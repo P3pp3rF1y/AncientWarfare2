@@ -1,24 +1,3 @@
-/*
- Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
- This software is distributed under the terms of the GNU General Public License.
- Please see COPYING for precise license information.
-
- This file is part of Ancient Warfare.
-
- Ancient Warfare is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- Ancient Warfare is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.structure.block;
 
 import codechicken.lib.model.DummyBakedModel;
@@ -44,10 +23,12 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.proxy.IClientRegistrar;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
 
 import javax.annotation.Nullable;
+import java.util.Optional;
 import java.util.Random;
 
 public final class BlockGateProxy extends BlockContainer implements IClientRegistrar {
@@ -105,11 +86,7 @@ public final class BlockGateProxy extends BlockContainer implements IClientRegis
 
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		TileEntity proxy = world.getTileEntity(pos);
-		if (proxy instanceof TEGateProxy) {
-			return ((TEGateProxy) proxy).onBlockPicked(target);
-		}
-		return ItemStack.EMPTY;
+		return WorldTools.getTile(world, pos, TEGateProxy.class).map(g -> g.onBlockPicked(target)).orElse(ItemStack.EMPTY);
 	}
 
 	@Override
@@ -119,15 +96,14 @@ public final class BlockGateProxy extends BlockContainer implements IClientRegis
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		TileEntity proxy = world.getTileEntity(pos);
-		return proxy instanceof TEGateProxy && ((TEGateProxy) proxy).onBlockClicked(player, hand);
+		return WorldTools.getTile(world, pos, TEGateProxy.class).map(g -> g.onBlockClicked(player, hand)).orElse(false);
 	}
 
 	@Override
 	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
-		TileEntity proxy = world.getTileEntity(pos);
-		if (proxy instanceof TEGateProxy) {
-			((TEGateProxy) proxy).onBlockAttacked(player);
+		Optional<TEGateProxy> proxy = WorldTools.getTile(world, pos, TEGateProxy.class);
+		if (proxy.isPresent()) {
+			proxy.get().onBlockAttacked(player);
 		} else if (player != null && player.capabilities.isCreativeMode) {
 			return super.removedByPlayer(state, world, pos, player, false);
 		}
@@ -152,10 +128,10 @@ public final class BlockGateProxy extends BlockContainer implements IClientRegis
 	//Actually "can go through", for mob pathing
 	@Override
 	public boolean isPassable(IBlockAccess world, BlockPos pos) {
-		TileEntity proxy = world.getTileEntity(pos);
-		if (proxy instanceof TEGateProxy && ((TEGateProxy) proxy).isGateClosed()) {
+		if (WorldTools.getTile(world, pos, TEGateProxy.class).map(TEGateProxy::isGateClosed).orElse(false)) {
 			return false;
 		}
+
 		//Gate is probably open, Search identical neighbour
 		if (world.getBlockState(pos.offset(EnumFacing.WEST)).getBlock() == this) { //TODO only the first half of these should be needed
 			return world.getBlockState(pos.offset(EnumFacing.EAST)).getBlock() == this;

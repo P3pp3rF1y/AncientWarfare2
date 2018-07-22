@@ -26,12 +26,12 @@ import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseSto
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStorageLarge;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStorageMedium;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
-import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
 public class BlockWarehouseStorage extends BlockBaseAutomation {
-	static final PropertyEnum<Size> SIZE = PropertyEnum.create("size", Size.class);
+	private static final PropertyEnum<Size> SIZE = PropertyEnum.create("size", Size.class);
 
 	public BlockWarehouseStorage(String regName) {
 		super(Material.ROCK, regName);
@@ -79,8 +79,7 @@ public class BlockWarehouseStorage extends BlockBaseAutomation {
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		TileEntity te = world.getTileEntity(pos);
-		return te instanceof IInteractableTile && ((IInteractableTile) te).onBlockClicked(player, hand);
+		return WorldTools.clickInteractableTileWithHand(world, pos, player, hand);
 	}
 
 	@Override
@@ -91,8 +90,7 @@ public class BlockWarehouseStorage extends BlockBaseAutomation {
 	@Override
 	public boolean eventReceived(IBlockState state, World world, BlockPos pos, int id, int param) {
 		super.eventReceived(state, world, pos, id, param);
-		TileEntity tileentity = world.getTileEntity(pos);
-		return tileentity != null && tileentity.receiveClientEvent(id, param);
+		return WorldTools.sendClientEventToTile(world, pos, id, param);
 	}
 
 	public enum Size implements IStringSerializable {
@@ -121,7 +119,7 @@ public class BlockWarehouseStorage extends BlockBaseAutomation {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerClient() {
-		final ResourceLocation assetLocation = new ResourceLocation(AncientWarfareCore.modID, "automation/" + getRegistryName().getResourcePath());
+		final ResourceLocation assetLocation = new ResourceLocation(AncientWarfareCore.MOD_ID, "automation/" + getRegistryName().getResourcePath());
 
 		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
 			@Override

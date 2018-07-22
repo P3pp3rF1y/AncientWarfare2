@@ -27,7 +27,7 @@ public abstract class ResearchRecipeCategory {
 		ResourceLocation location = Constants.RECIPE_GUI_VANILLA;
 		background = guiHelper.createDrawable(location, 0, 60, WIDTH, HEIGHT);
 		craftingGridHelper = guiHelper.createCraftingGridHelper(CRAFT_INPUT_SLOT, CRAFT_OUTPUT_SLOT);
-		icon = guiHelper.createDrawable(new ResourceLocation(AncientWarfareCore.modID + ":textures/items/core/research_book.png"), 0, 0, 16, 16, 16, 16);
+		icon = guiHelper.createDrawable(new ResourceLocation(AncientWarfareCore.MOD_ID + ":textures/items/core/research_book.png"), 0, 0, 16, 16, 16, 16);
 	}
 
 	@Nullable
@@ -36,7 +36,7 @@ public abstract class ResearchRecipeCategory {
 	}
 
 	public String getModName() {
-		return AncientWarfareCore.modID;
+		return AncientWarfareCore.MOD_ID;
 	}
 
 	public IDrawable getBackground() {

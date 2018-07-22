@@ -1,31 +1,9 @@
-/*
- Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
- This software is distributed under the terms of the GNU General Public License.
- Please see COPYING for precise license information.
-
- This file is part of Ancient Warfare.
-
- Ancient Warfare is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- Ancient Warfare is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.structure.gates.types;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -33,8 +11,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks;
 import net.shadowmage.ancientwarfare.structure.entity.DualBoundingBox;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
@@ -181,7 +160,7 @@ public class Gate implements IGateType {
 		return getGateNameFor(id);
 	}
 
-	public static String getGateNameFor(int id) {
+	private static String getGateNameFor(int id) {
 		int gateID;
 		for (String key : gateIDByName.keySet()) {
 			gateID = gateIDByName.get(key);
@@ -307,10 +286,7 @@ public class Gate implements IGateType {
 						block.dropBlockAsItem(gate.world, pos, state, 0);
 					}
 					if (gate.world.setBlockState(pos, AWStructuresBlocks.gateProxy.getDefaultState())) {
-						TileEntity te = gate.world.getTileEntity(pos);
-						if (te instanceof TEGateProxy) {
-							((TEGateProxy) te).setOwner(gate);
-						}
+						WorldTools.getTile(gate.world, pos, TEGateProxy.class).ifPresent(t -> t.setOwner(gate));
 					}
 				}
 			}
@@ -328,7 +304,7 @@ public class Gate implements IGateType {
 				for (int z = min.getZ(); z <= max.getZ(); z++) {
 					BlockPos pos = new BlockPos(x, y, z);
 					if (!world.isAirBlock(pos)) {
-						AWLog.logDebug("could not create gate for non-air block at: " + x + "," + y + "," + z + " block: " + world.getBlockState(pos).getBlock());
+						AncientWarfareStructures.log.info("could not create gate for non-air block at: " + x + "," + y + "," + z + " block: " + world.getBlockState(pos).getBlock());
 						return null;
 					}
 				}

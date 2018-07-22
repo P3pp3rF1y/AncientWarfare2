@@ -1,13 +1,15 @@
 package net.shadowmage.ancientwarfare.npc.ai.owned;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcWorker;
+
+import java.util.Optional;
 
 public class NpcAIPlayerOwnedWorkRandom extends NpcAI<NpcWorker> {
 
@@ -62,10 +64,9 @@ public class NpcAIPlayerOwnedWorkRandom extends NpcAI<NpcWorker> {
 		}
 		if (ticksAtSite >= AWNPCStatics.npcWorkTicks) {
 			ticksAtSite = 0;
-			BlockPos pos = npc.autoWorkTarget;
-			TileEntity te = npc.world.getTileEntity(pos);
-			if (te instanceof IWorkSite) {
-				IWorkSite site = (IWorkSite) te;
+			Optional<IWorkSite> te = WorldTools.getTile(npc.world, npc.autoWorkTarget, IWorkSite.class);
+			if (te.isPresent()) {
+				IWorkSite site = te.get();
 				if (npc.canWorkAt(site.getWorkType()) && site.hasWork()) {
 					npc.addExperience(AWNPCStatics.npcXpFromWork);
 					site.addEnergyFromWorker(npc);

@@ -19,7 +19,6 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -32,6 +31,7 @@ import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileWindm
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
 import net.shadowmage.ancientwarfare.core.util.Trig;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -43,7 +43,7 @@ import java.util.stream.Collectors;
 
 public class WindmillBladeRenderer extends AnimatedBlockRenderer {
 
-	public static final ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":automation/windmill_blade", "normal");
+	public static final ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.MOD_ID + ":automation/windmill_blade", "normal");
 	public static final WindmillBladeRenderer INSTANCE = new WindmillBladeRenderer();
 
 	private static final PerspectiveProperties MODEL_PROPERTIES;
@@ -67,11 +67,11 @@ public class WindmillBladeRenderer extends AnimatedBlockRenderer {
 	private final Collection<CCModel> bladeJoint;
 	private final CCModel cube;
 	public TextureAtlasSprite cubeSprite;
-	protected IconTransformation cubeIconTransform;
+	private IconTransformation cubeIconTransform;
 
 	private WindmillBladeRenderer() {
 		super("automation/windmill_blade.obj");
-		cube = OBJParser.parseModels(new ResourceLocation(AncientWarfareCore.modID, "models/block/automation/windmill_blade_cube.obj"), 7, new RedundantTransformation()).values().iterator().next().backfacedCopy();
+		cube = OBJParser.parseModels(new ResourceLocation(AncientWarfareCore.MOD_ID, "models/block/automation/windmill_blade_cube.obj"), 7, new RedundantTransformation()).values().iterator().next().backfacedCopy();
 		bladeShaft = removeGroups(s -> s.startsWith("bladeShaft."));
 		windmillShaft = transformModels(removeGroups(s -> s.startsWith("windmillShaft.")), new Translation(0d, 0.5d, 0d));
 		blade = removeGroups(s -> s.startsWith("blade."));
@@ -153,20 +153,16 @@ public class WindmillBladeRenderer extends AnimatedBlockRenderer {
 
 	@Override
 	public IExtendedBlockState handleState(IExtendedBlockState state, IBlockAccess access, BlockPos pos) {
-		TileEntity te = access.getTileEntity(pos);
+		return WorldTools.getTile(access, pos, TileWindmillBlade.class).map(t -> getWindmillState(state, t)).orElse(state);
+	}
 
-		if (te instanceof TileWindmillBlade) {
-			TileWindmillBlade blade = (TileWindmillBlade) te;
-
-			state = state.withProperty(BlockWindmillBlade.FORMED, blade.isFormed());
-			state = state.withProperty(AutomationProperties.IS_CONTROL, false);
-			state = state.withProperty(AutomationProperties.HEIGHT, 0);
-			state = state.withProperty(AutomationProperties.ROTATION, 0f);
-			state = state.withProperty(CoreProperties.UNLISTED_HORIZONTAL_FACING, EnumFacing.NORTH);
-			state = state.withProperty(AutomationProperties.DYNAMIC, false);
-		}
-
-		return state;
+	private IExtendedBlockState getWindmillState(IExtendedBlockState state, TileWindmillBlade blade) {
+		return state.withProperty(BlockWindmillBlade.FORMED, blade.isFormed())
+				.withProperty(AutomationProperties.IS_CONTROL, false)
+				.withProperty(AutomationProperties.HEIGHT, 0)
+				.withProperty(AutomationProperties.ROTATION, 0f)
+				.withProperty(CoreProperties.UNLISTED_HORIZONTAL_FACING, EnumFacing.NORTH)
+				.withProperty(AutomationProperties.DYNAMIC, false);
 	}
 
 	@Override

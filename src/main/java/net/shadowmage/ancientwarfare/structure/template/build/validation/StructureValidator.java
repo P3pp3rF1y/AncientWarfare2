@@ -1,24 +1,3 @@
-/*
- Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
- This software is distributed under the terms of the GNU General Public License.
- Please see COPYING for precise license information.
-
- This file is part of Ancient Warfare.
-
- Ancient Warfare is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- Ancient Warfare is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.structure.template.build.validation;
 
 import net.minecraft.block.Block;
@@ -31,15 +10,17 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.automation.registry.TreeFarmRegistry;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.ITree;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.ITreeScanner;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.template.load.TemplateParser;
-import net.shadowmage.ancientwarfare.structure.world_gen.WorldStructureGenerator;
+import net.shadowmage.ancientwarfare.structure.worldgen.WorldStructureGenerator;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -54,7 +35,6 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 public abstract class StructureValidator {
-
 	public static final String PROP_WORLD_GEN = "enableWorldGen";
 	public static final String PROP_UNIQUE = "unique";
 	public static final String PROP_SURVIVAL = "survival";
@@ -75,7 +55,6 @@ public abstract class StructureValidator {
 	public final StructureValidationType validationType;
 
 	private HashMap<String, StructureValidationProperty> properties = new HashMap<>();
-	//private boolean survival;
 
 	protected StructureValidator(StructureValidationType validationType) {
 		this.validationType = validationType;
@@ -125,14 +104,6 @@ public abstract class StructureValidator {
 	}
 
 	protected void setDefaultSettings(StructureTemplate template) {
-		/*
-		 * TODO
-         */
-		//  this.validTargetBlocks.addAll(WorldStructureGenerator.defaultTargetBlocks);
-		//  int size = (template.ySize-template.yOffset)/3;
-		//  this.borderSize = size;
-		//  this.maxLeveling = template.ySize-template.yOffset;
-		//  this.maxFill = size;
 	}
 
 	/*
@@ -143,6 +114,7 @@ public abstract class StructureValidator {
 	/*
 	 * if template should be included for selection, get the adjusted spawn Y level from the input block position.  this adjustedY will be used for validation and generation if template is selected and validated
 	 */
+	@SuppressWarnings("squid:S1172")
 	public int getAdjustedSpawnY(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
 		return y;
 	}
@@ -167,8 +139,19 @@ public abstract class StructureValidator {
 	 * implementations should fill the input x,y,z with whatever block is an appropriate 'fill' for that
 	 * validation type -- e.g. air or water
 	 */
+	@SuppressWarnings("squid:S1172")
 	public void handleClearAction(World world, BlockPos pos, StructureTemplate template, StructureBB bb) {
-		world.setBlockToAir(pos);
+		IBlockState state = world.getBlockState(pos);
+		if (state.getMaterial() != Material.AIR) {
+			ITreeScanner treeScanner = TreeFarmRegistry.getTreeScanner(state);
+			if (!treeScanner.matches(state)) {
+				world.setBlockToAir(pos);
+				return;
+			}
+			ITree tree = treeScanner.scanTree(world, pos);
+			tree.getLeafPositions().forEach(world::setBlockToAir);
+			tree.getTrunkPositions().forEach(world::setBlockToAir);
+		}
 	}
 
 	public static boolean startLow(String text, String test) {
@@ -180,8 +163,19 @@ public abstract class StructureValidator {
 		List<String> tagLines = new ArrayList<>();
 		Iterator<String> it = lines.iterator();
 		String line;
-		boolean unique = false, worldGen = false, biome = false, dimension = false, blocks = false, survival = false, swap = false;
-		int selectionWeight = 1, clusterValue = 1, duplicate = 1, maxLeveling = 0, maxFill = 0, borderSize = 0;
+		boolean unique = false;
+		boolean worldGen = false;
+		boolean biome = false;
+		boolean dimension = false;
+		boolean blocks = false;
+		boolean survival = false;
+		boolean swap = false;
+		int selectionWeight = 1;
+		int clusterValue = 1;
+		int duplicate = 1;
+		int maxLeveling = 0;
+		int maxFill = 0;
+		int borderSize = 0;
 		int[] dimensions = null;
 		Set<String> biomes = new HashSet<>();
 		Set<String> validTargetBlocks = new HashSet<>();
@@ -315,11 +309,7 @@ public abstract class StructureValidator {
 		return this;
 	}
 
-	public final StructureValidationProperty getProperty(String name) {
-		return properties.get(name);
-	}
-
-	public final void setProperty(String name, Object value) {
+	private void setProperty(String name, Object value) {
 		if (properties.containsKey(name)) {
 			properties.get(name).setValue(value);
 		} else {
@@ -385,12 +375,6 @@ public abstract class StructureValidator {
 		return properties.get(PROP_MIN_DUPLICATE_DISTANCE).getDataInt();
 	}
 
-	public final void setTargetBlocks(Collection<String> targetBlocks) {
-		Set<String> blocks = new HashSet<>();
-		blocks.addAll(targetBlocks);
-		properties.get(PROP_BLOCK_LIST).setValue(blocks);
-	}
-
 	public final void setBiomeList(Collection<String> biomes) {
 		Set<String> blocks = new HashSet<>();
 		blocks.addAll(biomes);
@@ -415,7 +399,8 @@ public abstract class StructureValidator {
 
 	//*********************************************** UTILITY METHODS *************************************************//
 	protected boolean validateBorderBlocks(World world, StructureTemplate template, StructureBB bb, int minY, int maxY, boolean skipWater) {
-		int bx, bz;
+		int bx;
+		int bz;
 		int borderSize = getBorderSize();
 		boolean riverBiomeValid = BiomeDictionary.hasType(world.provider.getBiomeForCoords(new BlockPos(bb.min.getX(), 1, bb.min.getZ())), BiomeDictionary.Type.RIVER);
 		for (bx = bb.min.getX() - borderSize; bx <= bb.max.getX() + borderSize; bx++) {
@@ -448,10 +433,10 @@ public abstract class StructureValidator {
 		return validateBlockType(world, x, validateBlockHeight(world, x, z, min, max, skipWater), z, isValidState);
 	}
 
-	protected boolean validateBlockHeightTypeAndBiome(World world, int x, int z, int min, int max, boolean skipWater, boolean riverBiomeValid, Predicate<IBlockState> isValidState) {
+	private boolean validateBlockHeightTypeAndBiome(World world, int x, int z, int min, int max, boolean skipWater, boolean riverBiomeValid, Predicate<IBlockState> isValidState) {
 		BlockPos pos = new BlockPos(x, 1, z);
 		if (!riverBiomeValid && BiomeDictionary.hasType(world.provider.getBiomeForCoords(pos), BiomeDictionary.Type.RIVER)) {
-			AncientWarfareCore.log.debug("Rejected for placement into river biome at {}", pos.toString());
+			AncientWarfareStructures.log.debug("Rejected for placement into river biome at {}", pos.toString());
 			return false;
 		}
 
@@ -466,10 +451,10 @@ public abstract class StructureValidator {
 	 * validates top block height at X, Z is >=  min and <= max (inclusive)
 	 * returns topFoundY or -1 if not within range
 	 */
-	protected int validateBlockHeight(World world, int x, int z, int minimumAcceptableY, int maximumAcceptableY, boolean skipWater) {
+	private int validateBlockHeight(World world, int x, int z, int minimumAcceptableY, int maximumAcceptableY, boolean skipWater) {
 		int topFilledY = WorldStructureGenerator.getTargetY(world, x, z, skipWater);
 		if (topFilledY < minimumAcceptableY || topFilledY > maximumAcceptableY) {
-			AWLog.logDebug("rejected for leveling or depth test. foundY: " + topFilledY + " min: " + minimumAcceptableY + " max:" + maximumAcceptableY + " at: " + x + "," + topFilledY + "," + z);
+			AncientWarfareStructures.log.info("rejected for leveling or depth test. foundY: " + topFilledY + " min: " + minimumAcceptableY + " max:" + maximumAcceptableY + " at: " + x + "," + topFilledY + "," + z);
 			return -1;
 		}
 		return topFilledY;
@@ -478,18 +463,18 @@ public abstract class StructureValidator {
 	/*
 	 * validates the target block at x,y,z is one of the input valid blocks
 	 */
-	protected boolean validateBlockType(World world, int x, int y, int z, Predicate<IBlockState> isValidState) {
+	private boolean validateBlockType(World world, int x, int y, int z, Predicate<IBlockState> isValidState) {
 		if (y < 0 || y >= world.getHeight()) {
 			return false;
 		}
 		IBlockState state = world.getBlockState(new BlockPos(x, y, z));
 		Block block = state.getBlock();
 		if (block == Blocks.AIR) {
-			AWLog.logDebug("rejected for non-matching block: air" + " at: " + x + "," + y + "," + z);
+			AncientWarfareStructures.log.info("rejected for non-matching block: air" + " at: " + x + "," + y + "," + z);
 			return false;
 		}
 		if (!isValidState.test(state)) {
-			AWLog.logDebug("Rejected for non-matching block: " + BlockDataManager.INSTANCE.getNameForBlock(block) + " at: " + x + "," + y + "," + z);
+			AncientWarfareStructures.log.info("Rejected for non-matching block: " + BlockDataManager.INSTANCE.getNameForBlock(block) + " at: " + x + "," + y + "," + z);
 			return false;
 		}
 		return true;
@@ -515,20 +500,8 @@ public abstract class StructureValidator {
 		return bb.min.getY() + template.yOffset + getMaxLeveling();
 	}
 
-	protected int getMinFillY(StructureTemplate template, StructureBB bb) {
-		return getMinY(template, bb);
-	}
-
-	protected int getMaxFillY(StructureTemplate template, StructureBB bb) {
+	private int getMaxFillY(StructureTemplate template, StructureBB bb) {
 		return getMinY(template, bb) + getMaxFill();
-	}
-
-	protected int getMinLevelingY(StructureTemplate template, StructureBB bb) {
-		return bb.min.getY() + template.yOffset;
-	}
-
-	protected int getMaxLevelingY(StructureTemplate template, StructureBB bb) {
-		return bb.min.getY() + template.yOffset + getMaxLeveling();
 	}
 
 	protected void borderLeveling(World world, int x, int z, StructureTemplate template, StructureBB bb) {
@@ -554,7 +527,7 @@ public abstract class StructureValidator {
 		}
 	}
 
-	protected void borderFill(World world, int x, int z, StructureTemplate template, StructureBB bb) {
+	private void borderFill(World world, int x, int z, StructureTemplate template, StructureBB bb) {
 		if (getMaxFill() <= 0) {
 			return;
 		}
@@ -576,7 +549,7 @@ public abstract class StructureValidator {
 		}
 	}
 
-	protected void underFill(World world, int x, int z, StructureTemplate template, StructureBB bb) {
+	private void underFill(World world, int x, int z, StructureBB bb) {
 		int topFilledY = WorldStructureGenerator.getTargetY(world, x, z, true);
 		Biome biome = world.provider.getBiomeForCoords(new BlockPos(x, 1, z));
 		IBlockState fillBlockID = Blocks.GRASS.getDefaultState();
@@ -592,10 +565,11 @@ public abstract class StructureValidator {
 		if (getMaxFill() <= 0) {
 			return;
 		}
-		int bx, bz;
+		int bx;
+		int bz;
 		for (bx = bb.min.getX(); bx <= bb.max.getX(); bx++) {
 			for (bz = bb.min.getZ(); bz <= bb.max.getZ(); bz++) {
-				underFill(world, bx, bz, template, bb);
+				underFill(world, bx, bz, bb);
 			}
 		}
 	}
@@ -605,7 +579,8 @@ public abstract class StructureValidator {
 		if (borderSize <= 0) {
 			return;
 		}
-		int bx, bz;
+		int bx;
+		int bz;
 		for (bx = bb.min.getX() - borderSize; bx <= bb.max.getX() + borderSize; bx++) {
 			for (bz = bb.max.getZ() + borderSize; bz > bb.max.getZ(); bz--) {
 				borderLeveling(world, bx, bz, template, bb);

@@ -5,7 +5,7 @@ import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 public class EngineeringStationRenderer extends RotatableBlockRenderer {
 
-	public static final ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":engineering_station", "normal");
+	public static final ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.MOD_ID + ":engineering_station", "normal");
 	public static final EngineeringStationRenderer INSTANCE = new EngineeringStationRenderer();
 
 	private EngineeringStationRenderer() {

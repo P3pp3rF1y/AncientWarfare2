@@ -5,18 +5,19 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
 import net.shadowmage.ancientwarfare.structure.gamedata.TownMap;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
-import net.shadowmage.ancientwarfare.structure.world_gen.StructureEntry;
+import net.shadowmage.ancientwarfare.structure.worldgen.StructureEntry;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TownPlacementValidator {
+	private TownPlacementValidator() {}
 
 	private static int maxSize = 21;
 
@@ -107,7 +108,7 @@ public class TownPlacementValidator {
 		map.getEntriesNear(world, area.getCenterX(), area.getCenterZ(), size, true, entries);
 		for (StructureEntry e : entries) {
 			if (e.getBB().crossWith(bb)) {
-				AWLog.logDebug("Skipping town generation at: " + area + " for intersection with existing structure at: " + e.getBB());
+				AncientWarfareStructures.log.info("Skipping town generation at: " + area + " for intersection with existing structure at: " + e.getBB());
 				return false;
 			}
 		}
@@ -221,7 +222,7 @@ public class TownPlacementValidator {
 				return -1;//return invalid Y if liquid block is too low
 			}
 			if (!AWStructureStatics.isValidTargetBlock(state)) {
-				AWLog.logDebug("rejecting town chunk for non-target block: " + block + " :: " + chunk.x + ":" + chunk.z);
+				AncientWarfareStructures.log.info("rejecting town chunk for non-target block: " + block + " :: " + chunk.x + ":" + chunk.z);
 				return -1;
 			}
 			return y;//if not skippable and is valid target block, return that y-level

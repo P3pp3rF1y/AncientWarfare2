@@ -41,8 +41,8 @@ import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager
 import net.shadowmage.ancientwarfare.structure.template.WorldGenStructureManager;
 import net.shadowmage.ancientwarfare.structure.template.load.TemplateLoader;
 import net.shadowmage.ancientwarfare.structure.town.WorldTownGenerator;
-import net.shadowmage.ancientwarfare.structure.world_gen.WorldGenTickHandler;
-import net.shadowmage.ancientwarfare.structure.world_gen.WorldStructureGenerator;
+import net.shadowmage.ancientwarfare.structure.worldgen.WorldGenTickHandler;
+import net.shadowmage.ancientwarfare.structure.worldgen.WorldStructureGenerator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -61,10 +61,14 @@ public class AncientWarfareStructures {
 	@SuppressWarnings("squid:S1444")
 	public static CommonProxyBase proxy;
 
+	public static Logger log;
+
 	private AWStructureStatics statics;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent evt) {
+		log = evt.getModLog();
+
 		statics = new AWStructureStatics("AncientWarfareStructures");
 
 		/*
@@ -97,8 +101,7 @@ public class AncientWarfareStructures {
 		NetworkHandler.registerContainer(NetworkHandler.GUI_LOOT_CHEST_PLACER, ContainerLootChestPlacer.class);
 		proxy.preInit();
 
-		String path = evt.getModConfigurationDirectory().getAbsolutePath();
-		TemplateLoader.INSTANCE.initializeAndExportDefaults(path);
+		TemplateLoader.INSTANCE.initializeAndExportDefaults();
 	}
 
 	@EventHandler

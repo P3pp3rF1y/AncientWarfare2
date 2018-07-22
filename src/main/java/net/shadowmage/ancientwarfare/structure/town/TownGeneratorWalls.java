@@ -7,7 +7,7 @@ import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplate.TownWallEntry;
-import net.shadowmage.ancientwarfare.structure.world_gen.WorldGenTickHandler;
+import net.shadowmage.ancientwarfare.structure.worldgen.WorldGenTickHandler;
 
 import java.util.Random;
 

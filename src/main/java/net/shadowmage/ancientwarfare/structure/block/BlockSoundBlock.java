@@ -31,6 +31,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.render.BlockStateKeyGenerator;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.gui.GuiSoundBlock;
 import net.shadowmage.ancientwarfare.structure.render.SoundBlockRenderer;
 import net.shadowmage.ancientwarfare.structure.tile.TileSoundBlock;
@@ -75,10 +76,7 @@ public class BlockSoundBlock extends BlockBaseStructure implements IBakeryProvid
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		@Nonnull ItemStack itemStack = player.getHeldItem(hand);
 		if (!itemStack.isEmpty() && itemStack.getItem() instanceof ItemBlock) {
-			TileEntity tileEntity = world.getTileEntity(pos);
-			if (tileEntity instanceof TileSoundBlock) {
-				((TileSoundBlock) tileEntity).setDisguiseState(itemStack);
-			}
+			WorldTools.getTile(world, pos, TileSoundBlock.class).ifPresent(s -> s.setDisguiseState(itemStack));
 		}
 		if (!world.isRemote) {
 			NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_SOUND_BLOCK, pos);

@@ -65,6 +65,8 @@ public class StructureTemplateManager {
 			PacketStructure pkt = new PacketStructure();
 			pkt.packetData.setTag("singleStructure", tag);
 			NetworkHandler.sendToAllPlayers(pkt);
+		} else if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
+			StructureTemplateManagerClient.instance().addTemplate(cl);
 		}
 	}
 

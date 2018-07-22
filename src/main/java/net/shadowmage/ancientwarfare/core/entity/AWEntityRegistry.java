@@ -5,13 +5,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 public class AWEntityRegistry {
+	private AWEntityRegistry() {}
 
-	/*
-	 * NPC Module Registrations
-	 */
 	public static final String NPC_WORKER = "aw_npc_worker";
 	public static final String NPC_COMBAT = "aw_npc_combat";
 	public static final String NPC_COURIER = "aw_npc_courier";
@@ -35,12 +33,7 @@ public class AWEntityRegistry {
 	public static final String NPC_FACTION_BARD = "faction.bard";
 	public static final String NPC_FACTION_SIEGE_ENGINEER = "faction.siege_engineer";
 
-    /*
-	 * Vehicle Module Entity Registrations
-     */
-
 	public static final String VEHICLE_TEST = "vehicle";
-	public static final String VEHICLE_CATAPULT = "catapult";
 	public static final String MISSILE_TEST = "missile";
 
 	/*
@@ -63,12 +56,12 @@ public class AWEntityRegistry {
 	 *
 	 * @author Shadowmage
 	 */
-	public static abstract class EntityDeclaration {
+	public abstract static class EntityDeclaration {
 
 		protected final Class<? extends Entity> entityClass;
-		final String entityName;
-		final int id;
-		final String modID;
+		private final String entityName;
+		private final int id;
+		private final String modID;
 
 		public EntityDeclaration(Class<? extends Entity> entityClass, String entityName, int id, String modID) {
 			this.entityClass = entityClass;
@@ -77,12 +70,12 @@ public class AWEntityRegistry {
 			this.modID = modID;
 		}
 
-		public Entity createEntity(World world) {
+		protected Entity createEntity(World world) {
 			try {
 				return entityClass.getConstructor(World.class).newInstance(world);
 			}
 			catch (Exception e) {
-				AWLog.logError("Couldn't create entity:" + e.getMessage());
+				AncientWarfareCore.log.error("Couldn't create entity:" + e.getMessage());
 			}
 			return null;
 		}

@@ -69,6 +69,8 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import static net.shadowmage.ancientwarfare.npc.config.AWNPCStatics.npcLevelDamageMultiplier;
@@ -80,9 +82,25 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	private static final DataParameter<Byte> BED_DIRECTION = EntityDataManager.createKey(NpcBase.class, DataSerializers.BYTE);
 	private static final DataParameter<Boolean> IS_SLEEPING = EntityDataManager.createKey(NpcBase.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<Boolean> SWINGING_ARMS = EntityDataManager.createKey(NpcBase.class, DataSerializers.BOOLEAN);
+	private static final String PROFILE_TEXTURE_TAG = "profileTex";
+	private static final String CUSTOM_TEXTURE_TAG = "customTex";
+	private static final String SLOT_NUM_TAG = "slotNum";
+	private static final String BED_DIRECTION_TAG = "bedDirection";
+	private static final String IS_SLEEPING_TAG = "isSleeping";
+	private static final String CACHED_BED_POS_TAG = "cachedBedPos";
+	private static final String BED_POS_TAG = "bedPos";
+	private static final String FOUND_BED_TAG = "foundBed";
+	private static final String ORDERS_STACK_TAG = "ordersStack";
+	private static final String UPKEEP_STACK_TAG = "upkeepStack";
+	private static final String LEVELING_STATS_TAG = "levelingStats";
+	private static final String MAX_HEALTH_TAG = "maxHealth";
+	private static final String HEALTH_TAG = "health";
+	private static final String ATTACK_DAMAGE_OVERRIDE_TAG = "attackDamageOverride";
+	private static final String ARMOR_VALUE_OVERRIDE_TAG = "armorValueOverride";
+	private static final String AI_ENABLED_TAG = "aiEnabled";
 
 	private Owner owner = Owner.EMPTY;
-	protected String followingPlayerName;//set/cleared onInteract from player if player.team==this.team
+	private String followingPlayerName;//set/cleared onInteract from player if player.team==this.team
 
 	private NpcLevelingStats levelingStats;
 
@@ -92,7 +110,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	private static final ResourceLocation baseDefaultTexture = new ResourceLocation("ancientwarfare:textures/entity/npc/npc_default.png");
 
 	private ResourceLocation currentTexture = null;
-	public static final int ORDER_SLOT = 6, UPKEEP_SLOT = 7;
+	public static final int ORDER_SLOT = 6;
+	public static final int UPKEEP_SLOT = 7;
 	@Nonnull
 	public ItemStack ordersStack = ItemStack.EMPTY;
 	@Nonnull
@@ -101,7 +120,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	// used for flee/distress AI
 	// this isn't really useful yet, combat NPC's will attack any mob they come in
 	// contact with during a distress response
-	public LinkedHashSet<Entity> nearbyHostiles = new LinkedHashSet<Entity>();
+	public Set<Entity> nearbyHostiles = new LinkedHashSet<Entity>();
 
 	private boolean aiEnabled = true;
 
@@ -165,19 +184,14 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	}
 
 	public void setCustomTexRef(String customTexRef) {
-		if (customTexRef == null) {
-			customTexRef = "";
-		}
 		if (!world.isRemote) {
 			if (!customTexRef.equals(this.customTexRef)) {
 				PacketEntity pkt = new PacketEntity(this);
 				if (customTexRef.startsWith("Player:")) {
 					String name = customTexRef.split(":", 2)[1];
-					NBTTagCompound tagCompound = AncientWarfareNPC.proxy.cacheProfile((WorldServer) world, name);
-					if (tagCompound != null)
-						pkt.packetData.setTag("profileTex", tagCompound);
+					AncientWarfareNPC.proxy.cacheProfile((WorldServer) world, name).ifPresent(t -> pkt.packetData.setTag(PROFILE_TEXTURE_TAG, t));
 				}
-				pkt.packetData.setString("customTex", customTexRef);
+				pkt.packetData.setString(CUSTOM_TEXTURE_TAG, customTexRef);
 				NetworkHandler.sendToAllTracking(this, pkt);
 			}
 			this.customTexRef = customTexRef;
@@ -378,7 +392,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		return true;
 	}
 
-	public void setRainedOn(boolean rainedOn) {
+	private void setRainedOn(boolean rainedOn) {
 		this.rainedOn = rainedOn;
 	}
 
@@ -665,8 +679,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		for (int i = 0; i < equipmentList.tagCount(); i++) {
 			equipmentTag = equipmentList.getCompoundTagAt(i);
 			stack = new ItemStack(equipmentTag);
-			if (equipmentTag.hasKey("slotNum")) {
-				setItemStackToSlot(equipmentTag.getInteger("slotNum"), stack);
+			if (equipmentTag.hasKey(SLOT_NUM_TAG)) {
+				setItemStackToSlot(equipmentTag.getInteger(SLOT_NUM_TAG), stack);
 			}
 		}
 		readBaseTags(tag);
@@ -676,7 +690,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	 * Implementations should write out any persistent entity-data needed to restore entity-state from an item-stack.<br>
 	 * This should include inventory, levels, orders, faction / etc
 	 */
-	public final NBTTagCompound writeAdditionalItemData(NBTTagCompound tag) {
+	public final void writeAdditionalItemData(NBTTagCompound tag) {
 		NBTTagList equipmentList = new NBTTagList();
 		@Nonnull ItemStack stack;
 		NBTTagCompound equipmentTag;
@@ -686,18 +700,18 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 				continue;
 			}
 			equipmentTag = stack.writeToNBT(new NBTTagCompound());
-			equipmentTag.setInteger("slotNum", slot.ordinal());
+			equipmentTag.setInteger(SLOT_NUM_TAG, slot.ordinal());
 			equipmentList.appendTag(equipmentTag);
 		}
 		tag.setTag("equipment", equipmentList);
 		writeBaseTags(tag);
-		return tag;
 	}
 
 	/*
 	 * is the input stack a valid orders-item for this npc?<br>
 	 * only used by player-owned NPCs
 	 */
+	@SuppressWarnings("squid:S1172")
 	public boolean isValidOrdersStack(ItemStack stack) {
 		return false;
 	}
@@ -761,11 +775,11 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		return levelingStats;
 	}
 
-	public final ResourceLocation getDefaultTexture() {
+	private ResourceLocation getDefaultTexture() {
 		return baseDefaultTexture;
 	}
 
-	public final ItemStack getItemToSpawn() {
+	private ItemStack getItemToSpawn() {
 		return ItemNpcSpawner.getSpawnerItemForNpc(this);
 	}
 
@@ -804,12 +818,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 			setHealth(getHealth() + 1);
 		}
 		super.onUpdate();
-		if (getHeldItemMainhand() != null) {
-			try {//Inserting Item#onUpdate, to let it do whatever it needs to do. Used by QuiverBow for burst fire
-				getHeldItemMainhand().updateAnimation(world, this, 0, true);
-			}
-			catch (Exception ignored) {
-			}
+		if (!getHeldItemMainhand().isEmpty()) {
+			getHeldItemMainhand().updateAnimation(world, this, 0, true);
 		}
 		world.profiler.endSection();
 	}
@@ -866,9 +876,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	}
 
 	public void setOwnerName(String name) {
-		if (name == null) {
-			name = "";
-		}
 		owner = new Owner(world, name);
 		if (!world.isRemote && !name.equals(owner.getName())) {
 			PacketEntity pkt = new PacketEntity(this);
@@ -902,7 +909,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
 	@Override
 	protected int getExperiencePoints(EntityPlayer attacker) {
-		if (attacker != null && isHostileTowards(attacker) && canBeAttackedBy(attacker)) {
+		if (isHostileTowards(attacker) && canBeAttackedBy(attacker)) {
 			return super.getExperiencePoints(attacker);
 		}
 		return 0;
@@ -919,10 +926,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 			return null;
 		}
 		return world.getPlayerEntityByName(followingPlayerName);
-	}
-
-	public void setExperienceDrop(int exp) {
-		this.experienceValue = exp;
 	}
 
 	public final void setFollowingEntity(EntityLivingBase entity) {
@@ -972,18 +975,18 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		if (tag.hasKey("home")) {
 			setHomePosAndDistance(BlockPos.fromLong(tag.getLong("home")), tag.getInteger("homeRange"));
 		}
-		if (tag.hasKey("bedDirection"))
-			setBedDirection(EnumFacing.VALUES[tag.getByte("bedDirection")]);
-		if (tag.hasKey("isSleeping"))
-			setSleeping(tag.getBoolean("isSleeping"));
-		if (tag.hasKey("cachedBedPos")) {
-			this.cachedBedPos = BlockPos.fromLong(tag.getLong("cachedBedPos"));
+		if (tag.hasKey(BED_DIRECTION_TAG))
+			setBedDirection(EnumFacing.VALUES[tag.getByte(BED_DIRECTION_TAG)]);
+		if (tag.hasKey(IS_SLEEPING_TAG))
+			setSleeping(tag.getBoolean(IS_SLEEPING_TAG));
+		if (tag.hasKey(CACHED_BED_POS_TAG)) {
+			this.cachedBedPos = BlockPos.fromLong(tag.getLong(CACHED_BED_POS_TAG));
 		}
-		if (tag.hasKey("bedPos")) {
-			this.setBedPosition(BlockPos.fromLong(tag.getLong("bedPos")));
+		if (tag.hasKey(BED_POS_TAG)) {
+			this.setBedPosition(BlockPos.fromLong(tag.getLong(BED_POS_TAG)));
 		}
-		if (tag.hasKey("foundBed"))
-			this.foundBed = tag.getBoolean("foundBed");
+		if (tag.hasKey(FOUND_BED_TAG))
+			this.foundBed = tag.getBoolean(FOUND_BED_TAG);
 
 		readBaseTags(tag);
 		onWeaponInventoryChanged();
@@ -1001,32 +1004,32 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		}
 		tag.setLong("home", getHomePosition().toLong());
 		tag.setInteger("homeRange", getHomeRange());
-		tag.setByte("bedDirection", (byte) getBedDirection().ordinal());
-		tag.setBoolean("isSleeping", this.isSleeping());
+		tag.setByte(BED_DIRECTION_TAG, (byte) getBedDirection().ordinal());
+		tag.setBoolean(IS_SLEEPING_TAG, this.isSleeping());
 		if (cachedBedPos != null)
-			tag.setLong("cachedBedPos", cachedBedPos.toLong());
+			tag.setLong(CACHED_BED_POS_TAG, cachedBedPos.toLong());
 		BlockPos bedPos = this.getBedPosition();
-		tag.setLong("bedPos", bedPos.toLong());
-		tag.setBoolean("foundBed", foundBed);
+		tag.setLong(BED_POS_TAG, bedPos.toLong());
+		tag.setBoolean(FOUND_BED_TAG, foundBed);
 
 		writeBaseTags(tag);
 	}
 
 	private void readBaseTags(NBTTagCompound tag) {
-		if (tag.hasKey("ordersStack")) {
-			setItemStackToSlot(ORDER_SLOT, new ItemStack(tag.getCompoundTag("ordersStack")));
+		if (tag.hasKey(ORDERS_STACK_TAG)) {
+			setItemStackToSlot(ORDER_SLOT, new ItemStack(tag.getCompoundTag(ORDERS_STACK_TAG)));
 		}
-		if (tag.hasKey("upkeepStack")) {
-			setItemStackToSlot(UPKEEP_SLOT, new ItemStack(tag.getCompoundTag("upkeepStack")));
+		if (tag.hasKey(UPKEEP_STACK_TAG)) {
+			setItemStackToSlot(UPKEEP_SLOT, new ItemStack(tag.getCompoundTag(UPKEEP_STACK_TAG)));
 		}
-		if (tag.hasKey("levelingStats")) {
-			getLevelingStats().readFromNBT(tag.getCompoundTag("levelingStats"));
+		if (tag.hasKey(LEVELING_STATS_TAG)) {
+			getLevelingStats().readFromNBT(tag.getCompoundTag(LEVELING_STATS_TAG));
 		}
-		if (tag.hasKey("maxHealth")) {
-			getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(tag.getFloat("maxHealth"));
+		if (tag.hasKey(MAX_HEALTH_TAG)) {
+			getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(tag.getFloat(MAX_HEALTH_TAG));
 		}
-		if (tag.hasKey("health")) {
-			setHealth(tag.getFloat("health"));
+		if (tag.hasKey(HEALTH_TAG)) {
+			setHealth(tag.getFloat(HEALTH_TAG));
 		}
 		if (tag.hasKey("name")) {
 			setCustomNameTag(tag.getString("name"));
@@ -1034,39 +1037,39 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		if (tag.hasKey("food")) {
 			setFoodRemaining(tag.getInteger("food"));
 		}
-		if (tag.hasKey("attackDamageOverride")) {
-			setAttackDamageOverride(tag.getInteger("attackDamageOverride"));
+		if (tag.hasKey(ATTACK_DAMAGE_OVERRIDE_TAG)) {
+			setAttackDamageOverride(tag.getInteger(ATTACK_DAMAGE_OVERRIDE_TAG));
 		}
-		if (tag.hasKey("armorValueOverride")) {
-			setArmorValueOverride(tag.getInteger("armorValueOverride"));
+		if (tag.hasKey(ARMOR_VALUE_OVERRIDE_TAG)) {
+			setArmorValueOverride(tag.getInteger(ARMOR_VALUE_OVERRIDE_TAG));
 		}
-		if (tag.hasKey("customTex")) {
-			setCustomTexRef(tag.getString("customTex"));
+		if (tag.hasKey(CUSTOM_TEXTURE_TAG)) {
+			setCustomTexRef(tag.getString(CUSTOM_TEXTURE_TAG));
 		}
-		if (tag.hasKey("aiEnabled")) {
-			setIsAIEnabled(tag.getBoolean("aiEnabled"));
+		if (tag.hasKey(AI_ENABLED_TAG)) {
+			setIsAIEnabled(tag.getBoolean(AI_ENABLED_TAG));
 		}
 		owner = Owner.deserializeFromNBT(tag);
 	}
 
 	private void writeBaseTags(NBTTagCompound tag) {
 		if (!ordersStack.isEmpty()) {
-			tag.setTag("ordersStack", ordersStack.writeToNBT(new NBTTagCompound()));
+			tag.setTag(ORDERS_STACK_TAG, ordersStack.writeToNBT(new NBTTagCompound()));
 		}
 		if (!upkeepStack.isEmpty()) {
-			tag.setTag("upkeepStack", upkeepStack.writeToNBT(new NBTTagCompound()));
+			tag.setTag(UPKEEP_STACK_TAG, upkeepStack.writeToNBT(new NBTTagCompound()));
 		}
-		tag.setTag("levelingStats", getLevelingStats().writeToNBT(new NBTTagCompound()));
-		tag.setFloat("maxHealth", getMaxHealth());
-		tag.setFloat("health", getHealth());
+		tag.setTag(LEVELING_STATS_TAG, getLevelingStats().writeToNBT(new NBTTagCompound()));
+		tag.setFloat(MAX_HEALTH_TAG, getMaxHealth());
+		tag.setFloat(HEALTH_TAG, getHealth());
 		if (hasCustomName()) {
 			tag.setString("name", getCustomNameTag());
 		}
 		tag.setInteger("food", getFoodRemaining());
-		tag.setInteger("attackDamageOverride", attackDamage);
-		tag.setInteger("armorValueOverride", armorValue);
-		tag.setString("customTex", customTexRef);
-		tag.setBoolean("aiEnabled", aiEnabled);
+		tag.setInteger(ATTACK_DAMAGE_OVERRIDE_TAG, attackDamage);
+		tag.setInteger(ARMOR_VALUE_OVERRIDE_TAG, armorValue);
+		tag.setString(CUSTOM_TEXTURE_TAG, customTexRef);
+		tag.setBoolean(AI_ENABLED_TAG, aiEnabled);
 		owner.serializeToNBT(tag);
 	}
 
@@ -1081,13 +1084,15 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		usesPlayerSkin = false;
 		if (customTexRef.startsWith("Player:")) {
 			try {
-				currentTexture = AncientWarfareNPC.proxy.getPlayerSkin(customTexRef.split(":", 2)[1]);
-				usesPlayerSkin = true;
+				AncientWarfareNPC.proxy.getPlayerSkin(customTexRef.split(":", 2)[1]).ifPresent(t -> {
+					currentTexture = t;
+					usesPlayerSkin = true;
+				});
 			}
 			catch (Throwable ignored) {
 			}
 		} else {
-			currentTexture = NpcSkinManager.INSTANCE.getTextureFor(this);
+			NpcSkinManager.INSTANCE.getTextureFor(this).ifPresent(t -> currentTexture = t);
 		}
 	}
 
@@ -1095,25 +1100,22 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	public void handlePacketData(NBTTagCompound tag) {
 		if (tag.hasKey("ownerName")) {
 			owner = Owner.deserializeFromNBT(tag);
-		} else if (tag.hasKey("profileTex") && tag.hasKey("customTex")) {
-			customTexRef = tag.getString("customTex");
-			NBTTagCompound tah = tag.getCompoundTag("profileTex");
+		} else if (tag.hasKey(PROFILE_TEXTURE_TAG) && tag.hasKey(CUSTOM_TEXTURE_TAG)) {
+			customTexRef = tag.getString(CUSTOM_TEXTURE_TAG);
+			NBTTagCompound tah = tag.getCompoundTag(PROFILE_TEXTURE_TAG);
 			if (world.isRemote) {
-				try {
-					AncientWarfareNPC.proxy.cacheProfile(NBTUtil.readGameProfileFromNBT(tah));
-				}
-				catch (Throwable ignored) {
-				}
+				Optional.ofNullable(NBTUtil.readGameProfileFromNBT(tah)).ifPresent(AncientWarfareNPC.proxy::cacheProfile);
 			}
 			updateTexture();
-		} else if (tag.hasKey("customTex")) {
-			setCustomTexRef(tag.getString("customTex"));
+		} else if (tag.hasKey(CUSTOM_TEXTURE_TAG)) {
+			setCustomTexRef(tag.getString(CUSTOM_TEXTURE_TAG));
 		} else if (tag.hasKey("attackTarget")) {
 			int entityId = tag.getInteger("attackTarget");
 			setAttackTarget((EntityLivingBase) world.getEntityByID(entityId));
 		}
 	}
 
+	@Override
 	public double getDistanceSq(BlockPos pos) {
 		return getDistanceSq(pos.getX() + 0.5d, pos.getY(), pos.getZ() + 0.5d);
 	}
@@ -1244,12 +1246,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		dataManager.set(BED_POS, pos);
 	}
 
-	// TODO: sitting around when idle
-	//@Override
-	//public boolean isRiding() {
-	//    return true;
-	//}
-
 	public void setPositionToBed() {
 		float xOffset = 0.5F;
 		float yOffset = 0.6F;
@@ -1292,7 +1288,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 			super.collideWithEntity(entity);
 	}
 
-	public void setSleeping(boolean isSleeping) {
+	private void setSleeping(boolean isSleeping) {
 		dataManager.set(IS_SLEEPING, isSleeping);
 	}
 
@@ -1300,7 +1296,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		return dataManager == null ? false : dataManager.get(IS_SLEEPING);
 	}
 
-	public void setBedDirection(EnumFacing direction) {
+	private void setBedDirection(EnumFacing direction) {
 		dataManager.set(BED_DIRECTION, (byte) direction.ordinal());
 	}
 
@@ -1391,16 +1387,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
 	@Override
 	public void onStuckDetected() {
-/* TODO implement stuck logic for NPC
-		if (!this.worldObj.isRemote && Config.enableNpcTeleportHome && this.wayNav.getHomePoint() != null && this.getTargetType() == TargetType.SHELTER) {
-			WayPoint p = this.wayNav.getHomePoint();
-			if (this.worldObj.blockExists(p.floorX(), p.floorY(), p.floorZ()) && this.worldObj.isAirBlock(p.floorX(), p.floorY() + 1, p.floorZ())) {
-				this.setPosition(p.floorX() + 0.5d, p.floorY(), p.floorZ() + 0.5d);
-				this.motionX = this.motionY = this.motionZ = 0;
-				this.clearPath();
-				this.setTargetAW(null);
-			}
-		}
-*/
+		//noop
 	}
 }

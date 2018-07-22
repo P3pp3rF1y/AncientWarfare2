@@ -1,24 +1,3 @@
-/*
- Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
- This software is distributed under the terms of the GNU General Public License.
- Please see COPYING for precise license information.
-
- This file is part of Ancient Warfare.
-
- Ancient Warfare is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- Ancient Warfare is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.structure.template;
 
 import net.minecraft.util.EnumFacing;
@@ -28,12 +7,12 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.common.Loader;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
-import net.shadowmage.ancientwarfare.structure.world_gen.StructureEntry;
+import net.shadowmage.ancientwarfare.structure.worldgen.StructureEntry;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -49,9 +28,10 @@ public class WorldGenStructureManager {
 	private HashMap<String, Set<StructureTemplate>> templatesByBiome = new HashMap<>();
 	/*
 	 * cached list objects, used for temp searching, as to not allocate new lists for every chunk-generated....
-	 */ List<StructureEntry> searchCache = new ArrayList<>();
-	List<StructureTemplate> trimmedPotentialStructures = new ArrayList<>();
-	HashMap<String, Integer> distancesFound = new HashMap<>();
+	 */
+	private List<StructureEntry> searchCache = new ArrayList<>();
+	private List<StructureTemplate> trimmedPotentialStructures = new ArrayList<>();
+	private HashMap<String, Integer> distancesFound = new HashMap<>();
 	BlockPos rearBorderPos = BlockPos.ORIGIN;
 
 	public static final WorldGenStructureManager INSTANCE = new WorldGenStructureManager();
@@ -76,7 +56,7 @@ public class WorldGenStructureManager {
 				if (templatesByBiome.containsKey(biome)) {
 					templatesByBiome.get(biome).add(template);
 				} else if (Loader.isModLoaded((new ResourceLocation(biome)).getResourceDomain())) {
-					AWLog.logError("Could not locate biome: " + biome + " while registering template: " + template.name + " for world generation.");
+					AncientWarfareStructures.log.error("Could not locate biome: " + biome + " while registering template: " + template.name + " for world generation.");
 				}
 			}
 		} else//blacklist, skip template-biomes
@@ -98,8 +78,11 @@ public class WorldGenStructureManager {
 		if (map == null) {
 			return null;
 		}
-		int foundValue = 0, chunkDistance;
-		float foundDistance, mx, mz;
+		int foundValue = 0;
+		int chunkDistance;
+		float foundDistance;
+		float mx;
+		float mz;
 
 		Biome biome = world.provider.getBiomeForCoords(new BlockPos(x, 1, z));
 		String biomeName = biome.getRegistryName().toString();

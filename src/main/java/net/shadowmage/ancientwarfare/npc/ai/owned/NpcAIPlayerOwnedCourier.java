@@ -3,11 +3,13 @@ package net.shadowmage.ancientwarfare.npc.ai.owned;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.shadowmage.ancientwarfare.core.owner.IOwnable;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcCourier;
@@ -26,6 +28,7 @@ public class NpcAIPlayerOwnedCourier extends NpcAI<NpcCourier> {
 	@Nonnull
 	private ItemStack routeStack;
 
+	@SuppressWarnings("squid:S2637")
 	public NpcAIPlayerOwnedCourier(NpcCourier npc) {
 		super(npc);
 		this.setMutexBits(ATTACK + MOVE);
@@ -46,10 +49,7 @@ public class NpcAIPlayerOwnedCourier extends NpcAI<NpcCourier> {
 
 	@Override
 	public boolean shouldContinueExecuting() {
-		if (!npc.getIsAIEnabled() || npc.shouldBeAtHome()) {
-			return false;
-		}
-		return npc.backpackInventory != null && order != null && !order.isEmpty();
+		return !(!npc.getIsAIEnabled() || npc.shouldBeAtHome()) && npc.backpackInventory != null && order != null && !order.isEmpty();
 	}
 
 	@Override
@@ -83,7 +83,7 @@ public class NpcAIPlayerOwnedCourier extends NpcAI<NpcCourier> {
 		npc.removeAITask(TASK_WORK + TASK_MOVE);
 	}
 
-	public void workAtSite() {
+	private void workAtSite() {
 		if (ticksToWork == 0) {
 			startWork();
 		} else {
@@ -117,20 +117,23 @@ public class NpcAIPlayerOwnedCourier extends NpcAI<NpcCourier> {
 	@Nullable
 	private IItemHandler getTargetHandler() {
 		RoutingOrder.RoutePoint point = order.get(routeIndex);
-		TileEntity te = npc.world.getTileEntity(point.getTarget());
-		if (te != null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, point.getBlockSide())) {
-			if (te instanceof IOwnable) {
-				IOwnable ownableTE = (IOwnable) te;
-				if (!npc.hasCommandPermissions(ownableTE.getOwner())) {
-					return null;
-				}
-			}
-			return te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, point.getBlockSide());
-		}
-		return null;
+		return WorldTools.getTile(npc.world, point.getTarget())
+				.filter(t -> t.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, point.getBlockSide()))
+				.map(t -> getTargetHandler(point.getBlockSide(), t)).orElse(null);
 	}
 
-	public void setMoveToNextSite() {
+	private IItemHandler getTargetHandler(EnumFacing side, TileEntity te) {
+		if (te instanceof IOwnable) {
+			IOwnable ownableTE = (IOwnable) te;
+			if (!npc.hasCommandPermissions(ownableTE.getOwner())) {
+				return null;
+			}
+		}
+		//noinspection ConstantConditions
+		return te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side);
+	}
+
+	private void setMoveToNextSite() {
 		ticksAtSite = 0;
 		ticksToWork = 0;
 		moveRetryDelay = 0;

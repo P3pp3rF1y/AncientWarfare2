@@ -2,7 +2,7 @@ package net.shadowmage.ancientwarfare.structure.town;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 
 import java.util.ArrayList;
@@ -72,9 +72,6 @@ public final class TownTemplate {
 	private List<TownStructureEntry> houseStructureEntries = new ArrayList<>();
 	private List<TownStructureEntry> cosmeticStructureEntries = new ArrayList<>();
 	private List<TownStructureEntry> exteriorStructureEntries = new ArrayList<>();
-
-	public TownTemplate() {
-	}
 
 	public void setTownTypeName(String townTypeName) {
 		this.townTypeName = townTypeName;
@@ -335,7 +332,7 @@ public final class TownTemplate {
 		validateStructureList(exteriorStructureEntries);
 		TownStructureEntry e = getLamp();
 		if (e != null && StructureTemplateManager.INSTANCE.getTemplate(e.templateName) == null) {
-			AWLog.logError("Error loading lamp template: " + e.templateName);
+			AncientWarfareStructures.log.error("Error loading lamp template: " + e.templateName);
 		}
 		wallTotalWeights = validateWallList(walls, wallTotalWeights);
 		cornersTotalWeight = validateWallList(cornerWalls, cornersTotalWeight);
@@ -349,7 +346,7 @@ public final class TownTemplate {
 		TownStructureEntry e;
 		while (it.hasNext() && (e = it.next()) != null) {
 			if (StructureTemplateManager.INSTANCE.getTemplate(e.templateName) == null) {
-				AWLog.logError("Error loading structure template: " + e.templateName + " for town: " + townTypeName);
+				AncientWarfareStructures.log.error("Error loading structure template: " + e.templateName + " for town: " + townTypeName);
 				it.remove();
 			}
 		}
@@ -360,7 +357,7 @@ public final class TownTemplate {
 		TownWallEntry e;
 		while (it.hasNext() && (e = it.next()) != null) {
 			if (StructureTemplateManager.INSTANCE.getTemplate(e.templateName) == null) {
-				AWLog.logError("Error loading structure template: " + e.templateName + " for town: " + townTypeName);
+				AncientWarfareStructures.log.error("Error loading structure template: " + e.templateName + " for town: " + townTypeName);
 				it.remove();
 				originalWeight -= e.weight;
 			}
@@ -370,11 +367,11 @@ public final class TownTemplate {
 
 	public final boolean isValid() {
 		if (wallStyle > 0 && cornerWalls.isEmpty()) {
-			AWLog.logError("Town template of: " + townTypeName + " is missing corner wall type for specified wall style of: " + wallStyle);
+			AncientWarfareStructures.log.error("Town template of: " + townTypeName + " is missing corner wall type for specified wall style of: " + wallStyle);
 			return false;
 		}
 		if (wallStyle > 1 && (walls.isEmpty() || gateCenterWalls.isEmpty() || gateLeftWalls.isEmpty() || gateRightWalls.isEmpty())) {
-			AWLog.logError("Town template of: " + townTypeName + " is missing one or more wall types for specified wall style of: " + wallStyle);
+			AncientWarfareStructures.log.error("Town template of: " + townTypeName + " is missing one or more wall types for specified wall style of: " + wallStyle);
 			return false;
 		}
 		return townTypeName != null && !townTypeName.isEmpty();
@@ -397,9 +394,9 @@ public final class TownTemplate {
 
 	public static final class TownWallEntry {
 		String templateName;
-		String typeName;
-		int weight;
-		int id;
+		private String typeName;
+		private int weight;
+		private int id;
 
 		public TownWallEntry(String name, String type, int id, int weight) {
 			this.templateName = name;

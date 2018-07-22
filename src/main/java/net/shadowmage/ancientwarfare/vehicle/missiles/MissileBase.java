@@ -1,24 +1,3 @@
-/**
- * Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
- * This software is distributed under the terms of the GNU General Public License.
- * Please see COPYING for precise license information.
- * <p>
- * This file is part of Ancient Warfare.
- * <p>
- * Ancient Warfare is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * <p>
- * Ancient Warfare is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.vehicle.missiles;
 
 import io.netty.buffer.ByteBuf;
@@ -59,42 +38,27 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 	public Entity launcher = null;
 	public Entity shooterLiving;
 	IMissileHitCallback shooter = null;
-	int rocketBurnTime = 0;
-	public int ticksImpacted = 0;
+	private int rocketBurnTime = 0;
 
-	public boolean inGround = false;
-	public boolean hasImpacted = false;
-	BlockPos persistentBlockPos = BlockPos.ORIGIN;
-	IBlockState persistentBlock = Blocks.AIR.getDefaultState();
+	private boolean inGround = false;
+	private boolean hasImpacted = false;
+	private BlockPos persistentBlockPos = BlockPos.ORIGIN;
+	private IBlockState persistentBlock = Blocks.AIR.getDefaultState();
 
 	/**
 	 * initial velocities, used by rocket for acceleration factor
 	 */
-	float mX;
-	float mY;
-	float mZ;
+	private float mX;
+	private float mY;
+	private float mZ;
 
-	/**
-	 * @param par1World
-	 */
 	public MissileBase(World par1World) {
 		super(par1World);
 		this.entityCollisionReduction = 1.f;
 		this.setSize(0.4f, 0.4f);
 	}
 
-	/**
-	 * called server side after creating but before spawning. ammoType is set client-side by the readSpawnData method, as should all other movement (rotation/motion) params.
-	 *
-	 * @param type
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @param mx
-	 * @param my
-	 * @param mz
-	 */
-	public void setMissileParams(IAmmo type, float x, float y, float z, float mx, float my, float mz) {
+	private void setMissileParams(IAmmo type, float x, float y, float z, float mx, float my, float mz) {
 		this.ammoType = type;
 		this.setPosition(x, y, z);
 		this.prevPosX = this.posX;
@@ -114,16 +78,15 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 		if (this.ammoType.isRocket() || this.ammoType.isTorpedo())//use launch power to determine rocket burn time...
 		{
 			float temp = MathHelper.sqrt(mx * mx + my * my + mz * mz);
-			this.rocketBurnTime = (int) (temp * 20.f * AmmoHwachaRocket.burnTimeFactor);
+			this.rocketBurnTime = (int) (temp * 20.f * AmmoHwachaRocket.BURN_TIME_FACTOR);
 
-			this.mX = (float) (motionX / temp) * AmmoHwachaRocket.accelerationFactor;
-			this.mY = (float) (motionY / temp) * AmmoHwachaRocket.accelerationFactor;
-			this.mZ = (float) (motionZ / temp) * AmmoHwachaRocket.accelerationFactor;
+			this.mX = (float) (motionX / temp) * AmmoHwachaRocket.ACCELERATION_FACTOR;
+			this.mY = (float) (motionY / temp) * AmmoHwachaRocket.ACCELERATION_FACTOR;
+			this.mZ = (float) (motionZ / temp) * AmmoHwachaRocket.ACCELERATION_FACTOR;
 			this.motionX = mX;
 			this.motionY = mY;
 			this.motionZ = mZ;
 		}
-		//  Config.logDebug("missile spawning. motY: "+this.motionY);
 	}
 
 	public void setMissileParams2(IAmmo ammo, float x, float y, float z, float yaw, float angle, float velocity) {
@@ -155,9 +118,6 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 	}
 
 	public void onImpactWorld(RayTraceResult hit) {
-		if (!world.isRemote) {
-			//    Config.logDebug("World Impacted by: "+this.ammoType.getDisplayName()+" :: "+this);
-		}
 		this.ammoType.onImpactWorld(world, hit.getBlockPos().getX(), hit.getBlockPos().getY(), hit.getBlockPos().getZ(), this, hit);
 		if (this.shooter != null) {
 			this.shooter.onMissileImpact(world, hit.getBlockPos().getX(), hit.getBlockPos().getY(), hit.getBlockPos().getZ());
@@ -165,9 +125,6 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 	}
 
 	@SideOnly(Side.CLIENT)
-	/**
-	 * Return whether this entity should be rendered as on fire.
-	 */
 	@Override
 	public boolean canRenderOnFire() {
 		return this.ammoType.isFlaming();
@@ -185,7 +142,7 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 
 	@Override
 	public void applyEntityCollision(Entity par1Entity) {
-
+		//NOOP
 	}
 
 	@Override
@@ -204,7 +161,7 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 		}
 	}
 
-	protected void checkProximity() {
+	private void checkProximity() {
 		if (this.motionY > 0) {
 			return;//don't bother checking when travelling upwards, wait until the downward swing...
 		}
@@ -247,14 +204,12 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 		}
 	}
 
-	public void onMovementTick() {
-		if (this.inGround) {
-			if (persistentBlock != world.getBlockState(persistentBlockPos)) {
-				this.motionX = 0;
-				this.motionY = 0;
-				this.motionZ = 0;
-				this.inGround = false;
-			}
+	private void onMovementTick() {
+		if (this.inGround && persistentBlock != world.getBlockState(persistentBlockPos)) {
+			this.motionX = 0;
+			this.motionY = 0;
+			this.motionZ = 0;
+			this.inGround = false;
 		}
 		if (!this.inGround) {
 			Vec3d positionVector = new Vec3d(this.posX, this.posY, this.posZ);
@@ -384,7 +339,7 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 		}
 	}
 
-	public void onUpdateArrowRotation() {
+	private void onUpdateArrowRotation() {
 		double motionSpeed = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
 		this.rotationYaw = Trig.toDegrees((float) Math.atan2(this.motionX, this.motionZ)) - 90;
 		this.rotationPitch = Trig.toDegrees((float) Math.atan2(this.motionY, (double) motionSpeed)) - 90;
@@ -445,6 +400,7 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 
 	@Override
 	protected void entityInit() {
+		//NOOP
 	}
 
 	@Override

@@ -8,17 +8,17 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ChunkCache;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.owner.IOwnable;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
+import java.util.Optional;
 import java.util.function.Supplier;
 
 import static net.shadowmage.ancientwarfare.core.render.property.CoreProperties.FACING;
@@ -43,8 +43,7 @@ public class BlockWorksiteBase extends BlockBaseAutomation implements IRotatable
 
 	@Override
 	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
-		TileEntity te = world instanceof ChunkCache ? ((ChunkCache) world).getTileEntity(pos, Chunk.EnumCreateEntityType.CHECK) : world.getTileEntity(pos);
-		return te != null && te instanceof IRotatableTile ? state.withProperty(FACING, ((IRotatableTile) te).getPrimaryFacing()) : state;
+		return WorldTools.getTile(world, pos, IRotatableTile.class).map(t -> state.withProperty(FACING, t.getPrimaryFacing())).orElse(state);
 	}
 
 	BlockWorksiteBase setTileFactory(Supplier<TileEntity> renderFactory) {
@@ -99,16 +98,20 @@ public class BlockWorksiteBase extends BlockBaseAutomation implements IRotatable
 	@Override
 	public final boolean rotateBlock(World world, BlockPos pos, EnumFacing facing) {
 		if (facing == EnumFacing.DOWN || facing == EnumFacing.UP) {
-			TileEntity te = world.getTileEntity(pos);
-			if (te instanceof IRotatableTile) {
+			Optional<IRotatableTile> te = WorldTools.getTile(world, pos, IRotatableTile.class);
+			if (te.isPresent()) {
 				if (!world.isRemote) {
-					EnumFacing o = ((IRotatableTile) te).getPrimaryFacing().rotateAround(facing.getAxis());
-					((IRotatableTile) te).setPrimaryFacing(o);//twb will send update packets / etc
+					rotateTile(facing, te.get());
 				}
 				return true;
 			}
 		}
 		return false;
+	}
+
+	private void rotateTile(EnumFacing facing, IRotatableTile te) {
+		EnumFacing o = te.getPrimaryFacing().rotateAround(facing.getAxis());
+		te.setPrimaryFacing(o);//twb will send update packets / etc
 	}
 
 	@Override

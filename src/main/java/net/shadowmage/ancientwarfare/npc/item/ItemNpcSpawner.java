@@ -37,6 +37,11 @@ import java.util.Optional;
 
 public class ItemNpcSpawner extends ItemBaseNPC {
 
+	private static final String NPC_TYPE_TAG = "npcType";
+	private static final String NPC_SUBTYPE_TAG = "npcSubtype";
+	private static final String FACTION_TAG = "faction";
+	private static final String NPC_STORED_DATA_TAG = "npcStoredData";
+
 	public ItemNpcSpawner() {
 		super("npc_spawner");
 	}
@@ -101,11 +106,11 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 		if (npc == null) {
 			return null;
 		}
-		if (stack.hasTagCompound() && stack.getTagCompound().hasKey("npcStoredData")) {
+		if (stack.hasTagCompound() && stack.getTagCompound().hasKey(NPC_STORED_DATA_TAG)) {
 			for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
 				npc.setItemStackToSlot(slot, ItemStack.EMPTY);
 			}
-			npc.readAdditionalItemData(stack.getTagCompound().getCompoundTag("npcStoredData"));
+			npc.readAdditionalItemData(stack.getTagCompound().getCompoundTag(NPC_STORED_DATA_TAG));
 		}
 		return npc;
 	}
@@ -120,7 +125,7 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 		ItemStack stack = npc instanceof NpcFaction ? getStackForNpcType("faction." + type, sub, ((NpcFaction) npc).getFaction()) : getStackForNpcType(type, sub);
 		NBTTagCompound tag = new NBTTagCompound();
 		npc.writeAdditionalItemData(tag);
-		stack.setTagInfo("npcStoredData", tag);
+		stack.setTagInfo(NPC_STORED_DATA_TAG, tag);
 		return stack;
 	}
 
@@ -132,7 +137,7 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 		getSpawnerSubItems(items);
 	}
 
-	public static void getSpawnerSubItems(NonNullList<ItemStack> list) {
+	private static void getSpawnerSubItems(NonNullList<ItemStack> list) {
 		for (AWNPCEntityLoader.NpcDeclaration dec : AWNPCEntityLoader.getNpcMap().values()) {
 			if (dec.canSpawnBaseEntity()) {
 				if (dec.getNpcType().startsWith("faction.")) {
@@ -148,38 +153,38 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 		}
 	}
 
-	public static ItemStack getStackForNpcType(String type, String npcSubtype) {
+	private static ItemStack getStackForNpcType(String type, String npcSubtype) {
 		return getStackForNpcType(type, npcSubtype, "");
 	}
 
-	public static ItemStack getStackForNpcType(String type, String npcSubtype, String faction) {
+	private static ItemStack getStackForNpcType(String type, String npcSubtype, String faction) {
 		@Nonnull ItemStack stack = new ItemStack(AWNPCItems.npcSpawner);
-		stack.setTagInfo("npcType", new NBTTagString(type));
-		stack.setTagInfo("npcSubtype", new NBTTagString(npcSubtype));
+		stack.setTagInfo(NPC_TYPE_TAG, new NBTTagString(type));
+		stack.setTagInfo(NPC_SUBTYPE_TAG, new NBTTagString(npcSubtype));
 		if (!faction.isEmpty()) {
-			stack.setTagInfo("faction", new NBTTagString(faction));
+			stack.setTagInfo(FACTION_TAG, new NBTTagString(faction));
 		}
 		return stack;
 	}
 
 	@Nullable
 	public static String getNpcType(ItemStack stack) {
-		if (stack.hasTagCompound() && stack.getTagCompound().hasKey("npcType")) {
-			return stack.getTagCompound().getString("npcType");
+		if (stack.hasTagCompound() && stack.getTagCompound().hasKey(NPC_TYPE_TAG)) {
+			return stack.getTagCompound().getString(NPC_TYPE_TAG);
 		}
 		return null;
 	}
 
 	private static String getNpcSubtype(ItemStack stack) {
-		if (stack.hasTagCompound() && stack.getTagCompound().hasKey("npcSubtype")) {
-			return stack.getTagCompound().getString("npcSubtype");
+		if (stack.hasTagCompound() && stack.getTagCompound().hasKey(NPC_SUBTYPE_TAG)) {
+			return stack.getTagCompound().getString(NPC_SUBTYPE_TAG);
 		}
 		return "";
 	}
 
 	public static Optional<String> getFaction(ItemStack stack) {
-		if (stack.hasTagCompound() && stack.getTagCompound().hasKey("faction")) {
-			return Optional.of(stack.getTagCompound().getString("faction"));
+		if (stack.hasTagCompound() && stack.getTagCompound().hasKey(FACTION_TAG)) {
+			return Optional.of(stack.getTagCompound().getString(FACTION_TAG));
 		}
 		return Optional.empty();
 	}
@@ -207,6 +212,6 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 	}
 
 	private ModelResourceLocation getModelLocation(String modelVariant) {
-		return new ModelResourceLocation(AncientWarfareCore.modID + ":npc/npc_spawner", "variant=" + modelVariant);
+		return new ModelResourceLocation(AncientWarfareCore.MOD_ID + ":npc/npc_spawner", "variant=" + modelVariant);
 	}
 }

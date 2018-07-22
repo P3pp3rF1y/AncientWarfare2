@@ -11,7 +11,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.entity.AWEntityRegistry;
 import net.shadowmage.ancientwarfare.core.entity.AWEntityRegistry.EntityDeclaration;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
@@ -42,6 +41,14 @@ import java.util.Set;
 
 @Mod.EventBusSubscriber(modid = AncientWarfareNPC.modID)
 public class AWNPCEntityLoader {
+	private AWNPCEntityLoader() {}
+
+	private static final String COMBAT_TYPE = "combat";
+	private static final String SOLDIER_SUBTYPE = "soldier";
+	private static final String COMMANDER_SUBTYPE = "commander";
+	private static final String ARCHER_SUBTYPE = "archer";
+	private static final String WORKER_TYPE = "worker";
+	private static final String MINER_SUBTYPE = "miner";
 	private static int nextID = 0;
 
 	/*
@@ -58,12 +65,12 @@ public class AWNPCEntityLoader {
 	}
 
 	private static void addPlayerOwnedNpcs() {
-		NpcDeclaration reg = new NpcDeclaration(NpcCombat.class, AWEntityRegistry.NPC_COMBAT, "combat", "soldier");
-		reg.addSubTypes("commander", "soldier", "archer", "medic", "engineer");
+		NpcDeclaration reg = new NpcDeclaration(NpcCombat.class, AWEntityRegistry.NPC_COMBAT, COMBAT_TYPE, SOLDIER_SUBTYPE);
+		reg.addSubTypes(COMMANDER_SUBTYPE, SOLDIER_SUBTYPE, ARCHER_SUBTYPE, "medic", "engineer");
 		addNpcRegistration(reg);
 
-		reg = new NpcDeclaration(NpcWorker.class, AWEntityRegistry.NPC_WORKER, "worker", "miner");
-		reg.addSubTypes("miner", "farmer", "lumberjack", "researcher", "craftsman");
+		reg = new NpcDeclaration(NpcWorker.class, AWEntityRegistry.NPC_WORKER, WORKER_TYPE, MINER_SUBTYPE);
+		reg.addSubTypes(MINER_SUBTYPE, "farmer", "lumberjack", "researcher", "craftsman");
 		addNpcRegistration(reg);
 
 		reg = new NpcDeclaration(NpcCourier.class, AWEntityRegistry.NPC_COURIER, "courier");
@@ -87,13 +94,13 @@ public class AWNPCEntityLoader {
 		/*
 		 * BANDITS
          */
-		reg = new NpcFactionDeclaration(NpcFactionArcher.class, AWEntityRegistry.NPC_FACTION_ARCHER, "archer");
+		reg = new NpcFactionDeclaration(NpcFactionArcher.class, AWEntityRegistry.NPC_FACTION_ARCHER, ARCHER_SUBTYPE);
 		addNpcRegistration(reg);
 
-		reg = new NpcFactionDeclaration(NpcFactionSoldier.class, AWEntityRegistry.NPC_FACTION_SOLDIER, "soldier");
+		reg = new NpcFactionDeclaration(NpcFactionSoldier.class, AWEntityRegistry.NPC_FACTION_SOLDIER, SOLDIER_SUBTYPE);
 		addNpcRegistration(reg);
 
-		reg = new NpcFactionDeclaration(NpcFactionLeader.class, AWEntityRegistry.NPC_FACTION_COMMANDER, "commander");
+		reg = new NpcFactionDeclaration(NpcFactionLeader.class, AWEntityRegistry.NPC_FACTION_COMMANDER, COMMANDER_SUBTYPE);
 		addNpcRegistration(reg);
 
 		reg = new NpcFactionDeclaration(NpcFactionPriest.class, AWEntityRegistry.NPC_FACTION_PRIEST, "priest");
@@ -102,10 +109,10 @@ public class AWNPCEntityLoader {
 		reg = new NpcFactionDeclaration(NpcFactionTrader.class, AWEntityRegistry.NPC_FACTION_TRADER, "trader");
 		addNpcRegistration(reg);
 
-		reg = new NpcFactionDeclaration(NpcFactionMountedSoldier.class, AWEntityRegistry.NPC_FACTION_CAVALRY, "soldier");
+		reg = new NpcFactionDeclaration(NpcFactionMountedSoldier.class, AWEntityRegistry.NPC_FACTION_CAVALRY, SOLDIER_SUBTYPE);
 		addNpcRegistration(reg);
 
-		reg = new NpcFactionDeclaration(NpcFactionMountedArcher.class, AWEntityRegistry.NPC_FACTION_MOUNTED_ARCHER, "archer");
+		reg = new NpcFactionDeclaration(NpcFactionMountedArcher.class, AWEntityRegistry.NPC_FACTION_MOUNTED_ARCHER, ARCHER_SUBTYPE);
 		addNpcRegistration(reg);
 
 		reg = new NpcFactionDeclaration(NpcFactionCivilianMale.class, AWEntityRegistry.NPC_FACTION_CIVILIAN_MALE, "civilian_male");
@@ -114,13 +121,13 @@ public class AWNPCEntityLoader {
 		reg = new NpcFactionDeclaration(NpcFactionCivilianFemale.class, AWEntityRegistry.NPC_FACTION_CIVILIAN_FEMALE, "civilian_female");
 		addNpcRegistration(reg);
 
-		reg = new NpcFactionDeclaration(NpcFactionArcherElite.class, AWEntityRegistry.NPC_FACTION_ARCHER_ELITE, "archer");
+		reg = new NpcFactionDeclaration(NpcFactionArcherElite.class, AWEntityRegistry.NPC_FACTION_ARCHER_ELITE, ARCHER_SUBTYPE);
 		addNpcRegistration(reg);
 
-		reg = new NpcFactionDeclaration(NpcFactionSoldierElite.class, AWEntityRegistry.NPC_FACTION_SOLDIER_ELITE, "soldier");
+		reg = new NpcFactionDeclaration(NpcFactionSoldierElite.class, AWEntityRegistry.NPC_FACTION_SOLDIER_ELITE, SOLDIER_SUBTYPE);
 		addNpcRegistration(reg);
 
-		reg = new NpcFactionDeclaration(NpcFactionLeaderElite.class, AWEntityRegistry.NPC_FACTION_LEADER_ELITE, "commander");
+		reg = new NpcFactionDeclaration(NpcFactionLeaderElite.class, AWEntityRegistry.NPC_FACTION_LEADER_ELITE, COMMANDER_SUBTYPE);
 		addNpcRegistration(reg);
 
 		reg = new NpcFactionDeclaration(NpcFactionBard.class, AWEntityRegistry.NPC_FACTION_BARD, "bard");
@@ -134,17 +141,17 @@ public class AWNPCEntityLoader {
 	 * has to be called during post-init so that all items/etc are fully initialized
 	 */
 	public static void loadNpcSubtypeEquipment() {
-		addNpcSubtypeEquipment("worker", "farmer", new ItemStack(Items.IRON_HOE));
-		addNpcSubtypeEquipment("worker", "miner", new ItemStack(Items.IRON_PICKAXE));
-		addNpcSubtypeEquipment("worker", "lumberjack", new ItemStack(Items.IRON_AXE));
-		addNpcSubtypeEquipment("worker", "researcher", new ItemStack(AWItems.quillIron));
-		addNpcSubtypeEquipment("worker", "craftsman", new ItemStack(AWItems.automationHammerIron));
+		addNpcSubtypeEquipment(WORKER_TYPE, "farmer", new ItemStack(Items.IRON_HOE));
+		addNpcSubtypeEquipment(WORKER_TYPE, MINER_SUBTYPE, new ItemStack(Items.IRON_PICKAXE));
+		addNpcSubtypeEquipment(WORKER_TYPE, "lumberjack", new ItemStack(Items.IRON_AXE));
+		addNpcSubtypeEquipment(WORKER_TYPE, "researcher", new ItemStack(AWItems.quillIron));
+		addNpcSubtypeEquipment(WORKER_TYPE, "craftsman", new ItemStack(AWItems.automationHammerIron));
 
-		addNpcSubtypeEquipment("combat", "commander", new ItemStack(AWNPCItems.commandBatonIron));
-		addNpcSubtypeEquipment("combat", "soldier", new ItemStack(Items.IRON_SWORD));
-		addNpcSubtypeEquipment("combat", "archer", new ItemStack(Items.BOW));
-		addNpcSubtypeEquipment("combat", "engineer", new ItemStack(AWItems.automationHammerIron));
-		addNpcSubtypeEquipment("combat", "medic", new ItemStack(Items.IRON_AXE));
+		addNpcSubtypeEquipment(COMBAT_TYPE, COMMANDER_SUBTYPE, new ItemStack(AWNPCItems.commandBatonIron));
+		addNpcSubtypeEquipment(COMBAT_TYPE, SOLDIER_SUBTYPE, new ItemStack(Items.IRON_SWORD));
+		addNpcSubtypeEquipment(COMBAT_TYPE, ARCHER_SUBTYPE, new ItemStack(Items.BOW));
+		addNpcSubtypeEquipment(COMBAT_TYPE, "engineer", new ItemStack(AWItems.automationHammerIron));
+		addNpcSubtypeEquipment(COMBAT_TYPE, "medic", new ItemStack(Items.IRON_AXE));
 	}
 
 	private static void addNpcRegistration(NpcDeclaration reg) {
@@ -265,7 +272,7 @@ public class AWNPCEntityLoader {
 	}
 
 	public static class NpcFactionDeclaration extends NpcDeclaration {
-		public NpcFactionDeclaration(Class<? extends NpcFaction> entityClass, String entityName, String itemModelVariant) {
+		private NpcFactionDeclaration(Class<? extends NpcFaction> entityClass, String entityName, String itemModelVariant) {
 			super(entityClass, entityName, entityName, itemModelVariant);
 		}
 
@@ -275,7 +282,7 @@ public class AWNPCEntityLoader {
 				return (NpcFaction) entityClass.getConstructor(World.class, String.class).newInstance(world, factionName);
 			}
 			catch (Exception e) {
-				AWLog.logError("Couldn't create entity:" + e.getMessage());
+				AncientWarfareNPC.log.error("Couldn't create entity:" + e.getMessage());
 			}
 			return null;
 		}

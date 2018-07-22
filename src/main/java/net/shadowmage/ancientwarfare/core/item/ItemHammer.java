@@ -13,7 +13,6 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
@@ -28,13 +27,15 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Optional;
 
 public class ItemHammer extends ItemBaseCore implements IItemKeyInterface {
-
-	double attackDamage = 5.d;
+	public static final String WORK_MODE_TAG = "workMode";
+	private double attackDamage = 5.d;
 
 	private ToolMaterial material;
 
@@ -107,7 +108,7 @@ public class ItemHammer extends ItemBaseCore implements IItemKeyInterface {
 		String key = InputHandler.ALT_ITEM_USE_1.getDisplayName();
 		tooltip.add(I18n.format("guistrings.core.hammer.use_primary_item_key", key));
 		//noinspection ConstantConditions
-		if (stack.hasTagCompound() && stack.getTagCompound().getBoolean("workMode")) {
+		if (stack.hasTagCompound() && stack.getTagCompound().getBoolean(WORK_MODE_TAG)) {
 			tooltip.add(I18n.format("guistrings.core.hammer.work_mode"));
 		} else {
 			tooltip.add(I18n.format("guistrings.core.hammer.rotate_mode"));
@@ -126,12 +127,12 @@ public class ItemHammer extends ItemBaseCore implements IItemKeyInterface {
 		}
 		boolean mode = false;
 		if (stack.hasTagCompound()) {
-			mode = stack.getTagCompound().getBoolean("workMode");
+			mode = stack.getTagCompound().getBoolean(WORK_MODE_TAG);
 		} else {
 			stack.setTagCompound(new NBTTagCompound());
 		}
 		mode = !mode;
-		stack.getTagCompound().setBoolean("workMode", mode);
+		stack.getTagCompound().setBoolean(WORK_MODE_TAG, mode);
 		player.world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 0.3F, 0.6F);
 	}
 
@@ -147,18 +148,17 @@ public class ItemHammer extends ItemBaseCore implements IItemKeyInterface {
 		}
 		boolean mode = false;
 		if (stack.hasTagCompound()) {
-			mode = stack.getTagCompound().getBoolean("workMode");
+			mode = stack.getTagCompound().getBoolean(WORK_MODE_TAG);
 		} else {
 			stack.setTagCompound(new NBTTagCompound());
 		}
 		if (mode) {
-			TileEntity te = world.getTileEntity(hit.getBlockPos());
-			if (te instanceof IWorkSite && ((IWorkSite) te).hasWork()) {
-				((IWorkSite) te).addEnergyFromPlayer(player);
+			Optional<IWorkSite> te = WorldTools.getTile(world, hit.getBlockPos(), IWorkSite.class).filter(IWorkSite::hasWork);
+			if (te.isPresent()) {
+				te.get().addEnergyFromPlayer(player);
 				playSound(world, hit, SoundEvents.BLOCK_PISTON_CONTRACT);
-			} else {
-				if (!world.isAirBlock(hit.getBlockPos()))
-					playBlockSound(world, hit, world.getBlockState(hit.getBlockPos()));
+			} else if (!world.isAirBlock(hit.getBlockPos())) {
+				playBlockSound(world, hit, world.getBlockState(hit.getBlockPos()));
 			}
 		} else {
 			if (!world.isAirBlock(hit.getBlockPos())) {

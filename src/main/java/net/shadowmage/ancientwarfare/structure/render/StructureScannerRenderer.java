@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.structure.event.IBoxRenderer;
+import net.shadowmage.ancientwarfare.structure.item.ItemStructureScanner;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureScanner;
 
 public class StructureScannerRenderer extends TileEntitySpecialRenderer<TileStructureScanner> {
@@ -14,7 +15,7 @@ public class StructureScannerRenderer extends TileEntitySpecialRenderer<TileStru
 		Minecraft mc = Minecraft.getMinecraft();
 		mc.entityRenderer.disableLightmap();
 		ItemStack scanner = te.getScannerInventory().getStackInSlot(0);
-		if (te.getBoundsActive() && !scanner.isEmpty()) {
+		if (te.getBoundsActive() && !scanner.isEmpty() && ItemStructureScanner.readyToExport(scanner)) {
 			((IBoxRenderer) scanner.getItem()).renderBox(mc.player, scanner, partialTicks);
 		}
 		mc.entityRenderer.enableLightmap();

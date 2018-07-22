@@ -5,6 +5,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -19,9 +20,7 @@ import net.shadowmage.ancientwarfare.core.item.ItemBlockRotatableMetaTile;
 import net.shadowmage.ancientwarfare.core.tile.TileEngineeringStation;
 import net.shadowmage.ancientwarfare.core.tile.TileResearchStation;
 
-import static net.shadowmage.ancientwarfare.core.AncientWarfareCore.MOD_PREFIX;
-
-@Mod.EventBusSubscriber(modid = AncientWarfareCore.modID)
+@Mod.EventBusSubscriber(modid = AncientWarfareCore.MOD_ID)
 public class AWCoreBlockLoader {
 
 	public static final AWCoreBlockLoader INSTANCE = new AWCoreBlockLoader();
@@ -56,6 +55,6 @@ public class AWCoreBlockLoader {
 	}
 
 	private static void registerTile(Class<? extends TileEntity> teClass, String teId) {
-		GameRegistry.registerTileEntity(teClass, MOD_PREFIX + teId);
+		GameRegistry.registerTileEntity(teClass, new ResourceLocation(AncientWarfareCore.MOD_ID, teId));
 	}
 }

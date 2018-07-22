@@ -19,9 +19,9 @@ import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseStockViewer;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStockViewer;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
-import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
 import javax.annotation.Nullable;
 import java.util.Map;
@@ -118,15 +118,13 @@ public class BlockWarehouseStockViewer extends BlockBaseAutomation implements IR
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		TileEntity te = world.getTileEntity(pos);
-		return te instanceof IInteractableTile && ((IInteractableTile) te).onBlockClicked(player, hand);
+		return WorldTools.clickInteractableTileWithHand(world, pos, player, hand);
 	}
 
 	@Override
 	public boolean eventReceived(IBlockState state, World world, BlockPos pos, int id, int param) {
 		super.eventReceived(state, world, pos, id, param);
-		TileEntity tileentity = world.getTileEntity(pos);
-		return tileentity != null && tileentity.receiveClientEvent(id, param);
+		return WorldTools.sendClientEventToTile(world, pos, id, param);
 	}
 
 	@Override

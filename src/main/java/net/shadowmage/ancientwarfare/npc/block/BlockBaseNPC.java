@@ -26,7 +26,7 @@ public class BlockBaseNPC extends BlockBase implements IClientRegistrar {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerClient() {
-		final ModelResourceLocation modelLocation = new ModelResourceLocation(new ResourceLocation(AncientWarfareCore.modID, "npc/" + getRegistryName().getResourcePath()), "normal");
+		final ModelResourceLocation modelLocation = new ModelResourceLocation(new ResourceLocation(AncientWarfareCore.MOD_ID, "npc/" + getRegistryName().getResourcePath()), "normal");
 		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
 			@Override
 			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {

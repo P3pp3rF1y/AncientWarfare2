@@ -33,6 +33,7 @@ import net.shadowmage.ancientwarfare.core.render.EngineeringStationRenderer;
 import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
 import net.shadowmage.ancientwarfare.core.tile.TileEngineeringStation;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
 public class BlockEngineeringStation extends BlockBaseCore implements IClientRegistrar, IBakeryProvider, IRotatableBlock {
 
@@ -55,13 +56,7 @@ public class BlockEngineeringStation extends BlockBaseCore implements IClientReg
 
 	@Override
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-		EnumFacing facing = EnumFacing.NORTH;
-		TileEntity tileentity = world.getTileEntity(pos);
-
-		if (tileentity instanceof TileEngineeringStation) {
-			facing = ((TileEngineeringStation) tileentity).getPrimaryFacing();
-		}
-
+		EnumFacing facing = WorldTools.getTile(world, pos, TileEngineeringStation.class).map(TileEngineeringStation::getPrimaryFacing).orElse(EnumFacing.NORTH);
 		return ((IExtendedBlockState) super.getExtendedState(state, world, pos)).withProperty(CoreProperties.UNLISTED_HORIZONTAL_FACING, facing);
 	}
 
@@ -85,10 +80,7 @@ public class BlockEngineeringStation extends BlockBaseCore implements IClientReg
 
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		TileEngineeringStation tile = (TileEngineeringStation) world.getTileEntity(pos);
-		if (tile != null) {
-			tile.onBlockBreak();
-		}
+		WorldTools.getTile(world, pos, TileEngineeringStation.class).ifPresent(TileEngineeringStation::onBlockBreak);
 		super.breakBlock(world, pos, state);
 	}
 

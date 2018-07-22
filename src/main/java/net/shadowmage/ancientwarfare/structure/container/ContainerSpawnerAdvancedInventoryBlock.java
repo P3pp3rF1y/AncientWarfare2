@@ -3,24 +3,26 @@ package net.shadowmage.ancientwarfare.structure.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketGui;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
 
-public class ContainerSpawnerAdvancedInventoryBlock extends ContainerSpawnerAdvancedInventoryBase {
+import java.util.Optional;
 
+public class ContainerSpawnerAdvancedInventoryBlock extends ContainerSpawnerAdvancedInventoryBase {
+	private static final String SPAWNER_SETTINGS_TAG = "spawnerSettings";
 	private TileAdvancedSpawner spawner;
 
 	public ContainerSpawnerAdvancedInventoryBlock(EntityPlayer player, int x, int y, int z) {
 		super(player, x, y, z);
 
-		TileEntity te = player.world.getTileEntity(new BlockPos(x, y, z));
-		if (!player.world.isRemote && te instanceof TileAdvancedSpawner) {
-			spawner = (TileAdvancedSpawner) te;
+		Optional<TileAdvancedSpawner> te = WorldTools.getTile(player.world, new BlockPos(x, y, z), TileAdvancedSpawner.class);
+		if (!player.world.isRemote && te.isPresent()) {
+			spawner = te.get();
 			settings = spawner.getSettings();
 		} else {
 			settings = SpawnerSettings.getDefaultSettings();
@@ -47,15 +49,15 @@ public class ContainerSpawnerAdvancedInventoryBlock extends ContainerSpawnerAdva
 		settings.writeToNBT(tag);
 
 		PacketGui pkt = new PacketGui();
-		pkt.setTag("spawnerSettings", tag);
+		pkt.setTag(SPAWNER_SETTINGS_TAG, tag);
 		NetworkHandler.sendToPlayer((EntityPlayerMP) player, pkt);
 	}
 
 	@Override
 	public void handlePacketData(NBTTagCompound tag) {
-		if (tag.hasKey("spawnerSettings")) {
+		if (tag.hasKey(SPAWNER_SETTINGS_TAG)) {
 			if (player.world.isRemote) {
-				settings.readFromNBT(tag.getCompoundTag("spawnerSettings"));
+				settings.readFromNBT(tag.getCompoundTag(SPAWNER_SETTINGS_TAG));
 				this.refreshGui();
 			} else {
 				spawner.readFromNBT(tag);

@@ -20,7 +20,7 @@ import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
-import net.shadowmage.ancientwarfare.structure.world_gen.WorldStructureGenerator;
+import net.shadowmage.ancientwarfare.structure.worldgen.WorldStructureGenerator;
 
 import javax.annotation.Nullable;
 import java.util.List;

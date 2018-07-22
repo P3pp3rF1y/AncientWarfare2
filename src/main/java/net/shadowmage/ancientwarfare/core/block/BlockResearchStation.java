@@ -26,7 +26,6 @@ import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.gui.research.GuiResearchStation;
-import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.IClientRegistrar;
 import net.shadowmage.ancientwarfare.core.render.BlockStateKeyGenerator;
@@ -34,6 +33,7 @@ import net.shadowmage.ancientwarfare.core.render.ResearchStationRenderer;
 import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
 import net.shadowmage.ancientwarfare.core.tile.TileResearchStation;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
 public class BlockResearchStation extends BlockBaseCore implements IRotatableBlock, IBakeryProvider, IClientRegistrar {
 
@@ -56,13 +56,7 @@ public class BlockResearchStation extends BlockBaseCore implements IRotatableBlo
 
 	@Override
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-		EnumFacing facing = EnumFacing.NORTH;
-		TileEntity tileentity = world.getTileEntity(pos);
-
-		if (tileentity instanceof TileResearchStation) {
-			facing = ((TileResearchStation) tileentity).getPrimaryFacing();
-		}
-
+		EnumFacing facing = WorldTools.getTile(world, pos, TileResearchStation.class).map(TileResearchStation::getPrimaryFacing).orElse(EnumFacing.NORTH);
 		return ((IExtendedBlockState) super.getExtendedState(state, world, pos)).withProperty(CoreProperties.UNLISTED_HORIZONTAL_FACING, facing);
 	}
 
@@ -78,8 +72,7 @@ public class BlockResearchStation extends BlockBaseCore implements IRotatableBlo
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		TileEntity te = world.getTileEntity(pos);
-		return te instanceof IInteractableTile && ((IInteractableTile) te).onBlockClicked(player, hand);
+		return WorldTools.clickInteractableTileWithHand(world, pos, player, hand);
 	}
 
 	@Override

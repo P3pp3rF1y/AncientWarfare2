@@ -26,11 +26,11 @@ import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.item.ItemComponent;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 
-import java.util.Collections;
 import java.util.Comparator;
 
-@Mod.EventBusSubscriber(modid = AncientWarfareAutomation.modID)
+@Mod.EventBusSubscriber(modid = AncientWarfareAutomation.MOD_ID)
 public class AWAutomationItemLoader {
+	private AWAutomationItemLoader() {}
 
 	public static final CreativeTabs automationTab = new CreativeTabs("tabs.automation") {
 		@Override
@@ -43,7 +43,7 @@ public class AWAutomationItemLoader {
 		@SideOnly(Side.CLIENT)
 		public void displayAllRelevantItems(NonNullList<ItemStack> list) {
 			super.displayAllRelevantItems(list);
-			Collections.sort(list, sorter);
+			list.sort(SORTER);
 		}
 	};
 
@@ -77,7 +77,7 @@ public class AWAutomationItemLoader {
 		AWItems.componentItem.addSubItem(ItemComponent.STEEL_TORQUE_SHAFT, "automation/component#variant=steel_shaft", "shaftSteel");
 	}
 
-	private static final Comparator sorter = new Comparator<ItemStack>() {
+	private static final Comparator<ItemStack> SORTER = new Comparator<ItemStack>() {
 
 		@Override
 		public int compare(ItemStack arg0, ItemStack arg1) {

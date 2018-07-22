@@ -21,7 +21,6 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -34,6 +33,7 @@ import net.shadowmage.ancientwarfare.automation.block.TorqueTier;
 import net.shadowmage.ancientwarfare.automation.render.property.AutomationProperties;
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileFlywheelStorage;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -45,6 +45,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -53,26 +54,27 @@ import static net.shadowmage.ancientwarfare.automation.render.property.Automatio
 
 @SideOnly(Side.CLIENT)
 public class FlywheelStorageRenderer implements ILayeredBlockBakery, ITESRRenderer {
-	public static final ModelResourceLocation LIGHT_MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":automation/flywheel_storage", "small_light");
-	public static final ModelResourceLocation MEDIUM_MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":automation/flywheel_storage", "small_medium");
-	public static final ModelResourceLocation HEAVY_MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":automation/flywheel_storage", "small_heavy");
+	private static final String FLYWHEEL_STORAGE_REGISTRY_PATH = ":automation/flywheel_storage";
+	public static final ModelResourceLocation LIGHT_MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.MOD_ID + FLYWHEEL_STORAGE_REGISTRY_PATH, "small_light");
+	public static final ModelResourceLocation MEDIUM_MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.MOD_ID + FLYWHEEL_STORAGE_REGISTRY_PATH, "small_medium");
+	public static final ModelResourceLocation HEAVY_MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.MOD_ID + FLYWHEEL_STORAGE_REGISTRY_PATH, "small_heavy");
 
-	public static FlywheelStorageRenderer INSTANCE = new FlywheelStorageRenderer();
+	public static final FlywheelStorageRenderer INSTANCE = new FlywheelStorageRenderer();
 
-	Collection<CCModel> spindleSmall;
-	Collection<CCModel> upperShroudSmall;
-	Collection<CCModel> lowerShroudSmall;
-	Collection<CCModel> flywheelExtensionSmall;
-	Collection<CCModel> lowerWindowSmall;
-	Collection<CCModel> upperWindowSmall;
-	Collection<CCModel> caseBarsSmall;
-	Collection<CCModel> spindleLarge;
-	Collection<CCModel> upperShroudLarge;
-	Collection<CCModel> lowerShroudLarge;
-	Collection<CCModel> flywheelExtensionLarge;
-	Collection<CCModel> lowerWindowLarge;
-	Collection<CCModel> upperWindowLarge;
-	Collection<CCModel> caseBarsLarge;
+	private Collection<CCModel> spindleSmall;
+	private Collection<CCModel> upperShroudSmall;
+	private Collection<CCModel> lowerShroudSmall;
+	private Collection<CCModel> flywheelExtensionSmall;
+	private Collection<CCModel> lowerWindowSmall;
+	private Collection<CCModel> upperWindowSmall;
+	private Collection<CCModel> caseBarsSmall;
+	private Collection<CCModel> spindleLarge;
+	private Collection<CCModel> upperShroudLarge;
+	private Collection<CCModel> lowerShroudLarge;
+	private Collection<CCModel> flywheelExtensionLarge;
+	private Collection<CCModel> lowerWindowLarge;
+	private Collection<CCModel> upperWindowLarge;
+	private Collection<CCModel> caseBarsLarge;
 
 	private Map<Pair<Boolean, TorqueTier>, IconTransformation> iconTransformations = Maps.newHashMap();
 	private Map<Pair<Boolean, TorqueTier>, TextureAtlasSprite> sprites = Maps.newHashMap();
@@ -82,8 +84,8 @@ public class FlywheelStorageRenderer implements ILayeredBlockBakery, ITESRRender
 		iconTransformations.put(new ImmutablePair<>(large, tier), new IconTransformation(sprite));
 	}
 
-	public TextureAtlasSprite getSprite(boolean large, TorqueTier tier) {
-		return sprites.get(new ImmutablePair<>(large, tier));
+	public TextureAtlasSprite getSprite(TorqueTier tier) {
+		return sprites.get(new ImmutablePair<>(false, tier));
 	}
 
 	private IconTransformation getIconTransformation(boolean large, TorqueTier tier) {
@@ -111,7 +113,7 @@ public class FlywheelStorageRenderer implements ILayeredBlockBakery, ITESRRender
 	}
 
 	private Map<String, CCModel> loadModel(String modelName) {
-		Map<String, CCModel> ret = OBJParser.parseModels(new ResourceLocation(AncientWarfareCore.modID, "models/block/automation/" + modelName), 7, new RedundantTransformation());
+		Map<String, CCModel> ret = OBJParser.parseModels(new ResourceLocation(AncientWarfareCore.MOD_ID, "models/block/automation/" + modelName), 7, new RedundantTransformation());
 
 		for (Map.Entry<String, CCModel> group : ret.entrySet()) {
 			group.setValue(group.getValue().backfacedCopy().computeNormals());
@@ -247,26 +249,26 @@ public class FlywheelStorageRenderer implements ILayeredBlockBakery, ITESRRender
 
 	@Override
 	public IExtendedBlockState handleState(IExtendedBlockState state, IBlockAccess access, BlockPos pos) {
-		TileEntity te = access.getTileEntity(pos);
+		Optional<TileFlywheelStorage> te = WorldTools.getTile(access, pos, TileFlywheelStorage.class);
 		boolean isControl = true;
 		int height = 1;
 		int width = 1;
 
-		if (te instanceof TileFlywheelStorage) {
-			TileFlywheelStorage storage = (TileFlywheelStorage) te;
+		if (te.isPresent()) {
+			TileFlywheelStorage storage = te.get();
 
 			isControl = storage.isControl;
 			width = storage.setWidth;
 			height = storage.setHeight;
 		}
 
-		state = state.withProperty(AutomationProperties.DYNAMIC, false);
-		state = state.withProperty(AutomationProperties.IS_CONTROL, isControl);
-		state = state.withProperty(AutomationProperties.HEIGHT, height);
-		state = state.withProperty(AutomationProperties.WIDTH, width);
-		state = state.withProperty(AutomationProperties.ROTATION, 0f);
+		IExtendedBlockState updatedState = state.withProperty(AutomationProperties.DYNAMIC, false);
+		updatedState = updatedState.withProperty(AutomationProperties.IS_CONTROL, isControl);
+		updatedState = updatedState.withProperty(AutomationProperties.HEIGHT, height);
+		updatedState = updatedState.withProperty(AutomationProperties.WIDTH, width);
+		updatedState = updatedState.withProperty(AutomationProperties.ROTATION, 0f);
 
-		return state;
+		return updatedState;
 	}
 
 	private void renderModels(Collection<CCModel> modelGroups, CCRenderState ccrs, boolean large, TorqueTier tier) {

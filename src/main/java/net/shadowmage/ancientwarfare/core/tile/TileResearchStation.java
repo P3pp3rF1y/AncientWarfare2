@@ -4,14 +4,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
@@ -26,6 +24,7 @@ import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -36,6 +35,7 @@ import java.util.Set;
 
 public class TileResearchStation extends TileOwned implements IWorkSite, ITorqueTile, IInteractableTile, IRotatableTile, ITickable {
 
+	public static final String ORIENTATION_TAG = "orientation";
 	private EnumFacing orientation = EnumFacing.NORTH;//default for old blocks
 
 	public final ItemStackHandler bookInventory = new ItemStackHandler(1) {
@@ -57,15 +57,15 @@ public class TileResearchStation extends TileOwned implements IWorkSite, ITorque
 		}
 	};
 
-	int startCheckDelay = 0;
-	int startCheckDelayMax = 40;
+	private int startCheckDelay = 0;
+	private int startCheckDelayMax = 40;
 
 	public boolean useAdjacentInventory;
 	public EnumFacing inventoryDirection = EnumFacing.NORTH;
 	public EnumFacing inventorySide = EnumFacing.NORTH;
 
-	double maxEnergyStored = 1600;
-	double maxInput = 100;
+	private double maxEnergyStored = 1600;
+	private double maxInput = 100;
 	private double storedEnergy;
 
 	public TileResearchStation() {
@@ -181,13 +181,13 @@ public class TileResearchStation extends TileOwned implements IWorkSite, ITorque
 	@Override
 	protected void writeUpdateNBT(NBTTagCompound tag) {
 		super.writeUpdateNBT(tag);
-		tag.setInteger("orientation", orientation.ordinal());
+		tag.setInteger(ORIENTATION_TAG, orientation.ordinal());
 	}
 
 	@Override
 	protected void handleUpdateNBT(NBTTagCompound tag) {
 		super.handleUpdateNBT(tag);
-		orientation = EnumFacing.VALUES[tag.getInteger("orientation")];
+		orientation = EnumFacing.VALUES[tag.getInteger(ORIENTATION_TAG)];
 		BlockTools.notifyBlockUpdate(this);
 	}
 
@@ -198,8 +198,8 @@ public class TileResearchStation extends TileOwned implements IWorkSite, ITorque
 		resourceInventory.deserializeNBT(tag.getCompoundTag("resourceInventory"));
 		this.useAdjacentInventory = tag.getBoolean("useAdjacentInventory");
 		this.storedEnergy = tag.getDouble("storedEnergy");
-		if (tag.hasKey("orientation")) {
-			setPrimaryFacing(EnumFacing.VALUES[tag.getInteger("orientation")]);
+		if (tag.hasKey(ORIENTATION_TAG)) {
+			setPrimaryFacing(EnumFacing.VALUES[tag.getInteger(ORIENTATION_TAG)]);
 		}
 		this.inventoryDirection = EnumFacing.VALUES[tag.getInteger("inventoryDirection")];
 		this.inventorySide = EnumFacing.VALUES[tag.getInteger("inventorySide")];
@@ -212,7 +212,7 @@ public class TileResearchStation extends TileOwned implements IWorkSite, ITorque
 		tag.setTag("resourceInventory", resourceInventory.serializeNBT());
 		tag.setBoolean("useAdjacentInventory", useAdjacentInventory);
 		tag.setDouble("storedEnergy", storedEnergy);
-		tag.setInteger("orientation", orientation.ordinal());
+		tag.setInteger(ORIENTATION_TAG, orientation.ordinal());
 		tag.setInteger("inventoryDirection", inventoryDirection.ordinal());
 		tag.setInteger("inventorySide", inventorySide.ordinal());
 		return tag;
@@ -249,12 +249,9 @@ public class TileResearchStation extends TileOwned implements IWorkSite, ITorque
 			if (goalInstance.tryStart(resourceInventory)) {
 				ResearchTracker.INSTANCE.startResearch(world, name, goalName);
 			} else if (useAdjacentInventory) {
-				TileEntity t = world.getTileEntity(pos.offset(inventoryDirection));
-				boolean started = false;
-				if (t != null && t.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, inventorySide)) {
-					//noinspection ConstantConditions
-					started = goalInstance.tryStart(t.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, inventorySide));
-				}
+				//noinspection ConstantConditions
+				boolean started = WorldTools.getItemHandlerFromTile(world, pos.offset(inventoryDirection), inventorySide).map(goalInstance::tryStart)
+						.orElse(false);
 				if (started) {
 					ResearchTracker.INSTANCE.startResearch(world, name, goalName);
 				}

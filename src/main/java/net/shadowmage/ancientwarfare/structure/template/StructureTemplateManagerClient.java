@@ -8,8 +8,8 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.TextureImageBased;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 
 import javax.imageio.ImageIO;
@@ -84,22 +84,22 @@ public class StructureTemplateManagerClient {
 		return clientTemplates.get(name);
 	}
 
-	private void addTemplate(StructureTemplateClient template) {
+	public void addTemplate(StructureTemplateClient template) {
 		clientTemplates.put(template.name, template);
-		loadTemplateImage(template.name + ".jpg");
+		loadTemplateImage(template.name, template.name + ".jpg");
 	}
 
 	public ResourceLocation getImageFor(String templateName) {
 		return clientTemplateImages.get(templateName + ".jpg");
 	}
 
-	private void loadTemplateImage(String imageName) {
+	private void loadTemplateImage(String templateName, String imageName) {
 		String pathBase = AWCoreStatics.configPathForFiles + "structures/image_cache/";
 		File file = new File(pathBase + imageName);
 		ResourceLocation loc = new ResourceLocation("ancientwarfare", pathBase + imageName);
 
 		if (!file.exists()) {
-			BufferedImage image = StructureTemplateManager.INSTANCE.getTemplateImage(imageName);
+			BufferedImage image = StructureTemplateManager.INSTANCE.getTemplateImage(templateName);
 			if (image != null) {
 				Minecraft.getMinecraft().renderEngine.loadTexture(loc, new TextureImageBased(loc, image));
 				clientTemplateImages.put(imageName, loc);
@@ -111,7 +111,7 @@ public class StructureTemplateManagerClient {
 					Minecraft.getMinecraft().renderEngine.loadTexture(loc, new TextureImageBased(loc, image));
 					clientTemplateImages.put(imageName, loc);
 				} else {
-					AWLog.logError("Error parsing image: " + file.getName() + " image was not of correct size. Found: " + image.getWidth() + "x" + image.getHeight() + "  Needed: " + AWStructureStatics.structureImageWidth + "x" + AWStructureStatics.structureImageHeight);
+					AncientWarfareStructures.log.error("Error parsing image: " + file.getName() + " image was not of correct size. Found: " + image.getWidth() + "x" + image.getHeight() + "  Needed: " + AWStructureStatics.structureImageWidth + "x" + AWStructureStatics.structureImageHeight);
 				}
 			}
 			catch (IOException e) {

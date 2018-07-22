@@ -15,8 +15,8 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 
@@ -171,7 +171,7 @@ public class SpawnerSettings {
 		if (maxNearbyMonsters > 0 && mobRange > 0) {
 			int nearbyCount = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos, pos.add(1, 1, 1)).grow(mobRange, mobRange, mobRange)).size();
 			if (nearbyCount >= maxNearbyMonsters) {
-				AWLog.logDebug("skipping spawning because of too many nearby entities");
+				AncientWarfareStructures.log.info("skipping spawning because of too many nearby entities");
 				return;
 			}
 		}
@@ -470,13 +470,13 @@ public class SpawnerSettings {
 	}
 
 	public static final class EntitySpawnSettings {
-		static final String ENTITY_ID_TAG = "entityId";
-		static final String CUSTOM_TAG = "customTag";
-		static final String FORCED_TAG = "forced";
-		static final String MIN_TO_SPAWN_TAG = "minToSpawn";
-		static final String MAX_TO_SPAWN_TAG = "maxToSpawn";
-		static final String REMAINING_SPAWN_COUNT_TAG = "remainingSpawnCount";
-		static final String FACTION_NAME_TAG = "factionName";
+		private static final String ENTITY_ID_TAG = "entityId";
+		private static final String CUSTOM_TAG = "customTag";
+		private static final String FORCED_TAG = "forced";
+		private static final String MIN_TO_SPAWN_TAG = "minToSpawn";
+		private static final String MAX_TO_SPAWN_TAG = "maxToSpawn";
+		private static final String REMAINING_SPAWN_COUNT_TAG = "remainingSpawnCount";
+		private static final String FACTION_NAME_TAG = "factionName";
 		private ResourceLocation entityId = new ResourceLocation("pig");
 		private NBTTagCompound customTag;
 		private int minToSpawn = 2;
@@ -509,11 +509,11 @@ public class SpawnerSettings {
 		public final void setEntityToSpawn(ResourceLocation entityId) {
 			this.entityId = entityId;
 			if (!ForgeRegistries.ENTITIES.containsKey(this.entityId)) {
-				AWLog.logError(entityId + " is not a valid entityId.  Spawner default to Zombie.");
+				AncientWarfareStructures.log.error(entityId + " is not a valid entityId.  Spawner default to Zombie.");
 				this.entityId = new ResourceLocation("zombie");
 			}
 			if (AWStructureStatics.excludedSpawnerEntities.contains(this.entityId.toString())) {
-				AWLog.logError(entityId + " has been set as an invalid entity for spawners!  Spawner default to Zombie.");
+				AncientWarfareStructures.log.error(entityId + " has been set as an invalid entity for spawners!  Spawner default to Zombie.");
 				this.entityId = new ResourceLocation("zombie");
 			}
 		}

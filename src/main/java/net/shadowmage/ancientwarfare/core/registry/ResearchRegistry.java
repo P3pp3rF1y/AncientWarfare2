@@ -53,7 +53,7 @@ public class ResearchRegistry {
 
 		private Set<Ingredient> getResources(JsonObject json) {
 			JsonArray res = JsonUtils.getJsonArray(json, "resources");
-			JsonContext context = new JsonContext(AncientWarfareCore.modID);
+			JsonContext context = new JsonContext(AncientWarfareCore.MOD_ID);
 			return StreamSupport.stream(res.spliterator(), false).map(e -> CraftingHelper.getIngredient(e, context)).collect(Collectors.toSet());
 		}
 

@@ -1,8 +1,7 @@
 package net.shadowmage.ancientwarfare.npc.ai.owned;
 
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
@@ -66,11 +65,7 @@ public class NpcAIPlayerOwnedGetFood extends NpcAI<NpcPlayerOwned> {
 		npc.removeAITask(TASK_UPKEEP + TASK_MOVE);
 	}
 
-	protected void tryUpkeep(BlockPos pos) {
-		TileEntity te = npc.world.getTileEntity(pos);
-		if (te != null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, npc.getUpkeepBlockSide())) {
-			npc.withdrawFood(te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, npc.getUpkeepBlockSide()));
-		}
+	private void tryUpkeep(BlockPos pos) {
+		WorldTools.getItemHandlerFromTile(npc.world, pos, npc.getUpkeepBlockSide()).ifPresent(h -> npc.withdrawFood(h));
 	}
-
 }

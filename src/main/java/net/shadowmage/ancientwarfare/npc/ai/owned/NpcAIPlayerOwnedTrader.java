@@ -2,11 +2,11 @@ package net.shadowmage.ancientwarfare.npc.ai.owned;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.shadowmage.ancientwarfare.core.item.ItemBackpack;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.orders.TradeOrder;
@@ -31,11 +31,11 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
 	private boolean restock;
 	private boolean deposit;
 	private boolean waiting;
-	private boolean at_shelter;
-	private boolean at_upkeep;
-	private boolean at_deposit;
-	private boolean at_withdraw;
-	private boolean at_waypoint;
+	private boolean atShelter;
+	private boolean atUpkeep;
+	private boolean atDeposit;
+	private boolean atWithdraw;
+	private boolean atWaypoint;
 
 	/*
 	 * used to track how long to wait when in 'waiting' state
@@ -76,11 +76,11 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
 		restock = false;
 		deposit = false;
 		waiting = false;
-		at_deposit = false;
-		at_shelter = false;
-		at_upkeep = false;
-		at_waypoint = false;
-		at_withdraw = false;
+		atDeposit = false;
+		atShelter = false;
+		atUpkeep = false;
+		atWaypoint = false;
+		atWithdraw = false;
 		waypointIndex = 0;
 		delayCounter = 0;
 		if (orders != null && orders.getRoute().size() > 0) {
@@ -119,17 +119,17 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
 	private void updateShelter() {
 		npc.addAITask(TASK_GO_HOME);
 		shelter = true;
-		if (at_shelter) {
+		if (atShelter) {
 			if (!npc.shouldBeAtHome()) {
 				shelter = false;
-				at_shelter = false;
+				atShelter = false;
 				shelterPoint = null;
 				upkeep = false;
-				at_upkeep = false;
+				atUpkeep = false;
 				deposit = false;
 				restock = false;
-				at_deposit = false;
-				at_withdraw = false;
+				atDeposit = false;
+				atWithdraw = false;
 				waiting = false;
 				delayCounter = 0;
 				npc.removeAITask(TASK_GO_HOME);
@@ -150,16 +150,16 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
 				moveToPosition(shelterPoint, d);
 			} else {
 				npc.removeAITask(TASK_MOVE);
-				at_shelter = true;
+				atShelter = true;
 			}
 		}
 	}
 
 	private void updateUpkeep() {
 		npc.addAITask(TASK_UPKEEP);
-		if (at_upkeep) {
+		if (atUpkeep) {
 			if (tryWithdrawUpkeep()) {
-				at_upkeep = false;
+				atUpkeep = false;
 				upkeep = false;
 				restock = true;
 				deposit = true;
@@ -173,7 +173,7 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
 				moveToPosition(npc.getUpkeepPoint(), d);
 			} else {
 				npc.removeAITask(TASK_MOVE);
-				at_upkeep = true;
+				atUpkeep = true;
 			}
 		} else//no upkeep point, display no upkeep task/state icon
 		{
@@ -182,13 +182,8 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
 		}
 	}
 
-	protected boolean tryWithdrawUpkeep() {
-		BlockPos p = npc.getUpkeepPoint();
-		TileEntity te = npc.world.getTileEntity(p);
-		if (te != null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, npc.getUpkeepBlockSide())) {
-			return npc.withdrawFood(te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, npc.getUpkeepBlockSide()));
-		}
-		return false;
+	private boolean tryWithdrawUpkeep() {
+		return WorldTools.getItemHandlerFromTile(npc.world, npc.getUpkeepPoint(), npc.getUpkeepBlockSide()).map(h -> npc.withdrawFood(h)).orElse(false);
 	}
 
 	private void updateRestock() {
@@ -200,10 +195,10 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
 	}
 
 	private void updateDeposit() {
-		if (at_deposit) {
+		if (atDeposit) {
 			doDeposit();
 			deposit = false;
-			at_deposit = false;
+			atDeposit = false;
 		} else if (orders.getRestockData().getDepositPoint() != null) {
 			BlockPos p = orders.getRestockData().getDepositPoint();
 			double d = npc.getDistanceSq(p);
@@ -212,7 +207,7 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
 				moveToPosition(p, d);
 			} else {
 				npc.removeAITask(TASK_MOVE);
-				at_deposit = true;
+				atDeposit = true;
 			}
 		} else//no deposit point
 		{
@@ -221,11 +216,11 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
 	}
 
 	private void updateWithdraw() {
-		if (at_withdraw) {
+		if (atWithdraw) {
 			doWithdraw();
 			setNextWaypoint();
 			restock = false;
-			at_withdraw = false;
+			atWithdraw = false;
 		} else if (orders.getRestockData().getWithdrawPoint() != null) {
 			BlockPos p = orders.getRestockData().getWithdrawPoint();
 			double d = npc.getDistanceSq(p);
@@ -234,7 +229,7 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
 				moveToPosition(p, d);
 			} else {
 				npc.removeAITask(TASK_MOVE);
-				at_withdraw = true;
+				atWithdraw = true;
 			}
 		} else//no withdraw point
 		{
@@ -244,13 +239,13 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
 	}
 
 	private void updatePatrol() {
-		if (at_waypoint) {
+		if (atWaypoint) {
 			if (waiting) {
 				delayCounter++;
 				if (delayCounter >= orders.getRoute().get(waypointIndex).getDelay()) {
 					delayCounter = 0;
 					waiting = false;
-					at_waypoint = false;
+					atWaypoint = false;
 					if (orders.getRoute().get(waypointIndex).shouldUpkeep()) {
 						upkeep = true;
 					} else {
@@ -265,7 +260,7 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
 			npc.addAITask(TASK_MOVE);
 			double d = npc.getDistanceSq(waypoint);
 			if (d < MIN_RANGE) {
-				at_waypoint = true;
+				atWaypoint = true;
 				waiting = false;
 				npc.removeAITask(TASK_MOVE);
 			} else {
@@ -287,10 +282,9 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
 		if (!backpack.isEmpty() && backpack.getItem() instanceof ItemBackpack) {
 			IItemHandler inv = backpack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 			BlockPos pos = orders.getRestockData().getDepositPoint();
-			TileEntity te = npc.world.getTileEntity(pos);
-			if (te != null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, orders.getRestockData().getDepositSide())) {
-				orders.getRestockData().doDeposit(inv, te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, orders.getRestockData().getDepositSide()));
-			}
+			//noinspection ConstantConditions
+			WorldTools.getItemHandlerFromTile(npc.world, pos, orders.getRestockData().getDepositSide())
+					.ifPresent(handler -> orders.getRestockData().doDeposit(inv, handler));
 		}
 	}
 
@@ -299,10 +293,9 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
 		if (!backpack.isEmpty() && backpack.getItem() instanceof ItemBackpack) {
 			IItemHandler inv = backpack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 			BlockPos pos = orders.getRestockData().getWithdrawPoint();
-			TileEntity te = npc.world.getTileEntity(pos);
-			if (te != null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, orders.getRestockData().getWithdrawSide())) {
-				orders.getRestockData().doWithdraw(inv, te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, orders.getRestockData().getWithdrawSide()));
-			}
+			//noinspection ConstantConditions
+			WorldTools.getItemHandlerFromTile(npc.world, pos, orders.getRestockData().getWithdrawSide())
+					.ifPresent(handler -> orders.getRestockData().doWithdraw(inv, handler));
 		}
 	}
 

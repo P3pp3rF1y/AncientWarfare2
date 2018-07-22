@@ -6,7 +6,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -20,10 +19,10 @@ import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueBase;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
-import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.render.BlockStateKeyGenerator;
 import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
 public abstract class BlockTorqueBase extends BlockBaseAutomation implements IRotatableBlock {
 
@@ -34,8 +33,7 @@ public abstract class BlockTorqueBase extends BlockBaseAutomation implements IRo
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		TileEntity te = world.getTileEntity(pos);
-		return te instanceof IInteractableTile && ((IInteractableTile) te).onBlockClicked(player, hand);
+		return WorldTools.clickInteractableTileWithHand(world, pos, player, hand);
 	}
 
 	@Override
@@ -83,31 +81,19 @@ public abstract class BlockTorqueBase extends BlockBaseAutomation implements IRo
 
 	@Override
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-		EnumFacing facing = EnumFacing.NORTH;
-		TileEntity tileentity = world.getTileEntity(pos);
-
-		if (tileentity instanceof TileTorqueBase) {
-			facing = ((TileTorqueBase) tileentity).getPrimaryFacing();
-		}
-
+		EnumFacing facing = WorldTools.getTile(world, pos, TileTorqueBase.class).map(TileTorqueBase::getPrimaryFacing).orElse(EnumFacing.NORTH);
 		return ((IExtendedBlockState) super.getExtendedState(state, world, pos)).withProperty(CoreProperties.UNLISTED_FACING, facing);
 	}
 
 	@Override
 	public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
-		TileEntity te = world.getTileEntity(pos);
-		if (te instanceof TileTorqueBase) {
-			((TileTorqueBase) te).onNeighborTileChanged();
-		}
+		WorldTools.getTile(world, pos, TileTorqueBase.class).ifPresent(TileTorqueBase::onNeighborTileChanged);
 		super.onNeighborChange(world, pos, neighbor);
 	}
 
 	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
-		TileEntity te = world.getTileEntity(pos);
-		if (te instanceof TileTorqueBase) {
-			((TileTorqueBase) te).onNeighborTileChanged();
-		}
+		WorldTools.getTile(world, pos, TileTorqueBase.class).ifPresent(TileTorqueBase::onNeighborTileChanged);
 		super.neighborChanged(state, world, pos, block, fromPos);
 	}
 
@@ -116,7 +102,8 @@ public abstract class BlockTorqueBase extends BlockBaseAutomation implements IRo
 		if (world.isRemote) { //TODO is this needed or it's always server side?
 			return false;
 		}
-		IRotatableTile tt = (IRotatableTile) world.getTileEntity(pos);
+		//noinspection ConstantConditions
+		IRotatableTile tt = WorldTools.getTile(world, pos, IRotatableTile.class).get();
 		EnumFacing facing = tt.getPrimaryFacing();
 		EnumFacing rotatedFacing = facing;
 		if (axis.getAxis() == EnumFacing.Axis.Y || getRotationType() == BlockRotationHandler.RotationType.SIX_WAY) {
@@ -131,8 +118,7 @@ public abstract class BlockTorqueBase extends BlockBaseAutomation implements IRo
 
 	@Override
 	public boolean eventReceived(IBlockState state, World world, BlockPos pos, int id, int param) {
-		TileEntity tileentity = world.getTileEntity(pos);
-		return tileentity != null && tileentity.receiveClientEvent(id, param);
+		return WorldTools.sendClientEventToTile(world, pos, id, param);
 	}
 
 	@Override

@@ -9,7 +9,7 @@ import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 
 public abstract class ItemBaseCore extends ItemBase implements IClientRegistrar {
 	public ItemBaseCore(String regName) {
-		super(AncientWarfareCore.modID, regName);
+		super(AncientWarfareCore.MOD_ID, regName);
 		setCreativeTab(AWCoreBlockLoader.coreTab);
 
 		AncientWarfareCore.proxy.addClientRegistrar(this);

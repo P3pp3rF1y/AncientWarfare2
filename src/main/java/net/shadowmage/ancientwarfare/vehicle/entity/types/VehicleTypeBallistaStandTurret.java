@@ -1,34 +1,9 @@
-/**
- * Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
- * This software is distributed under the terms of the GNU General Public License.
- * Please see COPYING for precise license information.
- * <p>
- * This file is part of Ancient Warfare.
- * <p>
- * Ancient Warfare is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * <p>
- * Ancient Warfare is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.vehicle.entity.types;
 
 import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 public class VehicleTypeBallistaStandTurret extends VehicleTypeBallista {
-
-	/**
-	 * @param typeNum
-	 */
 	public VehicleTypeBallistaStandTurret(int typeNum) {
 		super(typeNum);
 		this.configName = "ballista_stand_turret";
@@ -59,17 +34,17 @@ public class VehicleTypeBallistaStandTurret extends VehicleTypeBallista {
 	public ResourceLocation getTextureForMaterialLevel(int level) {
 		switch (level) {
 			case 0:
-				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ballista_stand_1.png");
+				return new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/model/vehicle/ballista_stand_1.png");
 			case 1:
-				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ballista_stand_2.png");
+				return new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/model/vehicle/ballista_stand_2.png");
 			case 2:
-				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ballista_stand_3.png");
+				return new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/model/vehicle/ballista_stand_3.png");
 			case 3:
-				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ballista_stand_4.png");
+				return new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/model/vehicle/ballista_stand_4.png");
 			case 4:
-				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ballista_stand_5.png");
+				return new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/model/vehicle/ballista_stand_5.png");
 			default:
-				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ballista_stand_1.png");
+				return new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/model/vehicle/ballista_stand_1.png");
 		}
 	}
 

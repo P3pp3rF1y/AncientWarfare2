@@ -1,24 +1,3 @@
-/*
- Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
- This software is distributed under the terms of the GNU General Public License.
- Please see COPYING for precise license information.
-
- This file is part of Ancient Warfare.
-
- Ancient Warfare is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- Ancient Warfare is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules;
 
 import net.minecraft.block.Block;
@@ -41,9 +20,10 @@ import javax.annotation.Nonnull;
 
 public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
 
+	public static final String INVENTORY_DATA_TAG = "inventoryData";
 	public int randomLootLevel = 0;
 	public NBTTagCompound tag = new NBTTagCompound();
-	NonNullList<ItemStack> inventoryStacks;
+	private NonNullList<ItemStack> inventoryStacks;
 
 	public TemplateRuleBlockInventory(World world, BlockPos pos, Block block, int meta, int turns) {
 		super(world, pos, block, meta, turns);
@@ -139,14 +119,14 @@ public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
 			list.appendTag(itemTag);
 		}
 		invData.setTag("inventoryContents", list);
-		tag.setTag("inventoryData", invData);
+		tag.setTag(INVENTORY_DATA_TAG, invData);
 	}
 
 	@Override
 	public void parseRuleData(NBTTagCompound tag) {
 		super.parseRuleData(tag);
-		if (tag.hasKey("inventoryData")) {
-			NBTTagCompound inventoryTag = tag.getCompoundTag("inventoryData");
+		if (tag.hasKey(INVENTORY_DATA_TAG)) {
+			NBTTagCompound inventoryTag = tag.getCompoundTag(INVENTORY_DATA_TAG);
 			int length = inventoryTag.getInteger("length");
 			inventoryStacks = NonNullList.withSize(length, ItemStack.EMPTY);
 			NBTTagCompound itemTag;

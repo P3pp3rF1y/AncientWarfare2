@@ -22,11 +22,11 @@ import java.util.HashSet;
 public class ItemWorksiteUpgrade extends ItemMulti {
 
 	public ItemWorksiteUpgrade() {
-		super(AncientWarfareAutomation.modID, "worksite_upgrade");
+		super(AncientWarfareAutomation.MOD_ID, "worksite_upgrade");
 		this.setCreativeTab(AWAutomationItemLoader.automationTab);
 	}
 
-	public static WorksiteUpgrade getUpgrade(ItemStack stack) {
+	private static WorksiteUpgrade getUpgrade(ItemStack stack) {
 		if (stack.isEmpty() || stack.getItem() != AWItems.worksiteUpgrade) {
 			throw new RuntimeException("Cannot retrieve worksite upgrade type for: " + stack + ".  Null stack, or item, or mismatched item!");
 		}

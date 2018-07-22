@@ -1,24 +1,3 @@
-/**
- * Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
- * This software is distributed under the terms of the GNU General Public License.
- * Please see COPYING for precise license information.
- * <p>
- * This file is part of Ancient Warfare.
- * <p>
- * Ancient Warfare is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * <p>
- * Ancient Warfare is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.vehicle.missiles;
 
 import net.minecraft.entity.Entity;
@@ -29,8 +8,8 @@ import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 public class AmmoHwachaRocket extends Ammo {
 
-	public static float burnTimeFactor = 3.f;
-	public static float accelerationFactor = 0.01f;
+	public static final float BURN_TIME_FACTOR = 3.f;
+	public static final float ACCELERATION_FACTOR = 0.01f;
 
 	public AmmoHwachaRocket() {
 		super("ammo_hwacha_rocket");
@@ -42,12 +21,12 @@ public class AmmoHwachaRocket extends Ammo {
 		this.ammoWeight = 1.f;
 		this.renderScale = 0.2f;
 		this.configName = "hwacha_rocket";
-		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ammo/arrow_wood.png");
+		this.modelTexture = new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/model/vehicle/ammo/arrow_wood.png");
 	}
 
 	@Override
 	public void onImpactWorld(World world, float x, float y, float z, MissileBase missile, RayTraceResult hit) {
-
+		//noop
 	}
 
 	@Override

@@ -1,24 +1,3 @@
-/*
- Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
- This software is distributed under the terms of the GNU General Public License.
- Please see COPYING for precise license information.
-
- This file is part of Ancient Warfare.
-
- Ancient Warfare is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- Ancient Warfare is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.structure.gamedata;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -28,7 +7,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
-import net.shadowmage.ancientwarfare.structure.world_gen.StructureEntry;
+import net.shadowmage.ancientwarfare.structure.worldgen.StructureEntry;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -79,16 +58,16 @@ public class StructureMap extends WorldSavedData {
 
 	private class StructureDimensionMap {
 		private HashMap<Integer, StructureWorldMap> mapsByDimension = new HashMap<>();
-		Set<String> generatedUniques = new HashSet<>();
+		private Set<String> generatedUniques = new HashSet<>();
 
-		public Collection<StructureEntry> getEntriesNear(int dimension, int chunkX, int chunkZ, int chunkRadius, boolean expandBySize, Collection<StructureEntry> list) {
+		private Collection<StructureEntry> getEntriesNear(int dimension, int chunkX, int chunkZ, int chunkRadius, boolean expandBySize, Collection<StructureEntry> list) {
 			if (mapsByDimension.containsKey(dimension)) {
 				return mapsByDimension.get(dimension).getEntriesNear(chunkX, chunkZ, chunkRadius, expandBySize, list);
 			}
 			return Collections.emptyList();
 		}
 
-		public void setGeneratedAt(int dimension, int chunkX, int chunkZ, StructureEntry entry, boolean unique) {
+		private void setGeneratedAt(int dimension, int chunkX, int chunkZ, StructureEntry entry, boolean unique) {
 			if (!this.mapsByDimension.containsKey(dimension)) {
 				this.mapsByDimension.put(dimension, new StructureWorldMap());
 			}
@@ -186,7 +165,8 @@ public class StructureMap extends WorldSavedData {
 			NBTTagList entryList = nbttagcompound.getTagList("entries", Constants.NBT.TAG_COMPOUND);
 			StructureEntry entry;
 			NBTTagCompound entryTag;
-			int x, z;
+			int x;
+			int z;
 			for (int i = 0; i < entryList.tagCount(); i++) {
 				entryTag = entryList.getCompoundTagAt(i);
 				x = entryTag.getInteger("x");

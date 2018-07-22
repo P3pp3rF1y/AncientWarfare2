@@ -12,12 +12,10 @@ import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 
 import javax.annotation.Nullable;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ItemAmmo extends ItemBaseVehicle {
-	String tooltipName;
+	private String tooltipName;
 
 	public ItemAmmo(ResourceLocation registryName) {
 		super(registryName.getResourcePath());
@@ -34,8 +32,6 @@ public class ItemAmmo extends ItemBaseVehicle {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerClient() {
-		final Map<String, ModelResourceLocation> modelLocations = new HashMap<>();
-
-		ModelLoaderHelper.registerItem(this, (i, m) -> new ModelResourceLocation(new ResourceLocation(AncientWarfareCore.modID, "vehicle/ammo"), "variant=" + getRegistryName().getResourcePath()));
+		ModelLoaderHelper.registerItem(this, (i, m) -> new ModelResourceLocation(new ResourceLocation(AncientWarfareCore.MOD_ID, "vehicle/ammo"), "variant=" + getRegistryName().getResourcePath()));
 	}
 }

@@ -9,6 +9,7 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcWorker;
 
 import java.util.List;
+import java.util.Optional;
 
 public class NpcAIPlayerOwnedFindWorksite extends NpcAI<NpcWorker> {
 
@@ -39,9 +40,9 @@ public class NpcAIPlayerOwnedFindWorksite extends NpcAI<NpcWorker> {
 		if (npc.autoWorkTarget != null)//validate existing position
 		{
 			BlockPos pos = npc.autoWorkTarget;
-			TileEntity te = npc.world.getTileEntity(pos);
-			if (te instanceof IWorkSite) {
-				IWorkSite site = (IWorkSite) te;
+			Optional<IWorkSite> te = WorldTools.getTile(npc.world, pos, IWorkSite.class);
+			if (te.isPresent()) {
+				IWorkSite site = te.get();
 				if (!npc.canWorkAt(site.getWorkType()))
 					npc.autoWorkTarget = null;
 				if (npc.hasCommandPermissions(site.getOwner()))

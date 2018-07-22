@@ -3,21 +3,23 @@ package net.shadowmage.ancientwarfare.structure.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
 
-public class ContainerSpawnerAdvancedBlock extends ContainerSpawnerAdvancedBase {
+import java.util.Optional;
 
+public class ContainerSpawnerAdvancedBlock extends ContainerSpawnerAdvancedBase {
+	private static final String SPAWNER_SETTINGS_TAG = "spawnerSettings";
 	private final TileAdvancedSpawner spawner;
 
 	public ContainerSpawnerAdvancedBlock(EntityPlayer player, int x, int y, int z) {
 		super(player);
-		TileEntity te = player.world.getTileEntity(new BlockPos(x, y, z));
-		if (te instanceof TileAdvancedSpawner) {
-			spawner = (TileAdvancedSpawner) te;
+		Optional<TileAdvancedSpawner> te = WorldTools.getTile(player.world, new BlockPos(x, y, z), TileAdvancedSpawner.class);
+		if (te.isPresent()) {
+			spawner = te.get();
 			settings = spawner.getSettings();
 		} else {
 			throw new IllegalArgumentException("Spawner not found");
@@ -33,12 +35,12 @@ public class ContainerSpawnerAdvancedBlock extends ContainerSpawnerAdvancedBase 
 
 	@Override
 	public void handlePacketData(NBTTagCompound tag) {
-		if (tag.hasKey("spawnerSettings")) {
+		if (tag.hasKey(SPAWNER_SETTINGS_TAG)) {
 			if (spawner.getWorld().isRemote) {
-				settings.readFromNBT(tag.getCompoundTag("spawnerSettings"));
+				settings.readFromNBT(tag.getCompoundTag(SPAWNER_SETTINGS_TAG));
 				this.refreshGui();
 			} else {
-				spawner.getSettings().readFromNBT(tag.getCompoundTag("spawnerSettings"));
+				spawner.getSettings().readFromNBT(tag.getCompoundTag(SPAWNER_SETTINGS_TAG));
 				spawner.markDirty();
 				BlockTools.notifyBlockUpdate(spawner);
 			}

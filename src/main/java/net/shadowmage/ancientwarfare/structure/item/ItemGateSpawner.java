@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.structure.item;
 
-import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -220,7 +219,7 @@ public class ItemGateSpawner extends ItemBaseStructure implements IItemKeyInterf
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerClient() {
-		ResourceLocation basePath = new ResourceLocation(AncientWarfareCore.modID, "structure/gate_spawner");
+		ResourceLocation basePath = new ResourceLocation(AncientWarfareCore.MOD_ID, "structure/gate_spawner");
 		ModelResourceLocation IRON_BASIC = new ModelResourceLocation(basePath, "variant=gate_iron_basic");
 		ModelResourceLocation IRON_DOUBLE = new ModelResourceLocation(basePath, "variant=gate_iron_double");
 		ModelResourceLocation IRON_SINGLE = new ModelResourceLocation(basePath, "variant=gate_iron_single");
@@ -229,27 +228,24 @@ public class ItemGateSpawner extends ItemBaseStructure implements IItemKeyInterf
 		ModelResourceLocation WOOD_ROTATING = new ModelResourceLocation(basePath, "variant=gate_wood_rotating");
 		ModelResourceLocation WOOD_SINGLE = new ModelResourceLocation(basePath, "variant=gate_wood_single");
 
-		ModelLoader.setCustomMeshDefinition(this, new ItemMeshDefinition() {
-			@Override
-			public ModelResourceLocation getModelLocation(ItemStack stack) {
-				switch (Gate.getGateByID(stack.getMetadata()).getVariant()) {
-					case IRON_BASIC:
-						return IRON_BASIC;
-					case IRON_DOUBLE:
-						return IRON_DOUBLE;
-					case IRON_SINGLE:
-						return IRON_SINGLE;
-					case WOOD_BASIC:
-						return WOOD_BASIC;
-					case WOOD_DOUBLE:
-						return WOOD_DOUBLE;
-					case WOOD_ROTATING:
-						return WOOD_ROTATING;
-					case WOOD_SINGLE:
-						return WOOD_SINGLE;
-					default:
-						return WOOD_BASIC;
-				}
+		ModelLoader.setCustomMeshDefinition(this, stack -> {
+			switch (Gate.getGateByID(stack.getMetadata()).getVariant()) {
+				case IRON_BASIC:
+					return IRON_BASIC;
+				case IRON_DOUBLE:
+					return IRON_DOUBLE;
+				case IRON_SINGLE:
+					return IRON_SINGLE;
+				case WOOD_BASIC:
+					return WOOD_BASIC;
+				case WOOD_DOUBLE:
+					return WOOD_DOUBLE;
+				case WOOD_ROTATING:
+					return WOOD_ROTATING;
+				case WOOD_SINGLE:
+					return WOOD_SINGLE;
+				default:
+					return WOOD_BASIC;
 			}
 		});
 

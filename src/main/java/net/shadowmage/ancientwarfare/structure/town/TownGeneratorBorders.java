@@ -1,23 +1,30 @@
 package net.shadowmage.ancientwarfare.structure.town;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
+import net.shadowmage.ancientwarfare.automation.registry.TreeFarmRegistry;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.ITree;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.ITreeScanner;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
-import net.shadowmage.ancientwarfare.structure.world_gen.WorldStructureGenerator;
+import net.shadowmage.ancientwarfare.structure.worldgen.WorldStructureGenerator;
 
 public class TownGeneratorBorders {
+	private TownGeneratorBorders() {}
 
 	public static void generateBorders(World world, StructureBB exterior, StructureBB walls, StructureBB max) {
-		int minX, maxX, minZ, maxZ;
+		int minX;
+		int maxX;
+		int minZ;
+		int maxZ;
 		int step;
 		int fillBase = max.min.getY() - 1;
-		int levelBase = fillBase;
 
 		int eminx = exterior.min.getX();
 		int eminz = exterior.min.getZ();
@@ -29,7 +36,7 @@ public class TownGeneratorBorders {
 		for (int px = minX; px <= maxX; px++) {
 			for (int pz = max.min.getZ(); pz <= max.max.getZ(); pz++) {
 				step = WorldStructureGenerator.getStepNumber(px, pz, eminx, emaxx, eminz, emaxz);
-				handleBorderBlock(world, px, pz, fillBase - step, levelBase + step, getFillBlock(world, px, pz, false, Blocks.DIRT.getDefaultState()), getFillBlock(world, px, pz, true, Blocks.GRASS.getDefaultState()), true);
+				handleBorderBlock(world, px, pz, fillBase - step, fillBase + step, getFillBlock(world, px, pz, false, Blocks.DIRT.getDefaultState()), getFillBlock(world, px, pz, true, Blocks.GRASS.getDefaultState()));
 			}
 		}
 
@@ -38,7 +45,7 @@ public class TownGeneratorBorders {
 		for (int px = minX; px <= maxX; px++) {
 			for (int pz = max.min.getZ(); pz <= max.max.getZ(); pz++) {
 				step = WorldStructureGenerator.getStepNumber(px, pz, eminx, emaxx, eminz, emaxz);
-				handleBorderBlock(world, px, pz, fillBase - step, levelBase + step, getFillBlock(world, px, pz, false, Blocks.DIRT.getDefaultState()), getFillBlock(world, px, pz, true, Blocks.GRASS.getDefaultState()), true);
+				handleBorderBlock(world, px, pz, fillBase - step, fillBase + step, getFillBlock(world, px, pz, false, Blocks.DIRT.getDefaultState()), getFillBlock(world, px, pz, true, Blocks.GRASS.getDefaultState()));
 			}
 		}
 
@@ -47,7 +54,7 @@ public class TownGeneratorBorders {
 		for (int pz = minZ; pz <= maxZ; pz++) {
 			for (int px = max.min.getX(); px <= max.max.getX(); px++) {
 				step = WorldStructureGenerator.getStepNumber(px, pz, eminx, emaxx, eminz, emaxz);
-				handleBorderBlock(world, px, pz, fillBase - step, levelBase + step, getFillBlock(world, px, pz, false, Blocks.DIRT.getDefaultState()), getFillBlock(world, px, pz, true, Blocks.GRASS.getDefaultState()), true);
+				handleBorderBlock(world, px, pz, fillBase - step, fillBase + step, getFillBlock(world, px, pz, false, Blocks.DIRT.getDefaultState()), getFillBlock(world, px, pz, true, Blocks.GRASS.getDefaultState()));
 			}
 		}
 
@@ -56,7 +63,7 @@ public class TownGeneratorBorders {
 		for (int pz = minZ; pz <= maxZ; pz++) {
 			for (int px = max.min.getX(); px <= max.max.getX(); px++) {
 				step = WorldStructureGenerator.getStepNumber(px, pz, eminx, emaxx, eminz, emaxz);
-				handleBorderBlock(world, px, pz, fillBase - step, levelBase + step, getFillBlock(world, px, pz, false, Blocks.DIRT.getDefaultState()), getFillBlock(world, px, pz, true, Blocks.GRASS.getDefaultState()), true);
+				handleBorderBlock(world, px, pz, fillBase - step, fillBase + step, getFillBlock(world, px, pz, false, Blocks.DIRT.getDefaultState()), getFillBlock(world, px, pz, true, Blocks.GRASS.getDefaultState()));
 			}
 		}
 	}
@@ -69,25 +76,43 @@ public class TownGeneratorBorders {
 		int desiredTopBlockHeight = walls.min.getY() - 1;
 		for (int x = minX; x <= maxX; x++) {
 			for (int z = minZ; z <= maxZ; z++) {
-				handleBorderBlock(world, x, z, desiredTopBlockHeight, desiredTopBlockHeight, getFillBlock(world, x, z, false, Blocks.GRASS.getDefaultState()), getFillBlock(world, x, z, true, Blocks.GRASS.getDefaultState()), false);
+				handleBorderBlock(world, x, z, desiredTopBlockHeight, desiredTopBlockHeight, getFillBlock(world, x, z, false, Blocks.GRASS.getDefaultState()), getFillBlock(world, x, z, true, Blocks.GRASS.getDefaultState()));
 				world.setBlockState(new BlockPos(x, desiredTopBlockHeight - 5, z), Blocks.COBBLESTONE.getDefaultState());
 			}
 		}
 	}
 
-	private static void handleBorderBlock(World world, int x, int z, int fillLevel, int cutLevel, IBlockState fillBlock, IBlockState topBlock, boolean skippables) {
-		int y = getTopFilledHeight(world.getChunkFromBlockCoords(new BlockPos(x, 1, z)), x, z, skippables);
+	private static void handleBorderBlock(World world, int x, int z, int fillLevel, int cutLevel, IBlockState fillBlock, IBlockState topBlock) {
+		int y = getTopFilledHeight(world.getChunkFromBlockCoords(new BlockPos(x, 1, z)), x, z, false);
+		int topSolidY = getTopFilledHeight(world.getChunkFromBlockCoords(new BlockPos(x, 1, z)), x, z, true);
 		if (y >= cutLevel) {
-			for (int py = world.getActualHeight(); py > cutLevel; py--) {
-				world.setBlockToAir(new BlockPos(x, py, z));
+			for (int py = Math.min(topSolidY, cutLevel) + 1; py <= y; py++) {
+				BlockPos clearPos = new BlockPos(x, py, z);
+				handleClearing(world, clearPos);
 			}
-			world.setBlockState(new BlockPos(x, cutLevel, z), topBlock);
+			if (topSolidY > cutLevel) {
+				world.setBlockState(new BlockPos(x, cutLevel, z), topBlock);
+			}
 		}
-		if (y <= fillLevel) {
-			for (int py = y + 1; py < fillLevel; py++) {
+		if (topSolidY <= fillLevel) {
+			for (int py = topSolidY + 1; py < fillLevel; py++) {
 				world.setBlockState(new BlockPos(x, py, z), fillBlock);
 			}
 			world.setBlockState(new BlockPos(x, fillLevel, z), topBlock);
+		}
+	}
+
+	private static void handleClearing(World world, BlockPos clearPos) {
+		IBlockState state = world.getBlockState(clearPos);
+		if (state.getMaterial() != Material.AIR) {
+			ITreeScanner treeScanner = TreeFarmRegistry.getTreeScanner(state);
+			if (!treeScanner.matches(state)) {
+				world.setBlockToAir(clearPos);
+				return;
+			}
+			ITree tree = treeScanner.scanTree(world, clearPos);
+			tree.getLeafPositions().forEach(world::setBlockToAir);
+			tree.getTrunkPositions().forEach(world::setBlockToAir);
 		}
 	}
 
@@ -97,7 +122,7 @@ public class TownGeneratorBorders {
 		for (int y = maxY; y > 0; y--) {
 			IBlockState state = chunk.getBlockState(new BlockPos(x, y, z));
 			block = state.getBlock();
-			if (block == null || block == Blocks.AIR || (skippables && AWStructureStatics.isSkippable(state))) {
+			if (block == Blocks.AIR || (skippables && AWStructureStatics.isSkippable(state))) {
 				continue;
 			}
 			return y;

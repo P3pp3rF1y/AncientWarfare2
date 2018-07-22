@@ -5,7 +5,6 @@ import codechicken.lib.render.CCRenderState;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -14,6 +13,7 @@ import net.minecraftforge.common.property.IUnlistedProperty;
 import net.shadowmage.ancientwarfare.automation.render.property.AutomationProperties;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueBase;
 import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
 import javax.annotation.Nullable;
 import java.util.Collection;
@@ -62,10 +62,10 @@ public abstract class BaseTorqueRenderer<T extends TileTorqueBase> extends Anima
 	@Override
 	public IExtendedBlockState handleState(IExtendedBlockState state, IBlockAccess access, BlockPos pos) {
 		EnumFacing facing = EnumFacing.NORTH;
-		TileEntity tileentity = access.getTileEntity(pos);
+		Optional<TileTorqueBase> tileentity = WorldTools.getTile(access, pos, TileTorqueBase.class);
 
-		if (tileentity instanceof TileTorqueBase) {
-			TileTorqueBase torquePart = ((TileTorqueBase) tileentity);
+		if (tileentity.isPresent()) {
+			TileTorqueBase torquePart = tileentity.get();
 			facing = torquePart.getPrimaryFacing();
 		}
 
@@ -75,8 +75,9 @@ public abstract class BaseTorqueRenderer<T extends TileTorqueBase> extends Anima
 			updatedState = updatedState.withProperty(AutomationProperties.ROTATIONS[f.getIndex()], 0f);
 		}
 
-		if (tileentity instanceof TileTorqueBase) {
-			updatedState = handleAdditionalProperties(updatedState, (T) tileentity);
+		if (tileentity.isPresent()) {
+			//noinspection unchecked
+			updatedState = handleAdditionalProperties(updatedState, (T) tileentity.get());
 		}
 
 		return updatedState;

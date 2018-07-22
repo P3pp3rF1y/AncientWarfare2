@@ -12,7 +12,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagLong;
 import net.minecraft.nbt.NBTTagShort;
 import net.minecraft.nbt.NBTTagString;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.util.Json.JsonAbstract;
 import net.shadowmage.ancientwarfare.core.util.Json.JsonArray;
 import net.shadowmage.ancientwarfare.core.util.Json.JsonObject;
@@ -144,7 +144,7 @@ public class JsonTagWriter {
 	}
 
 	public static void JsonTest() {
-		AWLog.logDebug("testing json read/write!!");
+		AncientWarfareCore.log.info("testing json read/write!!");
 		NBTTagCompound tag = new NBTTagCompound();
 		tag.setInteger("fooInt", 1);
 		tag.setString("fooString", "stringData");
@@ -162,14 +162,14 @@ public class JsonTagWriter {
 		JsonObject o = JsonTagWriter.getJsonForTag(tag);
 		String os = Json.getJsonData(o);
 
-		AWLog.logDebug("pre out : " + os);
+		AncientWarfareCore.log.info("pre out : " + os);
 		o = Json.parseJson(os);
 		os = Json.getJsonData(o);
-		AWLog.logDebug("post out: " + os);
+		AncientWarfareCore.log.info("post out: " + os);
 
-		AWLog.logDebug("pre tag : " + tag);
+		AncientWarfareCore.log.info("pre tag : " + tag);
 		tag = JsonTagReader.getTagFrom(o);
-		AWLog.logDebug("post tag: " + tag);
+		AncientWarfareCore.log.info("post tag: " + tag);
 
 		Integer.parseInt("foo");//crash
 	}

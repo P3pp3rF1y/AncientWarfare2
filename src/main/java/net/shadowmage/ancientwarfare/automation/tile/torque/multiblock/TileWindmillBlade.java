@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.automation.tile.torque.multiblock;
 
 import com.google.common.collect.Lists;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -13,20 +12,26 @@ import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 import net.shadowmage.ancientwarfare.core.util.BlockFinder;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.Trig;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import org.apache.commons.lang3.tuple.Pair;
 
+import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Optional;
 
 public class TileWindmillBlade extends TileUpdatable implements ITickable {
 
-	double bladeRpm = 20.d;
-	double bladeRpt = bladeRpm * AWAutomationStatics.rpmToRpt;
+	private static final String IS_CONTROL_TAG = "isControl";
+	private static final String CONTROL_POS_TAG = "controlPos";
+	private static final String DIRECTION_TAG = "direction";
+	private double bladeRpm = 20.d;
+	private double bladeRpt = bladeRpm * AWAutomationStatics.rpmToRpt;
 
-	public BlockPos controlPos;
+	private BlockPos controlPos;
 
 	private boolean isControl = false;//set to true if this is the control block for a setup
 	protected float rotation;//used in rendering
-	protected float lastRotationDiff;
+	private float lastRotationDiff;
 
 	/*
 	 * the raw size of the windmill in blocks tall
@@ -78,7 +83,7 @@ public class TileWindmillBlade extends TileUpdatable implements ITickable {
 		return rotation - lastRotationDiff * (1 - delta);
 	}
 
-	protected void updateRotation() {
+	private void updateRotation() {
 		lastRotationDiff = (float) (bladeRpt * Trig.TORADIANS);
 		rotation += lastRotationDiff;
 		rotation %= Trig.PI * 2;
@@ -94,52 +99,38 @@ public class TileWindmillBlade extends TileUpdatable implements ITickable {
 			if (isControl) {
 				int expand = (windmillSize - 1) / 2;
 				if (expand > 0) {
-					TileEntity tileEntity;
 					if (windmillDirection.getAxis() == EnumFacing.Axis.Z) {
 						for (int j = -expand; j < expand + 1; j++) {
 							for (int i = -expand; i < expand + 1; i++) {
-								tileEntity = world.getTileEntity(pos.add(i, j, 0));
-								if (tileEntity instanceof TileWindmillBlade) {
-									((TileWindmillBlade) tileEntity).setController(null);
-								}
+								WorldTools.getTile(world, pos.add(i, j, 0), TileWindmillBlade.class).ifPresent(t -> t.setController(null));
 							}
 						}
 					} else if (windmillDirection.getAxis() == EnumFacing.Axis.X) {
 						for (int j = -expand; j < expand + 1; j++) {
 							for (int i = -expand; i < expand + 1; i++) {
-								tileEntity = world.getTileEntity(pos.add(0, j, i));
-								if (tileEntity instanceof TileWindmillBlade) {
-									((TileWindmillBlade) tileEntity).setController(null);
-								}
+								WorldTools.getTile(world, pos.add(0, j, i), TileWindmillBlade.class).ifPresent(t -> t.setController(null));
 							}
 						}
 					}
 				}
 				isControl = false;
 			} else if (controlPos != null) {
-				TileEntity te = world.getTileEntity(controlPos);
+				WorldTools.getTile(world, controlPos, TileWindmillBlade.class).ifPresent(TileWindmillBlade::validateSetup);
 				controlPos = null;
-				if (te instanceof TileWindmillBlade)
-					((TileWindmillBlade) te).validateSetup();
 			} else
 				informNeighborsToValidate();
 		}
 	}
 
-	public TileWindmillBlade getMaster() {
-		if (controlPos != null) {
-			TileEntity te = world.getTileEntity(controlPos);
-			return te instanceof TileWindmillBlade ? (TileWindmillBlade) te : null;
-		} else if (isControl)
-			return this;
-		return null;
-	}
-
-	protected boolean validateSetup() {
+	private boolean validateSetup() {
 		BlockFinder finder = new BlockFinder(world, getBlockType(), getBlockMetadata(), 9 * 9);
 		Pair<BlockPos, BlockPos> corners = finder.cross(pos);
-		int minX = corners.getLeft().getX(), minY = corners.getLeft().getY(), minZ = corners.getLeft().getZ();
-		int xSize = corners.getRight().getX() - minX + 1, ySize = corners.getRight().getY() - minY + 1, zSize = corners.getRight().getZ() - minZ + 1;
+		int minX = corners.getLeft().getX();
+		int minY = corners.getLeft().getY();
+		int minZ = corners.getLeft().getZ();
+		int xSize = corners.getRight().getX() - minX + 1;
+		int ySize = corners.getRight().getY() - minY + 1;
+		int zSize = corners.getRight().getZ() - minZ + 1;
 
         /*
 		 * if y size >= 5
@@ -154,7 +145,9 @@ public class TileWindmillBlade extends TileUpdatable implements ITickable {
 			/*
 			 * calculate the control block coordinates from the min coordinate and sizes
              */
-			int controlX, controlY, controlZ;
+			int controlX;
+			int controlY;
+			int controlZ;
 
 			int halfSize = (ySize - 1) / 2;
 
@@ -204,16 +197,12 @@ public class TileWindmillBlade extends TileUpdatable implements ITickable {
 	}
 
 	private void informNeighborsToValidate() {
-		TileEntity te;
 		for (EnumFacing d : EnumFacing.VALUES) {
-			te = world.getTileEntity(pos.offset(d));
-			if (te instanceof TileWindmillBlade) {
-				((TileWindmillBlade) te).validateSetup();
-			}
+			WorldTools.getTile(world, pos.offset(d), TileWindmillBlade.class).ifPresent(TileWindmillBlade::validateSetup);
 		}
 	}
 
-	private void setController(BlockPos pos) {
+	private void setController(@Nullable BlockPos pos) {
 		boolean dirty = false;
 		if (pos == null) {
 			if (isControl || controlPos != null)
@@ -232,25 +221,18 @@ public class TileWindmillBlade extends TileUpdatable implements ITickable {
 	}
 
 	private void setInvalidSetup(List<BlockPos> set) {
-		TileEntity te;
 		for (BlockPos pos : set) {
-			te = world.getTileEntity(pos);
-			if (te instanceof TileWindmillBlade) {
-				((TileWindmillBlade) te).setController(null);
-			}
+			WorldTools.getTile(world, pos, TileWindmillBlade.class).ifPresent(t -> t.setController(null));
 		}
 	}
 
 	private void setValidSetup(List<BlockPos> set, int cx, int cy, int cz, int xs, int ys, int zs) {
 		setController(new BlockPos(cx, cy, cz));
-		TileEntity te = world.getTileEntity(controlPos);
-		if (te instanceof TileWindmillBlade) {
-			((TileWindmillBlade) te).setAsController(xs, ys, zs);
+		Optional<TileWindmillBlade> te = WorldTools.getTile(world, controlPos, TileWindmillBlade.class);
+		if (te.isPresent()) {
+			te.get().setAsController(xs, ys, zs);
 			for (BlockPos pos : set) {
-				te = world.getTileEntity(pos);
-				if (te instanceof TileWindmillBlade) {
-					((TileWindmillBlade) te).setController(controlPos);
-				}
+				WorldTools.getTile(world, pos, TileWindmillBlade.class).ifPresent(t -> t.setController(controlPos));
 			}
 		} else
 			setController(null);
@@ -267,24 +249,24 @@ public class TileWindmillBlade extends TileUpdatable implements ITickable {
 	@Override
 	protected void writeUpdateNBT(NBTTagCompound tag) {
 		super.writeUpdateNBT(tag);
-		tag.setBoolean("isControl", isControl);
+		tag.setBoolean(IS_CONTROL_TAG, isControl);
 		if (controlPos != null) {
-			tag.setLong("controlPos", controlPos.toLong());
+			tag.setLong(CONTROL_POS_TAG, controlPos.toLong());
 		}
 		if (isControl) {
 			tag.setInteger("size", windmillSize);
-			tag.setByte("direction", (byte) windmillDirection.ordinal());
+			tag.setByte(DIRECTION_TAG, (byte) windmillDirection.ordinal());
 		}
 	}
 
 	@Override
 	protected void handleUpdateNBT(NBTTagCompound tag) {
 		super.handleUpdateNBT(tag);
-		controlPos = tag.hasKey("controlPos") ? BlockPos.fromLong(tag.getLong("controlPos")) : null;
-		isControl = tag.getBoolean("isControl");
+		controlPos = tag.hasKey(CONTROL_POS_TAG) ? BlockPos.fromLong(tag.getLong(CONTROL_POS_TAG)) : null;
+		isControl = tag.getBoolean(IS_CONTROL_TAG);
 		if (isControl) {
 			windmillSize = tag.getInteger("size");
-			windmillDirection = EnumFacing.VALUES[tag.getByte("direction")];
+			windmillDirection = EnumFacing.VALUES[tag.getByte(DIRECTION_TAG)];
 		}
 		BlockTools.notifyBlockUpdate(this);
 	}
@@ -292,24 +274,24 @@ public class TileWindmillBlade extends TileUpdatable implements ITickable {
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
-		controlPos = tag.hasKey("controlPos") ? BlockPos.fromLong(tag.getLong("controlPos")) : null;
-		isControl = tag.getBoolean("isControl");
+		controlPos = tag.hasKey(CONTROL_POS_TAG) ? BlockPos.fromLong(tag.getLong(CONTROL_POS_TAG)) : null;
+		isControl = tag.getBoolean(IS_CONTROL_TAG);
 		if (isControl) {
 			windmillSize = tag.getInteger("size");
-			windmillDirection = EnumFacing.VALUES[tag.getByte("direction")];
+			windmillDirection = EnumFacing.VALUES[tag.getByte(DIRECTION_TAG)];
 		}
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
-		tag.setBoolean("isControl", isControl);
+		tag.setBoolean(IS_CONTROL_TAG, isControl);
 		if (controlPos != null) {
-			tag.setLong("controlPos", controlPos.toLong());
+			tag.setLong(CONTROL_POS_TAG, controlPos.toLong());
 		}
 		if (isControl) {
 			tag.setInteger("size", windmillSize);
-			tag.setByte("direction", (byte) windmillDirection.ordinal());
+			tag.setByte(DIRECTION_TAG, (byte) windmillDirection.ordinal());
 		}
 
 		return tag;

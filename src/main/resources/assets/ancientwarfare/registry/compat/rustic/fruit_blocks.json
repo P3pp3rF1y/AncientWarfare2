@@ -1,0 +1,70 @@
+{
+    "mod": "rustic",
+    "fruits": [
+        {
+            "type": "picked_drop",
+            "fruit": "rustic:wildberry_bush",
+            "ripe": {
+                "berries": "true"
+            },
+            "new": {
+                "berries": "false"
+            },
+            "drop": {
+                "name": "rustic:wildberries"
+            }
+        },
+        {
+            "type": "picked_drop",
+            "fruit": "rustic:leaves_apple",
+            "ripe": {
+                "apple_age": 3
+            },
+            "new": {
+                "apple_age": 0
+            },
+            "drop": {
+                "name": "minecraft:apple"
+            }
+        },
+        {
+            "type": "picked_drop",
+            "fruit": "rustic:grape_leaves",
+            "ripe": {
+                "grapes": "true"
+            },
+            "new": {
+                "grapes": "false"
+            },
+            "drop": {
+                "name": "rustic:grapes"
+            }
+        },
+        {
+            "type": "picked_drop",
+            "fruit": "rustic:chili_crop",
+            "ripe": {
+                "age": 3
+            },
+            "new": {
+                "age": 0
+            },
+            "drop": {
+                "name": "rustic:chili_pepper"
+            }
+        },
+        {
+            "type": "picked_drop",
+            "fruit": "rustic:tomato_crop",
+            "ripe": {
+                "age": 3
+            },
+            "new": {
+                "age": 0
+            },
+            "drop": {
+                "name": "rustic:tomato"
+            }
+        }
+    ]
+}

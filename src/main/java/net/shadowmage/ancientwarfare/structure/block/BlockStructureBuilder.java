@@ -17,6 +17,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.render.RenderStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManagerClient;
@@ -29,7 +30,7 @@ import java.util.stream.Collectors;
 
 public class BlockStructureBuilder extends BlockBaseStructure {
 
-	NonNullList<ItemStack> displayCache = null;
+	private NonNullList<ItemStack> displayCache = null;
 
 	public BlockStructureBuilder() {
 		super(Material.ROCK, "structure_builder_ticked");
@@ -74,11 +75,7 @@ public class BlockStructureBuilder extends BlockBaseStructure {
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if (!world.isRemote) {
-			TileEntity te = world.getTileEntity(pos);
-			if (te instanceof TileStructureBuilder) {
-				TileStructureBuilder builder = (TileStructureBuilder) te;
-				builder.onBlockClicked(player);
-			}
+			WorldTools.getTile(world, pos, TileStructureBuilder.class).ifPresent(b -> b.onBlockClicked(player));
 		}
 		return true;
 	}
@@ -86,20 +83,15 @@ public class BlockStructureBuilder extends BlockBaseStructure {
 	@Override
 	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
 		ItemStack drop = new ItemStack(this);
-		TileEntity te = world.getTileEntity(pos);
-		if (te != null) {
-			drop.setTagInfo("structureName", new NBTTagString(((TileStructureBuilder) te).getBuilder().getTemplate().name));
-		}
-
+		WorldTools.getTile(world, pos, TileStructureBuilder.class)
+				.ifPresent(t -> drop.setTagInfo("structureName", new NBTTagString(t.getBuilder().getTemplate().name)));
 		drops.add(drop);
 	}
 
 	@Override
 	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
-		if (willHarvest) {
-			return true; //If it will harvest, delay deletion of the block until after getDrops
-		}
-		return super.removedByPlayer(state, world, pos, player, willHarvest);
+		//If it will harvest, delay deletion of the block until after getDrops
+		return willHarvest || super.removedByPlayer(state, world, pos, player, willHarvest);
 	}
 
 	@Override

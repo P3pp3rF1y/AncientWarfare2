@@ -1,11 +1,13 @@
 package net.shadowmage.ancientwarfare.automation.tile.torque;
 
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileWindmillBlade;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
+
+import javax.annotation.Nullable;
 
 public class TileWindmillController extends TileTorqueSingleCell {
 
@@ -28,19 +30,15 @@ public class TileWindmillController extends TileTorqueSingleCell {
 	}
 
 	private TileWindmillBlade getControlledBlade() {
-		TileEntity te;
 		BlockPos behind = pos.offset(getPrimaryFacing().getOpposite());
-		if (world.isBlockLoaded(behind) && (te = world.getTileEntity(behind)) instanceof TileWindmillBlade) {
-			TileWindmillBlade blade = (TileWindmillBlade) te;
-			if (blade.isControl()) {
-				return blade;
-			}
+		if (world.isBlockLoaded(behind)) {
+			return WorldTools.getTile(world, behind, TileWindmillBlade.class).orElse(null);
 		}
 		return null;
 	}
 
 	@Override
-	public boolean canInputTorque(EnumFacing from) {
+	public boolean canInputTorque(@Nullable EnumFacing from) {
 		return false;
 	}
 

@@ -7,9 +7,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemStackHandler;
+import net.shadowmage.ancientwarfare.core.tile.IBlockBreakHandler;
 import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.structure.item.AWStructuresItems;
 import net.shadowmage.ancientwarfare.structure.item.ItemStructureScanner;
 import net.shadowmage.ancientwarfare.structure.item.ItemStructureSettings;
@@ -21,7 +25,7 @@ import net.shadowmage.ancientwarfare.structure.template.scan.TemplateScanner;
 
 import javax.annotation.Nonnull;
 
-public class TileStructureScanner extends TileUpdatable {
+public class TileStructureScanner extends TileUpdatable implements IBlockBreakHandler {
 	private static final String SCANNER_INVENTORY_TAG = "scannerInventory";
 	private static final String BOUNDS_ACTIVE_TAG = "boundsActive";
 	private static final String FACING_TAG = "facing";
@@ -109,6 +113,7 @@ public class TileStructureScanner extends TileUpdatable {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public AxisAlignedBB getRenderBoundingBox() {
 		ItemStack scanner = scannerInventory.getStackInSlot(0);
 		if (scanner.getItem() != AWStructuresItems.structureScanner) {
@@ -194,7 +199,8 @@ public class TileStructureScanner extends TileUpdatable {
 	}
 
 	private void clearEntities(AxisAlignedBB boundingBox) {
-		world.getEntitiesWithinAABB(Entity.class, boundingBox).forEach(Entity::setDead);
+		AxisAlignedBB expandedBoundingBox = new AxisAlignedBB(boundingBox.minX, boundingBox.minY, boundingBox.minZ, boundingBox.maxX + 1, boundingBox.maxY + 1, boundingBox.maxZ + 1);
+		world.getEntitiesWithinAABB(Entity.class, expandedBoundingBox).forEach(Entity::setDead);
 	}
 
 	private boolean isSameTemplateSizeAndOffset(StructureTemplate template, StructureTemplate dummyTemplate) {
@@ -207,5 +213,10 @@ public class TileStructureScanner extends TileUpdatable {
 
 	private boolean dimensionsAreSame(StructureTemplate template, StructureTemplate dummyTemplate) {
 		return template.xSize == dummyTemplate.xSize && template.ySize == dummyTemplate.ySize && template.zSize == dummyTemplate.zSize;
+	}
+
+	@Override
+	public void onBlockBroken() {
+		InventoryTools.dropItemsInWorld(world, scannerInventory, pos);
 	}
 }

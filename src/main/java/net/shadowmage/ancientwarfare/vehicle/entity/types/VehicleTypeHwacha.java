@@ -1,24 +1,3 @@
-/**
- * Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
- * This software is distributed under the terms of the GNU General Public License.
- * Please see COPYING for precise license information.
- * <p>
- * This file is part of Ancient Warfare.
- * <p>
- * Ancient Warfare is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * <p>
- * Ancient Warfare is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.vehicle.entity.types;
 
 import net.minecraft.init.SoundEvents;
@@ -35,10 +14,6 @@ import net.shadowmage.ancientwarfare.vehicle.registry.ArmorRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.UpgradeRegistry;
 
 public class VehicleTypeHwacha extends VehicleType {
-
-	/**
-	 * @param typeNum
-	 */
 	public VehicleTypeHwacha(int typeNum) {
 		super(typeNum);
 		this.configName = "hwacha";
@@ -108,17 +83,17 @@ public class VehicleTypeHwacha extends VehicleType {
 	public ResourceLocation getTextureForMaterialLevel(int level) {
 		switch (level) {
 			case 0:
-				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/hwacha_1.png");
+				return new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/model/vehicle/hwacha_1.png");
 			case 1:
-				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/hwacha_2.png");
+				return new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/model/vehicle/hwacha_2.png");
 			case 2:
-				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/hwacha_3.png");
+				return new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/model/vehicle/hwacha_3.png");
 			case 3:
-				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/hwacha_4.png");
+				return new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/model/vehicle/hwacha_4.png");
 			case 4:
-				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/hwacha_5.png");
+				return new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/model/vehicle/hwacha_5.png");
 			default:
-				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/hwacha_1.png");
+				return new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/model/vehicle/hwacha_1.png");
 		}
 	}
 
@@ -128,14 +103,10 @@ public class VehicleTypeHwacha extends VehicleType {
 	}
 
 	public class HwachaFiringVarsHelper extends VehicleFiringVarsHelper {
+		private int missileFired = 0;
+		private int delayTick = 0;
 
-		int missileFired = 0;
-		int delayTick = 0;
-
-		/**
-		 * @param vehicle
-		 */
-		public HwachaFiringVarsHelper(VehicleBase vehicle) {
+		private HwachaFiringVarsHelper(VehicleBase vehicle) {
 			super(vehicle);
 		}
 
@@ -146,7 +117,7 @@ public class VehicleTypeHwacha extends VehicleType {
 
 		@Override
 		public void deserializeNBT(NBTTagCompound tag) {
-
+			//noop
 		}
 
 		@Override
@@ -156,7 +127,7 @@ public class VehicleTypeHwacha extends VehicleType {
 
 		@Override
 		public void onReloadUpdate() {
-
+			//noop
 		}
 
 		@Override
@@ -176,9 +147,9 @@ public class VehicleTypeHwacha extends VehicleType {
 			}
 		}
 
-		float missileOffsetX;
-		float missileOffsetY;
-		float missileOffsetZ;
+		private float missileOffsetX;
+		private float missileOffsetY;
+		private float missileOffsetZ;
 
 		private void calcMissileOffset(int missileNum) {
 			int currentRow = missileNum / 9;

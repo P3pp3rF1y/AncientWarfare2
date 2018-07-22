@@ -5,7 +5,7 @@ import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 public abstract class BlockBaseCore extends BlockBase {
 	public BlockBaseCore(Material material, String regName) {
-		super(material, AncientWarfareCore.modID, regName);
+		super(material, AncientWarfareCore.MOD_ID, regName);
 		setCreativeTab(AWCoreBlockLoader.coreTab);
 
 	}

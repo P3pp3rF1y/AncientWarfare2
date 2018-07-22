@@ -12,8 +12,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseCraftingStation;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseCraftingStation;
-import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
 public class BlockWarehouseCraftingStation extends BlockBaseAutomation {
 
@@ -34,8 +34,7 @@ public class BlockWarehouseCraftingStation extends BlockBaseAutomation {
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		TileEntity te = world.getTileEntity(pos);
-		return te instanceof IInteractableTile && ((IInteractableTile) te).onBlockClicked(player, hand);
+		return WorldTools.clickInteractableTileWithHand(world, pos, player, hand);
 	}
 
 	@Override

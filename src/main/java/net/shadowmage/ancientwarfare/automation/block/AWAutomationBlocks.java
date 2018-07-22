@@ -3,8 +3,11 @@ package net.shadowmage.ancientwarfare.automation.block;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
 
-@ObjectHolder(AncientWarfareAutomation.modID)
+@ObjectHolder(AncientWarfareAutomation.MOD_ID)
+@SuppressWarnings("squid:S1444")
 public class AWAutomationBlocks {
+	private AWAutomationBlocks() {}
+
 	@ObjectHolder("quarry")
 	public static BlockWorksiteBase worksiteQuarry;
 	@ObjectHolder("tree_farm")

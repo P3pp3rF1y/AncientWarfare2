@@ -15,8 +15,7 @@ import net.shadowmage.ancientwarfare.core.item.ItemBlockBase;
 import net.shadowmage.ancientwarfare.core.owner.IOwnable;
 
 public class ItemBlockTorqueTile extends ItemBlockBase {
-
-	IRotatableBlock rotatable;
+	private IRotatableBlock rotatable;
 
 	public ItemBlockTorqueTile(Block block) {
 		super(block);
@@ -37,8 +36,8 @@ public class ItemBlockTorqueTile extends ItemBlockBase {
 			if (te instanceof IOwnable) {
 				((IOwnable) te).setOwner(player);
 			}
-			EnumFacing facing = BlockRotationHandler.getFaceForPlacement(player, rotatable, side);
-			te.setPrimaryFacing(facing);
+			//noinspection ConstantConditions
+			te.setPrimaryFacing(BlockRotationHandler.getFaceForPlacement(player, rotatable, side));
 		}
 		return val;
 	}

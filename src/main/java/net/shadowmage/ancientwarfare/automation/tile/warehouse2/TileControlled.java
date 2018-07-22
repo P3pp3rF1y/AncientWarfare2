@@ -8,8 +8,6 @@ import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
-import javax.annotation.Nullable;
-
 public abstract class TileControlled extends TileUpdatable implements IControlledTile, ITickable {
 
 	private boolean init;
@@ -31,17 +29,14 @@ public abstract class TileControlled extends TileUpdatable implements IControlle
 		BlockPos pos = controllerPosition;
 		controllerPosition = null;
 		if (pos != null && controller == null) {
-			TileEntity te = world.getTileEntity(pos);
-			if (te instanceof IControllerTile && isValidController((IControllerTile) te)) {
-				((IControllerTile) te).addControlledTile(this);
-			}
+			WorldTools.getTile(world, pos, IControllerTile.class).filter(this::isValidController).ifPresent(t -> t.addControlledTile(this));
 		}
 		return controller != null;
 	}
 
 	protected abstract void updateTile();
 
-	protected void searchForController() {
+	private void searchForController() {
 		BlockPos min = pos.add(-16, -4, -16);
 		BlockPos max = pos.add(16, 4, 16);
 		for (TileEntity te : WorldTools.getTileEntitiesInArea(world, min.getX(), min.getY(), min.getZ(), max.getX(), max.getY(), max.getZ())) {
@@ -88,7 +83,6 @@ public abstract class TileControlled extends TileUpdatable implements IControlle
 	protected void onControllerChanged(IControllerTile oldController, IControllerTile newController) {
 	}
 
-	@Nullable
 	@Override
 	public final IControllerTile getController() {
 		return controller;

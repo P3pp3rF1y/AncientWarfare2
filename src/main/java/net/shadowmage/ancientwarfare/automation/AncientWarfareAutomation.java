@@ -42,34 +42,34 @@ import net.shadowmage.ancientwarfare.automation.registry.TreeFarmRegistry;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.compat.CompatLoader;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
 import net.shadowmage.ancientwarfare.core.registry.RegistryLoader;
+import org.apache.logging.log4j.Logger;
 
-@Mod(name = "Ancient Warfare Automation", modid = AncientWarfareAutomation.modID, version = "@VERSION@", dependencies = "required-after:ancientwarfare;after:redstoneflux;after:buildcraftcore")
+@Mod(name = "Ancient Warfare Automation", modid = AncientWarfareAutomation.MOD_ID, version = "@VERSION@", dependencies = "required-after:ancientwarfare;after:redstoneflux;after:buildcraftcore")
 public class AncientWarfareAutomation {
-	public static final String modID = "ancientwarfareautomation";
-	public static final String MOD_PREFIX = modID + ":";
+	public static final String MOD_ID = "ancientwarfareautomation";
+	public static final String MOD_PREFIX = MOD_ID + ":";
 
-	@Instance(value = modID)
+	@Instance(value = MOD_ID)
 	public static AncientWarfareAutomation instance;
 
 	@SidedProxy(clientSide = "net.shadowmage.ancientwarfare.automation.proxy.ClientProxyAutomation", serverSide = "net.shadowmage.ancientwarfare.core.proxy.CommonProxy")
 	public static CommonProxyBase proxy;
 
+	public static Logger log;
+
 	public static AWAutomationStatics statics;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent evt) {
+		log = evt.getModLog();
+
 		ModuleStatus.automationLoaded = true;
-		if (Loader.isModLoaded("buildcraftcore")) {
-			ModuleStatus.buildCraftLoaded = true;
-			AWLog.log("Detecting BuildCraft Core is loaded, enabling BC Compatibility");
-		}
 		if (Loader.isModLoaded("redstoneflux")) {
 			ModuleStatus.redstoneFluxEnabled = true;
-			AWLog.log("Detecting Redstone Flux is loaded, enabling RF Compatibility");
+			AncientWarfareAutomation.log.info("Detecting Redstone Flux is loaded, enabling RF Compatibility");
 		}
 		RFProxy.loadInstance();
 
@@ -138,7 +138,7 @@ public class AncientWarfareAutomation {
 
 	@SubscribeEvent
 	public void onConfigChanged(OnConfigChangedEvent evt) {
-		if (AncientWarfareCore.modID.equals(evt.getModID())) {
+		if (AncientWarfareCore.MOD_ID.equals(evt.getModID())) {
 			statics.save();
 		}
 	}

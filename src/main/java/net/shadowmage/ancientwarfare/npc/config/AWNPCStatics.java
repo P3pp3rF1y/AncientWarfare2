@@ -29,6 +29,7 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
+import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -183,6 +184,13 @@ public class AWNPCStatics extends ModConfiguration {
 			entitiesToTargetNpcs = new ArrayList<>();
 			Collections.addAll(entitiesToTargetNpcs, targets);
 		}
+	}
+
+	public int getPlayerDefaultStanding(String factionName) {
+		return factionConfig.get(factionSettings, factionName + ".starting_faction_standing", FactionRegistry.getFaction(factionName).getPlayerDefaultStanding(),
+				"Default faction standing for: [" + factionName + "] for new players joining a game." +
+						" Less than 0 will be hostile, greater than or equal to zero will be neutral/friendly." +
+						" Players will need to trade with faction-owned traders to improve their standing to become friendly.").getInt();
 	}
 
 	/*

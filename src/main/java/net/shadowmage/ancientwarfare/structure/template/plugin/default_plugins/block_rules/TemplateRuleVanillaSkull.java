@@ -5,7 +5,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 
 public class TemplateRuleVanillaSkull extends TemplateRuleBlockLogic {
@@ -14,9 +14,9 @@ public class TemplateRuleVanillaSkull extends TemplateRuleBlockLogic {
 	public TemplateRuleVanillaSkull(World world, BlockPos pos, Block block, int meta, int turns) {
 		super(world, pos, block, meta, turns);
 		int t = tag.getInteger("Rot");
-		AWLog.logDebug("base rot: " + t);
+		AncientWarfareStructures.log.info("base rot: " + t);
 		t = getRotation(t, turns);
-		AWLog.logDebug("rotated Rot: " + t);
+		AncientWarfareStructures.log.info("rotated Rot: " + t);
 		rotation = t;
 	}
 
@@ -26,7 +26,7 @@ public class TemplateRuleVanillaSkull extends TemplateRuleBlockLogic {
 	@Override
 	public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
 		tag.setInteger("Rot", getRotation(rotation, turns));
-		AWLog.logDebug("pre-place rot: " + tag.getInteger("Rot"));
+		AncientWarfareStructures.log.info("pre-place rot: " + tag.getInteger("Rot"));
 		super.handlePlacement(world, turns, pos, builder);
 	}
 

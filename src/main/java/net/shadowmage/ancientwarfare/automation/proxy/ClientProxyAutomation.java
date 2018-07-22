@@ -193,6 +193,6 @@ public class ClientProxyAutomation extends ClientProxyBase {
 	}
 
 	private TextureAtlasSprite registerSprite(TextureStitchEvent.Pre evt, String spriteName) {
-		return evt.getMap().registerSprite(new ResourceLocation(AncientWarfareCore.modID + ":model/automation/" + spriteName));
+		return evt.getMap().registerSprite(new ResourceLocation(AncientWarfareCore.MOD_ID + ":model/automation/" + spriteName));
 	}
 }

@@ -19,9 +19,9 @@ import java.util.Collection;
 
 public class TorqueShaftRenderer extends TorqueTieredRenderer<TileTorqueShaft> {
 
-	public static final ModelResourceLocation LIGHT_MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":automation/torque_shaft", "light");
-	public static final ModelResourceLocation MEDIUM_MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":automation/torque_shaft", "medium");
-	public static final ModelResourceLocation HEAVY_MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":automation/torque_shaft", "heavy");
+	public static final ModelResourceLocation LIGHT_MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.MOD_ID + ":automation/torque_shaft", "light");
+	public static final ModelResourceLocation MEDIUM_MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.MOD_ID + ":automation/torque_shaft", "medium");
+	public static final ModelResourceLocation HEAVY_MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.MOD_ID + ":automation/torque_shaft", "heavy");
 	public static final TorqueShaftRenderer INSTANCE = new TorqueShaftRenderer();
 
 	private Collection<CCModel> inputHead;

@@ -1,24 +1,3 @@
-/**
- * Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
- * This software is distributed under the terms of the GNU General Public License.
- * Please see COPYING for precise license information.
- * <p>
- * This file is part of Ancient Warfare.
- * <p>
- * Ancient Warfare is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * <p>
- * Ancient Warfare is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.vehicle.entity.types;
 
 import net.minecraft.util.ResourceLocation;
@@ -33,10 +12,6 @@ import net.shadowmage.ancientwarfare.vehicle.registry.ArmorRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.UpgradeRegistry;
 
 public class VehicleTypeBatteringRam extends VehicleType {
-
-	/**
-	 * @param typeNum
-	 */
 	public VehicleTypeBatteringRam(int typeNum) {
 		super(typeNum);
 		this.configName = "battering_ram";
@@ -90,25 +65,21 @@ public class VehicleTypeBatteringRam extends VehicleType {
 	public ResourceLocation getTextureForMaterialLevel(int level) {
 		switch (level) {
 			case 0:
-				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/battering_ram_1.png");
+				return new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/model/vehicle/battering_ram_1.png");
 			case 1:
-				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/battering_ram_2.png");
+				return new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/model/vehicle/battering_ram_2.png");
 			case 2:
-				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/battering_ram_3.png");
+				return new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/model/vehicle/battering_ram_3.png");
 			case 3:
-				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/battering_ram_4.png");
+				return new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/model/vehicle/battering_ram_4.png");
 			case 4:
-				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/battering_ram_5.png");
+				return new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/model/vehicle/battering_ram_5.png");
 			default:
-				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/battering_ram_1.png");
+				return new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/model/vehicle/battering_ram_1.png");
 		}
 	}
 
 	public static BlockPos[] getEffectedPositions(VehicleBase vehicle) {
-		double x1 = vehicle.posX;
-		double y1 = vehicle.posY;
-		double z1 = vehicle.posZ;
-
 		BlockPos[] positions = new BlockPos[7];
 		Vec3d offset = vehicle.getMissileOffset();
 		float bx = (float) (vehicle.posX + offset.x);

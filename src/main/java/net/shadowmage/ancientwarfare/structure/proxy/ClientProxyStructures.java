@@ -4,7 +4,6 @@ import codechicken.lib.util.ResourceUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -15,6 +14,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.ClientProxyBase;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.event.StructureBoundingBoxRenderer;
@@ -24,6 +24,7 @@ import net.shadowmage.ancientwarfare.structure.render.ParticleDummyModel;
 import net.shadowmage.ancientwarfare.structure.render.RenderGateHelper;
 import net.shadowmage.ancientwarfare.structure.tile.TileSoundBlock;
 
+@SuppressWarnings("unused")
 @SideOnly(Side.CLIENT)
 public class ClientProxyStructures extends ClientProxyBase {
 
@@ -45,20 +46,14 @@ public class ClientProxyStructures extends ClientProxyBase {
 		super.init();
 
 		Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler((state, world, pos, tintIndex) -> {
-			TileEntity tileEntity = world.getTileEntity(pos);
-			IBlockState disguiseState = Blocks.JUKEBOX.getDefaultState();
-			if (tileEntity instanceof TileSoundBlock) {
-				IBlockState tileState = ((TileSoundBlock) tileEntity).getDisguiseState();
-				if (tileState != null) {
-					disguiseState = tileState;
-				}
-			}
+			IBlockState disguiseState = WorldTools.getTile(world, pos, TileSoundBlock.class).filter(t -> t.getDisguiseState() != null)
+					.map(TileSoundBlock::getDisguiseState).orElse(Blocks.JUKEBOX.getDefaultState());
 			return Minecraft.getMinecraft().getBlockColors().colorMultiplier(disguiseState, world, pos, 0);
 		}, AWStructuresBlocks.soundBlock);
 	}
 
 	@SubscribeEvent
 	public void onPreTextureStitch(TextureStitchEvent.Pre evt) {
-		DraftingStationRenderer.INSTANCE.setSprite(evt.getMap().registerSprite(new ResourceLocation(AncientWarfareCore.modID + ":model/structure/tile_drafting_station")));
+		DraftingStationRenderer.INSTANCE.setSprite(evt.getMap().registerSprite(new ResourceLocation(AncientWarfareCore.MOD_ID + ":model/structure/tile_drafting_station")));
 	}
 }

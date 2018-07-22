@@ -7,14 +7,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.PathNavigateGround;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedRideHorse;
@@ -29,13 +28,16 @@ import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Optional;
 
 public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc {
-
+	private static final String COMMAND_TAG = "command";
+	private static final String TOWN_HALL_TAG = "townHall";
+	private static final String UPKEEP_POS_TAG = "upkeepPos";
 	public boolean isAlarmed = false;
-	public boolean deathNotifiedTownhall = false;
+	private boolean deathNotifiedTownhall = false;
 
-	private Command playerIssuedCommand;//TODO load/save
+	private Command playerIssuedCommand;
 	private int foodValueRemaining = 0;
 
 	protected NpcAIPlayerOwnedRideHorse horseAI;
@@ -81,12 +83,8 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 		return -1;
 	}
 
-	public void setTownHallPosition(BlockPos pos) {
-		if (pos != null) {
-			this.townHallPosition = pos;
-		} else {
-			this.townHallPosition = null;
-		}
+	private void setTownHallPosition(@Nullable BlockPos pos) {
+		townHallPosition = pos;
 	}
 
 	@Override
@@ -95,14 +93,7 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 	}
 
 	public TileTownHall getTownHall() {
-		BlockPos pos = getTownHallPosition();
-		if (pos != null) {
-			TileEntity te = world.getTileEntity(pos);
-			if (te instanceof TileTownHall) {
-				return (TileTownHall) te;
-			}
-		}
-		return null;
+		return WorldTools.getTile(world, getTownHallPosition(), TileTownHall.class).orElse(null);
 	}
 
 	public void handleTownHallBroadcast(TileTownHall tile, BlockPos position) {
@@ -127,22 +118,19 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 		isAlarmed = getTownHall().alarmActive;
 	}
 
-	private boolean validateTownHallPosition() {
+	private void validateTownHallPosition() {
 		BlockPos pos = getTownHallPosition();
 		if (pos == null) {
-			return false;
+			return;
 		}
 		if (!world.isBlockLoaded(pos)) {
-			return true;
+			return;
 		}//cannot validate, unloaded...assume good
-		TileEntity te = world.getTileEntity(pos);
-		if (te instanceof TileTownHall) {
-			TileTownHall townHall = (TileTownHall) te;
-			if (hasCommandPermissions(townHall.getOwner()))
-				return true;
+		Optional<TileTownHall> te = WorldTools.getTile(world, pos, TileTownHall.class);
+		if (te.isPresent() && hasCommandPermissions(te.get().getOwner())) {
+			return;
 		}
 		setTownHallPosition(null);
-		return false;
 	}
 
 	/*
@@ -155,23 +143,28 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 	/*
 	 * input path from command baton - default implementation for player-owned NPC is to set current command==input command and then let AI do the rest
 	 */
-	public void handlePlayerCommand(Command cmd) {
+	public void handlePlayerCommand(@Nullable Command cmd) {
 		if (cmd != null && cmd.type == CommandType.ATTACK) {
-			Entity e = cmd.getEntityTarget(world);
-			AWLog.logDebug("Handling attack command : " + e);
-			if (e instanceof EntityLivingBase) {
-				EntityLivingBase elb = (EntityLivingBase) e;
-				if (canTarget(elb))//only attacked allowed targets
-				{
-					setAttackTarget(elb);
-				}
-			}
-			cmd = null;
+			handleAttackCommand(cmd);
+			return;
 		}
-		this.setPlayerCommand(cmd);
+		setPlayerCommand(cmd);
 	}
 
-	public void setPlayerCommand(Command cmd) {
+	private void handleAttackCommand(Command cmd) {
+		Entity e = cmd.getEntityTarget(world);
+		AncientWarfareNPC.log.info("Handling attack command : " + e);
+		if (e instanceof EntityLivingBase) {
+			EntityLivingBase elb = (EntityLivingBase) e;
+			if (canTarget(elb))//only attacked allowed targets
+			{
+				setAttackTarget(elb);
+			}
+		}
+		setPlayerCommand(null);
+	}
+
+	public void setPlayerCommand(@Nullable Command cmd) {
 		this.playerIssuedCommand = cmd;
 	}
 
@@ -227,7 +220,7 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 	}
 
 	@Override
-	public void setUpkeepAutoPosition(BlockPos pos) {
+	public void setUpkeepAutoPosition(@Nullable BlockPos pos) {
 		upkeepAutoBlock = pos;
 	}
 
@@ -260,9 +253,7 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 
 	@Override
 	protected boolean tryCommand(EntityPlayer player) {
-		if (hasCommandPermissions(player.getUniqueID(), player.getName()))
-			return super.tryCommand(player);
-		return false;
+		return hasCommandPermissions(player.getUniqueID(), player.getName()) && super.tryCommand(player);
 	}
 
 	public boolean withdrawFood(IItemHandler handler) {
@@ -323,14 +314,14 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 	public void readEntityFromNBT(NBTTagCompound tag) {
 		super.readEntityFromNBT(tag);
 		foodValueRemaining = tag.getInteger("foodValue");
-		if (tag.hasKey("command")) {
-			playerIssuedCommand = new Command(tag.getCompoundTag("command"));
+		if (tag.hasKey(COMMAND_TAG)) {
+			playerIssuedCommand = new Command(tag.getCompoundTag(COMMAND_TAG));
 		}
-		if (tag.hasKey("townHall")) {
-			townHallPosition = BlockPos.fromLong(tag.getLong("townHall"));
+		if (tag.hasKey(TOWN_HALL_TAG)) {
+			townHallPosition = BlockPos.fromLong(tag.getLong(TOWN_HALL_TAG));
 		}
-		if (tag.hasKey("upkeepPos")) {
-			upkeepAutoBlock = BlockPos.fromLong(tag.getLong("upkeepPos"));
+		if (tag.hasKey(UPKEEP_POS_TAG)) {
+			upkeepAutoBlock = BlockPos.fromLong(tag.getLong(UPKEEP_POS_TAG));
 		}
 		onOrdersInventoryChanged();
 	}
@@ -340,13 +331,13 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 		super.writeEntityToNBT(tag);
 		tag.setInteger("foodValue", foodValueRemaining);
 		if (playerIssuedCommand != null) {
-			tag.setTag("command", playerIssuedCommand.writeToNBT(new NBTTagCompound()));
+			tag.setTag(COMMAND_TAG, playerIssuedCommand.writeToNBT(new NBTTagCompound()));
 		}
 		if (townHallPosition != null) {
-			tag.setLong("townHall", townHallPosition.toLong());
+			tag.setLong(TOWN_HALL_TAG, townHallPosition.toLong());
 		}
 		if (upkeepAutoBlock != null) {
-			tag.setLong("upkeepPos", upkeepAutoBlock.toLong());
+			tag.setLong(UPKEEP_POS_TAG, upkeepAutoBlock.toLong());
 		}
 	}
 

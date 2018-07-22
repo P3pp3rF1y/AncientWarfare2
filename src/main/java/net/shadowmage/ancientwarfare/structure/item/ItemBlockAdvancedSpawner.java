@@ -7,7 +7,6 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -16,6 +15,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.item.ItemBlockBase;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings.EntitySpawnGroup;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings.EntitySpawnSettings;
@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemBlockAdvancedSpawner extends ItemBlockBase implements IItemKeyInterface {
+	private static final String SPAWNER_SETTINGS_TAG = "spawnerSettings";
 
 	public ItemBlockAdvancedSpawner(Block block) {
 		super(block);
@@ -32,21 +33,20 @@ public class ItemBlockAdvancedSpawner extends ItemBlockBase implements IItemKeyI
 
 	@Override
 	public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState) {
-		if (!stack.hasTagCompound() || !stack.getTagCompound().hasKey("spawnerSettings")) {
+		//noinspection ConstantConditions
+		if (!stack.hasTagCompound() || !stack.getTagCompound().hasKey(SPAWNER_SETTINGS_TAG)) {
 			SpawnerSettings settings = SpawnerSettings.getDefaultSettings();
 			NBTTagCompound defaultTag = new NBTTagCompound();
 			settings.writeToNBT(defaultTag);
-			stack.setTagInfo("spawnerSettings", defaultTag);
+			stack.setTagInfo(SPAWNER_SETTINGS_TAG, defaultTag);
 		}
 		boolean val = super.placeBlockAt(stack, player, world, pos, side, hitX, hitY, hitZ, newState);
 		if (!world.isRemote && val) {
-			TileEntity te = world.getTileEntity(pos);
-			if (te instanceof TileAdvancedSpawner) {
-				TileAdvancedSpawner tile = (TileAdvancedSpawner) te;
+			WorldTools.getTile(world, pos, TileAdvancedSpawner.class).ifPresent(t -> {
 				SpawnerSettings settings = new SpawnerSettings();
-				settings.readFromNBT(stack.getTagCompound().getCompoundTag("spawnerSettings"));
-				tile.setSettings(settings);
-			}
+				settings.readFromNBT(stack.getTagCompound().getCompoundTag(SPAWNER_SETTINGS_TAG));
+				t.setSettings(settings);
+			});
 		}
 		return val;
 	}
@@ -68,12 +68,13 @@ public class ItemBlockAdvancedSpawner extends ItemBlockBase implements IItemKeyI
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flagIn) {
-		if (!stack.hasTagCompound() || !stack.getTagCompound().hasKey("spawnerSettings")) {
+		//noinspection ConstantConditions
+		if (!stack.hasTagCompound() || !stack.getTagCompound().hasKey(SPAWNER_SETTINGS_TAG)) {
 			tooltip.add(I18n.format("guistrings.corrupt_item"));
 			return;
 		}
 		SpawnerSettings tooltipSettings = new SpawnerSettings();
-		tooltipSettings.readFromNBT(stack.getTagCompound().getCompoundTag("spawnerSettings"));
+		tooltipSettings.readFromNBT(stack.getTagCompound().getCompoundTag(SPAWNER_SETTINGS_TAG));
 		List<EntitySpawnGroup> groups = tooltipSettings.getSpawnGroups();
 		tooltip.add(I18n.format("guistrings.spawner.group_count") + ": " + groups.size());
 		EntitySpawnGroup group;

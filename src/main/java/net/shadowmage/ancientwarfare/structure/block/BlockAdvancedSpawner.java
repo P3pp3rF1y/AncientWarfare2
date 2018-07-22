@@ -17,14 +17,13 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.ChunkCache;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.gui.GuiSpawnerAdvanced;
 import net.shadowmage.ancientwarfare.structure.gui.GuiSpawnerAdvancedInventory;
 import net.shadowmage.ancientwarfare.structure.render.RenderAdvancedSpawner;
@@ -65,15 +64,8 @@ public class BlockAdvancedSpawner extends BlockBaseStructure {
 
 	@Override
 	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
-		IBlockState superState = super.getActualState(state, world, pos);
-		TileEntity te = world instanceof ChunkCache ? ((ChunkCache) world).getTileEntity(pos, Chunk.EnumCreateEntityType.CHECK) : world.getTileEntity(pos);
-		if (te instanceof TileAdvancedSpawner) {
-			TileAdvancedSpawner spawner = (TileAdvancedSpawner) te;
-			if (spawner.getSettings().isTransparent()) {
-				return superState.withProperty(TRANSPARENT, true);
-			}
-		}
-		return superState.withProperty(TRANSPARENT, false);
+		return super.getActualState(state, world, pos).withProperty(TRANSPARENT, WorldTools.getTile(world, pos, TileAdvancedSpawner.class)
+				.map(s -> s.getSettings().isTransparent()).orElse(false));
 	}
 
 	@Override
@@ -113,25 +105,20 @@ public class BlockAdvancedSpawner extends BlockBaseStructure {
 
 	@Override
 	public float getBlockHardness(IBlockState state, World world, BlockPos pos) {
-		TileEntity te = world.getTileEntity(pos);
-		if (te instanceof TileAdvancedSpawner) {
-			TileAdvancedSpawner spawner = (TileAdvancedSpawner) te;
-			return spawner.getBlockHardness();
-		}
-		return super.getBlockHardness(state, world, pos);
+		return WorldTools.getTile(world, pos, TileAdvancedSpawner.class).map(TileAdvancedSpawner::getBlockHardness).orElse(super.getBlockHardness(state, world, pos));
 	}
 
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		TileEntity te = world.getTileEntity(pos);
-		if (te instanceof TileAdvancedSpawner) {
-			@Nonnull ItemStack item = new ItemStack(this);
-			NBTTagCompound settings = new NBTTagCompound();
-			((TileAdvancedSpawner) te).getSettings().writeToNBT(settings);
-			item.setTagInfo("spawnerSettings", settings);
-			return item;
-		}
-		return super.getPickBlock(state, target, world, pos, player);
+		return WorldTools.getTile(world, pos, TileAdvancedSpawner.class).map(this::getSpawnerItem).orElse(super.getPickBlock(state, target, world, pos, player));
+	}
+
+	private ItemStack getSpawnerItem(TileAdvancedSpawner te) {
+		@Nonnull ItemStack item = new ItemStack(this);
+		NBTTagCompound settings = new NBTTagCompound();
+		te.getSettings().writeToNBT(settings);
+		item.setTagInfo("spawnerSettings", settings);
+		return item;
 	}
 
 	@Override

@@ -1,7 +1,7 @@
 package net.shadowmage.ancientwarfare.npc.compat;
 
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.compat.ICompat;
+import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.event.EventHandler;
 
 public class EpicSiegeCompat implements ICompat {
@@ -19,7 +19,7 @@ public class EpicSiegeCompat implements ICompat {
 			EventHandler.INSTANCE.registerAdditionalHostileAICheck(e -> hostileAI.isInstance(e));
 		}
 		catch (ClassNotFoundException e) {
-			AncientWarfareCore.log.error("Unable to find ESM_EntityAINearestAttackableTarget ai class", e);
+			AncientWarfareNPC.log.error("Unable to find ESM_EntityAINearestAttackableTarget ai class", e);
 		}
 	}
 }

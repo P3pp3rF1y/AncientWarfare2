@@ -4,12 +4,11 @@ import net.minecraft.block.Block;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
-@ObjectHolder(AncientWarfareCore.modID)
+@ObjectHolder(AncientWarfareCore.MOD_ID)
+@SuppressWarnings("squid:S1444")
 public class AWBlocks {
+	private AWBlocks() {}
 
-	/*
-	 * CORE module
-	 */
 	@ObjectHolder("engineering_station")
 	public static Block engineeringStation;
 	@ObjectHolder("research_station")

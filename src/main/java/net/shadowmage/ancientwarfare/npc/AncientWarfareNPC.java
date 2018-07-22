@@ -44,6 +44,7 @@ import net.shadowmage.ancientwarfare.npc.network.PacketNpcCommand;
 import net.shadowmage.ancientwarfare.npc.proxy.NpcCommonProxy;
 import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
 import net.shadowmage.ancientwarfare.npc.registry.NpcDefaultsRegistry;
+import org.apache.logging.log4j.Logger;
 
 @Mod(name = "Ancient Warfare NPCs", modid = AncientWarfareNPC.modID, version = "@VERSION@", dependencies = "required-after:ancientwarfare")
 
@@ -57,10 +58,14 @@ public class AncientWarfareNPC {
 	@SidedProxy(clientSide = "net.shadowmage.ancientwarfare.npc.proxy.NpcClientProxy", serverSide = "net.shadowmage.ancientwarfare.npc.proxy.NpcCommonProxy")
 	public static NpcCommonProxy proxy;
 
+	public static Logger log;
+
 	public static AWNPCStatics statics;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent evt) {
+		log = evt.getModLog();
+
 		ModuleStatus.npcsLoaded = true;
 
         /*
@@ -116,7 +121,7 @@ public class AncientWarfareNPC {
 
 	@SubscribeEvent
 	public void onConfigChanged(OnConfigChangedEvent evt) {
-		if (AncientWarfareCore.modID.equals(evt.getModID())) {
+		if (AncientWarfareCore.MOD_ID.equals(evt.getModID())) {
 			statics.save();
 		}
 	}

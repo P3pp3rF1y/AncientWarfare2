@@ -9,9 +9,9 @@ import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplate.TownStructureEntry;
-import net.shadowmage.ancientwarfare.structure.world_gen.WorldGenTickHandler;
-import net.shadowmage.ancientwarfare.structure.world_gen.WorldGenTickHandler.StructureGenerationCallbackTicket;
-import net.shadowmage.ancientwarfare.structure.world_gen.WorldStructureGenerator;
+import net.shadowmage.ancientwarfare.structure.worldgen.WorldGenTickHandler;
+import net.shadowmage.ancientwarfare.structure.worldgen.WorldGenTickHandler.StructureGenerationCallbackTicket;
+import net.shadowmage.ancientwarfare.structure.worldgen.WorldStructureGenerator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -158,7 +158,7 @@ public class TownGeneratorStructures {
 		}
 	}
 
-	public static void generateLamps(List<TownPartBlock> blocks, TownStructureEntry templateToGenerate, final TownGenerator gen) {
+	private static void generateLamps(List<TownPartBlock> blocks, TownStructureEntry templateToGenerate, final TownGenerator gen) {
 		if (templateToGenerate == null) {
 			return;
 		}
@@ -174,7 +174,15 @@ public class TownGeneratorStructures {
 	private static void generateLamps(World world, TownPartBlock block, StructureTemplate lamp, List<BlockPos> doors) {
 		Direction xDir = block.quadrant.getXDir();
 		Direction zDir = block.quadrant.getZDir();
-		int xStart, zStart, xMove, zMove, size, x, z, xBits, zBits;
+		int xStart;
+		int zStart;
+		int xMove;
+		int zMove;
+		int size;
+		int x;
+		int z;
+		int xBits;
+		int zBits;
 
 		size = 5;
 		xBits = (block.bb.getXSize() - 1) / size;
@@ -238,14 +246,13 @@ public class TownGeneratorStructures {
 		}
 		int minX = x;
 		int minZ = z;
-		int minY = y;
 		int maxX = x + t.xSize - 1;
 		int maxY = y + (t.ySize - 1 - t.yOffset);
 		int maxZ = z + t.zSize - 1;
 
 		for (int x1 = minX; x1 <= maxX; x1++) {
 			for (int z1 = minZ; z1 <= maxZ; z1++) {
-				for (int y1 = minY; y1 <= maxY; y1++) {
+				for (int y1 = y; y1 <= maxY; y1++) {
 					if (!world.isAirBlock(new BlockPos(x1, y1, z1))) {
 						return;
 					}//skip construction if it would overwrite any non-valid block (should ALL be air)
@@ -347,13 +354,12 @@ public class TownGeneratorStructures {
 		bb.add(0, -template.yOffset, 0);
 		gen.structureDoors.add(buildKey);
 		WorldGenTickHandler.INSTANCE.addStructureForGeneration(new StructureBuilder(gen.world, template, face, buildKey, bb));
-		//  AWLog.logDebug("added structure to tick handler for generation: "+template.name +" at: "+buildKey+" town bounds: "+gen.townBounds);
 	}
 
 	/*
 	 * pull a random template from the input generation list, does not remove
 	 */
-	public static StructureTemplate getRandomTemplate(List<StructureTemplate> templatesToGenerate, Random rng) {
+	private static StructureTemplate getRandomTemplate(List<StructureTemplate> templatesToGenerate, Random rng) {
 		if (templatesToGenerate.size() == 0) {
 			return null;
 		}
@@ -361,7 +367,7 @@ public class TownGeneratorStructures {
 		return templatesToGenerate.get(roll);
 	}
 
-	public static void sortBlocksByDistance(List<TownPartBlock> blocks) {
+	private static void sortBlocksByDistance(List<TownPartBlock> blocks) {
 		Collections.sort(blocks, new TownPartBlockComparator());
 	}
 

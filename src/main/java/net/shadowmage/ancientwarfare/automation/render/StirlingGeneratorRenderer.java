@@ -15,7 +15,7 @@ import java.util.Collection;
 
 public class StirlingGeneratorRenderer extends BaseTorqueRenderer<TileStirlingGenerator> {
 
-	public static final ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":automation/stirling_generator", "normal");
+	public static final ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.MOD_ID + ":automation/stirling_generator", "normal");
 	public static final StirlingGeneratorRenderer INSTANCE = new StirlingGeneratorRenderer();
 
 	private final Collection<CCModel> flywheel;
@@ -57,10 +57,9 @@ public class StirlingGeneratorRenderer extends BaseTorqueRenderer<TileStirlingGe
 	}
 
 	private void calculateArmAngle1(float crankAngle) {
-		float ra = crankAngle;
 		float crankDistance = 1.f;//side a
 		float crankLength = 9.f;//side b
-		calculatePistonPosition1(ra, crankDistance, crankLength);
+		calculatePistonPosition1(crankAngle, crankDistance, crankLength);
 	}
 
 	private void calculatePistonPosition1(float crankAngleRadians, float radius, float length) {
@@ -71,17 +70,14 @@ public class StirlingGeneratorRenderer extends BaseTorqueRenderer<TileStirlingGe
 		float bx = sA * radius;
 		float by = cA * radius;
 		float cx = 0;
-		float cy = pistonPos;
 
-		float rlrA = (float) Math.atan2(cx - bx, cy - by);
-		armAngle = rlrA;
+		armAngle = (float) Math.atan2(cx - bx, pistonPos - by);
 	}
 
 	private void calculateArmAngle2(float crankAngle) {
-		float ra = crankAngle;
 		float crankDistance = 1.f;//side a
 		float crankLength = 7.f;//side b
-		calculatePistonPosition2(ra, crankDistance, crankLength);
+		calculatePistonPosition2(crankAngle, crankDistance, crankLength);
 	}
 
 	private void calculatePistonPosition2(float crankAngleRadians, float radius, float length) {
@@ -92,9 +88,7 @@ public class StirlingGeneratorRenderer extends BaseTorqueRenderer<TileStirlingGe
 		float bx = sA * radius;
 		float by = cA * radius;
 		float cx = -2f;
-		float cy = pistonPos2;
 
-		float rlrA = (float) Math.atan2(cx - bx, cy - by);
-		armAngle2 = rlrA;
+		armAngle2 = (float) Math.atan2(cx - bx, pistonPos2 - by);
 	}
 }

@@ -9,12 +9,19 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.SlotItemHandler;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.tile.TileDraftingStation;
 
 import javax.annotation.Nonnull;
+import java.util.Optional;
 
 public class ContainerDraftingStation extends ContainerStructureSelectionBase {
-
+	private static final String IS_STARTED_TAG = "isStarted";
+	private static final String IS_FINISHED_TAG = "isFinished";
+	private static final String REMAINING_TIME_TAG = "remainingTime";
+	private static final String TOTAL_TIME_TAG = "totalTime";
+	private static final String STRUCT_NAME_TAG = "structName";
+	private static final String RESOURCE_LIST_TAG = "resourceList";
 	public boolean isStarted = false;
 	private boolean isFinished = false;
 	private int remainingTime;
@@ -25,10 +32,11 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
 
 	public ContainerDraftingStation(EntityPlayer player, int x, int y, int z) {
 		super(player);
-		tile = (TileDraftingStation) player.world.getTileEntity(new BlockPos(x, y, z));
-		if (tile == null) {
+		Optional<TileDraftingStation> te = WorldTools.getTile(player.world, new BlockPos(x, y, z), TileDraftingStation.class);
+		if (!te.isPresent()) {
 			throw new IllegalArgumentException("No drafting station");
 		}
+		tile = te.get();
 		structureName = tile.getCurrentTemplateName();
 		neededResources.addAll(tile.getNeededResources());
 		isStarted = tile.isStarted();
@@ -104,14 +112,14 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
 	@Override
 	public void sendInitData() {
 		NBTTagCompound tag = new NBTTagCompound();
-		tag.setBoolean("isStarted", isStarted);
-		tag.setBoolean("isFinished", isFinished);
-		tag.setInteger("remainingTime", remainingTime);
-		tag.setInteger("totalTime", totalTime);
+		tag.setBoolean(IS_STARTED_TAG, isStarted);
+		tag.setBoolean(IS_FINISHED_TAG, isFinished);
+		tag.setInteger(REMAINING_TIME_TAG, remainingTime);
+		tag.setInteger(TOTAL_TIME_TAG, totalTime);
 		if (structureName != null) {
-			tag.setString("structName", structureName);
+			tag.setString(STRUCT_NAME_TAG, structureName);
 		}
-		tag.setTag("resourceList", getResourceListTag(neededResources));
+		tag.setTag(RESOURCE_LIST_TAG, getResourceListTag(neededResources));
 		this.sendDataToClient(tag);
 	}
 
@@ -152,30 +160,30 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
 
 	@Override
 	public void handlePacketData(NBTTagCompound tag) {
-		if (tag.hasKey("structName")) {
+		if (tag.hasKey(STRUCT_NAME_TAG)) {
 			if (player.world.isRemote) {
-				this.structureName = tag.getString("structName");
+				this.structureName = tag.getString(STRUCT_NAME_TAG);
 			} else {
-				tile.setTemplate(tag.getString("structName"));
+				tile.setTemplate(tag.getString(STRUCT_NAME_TAG));
 			}
 		} else if (tag.hasKey("clearName")) {
 			structureName = null;
 		}
-		if (tag.hasKey("isStarted")) {
-			isStarted = tag.getBoolean("isStarted");
+		if (tag.hasKey(IS_STARTED_TAG)) {
+			isStarted = tag.getBoolean(IS_STARTED_TAG);
 		}
-		if (tag.hasKey("isFinished")) {
-			isFinished = tag.getBoolean("isFinished");
+		if (tag.hasKey(IS_FINISHED_TAG)) {
+			isFinished = tag.getBoolean(IS_FINISHED_TAG);
 		}
-		if (tag.hasKey("remainingTime")) {
-			remainingTime = tag.getInteger("remainingTime");
+		if (tag.hasKey(REMAINING_TIME_TAG)) {
+			remainingTime = tag.getInteger(REMAINING_TIME_TAG);
 		}
-		if (tag.hasKey("totalTime")) {
-			totalTime = tag.getInteger("totalTime");
+		if (tag.hasKey(TOTAL_TIME_TAG)) {
+			totalTime = tag.getInteger(TOTAL_TIME_TAG);
 		}
-		if (tag.hasKey("resourceList")) {
+		if (tag.hasKey(RESOURCE_LIST_TAG)) {
 			neededResources.clear();
-			readResourceList(tag.getTagList("resourceList", Constants.NBT.TAG_COMPOUND), neededResources);
+			readResourceList(tag.getTagList(RESOURCE_LIST_TAG, Constants.NBT.TAG_COMPOUND), neededResources);
 		}
 		if (tag.hasKey("stop")) {
 			tile.stopCurrentWork();
@@ -196,40 +204,40 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
 			if (this.structureName == null) {
 				tag.setBoolean("clearName", true);
 			} else {
-				tag.setString("structName", structureName);
+				tag.setString(STRUCT_NAME_TAG, structureName);
 			}
 		} else if (structureName != null && !structureName.equals(tileName)) {
 			structureName = tileName;
 			tag = new NBTTagCompound();
-			tag.setString("structName", structureName);
+			tag.setString(STRUCT_NAME_TAG, structureName);
 		}
 		if (tile.isFinished() != isFinished) {
 			if (tag == null) {
 				tag = new NBTTagCompound();
 			}
 			isFinished = tile.isFinished();
-			tag.setBoolean("isFinished", isFinished);
+			tag.setBoolean(IS_FINISHED_TAG, isFinished);
 		}
 		if (tile.isStarted() != isStarted) {
 			if (tag == null) {
 				tag = new NBTTagCompound();
 			}
 			isStarted = tile.isStarted();
-			tag.setBoolean("isStarted", isStarted);
+			tag.setBoolean(IS_STARTED_TAG, isStarted);
 		}
 		if (tile.getRemainingTime() != remainingTime) {
 			if (tag == null) {
 				tag = new NBTTagCompound();
 			}
 			remainingTime = tile.getRemainingTime();
-			tag.setInteger("remainingTime", remainingTime);
+			tag.setInteger(REMAINING_TIME_TAG, remainingTime);
 		}
 		if (tile.getTotalTime() != totalTime) {
 			if (tag == null) {
 				tag = new NBTTagCompound();
 			}
 			totalTime = tile.getTotalTime();
-			tag.setInteger("totalTime", totalTime);
+			tag.setInteger(TOTAL_TIME_TAG, totalTime);
 		}
 		if (!neededResources.equals(tile.getNeededResources())) {
 			if (tag == null) {
@@ -238,7 +246,7 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
 			neededResources.clear();
 			neededResources.addAll(tile.getNeededResources());
 			NBTTagList list = getResourceListTag(neededResources);
-			tag.setTag("resourceList", list);
+			tag.setTag(RESOURCE_LIST_TAG, list);
 		}
 		if (tag != null) {
 			sendDataToClient(tag);

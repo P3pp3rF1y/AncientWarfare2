@@ -30,6 +30,9 @@ import net.shadowmage.ancientwarfare.automation.render.property.AutomationProper
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileWindmillBlade;
 import net.shadowmage.ancientwarfare.core.render.BlockStateKeyGenerator;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
+
+import java.util.Optional;
 
 import static net.shadowmage.ancientwarfare.core.render.property.CoreProperties.UNLISTED_HORIZONTAL_FACING;
 
@@ -58,22 +61,21 @@ public class BlockWindmillBlade extends BlockBaseAutomation implements IBakeryPr
 
 	@Override
 	public boolean eventReceived(IBlockState state, World world, BlockPos pos, int id, int param) {
-		TileEntity tileentity = world.getTileEntity(pos);
-		return tileentity != null && tileentity.receiveClientEvent(id, param);
+		return WorldTools.sendClientEventToTile(world, pos, id, param);
 	}
 
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		super.onBlockPlacedBy(world, pos, state, placer, stack);
-		TileWindmillBlade te = (TileWindmillBlade) world.getTileEntity(pos);
-		te.blockPlaced();
+		WorldTools.getTile(world, pos, TileWindmillBlade.class).ifPresent(TileWindmillBlade::blockPlaced);
 	}
 
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		TileWindmillBlade te = (TileWindmillBlade) world.getTileEntity(pos);
+		Optional<TileWindmillBlade> te = WorldTools.getTile(world, pos, TileWindmillBlade.class);
 		super.breakBlock(world, pos, state);
-		te.blockBroken();//have to call post block-break so that the tile properly sees the block/tile as gone //TODO invalidate?
+		te.ifPresent(TileWindmillBlade::blockBroken); //have to call post block-break so that the tile properly sees the block/tile as gone
+
 	}
 
 	@Override

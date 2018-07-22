@@ -17,6 +17,7 @@ import net.minecraft.util.Tuple;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
+import net.shadowmage.ancientwarfare.core.util.TriFunction;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,10 +45,10 @@ public class JsonHelper {
 	}
 
 	public static ItemStack getItemStack(JsonObject json, String elementName) {
-		return getItemStack(json, elementName, (i, m) -> new ItemStack(i, 1, m), ItemStack::new);
+		return getItemStack(json, elementName, ItemStack::new, ItemStack::new);
 	}
 
-	private static <T> T getItemStack(JsonObject parent, String elementName, BiFunction<Item, Integer, T> instantiate, Function<Item, T> instantiateNoMeta) {
+	private static <T> T getItemStack(JsonObject parent, String elementName, TriFunction<Item, Integer, Integer, T> instantiate, BiFunction<Item, Integer, T> instantiateNoMeta) {
 		if (!JsonUtils.hasField(parent, elementName)) {
 			throw new JsonParseException("Expected " + elementName + " member in " + parent.toString());
 		}
@@ -55,29 +56,31 @@ public class JsonHelper {
 		return getItemStack(parent.get(elementName), instantiate, instantiateNoMeta);
 	}
 
-	private static <T> T getItemStack(JsonElement element, BiFunction<Item, Integer, T> instantiate, Function<Item, T> instantiateNoMeta) {
+	private static <T> T getItemStack(JsonElement element, TriFunction<Item, Integer, Integer, T> instantiate, BiFunction<Item, Integer, T> instantiateNoMeta) {
 
 		if (element.isJsonPrimitive()) {
-			return instantiateNoMeta.apply(getItem(element.getAsString()));
+			return instantiateNoMeta.apply(getItem(element.getAsString()), 1);
 		}
 
 		JsonObject obj = element.getAsJsonObject();
 		String registryName = JsonUtils.getString(obj, "name");
 		Item item = getItem(registryName);
 
+		int count = JsonUtils.hasField(obj, "count") ? JsonUtils.getInt(obj, "count") : 1;
+
 		if (JsonUtils.hasField(obj, "meta")) {
-			return instantiate.apply(item, JsonUtils.getInt(obj, "meta"));
+			return instantiate.apply(item, count, JsonUtils.getInt(obj, "meta"));
 		}
 
-		return instantiateNoMeta.apply(getItem(registryName));
+		return instantiateNoMeta.apply(getItem(registryName), count);
 	}
 
 	public static ItemStackMatcher getItemStackMatcher(JsonObject element) {
-		return getItemStack(element, ItemStackMatcher::new, ItemStackMatcher::new);
+		return getItemStack(element, (i, c, m) -> new ItemStackMatcher(i, m), (i, c) -> new ItemStackMatcher(i));
 	}
 
 	public static ItemStackMatcher getItemStackMatcher(JsonObject parent, String elementName) {
-		return getItemStack(parent, elementName, ItemStackMatcher::new, ItemStackMatcher::new);
+		return getItemStack(parent, elementName, (i, c, m) -> new ItemStackMatcher(i, m), (i, c) -> new ItemStackMatcher(i));
 	}
 
 	private static <T> T getBlockState(JsonObject stateJson, Function<Block, T> init, AddPropertyFunction<T> addProperty) {

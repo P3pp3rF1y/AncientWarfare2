@@ -1,24 +1,3 @@
-/*
- Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
- This software is distributed under the terms of the GNU General Public License.
- Please see COPYING for precise license information.
-
- This file is part of Ancient Warfare.
-
- Ancient Warfare is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- Ancient Warfare is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.structure.template.build.validation;
 
 import net.minecraft.util.EnumFacing;
@@ -27,7 +6,7 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
-import net.shadowmage.ancientwarfare.structure.world_gen.WorldStructureGenerator;
+import net.shadowmage.ancientwarfare.structure.worldgen.WorldStructureGenerator;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -35,9 +14,9 @@ import java.util.List;
 
 public class StructureValidatorUnderground extends StructureValidator {
 
-	int minGenerationDepth;
-	int maxGenerationDepth;
-	int minOverfill;
+	private int minGenerationDepth;
+	private int maxGenerationDepth;
+	private int minOverfill;
 
 	public StructureValidatorUnderground() {
 		super(StructureValidationType.UNDERGROUND);
@@ -64,11 +43,6 @@ public class StructureValidatorUnderground extends StructureValidator {
 		out.newLine();
 		out.write("minOverfill=" + minOverfill);
 		out.newLine();
-	}
-
-	@Override
-	protected void setDefaultSettings(StructureTemplate template) {
-
 	}
 
 	@Override
@@ -104,14 +78,7 @@ public class StructureValidatorUnderground extends StructureValidator {
 
 	@Override
 	public void preGeneration(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureBB bb) {
-		//  /*
-		//   * TODO remove debug stuff
-		//   */
-		//  int by = WorldStructureGenerator.getTargetY(world, x, z, false);
-		//  for(int cy = by; cy<=by+5; cy++)
-		//    {
-		//    world.setBlock(x, cy, z, Block.obsidian.blockID);
-		//    }
+		//noop
 	}
 
 }

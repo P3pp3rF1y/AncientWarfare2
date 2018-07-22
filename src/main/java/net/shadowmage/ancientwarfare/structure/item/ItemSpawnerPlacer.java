@@ -1,12 +1,16 @@
 package net.shadowmage.ancientwarfare.structure.item;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.passive.EntityHorse;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
@@ -22,13 +26,17 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
 
 import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class ItemSpawnerPlacer extends ItemBaseStructure {
 	private static final String SPAWNER_DATA_TAG = "spawnerData";
@@ -68,12 +76,12 @@ public class ItemSpawnerPlacer extends ItemBaseStructure {
 			if (stack.hasTagCompound() && stack.getTagCompound().hasKey(SPAWNER_DATA_TAG)) {
 				BlockPos placePos = traceResult.getBlockPos().offset(traceResult.sideHit);
 				if (player.world.setBlockState(placePos, AWStructuresBlocks.advancedSpawner.getDefaultState())) {
-					TileEntity te = player.world.getTileEntity(placePos);
-					TileAdvancedSpawner spawnerTe = (TileAdvancedSpawner) te;
-					SpawnerSettings settings = new SpawnerSettings();
-					settings.readFromNBT(stack.getTagCompound().getCompoundTag(SPAWNER_DATA_TAG));
-					//noinspection ConstantConditions
-					spawnerTe.setSettings(settings);
+					WorldTools.getTile(player.world, placePos, TileAdvancedSpawner.class)
+							.ifPresent(t -> {
+								SpawnerSettings settings = new SpawnerSettings();
+								settings.readFromNBT(stack.getTagCompound().getCompoundTag(SPAWNER_DATA_TAG));
+								t.setSettings(settings);
+							});
 				}
 			} else {
 				player.sendMessage(new TextComponentTranslation("guistrings.spawner.nodata"));
@@ -130,12 +138,20 @@ public class ItemSpawnerPlacer extends ItemBaseStructure {
 
 		NBTTagCompound ret = new NBTTagCompound();
 
-		if (entity instanceof NpcFaction) {
-			ret.setString("factionName", entityTag.getString("factionName"));
+		for (Map.Entry<Class, Set<String>> entry : ENTITY_TAGS.entrySet()) {
+			if (entry.getKey().isInstance(entity)) {
+				for (String tag : entry.getValue()) {
+					ret.setTag(tag, entityTag.getTag(tag));
+				}
+			}
 		}
-		ret.setTag("HandItems", entityTag.getTag("HandItems"));
-		ret.setTag("ArmorItems", entityTag.getTag("ArmorItems"));
-		ret.setTag("ArmorDropChances", entityTag.getTag("ArmorDropChances"));
 		return ret;
 	}
+
+	private static final Map<Class, Set<String>> ENTITY_TAGS = new ImmutableMap.Builder<Class, Set<String>>()
+			.put(NpcFaction.class, Collections.singleton("factionName"))
+			.put(EntityVillager.class, ImmutableSet.of("Offers", "Profession", "ProfessionName", "Career", "CareerLevel"))
+			.put(EntityHorse.class, Collections.singleton("Variant"))
+			.put(EntityLiving.class, ImmutableSet.of("HandItems", "HandDropChances", "ArmorItems", "ArmorDropChances"))
+			.build();
 }

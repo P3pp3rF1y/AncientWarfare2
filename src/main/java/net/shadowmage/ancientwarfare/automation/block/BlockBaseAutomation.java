@@ -18,7 +18,7 @@ import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 public abstract class BlockBaseAutomation extends BlockBase implements IClientRegistrar {
 
 	public BlockBaseAutomation(Material material, String regName) {
-		super(material, AncientWarfareAutomation.modID, regName);
+		super(material, AncientWarfareAutomation.MOD_ID, regName);
 		setCreativeTab(AWAutomationItemLoader.automationTab);
 
 		AncientWarfareAutomation.proxy.addClientRegistrar(this);
@@ -27,7 +27,7 @@ public abstract class BlockBaseAutomation extends BlockBase implements IClientRe
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerClient() {
-		final ResourceLocation assetLocation = new ResourceLocation(AncientWarfareCore.modID, "automation/" + getRegistryName().getResourcePath());
+		final ResourceLocation assetLocation = new ResourceLocation(AncientWarfareCore.MOD_ID, "automation/" + getRegistryName().getResourcePath());
 
 		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
 			@Override
