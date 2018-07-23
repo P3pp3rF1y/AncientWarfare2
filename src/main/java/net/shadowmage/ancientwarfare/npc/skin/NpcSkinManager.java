@@ -57,12 +57,13 @@ public class NpcSkinManager {
 		loadSkinsFromSource(new File(SKINS_CONFIG_PATH), "");
 	}
 
+	@SuppressWarnings("squid:S3725") //can't use toFile().exists() as it's unsupported in ZipPath
 	private void loadSkinsFromSource(File source, String base) {
 		HashMap<String, Set<String>> imageMap = new HashMap<>();
 
 		FileUtils.findFiles(source, base, root -> {
 			Path fPath = root.resolve("skin_pack.meta");
-			if (fPath != null && fPath.toFile().exists()) {
+			if (fPath != null && Files.exists(fPath)) {
 				try (BufferedReader reader = Files.newBufferedReader(fPath)) {
 					readImageMap(reader, imageMap);
 				}
