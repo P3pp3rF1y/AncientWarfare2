@@ -60,12 +60,6 @@ public interface IGateType {
 	int getMaxHealth();
 
 	/*
-	 * a callback from the entity to the gate-type to allow for
-	 * gate-type specific checks during updates
-	 */
-	void onUpdate(EntityGate ent);
-
-	/*
 	 * called from setPosition to update gates bounding box
 	 */
 	void setCollisionBoundingBox(EntityGate gate);

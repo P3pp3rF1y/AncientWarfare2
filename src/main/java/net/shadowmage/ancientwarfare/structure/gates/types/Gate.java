@@ -11,6 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
+import net.shadowmage.ancientwarfare.core.owner.Owner;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
@@ -21,6 +22,8 @@ import net.shadowmage.ancientwarfare.structure.gates.IGateType;
 import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 public class Gate implements IGateType {
 
@@ -37,7 +40,7 @@ public class Gate implements IGateType {
 
 	private static final Gate rotatingBridge = new GateRotatingBridge(12, "_bridge_wood_1.png");
 
-	public static final HashMap<String, Integer> gateIDByName = new HashMap<>();
+	private static final HashMap<String, Integer> gateIDByName = new HashMap<>();
 
 	static {
 		gateIDByName.put("gate.verticalWooden", 0);
@@ -57,20 +60,20 @@ public class Gate implements IGateType {
 		WOOD_BASIC, IRON_BASIC, WOOD_SINGLE, IRON_SINGLE, WOOD_DOUBLE, IRON_DOUBLE, WOOD_ROTATING
 	}
 
-	protected final int globalID;
+	private final int globalID;
 	protected String displayName = "";
 	protected String tooltip = "";
 	protected Variant variant;
 	protected int maxHealth = 40;
-	protected int modelType = 0;
+	private int modelType = 0;
 
 	protected boolean canSoldierInteract = true;
 
 	protected float moveSpeed = 0.5f * 0.05f; ///1/2 block / second
 
-	protected final ItemStack displayStack;
+	private final ItemStack displayStack;
 
-	protected final ResourceLocation textureLocation;
+	private final ResourceLocation textureLocation;
 
 	/*
 	 *
@@ -162,10 +165,10 @@ public class Gate implements IGateType {
 
 	private static String getGateNameFor(int id) {
 		int gateID;
-		for (String key : gateIDByName.keySet()) {
-			gateID = gateIDByName.get(key);
+		for (Map.Entry<String, Integer> entry : gateIDByName.entrySet()) {
+			gateID = entry.getValue();
 			if (gateID == id) {
-				return key;
+				return entry.getKey();
 			}
 		}
 		return "gate.verticalWooden";
@@ -186,11 +189,6 @@ public class Gate implements IGateType {
 	}
 
 	@Override
-	public void onUpdate(EntityGate ent) {
-
-	}
-
-	@Override
 	public void setCollisionBoundingBox(EntityGate gate) {
 		if (gate.pos1 == null || gate.pos2 == null) {
 			return;
@@ -202,7 +200,7 @@ public class Gate implements IGateType {
 				ObfuscationReflectionHelper.setPrivateValue(Entity.class, gate, new DualBoundingBox(min, max), "boundingBox", "field_70121_D");
 			}
 			catch (Exception ignored) {
-
+				//ignored
 			}
 		}
 		if (gate.edgePosition > 0) {
@@ -227,7 +225,7 @@ public class Gate implements IGateType {
 		float zOffset = wideOnXAxis ? 0.5f : width * 0.5f;
 		gate.pos1 = min;
 		gate.pos2 = max;
-		gate.edgeMax = max.getY() - min.getY() + 1;
+		gate.edgeMax = (float) max.getY() - min.getY() + 1;
 		gate.setPosition(min.getX() + xOffset, min.getY(), min.getZ() + zOffset);
 	}
 
@@ -243,12 +241,12 @@ public class Gate implements IGateType {
 
 	@Override
 	public void onGateFinishOpen(EntityGate gate) {
-
+		//overriden in subclass
 	}
 
 	@Override
 	public void onGateStartClose(EntityGate gate) {
-
+		//overriden in subclass
 	}
 
 	@Override
@@ -296,7 +294,7 @@ public class Gate implements IGateType {
 	/*
 	 * @return a fully setup gate, or null if chosen spawn position is invalid (blocks in the way)
 	 */
-	public static EntityGate constructGate(World world, BlockPos pos1, BlockPos pos2, Gate type, EnumFacing facing) {
+	public static Optional<EntityGate> constructGate(World world, BlockPos pos1, BlockPos pos2, Gate type, EnumFacing facing, Owner owner) {
 		BlockPos min = BlockTools.getMin(pos1, pos2);
 		BlockPos max = BlockTools.getMax(pos1, pos2);
 		for (int x = min.getX(); x <= max.getX(); x++) {
@@ -305,35 +303,32 @@ public class Gate implements IGateType {
 					BlockPos pos = new BlockPos(x, y, z);
 					if (!world.isAirBlock(pos)) {
 						AncientWarfareStructures.log.info("could not create gate for non-air block at: " + x + "," + y + "," + z + " block: " + world.getBlockState(pos).getBlock());
-						return null;
+						return Optional.empty();
 					}
 				}
 			}
 		}
 
+		EnumFacing rotatedFacing = facing;
 		if (pos1.getX() == pos2.getX()) {
 			if (facing == EnumFacing.SOUTH || facing == EnumFacing.NORTH) {
-				facing = facing.rotateY();
+				rotatedFacing = facing.rotateY();
 			}
-		} else if (pos1.getZ() == pos2.getZ()) {
-			if (facing == EnumFacing.EAST || facing == EnumFacing.WEST) {
-				facing = facing.rotateY();
-			}
+		} else if (pos1.getZ() == pos2.getZ() && (facing == EnumFacing.EAST || facing == EnumFacing.WEST)) {
+			rotatedFacing = facing.rotateY();
 		}
 
 		EntityGate ent = new EntityGate(world);
 		ent.setGateType(type);
-		ent.gateOrientation = facing;
+		ent.gateOrientation = rotatedFacing;
 		type.setInitialBounds(ent, pos1, pos2);
 		type.onGateFinishClose(ent);
-		return ent;
+		ent.setOwner(owner);
+		return Optional.of(ent);
 	}
 
 	public static ItemStack getItemToConstruct(int type) {
 		return getGateByID(type).getConstructingItem();
 	}
 
-	public static ItemStack getItemToConstruct(String typeName) {
-		return getGateByName(typeName).getConstructingItem();
-	}
 }
