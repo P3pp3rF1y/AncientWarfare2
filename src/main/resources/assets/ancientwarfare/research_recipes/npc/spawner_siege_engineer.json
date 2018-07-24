@@ -19,6 +19,6 @@
     "result": {
         "type": "minecraft:item_nbt",
         "item": "ancientwarfarenpc:npc_spawner",
-        "nbt": "{npcSubtype:\"\",npcType:\"siege.engineer\"}"
+        "nbt": "{npcSubtype:\"\",npcType:\"siege_engineer\"}"
     }
 }
