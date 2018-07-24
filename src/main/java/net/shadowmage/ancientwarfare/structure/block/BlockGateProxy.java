@@ -7,15 +7,13 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
@@ -28,10 +26,9 @@ import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
 
 import javax.annotation.Nullable;
-import java.util.Optional;
-import java.util.Random;
 
 public final class BlockGateProxy extends BlockContainer implements IClientRegistrar {
+	private static final AxisAlignedBB ZERO_AABB = new AxisAlignedBB(0, 0, 0, 0, 0, 0);
 
 	public BlockGateProxy() {
 		super(Material.ROCK);
@@ -64,65 +61,24 @@ public final class BlockGateProxy extends BlockContainer implements IClientRegis
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess world, BlockPos pos, EnumFacing side) {
-		return false;
-	}
-
-	@Override
-	public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-		return false;
-	}
-
-	@Override
-	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
-		return true;
-	} //TODO really normal cube after all the other stuff? test why this is the case
-
-	@Override
 	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
+	@Nullable
 	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		return WorldTools.getTile(world, pos, TEGateProxy.class).map(g -> g.onBlockPicked(target)).orElse(ItemStack.EMPTY);
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+		return NULL_AABB;
 	}
 
 	@Override
-	public int quantityDropped(Random par1Random) {
-		return 0;
-	}
-
-	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		return WorldTools.getTile(world, pos, TEGateProxy.class).map(g -> g.onBlockClicked(player, hand)).orElse(false);
-	}
-
-	@Override
-	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
-		Optional<TEGateProxy> proxy = WorldTools.getTile(world, pos, TEGateProxy.class);
-		if (proxy.isPresent()) {
-			proxy.get().onBlockAttacked(player);
-		} else if (player != null && player.capabilities.isCreativeMode) {
-			return super.removedByPlayer(state, world, pos, player, false);
-		}
+	public boolean canCollideCheck(IBlockState state, boolean hitIfLiquid) {
 		return false;
 	}
 
 	@Override
-	public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack) {
-		player.addExhaustion(0.025F);
-	}
-
-	@Override
-	public void dropXpOnBlockBreak(World worldIn, BlockPos pos, int amount) {
-		//no xp drop
-	}
-
-	@Override
-	public boolean canHarvestBlock(IBlockAccess world, BlockPos pos, EntityPlayer player) {
-		return false;
+	public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos) {
+		return ZERO_AABB;
 	}
 
 	//Actually "can go through", for mob pathing
@@ -133,14 +89,10 @@ public final class BlockGateProxy extends BlockContainer implements IClientRegis
 		}
 
 		//Gate is probably open, Search identical neighbour
-		if (world.getBlockState(pos.offset(EnumFacing.WEST)).getBlock() == this) { //TODO only the first half of these should be needed
+		if (world.getBlockState(pos.offset(EnumFacing.WEST)).getBlock() == this) {
 			return world.getBlockState(pos.offset(EnumFacing.EAST)).getBlock() == this;
 		} else if (world.getBlockState(pos.offset(EnumFacing.NORTH)).getBlock() == this) {
 			return world.getBlockState(pos.offset(EnumFacing.SOUTH)).getBlock() == this;
-		} else if (world.getBlockState(pos.offset(EnumFacing.EAST)).getBlock() == this) {
-			return world.getBlockState(pos.offset(EnumFacing.WEST)).getBlock() == this;
-		} else if (world.getBlockState(pos.offset(EnumFacing.SOUTH)).getBlock() == this) {
-			return world.getBlockState(pos.offset(EnumFacing.NORTH)).getBlock() == this;
 		}
 		return true;
 	}
@@ -148,6 +100,7 @@ public final class BlockGateProxy extends BlockContainer implements IClientRegis
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerClient() {
+		//noinspection ConstantConditions
 		ModelResourceLocation modelLocation = new ModelResourceLocation(getRegistryName(), "normal");
 		ModelLoaderHelper.registerItem(this, modelLocation);
 		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {

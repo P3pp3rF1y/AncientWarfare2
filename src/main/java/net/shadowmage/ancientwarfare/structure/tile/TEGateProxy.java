@@ -1,42 +1,18 @@
-/*
- Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
- This software is distributed under the terms of the GNU General Public License.
- Please see COPYING for precise license information.
-
- This file is part of Ancient Warfare.
-
- Ancient Warfare is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- Ancient Warfare is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.structure.tile;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.math.RayTraceResult;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 
+import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public class TEGateProxy extends TileEntity implements ITickable {
-
+	@Nullable
 	private EntityGate owner = null;
 	private UUID entityID = null;
 	private int noParentTicks = 0;
@@ -67,24 +43,6 @@ public class TEGateProxy extends TileEntity implements ITickable {
 		return tag;
 	}
 
-	public boolean onBlockClicked(EntityPlayer player, EnumHand hand) {
-		return this.getOwner() == null || this.getOwner().processInitialInteract(player, hand);
-	}
-
-	public void onBlockAttacked(EntityPlayer player) {
-		if (this.getOwner() != null) {
-			DamageSource source = player != null ? DamageSource.causePlayerDamage(player) : DamageSource.GENERIC;
-			this.getOwner().attackEntityFrom(source, 1);
-		}
-	}
-
-	public ItemStack onBlockPicked(RayTraceResult target) {
-		if (this.getOwner() != null) {
-			return getOwner().getPickedResult(target);
-		}
-		return ItemStack.EMPTY;
-	}
-
 	@Override
 	public void update() {
 		if (!hasWorld() || this.world.isRemote) {
@@ -92,29 +50,29 @@ public class TEGateProxy extends TileEntity implements ITickable {
 		}
 		if (this.entityID == null) {
 			this.noParentTicks++;
-		} else if (this.getOwner() == null) {
+		} else if (!getOwner().isPresent()) {
 			this.noParentTicks++;
 
 			List<Entity> entities = this.world.loadedEntityList;
 			for (Entity ent : entities) {
-				if (ent instanceof EntityGate && ent.getPersistentID() != null && ent.getPersistentID().equals(entityID)) {
+				if (ent instanceof EntityGate && ent.getPersistentID().equals(entityID)) {
 					this.owner = (EntityGate) ent;
 					this.noParentTicks = 0;
 					break;
 				}
 			}
 		}
-		if (this.noParentTicks >= 100 || (getOwner() != null && getOwner().isDead)) {
+		if (this.noParentTicks >= 100 || getOwner().map(o -> o.isDead).orElse(false)) {
 			owner = null;
 			this.world.setBlockToAir(pos);
 		}
 	}
 
 	public boolean isGateClosed() {
-		return getOwner() != null && getOwner().isClosed();
+		return getOwner().map(EntityGate::isClosed).orElse(false);
 	}
 
-	public EntityGate getOwner() {
-		return owner;
+	public Optional<EntityGate> getOwner() {
+		return Optional.ofNullable(owner);
 	}
 }
