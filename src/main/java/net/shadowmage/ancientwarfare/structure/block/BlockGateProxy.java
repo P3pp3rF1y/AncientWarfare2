@@ -81,7 +81,7 @@ public final class BlockGateProxy extends BlockContainer implements IClientRegis
 
 	@Override
 	public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World world, BlockPos pos) {
-		return ZERO_AABB;// (world.getBlockState(pos.offset(EnumFacing.WEST)).getBlock() == this || world.getBlockState(pos.offset(EnumFacing.EAST)).getBlock() == this) ? X_AXIS_AABB.offset(pos) : Z_AXIS_AABB.offset(pos);
+		return ZERO_AABB;
 	}
 
 	//Actually "can go through", for mob pathing
