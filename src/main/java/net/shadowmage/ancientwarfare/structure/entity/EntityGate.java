@@ -351,7 +351,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 
 	@Override
 	public float getCollisionBorderSize() {
-		return -0.1F;
+		return 0.1F;
 	}
 
 	@Override

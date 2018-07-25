@@ -28,6 +28,8 @@ import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
 import javax.annotation.Nullable;
 
 public final class BlockGateProxy extends BlockContainer implements IClientRegistrar {
+	private static final AxisAlignedBB Z_AXIS_AABB = new AxisAlignedBB(8D / 16D, 0, 0, 8D / 16D, 1, 1);
+	private static final AxisAlignedBB X_AXIS_AABB = new AxisAlignedBB(0, 0, 8D / 16D, 1, 1, 8D / 16D);
 	private static final AxisAlignedBB ZERO_AABB = new AxisAlignedBB(0, 0, 0, 0, 0, 0);
 
 	public BlockGateProxy() {
@@ -67,18 +69,19 @@ public final class BlockGateProxy extends BlockContainer implements IClientRegis
 
 	@Nullable
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
-		return NULL_AABB;
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return (world.getBlockState(pos.offset(EnumFacing.WEST)).getBlock() == this || world.getBlockState(pos.offset(EnumFacing.EAST)).getBlock() == this)
+				? X_AXIS_AABB : Z_AXIS_AABB;
 	}
 
 	@Override
 	public boolean canCollideCheck(IBlockState state, boolean hitIfLiquid) {
-		return false;
+		return true;
 	}
 
 	@Override
-	public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos) {
-		return ZERO_AABB;
+	public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World world, BlockPos pos) {
+		return ZERO_AABB;// (world.getBlockState(pos.offset(EnumFacing.WEST)).getBlock() == this || world.getBlockState(pos.offset(EnumFacing.EAST)).getBlock() == this) ? X_AXIS_AABB.offset(pos) : Z_AXIS_AABB.offset(pos);
 	}
 
 	//Actually "can go through", for mob pathing
