@@ -21,13 +21,13 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.entity.AWFakePlayer;
-import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.ItemWrapper;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,7 +56,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 	private List<Integer> sheepToShear = new ArrayList<>();
 	private List<Integer> entitiesToCull = new ArrayList<>();
 
-	private static ArrayList<ItemWrapper> ANIMAL_DROPS = new ArrayList<>();
+	private static final ArrayList<ItemWrapper> ANIMAL_DROPS = ItemWrapper.buildList("Animal Farm drops", AWAutomationStatics.animal_farm_pickups);
 
 	public final ItemStackHandler foodInventory;
 	public final ItemStackHandler toolInventory;
@@ -249,33 +249,25 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 
 	@Override
 	protected boolean processWork() {
-		if (!cowsToBreed.isEmpty() && wheatCount >= 2) {
-			if (tryBreeding(cowsToBreed)) {
-				wheatCount -= 2;
-				InventoryTools.removeItems(foodInventory, new ItemStack(Items.WHEAT), 2);
-				return true;
-			}
+		if (!cowsToBreed.isEmpty() && wheatCount >= 2 && tryBreeding(cowsToBreed)) {
+			wheatCount -= 2;
+			InventoryTools.removeItems(foodInventory, new ItemStack(Items.WHEAT), 2);
+			return true;
 		}
-		if (!sheepToBreed.isEmpty() && wheatCount >= 2) {
-			if (tryBreeding(sheepToBreed)) {
-				wheatCount -= 2;
-				InventoryTools.removeItems(foodInventory, new ItemStack(Items.WHEAT), 2);
-				return true;
-			}
+		if (!sheepToBreed.isEmpty() && wheatCount >= 2 && tryBreeding(sheepToBreed)) {
+			wheatCount -= 2;
+			InventoryTools.removeItems(foodInventory, new ItemStack(Items.WHEAT), 2);
+			return true;
 		}
-		if (!chickensToBreed.isEmpty() && seedCount >= 2) {
-			if (tryBreeding(chickensToBreed)) {
-				seedCount -= 2;
-				InventoryTools.removeItems(foodInventory, new ItemStack(Items.WHEAT_SEEDS), 2);
-				return true;
-			}
+		if (!chickensToBreed.isEmpty() && seedCount >= 2 && tryBreeding(chickensToBreed)) {
+			seedCount -= 2;
+			InventoryTools.removeItems(foodInventory, new ItemStack(Items.WHEAT_SEEDS), 2);
+			return true;
 		}
-		if (!pigsToBreed.isEmpty() && carrotCount >= 2) {
-			if (tryBreeding(pigsToBreed)) {
-				carrotCount -= 2;
-				InventoryTools.removeItems(foodInventory, new ItemStack(Items.CARROT), 2);
-				return true;
-			}
+		if (!pigsToBreed.isEmpty() && carrotCount >= 2 && tryBreeding(pigsToBreed)) {
+			carrotCount -= 2;
+			InventoryTools.removeItems(foodInventory, new ItemStack(Items.CARROT), 2);
+			return true;
 		}
 		if (tryShearing()) {
 			return true;
@@ -310,12 +302,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 	}
 
 	private boolean tryMilking() {
-		if (cowsToMilk > 0) {
-			if (ModAccessors.HARDER_WILDLIFE_LOADED)
-				return true;
-			return world.rand.nextInt(cowsToMilk * 4) > (cowsToMilk * 3);
-		}
-		return false;
+		return cowsToMilk > 0 && world.rand.nextInt(cowsToMilk * 4) > (cowsToMilk * 3);
 	}
 
 	private boolean tryShearing() {
@@ -369,7 +356,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 	}
 
 	@Override
-	public boolean onBlockClicked(EntityPlayer player, EnumHand hand) {
+	public boolean onBlockClicked(EntityPlayer player, @Nullable EnumHand hand) {
 		if (!player.world.isRemote) {
 			NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_ANIMAL_FARM, pos);
 		}
@@ -377,10 +364,6 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 	}
 
 	private void pickupDrops() {
-		if (ANIMAL_DROPS.size() == 0) {
-			ANIMAL_DROPS = ItemWrapper.buildList("Animal Farm drops", AWAutomationStatics.animal_farm_pickups);
-		}
-
 		List<EntityItem> items = EntityTools.getEntitiesWithinBounds(world, EntityItem.class, getWorkBoundsMin(), getWorkBoundsMax());
 		@Nonnull ItemStack stack;
 		for (EntityItem item : items) {
@@ -388,14 +371,12 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 			if (item.isEntityAlive() && !stack.isEmpty() && stack.getItem() != Items.AIR) {
 				Item droppedItem = stack.getItem();
 				for (ItemWrapper animalDrop : ANIMAL_DROPS) {
-					if (droppedItem.equals(animalDrop.item)) {
-						if (animalDrop.damage == -1 || animalDrop.damage == stack.getItemDamage()) {
-							stack = InventoryTools.mergeItemStack(mainInventory, stack);
-							if (!stack.isEmpty()) {
-								item.setItem(stack);
-							} else {
-								item.setDead();
-							}
+					if (droppedItem.equals(animalDrop.item) && animalDrop.damage == -1 || animalDrop.damage == stack.getItemDamage()) {
+						stack = InventoryTools.mergeItemStack(mainInventory, stack);
+						if (!stack.isEmpty()) {
+							item.setItem(stack);
+						} else {
+							item.setDead();
 						}
 					}
 				}
@@ -438,19 +419,19 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 
 	private static class EntityPair {
 
-		final int idA;
-		final int idB;
+		private final int idA;
+		private final int idB;
 
 		private EntityPair(Entity a, Entity b) {
 			idA = a.getEntityId();
 			idB = b.getEntityId();
 		}
 
-		public Entity getEntityA(World world) {
+		private Entity getEntityA(World world) {
 			return world.getEntityByID(idA);
 		}
 
-		public Entity getEntityB(World world) {
+		private Entity getEntityB(World world) {
 			return world.getEntityByID(idB);
 		}
 	}

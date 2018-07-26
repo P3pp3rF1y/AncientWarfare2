@@ -22,6 +22,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.shadowmage.ancientwarfare.core.command.CommandResearch;
 import net.shadowmage.ancientwarfare.core.command.CommandUtils;
 import net.shadowmage.ancientwarfare.core.compat.CompatLoader;
+import net.shadowmage.ancientwarfare.core.compat.ftb.FTBCompat;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.container.ContainerBackpack;
 import net.shadowmage.ancientwarfare.core.container.ContainerEngineeringStation;
@@ -33,7 +34,6 @@ import net.shadowmage.ancientwarfare.core.datafixes.TileIdFixer;
 import net.shadowmage.ancientwarfare.core.datafixes.TileOwnerFixer;
 import net.shadowmage.ancientwarfare.core.datafixes.VehicleOwnerFixer;
 import net.shadowmage.ancientwarfare.core.entity.AWFakePlayer;
-import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.item.AWCoreItemLoader;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
@@ -48,7 +48,6 @@ import org.apache.logging.log4j.Logger;
 public class AncientWarfareCore {
 
 	public static final String MOD_ID = "ancientwarfare";
-	public static final String MOD_PREFIX = MOD_ID + ":";
 	private static final int DATA_FIXER_VERSION = 4;
 
 	@Instance(value = AncientWarfareCore.MOD_ID)
@@ -89,6 +88,8 @@ public class AncientWarfareCore {
 
 		RegistryLoader.registerParser(new ResearchRegistry.ResearchParser());
 
+		CompatLoader.registerCompat(new FTBCompat());
+
 		proxy.preInit();
 	}
 
@@ -114,11 +115,6 @@ public class AncientWarfareCore {
 		fixes.registerFix(FixTypes.ENTITY, new FactionEntityFixer());
 		fixes.registerFix(FixTypes.ITEM_INSTANCE, new FactionSpawnerItemFixer());
 		fixes.registerFix(FixTypes.ITEM_INSTANCE, new ResearchNoteFixer());
-
-        /*
-         * Setup compats
-         */
-		ModAccessors.init();
 	}
 
 	@EventHandler
