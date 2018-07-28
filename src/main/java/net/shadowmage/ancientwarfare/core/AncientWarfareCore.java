@@ -26,6 +26,7 @@ import net.shadowmage.ancientwarfare.core.compat.ftb.FTBCompat;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.container.ContainerBackpack;
 import net.shadowmage.ancientwarfare.core.container.ContainerEngineeringStation;
+import net.shadowmage.ancientwarfare.core.container.ContainerManual;
 import net.shadowmage.ancientwarfare.core.container.ContainerResearchBook;
 import net.shadowmage.ancientwarfare.core.container.ContainerResearchStation;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
@@ -85,6 +86,7 @@ public class AncientWarfareCore {
 		NetworkHandler.registerContainer(NetworkHandler.GUI_RESEARCH_STATION, ContainerResearchStation.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_BACKPACK, ContainerBackpack.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_RESEARCH_BOOK, ContainerResearchBook.class);
+		NetworkHandler.registerContainer(NetworkHandler.GUI_MANUAL, ContainerManual.class);
 
 		RegistryLoader.registerParser(new ResearchRegistry.ResearchParser());
 

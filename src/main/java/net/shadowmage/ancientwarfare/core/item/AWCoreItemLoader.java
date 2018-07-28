@@ -47,6 +47,8 @@ public class AWCoreItemLoader {
 		registry.register(new ItemQuill("gold_quill", ToolMaterial.GOLD));
 		registry.register(new ItemQuill("diamond_quill", ToolMaterial.DIAMOND));
 
+		registry.register(new ItemManual());
+
 		AWItems.componentItem = new ItemComponent().listenToProxy(AncientWarfareCore.proxy);
 		registry.register(AWItems.componentItem);
 
