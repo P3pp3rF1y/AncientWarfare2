@@ -3,21 +3,32 @@ package net.shadowmage.ancientwarfare.core.manual;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.JsonUtils;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.registry.IRegistryDataParser;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@SideOnly(Side.CLIENT)
 public class ManualContentRegistry {
 	private ManualContentRegistry() {}
 
+	private static Map<String, List<IContentElement>> englishCategoryContents = new HashMap<>();
 	private static Map<String, List<IContentElement>> categoryContents = new HashMap<>();
 
 	public static List<IContentElement> getCategoryContent(String category) {
-		return categoryContents.get(category);
+		if (categoryContents.containsKey(category)) {
+			return categoryContents.get(category);
+		} else if (englishCategoryContents.containsKey(category)) {
+			return englishCategoryContents.get(category);
+		}
+		return Collections.emptyList();
 	}
 
 	public static class ManualContentParser implements IRegistryDataParser {
@@ -30,9 +41,18 @@ public class ManualContentRegistry {
 
 		@Override
 		public void parse(JsonObject json) {
+			String lang = JsonUtils.getString(json, "lang");
+			String currentLang = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage().getLanguageCode();
+			if (!lang.equals("en_US") && !lang.equals(currentLang)) {
+				return;
+			}
 			String category = JsonUtils.getString(json, "category");
 			List<IContentElement> contents = new ArrayList<>();
-			categoryContents.put(category, contents);
+			if (lang.equals("en_US") && !currentLang.equals(lang)) {
+				englishCategoryContents.put(category, contents);
+			} else {
+				categoryContents.put(category, contents);
+			}
 
 			JsonArray elements = JsonUtils.getJsonArray(json, "content");
 

@@ -36,7 +36,6 @@ import net.shadowmage.ancientwarfare.core.datafixes.TileOwnerFixer;
 import net.shadowmage.ancientwarfare.core.datafixes.VehicleOwnerFixer;
 import net.shadowmage.ancientwarfare.core.entity.AWFakePlayer;
 import net.shadowmage.ancientwarfare.core.item.AWCoreItemLoader;
-import net.shadowmage.ancientwarfare.core.manual.ManualContentRegistry;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
 import net.shadowmage.ancientwarfare.core.registry.RegistryLoader;
@@ -90,7 +89,6 @@ public class AncientWarfareCore {
 		NetworkHandler.registerContainer(NetworkHandler.GUI_MANUAL, ContainerManual.class);
 
 		RegistryLoader.registerParser(new ResearchRegistry.ResearchParser());
-		RegistryLoader.registerParser(new ManualContentRegistry.ManualContentParser());
 
 		CompatLoader.registerCompat(new FTBCompat());
 
