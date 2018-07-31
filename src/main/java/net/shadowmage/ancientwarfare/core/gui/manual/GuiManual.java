@@ -8,6 +8,7 @@ import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.container.ContainerManual;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
+import net.shadowmage.ancientwarfare.core.gui.TextureData;
 import net.shadowmage.ancientwarfare.core.manual.IContentElement;
 import net.shadowmage.ancientwarfare.core.manual.ManualContentRegistry;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
@@ -21,10 +22,14 @@ public class GuiManual extends GuiContainerBase<ContainerManual> {
 	private static final int BOOK_WIDTH = 412;
 	private static final int PAGE_WIDTH = BOOK_WIDTH / 2;
 	private static final int BOOK_HEIGHT = 200;
-	private static final ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/gui/manual.png");
+	public static final int FOOTER_HEIGHT = 14;
+	private static final ResourceLocation MANUAL_TEXTURE = new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/gui/manual.png");
 	private static final int HORIZONTAL_PAGE_PADDING = 8;
 	private static final int VERTICAL_PAGE_PADDING = 7;
 	private List<List<BaseElementWrapper>> pageElements;
+	private int currentPageIndex = 0;
+	private Page leftPage;
+	private Page rightPage;
 
 	public GuiManual(ContainerBase container) {
 		super(container, BOOK_WIDTH, BOOK_HEIGHT);
@@ -32,26 +37,33 @@ public class GuiManual extends GuiContainerBase<ContainerManual> {
 		List<IContentElement> elements = ManualContentRegistry.getCategoryContent("factions");
 
 		int innerPageWidth = BOOK_WIDTH / 2 - HORIZONTAL_PAGE_PADDING - 2 * Page.getPadding();
-		int innerPageHeight = BOOK_HEIGHT - 2 * VERTICAL_PAGE_PADDING - 2 * Page.getPadding();
-		pageElements = ElementWrapperFactory.getPagedWrappedContent(elements, innerPageWidth, innerPageHeight);
+		pageElements = ElementWrapperFactory.getPagedWrappedContent(elements, innerPageWidth, getInnerPageHeight());
 
+	}
+
+	private int getInnerPageHeight() {
+		return BOOK_HEIGHT - 2 * VERTICAL_PAGE_PADDING - 2 * Page.getPadding() - FOOTER_HEIGHT;
 	}
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3) {
-		Minecraft.getMinecraft().renderEngine.bindTexture(BACKGROUND_TEXTURE);
+		Minecraft.getMinecraft().renderEngine.bindTexture(MANUAL_TEXTURE);
 		RenderTools.renderQuarteredTexture(512, 512, 0, 0, BOOK_WIDTH, BOOK_HEIGHT, width / 2 - xSize / 2, (height / 2) - (ySize / 2), xSize, ySize);
 	}
 
 	@Override
 	public void initElements() {
-		Page leftPage = new Page(HORIZONTAL_PAGE_PADDING, VERTICAL_PAGE_PADDING, PAGE_WIDTH - HORIZONTAL_PAGE_PADDING, BOOK_HEIGHT - 2 * VERTICAL_PAGE_PADDING, getPageElements(0));
-		leftPage.setBackground(BACKGROUND_TEXTURE, HORIZONTAL_PAGE_PADDING, BOOK_HEIGHT + VERTICAL_PAGE_PADDING);
+		int pageWidth = PAGE_WIDTH - HORIZONTAL_PAGE_PADDING;
+		int pageHeight = BOOK_HEIGHT - 2 * VERTICAL_PAGE_PADDING;
+		leftPage = new Page(this, HORIZONTAL_PAGE_PADDING, VERTICAL_PAGE_PADDING, pageWidth, pageHeight,
+				new TextureData(MANUAL_TEXTURE, 512, 512, HORIZONTAL_PAGE_PADDING, BOOK_HEIGHT + VERTICAL_PAGE_PADDING, pageWidth, pageHeight), true);
 		addGuiElement(leftPage);
 
-		Page rightPage = new Page(PAGE_WIDTH, VERTICAL_PAGE_PADDING, PAGE_WIDTH - HORIZONTAL_PAGE_PADDING, BOOK_HEIGHT - 2 * VERTICAL_PAGE_PADDING, getPageElements(1));
-		rightPage.setBackground(BACKGROUND_TEXTURE, PAGE_WIDTH, BOOK_HEIGHT + VERTICAL_PAGE_PADDING);
+		rightPage = new Page(this, PAGE_WIDTH, VERTICAL_PAGE_PADDING, PAGE_WIDTH - HORIZONTAL_PAGE_PADDING, BOOK_HEIGHT - 2 * VERTICAL_PAGE_PADDING,
+				new TextureData(MANUAL_TEXTURE, 512, 512, PAGE_WIDTH, BOOK_HEIGHT + VERTICAL_PAGE_PADDING, pageWidth, pageHeight), false);
 		addGuiElement(rightPage);
+		refreshGui();
+
 	}
 
 	private List<BaseElementWrapper> getPageElements(int pageNumber) {
@@ -60,6 +72,20 @@ public class GuiManual extends GuiContainerBase<ContainerManual> {
 
 	@Override
 	public void setupElements() {
+		leftPage.updateContentElements(getPageElements(getCurrentPageIndex()));
+		rightPage.updateContentElements(getPageElements(getCurrentPageIndex() + 1));
+	}
 
+	public int getCurrentPageIndex() {
+		return currentPageIndex;
+	}
+
+	public void setCurrentPageIndex(int currentPageIndex) {
+		this.currentPageIndex = currentPageIndex;
+		refreshGui();
+	}
+
+	public int getPageCount() {
+		return pageElements.size();
 	}
 }

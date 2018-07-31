@@ -2,43 +2,60 @@ package net.shadowmage.ancientwarfare.core.gui.manual;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.ResourceLocation;
+import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
+import net.shadowmage.ancientwarfare.core.gui.TextureData;
+import net.shadowmage.ancientwarfare.core.gui.elements.Composite;
 import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 
 import java.util.List;
 
-public class Page extends GuiElement {
+import static net.shadowmage.ancientwarfare.core.gui.manual.GuiManual.FOOTER_HEIGHT;
+
+public class Page extends Composite {
 	private static final int PADDING = 7;
-	private final List<BaseElementWrapper> elements;
+	private final boolean leftPage;
+	private final TextureData textureData;
+
+	public Page(GuiContainerBase gui, int topLeftX, int topLeftY, int width, int height, TextureData textureData, boolean leftPage) {
+		super(gui, topLeftX, topLeftY, width, height);
+		this.textureData = textureData;
+		this.leftPage = leftPage;
+	}
 
 	public static int getPadding() {
 		return PADDING;
 	}
 
-	private ResourceLocation background;
-	private int backgroundU;
-	private int backgroundV;
-
-	public Page(int topLeftX, int topLeftY, int width, int height, List<BaseElementWrapper> elements) {
-		super(topLeftX, topLeftY, width, height);
-		this.elements = elements;
+	public void updateContentElements(List<BaseElementWrapper> contentElements) {
+		clearElements();
+		contentElements.forEach(this::addGuiElement);
+		addPaging();
 	}
 
-	public void setBackground(ResourceLocation background, int backgroundU, int backgroundV) {
-		this.background = background;
-		this.backgroundU = backgroundU;
-		this.backgroundV = backgroundV;
+	@Override
+	public GuiManual getGui() {
+		return (GuiManual) super.getGui();
+	}
+
+	@Override
+	public void updateGuiPosition(int guiLeft, int guiTop) {
+		super.updateGuiPosition(guiLeft + PADDING, guiTop + PADDING);
+	}
+
+	private void addPaging() {
+		addGuiElement(new Paging(getGui(), 0, height - 2 * PADDING - FOOTER_HEIGHT, width - 2 * PADDING, FOOTER_HEIGHT,
+				textureData.getTexture(), leftPage));
 	}
 
 	@Override
 	public void render(int mouseX, int mouseY, float partialTick) {
 		GlStateManager.color(1, 1, 1, 1);
-		Minecraft.getMinecraft().renderEngine.bindTexture(background);
-		RenderTools.renderQuarteredTexture(512, 512, backgroundU, backgroundV, width, height, renderX, renderY, width, height);
+		Minecraft.getMinecraft().renderEngine.bindTexture(textureData.getTexture());
+		RenderTools.renderQuarteredTexture(textureData.getTextureWidth(), textureData.getTextureHeight(), textureData.getTextureU(), textureData.getTextureV(),
+				textureData.getPartWidth(), textureData.getPartHeight(), renderX - PADDING, renderY - PADDING, width, height);
 
-		for (BaseElementWrapper element : elements) {
-			element.updateGuiPosition(renderX + PADDING, renderY + PADDING);
+		for (GuiElement element : this.elements) {
 			element.render(mouseX, mouseY, partialTick);
 		}
 	}
