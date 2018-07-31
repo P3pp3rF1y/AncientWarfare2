@@ -59,7 +59,7 @@ public class Paging extends Composite {
 		}
 	}
 
-	private class PagingButton extends ImageButton {
+	private abstract class PagingButton extends ImageButton {
 		static final int BUTTON_WIDTH = 18;
 		private static final int BUTTON_HEIGHT = 10;
 

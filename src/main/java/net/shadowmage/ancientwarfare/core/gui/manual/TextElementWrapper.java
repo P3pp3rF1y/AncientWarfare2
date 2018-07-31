@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.core.gui.manual;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraftforge.fml.relauncher.Side;
@@ -31,7 +32,7 @@ public class TextElementWrapper extends BaseElementWrapper<TextElement> {
 
 	public static class Creator implements IElementWrapperCreator<TextElement> {
 		@Override
-		public PageElements<TextElement> construct(int topLeftY, int width, int remainingPageHeight, int emptyPageHeight, TextElement element) {
+		public List<BaseElementWrapper<TextElement>> construct(int topLeftY, int width, int remainingPageHeight, int emptyPageHeight, TextElement element) {
 			FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
 			List<String> textLines = fontRenderer.listFormattedStringToWidth(element.getText(), width);
 
@@ -39,15 +40,17 @@ public class TextElementWrapper extends BaseElementWrapper<TextElement> {
 
 			int textHeight = fontHeight * textLines.size();
 			if (textHeight <= remainingPageHeight) {
-				return new PageElements<>(new TextElementWrapper(topLeftY, width, textHeight, element), null);
-			} else if (remainingPageHeight >= 2 * fontHeight) {
-				int linesCurrent = remainingPageHeight / fontHeight;
-				TextElement currentElement = new TextElement(textLines.stream().limit(linesCurrent).collect(Collectors.joining("\n")));
-				List<BaseElementWrapper<TextElement>> nextElements = getNextElements(width, emptyPageHeight, textLines, fontHeight, linesCurrent);
-
-				return new PageElements<>(new TextElementWrapper(topLeftY, width, linesCurrent * fontHeight, currentElement), nextElements);
+				return ImmutableList.of(new TextElementWrapper(topLeftY, width, textHeight, element));
 			} else {
-				return new PageElements<>(null, getNextElements(width, emptyPageHeight, textLines, fontHeight, 0));
+				ImmutableList.Builder<BaseElementWrapper<TextElement>> listBuilder = new ImmutableList.Builder<>();
+				int linesCurrent = remainingPageHeight / fontHeight;
+				if (remainingPageHeight >= 2 * fontHeight) {
+					TextElement firstElement = new TextElement(textLines.stream().limit(linesCurrent).collect(Collectors.joining("\n")));
+					listBuilder.add(new TextElementWrapper(topLeftY, width, linesCurrent * fontHeight, firstElement));
+				}
+				listBuilder.addAll(getNextElements(width, emptyPageHeight, textLines, fontHeight, linesCurrent));
+
+				return listBuilder.build();
 			}
 		}
 

@@ -3,13 +3,12 @@ package net.shadowmage.ancientwarfare.core.gui.manual;
 import com.google.common.collect.ImmutableSet;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.shadowmage.ancientwarfare.core.gui.manual.IElementWrapperCreator.PageElements;
 import net.shadowmage.ancientwarfare.core.manual.IContentElement;
 import net.shadowmage.ancientwarfare.core.manual.TextElement;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @SideOnly(Side.CLIENT)
@@ -20,11 +19,11 @@ public class ElementWrapperFactory {
 			new ElementWrapperMapping<>(TextElement.class, new TextElementWrapper.Creator())
 	);
 
-	public static <T extends IContentElement> PageElements<T> create(int topLeftY, int width, int remainingPageHeight, int emptyPageHeight, T element) {
+	public static <T extends IContentElement> List<BaseElementWrapper<T>> create(int topLeftY, int width, int remainingPageHeight, int emptyPageHeight, T element) {
 		//noinspection unchecked
 		return MAPPINGS.stream().filter(m -> m.matches(element)).findFirst()
 				.map(m -> m.construct(topLeftY, width, remainingPageHeight, emptyPageHeight, element))
-				.orElse(new PageElements(null, null));
+				.orElse(Collections.emptyList());
 	}
 
 	public static List<List<BaseElementWrapper>> getPagedWrappedContent(List<IContentElement> elements, int width, int pageHeight) {
@@ -32,22 +31,16 @@ public class ElementWrapperFactory {
 		int currentY = 0;
 		List<BaseElementWrapper> currentPageWrappers = addNewPage(pagedWrappers);
 		for (IContentElement element : elements) {
-			PageElements<IContentElement> pageElements = create(currentY, width, pageHeight - currentY, pageHeight, element);
+			List<BaseElementWrapper<IContentElement>> pageElements = create(currentY, width, pageHeight - currentY, pageHeight, element);
 
-			Optional<BaseElementWrapper<IContentElement>> current = pageElements.getCurrent();
-			if (current.isPresent()) {
-				currentPageWrappers.add(current.get());
-				currentY += current.get().getHeight();
-			}
-
-			Optional<List<BaseElementWrapper<IContentElement>>> next = pageElements.getNext();
-			if (next.isPresent()) {
-				for (BaseElementWrapper wrapper : next.get()) {
+			boolean firstElement = true;
+			for (BaseElementWrapper wrapper : pageElements) {
+				if (!firstElement) {
 					currentPageWrappers = addNewPage(pagedWrappers);
-
-					currentPageWrappers.add(wrapper);
-					currentY = wrapper.getHeight();
 				}
+				currentPageWrappers.add(wrapper);
+				currentY = (firstElement ? currentY : 0) + wrapper.getHeight();
+				firstElement = false;
 			}
 		}
 
@@ -75,7 +68,7 @@ public class ElementWrapperFactory {
 			return elementClass.isInstance(element);
 		}
 
-		public PageElements<T> construct(int topLeftY, int width, int remainingPageHeight, int emptyPageHeight, T element) {
+		public List<BaseElementWrapper<T>> construct(int topLeftY, int width, int remainingPageHeight, int emptyPageHeight, T element) {
 			return creator.construct(topLeftY, width, remainingPageHeight, emptyPageHeight, element);
 		}
 	}
