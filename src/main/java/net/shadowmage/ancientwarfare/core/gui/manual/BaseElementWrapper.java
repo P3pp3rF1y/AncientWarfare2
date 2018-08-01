@@ -20,7 +20,15 @@ public abstract class BaseElementWrapper<T extends IContentElement> extends GuiE
 
 	}
 
+	public int getTopLeftY() {
+		return topLeftY;
+	}
+
 	public int getHeight() {
 		return height;
+	}
+
+	public boolean shouldKeepWithNext() {
+		return false;
 	}
 }

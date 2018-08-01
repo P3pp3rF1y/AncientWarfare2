@@ -41,14 +41,14 @@ public class ManualContentRegistry {
 
 		@Override
 		public void parse(JsonObject json) {
-			String lang = JsonUtils.getString(json, "lang");
+			String lang = JsonUtils.getString(json, "lang").toLowerCase();
 			String currentLang = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage().getLanguageCode();
-			if (!lang.equals("en_US") && !lang.equals(currentLang)) {
+			if (!lang.equals("en_us") && !lang.equals(currentLang)) {
 				return;
 			}
 			String category = JsonUtils.getString(json, "category");
 			List<IContentElement> contents = new ArrayList<>();
-			if (lang.equals("en_US") && !currentLang.equals(lang)) {
+			if (lang.equals("en_us") && !currentLang.equals(lang)) {
 				englishCategoryContents.put(category, contents);
 			} else {
 				categoryContents.put(category, contents);
@@ -67,6 +67,8 @@ public class ManualContentRegistry {
 			switch (contentType) {
 				case "text":
 					return TextElement.parse(elementJson);
+				case "heading":
+					return HeadingElement.parse(elementJson);
 			}
 			return EMPTY_ELEMENT;
 		}

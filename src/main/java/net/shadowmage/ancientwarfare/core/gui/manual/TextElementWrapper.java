@@ -43,7 +43,7 @@ public class TextElementWrapper extends BaseElementWrapper<TextElement> {
 				return ImmutableList.of(new TextElementWrapper(topLeftY, width, textHeight, element));
 			} else {
 				ImmutableList.Builder<BaseElementWrapper<TextElement>> listBuilder = new ImmutableList.Builder<>();
-				int linesCurrent = remainingPageHeight / fontHeight;
+				int linesCurrent = Math.max(remainingPageHeight / fontHeight, 0);
 				if (remainingPageHeight >= 2 * fontHeight) {
 					TextElement firstElement = new TextElement(textLines.stream().limit(linesCurrent).collect(Collectors.joining("\n")));
 					listBuilder.add(new TextElementWrapper(topLeftY, width, linesCurrent * fontHeight, firstElement));

@@ -4,12 +4,32 @@
     "category": "factions",
     "content": [
         {
+            "content_type": "heading",
+            "text": "Main heading",
+            "level": 1
+        },
+        {
+            "content_type": "heading",
+            "text": "Sub heading",
+            "level": 2
+        },
+        {
             "content_type": "text",
             "text": "These are some sample content sections"
         },
         {
             "content_type": "text",
             "text": "Nogg settlements are found far and wide and are perhaps the friendliest people that a traveller may ever meet. The Noggs are a farming and mining race, with a proud lumberjack tradition. Their settlements are most often well-fortified hamlets or small trading towns.\nNoggs make average warriors and rely on a plentiful citizen militia of spearmen, swordsmen and bowmen. Nogg nobles, known as Noggins, are skilled horsemen and their retainers are horse archers.\nNogg priests are noted for their cheerful and happy disposition and their healing powers are good.\nNogg traders will often have a wide range of materials and goods for exchange and will often accept many odd things in return."
+        },
+        {
+            "content_type": "heading",
+            "text": "Main heading for Empire",
+            "level": 1
+        },
+        {
+            "content_type": "heading",
+            "text": "Sub heading for Empire",
+            "level": 2
         },
         {
             "content_type": "text",
