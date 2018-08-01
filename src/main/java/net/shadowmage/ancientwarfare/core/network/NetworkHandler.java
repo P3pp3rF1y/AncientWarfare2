@@ -52,6 +52,8 @@ public final class NetworkHandler implements IGuiHandler {
 
 	private static final int PACKET_JEI_TRANSFER_RECIPE = 25;
 
+	private static final int PACKET_MANUAL_RELOAD = 26;
+
 	public static final int GUI_CRAFTING = 0;
 	public static final int GUI_SCANNER = 1;
 	public static final int GUI_BUILDER = 2;
@@ -124,6 +126,7 @@ public final class NetworkHandler implements IGuiHandler {
 		PacketBase.registerPacketType(PACKET_RESEARCH_ADD, PacketResearchUpdate.class);
 		PacketBase.registerPacketType(PACKET_RESEARCH_START, PacketResearchStart.class);
 		PacketBase.registerPacketType(PACKET_BLOCK_EVENT, PacketBlockEvent.class);
+		PacketBase.registerPacketType(PACKET_MANUAL_RELOAD, PacketManualReload.class);
 		NetworkRegistry.INSTANCE.registerGuiHandler(AncientWarfareCore.instance, this);
 
 		if (Loader.isModLoaded("jei")) {

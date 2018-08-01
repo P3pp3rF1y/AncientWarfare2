@@ -1,7 +1,9 @@
-package net.shadowmage.ancientwarfare.core.gui.manual;
+package net.shadowmage.ancientwarfare.core.gui.manual.elements;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.Minecraft;
+import net.shadowmage.ancientwarfare.core.gui.manual.GuiManual;
+import net.shadowmage.ancientwarfare.core.gui.manual.IElementWrapperCreator;
 import net.shadowmage.ancientwarfare.core.manual.HeadingElement;
 
 import java.util.List;
@@ -10,8 +12,8 @@ public class HeadingElementWrapper extends BaseElementWrapper<HeadingElement> {
 	private static final int TOP_PADDING = 3;
 	private static final int BOTTOM_PADDING = 3;
 
-	public HeadingElementWrapper(int topLeftY, int width, int height, HeadingElement element) {
-		super(0, topLeftY, width, height, element);
+	public HeadingElementWrapper(GuiManual gui, int topLeftY, int width, int height, HeadingElement element) {
+		super(gui, 0, topLeftY, width, height, element);
 	}
 
 	@Override
@@ -33,9 +35,9 @@ public class HeadingElementWrapper extends BaseElementWrapper<HeadingElement> {
 
 	public static class Creator implements IElementWrapperCreator<HeadingElement> {
 		@Override
-		public List<BaseElementWrapper<HeadingElement>> construct(int topLeftY, int width, int remainingPageHeight, int emptyPageHeight, HeadingElement element) {
+		public List<BaseElementWrapper<HeadingElement>> construct(GuiManual gui, int topLeftY, int width, int remainingPageHeight, int emptyPageHeight, HeadingElement element) {
 			int textHeight = Minecraft.getMinecraft().fontRenderer.getWordWrappedHeight(element.getText(), width);
-			return ImmutableList.of(new HeadingElementWrapper(topLeftY, width, textHeight + TOP_PADDING + BOTTOM_PADDING, element));
+			return ImmutableList.of(new HeadingElementWrapper(gui, topLeftY, width, textHeight + TOP_PADDING + BOTTOM_PADDING, element));
 		}
 	}
 }

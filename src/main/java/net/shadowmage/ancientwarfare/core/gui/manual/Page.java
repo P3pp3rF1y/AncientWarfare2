@@ -6,6 +6,7 @@ import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.TextureData;
 import net.shadowmage.ancientwarfare.core.gui.elements.Composite;
 import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
+import net.shadowmage.ancientwarfare.core.gui.manual.elements.BaseElementWrapper;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 
 import java.util.List;

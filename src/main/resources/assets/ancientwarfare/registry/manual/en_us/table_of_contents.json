@@ -1,0 +1,24 @@
+{
+    "type": "manual_content",
+    "lang": "en_US",
+    "category": "table_of_contents",
+    "content": [
+        {
+            "content_type": "toc_list",
+            "items": [
+                {
+                    "text": "Factions",
+                    "category_link": "factions"
+                },
+                {
+                    "text": "NPCs",
+                    "category_link": "npcs"
+                },
+                {
+                    "text": "Structures",
+                    "category_link": "structures"
+                }
+            ]
+        }
+    ]
+}

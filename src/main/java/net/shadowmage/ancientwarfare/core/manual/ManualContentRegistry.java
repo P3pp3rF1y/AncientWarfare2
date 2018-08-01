@@ -31,6 +31,11 @@ public class ManualContentRegistry {
 		return Collections.emptyList();
 	}
 
+	public static void clearContents() {
+		englishCategoryContents.clear();
+		categoryContents.clear();
+	}
+
 	public static class ManualContentParser implements IRegistryDataParser {
 		private static final IContentElement EMPTY_ELEMENT = new IContentElement() {};
 
@@ -69,8 +74,11 @@ public class ManualContentRegistry {
 					return TextElement.parse(elementJson);
 				case "heading":
 					return HeadingElement.parse(elementJson);
+				case "toc_list":
+					return TableOfContentsElement.parse(elementJson);
+				default:
+					return EMPTY_ELEMENT;
 			}
-			return EMPTY_ELEMENT;
 		}
 	}
 }

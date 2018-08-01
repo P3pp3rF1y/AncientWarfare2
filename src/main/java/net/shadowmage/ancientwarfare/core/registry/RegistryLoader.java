@@ -20,13 +20,12 @@ import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public class RegistryLoader {
 	private RegistryLoader() {}
@@ -39,21 +38,31 @@ public class RegistryLoader {
 		parsers.put(parser.getName(), parser);
 	}
 
-	private static final List<ResourceLocation> loadedRegistries = new ArrayList<>();
+	private static final Map<ResourceLocation, String> loadedRegistries = new HashMap<>();
 
 	public static void load() {
+		load(p -> true);
+	}
+
+	public static void reload(String type) {
+		loadedRegistries.entrySet().removeIf(entry -> entry.getValue().equals(type));
+		load(p -> p.getName().equals(type));
+	}
+
+	public static void load(Predicate<IRegistryDataParser> include) {
 		//noinspection ConstantConditions
 		ModContainer awModContainer = Loader.instance().activeModContainer();
 
 		Path registryOverridesFolder = new File(AWCoreStatics.configPathForFiles + "registry").toPath();
 		if (registryOverridesFolder.toFile().exists()) {
 			//noinspection ConstantConditions
-			loadRegistries(awModContainer, registryOverridesFolder);
+			loadRegistries(awModContainer, registryOverridesFolder, include);
 		}
-		loadRegistries(awModContainer, awModContainer.getSource(), "assets/" + awModContainer.getModId() + "/registry");
+		//noinspection ConstantConditions
+		loadRegistries(awModContainer, awModContainer.getSource(), "assets/" + awModContainer.getModId() + "/registry", include);
 	}
 
-	private static void loadRegistries(ModContainer mod, File source, String base) {
+	private static void loadRegistries(ModContainer mod, File source, String base, Predicate<IRegistryDataParser> include) {
 		if (!(source.isDirectory() || source.isFile())) {
 			return;
 		}
@@ -68,7 +77,7 @@ public class RegistryLoader {
 				root = source.toPath().resolve(base);
 			}
 
-			loadRegistries(mod, root);
+			loadRegistries(mod, root, include);
 		}
 		catch (IOException e) {
 			AncientWarfareCore.log.error("Error loading FileSystem from jar: ", e);
@@ -78,7 +87,8 @@ public class RegistryLoader {
 		}
 	}
 
-	private static void loadRegistries(ModContainer mod, Path root) {
+	@SuppressWarnings("squid:S3725") //ZipPath doesn't have toFile support
+	private static void loadRegistries(ModContainer mod, Path root, Predicate<IRegistryDataParser> include) {
 		if (!Files.exists(root)) {
 			return;
 		}
@@ -92,11 +102,11 @@ public class RegistryLoader {
 			return;
 		}
 		while (itr != null && itr.hasNext()) {
-			loadFile(mod, root, itr.next());
+			loadFile(mod, root, itr.next(), include);
 		}
 	}
 
-	private static void loadFile(ModContainer mod, Path root, Path file) {
+	private static void loadFile(ModContainer mod, Path root, Path file, Predicate<IRegistryDataParser> include) {
 		Loader.instance().setActiveModContainer(mod);
 
 		String relative = root.relativize(file).toString();
@@ -104,15 +114,10 @@ public class RegistryLoader {
 			return;
 
 		String name = FilenameUtils.removeExtension(relative).replaceAll("\\\\", "/");
-		ResourceLocation key = new ResourceLocation(mod.getModId(), name);
-
-		if (loadedRegistries.contains(key)) {
-			AncientWarfareCore.log.info("Registry {} has already been loaded in overrides, skipping...", key.toString());
-			return;
-		}
-		loadedRegistries.add(key);
 
 		String shortName = name.substring(name.lastIndexOf('/') + 1);
+
+		ResourceLocation registryName = new ResourceLocation(mod.getModId(), name);
 
 		BufferedReader reader = null;
 		try {
@@ -125,20 +130,26 @@ public class RegistryLoader {
 				return;
 			}
 
-			if (json == null || isDisabled(json) || !isModLoaded(json)) {
+			if (loadedRegistries.containsKey(registryName)) {
+				AncientWarfareCore.log.info("Registry {} has already been loaded in overrides, skipping...", registryName.toString());
+				return;
+			}
+			loadedRegistries.put(registryName, parser.get().getName());
+
+			if (json == null || !include.test(parser.get()) || isDisabled(json) || !isModLoaded(json)) {
 				return;
 			}
 
 			parser.get().parse(json);
 		}
 		catch (JsonParseException e) {
-			AncientWarfareCore.log.error("Parsing error loading registry {}", key, e);
+			AncientWarfareCore.log.error("Parsing error loading registry {}", registryName, e);
 		}
 		catch (MissingResourceException e) {
 			AncientWarfareCore.log.error(e.getMessage());
 		}
 		catch (IOException e) {
-			AncientWarfareCore.log.error("Couldn't read registry {} from {}", key, file, e);
+			AncientWarfareCore.log.error("Couldn't read registry {} from {}", registryName, file, e);
 		}
 		finally {
 			IOUtils.closeQuietly(reader);

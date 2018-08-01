@@ -1,10 +1,12 @@
-package net.shadowmage.ancientwarfare.core.gui.manual;
+package net.shadowmage.ancientwarfare.core.gui.manual.elements;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.shadowmage.ancientwarfare.core.gui.manual.GuiManual;
+import net.shadowmage.ancientwarfare.core.gui.manual.IElementWrapperCreator;
 import net.shadowmage.ancientwarfare.core.manual.TextElement;
 
 import java.util.ArrayList;
@@ -15,8 +17,8 @@ import java.util.stream.Collectors;
 public class TextElementWrapper extends BaseElementWrapper<TextElement> {
 	private static final int SPACING = 9;
 
-	public TextElementWrapper(int topLeftY, int width, int height, TextElement element) {
-		super(0, topLeftY, width, height, element);
+	public TextElementWrapper(GuiManual gui, int topLeftY, int width, int height, TextElement element) {
+		super(gui, 0, topLeftY, width, height, element);
 	}
 
 	@Override
@@ -32,7 +34,7 @@ public class TextElementWrapper extends BaseElementWrapper<TextElement> {
 
 	public static class Creator implements IElementWrapperCreator<TextElement> {
 		@Override
-		public List<BaseElementWrapper<TextElement>> construct(int topLeftY, int width, int remainingPageHeight, int emptyPageHeight, TextElement element) {
+		public List<BaseElementWrapper<TextElement>> construct(GuiManual gui, int topLeftY, int width, int remainingPageHeight, int emptyPageHeight, TextElement element) {
 			FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
 			List<String> textLines = fontRenderer.listFormattedStringToWidth(element.getText(), width);
 
@@ -40,21 +42,21 @@ public class TextElementWrapper extends BaseElementWrapper<TextElement> {
 
 			int textHeight = fontHeight * textLines.size();
 			if (textHeight <= remainingPageHeight) {
-				return ImmutableList.of(new TextElementWrapper(topLeftY, width, textHeight, element));
+				return ImmutableList.of(new TextElementWrapper(gui, topLeftY, width, textHeight, element));
 			} else {
 				ImmutableList.Builder<BaseElementWrapper<TextElement>> listBuilder = new ImmutableList.Builder<>();
 				int linesCurrent = Math.max(remainingPageHeight / fontHeight, 0);
 				if (remainingPageHeight >= 2 * fontHeight) {
 					TextElement firstElement = new TextElement(textLines.stream().limit(linesCurrent).collect(Collectors.joining("\n")));
-					listBuilder.add(new TextElementWrapper(topLeftY, width, linesCurrent * fontHeight, firstElement));
+					listBuilder.add(new TextElementWrapper(gui, topLeftY, width, linesCurrent * fontHeight, firstElement));
 				}
-				listBuilder.addAll(getNextElements(width, emptyPageHeight, textLines, fontHeight, linesCurrent));
+				listBuilder.addAll(getNextElements(gui, width, emptyPageHeight, textLines, fontHeight, linesCurrent));
 
 				return listBuilder.build();
 			}
 		}
 
-		private List<BaseElementWrapper<TextElement>> getNextElements(int width, int emptyPageHeight, List<String> textLines, int fontHeight, int linesCurrent) {
+		private List<BaseElementWrapper<TextElement>> getNextElements(GuiManual gui, int width, int emptyPageHeight, List<String> textLines, int fontHeight, int linesCurrent) {
 			int skipLines = linesCurrent;
 			List<BaseElementWrapper<TextElement>> nextElements = new ArrayList<>();
 			int maxLinesOnPage = emptyPageHeight / fontHeight;
@@ -62,7 +64,7 @@ public class TextElementWrapper extends BaseElementWrapper<TextElement> {
 				int linesToAdd = Math.min(textLines.size() - skipLines, maxLinesOnPage);
 
 				TextElement textElement = new TextElement(textLines.stream().skip(skipLines).limit(linesToAdd).collect(Collectors.joining("\n")));
-				nextElements.add(new TextElementWrapper(0, width, linesToAdd * fontHeight, textElement));
+				nextElements.add(new TextElementWrapper(gui, 0, width, linesToAdd * fontHeight, textElement));
 				skipLines += linesToAdd;
 			}
 			return nextElements;

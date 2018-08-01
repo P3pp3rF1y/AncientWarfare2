@@ -5,8 +5,13 @@ import com.google.common.collect.ImmutableSet;
 import net.minecraft.util.Tuple;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.shadowmage.ancientwarfare.core.gui.manual.elements.BaseElementWrapper;
+import net.shadowmage.ancientwarfare.core.gui.manual.elements.HeadingElementWrapper;
+import net.shadowmage.ancientwarfare.core.gui.manual.elements.TableOfContentsWrapper;
+import net.shadowmage.ancientwarfare.core.gui.manual.elements.TextElementWrapper;
 import net.shadowmage.ancientwarfare.core.manual.HeadingElement;
 import net.shadowmage.ancientwarfare.core.manual.IContentElement;
+import net.shadowmage.ancientwarfare.core.manual.TableOfContentsElement;
 import net.shadowmage.ancientwarfare.core.manual.TextElement;
 
 import java.util.ArrayList;
@@ -21,23 +26,24 @@ public class ElementWrapperFactory {
 
 	private static final Set<ElementWrapperMapping> MAPPINGS = ImmutableSet.of(
 			new ElementWrapperMapping<>(TextElement.class, new TextElementWrapper.Creator()),
-			new ElementWrapperMapping<>(HeadingElement.class, new HeadingElementWrapper.Creator())
+			new ElementWrapperMapping<>(HeadingElement.class, new HeadingElementWrapper.Creator()),
+			new ElementWrapperMapping<>(TableOfContentsElement.class, new TableOfContentsWrapper.Creator())
 	);
 
-	public static <T extends IContentElement> List<BaseElementWrapper<T>> create(int topLeftY, int width, int remainingPageHeight, int emptyPageHeight, T element) {
+	public static <T extends IContentElement> List<BaseElementWrapper<T>> create(GuiManual gui, int topLeftY, int width, int remainingPageHeight, int emptyPageHeight, T element) {
 		//noinspection unchecked
 		return MAPPINGS.stream().filter(m -> m.matches(element)).findFirst()
-				.map(m -> m.construct(topLeftY, width, remainingPageHeight, emptyPageHeight, element))
+				.map(m -> m.construct(gui, topLeftY, width, remainingPageHeight, emptyPageHeight, element))
 				.orElse(Collections.emptyList());
 	}
 
-	public static List<List<BaseElementWrapper>> getPagedWrappedContent(List<IContentElement> elements, int width, int pageHeight) {
+	public static List<List<BaseElementWrapper>> getPagedWrappedContent(GuiManual gui, List<IContentElement> elements, int width, int pageHeight) {
 		List<List<BaseElementWrapper>> pagedWrappers = new ArrayList<>();
 		int currentY = 0;
 		List<BaseElementWrapper> currentPageWrappers = addNewPage(pagedWrappers);
 		List<Tuple<IContentElement, List<BaseElementWrapper<IContentElement>>>> keepTogether = new ArrayList<>();
 		for (IContentElement element : elements) {
-			List<BaseElementWrapper<IContentElement>> pageElements = create(currentY, width, pageHeight - currentY, pageHeight, element);
+			List<BaseElementWrapper<IContentElement>> pageElements = create(gui, currentY, width, pageHeight - currentY, pageHeight, element);
 
 			if (!pageElements.isEmpty() && pageElements.get(0).shouldKeepWithNext()) {
 				keepTogether.add(new Tuple<>(element, pageElements));
@@ -45,7 +51,7 @@ public class ElementWrapperFactory {
 				continue;
 			} else if (!keepTogether.isEmpty()) {
 				pageElements = addFirstToKeepAndRemoveFromCurrent(keepTogether, element, pageElements);
-				currentY = addKeepToCurrentElements(width, pageHeight, keepTogether, pageElements);
+				currentY = addKeepToCurrentElements(gui, width, pageHeight, keepTogether, pageElements);
 				keepTogether.clear();
 			}
 
@@ -62,11 +68,11 @@ public class ElementWrapperFactory {
 
 	}
 
-	private static int addKeepToCurrentElements(int width, int pageHeight, List<Tuple<IContentElement, List<BaseElementWrapper<IContentElement>>>> keepTogether, List<BaseElementWrapper<IContentElement>> pageElements) {
+	private static int addKeepToCurrentElements(GuiManual gui, int width, int pageHeight, List<Tuple<IContentElement, List<BaseElementWrapper<IContentElement>>>> keepTogether, List<BaseElementWrapper<IContentElement>> pageElements) {
 		int currentY;
 		boolean recalculateY = !areOnTheSamePage(keepTogether);
 		if (recalculateY) {
-			currentY = recalculateYPositions(width, pageHeight, keepTogether, pageElements);
+			currentY = recalculateYPositions(gui, width, pageHeight, keepTogether, pageElements);
 		} else {
 			ArrayList<BaseElementWrapper<IContentElement>> lastElements = new ArrayList<>(pageElements);
 			pageElements.clear();
@@ -85,13 +91,13 @@ public class ElementWrapperFactory {
 		return pageElements;
 	}
 
-	private static int recalculateYPositions(int width, int pageHeight, List<Tuple<IContentElement, List<BaseElementWrapper<IContentElement>>>> keepTogether,
+	private static int recalculateYPositions(GuiManual gui, int width, int pageHeight, List<Tuple<IContentElement, List<BaseElementWrapper<IContentElement>>>> keepTogether,
 			List<BaseElementWrapper<IContentElement>> pageElements) {
 		int updatedY = 0;
 		List<BaseElementWrapper<IContentElement>> lastElements = new ArrayList<>(pageElements);
 		pageElements.clear();
 		for (Tuple<IContentElement, List<BaseElementWrapper<IContentElement>>> el : keepTogether) {
-			List<BaseElementWrapper<IContentElement>> els = create(updatedY, width, pageHeight - updatedY, pageHeight, el.getFirst());
+			List<BaseElementWrapper<IContentElement>> els = create(gui, updatedY, width, pageHeight - updatedY, pageHeight, el.getFirst());
 			if (!els.isEmpty()) {
 				updatedY += els.get(els.size() - 1).getHeight();
 			}
@@ -138,8 +144,8 @@ public class ElementWrapperFactory {
 			return elementClass.isInstance(element);
 		}
 
-		public List<BaseElementWrapper<T>> construct(int topLeftY, int width, int remainingPageHeight, int emptyPageHeight, T element) {
-			return creator.construct(topLeftY, width, remainingPageHeight, emptyPageHeight, element);
+		public List<BaseElementWrapper<T>> construct(GuiManual gui, int topLeftY, int width, int remainingPageHeight, int emptyPageHeight, T element) {
+			return creator.construct(gui, topLeftY, width, remainingPageHeight, emptyPageHeight, element);
 		}
 	}
 }
