@@ -13,6 +13,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 
@@ -55,7 +56,6 @@ public class TextureUtils {
 	private static boolean loadTexture(ResourceLocation loc, File file) {
 		try {
 			BufferedImage image = ImageIO.read(file);
-
 			Minecraft.getMinecraft().renderEngine.loadTexture(loc, new TextureImageBased(loc, image));
 
 			return true;
@@ -68,19 +68,19 @@ public class TextureUtils {
 
 	private static boolean loadTextureFromAssets(ResourceLocation loc, String path) {
 		//noinspection ConstantConditions
+		String fullPath = "assets/" + AncientWarfareCore.MOD_ID + "/" + path;
 		File source = Loader.instance().activeModContainer().getSource();
 		if (source.isFile()) {
 			try (FileSystem fs = FileSystems.newFileSystem(source.toPath(), null)) {
-				File file = fs.getPath(path).toFile();
-				if (loadTexture(loc, file)) {
-					return true;
-				}
+				InputStream inputstream = fs.provider().newInputStream(fs.getPath(fullPath));
+				Minecraft.getMinecraft().renderEngine.loadTexture(loc, new TextureImageBased(loc, ImageIO.read(inputstream)));
+				return true;
 			}
 			catch (IOException e) {
 				//noop
 			}
 		} else if (source.isDirectory()) {
-			File file = source.toPath().resolve("assets/" + AncientWarfareCore.MOD_ID + "/" + path).toFile();
+			File file = source.toPath().resolve(fullPath).toFile();
 			if (loadTexture(loc, file)) {
 				return true;
 			}
