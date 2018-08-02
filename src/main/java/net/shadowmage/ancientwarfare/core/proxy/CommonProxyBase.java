@@ -1,7 +1,5 @@
 package net.shadowmage.ancientwarfare.core.proxy;
 
-import net.minecraft.entity.player.EntityPlayer;
-
 public class CommonProxyBase {
 
 	public void addClientRegistrar(IClientRegistrar registrar) {
@@ -9,15 +7,14 @@ public class CommonProxyBase {
 	}
 
 	public void preInit() {
-
+		//NOOP for commonProxy
 	}
 
 	public void init() {
-
+		//NOOP for commonProxy
 	}
 
-	public EntityPlayer getClientPlayer() {
+	public void postInit() {
 		//NOOP for commonProxy
-		return null;
 	}
 }

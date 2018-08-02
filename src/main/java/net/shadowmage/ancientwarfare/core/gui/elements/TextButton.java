@@ -5,6 +5,7 @@ import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.init.SoundEvents;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
+import net.shadowmage.ancientwarfare.core.proxy.ClientProxy;
 
 import java.awt.*;
 
@@ -49,7 +50,7 @@ public abstract class TextButton extends GuiElement {
 	public void render(int mouseX, int mouseY, float partialTick) {
 		if (visible) {
 			Color color = isMouseOverElement(mouseX, mouseY) ? colorInFocus : colorOutOfFocus;
-			Minecraft.getMinecraft().fontRenderer.drawString(text, renderX, renderY, color.getRGB());
+			ClientProxy.getUnicodeFontRenderer().drawString(text, renderX, renderY, color.getRGB());
 		}
 	}
 }

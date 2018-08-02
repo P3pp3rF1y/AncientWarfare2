@@ -1,13 +1,13 @@
 package net.shadowmage.ancientwarfare.core.gui.manual.elements;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.gui.manual.GuiManual;
 import net.shadowmage.ancientwarfare.core.gui.manual.IElementWrapperCreator;
 import net.shadowmage.ancientwarfare.core.manual.TextElement;
+import net.shadowmage.ancientwarfare.core.proxy.ClientProxy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ public class TextElementWrapper extends BaseElementWrapper<TextElement> {
 	@Override
 	public void render(int mouseX, int mouseY, float partialTick) {
 		super.render(mouseX, mouseY, partialTick);
-		Minecraft.getMinecraft().fontRenderer.drawSplitString(getElement().getText(), renderX, renderY, width, 0x000000);
+		ClientProxy.getUnicodeFontRenderer().drawSplitString(getElement().getText(), renderX, renderY, width, 0x000000);
 	}
 
 	@Override
@@ -35,7 +35,7 @@ public class TextElementWrapper extends BaseElementWrapper<TextElement> {
 	public static class Creator implements IElementWrapperCreator<TextElement> {
 		@Override
 		public List<BaseElementWrapper<TextElement>> construct(GuiManual gui, int topLeftY, int width, int remainingPageHeight, int emptyPageHeight, TextElement element) {
-			FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+			FontRenderer fontRenderer = ClientProxy.getUnicodeFontRenderer();
 			List<String> textLines = fontRenderer.listFormattedStringToWidth(element.getText(), width);
 
 			int fontHeight = fontRenderer.FONT_HEIGHT;

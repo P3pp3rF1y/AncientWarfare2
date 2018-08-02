@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.core.gui.manual.elements;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -12,6 +11,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.TextButton;
 import net.shadowmage.ancientwarfare.core.gui.manual.GuiManual;
 import net.shadowmage.ancientwarfare.core.gui.manual.IElementWrapperCreator;
 import net.shadowmage.ancientwarfare.core.manual.TableOfContentsElement;
+import net.shadowmage.ancientwarfare.core.proxy.ClientProxy;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class TableOfContentsWrapper extends BaseElementWrapper<TableOfContentsEl
 		super(gui, 0, topLeftY, width, height, element);
 
 		int currentY = topLeftY;
-		FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+		FontRenderer fontRenderer = ClientProxy.getUnicodeFontRenderer();
 		int fontHeight = fontRenderer.FONT_HEIGHT;
 		int itemHeight = fontHeight + SPACING;
 		for (TableOfContentsElement.TableOfContentsItem item : element.getItems()) {
@@ -86,7 +86,7 @@ public class TableOfContentsWrapper extends BaseElementWrapper<TableOfContentsEl
 	public static class Creator implements IElementWrapperCreator<TableOfContentsElement> {
 		@Override
 		public List<BaseElementWrapper<TableOfContentsElement>> construct(GuiManual gui, int topLeftY, int width, int remainingPageHeight, int emptyPageHeight, TableOfContentsElement element) {
-			FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+			FontRenderer fontRenderer = ClientProxy.getUnicodeFontRenderer();
 			int remainingCount = element.getItems().size();
 			int remainingHeight = remainingCount * (fontRenderer.FONT_HEIGHT + SPACING);
 

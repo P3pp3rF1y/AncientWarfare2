@@ -122,6 +122,8 @@ public class AncientWarfareCore {
 	@EventHandler
 	public void postinit(FMLPostInitializationEvent evt) {
 		statics.save();
+
+		proxy.postInit();
 	}
 
 	@EventHandler
