@@ -1,6 +1,8 @@
 package net.shadowmage.ancientwarfare.core.network;
 
 import io.netty.buffer.ByteBuf;
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.manual.ManualContentRegistry;
@@ -24,5 +26,6 @@ public class PacketManualReload extends PacketBase {
 	protected void execute() {
 		ManualContentRegistry.clearContents();
 		RegistryLoader.reload("manual_content");
+		Minecraft.getMinecraft().player.sendMessage(new TextComponentString("Manual content reloaded"));
 	}
 }

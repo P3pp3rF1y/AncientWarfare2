@@ -76,6 +76,8 @@ public class ManualContentRegistry {
 					return HeadingElement.parse(elementJson);
 				case "toc_list":
 					return TableOfContentsElement.parse(elementJson);
+				case "image":
+					return ImageElement.parse(elementJson);
 				default:
 					return EMPTY_ELEMENT;
 			}

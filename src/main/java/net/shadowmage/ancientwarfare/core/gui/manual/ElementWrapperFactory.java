@@ -7,10 +7,12 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.gui.manual.elements.BaseElementWrapper;
 import net.shadowmage.ancientwarfare.core.gui.manual.elements.HeadingElementWrapper;
+import net.shadowmage.ancientwarfare.core.gui.manual.elements.ImageElementWrapper;
 import net.shadowmage.ancientwarfare.core.gui.manual.elements.TableOfContentsWrapper;
 import net.shadowmage.ancientwarfare.core.gui.manual.elements.TextElementWrapper;
 import net.shadowmage.ancientwarfare.core.manual.HeadingElement;
 import net.shadowmage.ancientwarfare.core.manual.IContentElement;
+import net.shadowmage.ancientwarfare.core.manual.ImageElement;
 import net.shadowmage.ancientwarfare.core.manual.TableOfContentsElement;
 import net.shadowmage.ancientwarfare.core.manual.TextElement;
 
@@ -27,7 +29,8 @@ public class ElementWrapperFactory {
 	private static final Set<ElementWrapperMapping> MAPPINGS = ImmutableSet.of(
 			new ElementWrapperMapping<>(TextElement.class, new TextElementWrapper.Creator()),
 			new ElementWrapperMapping<>(HeadingElement.class, new HeadingElementWrapper.Creator()),
-			new ElementWrapperMapping<>(TableOfContentsElement.class, new TableOfContentsWrapper.Creator())
+			new ElementWrapperMapping<>(TableOfContentsElement.class, new TableOfContentsWrapper.Creator()),
+			new ElementWrapperMapping<>(ImageElement.class, new ImageElementWrapper.Creator())
 	);
 
 	public static <T extends IContentElement> List<BaseElementWrapper<T>> create(GuiManual gui, int topLeftY, int width, int remainingPageHeight, int emptyPageHeight, T element) {
