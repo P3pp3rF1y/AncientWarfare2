@@ -12,24 +12,30 @@ import net.shadowmage.ancientwarfare.core.interfaces.ITorque.SidedTorqueCell;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
+import javax.annotation.Nullable;
+
 public abstract class TileTorqueSidedCell extends TileTorqueBase {
 
-	boolean connections[] = null;
+	private static final String CLIENT_ENERGY_TAG = "clientEnergy";
+	private boolean[] connections = null;
 	final SidedTorqueCell[] storage = new SidedTorqueCell[DIRECTION_LENGTH];
 
 	/*
 	 * client side this == 0.0 -> 100.0
-	 */ double clientEnergyState;
+	 */
+	private double clientEnergyState;
 
 	/*
 	 * server side this == 0 -> 100 (integer percent)
 	 * client side this == 0 -> 100 (integer percent)
-	 */ int clientDestEnergyState;
+	 */
+	private int clientDestEnergyState;
 
 	/*
 	 * used client side for rendering
-	 */ double rotation;
-	double lastRotationDiff;
+	 */
+	private double rotation;
+	private double lastRotationDiff;
 
 	public TileTorqueSidedCell() {
 		double max = getMaxTransfer();
@@ -58,7 +64,7 @@ public abstract class TileTorqueSidedCell extends TileTorqueBase {
 		}
 	}
 
-	protected double applyPowerLoss() {
+	private double applyPowerLoss() {
 		double loss = 0;
 		for (SidedTorqueCell aStorage : storage) {
 			loss += applyPowerDrain(aStorage);
@@ -160,14 +166,14 @@ public abstract class TileTorqueSidedCell extends TileTorqueBase {
 		connections = null;
 	}
 
-	protected void buildConnections() {
-		boolean[] connections = new boolean[DIRECTION_LENGTH];
+	private void buildConnections() {
+		boolean[] updatedConnections = new boolean[DIRECTION_LENGTH];
 		ITorqueTile[] cache = getTorqueCache();
 		EnumFacing dir;
 		for (int i = 0; i < cache.length; i++) {
 			dir = EnumFacing.values()[i];
 			if (cache[i] != null) {
-				connections[i] = (cache[i].canInputTorque(dir.getOpposite()) && canOutputTorque(dir)) || (cache[i].canOutputTorque(dir.getOpposite()) && canInputTorque(dir));
+				updatedConnections[i] = (cache[i].canInputTorque(dir.getOpposite()) && canOutputTorque(dir)) || (cache[i].canOutputTorque(dir.getOpposite()) && canInputTorque(dir));
 			}
 		}
 		if (ModuleStatus.redstoneFluxEnabled) {
@@ -177,20 +183,20 @@ public abstract class TileTorqueSidedCell extends TileTorqueBase {
 					continue;
 				}//already examined that side..
 				if (tes[i] != null) {
-					connections[i] = true;
+					updatedConnections[i] = true;
 				}
 			}
 		}
-		this.connections = connections;
+		this.connections = updatedConnections;
 	}
 
 	@Override
-	public double getMaxTorque(EnumFacing from) {
-		return storage[from.ordinal()].getMaxEnergy();
+	public double getMaxTorque(@Nullable EnumFacing from) {
+		return from == null ? 0 : storage[from.ordinal()].getMaxEnergy();
 	}
 
 	@Override
-	public double getTorqueStored(EnumFacing from) {
+	public double getTorqueStored(@Nullable EnumFacing from) {
 		if (from == null) {
 			return 0D; // some mods pass null into RF compat so let's return 0 in that case
 		}
@@ -198,8 +204,8 @@ public abstract class TileTorqueSidedCell extends TileTorqueBase {
 	}
 
 	@Override
-	public double addTorque(EnumFacing from, double energy) {
-		return storage[from.ordinal()].addEnergy(energy);
+	public double addTorque(@Nullable EnumFacing from, double energy) {
+		return from == null ? 0 : storage[from.ordinal()].addEnergy(energy);
 	}
 
 	@Override
@@ -213,12 +219,12 @@ public abstract class TileTorqueSidedCell extends TileTorqueBase {
 	}
 
 	@Override
-	public double getMaxTorqueInput(EnumFacing from) {
-		return storage[from.ordinal()].getMaxTickInput();
+	public double getMaxTorqueInput(@Nullable EnumFacing from) {
+		return from == null ? 0 : storage[from.ordinal()].getMaxTickInput();
 	}
 
 	@Override
-	public boolean useOutputRotation(EnumFacing from) {
+	public boolean useOutputRotation(@Nullable EnumFacing from) {
 		return true;
 	}
 
@@ -230,13 +236,13 @@ public abstract class TileTorqueSidedCell extends TileTorqueBase {
 	@Override
 	protected void writeUpdateNBT(NBTTagCompound tag) {
 		super.writeUpdateNBT(tag);
-		tag.setInteger("clientEnergy", clientDestEnergyState);
+		tag.setInteger(CLIENT_ENERGY_TAG, clientDestEnergyState);
 	}
 
 	@Override
 	protected void handleUpdateNBT(NBTTagCompound tag) {
 		super.handleUpdateNBT(tag);
-		clientDestEnergyState = tag.getInteger("clientEnergy");
+		clientDestEnergyState = tag.getInteger(CLIENT_ENERGY_TAG);
 		connections = null; //clear connections on update
 	}
 
@@ -247,7 +253,7 @@ public abstract class TileTorqueSidedCell extends TileTorqueBase {
 		for (int i = 0; i < storage.length; i++) {
 			storage[i].readFromNBT(list.getCompoundTagAt(i));
 		}
-		clientDestEnergyState = tag.getInteger("clientEnergy");
+		clientDestEnergyState = tag.getInteger(CLIENT_ENERGY_TAG);
 	}
 
 	@Override
@@ -258,7 +264,7 @@ public abstract class TileTorqueSidedCell extends TileTorqueBase {
 			list.appendTag(aStorage.writeToNBT(new NBTTagCompound()));
 		}
 		tag.setTag("energyList", list);
-		tag.setInteger("clientEnergy", clientDestEnergyState);
+		tag.setInteger(CLIENT_ENERGY_TAG, clientDestEnergyState);
 
 		return tag;
 	}
