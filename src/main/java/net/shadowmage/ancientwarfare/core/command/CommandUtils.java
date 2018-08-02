@@ -52,7 +52,7 @@ public class CommandUtils extends CommandBase {
 
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-		if (args.length > 2 || args.length == 0) {
+		if (args.length > 2 || args.length == 0 || !subCommands.containsKey(args[0])) {
 			throw new WrongUsageException(getUsage(sender));
 		}
 
