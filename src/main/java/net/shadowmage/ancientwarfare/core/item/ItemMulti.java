@@ -61,7 +61,7 @@ public class ItemMulti extends ItemBase implements IClientRegister {
 	}
 
 	public ItemMulti listenToProxy(CommonProxyBase proxy) {
-		proxy.addClientRegistrar(this);
+		proxy.addClientRegistrer(this);
 
 		return this;
 	}

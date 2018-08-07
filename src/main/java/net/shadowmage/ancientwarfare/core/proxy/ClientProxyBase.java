@@ -12,7 +12,7 @@ import java.util.Set;
 @SideOnly(Side.CLIENT)
 public class ClientProxyBase extends CommonProxyBase {
 
-	private Set<IClientRegister> clientRegistrars = Sets.newHashSet();
+	private Set<IClientRegister> clientRegisters = Sets.newHashSet();
 
 	public ClientProxyBase() {
 		MinecraftForge.EVENT_BUS.register(this);
@@ -20,13 +20,13 @@ public class ClientProxyBase extends CommonProxyBase {
 
 	@SubscribeEvent
 	public void registerModels(ModelRegistryEvent event) {
-		for (IClientRegister registrar : clientRegistrars) {
-			registrar.registerClient();
+		for (IClientRegister register : clientRegisters) {
+			register.registerClient();
 		}
 	}
 
 	@Override
-	public void addClientRegistrar(IClientRegister registrar) {
-		clientRegistrars.add(registrar);
+	public void addClientRegistrer(IClientRegister register) {
+		clientRegisters.add(register);
 	}
 }

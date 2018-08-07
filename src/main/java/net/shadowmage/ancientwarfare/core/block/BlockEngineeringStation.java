@@ -41,7 +41,7 @@ public class BlockEngineeringStation extends BlockBaseCore implements IClientReg
 		super(Material.ROCK, "engineering_station");
 		setHardness(2.f);
 
-		AncientWarfareCore.proxy.addClientRegistrar(this);
+		AncientWarfareCore.proxy.addClientRegistrer(this);
 	}
 
 	@Override

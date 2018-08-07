@@ -21,7 +21,7 @@ public abstract class BlockBaseAutomation extends BlockBase implements IClientRe
 		super(material, AncientWarfareAutomation.MOD_ID, regName);
 		setCreativeTab(AWAutomationItemLoader.automationTab);
 
-		AncientWarfareAutomation.proxy.addClientRegistrar(this);
+		AncientWarfareAutomation.proxy.addClientRegistrer(this);
 	}
 
 	@Override
