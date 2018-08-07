@@ -13,7 +13,7 @@ public abstract class ItemBaseVehicle extends ItemBase implements IClientRegiste
 		super(AncientWarfareVehicles.modID, regName);
 		setCreativeTab(AWVehicleItemLoader.vehicleTab);
 
-		AncientWarfareNPC.proxy.addClientRegistrer(this);
+		AncientWarfareNPC.proxy.addClientRegister(this);
 	}
 
 	@Override

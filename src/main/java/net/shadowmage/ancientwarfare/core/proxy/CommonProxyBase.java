@@ -2,7 +2,7 @@ package net.shadowmage.ancientwarfare.core.proxy;
 
 public class CommonProxyBase {
 
-	public void addClientRegistrer(IClientRegister register) {
+	public void addClientRegister(IClientRegister register) {
 		//NOOP for commonProxy
 	}
 

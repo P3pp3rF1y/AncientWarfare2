@@ -68,7 +68,7 @@ public class NpcClientProxy extends NpcCommonProxy {
 	}
 
 	@Override
-	public void addClientRegistrer(IClientRegister register) {
+	public void addClientRegister(IClientRegister register) {
 		clientRegisters.add(register);
 	}
 

@@ -41,7 +41,7 @@ public class BlockResearchStation extends BlockBaseCore implements IRotatableBlo
 		super(Material.ROCK, "research_station");
 		setHardness(2.f);
 
-		AncientWarfareCore.proxy.addClientRegistrer(this);
+		AncientWarfareCore.proxy.addClientRegister(this);
 	}
 
 	@Override

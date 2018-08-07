@@ -20,7 +20,7 @@ public class BlockBaseStructure extends BlockBase implements IClientRegister {
 		super(material, AncientWarfareStructures.MOD_ID, regName);
 		setCreativeTab(AWStructuresItemLoader.structureTab);
 
-		AncientWarfareStructures.proxy.addClientRegistrer(this);
+		AncientWarfareStructures.proxy.addClientRegister(this);
 	}
 
 	@Override

@@ -12,7 +12,7 @@ public class ItemBaseStructure extends ItemBase implements IClientRegister {
 		super(AncientWarfareStructures.MOD_ID, regName);
 		setCreativeTab(AWStructuresItemLoader.structureTab);
 
-		AncientWarfareStructures.proxy.addClientRegistrer(this);
+		AncientWarfareStructures.proxy.addClientRegister(this);
 	}
 
 	@Override

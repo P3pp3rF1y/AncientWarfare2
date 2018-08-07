@@ -20,7 +20,7 @@ public class BlockBaseNPC extends BlockBase implements IClientRegister {
 		super(material, AncientWarfareNPC.modID, regName);
 		setCreativeTab(AWNPCItemLoader.npcTab);
 
-		AncientWarfareNPC.proxy.addClientRegistrer(this);
+		AncientWarfareNPC.proxy.addClientRegister(this);
 	}
 
 	@Override

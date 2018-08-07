@@ -12,7 +12,7 @@ public abstract class ItemBaseCore extends ItemBase implements IClientRegister {
 		super(AncientWarfareCore.MOD_ID, regName);
 		setCreativeTab(AWCoreBlockLoader.coreTab);
 
-		AncientWarfareCore.proxy.addClientRegistrer(this);
+		AncientWarfareCore.proxy.addClientRegister(this);
 	}
 
 	@Override

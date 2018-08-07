@@ -12,7 +12,7 @@ public abstract class ItemBaseNPC extends ItemBase implements IClientRegister {
 		super(AncientWarfareNPC.modID, regName);
 		setCreativeTab(AWNPCItemLoader.npcTab);
 
-		AncientWarfareNPC.proxy.addClientRegistrer(this);
+		AncientWarfareNPC.proxy.addClientRegister(this);
 	}
 
 	@Override
