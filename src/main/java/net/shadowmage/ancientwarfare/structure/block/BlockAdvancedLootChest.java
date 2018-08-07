@@ -14,7 +14,7 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.shadowmage.ancientwarfare.core.proxy.IClientRegistrar;
+import net.shadowmage.ancientwarfare.core.proxy.IClientRegister;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
 import net.shadowmage.ancientwarfare.structure.render.ParticleDummyModel;
@@ -25,7 +25,7 @@ import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedLootChest;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class BlockAdvancedLootChest extends BlockChest implements IClientRegistrar {
+public class BlockAdvancedLootChest extends BlockChest implements IClientRegister {
 	protected BlockAdvancedLootChest() {
 		super(Type.BASIC);
 		setRegistryName(AncientWarfareStructures.MOD_ID, "advanced_loot_chest");

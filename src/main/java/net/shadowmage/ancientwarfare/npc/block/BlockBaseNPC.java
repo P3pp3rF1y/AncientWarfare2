@@ -10,12 +10,12 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.BlockBase;
-import net.shadowmage.ancientwarfare.core.proxy.IClientRegistrar;
+import net.shadowmage.ancientwarfare.core.proxy.IClientRegister;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.item.AWNPCItemLoader;
 
-public class BlockBaseNPC extends BlockBase implements IClientRegistrar {
+public class BlockBaseNPC extends BlockBase implements IClientRegister {
 	public BlockBaseNPC(Material material, String regName) {
 		super(material, AncientWarfareNPC.modID, regName);
 		setCreativeTab(AWNPCItemLoader.npcTab);

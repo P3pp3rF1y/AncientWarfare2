@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.shadowmage.ancientwarfare.core.proxy.IClientRegistrar;
+import net.shadowmage.ancientwarfare.core.proxy.IClientRegister;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
@@ -27,7 +27,7 @@ import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
 
 import javax.annotation.Nullable;
 
-public final class BlockGateProxy extends BlockContainer implements IClientRegistrar {
+public final class BlockGateProxy extends BlockContainer implements IClientRegister {
 	private static final AxisAlignedBB Z_AXIS_AABB = new AxisAlignedBB(8D / 16D, 0, 0, 8D / 16D, 1, 1);
 	private static final AxisAlignedBB X_AXIS_AABB = new AxisAlignedBB(0, 0, 8D / 16D, 1, 1, 8D / 16D);
 	private static final AxisAlignedBB ZERO_AABB = new AxisAlignedBB(0, 0, 0, 0, 0, 0);

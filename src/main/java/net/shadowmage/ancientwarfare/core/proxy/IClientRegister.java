@@ -1,5 +1,5 @@
 package net.shadowmage.ancientwarfare.core.proxy;
 
-public interface IClientRegistrar {
+public interface IClientRegister {
 	void registerClient();
 }

@@ -27,7 +27,7 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableB
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.gui.research.GuiResearchStation;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.proxy.IClientRegistrar;
+import net.shadowmage.ancientwarfare.core.proxy.IClientRegister;
 import net.shadowmage.ancientwarfare.core.render.BlockStateKeyGenerator;
 import net.shadowmage.ancientwarfare.core.render.ResearchStationRenderer;
 import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
@@ -35,7 +35,7 @@ import net.shadowmage.ancientwarfare.core.tile.TileResearchStation;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
-public class BlockResearchStation extends BlockBaseCore implements IRotatableBlock, IBakeryProvider, IClientRegistrar {
+public class BlockResearchStation extends BlockBaseCore implements IRotatableBlock, IBakeryProvider, IClientRegister {
 
 	public BlockResearchStation() {
 		super(Material.ROCK, "research_station");
