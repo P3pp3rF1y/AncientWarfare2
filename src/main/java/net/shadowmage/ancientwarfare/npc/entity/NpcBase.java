@@ -908,8 +908,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	}
 
 	@Override
-	protected int getExperiencePoints(EntityPlayer attacker) {
-		if (isHostileTowards(attacker) && canBeAttackedBy(attacker)) {
+	protected int getExperiencePoints(@Nullable EntityPlayer attacker) {
+		if (attacker == null || (isHostileTowards(attacker) && canBeAttackedBy(attacker))) {
 			return super.getExperiencePoints(attacker);
 		}
 		return 0;
