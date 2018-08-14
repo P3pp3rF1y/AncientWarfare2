@@ -1,0 +1,185 @@
+{
+    "mod": "oreshrubs",
+    "fruits": [
+        {
+            "type": "picked_drop",
+            "fruit": "oreshrubs:oreshrub_gold",
+            "ripe": {
+                "age": 4
+            },
+            "new": {
+                "age": 3
+            },
+            "drop": {
+                "name": "oreshrubs:oreberries",
+                "count": 2,
+                "nbt": "{OreShrubVariant:{Name:\"gold\"}}"
+            }
+        },
+        {
+            "type": "picked_drop",
+            "fruit": "oreshrubs:oreshrub_iron",
+            "ripe": {
+                "age": 4
+            },
+            "new": {
+                "age": 3
+            },
+            "drop": {
+                "name": "oreshrubs:oreberries",
+                "count": 2,
+                "nbt": "{OreShrubVariant:{Name:\"iron\"}}"
+            }
+        },
+        {
+            "type": "picked_drop",
+            "fruit": "oreshrubs:oreshrub_lead",
+            "ripe": {
+                "age": 4
+            },
+            "new": {
+                "age": 3
+            },
+            "drop": {
+                "name": "oreshrubs:oreberries",
+                "count": 2,
+                "nbt": "{OreShrubVariant:{Name:\"lead\"}}"
+            }
+        },
+        {
+            "type": "picked_drop",
+            "fruit": "oreshrubs:oreshrub_nickel",
+            "ripe": {
+                "age": 4
+            },
+            "new": {
+                "age": 3
+            },
+            "drop": {
+                "name": "oreshrubs:oreberries",
+                "count": 2,
+                "nbt": "{OreShrubVariant:{Name:\"nickel\"}}"
+            }
+        },
+        {
+            "type": "picked_drop",
+            "fruit": "oreshrubs:oreshrub_silver",
+            "ripe": {
+                "age": 4
+            },
+            "new": {
+                "age": 3
+            },
+            "drop": {
+                "name": "oreshrubs:oreberries",
+                "count": 2,
+                "nbt": "{OreShrubVariant:{Name:\"silver\"}}"
+            }
+        },
+        {
+            "type": "picked_drop",
+            "fruit": "oreshrubs:oreshrub_quartz",
+            "ripe": {
+                "age": 4
+            },
+            "new": {
+                "age": 3
+            },
+            "drop": {
+                "name": "oreshrubs:oreberries",
+                "count": 2,
+                "nbt": "{OreShrubVariant:{Name:\"quartz\"}}"
+            }
+        },
+        {
+            "type": "picked_drop",
+            "fruit": "oreshrubs:oreshrub_tin",
+            "ripe": {
+                "age": 4
+            },
+            "new": {
+                "age": 3
+            },
+            "drop": {
+                "name": "oreshrubs:oreberries",
+                "count": 2,
+                "nbt": "{OreShrubVariant:{Name:\"tin\"}}"
+            }
+        },
+        {
+            "type": "picked_drop",
+            "fruit": "oreshrubs:oreshrub_copper",
+            "ripe": {
+                "age": 4
+            },
+            "new": {
+                "age": 3
+            },
+            "drop": {
+                "name": "oreshrubs:oreberries",
+                "count": 2,
+                "nbt": "{OreShrubVariant:{Name:\"copper\"}}"
+            }
+        },
+        {
+            "type": "picked_drop",
+            "fruit": "oreshrubs:oreshrub_aluminum",
+            "ripe": {
+                "age": 4
+            },
+            "new": {
+                "age": 3
+            },
+            "drop": {
+                "name": "oreshrubs:oreberries",
+                "count": 2,
+                "nbt": "{OreShrubVariant:{Name:\"aluminum\"}}"
+            }
+        },
+        {
+            "type": "picked_drop",
+            "fruit": "oreshrubs:oreshrub_emerald",
+            "ripe": {
+                "age": 4
+            },
+            "new": {
+                "age": 3
+            },
+            "drop": {
+                "name": "oreshrubs:oreberries",
+                "count": 1,
+                "nbt": "{OreShrubVariant:{Name:\"emerald\"}}"
+            }
+        },
+        {
+            "type": "picked_drop",
+            "fruit": "oreshrubs:oreshrub_experience",
+            "ripe": {
+                "age": 4
+            },
+            "new": {
+                "age": 3
+            },
+            "drop": {
+                "name": "oreshrubs:oreberries",
+                "count": 3,
+                "nbt": "{OreShrubVariant:{Name:\"experience\"}}"
+            }
+        },
+        {
+            "type": "picked_drop",
+            "fruit": "oreshrubs:oreshrub_glowstone",
+            "ripe": {
+                "age": 4
+            },
+            "new": {
+                "age": 3
+            },
+            "drop": {
+                "name": "oreshrubs:oreberries",
+                "count": 3,
+                "nbt": "{OreShrubVariant:{Name:\"glowstone\"}}"
+            }
+        }
+    ]
+}
