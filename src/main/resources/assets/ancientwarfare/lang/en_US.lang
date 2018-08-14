@@ -366,6 +366,7 @@ guistrings.moveup=▲
 guistrings.moveup.tooltip=Move up
 guistrings.movedown=▼
 guistrings.movedown.tooltip=Move down
+guistrings.info_tool.click_to_print_stack_info=Click slot to print Item stack info
 
 #automation
 guistrings.automation.ignore_damage=Ign. Dmg

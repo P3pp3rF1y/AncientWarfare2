@@ -27,7 +27,7 @@ public class FruitCocoa implements IFruit {
 
 	public FruitCocoa() {
 		this.stateMatcher = new BlockStateMatcher(Blocks.COCOA);
-		this.stackMatcher = new ItemStackMatcher(Items.DYE, EnumDyeColor.BROWN.getDyeDamage());
+		this.stackMatcher = new ItemStackMatcher.Builder(Items.DYE).setMeta(EnumDyeColor.BROWN.getDyeDamage()).build();
 	}
 
 	@Override

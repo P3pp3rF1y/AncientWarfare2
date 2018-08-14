@@ -3,13 +3,17 @@ package net.shadowmage.ancientwarfare.core.api;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+import net.shadowmage.ancientwarfare.core.item.ItemInfoTool;
 import net.shadowmage.ancientwarfare.core.item.ItemMulti;
+import net.shadowmage.ancientwarfare.core.util.InjectionTools;
 import net.shadowmage.ancientwarfare.structure.item.ItemGateSpawner;
 import net.shadowmage.ancientwarfare.structure.item.ItemStructureScanner;
 
 @ObjectHolder(AncientWarfareCore.MOD_ID)
 @SuppressWarnings("squid:S1444")
 public class AWItems {
+	public static final ItemInfoTool INFO_TOOL = InjectionTools.nullValue();
+
 	private AWItems() {}
 
 	@ObjectHolder("research_book")
