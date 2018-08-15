@@ -256,16 +256,21 @@ public class AWCraftingManager {
 	public static ICraftingRecipe findMatchingRecipe(World world, NonNullList<ItemStack> inputs, ItemStack result) {
 		InventoryCrafting inv = fillCraftingMatrixFromInventory(inputs);
 		List<ICraftingRecipe> recipes = findMatchingRecipesNoResearchCheck(inv, world);
-		return recipes.stream().filter(r -> recipeResultsEqual(result, r)).findFirst().orElse(NoRecipeWrapper.INSTANCE);
+		return recipes.stream().filter(r -> recipeResultsEqual(result, r, inv)).findFirst().orElse(NoRecipeWrapper.INSTANCE);
 	}
 
-	private static boolean recipeResultsEqual(ItemStack result, ICraftingRecipe r) {
+	private static boolean recipeResultsEqual(ItemStack result, ICraftingRecipe r, InventoryCrafting inv) {
+		ItemStack otherResult = r.getCraftingResult(inv);
+		if (otherResult.isEmpty()) {
+			return false;
+		}
+
 		int[] oreIDs = OreDictionary.getOreIDs(result);
 		if (oreIDs.length > 0) {
-			int[] foundRecipeOreIDs = OreDictionary.getOreIDs(r.getRecipeOutput());
+			int[] foundRecipeOreIDs = OreDictionary.getOreIDs(otherResult);
 			return oreIDs.length == foundRecipeOreIDs.length && IntStream.of(oreIDs).allMatch(o -> IntStream.of(foundRecipeOreIDs).anyMatch(of -> o == of));
 		}
-		return r.getRecipeOutput().isItemEqual(result);
+		return otherResult.isItemEqual(result);
 	}
 
 	public static boolean canCraftFromInventory(ICraftingRecipe recipe, IItemHandler inventory) {
