@@ -7,16 +7,36 @@
             "content_type": "toc_list",
             "items": [
                 {
-                    "text": "Factions",
-                    "category_link": "factions"
+                    "text": "Research",
+                    "category_link": "research"
+                },
+                {
+                    "text": "Torque",
+                    "category_link": "torque"
+                },
+                {
+                    "text": "Machines",
+                    "category_link": "machines"
+                },
+                {
+                    "text": "Warehouse",
+                    "category_link": "warehouse"
                 },
                 {
                     "text": "NPCs",
                     "category_link": "npcs"
                 },
                 {
+                    "text": "Factions",
+                    "category_link": "factions"
+                },
+                {
                     "text": "Structures",
                     "category_link": "structures"
+                },
+                {
+                    "text": "Vehicles",
+                    "category_link": "vehicles"
                 }
             ]
         }
