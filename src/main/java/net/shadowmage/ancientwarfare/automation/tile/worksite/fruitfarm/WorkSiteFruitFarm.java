@@ -10,6 +10,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import net.shadowmage.ancientwarfare.automation.registry.FruitFarmRegistry;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.IWorksiteAction;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteFarm;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
@@ -82,11 +83,6 @@ public class WorkSiteFruitFarm extends TileWorksiteFarm {
 		return state.getBlock() instanceof IGrowable && ((IGrowable) state.getBlock()).canGrow(world, currentPos, state, world.isRemote);
 	}
 
-	@Override
-	protected boolean processWork() {
-		return pickFruits() || plantFruits() || boneMeal();
-	}
-
 	private boolean boneMeal() {
 		if (blocksToBoneMeal.isEmpty()) {
 			return false;
@@ -128,8 +124,32 @@ public class WorkSiteFruitFarm extends TileWorksiteFarm {
 		return pickable.pick(world, state, pickPos, getFortune(), inventoryForDrops);
 	}
 
+	private static final IWorksiteAction PICK_ACTION = WorksiteImplementation::getEnergyPerActivation;
+	private static final IWorksiteAction PLANT_ACTION = WorksiteImplementation::getEnergyPerActivation;
+	private static final IWorksiteAction BONEMEAL_ACTION = WorksiteImplementation::getEnergyPerActivation;
+
 	@Override
-	protected boolean hasWorksiteWork() {
-		return !blocksToPick.isEmpty() || !blocksToPlant.isEmpty() || !blocksToBoneMeal.isEmpty();
+	protected Optional<IWorksiteAction> getNextAction() {
+		if (!blocksToPick.isEmpty()) {
+			return Optional.of(PICK_ACTION);
+		} else if (!blocksToPlant.isEmpty()) {
+			return Optional.of(PLANT_ACTION);
+		} else if (!blocksToBoneMeal.isEmpty()) {
+			return Optional.of(BONEMEAL_ACTION);
+		}
+
+		return Optional.empty();
+	}
+
+	@Override
+	protected boolean processAction(IWorksiteAction action) {
+		if (action == PICK_ACTION) {
+			return pickFruits();
+		} else if (action == PLANT_ACTION) {
+			return plantFruits();
+		} else if (action == BONEMEAL_ACTION) {
+			return boneMeal();
+		}
+		return false;
 	}
 }

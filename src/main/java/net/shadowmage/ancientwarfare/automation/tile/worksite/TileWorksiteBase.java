@@ -10,7 +10,8 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraftforge.fml.common.Optional;
+import net.minecraftforge.fml.common.Optional.Interface;
+import net.minecraftforge.fml.common.Optional.Method;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.item.ItemWorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
@@ -29,10 +30,11 @@ import org.apache.commons.lang3.math.NumberUtils;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
+import java.util.Optional;
 import java.util.Set;
 
-@Optional.Interface(iface = "cofh.redstoneflux.api.IEnergyProvider", modid = "redstoneflux", striprefs = true)
-@Optional.Interface(iface = "cofh.redstoneflux.api.IEnergyReceiver", modid = "redstoneflux", striprefs = true)
+@Interface(iface = "cofh.redstoneflux.api.IEnergyProvider", modid = "redstoneflux", striprefs = true)
+@Interface(iface = "cofh.redstoneflux.api.IEnergyReceiver", modid = "redstoneflux", striprefs = true)
 public abstract class TileWorksiteBase extends TileUpdatable
 		implements ITickable, IWorkSite, IInteractableTile, IOwnable, IRotatableTile, IEnergyProvider, IEnergyReceiver {
 	private static final String UPGRADES_TAG = "upgrades";
@@ -55,31 +57,31 @@ public abstract class TileWorksiteBase extends TileUpdatable
 	}
 
 	//************************************** COFH RF METHODS ***************************************//
-	@Optional.Method(modid = "redstoneflux")
+	@Method(modid = "redstoneflux")
 	@Override
 	public final int getEnergyStored(EnumFacing from) {
 		return (int) (getTorqueStored(from) * AWAutomationStatics.torqueToRf);
 	}
 
-	@Optional.Method(modid = "redstoneflux")
+	@Method(modid = "redstoneflux")
 	@Override
 	public final int getMaxEnergyStored(EnumFacing from) {
 		return (int) (getMaxTorque(from) * AWAutomationStatics.torqueToRf);
 	}
 
-	@Optional.Method(modid = "redstoneflux")
+	@Method(modid = "redstoneflux")
 	@Override
 	public final boolean canConnectEnergy(EnumFacing from) {
 		return canOutputTorque(from) || canInputTorque(from);
 	}
 
-	@Optional.Method(modid = "redstoneflux")
+	@Method(modid = "redstoneflux")
 	@Override
 	public final int extractEnergy(EnumFacing from, int maxExtract, boolean simulate) {
 		return 0;
 	}
 
-	@Optional.Method(modid = "redstoneflux")
+	@Method(modid = "redstoneflux")
 	@Override
 	public final int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
 		if (!canInputTorque(from)) {
@@ -129,14 +131,17 @@ public abstract class TileWorksiteBase extends TileUpdatable
 	}
 
 	public int getFortune() {
-		return getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_2) ? 2 : getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_1) ? 1 : 0;
+		if (getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_2)) {
+			return 2;
+		}
+		return getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_1) ? 1 : 0;
 	}
 
 	//************************************** TILE UPDATE METHODS ***************************************//
 
-	protected abstract boolean processWork();
+	protected abstract Optional<IWorksiteAction> getNextAction();
 
-	protected abstract boolean hasWorksiteWork();
+	protected abstract boolean processAction(IWorksiteAction action);
 
 	protected abstract void updateWorksite();
 
@@ -149,12 +154,13 @@ public abstract class TileWorksiteBase extends TileUpdatable
 			workRetryDelay--;
 		} else {
 			world.profiler.startSection("Check For Work");
-			double ePerUse = IWorkSite.WorksiteImplementation.getEnergyPerActivation(efficiencyBonusFactor);
-			boolean hasWork = getTorqueStored(null) >= ePerUse && hasWorksiteWork();
+			Optional<IWorksiteAction> nextAction = getNextAction();
+			boolean hasWork = nextAction.isPresent() && nextAction.get().getEnergyConsumed(efficiencyBonusFactor) <= getTorqueStored(null);
 			if (hasWork) {
 				world.profiler.endStartSection("Process Work");
-				if (processWork()) {
-					torqueCell.setEnergy(torqueCell.getEnergy() - ePerUse);
+				IWorksiteAction action = nextAction.get();
+				if (processAction(action)) {
+					torqueCell.setEnergy(torqueCell.getEnergy() - action.getEnergyConsumed(efficiencyBonusFactor));
 					markDirty();
 				} else {
 					workRetryDelay = 20;
@@ -169,10 +175,6 @@ public abstract class TileWorksiteBase extends TileUpdatable
 
 	private void updateEfficiency() {
 		efficiencyBonusFactor = IWorkSite.WorksiteImplementation.getEfficiencyFactor(upgrades);
-	}
-
-	protected void setWorkRetryDelay(int workRetryDelay) {
-		this.workRetryDelay = workRetryDelay;
 	}
 
 	//************************************** TILE INTERACTION METHODS ***************************************//

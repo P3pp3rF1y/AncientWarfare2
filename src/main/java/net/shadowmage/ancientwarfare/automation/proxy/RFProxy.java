@@ -14,7 +14,7 @@ public class RFProxy {
 		if (ModuleStatus.redstoneFluxEnabled) {
 			try {
 				instance = (RFProxy) Class.forName("net.shadowmage.ancientwarfare.automation.proxy.RFProxyActual").newInstance();
-				AncientWarfareAutomation.log.info("RF Compatability loaded successfully");
+				AncientWarfareAutomation.LOG.info("RF Compatability loaded successfully");
 			}
 			catch (Exception e) {
 				e.printStackTrace();

@@ -15,7 +15,8 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Optional;
 
 public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
 	private static final int MAX_WATER = 1280;
@@ -27,6 +28,45 @@ public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
 
 	public WorkSiteFishFarm() {
 		super();
+	}
+
+	private static final IWorksiteAction FISH_ACTION = WorksiteImplementation::getEnergyPerActivation;
+
+	@Override
+	protected Optional<IWorksiteAction> getNextAction() {
+		return waterBlockCount > 0 ? Optional.of(FISH_ACTION) : Optional.empty();
+	}
+
+	@Override
+	protected boolean processAction(IWorksiteAction action) {
+		float percentOfMax = ((float) waterBlockCount) / MAX_WATER;
+		float check = world.rand.nextFloat();
+		if (check <= percentOfMax) {
+			boolean fish = harvestFish;
+			boolean ink = harvestInk;
+			if (fish && ink) {
+				fish = world.rand.nextBoolean();
+				ink = !fish;
+			}
+			if (fish) {
+				LootContext.Builder context = new LootContext.Builder((WorldServer) world);
+				context.withLuck(getFortune());
+				for (ItemStack fishStack : this.world.getLootTableManager().getLootTableFromLocation(LootTableList.GAMEPLAY_FISHING)
+						.generateLootForPools(world.rand, context.build())) {
+					InventoryTools.insertOrDropItem(mainInventory, fishStack, world, pos);
+				}
+			}
+			if (ink) {
+				ItemStack inkItem = new ItemStack(Items.DYE, 1, 0);
+				int fortune = getFortune();
+				if (fortune > 0) {
+					inkItem.grow(world.rand.nextInt(fortune + 1));
+				}
+				InventoryTools.insertOrDropItem(mainInventory, inkItem, world, pos);
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
@@ -75,39 +115,6 @@ public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
 		}
 	}
 
-	@Override
-	protected boolean processWork() {
-		if (waterBlockCount > 0) {
-			float percentOfMax = ((float) waterBlockCount) / MAX_WATER;
-			float check = world.rand.nextFloat();
-			if (check <= percentOfMax) {
-				boolean fish = harvestFish, ink = harvestInk;
-				if (fish && ink) {
-					fish = world.rand.nextBoolean();
-					ink = !fish;
-				}
-				if (fish) {
-					LootContext.Builder context = new LootContext.Builder((WorldServer) world);
-					context.withLuck(getFortune());
-					for (@Nonnull
-							ItemStack fishStack : this.world.getLootTableManager().getLootTableFromLocation(LootTableList.GAMEPLAY_FISHING).generateLootForPools(world.rand, context.build())) {
-						InventoryTools.insertOrDropItem(mainInventory, fishStack, world, pos);
-					}
-				}
-				if (ink) {
-					@Nonnull ItemStack inkItem = new ItemStack(Items.DYE, 1, 0);
-					int fortune = getFortune();
-					if (fortune > 0) {
-						inkItem.grow(world.rand.nextInt(fortune + 1));
-					}
-					InventoryTools.insertOrDropItem(mainInventory, inkItem, world, pos);
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
 	private void countWater() {
 		waterBlockCount = 0;
 		BlockPos min = getWorkBoundsMin();
@@ -147,7 +154,7 @@ public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
 	}
 
 	@Override
-	public boolean onBlockClicked(EntityPlayer player, EnumHand hand) {
+	public boolean onBlockClicked(EntityPlayer player, @Nullable EnumHand hand) {
 		if (!player.world.isRemote) {
 			NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_FISH_FARM, pos);
 		}
@@ -157,11 +164,6 @@ public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
 	@Override
 	public void openAltGui(EntityPlayer player) {
 		NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_FISH_CONTROL, pos);
-	}
-
-	@Override
-	protected boolean hasWorksiteWork() {
-		return waterBlockCount > 0;
 	}
 
 	@Override

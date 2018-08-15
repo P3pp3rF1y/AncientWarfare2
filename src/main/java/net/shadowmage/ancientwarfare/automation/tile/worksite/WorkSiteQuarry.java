@@ -15,9 +15,11 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
+import java.util.Optional;
+import java.util.Set;
 
 public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
-	boolean finished;
+	private boolean finished;
 	private boolean hasDoneInit = false;
 
 	/*
@@ -58,13 +60,16 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
 	}
 
 	@Override
-	public EnumSet<WorksiteUpgrade> getValidUpgrades() {
+	public Set<WorksiteUpgrade> getValidUpgrades() {
 		return EnumSet.of(WorksiteUpgrade.ENCHANTED_TOOLS_1, WorksiteUpgrade.ENCHANTED_TOOLS_2, WorksiteUpgrade.QUARRY_MEDIUM, WorksiteUpgrade.QUARRY_LARGE, WorksiteUpgrade.TOOL_QUALITY_1, WorksiteUpgrade.TOOL_QUALITY_2, WorksiteUpgrade.TOOL_QUALITY_3, WorksiteUpgrade.QUARRY_CHUNK_LOADER);
 	}
 
 	@Override
 	public int getBoundsMaxWidth() {
-		return getUpgrades().contains(WorksiteUpgrade.QUARRY_LARGE) ? 64 : getUpgrades().contains(WorksiteUpgrade.QUARRY_MEDIUM) ? 32 : 16;
+		if (getUpgrades().contains(WorksiteUpgrade.QUARRY_LARGE)) {
+			return 64;
+		}
+		return getUpgrades().contains(WorksiteUpgrade.QUARRY_MEDIUM) ? 32 : 16;
 	}
 
 	@Override
@@ -91,14 +96,17 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
 		this.finished = false;
 	}
 
+	private static final IWorksiteAction DIG_ACTION = WorksiteImplementation::getEnergyPerActivation;
 	@Override
-	protected boolean processWork() {
+	protected Optional<IWorksiteAction> getNextAction() {
+		return !finished ? Optional.of(DIG_ACTION) : Optional.empty();
+	}
+
+	@Override
+	protected boolean processAction(IWorksiteAction action) {
 		if (!hasDoneInit) {
 			initWorkSite();
 			hasDoneInit = true;
-		}
-		if (finished) {
-			return false;
 		}
 		/*
 		 * while the current position is invalid, increment to a valid one. generally the incremental scan
@@ -199,7 +207,7 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
 		return state.getBlockHardness(world, harvestPos) >= 0;
 	}
 
-	public void initWorkSite() {
+	private void initWorkSite() {
 		BlockPos boundsMin = getWorkBoundsMin();
 		setWorkBoundsMin(boundsMin.up(1 - boundsMin.getY()));
 		current = new BlockPos(getWorkBoundsMin().getX(), getWorkBoundsMax().getY(), getWorkBoundsMin().getZ());
@@ -238,10 +246,4 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
 		}
 		return true;
 	}
-
-	@Override
-	protected boolean hasWorksiteWork() {
-		return !finished;
-	}
-
 }

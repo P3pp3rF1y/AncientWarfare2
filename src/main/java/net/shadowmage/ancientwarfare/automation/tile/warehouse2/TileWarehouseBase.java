@@ -12,6 +12,7 @@ import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseCont
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseCraftingStation;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseInterface.InterfaceEmptyRequest;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseInterface.InterfaceFillRequest;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.IWorksiteAction;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteBounded;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -19,11 +20,11 @@ import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public abstract class TileWarehouseBase extends TileWorksiteBounded implements IControllerTile {
@@ -118,7 +119,7 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
 	}
 
 	private boolean tryEmptyInterfaces() {
-		List<TileWarehouseInterface> toEmpty = new ArrayList<TileWarehouseInterface>(interfacesToEmpty);
+		List<TileWarehouseInterface> toEmpty = new ArrayList<>(interfacesToEmpty);
 		for (TileWarehouseInterface tile : toEmpty) {
 			if (tryEmptyTile(tile)) {
 				tile.recalcRequests();
@@ -140,11 +141,10 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
 
 	private boolean tryRemoveFromRequest(TileWarehouseInterface tile, InterfaceEmptyRequest request) {
 		IItemHandler inventory = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-		@Nonnull ItemStack stack = inventory.getStackInSlot(request.slotNum);
+		ItemStack stack = inventory.getStackInSlot(request.slotNum);
 		if (stack.isEmpty()) {
 			return false;
 		}
-		int count = stack.getCount();
 		int moved;
 		int toMove = request.count;
 		int stackMove;
@@ -170,7 +170,7 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
 	}
 
 	private boolean tryFillInterfaces() {
-		List<TileWarehouseInterface> toFill = new ArrayList<TileWarehouseInterface>(interfacesToFill);
+		List<TileWarehouseInterface> toFill = new ArrayList<>(interfacesToFill);
 		for (TileWarehouseInterface tile : toFill) {
 			if (tryFillTile(tile)) {
 				tile.recalcRequests();
@@ -192,8 +192,9 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
 
 	private boolean tryFillFromRequest(TileWarehouseInterface tile, InterfaceFillRequest request) {
 		List<IWarehouseStorageTile> potentialStorage = storageMap.getDestinations();
-		int found, moved;
-		@Nonnull ItemStack stack;
+		int found;
+		int moved;
+		ItemStack stack;
 		int stackSize;
 		IItemHandler inventory = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 		for (IWarehouseStorageTile source : potentialStorage) {
@@ -227,24 +228,27 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
 		cachedItemMap.addAll(map);
 	}
 
+	private static final IWorksiteAction EMPTY_ACTION = WorksiteImplementation::getEnergyPerActivation;
+	private static final IWorksiteAction FILL_ACTION = WorksiteImplementation::getEnergyPerActivation;
+
 	@Override
-	protected boolean processWork() {
+	protected Optional<IWorksiteAction> getNextAction() {
 		if (!interfacesToEmpty.isEmpty()) {
-			if (tryEmptyInterfaces()) {
-				return true;
-			}
+			return Optional.of(EMPTY_ACTION);
+		} else if (!interfacesToFill.isEmpty()) {
+			return Optional.of(FILL_ACTION);
 		}
-		if (!interfacesToFill.isEmpty()) {
-			if (tryFillInterfaces()) {
-				return true;
-			}
-		}
-		return false;
+		return Optional.empty();
 	}
 
 	@Override
-	protected boolean hasWorksiteWork() {
-		return !interfacesToEmpty.isEmpty() || !interfacesToFill.isEmpty();
+	protected boolean processAction(IWorksiteAction action) {
+		if (action == EMPTY_ACTION) {
+			return tryEmptyInterfaces();
+		} else if (action == FILL_ACTION) {
+			return tryFillInterfaces();
+		}
+		return false;
 	}
 
 	@Override
@@ -260,11 +264,7 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
 
 	private void scanForInitialTiles() {
 		BlockPos max = getWorkBoundsMax();
-		if (max == null)
-			return;
 		BlockPos min = getWorkBoundsMin();
-		if (min == null)
-			return;
 		List<TileEntity> tiles = WorldTools.getTileEntitiesInArea(world, min.getX() - 1, min.getY(), min.getZ() - 1, max.getX() + 1, max.getY(), max.getZ() + 1);
 		for (TileEntity te : tiles) {
 			if (te instanceof IControlledTile && ((IControlledTile) te).getController() == null && ((IControlledTile) te).isValidController(this)) {
@@ -315,7 +315,7 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
 		}
 	}
 
-	public final void addStorageTile(IWarehouseStorageTile tile) {
+	private void addStorageTile(IWarehouseStorageTile tile) {
 		if (world.isRemote) {
 			return;
 		}
@@ -329,7 +329,7 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
 		}
 	}
 
-	public final void removeStorageTile(IWarehouseStorageTile tile) {
+	private void removeStorageTile(IWarehouseStorageTile tile) {
 		ItemQuantityMap iqm = new ItemQuantityMap();
 		tile.addItems(iqm);
 		this.cachedItemMap.removeAll(iqm);
@@ -338,7 +338,7 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
 		updateViewers();
 	}
 
-	public final void addInterfaceTile(TileWarehouseInterface tile) {
+	private void addInterfaceTile(TileWarehouseInterface tile) {
 		if (world.isRemote) {
 			return;
 		}
@@ -354,7 +354,7 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
 		}
 	}
 
-	public final void removeInterfaceTile(TileWarehouseInterface tile) {
+	private void removeInterfaceTile(TileWarehouseInterface tile) {
 		interfaceTiles.remove(tile);
 		interfacesToFill.remove(tile);
 		interfacesToEmpty.remove(tile);
@@ -381,7 +381,7 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
 		storageMap.updateTileFilters(tile, oldFilters, newFilters);
 	}
 
-	public final void addStockViewer(TileWarehouseStockViewer viewer) {
+	private void addStockViewer(TileWarehouseStockViewer viewer) {
 		if (world.isRemote) {
 			return;
 		}
@@ -390,7 +390,7 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
 		viewer.onWarehouseInventoryUpdated();
 	}
 
-	public final void removeStockViewer(TileWarehouseStockViewer tile) {
+	private void removeStockViewer(TileWarehouseStockViewer tile) {
 		stockViewers.remove(tile);
 	}
 
@@ -469,10 +469,8 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
 
 	public ItemStack tryAdd(ItemStack stack) {
 		List<IWarehouseStorageTile> destinations = storageMap.getDestinations(stack);
-		int moved = 0;
-		ItemStack copy = stack.copy();
 		for (IWarehouseStorageTile tile : destinations) {
-			moved = tile.insertItem(stack, stack.getCount());
+			int moved = tile.insertItem(stack, stack.getCount());
 			ItemStack filter = stack.copy();
 			filter.setCount(1);
 			changeCachedQuantity(filter, moved);

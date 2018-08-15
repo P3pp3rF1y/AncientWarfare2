@@ -12,6 +12,7 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
+import java.util.Optional;
 import java.util.Set;
 
 public class TileOreProcessor extends TileWorksiteBase {
@@ -43,14 +44,12 @@ public class TileOreProcessor extends TileWorksiteBase {
 	}
 
 	@Override
-	protected boolean processWork() {
-		// TODO Auto-generated method stub
-		return false;
+	protected Optional<IWorksiteAction> getNextAction() {
+		return null;
 	}
 
 	@Override
-	protected boolean hasWorksiteWork() {
-		// TODO Auto-generated method stub
+	protected boolean processAction(IWorksiteAction action) {
 		return false;
 	}
 

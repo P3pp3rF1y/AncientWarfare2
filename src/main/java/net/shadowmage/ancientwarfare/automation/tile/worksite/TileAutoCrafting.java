@@ -10,6 +10,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
+import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.tile.CraftingRecipeMemory;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
@@ -17,6 +18,7 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Optional;
 
 public class TileAutoCrafting extends TileWorksiteBase {
 	public CraftingRecipeMemory craftingRecipeMemory = new CraftingRecipeMemory(this);
@@ -35,9 +37,6 @@ public class TileAutoCrafting extends TileWorksiteBase {
 
 	private boolean canCraftLastCheck = false;
 	private boolean canHoldLastCheck = false;
-
-	public TileAutoCrafting() {
-	}
 
 	@Override
 	public void onBlockBroken() {
@@ -130,14 +129,23 @@ public class TileAutoCrafting extends TileWorksiteBase {
 		return true;
 	}
 
-	@Override
-	protected boolean processWork() {
-		return tryCraftItem();
+	private static final CraftAction CRAFT_ACTION = new CraftAction();
+
+	private static class CraftAction implements IWorksiteAction {
+		@Override
+		public double getEnergyConsumed(double efficiencyBonusFactor) {
+			return IWorkSite.WorksiteImplementation.getEnergyPerActivation(efficiencyBonusFactor);
+		}
 	}
 
 	@Override
-	protected boolean hasWorksiteWork() {
-		return canCraftLastCheck && canHoldLastCheck && !craftingRecipeMemory.getRecipe().getRecipeOutput().isEmpty();
+	protected Optional<IWorksiteAction> getNextAction() {
+		return canCraftLastCheck && canHoldLastCheck && !craftingRecipeMemory.getRecipe().getRecipeOutput().isEmpty() ? Optional.of(CRAFT_ACTION) : Optional.empty();
+	}
+
+	@Override
+	protected boolean processAction(IWorksiteAction action) {
+		return tryCraftItem();
 	}
 
 	@Override
