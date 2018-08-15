@@ -1,0 +1,41 @@
+{
+    "mod": "natura",
+    "tree_scanners": [
+        {
+            "type": "default",
+            "trunk": {
+                "name": "rustic:log",
+                "properties": {
+                    "axis": "y",
+                    "variant": "ironwood"
+                }
+            },
+            "leaf": {
+                "name": "rustic:leaves",
+                "properties": {
+                    "variant": "ironwood"
+                }
+            },
+            "max_leaf_distance": 3,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "rustic:log",
+                "properties": {
+                    "axis": "y",
+                    "variant": "olive"
+                }
+            },
+            "leaf": {
+                "name": "rustic:leaves",
+                "properties": {
+                    "variant": "olive"
+                }
+            },
+            "max_leaf_distance": 3,
+            "next_block_search": "connected_up_or_level"
+        }
+    ]
+}
