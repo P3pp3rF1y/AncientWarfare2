@@ -1045,3 +1045,5 @@ keybind.vehicle.turret.left=Turret Left
 keybind.vehicle.turret.right=Turret Right
 keybind.vehicle.mouse.aim=Enable/Disable Mouse Aim
 keybind.vehicle.ammo.select=Open Ammo Selection GUI
+
+gui.ancientwarfarevehicles.ammo.no_ammo=Vehicle is not loaded with any ammo

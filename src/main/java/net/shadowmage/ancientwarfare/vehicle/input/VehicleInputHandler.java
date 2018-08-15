@@ -9,6 +9,7 @@ import net.minecraft.util.Tuple;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -130,14 +131,24 @@ public class VehicleInputHandler {
 		InputHandler.registerCallBack(TURRET_RIGHT, new VehicleCallback(v -> v.firingHelper.handleAimKeyInput(0, 1)));
 		InputHandler.registerCallBack(AMMO_NEXT, new VehicleCallback(v -> v.ammoHelper.setNextAmmo()));
 		InputHandler.registerCallBack(AMMO_PREV, new VehicleCallback(v -> v.ammoHelper.setPreviousAmmo()));
-		InputHandler.registerCallBack(AMMO_SELECT, new VehicleCallback(vehicle -> {
-			if (!vehicle.vehicleType.getValidAmmoTypes().isEmpty()) {
-				NetworkHandler.INSTANCE.openGui(Minecraft.getMinecraft().player, NetworkHandler.GUI_VEHICLE_AMMO_SELECTION, vehicle.getEntityId());
-			}
-		}));
+		InputHandler.registerCallBack(AMMO_SELECT, new VehicleCallback(VehicleInputHandler::handleAmmoSelectAction));
+	}
+
+	private static void handleAmmoSelectAction(VehicleBase vehicle) {
+		if (!vehicle.isAmmoLoaded()) {
+			Minecraft.getMinecraft().player.sendStatusMessage(new TextComponentTranslation("gui.ancientwarfarevehicles.ammo.no_ammo"), true);
+			return;
+		}
+
+		if (!vehicle.vehicleType.getValidAmmoTypes().isEmpty()) {
+			NetworkHandler.INSTANCE.openGui(Minecraft.getMinecraft().player, NetworkHandler.GUI_VEHICLE_AMMO_SELECTION, vehicle.getEntityId());
+		}
 	}
 
 	private static void handleFireAction(VehicleBase vehicle) {
+		if (!vehicle.isAmmoLoaded()) {
+			Minecraft.getMinecraft().player.sendStatusMessage(new TextComponentTranslation("gui.ancientwarfarevehicles.ammo.no_ammo"), true);
+		}
 		if (vehicle.isAimable()) {
 			vehicle.firingHelper.handleFireInput();
 		}
