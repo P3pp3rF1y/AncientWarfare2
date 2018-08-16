@@ -67,7 +67,18 @@ public class InventoryTools {
 	}
 
 	public static IItemHandlerModifiable cloneItemHandler(IItemHandler handler) {
-		ItemStackHandler copy = new ItemStackHandler(handler.getSlots());
+		ItemStackHandler copy = new ItemStackHandler(handler.getSlots()) {
+			@Nonnull
+			@Override
+			public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+				return canInsert(slot, stack) ? super.insertItem(slot, stack, simulate) : stack;
+			}
+
+			private boolean canInsert(int slot, @Nonnull ItemStack stack) {
+				ItemStack remainingStack = handler.insertItem(slot, stack, true);
+				return remainingStack.isEmpty() || remainingStack.getCount() != stack.getCount();
+			}
+		};
 
 		for (int slot = 0; slot < handler.getSlots(); slot++) {
 			copy.setStackInSlot(slot, handler.getStackInSlot(slot).copy());

@@ -22,6 +22,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
+import net.shadowmage.ancientwarfare.core.owner.Owner;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.event.IBoxRenderer;
@@ -29,8 +30,10 @@ import net.shadowmage.ancientwarfare.structure.gates.types.Gate;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Optional;
 
 public class ItemGateSpawner extends ItemBaseStructure implements IItemKeyInterface, IBoxRenderer {
+	private static final String AW_GATE_INFO_TAG = "AWGateInfo";
 
 	public ItemGateSpawner(String name) {
 		super(name);
@@ -42,8 +45,9 @@ public class ItemGateSpawner extends ItemBaseStructure implements IItemKeyInterf
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag) {
 		NBTTagCompound tag;
-		if (stack.hasTagCompound() && stack.getTagCompound().hasKey("AWGateInfo")) {
-			tag = stack.getTagCompound().getCompoundTag("AWGateInfo");
+		//noinspection ConstantConditions
+		if (stack.hasTagCompound() && stack.getTagCompound().hasKey(AW_GATE_INFO_TAG)) {
+			tag = stack.getTagCompound().getCompoundTag(AW_GATE_INFO_TAG);
 		} else {
 			tag = new NBTTagCompound();
 		}
@@ -85,8 +89,9 @@ public class ItemGateSpawner extends ItemBaseStructure implements IItemKeyInterf
 			return new ActionResult<>(EnumActionResult.SUCCESS, stack);
 		}
 		NBTTagCompound tag;
-		if (stack.hasTagCompound() && stack.getTagCompound().hasKey("AWGateInfo")) {
-			tag = stack.getTagCompound().getCompoundTag("AWGateInfo");
+		//noinspection ConstantConditions
+		if (stack.hasTagCompound() && stack.getTagCompound().hasKey(AW_GATE_INFO_TAG)) {
+			tag = stack.getTagCompound().getCompoundTag(AW_GATE_INFO_TAG);
 		} else {
 			tag = new NBTTagCompound();
 		}
@@ -114,10 +119,9 @@ public class ItemGateSpawner extends ItemBaseStructure implements IItemKeyInterf
 				player.sendMessage(new TextComponentTranslation("guistrings.gate.exists"));
 				return new ActionResult<>(EnumActionResult.FAIL, stack);
 			}
-			EntityGate entity = Gate.constructGate(world, pos1, pos2, Gate.getGateByID(stack.getItemDamage()), player.getHorizontalFacing());
-			if (entity != null) {
-				entity.setOwner(player);
-				world.spawnEntity(entity);
+			Optional<EntityGate> entity = Gate.constructGate(world, pos1, pos2, Gate.getGateByID(stack.getItemDamage()), player.getHorizontalFacing(), new Owner(player));
+			if (entity.isPresent()) {
+				world.spawnEntity(entity.get());
 				if (!player.capabilities.isCreativeMode) {
 					stack.shrink(1);
 				}
@@ -131,7 +135,7 @@ public class ItemGateSpawner extends ItemBaseStructure implements IItemKeyInterf
 		return new ActionResult<>(EnumActionResult.SUCCESS, stack);
 	}
 
-	protected boolean canSpawnGate(World world, BlockPos pos1, BlockPos pos2) {
+	private boolean canSpawnGate(World world, BlockPos pos1, BlockPos pos2) {
 		BlockPos min = BlockTools.getMin(pos1, pos2);
 		BlockPos max = BlockTools.getMax(pos1, pos2);
 		AxisAlignedBB newGateBB = new AxisAlignedBB(min.getX(), min.getY(), min.getZ(), max.getX() + 1, max.getY() + 1, max.getZ() + 1);
@@ -160,8 +164,9 @@ public class ItemGateSpawner extends ItemBaseStructure implements IItemKeyInterf
 			return;
 		}
 		NBTTagCompound tag;
-		if (stack.hasTagCompound() && stack.getTagCompound().hasKey("AWGateInfo")) {
-			tag = stack.getTagCompound().getCompoundTag("AWGateInfo");
+		//noinspection ConstantConditions
+		if (stack.hasTagCompound() && stack.getTagCompound().hasKey(AW_GATE_INFO_TAG)) {
+			tag = stack.getTagCompound().getCompoundTag(AW_GATE_INFO_TAG);
 		} else {
 			tag = new NBTTagCompound();
 		}
@@ -179,16 +184,17 @@ public class ItemGateSpawner extends ItemBaseStructure implements IItemKeyInterf
 				player.sendMessage(new TextComponentTranslation("guistrings.gate.set_pos_one"));
 			}
 		}
-		stack.setTagInfo("AWGateInfo", tag);
+		stack.setTagInfo(AW_GATE_INFO_TAG, tag);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void renderBox(EntityPlayer player, ItemStack stack, float delta) {
 		NBTTagCompound tag = stack.getTagCompound();
-		BlockPos p1, p2;
-		if (tag != null && tag.hasKey("AWGateInfo")) {
-			tag = tag.getCompoundTag("AWGateInfo");
+		BlockPos p1;
+		BlockPos p2;
+		if (tag != null && tag.hasKey(AW_GATE_INFO_TAG)) {
+			tag = tag.getCompoundTag(AW_GATE_INFO_TAG);
 			if (tag.hasKey("pos1")) {
 				p1 = BlockPos.fromLong(tag.getLong("pos1"));
 				if (tag.hasKey("pos2")) {
@@ -220,35 +226,35 @@ public class ItemGateSpawner extends ItemBaseStructure implements IItemKeyInterf
 	@SideOnly(Side.CLIENT)
 	public void registerClient() {
 		ResourceLocation basePath = new ResourceLocation(AncientWarfareCore.MOD_ID, "structure/gate_spawner");
-		ModelResourceLocation IRON_BASIC = new ModelResourceLocation(basePath, "variant=gate_iron_basic");
-		ModelResourceLocation IRON_DOUBLE = new ModelResourceLocation(basePath, "variant=gate_iron_double");
-		ModelResourceLocation IRON_SINGLE = new ModelResourceLocation(basePath, "variant=gate_iron_single");
-		ModelResourceLocation WOOD_BASIC = new ModelResourceLocation(basePath, "variant=gate_wood_basic");
-		ModelResourceLocation WOOD_DOUBLE = new ModelResourceLocation(basePath, "variant=gate_wood_double");
-		ModelResourceLocation WOOD_ROTATING = new ModelResourceLocation(basePath, "variant=gate_wood_rotating");
-		ModelResourceLocation WOOD_SINGLE = new ModelResourceLocation(basePath, "variant=gate_wood_single");
+		ModelResourceLocation ironBasic = new ModelResourceLocation(basePath, "variant=gate_iron_basic");
+		ModelResourceLocation ironDouble = new ModelResourceLocation(basePath, "variant=gate_iron_double");
+		ModelResourceLocation ironSingle = new ModelResourceLocation(basePath, "variant=gate_iron_single");
+		ModelResourceLocation woodBasic = new ModelResourceLocation(basePath, "variant=gate_wood_basic");
+		ModelResourceLocation woodDouble = new ModelResourceLocation(basePath, "variant=gate_wood_double");
+		ModelResourceLocation woodRotating = new ModelResourceLocation(basePath, "variant=gate_wood_rotating");
+		ModelResourceLocation woodSingle = new ModelResourceLocation(basePath, "variant=gate_wood_single");
 
 		ModelLoader.setCustomMeshDefinition(this, stack -> {
 			switch (Gate.getGateByID(stack.getMetadata()).getVariant()) {
 				case IRON_BASIC:
-					return IRON_BASIC;
+					return ironBasic;
 				case IRON_DOUBLE:
-					return IRON_DOUBLE;
+					return ironDouble;
 				case IRON_SINGLE:
-					return IRON_SINGLE;
+					return ironSingle;
 				case WOOD_BASIC:
-					return WOOD_BASIC;
+					return woodBasic;
 				case WOOD_DOUBLE:
-					return WOOD_DOUBLE;
+					return woodDouble;
 				case WOOD_ROTATING:
-					return WOOD_ROTATING;
+					return woodRotating;
 				case WOOD_SINGLE:
-					return WOOD_SINGLE;
+					return woodSingle;
 				default:
-					return WOOD_BASIC;
+					return woodBasic;
 			}
 		});
 
-		ModelLoader.registerItemVariants(this, IRON_BASIC, IRON_DOUBLE, IRON_SINGLE, WOOD_BASIC, WOOD_DOUBLE, WOOD_ROTATING, WOOD_SINGLE);
+		ModelLoader.registerItemVariants(this, ironBasic, ironDouble, ironSingle, woodBasic, woodDouble, woodRotating, woodSingle);
 	}
 }

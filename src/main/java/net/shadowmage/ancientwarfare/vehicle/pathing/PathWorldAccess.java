@@ -21,7 +21,7 @@ public class PathWorldAccess {
 	public boolean canSwim;
 	public boolean canDrop;
 	public boolean canUseLaders;
-	public boolean canGoOnLand = true;
+	private boolean canGoOnLand = true;
 
 	private World world;
 
@@ -57,9 +57,6 @@ public class PathWorldAccess {
 	/**
 	 * checks the collision bounds of the block at x,y,z to make sure it is <= 0.5 tall (pathable)
 	 *
-	 * @param x
-	 * @param y
-	 * @param z
 	 * @return true if it is a pathable block, false if it fails bounds checks
 	 */
 	public boolean checkBlockBounds(int x, int y, int z) {
@@ -106,10 +103,7 @@ public class PathWorldAccess {
 				return true;
 			}
 		}
-		if (canSwim && isWater(block) && blockUp == Blocks.AIR) {
-			return true;
-		}
-		return false;
+		return canSwim && isWater(block) && blockUp == Blocks.AIR;
 	}
 
 	public boolean isPartialBlock(BlockPos pos) {
@@ -119,32 +113,20 @@ public class PathWorldAccess {
 			if (bb == null) {
 				return false;
 			}
-			if (bb.maxY <= 0.75d) {
-				if (bb.minX < 0.35 && bb.maxX > 0.65 && bb.minZ < 0.35 && bb.maxZ > 0.65) {
-					return true;
-				}
+			if (bb.maxY <= 0.75d && bb.minX < 0.35 && bb.maxX > 0.65 && bb.minZ < 0.35 && bb.maxZ > 0.65) {
+				return true;
 			}
 		}
 		return false;
 	}
 
 	private boolean canSupport(Block block, BlockPos pos) {
-		if (block != null) {
-			IBlockState state = world.getBlockState(pos);
-			if (block == Blocks.TRAPDOOR) {
-				return !state.getValue(BlockTrapDoor.OPEN) && state.getValue(BlockTrapDoor.HALF) == BlockTrapDoor.DoorHalf.BOTTOM;
-			}
-			AxisAlignedBB bb = block.getCollisionBoundingBox(state, world, pos);
-			if (bb == null) {
-				return false;
-			}
-			if (bb.maxY <= 0.5d) {
-				if (bb.minX < 0.35 && bb.maxX > 0.65 && bb.minZ < 0.35 && bb.maxZ > 0.65) {
-					return true;
-				}
-			}
+		IBlockState state = world.getBlockState(pos);
+		if (block == Blocks.TRAPDOOR) {
+			return !state.getValue(BlockTrapDoor.OPEN) && state.getValue(BlockTrapDoor.HALF) == BlockTrapDoor.DoorHalf.BOTTOM;
 		}
-		return false;
+		AxisAlignedBB bb = block.getCollisionBoundingBox(state, world, pos);
+		return bb != null && bb.maxY <= 0.5d && bb.minX < 0.35 && bb.maxX > 0.65 && bb.minZ < 0.35 && bb.maxZ > 0.65;
 	}
 
 	private boolean isFence(Block block) {
@@ -164,13 +146,9 @@ public class PathWorldAccess {
 		Block block = state.getBlock();
 		if (block == AWStructuresBlocks.gateProxy) {
 			return WorldTools.getTile(world, pos, TEGateProxy.class)
-					.map(proxy -> proxy.getOwner() != null && proxy.getOwner().getGateType().canSoldierActivate()).orElse(true);
+					.map(proxy -> proxy.getOwner().map(p -> p.getGateType().canSoldierActivate()).orElse(false)).orElse(true);
 		}
 		return (block instanceof BlockDoor && state.getMaterial() == Material.WOOD) || block instanceof BlockFenceGate;
-	}
-
-	protected boolean checkColidingEntities(int x, int y, int z) {
-		return false;
 	}
 
 	private boolean isLadder(Block block) {

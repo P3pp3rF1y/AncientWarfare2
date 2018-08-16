@@ -17,7 +17,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.config.ConfigManager;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.proxy.IClientRegistrar;
+import net.shadowmage.ancientwarfare.core.proxy.IClientRegister;
 import net.shadowmage.ancientwarfare.core.util.TextureImageBased;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.client.NPCItemColors;
@@ -54,7 +54,7 @@ import java.util.Set;
 @SideOnly(Side.CLIENT)
 public class NpcClientProxy extends NpcCommonProxy {
 
-	private Set<IClientRegistrar> clientRegistrars = Sets.newHashSet();
+	private Set<IClientRegister> clientRegisters = Sets.newHashSet();
 
 	public NpcClientProxy() {
 		MinecraftForge.EVENT_BUS.register(this);
@@ -62,14 +62,14 @@ public class NpcClientProxy extends NpcCommonProxy {
 
 	@SubscribeEvent
 	public void registerModels(ModelRegistryEvent event) {
-		for (IClientRegistrar registrar : clientRegistrars) {
-			registrar.registerClient();
+		for (IClientRegister register : clientRegisters) {
+			register.registerClient();
 		}
 	}
 
 	@Override
-	public void addClientRegistrar(IClientRegistrar registrar) {
-		clientRegistrars.add(registrar);
+	public void addClientRegister(IClientRegister register) {
+		clientRegisters.add(register);
 	}
 
 	@Override

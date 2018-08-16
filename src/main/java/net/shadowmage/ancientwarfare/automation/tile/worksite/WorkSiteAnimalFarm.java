@@ -21,15 +21,16 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.entity.AWFakePlayer;
-import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.ItemWrapper;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 	private static final int FOOD_INVENTORY_SIZE = 3;
@@ -56,7 +57,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 	private List<Integer> sheepToShear = new ArrayList<>();
 	private List<Integer> entitiesToCull = new ArrayList<>();
 
-	private static ArrayList<ItemWrapper> ANIMAL_DROPS = new ArrayList<>();
+	private static final ArrayList<ItemWrapper> ANIMAL_DROPS = ItemWrapper.buildList("Animal Farm drops", AWAutomationStatics.animal_farm_pickups);
 
 	public final ItemStackHandler foodInventory;
 	public final ItemStackHandler toolInventory;
@@ -110,9 +111,100 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 		return false;
 	}
 
+	private boolean canShearSheep() {
+		return shearsSlot >= 0 && !sheepToShear.isEmpty();
+	}
+
+	private boolean canMilkCow() {
+		return bucketCount > 0 && cowsToMilk > 0;
+	}
+
+	private boolean canBreedSheep() {
+		return wheatCount > 1 && !sheepToBreed.isEmpty();
+	}
+
+	private boolean canBreedCows() {
+		return wheatCount > 1 && !cowsToBreed.isEmpty();
+	}
+
+	private boolean canBreedChicken() {
+		return seedCount > 1 && !chickensToBreed.isEmpty();
+	}
+
+	private boolean canBreedPigs() {
+		return carrotCount > 1 && !pigsToBreed.isEmpty();
+	}
+
+	private boolean canCull() {
+		return !entitiesToCull.isEmpty();
+	}
+
+	private static final IWorksiteAction SHEAR_ACTION = WorksiteImplementation::getEnergyPerActivation;
+	private static final IWorksiteAction MILK_COW_ACTION = WorksiteImplementation::getEnergyPerActivation;
+	private static final IWorksiteAction BREED_SHEEP_ACTION = WorksiteImplementation::getEnergyPerActivation;
+	private static final IWorksiteAction BREED_COWS_ACTION = WorksiteImplementation::getEnergyPerActivation;
+	private static final IWorksiteAction BREED_CHICKEN_ACTION = WorksiteImplementation::getEnergyPerActivation;
+	private static final IWorksiteAction BREED_PIGS_ACTION = WorksiteImplementation::getEnergyPerActivation;
+	private static final IWorksiteAction CULL_ACTION = WorksiteImplementation::getEnergyPerActivation;
+
 	@Override
-	protected boolean hasWorksiteWork() {
-		return !entitiesToCull.isEmpty() || (carrotCount > 0 && !pigsToBreed.isEmpty()) || (seedCount > 0 && !chickensToBreed.isEmpty()) || (wheatCount > 0 && (!cowsToBreed.isEmpty() || !sheepToBreed.isEmpty())) || (bucketCount > 0 && cowsToMilk > 0) || (shearsSlot >= 0 && !sheepToShear.isEmpty());
+	protected Optional<IWorksiteAction> getNextAction() {
+		if (canShearSheep()) {
+			return Optional.of(SHEAR_ACTION);
+		} else if (canMilkCow()) {
+			return Optional.of(MILK_COW_ACTION);
+		} else if (canBreedSheep()) {
+			return Optional.of(BREED_SHEEP_ACTION);
+		} else if (canBreedCows()) {
+			return Optional.of(BREED_COWS_ACTION);
+		} else if (canBreedChicken()) {
+			return Optional.of(BREED_CHICKEN_ACTION);
+		} else if (canBreedPigs()) {
+			return Optional.of(BREED_PIGS_ACTION);
+		} else if (canCull()) {
+			return Optional.of(CULL_ACTION);
+		}
+		return Optional.empty();
+	}
+
+	@Override
+	protected boolean processAction(IWorksiteAction action) {
+		if (action == SHEAR_ACTION) {
+			return tryShearing();
+		} else if (action == MILK_COW_ACTION) {
+			if (tryMilking()) {
+				InventoryTools.removeItems(toolInventory, new ItemStack(Items.BUCKET), 1);
+				InventoryTools.insertOrDropItem(mainInventory, new ItemStack(Items.MILK_BUCKET), world, pos);
+				return true;
+			}
+		} else if (action == BREED_SHEEP_ACTION) {
+			if (tryBreeding(sheepToBreed)) {
+				wheatCount -= 2;
+				InventoryTools.removeItems(foodInventory, new ItemStack(Items.WHEAT), 2);
+				return true;
+			}
+		} else if (action == BREED_COWS_ACTION) {
+			if (tryBreeding(cowsToBreed)) {
+				wheatCount -= 2;
+				InventoryTools.removeItems(foodInventory, new ItemStack(Items.WHEAT), 2);
+				return true;
+			}
+		} else if (action == BREED_CHICKEN_ACTION) {
+			if (tryBreeding(chickensToBreed)) {
+				seedCount -= 2;
+				InventoryTools.removeItems(foodInventory, new ItemStack(Items.WHEAT_SEEDS), 2);
+				return true;
+			}
+		} else if (action == BREED_PIGS_ACTION) {
+			if (tryBreeding(pigsToBreed)) {
+				carrotCount -= 2;
+				InventoryTools.removeItems(foodInventory, new ItemStack(Items.CARROT), 2);
+				return true;
+			}
+		} else if (action == CULL_ACTION) {
+			return tryCulling();
+		}
+		return false;
 	}
 
 	@Override
@@ -247,47 +339,6 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 		}
 	}
 
-	@Override
-	protected boolean processWork() {
-		if (!cowsToBreed.isEmpty() && wheatCount >= 2) {
-			if (tryBreeding(cowsToBreed)) {
-				wheatCount -= 2;
-				InventoryTools.removeItems(foodInventory, new ItemStack(Items.WHEAT), 2);
-				return true;
-			}
-		}
-		if (!sheepToBreed.isEmpty() && wheatCount >= 2) {
-			if (tryBreeding(sheepToBreed)) {
-				wheatCount -= 2;
-				InventoryTools.removeItems(foodInventory, new ItemStack(Items.WHEAT), 2);
-				return true;
-			}
-		}
-		if (!chickensToBreed.isEmpty() && seedCount >= 2) {
-			if (tryBreeding(chickensToBreed)) {
-				seedCount -= 2;
-				InventoryTools.removeItems(foodInventory, new ItemStack(Items.WHEAT_SEEDS), 2);
-				return true;
-			}
-		}
-		if (!pigsToBreed.isEmpty() && carrotCount >= 2) {
-			if (tryBreeding(pigsToBreed)) {
-				carrotCount -= 2;
-				InventoryTools.removeItems(foodInventory, new ItemStack(Items.CARROT), 2);
-				return true;
-			}
-		}
-		if (tryShearing()) {
-			return true;
-		}
-		if (bucketCount > 0 && tryMilking()) {
-			InventoryTools.removeItems(toolInventory, new ItemStack(Items.BUCKET), 1);
-			InventoryTools.insertOrDropItem(mainInventory, new ItemStack(Items.MILK_BUCKET), world, pos);
-			return true;
-		}
-		return tryCulling();
-	}
-
 	private boolean tryBreeding(List<EntityPair> targets) {
 		Entity animalA;
 		Entity animalB;
@@ -310,12 +361,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 	}
 
 	private boolean tryMilking() {
-		if (cowsToMilk > 0) {
-			if (ModAccessors.HARDER_WILDLIFE_LOADED)
-				return true;
-			return world.rand.nextInt(cowsToMilk * 4) > (cowsToMilk * 3);
-		}
-		return false;
+		return cowsToMilk > 0 && world.rand.nextInt(cowsToMilk * 4) > (cowsToMilk * 3);
 	}
 
 	private boolean tryShearing() {
@@ -339,7 +385,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 		Entity entity;
 		EntityAnimal animal;
 		int fortune = getFortune();
-		while (!entitiesToCull.isEmpty()) {
+		while (canCull()) {
 			entity = world.getEntityByID(entitiesToCull.remove(0));
 			if (entity instanceof EntityAnimal && entity.isEntityAlive()) {
 				animal = (EntityAnimal) entity;
@@ -350,9 +396,8 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 				animal.captureDrops = true;
 				animal.arrowHitTimer = 10;
 				animal.attackEntityFrom(DamageSource.GENERIC, animal.getHealth() + 1);
-				@Nonnull ItemStack stack;
 				for (EntityItem item : animal.capturedDrops) {
-					stack = item.getItem();
+					ItemStack stack = item.getItem();
 					if (!stack.isEmpty()) {
 						if (fortune > 0) {
 							stack.grow(world.rand.nextInt(fortune));
@@ -369,7 +414,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 	}
 
 	@Override
-	public boolean onBlockClicked(EntityPlayer player, EnumHand hand) {
+	public boolean onBlockClicked(EntityPlayer player, @Nullable EnumHand hand) {
 		if (!player.world.isRemote) {
 			NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_ANIMAL_FARM, pos);
 		}
@@ -377,25 +422,18 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 	}
 
 	private void pickupDrops() {
-		if (ANIMAL_DROPS.size() == 0) {
-			ANIMAL_DROPS = ItemWrapper.buildList("Animal Farm drops", AWAutomationStatics.animal_farm_pickups);
-		}
-
 		List<EntityItem> items = EntityTools.getEntitiesWithinBounds(world, EntityItem.class, getWorkBoundsMin(), getWorkBoundsMax());
-		@Nonnull ItemStack stack;
 		for (EntityItem item : items) {
-			stack = item.getItem();
+			ItemStack stack = item.getItem();
 			if (item.isEntityAlive() && !stack.isEmpty() && stack.getItem() != Items.AIR) {
 				Item droppedItem = stack.getItem();
 				for (ItemWrapper animalDrop : ANIMAL_DROPS) {
-					if (droppedItem.equals(animalDrop.item)) {
-						if (animalDrop.damage == -1 || animalDrop.damage == stack.getItemDamage()) {
-							stack = InventoryTools.mergeItemStack(mainInventory, stack);
-							if (!stack.isEmpty()) {
-								item.setItem(stack);
-							} else {
-								item.setDead();
-							}
+					if (droppedItem.equals(animalDrop.item) && animalDrop.damage == -1 || animalDrop.damage == stack.getItemDamage()) {
+						stack = InventoryTools.mergeItemStack(mainInventory, stack);
+						if (!stack.isEmpty()) {
+							item.setItem(stack);
+						} else {
+							item.setDead();
 						}
 					}
 				}
@@ -438,19 +476,19 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 
 	private static class EntityPair {
 
-		final int idA;
-		final int idB;
+		private final int idA;
+		private final int idB;
 
 		private EntityPair(Entity a, Entity b) {
 			idA = a.getEntityId();
 			idB = b.getEntityId();
 		}
 
-		public Entity getEntityA(World world) {
+		private Entity getEntityA(World world) {
 			return world.getEntityByID(idA);
 		}
 
-		public Entity getEntityB(World world) {
+		private Entity getEntityB(World world) {
 			return world.getEntityByID(idB);
 		}
 	}

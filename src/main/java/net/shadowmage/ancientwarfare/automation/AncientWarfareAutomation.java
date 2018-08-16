@@ -31,9 +31,7 @@ import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteFishC
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteFishFarm;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteFruitFarm;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteInventorySideSelection;
-import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteMushroomFarm;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteQuarry;
-import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteReedFarm;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteTreeFarm;
 import net.shadowmage.ancientwarfare.automation.proxy.RFProxy;
 import net.shadowmage.ancientwarfare.automation.registry.CropFarmRegistry;
@@ -45,12 +43,12 @@ import net.shadowmage.ancientwarfare.core.compat.CompatLoader;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
 import net.shadowmage.ancientwarfare.core.registry.RegistryLoader;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @Mod(name = "Ancient Warfare Automation", modid = AncientWarfareAutomation.MOD_ID, version = "@VERSION@", dependencies = "required-after:ancientwarfare;after:redstoneflux;after:buildcraftcore")
 public class AncientWarfareAutomation {
 	public static final String MOD_ID = "ancientwarfareautomation";
-	public static final String MOD_PREFIX = MOD_ID + ":";
 
 	@Instance(value = MOD_ID)
 	public static AncientWarfareAutomation instance;
@@ -58,18 +56,16 @@ public class AncientWarfareAutomation {
 	@SidedProxy(clientSide = "net.shadowmage.ancientwarfare.automation.proxy.ClientProxyAutomation", serverSide = "net.shadowmage.ancientwarfare.core.proxy.CommonProxy")
 	public static CommonProxyBase proxy;
 
-	public static Logger log;
+	public static final Logger LOG = LogManager.getLogger(MOD_ID);
 
 	public static AWAutomationStatics statics;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent evt) {
-		log = evt.getModLog();
-
 		ModuleStatus.automationLoaded = true;
 		if (Loader.isModLoaded("redstoneflux")) {
 			ModuleStatus.redstoneFluxEnabled = true;
-			AncientWarfareAutomation.log.info("Detecting Redstone Flux is loaded, enabling RF Compatibility");
+			AncientWarfareAutomation.LOG.info("Detecting Redstone Flux is loaded, enabling RF Compatibility");
 		}
 		RFProxy.loadInstance();
 
@@ -99,9 +95,7 @@ public class AncientWarfareAutomation {
 		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_TREE_FARM, ContainerWorksiteTreeFarm.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_CROP_FARM, ContainerWorksiteCropFarm.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_FRUIT_FARM, ContainerWorksiteFruitFarm.class);
-		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_MUSHROOM_FARM, ContainerWorksiteMushroomFarm.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_ANIMAL_FARM, ContainerWorksiteAnimalFarm.class);
-		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_REED_FARM, ContainerWorksiteReedFarm.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_FISH_FARM, ContainerWorksiteFishFarm.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_STIRLING_GENERATOR, ContainerStirlingGenerator.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_CHUNK_LOADER_DELUXE, ContainerChunkLoaderDeluxe.class);

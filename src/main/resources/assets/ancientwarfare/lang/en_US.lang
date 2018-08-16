@@ -18,6 +18,7 @@ itemGroup.tabs.automation=Ancient Warfare Automation
 itemGroup.tabs.npc=Ancient Warfare Npcs
 itemGroup.tabs.vehicles=Ancient Warfare Vehicles
 #core
+item.manual.name=Treatise on the Principles of Ruling
 item.research_book.name=Research Book
 item.wooden_hammer.name=Wooden Hammer
 item.stone_hammer.name=Stone Hammer
@@ -121,10 +122,8 @@ tile.quarry.name=Quarry
 tile.tree_farm.name=Tree Farm
 tile.crop_farm.name=Crop Farm
 tile.fruit_farm.name=Fruit Farm
-tile.mushroom_farm.name=Mushroom Farm
 tile.animal_farm.name=Animal Farm
 tile.fish_farm.name=Fish Farm
-tile.reed_farm.name=Reed Farm
 tile.warehouse_control.name=Warehouse Control Block
 tile.warehouse_storage.0.name=Small Warehouse Storage
 tile.warehouse_storage.1.name=Medium Warehouse Storage
@@ -365,6 +364,7 @@ guistrings.moveup=▲
 guistrings.moveup.tooltip=Move up
 guistrings.movedown=▼
 guistrings.movedown.tooltip=Move down
+guistrings.info_tool.click_to_print_stack_info=Click slot to print Item stack info
 
 #automation
 guistrings.automation.ignore_damage=Ign. Dmg
@@ -686,7 +686,7 @@ command.aw.faction.get.usage=/awfaction get (playername)
 command.aw.faction.status.player=Faction Standing For Player: %s
 command.aw.faction.status.value=Faction %s  Standing: %s
 command.aw.faction.set=Set faction standing for %s with %s to %s
-command.aw.utils.usage=/awutils exportentities [fileName - defaults to "entitylist.csv"] OR /awutils exportbiomes [fileName - defaults to "biomelist.csv"] OR /awutils exportblocks [fileName - defaults to "blocklist.csv"]
+command.aw.utils.usage=/awutils exportentities [fileName - defaults to "entitylist.csv"] OR /awutils exportbiomes [fileName - defaults to "biomelist.csv"] OR /awutils exportblocks [fileName - defaults to "blocklist.csv"] OR /awutils reloadmanual
 
 #research
 research.invention=Invention
@@ -1043,3 +1043,5 @@ keybind.vehicle.turret.left=Turret Left
 keybind.vehicle.turret.right=Turret Right
 keybind.vehicle.mouse.aim=Enable/Disable Mouse Aim
 keybind.vehicle.ammo.select=Open Ammo Selection GUI
+
+gui.ancientwarfarevehicles.ammo.no_ammo=Vehicle is not loaded with any ammo

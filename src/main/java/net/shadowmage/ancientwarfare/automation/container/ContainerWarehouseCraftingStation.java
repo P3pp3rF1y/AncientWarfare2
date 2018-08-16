@@ -142,7 +142,7 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 	@Override
 	public void handlePacketData(NBTTagCompound tag) {
 		if (tag.hasKey("changeList")) {
-			AncientWarfareAutomation.log.info("rec. warehouse item map..");
+			AncientWarfareAutomation.LOG.info("rec. warehouse item map..");
 			handleChangeList(tag.getTagList("changeList", Constants.NBT.TAG_COMPOUND));
 		} else if (tag.hasKey("recipe")) {
 			containerCrafting.handleRecipeUpdate(tag);
@@ -212,7 +212,7 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 	}
 
 	public void onWarehouseInventoryUpdated() {
-		AncientWarfareAutomation.log.info("update callback from warehouse...");
+		AncientWarfareAutomation.LOG.info("update callback from warehouse...");
 		shouldUpdate = true;
 	}
 

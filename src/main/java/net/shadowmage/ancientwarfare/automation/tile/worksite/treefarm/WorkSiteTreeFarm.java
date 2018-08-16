@@ -22,6 +22,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import net.shadowmage.ancientwarfare.automation.registry.TreeFarmRegistry;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.IWorksiteAction;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteFarm;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -38,7 +39,8 @@ import java.util.Set;
 public class WorkSiteTreeFarm extends TileWorksiteFarm {
 	private boolean hasShears;
 	private final Set<BlockPos> blocksToShear = new LinkedHashSet<>();
-	private final Set<BlockPos> blocksToChop = new LinkedHashSet<>();
+	private final Set<BlockPos> leafBlocksToChop = new LinkedHashSet<>();
+	private final Set<BlockPos> trunkBlocksToChop = new LinkedHashSet<>();
 	private final Set<BlockPos> blocksToPlant = new HashSet<>();
 	private final Set<BlockPos> blocksToFertilize = new HashSet<>();
 
@@ -62,7 +64,8 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
 	@Override
 	public void onBoundsAdjusted() {
 		validateCollection(blocksToFertilize);
-		validateCollection(blocksToChop);
+		validateCollection(trunkBlocksToChop);
+		validateCollection(leafBlocksToChop);
 		validateCollection(blocksToPlant);
 		if (!hasShears) {
 			blocksToShear.clear();
@@ -74,11 +77,6 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
 	protected void countResources() {
 		super.countResources();
 		hasShears = InventoryTools.getCountOf(miscInventory, s -> s.getItem() == Items.SHEARS) > 0;
-	}
-
-	@Override
-	protected boolean processWork() {
-		return shearBlock() || chopBlock() || plant() || bonemealBlock();
 	}
 
 	private boolean bonemealBlock() {
@@ -125,12 +123,12 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
 				tryPlace(stack.copy(), position, EnumFacing.UP) || tryPlace(stack.copy(), position, EnumFacing.DOWN);
 	}
 
-	private boolean chopBlock() {
-		if (blocksToChop.isEmpty()) {
+	private boolean chopBlock(boolean wood) {
+		if ((wood && trunkBlocksToChop.isEmpty()) || (!wood && leafBlocksToChop.isEmpty())) {
 			return false;
 		}
 
-		Iterator<BlockPos> it = blocksToChop.iterator();
+		Iterator<BlockPos> it = wood ? trunkBlocksToChop.iterator() : leafBlocksToChop.iterator();
 		BlockPos position = it.next();
 		it.remove();
 		IBlockState state = world.getBlockState(position);
@@ -182,10 +180,10 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
 		if (hasShears) {
 			blocksToShear.addAll(leafBlocks);
 		} else {
-			blocksToChop.addAll(leafBlocks);
+			leafBlocksToChop.addAll(leafBlocks);
 		}
 		List<BlockPos> trunkBlocks = tree.getTrunkPositions();
-		blocksToChop.addAll(trunkBlocks);
+		trunkBlocksToChop.addAll(trunkBlocks);
 
 		if (!leafBlocks.isEmpty() || !trunkBlocks.isEmpty()) {
 			markDirty();
@@ -209,12 +207,19 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
-		if (!blocksToChop.isEmpty()) {
+		if (!trunkBlocksToChop.isEmpty()) {
 			NBTTagList chopList = new NBTTagList();
-			for (BlockPos position : blocksToChop) {
+			for (BlockPos position : trunkBlocksToChop) {
 				chopList.appendTag(new NBTTagLong(position.toLong()));
 			}
 			tag.setTag("targetList", chopList);
+		}
+		if (!leafBlocksToChop.isEmpty()) {
+			NBTTagList chopList = new NBTTagList();
+			for (BlockPos position : leafBlocksToChop) {
+				chopList.appendTag(new NBTTagLong(position.toLong()));
+			}
+			tag.setTag("targetLeafList", chopList);
 		}
 		return tag;
 	}
@@ -222,11 +227,17 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
-		blocksToChop.clear();
+		trunkBlocksToChop.clear();
 		if (tag.hasKey("targetList")) {
 			NBTTagList chopList = tag.getTagList("targetList", Constants.NBT.TAG_LONG);
 			for (int i = 0; i < chopList.tagCount(); i++) {
-				blocksToChop.add(BlockPos.fromLong(((NBTTagLong) chopList.get(i)).getLong()));
+				trunkBlocksToChop.add(BlockPos.fromLong(((NBTTagLong) chopList.get(i)).getLong()));
+			}
+		}
+		if (tag.hasKey("targetLeafList")) {
+			NBTTagList chopList = tag.getTagList("targetLeafList", Constants.NBT.TAG_LONG);
+			for (int i = 0; i < chopList.tagCount(); i++) {
+				leafBlocksToChop.add(BlockPos.fromLong(((NBTTagLong) chopList.get(i)).getLong()));
 			}
 		}
 	}
@@ -243,7 +254,7 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
 			IBlockState state = world.getBlockState(scanPos);
 			if (canFertilize(world, scanPos, state)) {
 				blocksToFertilize.add(scanPos);
-			} else if (state.getMaterial() != Material.AIR && blocksToChop.isEmpty()) {
+			} else if (state.getMaterial() != Material.AIR && trunkBlocksToChop.isEmpty() && leafBlocksToChop.isEmpty()) {
 				addTreeBlocks(state, scanPos);
 			}
 		}
@@ -253,9 +264,41 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
 		return state.getBlock() instanceof IGrowable && ((IGrowable) state.getBlock()).canGrow(world, pos, state, world.isRemote);
 	}
 
+	private static final IWorksiteAction SHEAR_ACTION = WorksiteImplementation::getEnergyPerActivation;
+	private static final IWorksiteAction CHOP_TRUNK_ACTION = e -> WorksiteImplementation.getEnergyPerActivation(e) / 2D;
+	private static final IWorksiteAction CHOP_LEAF_ACTION = e -> WorksiteImplementation.getEnergyPerActivation(e) / 10D;
+	private static final IWorksiteAction PLANT_ACTION = WorksiteImplementation::getEnergyPerActivation;
+	private static final IWorksiteAction BONEMEAL_ACTION = WorksiteImplementation::getEnergyPerActivation;
+
 	@Override
-	protected boolean hasWorksiteWork() {
-		return (hasShears && !blocksToShear.isEmpty()) || !blocksToChop.isEmpty() || (bonemealCount > 0 && !blocksToFertilize
-				.isEmpty()) || (plantableCount > 0 && !blocksToPlant.isEmpty());
+	protected Optional<IWorksiteAction> getNextAction() {
+		if (hasShears && !blocksToShear.isEmpty()) {
+			return Optional.of(SHEAR_ACTION);
+		} else if (!leafBlocksToChop.isEmpty()) {
+			return Optional.of(CHOP_LEAF_ACTION);
+		} else if (!trunkBlocksToChop.isEmpty()) {
+			return Optional.of(CHOP_TRUNK_ACTION);
+		} else if (bonemealCount > 0 && !blocksToFertilize.isEmpty()) {
+			return Optional.of(BONEMEAL_ACTION);
+		} else if (plantableCount > 0 && !blocksToPlant.isEmpty()) {
+			return Optional.of(PLANT_ACTION);
+		}
+		return Optional.empty();
+	}
+
+	@Override
+	protected boolean processAction(IWorksiteAction action) {
+		if (action == SHEAR_ACTION) {
+			return shearBlock();
+		} else if (action == CHOP_TRUNK_ACTION) {
+			return chopBlock(true);
+		} else if (action == CHOP_LEAF_ACTION) {
+			return chopBlock(false);
+		} else if (action == BONEMEAL_ACTION) {
+			return bonemealBlock();
+		} else if (action == PLANT_ACTION) {
+			return plant();
+		}
+		return false;
 	}
 }

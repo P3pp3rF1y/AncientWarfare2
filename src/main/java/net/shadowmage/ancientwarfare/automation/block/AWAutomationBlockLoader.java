@@ -45,9 +45,7 @@ import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseSto
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileAutoCrafting;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteAnimalFarm;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteFishFarm;
-import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteMushroomFarm;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteQuarry;
-import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteReedFarm;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.WorkSiteCropFarm;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.fruitfarm.WorkSiteFruitFarm;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.WorkSiteTreeFarm;
@@ -69,10 +67,8 @@ public class AWAutomationBlockLoader {
 		registry.register(new ItemBlockWorksiteStatic(AWAutomationBlocks.worksiteForestry));
 		registry.register(new ItemBlockWorksiteStatic(AWAutomationBlocks.worksiteCropFarm));
 		registry.register(new ItemBlockWorksiteStatic(AWAutomationBlocks.worksiteFruitFarm));
-		registry.register(new ItemBlockWorksiteStatic(AWAutomationBlocks.worksiteMushroomFarm));
 		registry.register(new ItemBlockWorksiteStatic(AWAutomationBlocks.worksiteAnimalFarm));
 		registry.register(new ItemBlockWorksiteStatic(AWAutomationBlocks.worksiteFishFarm));
-		registry.register(new ItemBlockWorksiteStatic(AWAutomationBlocks.worksiteReedFarm));
 		registry.register(new ItemBlockWorksiteStatic(AWAutomationBlocks.worksiteWarehouse));
 		registry.register(new ItemBlockWarehouseStorage(AWAutomationBlocks.warehouseStorageBlock));
 		registry.register(new ItemBlock(AWAutomationBlocks.warehouseInterface).setRegistryName(AWAutomationBlocks.warehouseInterface.getRegistryName()));
@@ -112,17 +108,11 @@ public class AWAutomationBlockLoader {
 		registry.register(new BlockWorksiteBase("fruit_farm").setTileFactory(WorkSiteFruitFarm::new));
 		registerTile(WorkSiteFruitFarm.class, "fruit_farm_tile");
 
-		registry.register(new BlockWorksiteBase("mushroom_farm").setTileFactory(WorkSiteMushroomFarm::new));
-		registerTile(WorkSiteMushroomFarm.class, "mushroom_farm_tile");
-
 		registry.register(new BlockWorksiteBase("animal_farm").setTileFactory(WorkSiteAnimalFarm::new));
 		registerTile(WorkSiteAnimalFarm.class, "animal_farm_tile");
 
 		registry.register(new BlockWorksiteBase("fish_farm").setTileFactory(WorkSiteFishFarm::new));
 		registerTile(WorkSiteFishFarm.class, "fish_farm_tile");
-
-		registry.register(new BlockWorksiteBase("reed_farm").setTileFactory(WorkSiteReedFarm::new));
-		registerTile(WorkSiteReedFarm.class, "reed_farm_tile");
 
 		registry.register(new BlockWorksiteBase("warehouse_control").setTileFactory(TileWarehouse::new));
 		registerTile(TileWarehouse.class, "warehouse_control_tile");

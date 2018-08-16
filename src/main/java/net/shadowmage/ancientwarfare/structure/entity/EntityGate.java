@@ -1,24 +1,3 @@
-/*
- Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
- This software is distributed under the terms of the GNU General Public License.
- Please see COPYING for precise license information.
-
- This file is part of Ancient Warfare.
-
- Ancient Warfare is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- Ancient Warfare is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.structure.entity;
 
 import io.netty.buffer.ByteBuf;
@@ -57,6 +36,7 @@ import javax.annotation.Nonnull;
  */
 public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IEntityPacketHandler {
 
+	public static final String HEALTH_TAG = "health";
 	public BlockPos pos1;
 	public BlockPos pos2;
 
@@ -84,13 +64,17 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 		this.preventEntitySpawning = true;
 	}
 
+	public void setOwner(Owner owner) {
+		this.owner = owner;
+	}
+
 	public void setOwner(EntityPlayer player) {
 		owner = new Owner(player);
 	}
 
 	@Override
 	public Team getTeam() {
-		return world.getScoreboard().getPlayersTeam(owner.getName());
+		return world.getScoreboard().getPlayersTeam(getOwner().getName());
 	}
 
 	public Gate getGateType() {
@@ -181,18 +165,16 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 	}
 
 	public void setHealth(int val) {
-		if (val < 0) {
-			val = 0;
-		}
-		if (val < health) {
+		int newHealth = Math.max(val, 0);
+		if (newHealth < health) {
 			this.hurtAnimationTicks = 20;
 		}
-		if (val < health && !this.world.isRemote) {
+		if (newHealth < health && !this.world.isRemote) {
 			PacketEntity pkt = new PacketEntity(this);
-			pkt.packetData.setInteger("health", val);
+			pkt.packetData.setInteger(HEALTH_TAG, newHealth);
 			NetworkHandler.sendToAllTracking(this, pkt);
 		}
-		this.health = val;
+		this.health = newHealth;
 	}
 
 	@Override
@@ -217,8 +199,9 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 			return true;
 		}
 
-		if (owner.isOwnerOrSameTeamOrFriend(player) || player.capabilities.isCreativeMode) {
-			if (player.isSneaking()) {
+		boolean gateOwner = getOwner().isOwnerOrSameTeamOrFriend(player);
+		if (player.capabilities.isCreativeMode || getOwner() == Owner.EMPTY || gateOwner) {
+			if (gateOwner && player.isSneaking()) {
 				NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_GATE_CONTROL, getEntityId(), 0, 0);
 			} else {
 				this.activateGate();
@@ -244,9 +227,9 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 	}
 
 	@Override
+	@SuppressWarnings("squid:S2696") //World.MAX_ENTITY_RADIUS is static and can only be set this way, also just running in the main thread makes this safe
 	public void onUpdate() {
 		super.onUpdate();
-		this.gateType.onUpdate(this);
 		float prevEdge = this.edgePosition;
 		this.setPosition(posX, posY, posZ);
 		if (this.hurtInvulTicks > 0) {
@@ -289,7 +272,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 		}
 	}
 
-	protected void checkForPowerUpdates() {
+	private void checkForPowerUpdates() {
 		if (this.world.isRemote) {
 			return;
 		}
@@ -311,28 +294,26 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 	}
 
 	private boolean isInsensitiveTo(DamageSource source) {
-		return source == null || source == DamageSource.ANVIL || source == DamageSource.CACTUS || source == DamageSource.DROWN || source == DamageSource.FALL || source == DamageSource.FALLING_BLOCK || source == DamageSource.IN_WALL || source == DamageSource.STARVE;
+		return source == DamageSource.ANVIL || source == DamageSource.CACTUS || source == DamageSource.DROWN || source == DamageSource.FALL || source == DamageSource.FALLING_BLOCK || source == DamageSource.IN_WALL || source == DamageSource.STARVE;
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
-		if (isInsensitiveTo(par1DamageSource) || par2 < 0) {
+	public boolean attackEntityFrom(DamageSource damageSource, float amount) {
+		if (isInsensitiveTo(damageSource) || amount < 0) {
 			return false;
 		}
 		if (this.world.isRemote) {
 			return true;
 		}
-		if (!par1DamageSource.isExplosion()) {
+		if (!damageSource.isExplosion()) {
 			if (this.hurtInvulTicks > 0) {
 				return false;
 			}
 			this.hurtInvulTicks = 10;
 		}
-		int health = this.getHealth();
-		health -= par2;
-		this.setHealth(health);
+		this.setHealth((int) (getHealth() - amount));
 
-		if (health <= 0) {
+		if (getHealth() <= 0) {
 			this.setDead();
 		}
 		return !this.isDead;
@@ -370,7 +351,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 
 	@Override
 	public float getCollisionBorderSize() {
-		return -0.1F;
+		return 0.1F;
 	}
 
 	@Override
@@ -414,7 +395,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 		owner = Owner.deserializeFromNBT(tag);
 		this.edgePosition = tag.getFloat("edge");
 		this.edgeMax = tag.getFloat("edgeMax");
-		this.setHealth(tag.getInteger("health"));
+		this.setHealth(tag.getInteger(HEALTH_TAG));
 		this.gateStatus = tag.getByte("status");
 		this.gateOrientation = EnumFacing.VALUES[tag.getByte("orient")];
 		this.wasPoweredA = tag.getBoolean("power");
@@ -426,10 +407,10 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 		tag.setLong("pos1", pos1.toLong());
 		tag.setLong("pos2", pos2.toLong());
 		tag.setInteger("type", this.gateType.getGlobalID());
-		owner.serializeToNBT(tag);
+		getOwner().serializeToNBT(tag);
 		tag.setFloat("edge", this.edgePosition);
 		tag.setFloat("edgeMax", this.edgeMax);
-		tag.setInteger("health", this.getHealth());
+		tag.setInteger(HEALTH_TAG, this.getHealth());
 		tag.setByte("status", this.gateStatus);
 		tag.setByte("orient", (byte) gateOrientation.ordinal());
 		tag.setBoolean("power", this.wasPoweredA);
@@ -462,10 +443,13 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 
 	@Override
 	public void handlePacketData(NBTTagCompound tag) {
-		if (tag.hasKey("health")) {
-			this.health = tag.getInteger("health");
+		if (tag.hasKey(HEALTH_TAG)) {
+			this.health = tag.getInteger(HEALTH_TAG);
 			this.hurtAnimationTicks = 20;
 		}
 	}
 
+	public Owner getOwner() {
+		return owner;
+	}
 }

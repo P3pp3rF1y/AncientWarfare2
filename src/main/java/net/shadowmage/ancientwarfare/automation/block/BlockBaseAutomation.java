@@ -12,16 +12,16 @@ import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.BlockBase;
-import net.shadowmage.ancientwarfare.core.proxy.IClientRegistrar;
+import net.shadowmage.ancientwarfare.core.proxy.IClientRegister;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 
-public abstract class BlockBaseAutomation extends BlockBase implements IClientRegistrar {
+public abstract class BlockBaseAutomation extends BlockBase implements IClientRegister {
 
 	public BlockBaseAutomation(Material material, String regName) {
 		super(material, AncientWarfareAutomation.MOD_ID, regName);
 		setCreativeTab(AWAutomationItemLoader.automationTab);
 
-		AncientWarfareAutomation.proxy.addClientRegistrar(this);
+		AncientWarfareAutomation.proxy.addClientRegister(this);
 	}
 
 	@Override

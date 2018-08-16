@@ -5,7 +5,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 import net.shadowmage.ancientwarfare.core.util.Trig;
@@ -90,7 +89,6 @@ public abstract class TileTorqueSingleCell extends TileTorqueBase {
 
 	@Override
 	protected void handleClientRotationData(EnumFacing side, int value) {
-		AncientWarfareAutomation.log.info("receiving sided rotation data: " + side + " :: " + value);
 		if (side == orientation) {
 			clientDestEnergyState = value;
 			networkUpdateTicks = AWAutomationStatics.energyMinNetworkUpdateFrequency;

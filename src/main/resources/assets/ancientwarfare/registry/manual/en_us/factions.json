@@ -1,0 +1,49 @@
+{
+    "type": "manual_content",
+    "lang": "en_US",
+    "category": "factions",
+    "content": [
+        {
+            "content_type": "heading",
+            "text": "Main heading",
+            "level": 1
+        },
+        {
+            "content_type": "heading",
+            "text": "Sub heading",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "These are some sample content sections"
+        },
+        {
+            "content_type": "text",
+            "text": "Nogg settlements are found far and wide and are perhaps the friendliest people that a traveller may ever meet. The Noggs are a farming and mining race, with a proud lumberjack tradition. Their settlements are most often well-fortified hamlets or small trading towns.\nNoggs make average warriors and rely on a plentiful citizen militia of spearmen, swordsmen and bowmen. Nogg nobles, known as Noggins, are skilled horsemen and their retainers are horse archers.\nNogg priests are noted for their cheerful and happy disposition and their healing powers are good.\nNogg traders will often have a wide range of materials and goods for exchange and will often accept many odd things in return."
+        },
+        {
+            "content_type": "heading",
+            "text": "Main heading for Empire",
+            "level": 1
+        },
+        {
+            "content_type": "heading",
+            "text": "Sub heading for Empire",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "The religion of the Empire is the Holy Church and it forms a separate allied faction of the Empire. Always seeking to destroy evil, the undead and anything non-human, it also attempts to destroy the temples and worship places of any other gods. In a sense, the Holy Church is the aggressive Crusading arm of the Empires expansion. Crusader fortifications are usually castles and can be vast affairs with many, many defenders.\nCrusaders are the military arm of the Imperial Church intended to conquer and convert the heathen tribes and nations. They are armoured and efficient warriors and tough to overcome.\nHoly Church priests have strong healing abilities and can resurrect fallen Crusaders in battle. Those of the highest power may also summon an Angelic warrior to assist them.\nHoly Church traders specialise in books, paper, feathers and ink sacs. They accept Imperial Coins and some materials in exchange."
+        },
+        {
+            "content_type": "image",
+            "path": "/images/sample.jpg",
+            "width": 459,
+            "height": 229
+        },
+        {
+            "content_type": "text",
+            "text": "In sweltering deserts may be encountered the desert strongholds of the Saracens. These fierce desert warriors defend their sun-parched territories with determination. Saracens can be found in isolated villages, outpost towers and in castles and walled cities.\nSaracens are a friendly nation and try to live peaceably but will defend themselves forcefully if attacked.\nSaracen Emirs are skilful and cunning fighters and are difficult to beat because of their speed.\nSaracen priests can resurrect fallen Saracens in battle and may call upon desert Djinns to aid them.\nSaracen traders have a very wide range of materials and items to trade and Saracen bazaars are legendary places to visit and trade."
+        }
+    ]
+}

@@ -4,10 +4,8 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.scoreboard.Team;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
-import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
@@ -16,6 +14,12 @@ import java.util.UUID;
 @Immutable
 public class Owner {
 	public static final Owner EMPTY = new Owner();
+	private static ITeamViewer teamViewer = new DefaultTeamViewer();
+
+	public static void setTeamViewer(ITeamViewer newTeamViewer) {
+		teamViewer = newTeamViewer;
+	}
+
 	private static final String OWNER_NAME_TAG = "ownerName";
 	private static final String OWNER_ID_TAG = "ownerId";
 	private final UUID uuid;
@@ -54,7 +58,7 @@ public class Owner {
 	}
 
 	public boolean isOwnerOrSameTeamOrFriend(World world, @Nullable UUID playerId, String playerName) {
-		return name.equals(playerName) || uuid.equals(playerId) || isSameTeam(world, playerName) || ModAccessors.FTBU.areFriendly(playerId, uuid);
+		return teamViewer.areFriendly(world, uuid, playerId, name, playerName);
 	}
 
 	public String getName() {
@@ -90,14 +94,7 @@ public class Owner {
 	}
 
 	public boolean playerHasCommandPermissions(World world, UUID playerId, String playerName) {
-		//noinspection SimplifiableIfStatement
-		if (this == Owner.EMPTY)
-			return false;
-		return playerId.equals(uuid) || isSameTeam(world, playerName) || ModAccessors.FTBU.areTeamMates(uuid, playerId);
+		return this != Owner.EMPTY && teamViewer.areTeamMates(world, uuid, playerId, name, playerName);
 	}
 
-	private boolean isSameTeam(World world, String playerName) {
-		Team team = world.getScoreboard().getPlayersTeam(name);
-		return team != null && team.isSameTeam(world.getScoreboard().getPlayersTeam(playerName));
-	}
 }

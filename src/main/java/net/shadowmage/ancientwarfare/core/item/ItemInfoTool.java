@@ -13,7 +13,12 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import net.shadowmage.ancientwarfare.core.gui.GuiInfoTool;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.core.util.ItemTools;
 
 import javax.annotation.Nullable;
 import java.awt.*;
@@ -40,13 +45,12 @@ public class ItemInfoTool extends ItemBaseCore {
 			} else {
 				printJSON(player, state);
 			}
-			return EnumActionResult.SUCCESS;
 		}
-
-		return super.onItemUseFirst(player, world, pos, side, hitX, hitY, hitZ, hand);
+		return EnumActionResult.SUCCESS;
 	}
 
 	private void printSimpleMessage(EntityPlayer player, IBlockState state) {
+		//noinspection ConstantConditions
 		player.sendMessage(new TextComponentString("Block name: " + state.getBlock().getRegistryName().toString()));
 		if (!state.getProperties().isEmpty()) {
 			player.sendMessage(new TextComponentString("Properties:"));
@@ -64,13 +68,43 @@ public class ItemInfoTool extends ItemBaseCore {
 		player.sendMessage(new TextComponentString("Copied to clipboard"));
 	}
 
+	public void printItemInfo(EntityPlayer player, ItemStack infoTool, ItemStack stack) {
+		if (getMode(infoTool) == Mode.INFO) {
+			printSimpleMessage(player, stack);
+		} else {
+			printJSON(player, stack);
+		}
+	}
+
+	private void printSimpleMessage(EntityPlayer player, ItemStack stack) {
+		//noinspection ConstantConditions
+		player.sendMessage(new TextComponentString("Item name: " + stack.getItem().getRegistryName().toString()));
+		player.sendMessage(new TextComponentString("Meta: " + stack.getMetadata()));
+		if (stack.hasTagCompound()) {
+			//noinspection ConstantConditions
+			player.sendMessage(new TextComponentString("NBT: " + stack.getTagCompound().toString()));
+		}
+	}
+
+	private void printJSON(EntityPlayer player, ItemStack stack) {
+		String json = ItemTools.serializeToJson(stack).toString();
+		StringSelection stringSelection = new StringSelection(json);
+		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
+		player.sendMessage(new TextComponentString(json));
+		player.sendMessage(new TextComponentString("Copied to clipboard"));
+	}
+
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-		if (!world.isRemote && player.isSneaking()) {
-			return new ActionResult<>(EnumActionResult.SUCCESS, cycleMode(player.getHeldItem(hand)));
+		if (world.isRemote) {
+			return super.onItemRightClick(world, player, hand);
 		}
-
-		return super.onItemRightClick(world, player, hand);
+		if (player.isSneaking()) {
+			return new ActionResult<>(EnumActionResult.SUCCESS, cycleMode(player.getHeldItem(hand)));
+		} else {
+			NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_INFO_TOOL);
+			return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
+		}
 	}
 
 	private ItemStack cycleMode(ItemStack stack) {
@@ -88,6 +122,14 @@ public class ItemInfoTool extends ItemBaseCore {
 			return stack.getTagCompound().getString("mode").equals("json") ? Mode.JSON : Mode.INFO;
 		}
 		return Mode.INFO;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerClient() {
+		super.registerClient();
+
+		NetworkHandler.registerGui(NetworkHandler.GUI_INFO_TOOL, GuiInfoTool.class);
 	}
 
 	enum Mode {

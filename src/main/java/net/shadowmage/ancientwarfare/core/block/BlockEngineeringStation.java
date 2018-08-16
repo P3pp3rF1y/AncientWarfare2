@@ -27,7 +27,7 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableB
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.gui.crafting.GuiEngineeringStation;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.proxy.IClientRegistrar;
+import net.shadowmage.ancientwarfare.core.proxy.IClientRegister;
 import net.shadowmage.ancientwarfare.core.render.BlockStateKeyGenerator;
 import net.shadowmage.ancientwarfare.core.render.EngineeringStationRenderer;
 import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
@@ -35,13 +35,13 @@ import net.shadowmage.ancientwarfare.core.tile.TileEngineeringStation;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
-public class BlockEngineeringStation extends BlockBaseCore implements IClientRegistrar, IBakeryProvider, IRotatableBlock {
+public class BlockEngineeringStation extends BlockBaseCore implements IClientRegister, IBakeryProvider, IRotatableBlock {
 
 	protected BlockEngineeringStation() {
 		super(Material.ROCK, "engineering_station");
 		setHardness(2.f);
 
-		AncientWarfareCore.proxy.addClientRegistrar(this);
+		AncientWarfareCore.proxy.addClientRegister(this);
 	}
 
 	@Override

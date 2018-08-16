@@ -19,13 +19,15 @@ import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import net.shadowmage.ancientwarfare.automation.registry.CropFarmRegistry;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.IWorksiteAction;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteFarm;
 import net.shadowmage.ancientwarfare.core.entity.AWFakePlayer;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 
-import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.Optional;
 import java.util.Set;
 
 public class WorkSiteCropFarm extends TileWorksiteFarm {
@@ -88,105 +90,16 @@ public class WorkSiteCropFarm extends TileWorksiteFarm {
 	}
 
 	@Override
-	protected boolean processWork() {
-
-		Iterator<BlockPos> it;
-		BlockPos position;
-		Block block;
-		if (!blocksToTill.isEmpty()) {
-			it = blocksToTill.iterator();
-			while (it.hasNext() && (position = it.next()) != null) {
-				it.remove();
-				IBlockState state = world.getBlockState(position);
-				if (CropFarmRegistry.isTillable(state) && canReplace(position.up())) {
-					world.setBlockState(position, CropFarmRegistry.getTilledState(state));
-					world.playSound(null, pos, SoundEvents.ITEM_HOE_TILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
-					return true;
-				}
-			}
-		} else if (!blocksToHarvest.isEmpty()) {
-			it = blocksToHarvest.iterator();
-			while (it.hasNext() && (position = it.next()) != null) {
-				it.remove();
-				IBlockState state = world.getBlockState(position);
-				ICrop crop = CropFarmRegistry.getCrop(state);
-				return crop.harvest(world, state, position, getFortune(), inventoryForDrops);
-			}
-		} else if (hasToPlant()) {
-			it = blocksToPlant.iterator();
-			while (it.hasNext() && (position = it.next()) != null) {
-				it.remove();
-				if (canReplace(position)) {
-					@Nonnull ItemStack stack;
-					for (int slot = 0; slot < plantableInventory.getSlots(); slot++) {
-						stack = plantableInventory.getStackInSlot(slot);
-						if (stack.isEmpty()) {
-							continue;
-						}
-						if (isPlantable(stack)) {
-							ItemStack clone = stack.copy();
-							if (tryPlace(clone, position, EnumFacing.UP)) {
-								plantableInventory.extractItem(slot, 1, false);
-								return true;
-							}
-						}
-					}
-					return false;
-				}
-			}
-		} else if (hasToFertilize()) {
-			it = blocksToFertilize.iterator();
-			while (it.hasNext() && (position = it.next()) != null) {
-				it.remove();
-				IBlockState state = world.getBlockState(position);
-				block = state.getBlock();
-				if (block instanceof IGrowable) {
-					@Nonnull ItemStack stack;
-					for (int slot = 0; slot < miscInventory.getSlots(); slot++) {
-						stack = miscInventory.getStackInSlot(slot);
-						if (stack.isEmpty()) {
-							continue;
-						}
-						if (isBonemeal(stack)) {
-							ItemStack clone = stack.copy();
-							if (ItemDye.applyBonemeal(clone, world, position, AWFakePlayer.get(world), EnumHand.MAIN_HAND)) {
-								miscInventory.extractItem(slot, 1, false);
-								world.playEvent(2005, position, 0);
-							}
-							block = world.getBlockState(position).getBlock();
-							if (block instanceof IGrowable) {
-								if (((IGrowable) block).canGrow(world, position, state, world.isRemote)) {
-									blocksToFertilize.add(position);
-								} else if (isFarmable(block, position)) {
-									blocksToHarvest.add(position);
-								}
-							}
-							return true;
-						}
-					}
-					return false;
-				}
-			}
-		}
-		return false;
-	}
-
-	@Override
 	public WorkType getWorkType() {
 		return WorkType.FARMING;
 	}
 
 	@Override
-	public boolean onBlockClicked(EntityPlayer player, EnumHand hand) {
+	public boolean onBlockClicked(EntityPlayer player, @Nullable EnumHand hand) {
 		if (!player.world.isRemote) {
 			NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_CROP_FARM, pos);
 		}
 		return true;
-	}
-
-	@Override
-	protected boolean hasWorksiteWork() {
-		return hasToPlant() || hasToFertilize() || !blocksToTill.isEmpty() || !blocksToHarvest.isEmpty();
 	}
 
 	private boolean hasToPlant() {
@@ -195,5 +108,126 @@ public class WorkSiteCropFarm extends TileWorksiteFarm {
 
 	private boolean hasToFertilize() {
 		return (bonemealCount > 0 && !blocksToFertilize.isEmpty());
+	}
+
+	private static final IWorksiteAction PLANT_ACTION = WorksiteImplementation::getEnergyPerActivation;
+	private static final IWorksiteAction FERTILIZE_ACTION = WorksiteImplementation::getEnergyPerActivation;
+	private static final IWorksiteAction TILL_ACTION = WorksiteImplementation::getEnergyPerActivation;
+	private static final IWorksiteAction HARVEST_ACTION = WorksiteImplementation::getEnergyPerActivation;
+
+	@Override
+	protected Optional<IWorksiteAction> getNextAction() {
+		if (hasToPlant()) {
+			return Optional.of(PLANT_ACTION);
+		} else if (hasToFertilize()) {
+			return Optional.of(FERTILIZE_ACTION);
+		} else if (!blocksToTill.isEmpty()) {
+			return Optional.of(TILL_ACTION);
+		} else if (!blocksToHarvest.isEmpty()) {
+			return Optional.of(HARVEST_ACTION);
+		}
+		return Optional.empty();
+	}
+
+	@Override
+	protected boolean processAction(IWorksiteAction action) {
+		if (action == TILL_ACTION) {
+			return tryTill();
+		} else if (action == HARVEST_ACTION) {
+			return tryHarvest();
+		} else if (action == PLANT_ACTION) {
+			return tryPlant();
+		} else if (action == FERTILIZE_ACTION) {
+			return tryFertilize();
+		}
+		return false;
+	}
+
+	private boolean tryFertilize() {
+		Iterator<BlockPos> it = blocksToFertilize.iterator();
+		BlockPos position;
+		while (it.hasNext() && (position = it.next()) != null) {
+			it.remove();
+			IBlockState state = world.getBlockState(position);
+			Block block = state.getBlock();
+			if (block instanceof IGrowable) {
+				for (int slot = 0; slot < miscInventory.getSlots(); slot++) {
+					ItemStack stack = miscInventory.getStackInSlot(slot);
+					if (stack.isEmpty()) {
+						continue;
+					}
+					if (isBonemeal(stack)) {
+						ItemStack clone = stack.copy();
+						if (ItemDye.applyBonemeal(clone, world, position, AWFakePlayer.get(world), EnumHand.MAIN_HAND)) {
+							miscInventory.extractItem(slot, 1, false);
+							world.playEvent(2005, position, 0);
+						}
+						block = world.getBlockState(position).getBlock();
+						if (block instanceof IGrowable) {
+							if (((IGrowable) block).canGrow(world, position, state, world.isRemote)) {
+								blocksToFertilize.add(position);
+							} else if (isFarmable(block, position)) {
+								blocksToHarvest.add(position);
+							}
+						}
+						return true;
+					}
+				}
+				return false;
+			}
+		}
+		return false;
+	}
+
+	private boolean tryPlant() {
+		Iterator<BlockPos> it = blocksToPlant.iterator();
+		BlockPos position;
+		while (it.hasNext() && (position = it.next()) != null) {
+			it.remove();
+			if (canReplace(position)) {
+				for (int slot = 0; slot < plantableInventory.getSlots(); slot++) {
+					ItemStack stack = plantableInventory.getStackInSlot(slot);
+					if (stack.isEmpty()) {
+						continue;
+					}
+					if (isPlantable(stack)) {
+						ItemStack clone = stack.copy();
+						if (tryPlace(clone, position, EnumFacing.UP)) {
+							plantableInventory.extractItem(slot, 1, false);
+							return true;
+						}
+					}
+				}
+				return false;
+			}
+		}
+		return false;
+	}
+
+	private boolean tryHarvest() {
+		Iterator<BlockPos> it = blocksToHarvest.iterator();
+		BlockPos position;
+		if (it.hasNext() && (position = it.next()) != null) {
+			it.remove();
+			IBlockState state = world.getBlockState(position);
+			ICrop crop = CropFarmRegistry.getCrop(state);
+			return crop.harvest(world, state, position, getFortune(), inventoryForDrops);
+		}
+		return false;
+	}
+
+	private boolean tryTill() {
+		Iterator<BlockPos> it = blocksToTill.iterator();
+		BlockPos position;
+		while (it.hasNext() && (position = it.next()) != null) {
+			it.remove();
+			IBlockState state = world.getBlockState(position);
+			if (CropFarmRegistry.isTillable(state) && canReplace(position.up())) {
+				world.setBlockState(position, CropFarmRegistry.getTilledState(state));
+				world.playSound(null, pos, SoundEvents.ITEM_HOE_TILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				return true;
+			}
+		}
+		return false;
 	}
 }

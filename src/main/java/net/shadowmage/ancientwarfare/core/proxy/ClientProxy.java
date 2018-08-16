@@ -1,5 +1,7 @@
 package net.shadowmage.ancientwarfare.core.proxy;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -9,6 +11,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
+import net.shadowmage.ancientwarfare.core.manual.ManualContentRegistry;
+import net.shadowmage.ancientwarfare.core.registry.RegistryLoader;
 import net.shadowmage.ancientwarfare.core.render.EngineeringStationRenderer;
 import net.shadowmage.ancientwarfare.core.render.ResearchStationRenderer;
 import org.lwjgl.LWJGLException;
@@ -22,6 +26,11 @@ import org.lwjgl.opengl.DisplayMode;
  */
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends ClientProxyBase {
+	private static FontRenderer unicodeFontRenderer;
+
+	public static FontRenderer getUnicodeFontRenderer() {
+		return unicodeFontRenderer;
+	}
 
 	@Override
 	public void preInit() {
@@ -37,6 +46,7 @@ public class ClientProxy extends ClientProxyBase {
 	@Override
 	public void init() {
 		InputHandler.initKeyBindings();
+		RegistryLoader.registerParser(new ManualContentRegistry.ManualContentParser());
 	}
 
 	private void setDebugResolution() {
@@ -47,6 +57,14 @@ public class ClientProxy extends ClientProxyBase {
 		catch (LWJGLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void postInit() {
+		super.postInit();
+
+		Minecraft mc = Minecraft.getMinecraft();
+		unicodeFontRenderer = new FontRenderer(mc.gameSettings, new ResourceLocation("textures/font/ascii.png"), mc.getTextureManager(), true);
 	}
 
 	@SubscribeEvent

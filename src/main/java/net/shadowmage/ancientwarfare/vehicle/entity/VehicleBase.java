@@ -1069,4 +1069,8 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		getPassengers().forEach(e -> e.setPosition(posX, posY, posZ));
 		return super.writeToNBT(compound);
 	}
+
+	public boolean isAmmoLoaded() {
+		return vehicleType.getValidAmmoTypes().stream().anyMatch(a -> ammoHelper.getCountOf(a) > 0);
+	}
 }

@@ -1,0 +1,10 @@
+{
+    "mod": "rustic",
+    "saplings": [
+        {
+            "sapling": {
+                "name": "rustic:sapling"
+            }
+        }
+    ]
+}

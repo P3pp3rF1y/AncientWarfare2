@@ -8,7 +8,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 import java.io.IOException;
 
@@ -27,6 +26,6 @@ public class PacketHandlerServer {
 	public void onClientPacket(FMLNetworkEvent.ClientCustomPacketEvent evt) throws IOException {
 		PacketBase packet = PacketBase.readPacket(evt.getPacket().payload());
 
-		Minecraft.getMinecraft().addScheduledTask(() -> packet.execute(AncientWarfareCore.proxy.getClientPlayer()));
+		Minecraft.getMinecraft().addScheduledTask(() -> packet.execute(Minecraft.getMinecraft().player));
 	}
 }

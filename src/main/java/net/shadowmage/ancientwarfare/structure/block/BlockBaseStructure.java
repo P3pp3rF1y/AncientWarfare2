@@ -10,17 +10,17 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.BlockBase;
-import net.shadowmage.ancientwarfare.core.proxy.IClientRegistrar;
+import net.shadowmage.ancientwarfare.core.proxy.IClientRegister;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
 
-public class BlockBaseStructure extends BlockBase implements IClientRegistrar {
+public class BlockBaseStructure extends BlockBase implements IClientRegister {
 	BlockBaseStructure(Material material, String regName) {
 		super(material, AncientWarfareStructures.MOD_ID, regName);
 		setCreativeTab(AWStructuresItemLoader.structureTab);
 
-		AncientWarfareStructures.proxy.addClientRegistrar(this);
+		AncientWarfareStructures.proxy.addClientRegister(this);
 	}
 
 	@Override

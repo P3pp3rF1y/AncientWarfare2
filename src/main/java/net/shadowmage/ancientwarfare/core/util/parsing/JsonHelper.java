@@ -11,19 +11,22 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.nbt.NBTException;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
-import net.shadowmage.ancientwarfare.core.util.TriFunction;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.MissingResourceException;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.StreamSupport;
@@ -45,21 +48,24 @@ public class JsonHelper {
 	}
 
 	public static ItemStack getItemStack(JsonObject json, String elementName) {
-		return getItemStack(json, elementName, ItemStack::new, ItemStack::new);
+		return getItemStack(json, elementName, (i, c, m, t) -> {
+			ItemStack stack = new ItemStack(i, c, m);
+			stack.setTagCompound(t);
+			return stack;
+		});
 	}
 
-	private static <T> T getItemStack(JsonObject parent, String elementName, TriFunction<Item, Integer, Integer, T> instantiate, BiFunction<Item, Integer, T> instantiateNoMeta) {
+	private static <T> T getItemStack(JsonObject parent, String elementName, ItemStackCreator<T> creator) {
 		if (!JsonUtils.hasField(parent, elementName)) {
 			throw new JsonParseException("Expected " + elementName + " member in " + parent.toString());
 		}
 
-		return getItemStack(parent.get(elementName), instantiate, instantiateNoMeta);
+		return getItemStack(parent.get(elementName), creator);
 	}
 
-	private static <T> T getItemStack(JsonElement element, TriFunction<Item, Integer, Integer, T> instantiate, BiFunction<Item, Integer, T> instantiateNoMeta) {
-
+	private static <T> T getItemStack(JsonElement element, ItemStackCreator<T> creator) {
 		if (element.isJsonPrimitive()) {
-			return instantiateNoMeta.apply(getItem(element.getAsString()), 1);
+			return creator.instantiate(getItem(element.getAsString()), 1, -1, null);
 		}
 
 		JsonObject obj = element.getAsJsonObject();
@@ -68,19 +74,29 @@ public class JsonHelper {
 
 		int count = JsonUtils.hasField(obj, "count") ? JsonUtils.getInt(obj, "count") : 1;
 
+		int meta = -1;
 		if (JsonUtils.hasField(obj, "meta")) {
-			return instantiate.apply(item, count, JsonUtils.getInt(obj, "meta"));
+			meta = JsonUtils.getInt(obj, "meta");
+		}
+		NBTTagCompound tagCompound = null;
+		if (JsonUtils.hasField(obj, "nbt")) {
+			try {
+				tagCompound = JsonToNBT.getTagFromJson(JsonUtils.getString(obj, "nbt"));
+			}
+			catch (NBTException e) {
+				AncientWarfareCore.log.error("Error reading item stack nbt ", JsonUtils.getJsonObject(obj, "nbt"));
+			}
 		}
 
-		return instantiateNoMeta.apply(getItem(registryName), count);
+		return creator.instantiate(item, count, meta, tagCompound);
 	}
 
 	public static ItemStackMatcher getItemStackMatcher(JsonObject element) {
-		return getItemStack(element, (i, c, m) -> new ItemStackMatcher(i, m), (i, c) -> new ItemStackMatcher(i));
+		return getItemStack(element, (i, c, m, t) -> new ItemStackMatcher.Builder(i).setMeta(m).setTagCompound(t).build());
 	}
 
 	public static ItemStackMatcher getItemStackMatcher(JsonObject parent, String elementName) {
-		return getItemStack(parent, elementName, (i, c, m) -> new ItemStackMatcher(i, m), (i, c) -> new ItemStackMatcher(i));
+		return getItemStack(parent, elementName, (i, c, m, t) -> new ItemStackMatcher.Builder(i).setMeta(m).setTagCompound(t).build());
 	}
 
 	private static <T> T getBlockState(JsonObject stateJson, Function<Block, T> init, AddPropertyFunction<T> addProperty) {
@@ -235,5 +251,9 @@ public class JsonHelper {
 		}
 
 		return ret;
+	}
+
+	private interface ItemStackCreator<R> {
+		R instantiate(Item item, int count, int meta, @Nullable NBTTagCompound tagCompound);
 	}
 }

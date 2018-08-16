@@ -1,8 +1,6 @@
 package net.shadowmage.ancientwarfare.core.proxy;
 
 import com.google.common.collect.Sets;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -14,7 +12,7 @@ import java.util.Set;
 @SideOnly(Side.CLIENT)
 public class ClientProxyBase extends CommonProxyBase {
 
-	private Set<IClientRegistrar> clientRegistrars = Sets.newHashSet();
+	private Set<IClientRegister> clientRegisters = Sets.newHashSet();
 
 	public ClientProxyBase() {
 		MinecraftForge.EVENT_BUS.register(this);
@@ -22,30 +20,13 @@ public class ClientProxyBase extends CommonProxyBase {
 
 	@SubscribeEvent
 	public void registerModels(ModelRegistryEvent event) {
-		for (IClientRegistrar registrar : clientRegistrars) {
-			registrar.registerClient();
+		for (IClientRegister register : clientRegisters) {
+			register.registerClient();
 		}
 	}
 
 	@Override
-	public void addClientRegistrar(IClientRegistrar registrar) {
-		clientRegistrars.add(registrar);
-	}
-
-	@Override
-	public void preInit() {
-		super.preInit();
-
-	}
-
-	@Override
-	public void init() {
-		super.init();
-
-	}
-
-	@Override
-	public final EntityPlayer getClientPlayer() {
-		return Minecraft.getMinecraft().player;
+	public void addClientRegister(IClientRegister register) {
+		clientRegisters.add(register);
 	}
 }

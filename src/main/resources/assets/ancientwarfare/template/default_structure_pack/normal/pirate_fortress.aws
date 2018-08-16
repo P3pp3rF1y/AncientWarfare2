@@ -929,7 +929,7 @@ plugin=awGate
 number=9
 data:
 position=13,1,22
-JSON:{{"val":{"pos1":{"val":{"z":{"val":"0","id":"pi"},"y":{"val":"0","id":"pi"},"x":{"val":"2","id":"pi"}},"id":"ct"},"orientation":{"val":"0","id":"pb"},"pos2":{"val":{"z":{"val":"0","id":"pi"},"y":{"val":"3","id":"pi"},"x":{"val":"-2","id":"pi"}},"id":"ct"},"gateType":{"val":"gate.verticalIron","id":"ss"}},"id":"ct"}}
+JSON:{{"val":{"pos1":{"val":{"z":{"val":"0","id":"pi"},"y":{"val":"0","id":"pi"},"x":{"val":"2","id":"pi"}},"id":"ct"},"orientation":{"val":"0","id":"pb"},"pos2":{"val":{"z":{"val":"0","id":"pi"},"y":{"val":"3","id":"pi"},"x":{"val":"-2","id":"pi"}},"id":"ct"},"owner":{"val":"shadowmage4513","id":"ss"},"gateType":{"val":"gate.verticalIron","id":"ss"}},"id":"ct"}}
 :enddata
 :endentity
 

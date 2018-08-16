@@ -2892,7 +2892,7 @@ plugin=awGate
 number=2
 data:
 position=22,2,11
-JSON:{{"val":{"pos1":{"val":{"z":{"val":"0","id":"pi"},"y":{"val":"0","id":"pi"},"x":{"val":"-1","id":"pi"}},"id":"ct"},"orientation":{"val":"0","id":"pb"},"pos2":{"val":{"z":{"val":"0","id":"pi"},"y":{"val":"2","id":"pi"},"x":{"val":"1","id":"pi"}},"id":"ct"},"gateType":{"val":"gate.verticalIron","id":"ss"}},"id":"ct"}}
+JSON:{{"val":{"pos1":{"val":{"z":{"val":"0","id":"pi"},"y":{"val":"0","id":"pi"},"x":{"val":"-1","id":"pi"}},"id":"ct"},"orientation":{"val":"0","id":"pb"},"pos2":{"val":{"z":{"val":"0","id":"pi"},"y":{"val":"2","id":"pi"},"x":{"val":"1","id":"pi"}},"id":"ct"},"owner":{"val":"shadowmage4513","id":"ss"},"gateType":{"val":"gate.verticalIron","id":"ss"}},"id":"ct"}}
 :enddata
 :endentity
 
@@ -3027,7 +3027,7 @@ plugin=awGate
 number=17
 data:
 position=24,7,22
-JSON:{{"val":{"pos1":{"val":{"z":{"val":"0","id":"pi"},"y":{"val":"0","id":"pi"},"x":{"val":"-1","id":"pi"}},"id":"ct"},"orientation":{"val":"2","id":"pb"},"pos2":{"val":{"z":{"val":"0","id":"pi"},"y":{"val":"2","id":"pi"},"x":{"val":"1","id":"pi"}},"id":"ct"},"gateType":{"val":"gate.verticalWooden","id":"ss"}},"id":"ct"}}
+JSON:{{"val":{"pos1":{"val":{"z":{"val":"0","id":"pi"},"y":{"val":"0","id":"pi"},"x":{"val":"-1","id":"pi"}},"id":"ct"},"orientation":{"val":"2","id":"pb"},"pos2":{"val":{"z":{"val":"0","id":"pi"},"y":{"val":"2","id":"pi"},"x":{"val":"1","id":"pi"}},"id":"ct"},"owner":{"val":"shadowmage4513","id":"ss"},"gateType":{"val":"gate.verticalWooden","id":"ss"}},"id":"ct"}}
 :enddata
 :endentity
 
@@ -3072,7 +3072,7 @@ plugin=awGate
 number=22
 data:
 position=24,6,46
-JSON:{{"val":{"pos1":{"val":{"z":{"val":"0","id":"pi"},"y":{"val":"0","id":"pi"},"x":{"val":"-3","id":"pi"}},"id":"ct"},"orientation":{"val":"0","id":"pb"},"pos2":{"val":{"z":{"val":"0","id":"pi"},"y":{"val":"6","id":"pi"},"x":{"val":"3","id":"pi"}},"id":"ct"},"gateType":{"val":"gate.drawbridge","id":"ss"}},"id":"ct"}}
+JSON:{{"val":{"pos1":{"val":{"z":{"val":"0","id":"pi"},"y":{"val":"0","id":"pi"},"x":{"val":"-3","id":"pi"}},"id":"ct"},"orientation":{"val":"0","id":"pb"},"pos2":{"val":{"z":{"val":"0","id":"pi"},"y":{"val":"6","id":"pi"},"x":{"val":"3","id":"pi"}},"id":"ct"},"owner":{"val":"shadowmage4513","id":"ss"},"gateType":{"val":"gate.drawbridge","id":"ss"}},"id":"ct"}}
 :enddata
 :endentity
 
@@ -3081,7 +3081,7 @@ plugin=awGate
 number=23
 data:
 position=24,7,45
-JSON:{{"val":{"pos1":{"val":{"z":{"val":"0","id":"pi"},"y":{"val":"0","id":"pi"},"x":{"val":"-2","id":"pi"}},"id":"ct"},"orientation":{"val":"0","id":"pb"},"pos2":{"val":{"z":{"val":"0","id":"pi"},"y":{"val":"5","id":"pi"},"x":{"val":"2","id":"pi"}},"id":"ct"},"gateType":{"val":"gate.verticalIron","id":"ss"}},"id":"ct"}}
+JSON:{{"val":{"pos1":{"val":{"z":{"val":"0","id":"pi"},"y":{"val":"0","id":"pi"},"x":{"val":"-2","id":"pi"}},"id":"ct"},"orientation":{"val":"0","id":"pb"},"pos2":{"val":{"z":{"val":"0","id":"pi"},"y":{"val":"5","id":"pi"},"x":{"val":"2","id":"pi"}},"id":"ct"},"owner":{"val":"shadowmage4513","id":"ss"},"gateType":{"val":"gate.verticalIron","id":"ss"}},"id":"ct"}}
 :enddata
 :endentity
 
@@ -3090,7 +3090,7 @@ plugin=awGate
 number=24
 data:
 position=24,7,40
-JSON:{{"val":{"pos1":{"val":{"z":{"val":"0","id":"pi"},"y":{"val":"0","id":"pi"},"x":{"val":"-2","id":"pi"}},"id":"ct"},"orientation":{"val":"0","id":"pb"},"pos2":{"val":{"z":{"val":"0","id":"pi"},"y":{"val":"3","id":"pi"},"x":{"val":"2","id":"pi"}},"id":"ct"},"gateType":{"val":"gate.verticalIron","id":"ss"}},"id":"ct"}}
+JSON:{{"val":{"pos1":{"val":{"z":{"val":"0","id":"pi"},"y":{"val":"0","id":"pi"},"x":{"val":"-2","id":"pi"}},"id":"ct"},"orientation":{"val":"0","id":"pb"},"pos2":{"val":{"z":{"val":"0","id":"pi"},"y":{"val":"3","id":"pi"},"x":{"val":"2","id":"pi"}},"id":"ct"},"owner":{"val":"shadowmage4513","id":"ss"},"gateType":{"val":"gate.verticalIron","id":"ss"}},"id":"ct"}}
 :enddata
 :endentity
 

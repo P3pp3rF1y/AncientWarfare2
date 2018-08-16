@@ -10,7 +10,6 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.network.FMLEventChannel;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.compat.jei.PacketTransferRecipe;
@@ -26,19 +25,19 @@ public final class NetworkHandler implements IGuiHandler {
 	public static final NetworkHandler INSTANCE = new NetworkHandler();
 
 	//public static final int PACKET_TEST = 0;//unused id
-	public static final int PACKET_GUI = 1;
+	private static final int PACKET_GUI = 1;
 	public static final int PACKET_STRUCTURE = 2;
-	public static final int PACKET_ITEM_KEY_INTERFACE = 3;
-	public static final int PACKET_ENTITY = 5;
-	public static final int PACKET_RESEARCH_INIT = 6;
-	public static final int PACKET_RESEARCH_ADD = 7;
-	public static final int PACKET_RESEARCH_START = 8;
+	private static final int PACKET_ITEM_KEY_INTERFACE = 3;
+	private static final int PACKET_ENTITY = 5;
+	private static final int PACKET_RESEARCH_INIT = 6;
+	private static final int PACKET_RESEARCH_ADD = 7;
+	private static final int PACKET_RESEARCH_START = 8;
 	//public static final int PACKET_STRUCTURE_IMAGE_LIST = 9;//unused
 	//public static final int PACKET_STRUCTURE_IMAGE_DATA = 10;//unused
 	public static final int PACKET_STRUCTURE_REMOVE = 11;
 	public static final int PACKET_NPC_COMMAND = 12;
 	public static final int PACKET_FACTION_UPDATE = 13;
-	public static final int PACKET_BLOCK_EVENT = 14;
+	private static final int PACKET_BLOCK_EVENT = 14;
 
 	public static final int PACKET_AIM_UPDATE = 15;
 	public static final int PACKET_AMMO_SELECT = 16;
@@ -51,7 +50,9 @@ public final class NetworkHandler implements IGuiHandler {
 	public static final int PACKET_VEHICLE_INPUT = 23;
 	public static final int PACKET_VEHICLE_MOVE = 24;
 
-	public static final int PACKET_JEI_TRANSFER_RECIPE = 25;
+	private static final int PACKET_JEI_TRANSFER_RECIPE = 25;
+
+	private static final int PACKET_MANUAL_RELOAD = 26;
 
 	public static final int GUI_CRAFTING = 0;
 	public static final int GUI_SCANNER = 1;
@@ -80,16 +81,12 @@ public final class NetworkHandler implements IGuiHandler {
 	public static final int GUI_WORKSITE_TREE_FARM = 25;
 	public static final int GUI_WORKSITE_ANIMAL_FARM = 26;
 	public static final int GUI_WORKSITE_CROP_FARM = 27;
-	public static final int GUI_WORKSITE_MUSHROOM_FARM = 28;
 	public static final int GUI_WORKSITE_FISH_FARM = 29;
-	public static final int GUI_WORKSITE_REED_FARM = 30;
 	public static final int GUI_STIRLING_GENERATOR = 31;
-	public static final int GUI_TORQUE_STORAGE_FLYWHEEL = 33;
 	public static final int GUI_NPC_WORK_ORDER = 34;
 	public static final int GUI_NPC_UPKEEP_ORDER = 35;
 	public static final int GUI_NPC_COMBAT_ORDER = 36;
 	public static final int GUI_NPC_ROUTING_ORDER = 37;
-	public static final int GUI_NPC_COMMAND_BATON = 38;
 	public static final int GUI_NPC_FACTION_TRADE_SETUP = 39;
 	public static final int GUI_BACKPACK = 40;
 	public static final int GUI_NPC_TOWN_HALL = 41;
@@ -110,6 +107,8 @@ public final class NetworkHandler implements IGuiHandler {
 
 	public static final int GUI_TOWN_BUILDER = 54;
 	public static final int GUI_LOOT_CHEST_PLACER = 55;
+	public static final int GUI_MANUAL = 56;
+	public static final int GUI_INFO_TOOL = 57;
 
 	private FMLEventChannel channel;
 
@@ -126,6 +125,7 @@ public final class NetworkHandler implements IGuiHandler {
 		PacketBase.registerPacketType(PACKET_RESEARCH_ADD, PacketResearchUpdate.class);
 		PacketBase.registerPacketType(PACKET_RESEARCH_START, PacketResearchStart.class);
 		PacketBase.registerPacketType(PACKET_BLOCK_EVENT, PacketBlockEvent.class);
+		PacketBase.registerPacketType(PACKET_MANUAL_RELOAD, PacketManualReload.class);
 		NetworkRegistry.INSTANCE.registerGuiHandler(AncientWarfareCore.instance, this);
 
 		if (Loader.isModLoaded("jei")) {
@@ -150,11 +150,7 @@ public final class NetworkHandler implements IGuiHandler {
 		server.getEntityTracker().sendToTracking(e, pkt.getFMLPacket());
 	}
 
-	public static void sendToAllNear(World world, int x, int y, int z, double range, PacketBase pkt) {
-		INSTANCE.channel.sendToAllAround(pkt.getFMLPacket(), new TargetPoint(world.provider.getDimension(), x, y, z, range));
-	}
-
-    /*
+	/*
 	 * @param world (must be instanceof be WorldServer)
      * @param cx    chunkX
      * @param cz    chunkZ
@@ -171,30 +167,30 @@ public final class NetworkHandler implements IGuiHandler {
 	}
 
 	@Override
-	public final Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-		Class<? extends ContainerBase> clz = containerClasses.get(ID);
+	public final Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
+		Class<? extends ContainerBase> clz = containerClasses.get(id);
 		if (clz != null) {
 			try {
 				return clz.getConstructor(EntityPlayer.class, int.class, int.class, int.class).newInstance(player, x, y, z);
 			}
 			catch (Exception e) {
-				e.printStackTrace();
+				AncientWarfareCore.log.error("Error instantiating GUI container on server: ", e);
 			}
 		}
 		return null;
 	}
 
 	@Override
-	public final Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-		Class<?> clz = this.guiClasses.get(ID);
+	public final Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
+		Class<?> clz = this.guiClasses.get(id);
 		if (clz != null) {
-			Object container = getServerGuiElement(ID, player, world, x, y, z);
+			Object container = getServerGuiElement(id, player, world, x, y, z);
 			try {
 				if (container != null)
 					return clz.getConstructor(ContainerBase.class).newInstance(container);
 			}
 			catch (Exception e) {
-				e.printStackTrace();
+				AncientWarfareCore.log.error("Error instantiating client GUI: ", e);
 			}
 		}
 		return null;

@@ -5,11 +5,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.tile.IBlockBreakHandler;
 import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public class TileAdvancedSpawner extends TileUpdatable implements ITickable {
+public class TileAdvancedSpawner extends TileUpdatable implements ITickable, IBlockBreakHandler {
 
 	private SpawnerSettings settings = new SpawnerSettings();
 
@@ -78,6 +78,7 @@ public class TileAdvancedSpawner extends TileUpdatable implements ITickable {
 		return settings.blockHardness;
 	}
 
+	@Override
 	public void onBlockBroken() {
 		if (world.isRemote) {
 			return;
@@ -88,6 +89,6 @@ public class TileAdvancedSpawner extends TileUpdatable implements ITickable {
 			xp -= j;
 			this.world.spawnEntity(new EntityXPOrb(this.world, this.pos.getX() + 0.5d, this.pos.getY(), this.pos.getZ() + 0.5d, j));
 		}
-		InventoryTools.dropItemsInWorld(world, settings.getInventory(), pos);
+		//InventoryTools.dropItemsInWorld(world, settings.getInventory(), pos);
 	}
 }

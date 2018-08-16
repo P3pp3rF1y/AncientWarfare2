@@ -7,7 +7,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
-import net.shadowmage.ancientwarfare.core.proxy.IClientRegistrar;
+import net.shadowmage.ancientwarfare.core.proxy.IClientRegister;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 
 import java.util.HashMap;
@@ -16,7 +16,7 @@ import java.util.Map;
 /*
  * Handle subtypes through ItemStack damage values
  */
-public class ItemMulti extends ItemBase implements IClientRegistrar {
+public class ItemMulti extends ItemBase implements IClientRegister {
 
 	private final HashMap<Integer, String> subItems = new HashMap<>();
 
@@ -61,7 +61,7 @@ public class ItemMulti extends ItemBase implements IClientRegistrar {
 	}
 
 	public ItemMulti listenToProxy(CommonProxyBase proxy) {
-		proxy.addClientRegistrar(this);
+		proxy.addClientRegister(this);
 
 		return this;
 	}

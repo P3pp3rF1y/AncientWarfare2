@@ -53,6 +53,11 @@ public class BlockAdvancedSpawner extends BlockBaseStructure {
 	}
 
 	@Override
+	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+		//no drops from spawner
+	}
+
+	@Override
 	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer.Builder(this).add(TRANSPARENT).build();
 	}
