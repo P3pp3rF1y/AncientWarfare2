@@ -12,6 +12,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockAdvancedSpawner;
+import net.shadowmage.ancientwarfare.structure.item.ItemBlockFirePit;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedLootChest;
@@ -22,6 +23,7 @@ import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureScanner;
 
 import static net.shadowmage.ancientwarfare.structure.AncientWarfareStructures.MOD_ID;
+import static net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks.FIRE_PIT;
 
 @Mod.EventBusSubscriber(modid = AncientWarfareStructures.MOD_ID)
 public class AWStructuresBlockLoader {
@@ -40,6 +42,7 @@ public class AWStructuresBlockLoader {
 		registry.register(new ItemBlock(AWStructuresBlocks.soundBlock).setRegistryName(AWStructuresBlocks.soundBlock.getRegistryName()));
 		registry.register(new ItemBlock(AWStructuresBlocks.structureScanner).setRegistryName(AWStructuresBlocks.structureScanner.getRegistryName()));
 		registry.register(new ItemBlock(AWStructuresBlocks.advancedLootChest).setRegistryName(AWStructuresBlocks.advancedLootChest.getRegistryName()));
+		registry.register(new ItemBlockFirePit(FIRE_PIT));
 	}
 
 	@SubscribeEvent
@@ -66,6 +69,8 @@ public class AWStructuresBlockLoader {
 
 		registry.register(new BlockAdvancedLootChest());
 		registerTile(TileAdvancedLootChest.class, "advanced_loot_chest_tile");
+
+		registry.register(new BlockFirePit());
 	}
 
 	private static void registerTile(Class<? extends TileEntity> teClass, String teId) {

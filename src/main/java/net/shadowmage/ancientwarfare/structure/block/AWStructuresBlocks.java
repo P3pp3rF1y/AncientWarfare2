@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.structure.block;
 
 import net.minecraft.block.Block;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
+import net.shadowmage.ancientwarfare.core.util.InjectionTools;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 
 @ObjectHolder(AncientWarfareStructures.MOD_ID)
@@ -23,4 +24,5 @@ public class AWStructuresBlocks {
 	public static Block structureScanner;
 	@ObjectHolder("advanced_loot_chest")
 	public static Block advancedLootChest;
+	public static final Block FIRE_PIT = InjectionTools.nullValue();
 }
