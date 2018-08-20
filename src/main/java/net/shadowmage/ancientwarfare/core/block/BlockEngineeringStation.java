@@ -36,8 +36,7 @@ import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
 public class BlockEngineeringStation extends BlockBaseCore implements IClientRegister, IBakeryProvider, IRotatableBlock {
-
-	protected BlockEngineeringStation() {
+	public BlockEngineeringStation() {
 		super(Material.ROCK, "engineering_station");
 		setHardness(2.f);
 

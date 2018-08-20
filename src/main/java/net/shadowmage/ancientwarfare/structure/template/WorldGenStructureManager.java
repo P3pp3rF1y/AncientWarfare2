@@ -8,7 +8,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.common.Loader;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
-import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
@@ -56,7 +56,7 @@ public class WorldGenStructureManager {
 				if (templatesByBiome.containsKey(biome)) {
 					templatesByBiome.get(biome).add(template);
 				} else if (Loader.isModLoaded((new ResourceLocation(biome)).getResourceDomain())) {
-					AncientWarfareStructures.log.error("Could not locate biome: " + biome + " while registering template: " + template.name + " for world generation.");
+					AncientWarfareStructure.LOG.error("Could not locate biome: " + biome + " while registering template: " + template.name + " for world generation.");
 				}
 			}
 		} else//blacklist, skip template-biomes

@@ -28,7 +28,7 @@ import java.util.Optional;
 public class BlockStructureScanner extends BlockBaseStructure {
 	public static final PropertyDirection FACING = BlockDirectional.FACING;
 
-	BlockStructureScanner() {
+	public BlockStructureScanner() {
 		super(Material.WOOD, "structure_scanner_block");
 	}
 

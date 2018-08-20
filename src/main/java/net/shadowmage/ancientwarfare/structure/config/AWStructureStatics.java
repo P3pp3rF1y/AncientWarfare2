@@ -28,7 +28,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
-import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 
 import java.util.Collections;
@@ -547,7 +547,7 @@ public class AWStructureStatics extends ModConfiguration {
 
 	public static void logSkippableBlocksCoveredByMaterial() {
 		skippableWorldGenBlocks.stream().filter(b -> getBlock(b).isPresent() && isSkippableMaterial(getBlock(b).get().getDefaultState().getMaterial()))
-				.forEach(b -> AncientWarfareStructures.LOG.info("Block {} defined as skippable is redundant as its material is already skipped by default", b));
+				.forEach(b -> AncientWarfareStructure.LOG.info("Block {} defined as skippable is redundant as its material is already skipped by default", b));
 	}
 
 	private static Optional<Block> getBlock(String registryName) {

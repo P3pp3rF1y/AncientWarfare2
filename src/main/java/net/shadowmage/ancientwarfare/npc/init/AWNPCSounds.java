@@ -1,4 +1,4 @@
-package net.shadowmage.ancientwarfare.core.api;
+package net.shadowmage.ancientwarfare.npc.init;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -7,12 +7,12 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.registries.IForgeRegistry;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 
-//TODO move this class to NPC module on split
-@ObjectHolder(AncientWarfareCore.MOD_ID)
-@Mod.EventBusSubscriber(modid = AncientWarfareCore.MOD_ID)
-public class AWSounds {
+@ObjectHolder(AncientWarfareNPC.MOD_ID)
+@Mod.EventBusSubscriber(modid = AncientWarfareNPC.MOD_ID)
+public class AWNPCSounds {
+	private AWNPCSounds() {}
 
 	@SubscribeEvent
 	public static void register(RegistryEvent.Register<SoundEvent> event) {
@@ -29,7 +29,7 @@ public class AWSounds {
 	}
 
 	private static SoundEvent createSoundEvent(String soundName) {
-		ResourceLocation registryName = new ResourceLocation(AncientWarfareCore.MOD_ID, soundName);
+		ResourceLocation registryName = new ResourceLocation(AncientWarfareNPC.MOD_ID, soundName);
 		return new SoundEvent(registryName).setRegistryName(registryName);
 	}
 }

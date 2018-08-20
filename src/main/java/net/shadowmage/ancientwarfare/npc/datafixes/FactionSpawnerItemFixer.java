@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.datafix.IFixableData;
-import net.shadowmage.ancientwarfare.npc.item.AWNPCItems;
+import net.shadowmage.ancientwarfare.npc.init.AWNPCItems;
 
 import java.util.Map;
 
@@ -128,7 +128,7 @@ public class FactionSpawnerItemFixer implements IFixableData {
 		String id = compound.getString("id");
 
 		//noinspection ConstantConditions
-		if (id.equals(AWNPCItems.npcSpawner.getRegistryName().toString())) {
+		if (id.equals(AWNPCItems.NPC_SPAWNER.getRegistryName().toString())) {
 			NBTTagCompound tag = compound.getCompoundTag("tag");
 			String npcType = tag.getString("npcType");
 			if (factionItemFixes.containsKey(npcType)) {

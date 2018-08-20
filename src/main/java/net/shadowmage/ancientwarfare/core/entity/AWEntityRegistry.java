@@ -33,8 +33,8 @@ public class AWEntityRegistry {
 	public static final String NPC_FACTION_BARD = "faction.bard";
 	public static final String NPC_FACTION_SIEGE_ENGINEER = "faction.siege_engineer";
 
-	public static final String VEHICLE_TEST = "vehicle";
-	public static final String MISSILE_TEST = "missile";
+	public static final String VEHICLE = "vehicle";
+	public static final String MISSILE = "missile";
 
 	/*
 	 * Structure Module Entity Registrations
@@ -75,7 +75,7 @@ public class AWEntityRegistry {
 				return entityClass.getConstructor(World.class).newInstance(world);
 			}
 			catch (Exception e) {
-				AncientWarfareCore.log.error("Couldn't create entity:" + e.getMessage());
+				AncientWarfareCore.LOG.error("Couldn't create entity:" + e.getMessage());
 			}
 			return null;
 		}

@@ -144,7 +144,7 @@ public class JsonTagWriter {
 	}
 
 	public static void JsonTest() {
-		AncientWarfareCore.log.info("testing json read/write!!");
+		AncientWarfareCore.LOG.info("testing json read/write!!");
 		NBTTagCompound tag = new NBTTagCompound();
 		tag.setInteger("fooInt", 1);
 		tag.setString("fooString", "stringData");
@@ -162,14 +162,14 @@ public class JsonTagWriter {
 		JsonObject o = JsonTagWriter.getJsonForTag(tag);
 		String os = Json.getJsonData(o);
 
-		AncientWarfareCore.log.info("pre out : " + os);
+		AncientWarfareCore.LOG.info("pre out : " + os);
 		o = Json.parseJson(os);
 		os = Json.getJsonData(o);
-		AncientWarfareCore.log.info("post out: " + os);
+		AncientWarfareCore.LOG.info("post out: " + os);
 
-		AncientWarfareCore.log.info("pre tag : " + tag);
+		AncientWarfareCore.LOG.info("pre tag : " + tag);
 		tag = JsonTagReader.getTagFrom(o);
-		AncientWarfareCore.log.info("post tag: " + tag);
+		AncientWarfareCore.LOG.info("post tag: " + tag);
 
 		Integer.parseInt("foo");//crash
 	}

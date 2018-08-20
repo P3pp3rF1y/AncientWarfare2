@@ -42,11 +42,11 @@ import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.init.Blocks;
-import net.shadowmage.ancientwarfare.core.api.AWBlocks;
+import net.shadowmage.ancientwarfare.core.init.AWCoreBlocks;
 import net.shadowmage.ancientwarfare.structure.api.IStructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.api.StructureContentPlugin;
-import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
+import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockDoors;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockInventory;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockLogic;
@@ -124,13 +124,13 @@ public class StructurePluginVanillaHandler implements StructureContentPlugin {
 		manager.registerBlockHandler("vanillaFlowerPot", Blocks.FLOWER_POT, TemplateRuleFlowerPot.class);
 		manager.registerBlockHandler("vanillaSkull", Blocks.SKULL, TemplateRuleVanillaSkull.class);
 
-		manager.registerBlockHandler("awAdvancedSpawner", AWStructuresBlocks.advancedSpawner, TemplateRuleBlockLogic.class);
-		manager.registerBlockHandler("awCoreLogic", AWBlocks.engineeringStation, TemplateRuleBlockLogic.class);
-		manager.registerBlockHandler("awCoreLogic", AWBlocks.researchStation, TemplateRuleBlockLogic.class);
-		manager.registerBlockHandler("awStructureLogic", AWStructuresBlocks.draftingStation, TemplateRuleBlockLogic.class);
-		manager.registerBlockHandler("awStructureLogic", AWStructuresBlocks.builderBlock, TemplateRuleBlockLogic.class);
-		manager.registerBlockHandler("awStructureLogic", AWStructuresBlocks.soundBlock, TemplateRuleBlockLogic.class);
-		manager.registerBlockHandler("awStructureLogic", AWStructuresBlocks.advancedLootChest, TemplateRuleBlockLogic.class);
+		manager.registerBlockHandler("awAdvancedSpawner", AWStructureBlocks.ADVANCED_SPAWNER, TemplateRuleBlockLogic.class);
+		manager.registerBlockHandler("awCoreLogic", AWCoreBlocks.ENGINEERING_STATION, TemplateRuleBlockLogic.class);
+		manager.registerBlockHandler("awCoreLogic", AWCoreBlocks.RESEARCH_STATION, TemplateRuleBlockLogic.class);
+		manager.registerBlockHandler("awStructureLogic", AWStructureBlocks.DRAFTING_STATION, TemplateRuleBlockLogic.class);
+		manager.registerBlockHandler("awStructureLogic", AWStructureBlocks.STRUCTURE_BUILDER_TICKED, TemplateRuleBlockLogic.class);
+		manager.registerBlockHandler("awStructureLogic", AWStructureBlocks.SOUND_BLOCK, TemplateRuleBlockLogic.class);
+		manager.registerBlockHandler("awStructureLogic", AWStructureBlocks.ADVANCED_LOOT_CHEST, TemplateRuleBlockLogic.class);
 	}
 
 	@Override

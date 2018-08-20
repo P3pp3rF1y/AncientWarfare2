@@ -25,8 +25,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.shadowmage.ancientwarfare.npc.block.AWNPCBlocks;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
+import net.shadowmage.ancientwarfare.npc.init.AWNPCBlocks;
 import net.shadowmage.ancientwarfare.structure.api.IStructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.api.StructureContentPlugin;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockLogic;
@@ -40,7 +40,7 @@ public class StructurePluginNpcs implements StructureContentPlugin {
 
 	@Override
 	public void addHandledBlocks(IStructurePluginManager manager) {
-		manager.registerBlockHandler("awTownHall", AWNPCBlocks.townHall, TemplateRuleBlockLogic.class);
+		manager.registerBlockHandler("awTownHall", AWNPCBlocks.TOWN_HALL, TemplateRuleBlockLogic.class);
 	}
 
 	@Override

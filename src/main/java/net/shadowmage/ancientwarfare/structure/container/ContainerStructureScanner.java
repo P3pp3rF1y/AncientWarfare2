@@ -13,7 +13,7 @@ import net.minecraftforge.items.SlotItemHandler;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
-import net.shadowmage.ancientwarfare.structure.item.AWStructuresItems;
+import net.shadowmage.ancientwarfare.structure.init.AWStructureItems;
 import net.shadowmage.ancientwarfare.structure.item.ItemStructureScanner;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidationType;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
@@ -59,7 +59,7 @@ public class ContainerStructureScanner extends ContainerBase {
 		} else {
 			scannerTile = null;
 			scanner = EntityTools.getItemFromEitherHand(player, ItemStructureScanner.class);
-			hand = EntityTools.getHandHoldingItem(player, AWStructuresItems.structureScanner);
+			hand = EntityTools.getHandHoldingItem(player, AWStructureItems.STRUCTURE_SCANNER);
 		}
 	}
 

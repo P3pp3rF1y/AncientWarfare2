@@ -149,7 +149,7 @@ public class ItemQuantityMap {
 				map.put(entry, qty);
 			}
 		} else {
-			AncientWarfareCore.log.warn("Unable to read item from NBT into quantity map, probably no longer exists. {}", itemTag.toString());
+			AncientWarfareCore.LOG.warn("Unable to read item from NBT into quantity map, probably no longer exists. {}", itemTag.toString());
 		}
 	}
 

@@ -21,10 +21,11 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
-import net.shadowmage.ancientwarfare.npc.entity.AWNPCEntityLoader;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
+import net.shadowmage.ancientwarfare.npc.init.AWNPCEntities;
+import net.shadowmage.ancientwarfare.npc.init.AWNPCItems;
 import net.shadowmage.ancientwarfare.npc.registry.FactionDefinition;
 import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
 
@@ -102,7 +103,7 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 		}
 		String subType = getNpcSubtype(stack);
 		Optional<String> faction = getFaction(stack);
-		NpcBase npc = AWNPCEntityLoader.createNpc(world, type, subType, faction.orElse(""));
+		NpcBase npc = AWNPCEntities.createNpc(world, type, subType, faction.orElse(""));
 		if (npc == null) {
 			return null;
 		}
@@ -138,7 +139,7 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 	}
 
 	private static void getSpawnerSubItems(NonNullList<ItemStack> list) {
-		for (AWNPCEntityLoader.NpcDeclaration dec : AWNPCEntityLoader.getNpcMap().values()) {
+		for (AWNPCEntities.NpcDeclaration dec : AWNPCEntities.getNpcMap().values()) {
 			if (dec.canSpawnBaseEntity()) {
 				if (dec.getNpcType().startsWith("faction.")) {
 					for (FactionDefinition faction : FactionRegistry.getFactions())
@@ -158,7 +159,7 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 	}
 
 	private static ItemStack getStackForNpcType(String type, String npcSubtype, String faction) {
-		@Nonnull ItemStack stack = new ItemStack(AWNPCItems.npcSpawner);
+		@Nonnull ItemStack stack = new ItemStack(AWNPCItems.NPC_SPAWNER);
 		stack.setTagInfo(NPC_TYPE_TAG, new NBTTagString(type));
 		stack.setTagInfo(NPC_SUBTYPE_TAG, new NBTTagString(npcSubtype));
 		if (!faction.isEmpty()) {
@@ -195,7 +196,7 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 
 		final Map<String, ModelResourceLocation> modelLocations = Maps.newHashMap();
 
-		AWNPCEntityLoader.getNpcMap().values().stream().map(AWNPCEntityLoader.NpcDeclaration::getItemModelVariants).flatMap(Collection::stream).distinct()
+		AWNPCEntities.getNpcMap().values().stream().map(AWNPCEntities.NpcDeclaration::getItemModelVariants).flatMap(Collection::stream).distinct()
 				.forEach(v -> {
 			modelLocations.put(v, getModelLocation(v));
 			ModelLoader.registerItemVariants(this, modelLocations.get(v));
@@ -206,7 +207,7 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 			if (npcType == null) {
 				npcType = "worker";
 			}
-			AWNPCEntityLoader.NpcDeclaration dec = AWNPCEntityLoader.getNpcDeclaration(npcType);
+			AWNPCEntities.NpcDeclaration dec = AWNPCEntities.getNpcDeclaration(npcType);
 			return dec == null ? null : modelLocations.get(dec.getItemModelVariant(getNpcSubtype(stack)));
 		});
 	}

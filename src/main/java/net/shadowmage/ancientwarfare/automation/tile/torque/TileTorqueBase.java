@@ -10,10 +10,10 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Optional;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.proxy.RFProxy;
-import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
@@ -267,7 +267,7 @@ public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTil
 				return drainTorque(from, tc[from.ordinal()].addTorque(from.getOpposite(), getMaxTorqueOutput(from)));
 			}
 		} else {
-			if (ModuleStatus.redstoneFluxEnabled) {
+			if (Loader.isModLoaded("redstoneflux")) {
 				transferred = RFProxy.instance.transferPower(this, from, getRFCache()[from.ordinal()]);
 				if (transferred > 0) {
 					return transferred;

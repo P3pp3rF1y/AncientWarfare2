@@ -9,7 +9,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
-import net.shadowmage.ancientwarfare.core.api.AWItems;
+import net.shadowmage.ancientwarfare.automation.init.AWAutomationItems;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.item.ItemMulti;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
@@ -23,18 +23,18 @@ public class ItemWorksiteUpgrade extends ItemMulti {
 
 	public ItemWorksiteUpgrade() {
 		super(AncientWarfareAutomation.MOD_ID, "worksite_upgrade");
-		this.setCreativeTab(AWAutomationItemLoader.automationTab);
+		this.setCreativeTab(AncientWarfareAutomation.TAB);
 	}
 
 	private static WorksiteUpgrade getUpgrade(ItemStack stack) {
-		if (stack.isEmpty() || stack.getItem() != AWItems.worksiteUpgrade) {
+		if (stack.isEmpty() || stack.getItem() != AWAutomationItems.WORKSITE_UPGRADE) {
 			throw new RuntimeException("Cannot retrieve worksite upgrade type for: " + stack + ".  Null stack, or item, or mismatched item!");
 		}
 		return WorksiteUpgrade.values()[stack.getItemDamage()];
 	}
 
 	public static ItemStack getStack(WorksiteUpgrade upgrade) {
-		return upgrade == null ? ItemStack.EMPTY : new ItemStack(AWItems.worksiteUpgrade, 1, upgrade.ordinal());
+		return upgrade == null ? ItemStack.EMPTY : new ItemStack(AWAutomationItems.WORKSITE_UPGRADE, 1, upgrade.ordinal());
 	}
 
 	@Override

@@ -14,7 +14,7 @@ import net.shadowmage.ancientwarfare.core.tile.IBlockBreakHandler;
 import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
-import net.shadowmage.ancientwarfare.structure.item.AWStructuresItems;
+import net.shadowmage.ancientwarfare.structure.init.AWStructureItems;
 import net.shadowmage.ancientwarfare.structure.item.ItemStructureScanner;
 import net.shadowmage.ancientwarfare.structure.item.ItemStructureSettings;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
@@ -33,7 +33,7 @@ public class TileStructureScanner extends TileUpdatable implements IBlockBreakHa
 		@Nonnull
 		@Override
 		public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-			return stack.getItem() == AWStructuresItems.structureScanner ? super.insertItem(slot, stack, simulate) : stack;
+			return stack.getItem() == AWStructureItems.STRUCTURE_SCANNER ? super.insertItem(slot, stack, simulate) : stack;
 		}
 
 		@Override
@@ -64,7 +64,7 @@ public class TileStructureScanner extends TileUpdatable implements IBlockBreakHa
 
 	private void updateRenderFacing() {
 		ItemStack scanner = getScannerInventory().getStackInSlot(0);
-		EnumFacing newRenderFacing = scanner.getItem() == AWStructuresItems.structureScanner &&
+		EnumFacing newRenderFacing = scanner.getItem() == AWStructureItems.STRUCTURE_SCANNER &&
 				ItemStructureScanner.readyToExport(scanner)
 				? EnumFacing.UP : facing;
 
@@ -116,7 +116,7 @@ public class TileStructureScanner extends TileUpdatable implements IBlockBreakHa
 	@SideOnly(Side.CLIENT)
 	public AxisAlignedBB getRenderBoundingBox() {
 		ItemStack scanner = scannerInventory.getStackInSlot(0);
-		if (scanner.getItem() != AWStructuresItems.structureScanner) {
+		if (scanner.getItem() != AWStructureItems.STRUCTURE_SCANNER) {
 			return super.getRenderBoundingBox();
 		}
 
@@ -136,7 +136,7 @@ public class TileStructureScanner extends TileUpdatable implements IBlockBreakHa
 	public void restoreTemplate(String name) {
 		ItemStack scanner = scannerInventory.getStackInSlot(0);
 
-		if (scanner.getItem() != AWStructuresItems.structureScanner) {
+		if (scanner.getItem() != AWStructureItems.STRUCTURE_SCANNER) {
 			return;
 		}
 

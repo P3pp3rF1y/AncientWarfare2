@@ -1,24 +1,3 @@
-/**
- * Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
- * This software is distributed under the terms of the GNU General Public License.
- * Please see COPYING for precise license information.
- * <p>
- * This file is part of Ancient Warfare.
- * <p>
- * Ancient Warfare is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * <p>
- * Ancient Warfare is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.vehicle.missiles;
 
 import net.minecraft.entity.Entity;
@@ -42,21 +21,16 @@ import java.util.UUID;
 public abstract class Ammo implements IAmmo {
 
 	private static Random rng = new Random();
-	public static Ammo[] ammoTypes = new Ammo[64];//starting with 64 types...can/will expand as needed
-
-	//62-63 reserved for future ammo types
-
 	int entityDamage;
 	int vehicleDamage;
-	static final float gravityFactor = 9.81f * 0.05f * 0.05f;
-	String displayName = "AW.Ammo";
+	private static final float GRAVITY_FACTOR = 9.81f * 0.05f * 0.05f;
 	String configName = "none";
 	ResourceLocation modelTexture = new ResourceLocation("missingno");
 	boolean isRocket = false;
 	boolean isArrow = false;
 	boolean isPersistent = false;
 	boolean isFlaming = false;
-	boolean isPenetrating = false;
+	private boolean isPenetrating = false;
 	boolean isProximityAmmo = false;
 	boolean isCraftable = true;
 	boolean isEnabled = true;
@@ -70,7 +44,7 @@ public abstract class Ammo implements IAmmo {
 	private ResourceLocation registryName;
 
 	public Ammo(String regName) {
-		registryName = new ResourceLocation(AncientWarfareVehicles.modID, regName);
+		registryName = new ResourceLocation(AncientWarfareVehicles.MOD_ID, regName);
 	}
 
 	@Override
@@ -159,7 +133,7 @@ public abstract class Ammo implements IAmmo {
 
 	@Override
 	public float getGravityFactor() {
-		return gravityFactor;
+		return GRAVITY_FACTOR;
 	}
 
 	@Override
@@ -213,20 +187,12 @@ public abstract class Ammo implements IAmmo {
 	}
 
 	protected void breakBlockAndDrop(World world, int x, int y, int z) {
-		if (!AWVehicleStatics.blockDestruction /*|| !WarzoneManager.instance().shouldBreakBlock(world, x, y, z) TODO warzone implementation?*/) {
+		if (!AWVehicleStatics.blockDestruction) {
 			return;
 		}
 		BlockTools.breakBlockAndDrop(world, new BlockPos(x, y, z));
 	}
 
-	/**
-	 * starts at y, works down to find the first solid block, and ignites the one above it (set to fire)
-	 *
-	 * @param world
-	 * @param x
-	 * @param y
-	 * @param z
-	 */
 	protected void igniteBlock(World world, int x, int y, int z, int maxSearch) {
 		if (!AWVehicleStatics.blockFires) {
 			return;
@@ -256,19 +222,10 @@ public abstract class Ammo implements IAmmo {
 		return true;
 	}
 
-	/**
-	 * starts at y, works down to find the first solid block, and ignites the one above it (set to fire)
-	 *
-	 * @param world
-	 * @param x
-	 * @param y
-	 * @param z
-	 */
 	protected void setBlockToLava(World world, int x, int y, int z, int maxSearch) {
 		if (!AWVehicleStatics.blockFires) {
 			return;
 		}
-		int id;
 		for (int i = 0; i < maxSearch && y - i >= 1; i++) {
 			BlockPos curPos = new BlockPos(x, y - i, z);
 			if (!world.isAirBlock(curPos)) {
@@ -292,7 +249,7 @@ public abstract class Ammo implements IAmmo {
 	}
 
 	protected void spawnGroundBurst(World world, float x, float y, float z, float maxVelocity, IAmmo type, int count, float minPitch, EnumFacing sideHit, Entity shooter) {
-		if (type != null && !world.isRemote) {
+		if (!world.isRemote) {
 			world.newExplosion(null, x, y, z, 0.25f, false, true);
 			createExplosion(world, null, x, y, z, 1.f);
 			MissileBase missile;
@@ -335,46 +292,41 @@ public abstract class Ammo implements IAmmo {
 		}
 	}
 
-	//n=0 :: 2
-	//e=-90/270 :: 5
-	//s=-180/180 :: 3
-	//w=-270/90 :: 4
 	private float getMinYaw(EnumFacing side) {
 		switch (side) {
 			case NORTH://north
-				return 360 - 45;
+				return 360f - 45f;
 			case SOUTH://south
-				return 180 - 45;
+				return 180f - 45f;
 			case WEST://west
-				return 90 - 45;
+				return 90f - 45f;
 			case EAST://east
-				return 270 - 45;
+				return 270f - 45f;
+			default:
+				return 0;
 		}
-		return 0;
 	}
 
 	private float getMaxYaw(EnumFacing side) {
 		switch (side) {
 			case NORTH://north
-				return 360 + 45;
+				return 360f + 45f;
 			case SOUTH://south
-				return 180 + 45;
+				return 180f + 45f;
 			case WEST://west
-				return 90 + 45;
+				return 90f + 45f;
 			case EAST://east
-				return 270 + 45;
+				return 270f + 45f;
+			default:
+				return 0;
 		}
-		return 0;
 	}
 
 	protected void spawnAirBurst(World world, float x, float y, float z, float maxVelocity, IAmmo type, int count, Entity shooter) {
 		spawnGroundBurst(world, x, y, z, maxVelocity, type, count, -90, EnumFacing.DOWN, shooter);
 	}
 
-	public MissileBase getMissileByType(IAmmo type, World world, float x, float y, float z, float yaw, float pitch, float velocity, Entity shooter) {
-		if (type == null) {
-			return null;
-		}
+	private MissileBase getMissileByType(IAmmo type, World world, float x, float y, float z, float yaw, float pitch, float velocity, Entity shooter) {
 		MissileBase missile = new MissileBase(world);
 		missile.setShooter(shooter);
 		missile.setMissileParams2(type, x, y, z, yaw, pitch, velocity);

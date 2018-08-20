@@ -1,6 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.template.save;
 
-import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
@@ -23,7 +23,7 @@ public class TemplateExporter {
 				exportFile.createNewFile();
 			}
 			catch (IOException e) {
-				AncientWarfareStructures.log.error("Could not export template..could not create file : " + exportFile.getAbsolutePath());
+				AncientWarfareStructure.LOG.error("Could not export template..could not create file : " + exportFile.getAbsolutePath());
 				e.printStackTrace();
 				return false;
 			}
@@ -48,7 +48,7 @@ public class TemplateExporter {
 			}
 		}
 		catch (IOException e) {
-			AncientWarfareStructures.log.error("Could not export template..could not create file : " + exportFile.getAbsolutePath());
+			AncientWarfareStructure.LOG.error("Could not export template..could not create file : " + exportFile.getAbsolutePath());
 			e.printStackTrace();
 			return false;
 		}

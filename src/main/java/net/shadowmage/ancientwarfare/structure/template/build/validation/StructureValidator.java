@@ -14,7 +14,7 @@ import net.shadowmage.ancientwarfare.automation.registry.TreeFarmRegistry;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.ITree;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.ITreeScanner;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
-import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
@@ -436,7 +436,7 @@ public abstract class StructureValidator {
 	private boolean validateBlockHeightTypeAndBiome(World world, int x, int z, int min, int max, boolean skipWater, boolean riverBiomeValid, Predicate<IBlockState> isValidState) {
 		BlockPos pos = new BlockPos(x, 1, z);
 		if (!riverBiomeValid && BiomeDictionary.hasType(world.provider.getBiomeForCoords(pos), BiomeDictionary.Type.RIVER)) {
-			AncientWarfareStructures.log.debug("Rejected for placement into river biome at {}", pos.toString());
+			AncientWarfareStructure.LOG.debug("Rejected for placement into river biome at {}", pos.toString());
 			return false;
 		}
 
@@ -454,7 +454,7 @@ public abstract class StructureValidator {
 	private int validateBlockHeight(World world, int x, int z, int minimumAcceptableY, int maximumAcceptableY, boolean skipWater) {
 		int topFilledY = WorldStructureGenerator.getTargetY(world, x, z, skipWater);
 		if (topFilledY < minimumAcceptableY || topFilledY > maximumAcceptableY) {
-			AncientWarfareStructures.log.info("rejected for leveling or depth test. foundY: " + topFilledY + " min: " + minimumAcceptableY + " max:" + maximumAcceptableY + " at: " + x + "," + topFilledY + "," + z);
+			AncientWarfareStructure.LOG.info("rejected for leveling or depth test. foundY: " + topFilledY + " min: " + minimumAcceptableY + " max:" + maximumAcceptableY + " at: " + x + "," + topFilledY + "," + z);
 			return -1;
 		}
 		return topFilledY;
@@ -470,11 +470,11 @@ public abstract class StructureValidator {
 		IBlockState state = world.getBlockState(new BlockPos(x, y, z));
 		Block block = state.getBlock();
 		if (block == Blocks.AIR) {
-			AncientWarfareStructures.log.info("rejected for non-matching block: air" + " at: " + x + "," + y + "," + z);
+			AncientWarfareStructure.LOG.info("rejected for non-matching block: air" + " at: " + x + "," + y + "," + z);
 			return false;
 		}
 		if (!isValidState.test(state)) {
-			AncientWarfareStructures.log.info("Rejected for non-matching block: " + BlockDataManager.INSTANCE.getNameForBlock(block) + " at: " + x + "," + y + "," + z);
+			AncientWarfareStructure.LOG.info("Rejected for non-matching block: " + BlockDataManager.INSTANCE.getNameForBlock(block) + " at: " + x + "," + y + "," + z);
 			return false;
 		}
 		return true;

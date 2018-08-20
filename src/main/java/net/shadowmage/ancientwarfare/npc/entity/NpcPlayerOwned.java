@@ -153,7 +153,7 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 
 	private void handleAttackCommand(Command cmd) {
 		Entity e = cmd.getEntityTarget(world);
-		AncientWarfareNPC.log.info("Handling attack command : " + e);
+		AncientWarfareNPC.LOG.info("Handling attack command : " + e);
 		if (e instanceof EntityLivingBase) {
 			EntityLivingBase elb = (EntityLivingBase) e;
 			if (canTarget(elb))//only attacked allowed targets

@@ -49,7 +49,7 @@ public class BlockFirePit extends BlockBaseStructure {
 
 	private static final AxisAlignedBB AABB = new AxisAlignedBB(0D, 0D, 0D, 1D, 0.25D, 1D);
 
-	BlockFirePit() {
+	public BlockFirePit() {
 		super(Material.ROCK, "fire_pit");
 		setHardness(2);
 		setTickRandomly(true);
@@ -297,7 +297,7 @@ public class BlockFirePit extends BlockBaseStructure {
 		}
 
 		public static Variant byValue(String value) {
-			return VALUES.get(value);
+			return VALUES.getOrDefault(value, DEFAULT);
 		}
 	}
 }

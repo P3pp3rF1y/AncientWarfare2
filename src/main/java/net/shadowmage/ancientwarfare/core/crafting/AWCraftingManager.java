@@ -176,7 +176,7 @@ public class AWCraftingManager {
 					LOAD_CONSTANTS.invoke(ctx, new Object[] {json});
 				}
 				catch (IOException | IllegalAccessException | InvocationTargetException e) {
-					AncientWarfareCore.log.error("Error loading _constants.json: ", e);
+					AncientWarfareCore.LOG.error("Error loading _constants.json: ", e);
 					return false;
 				}
 				finally {
@@ -205,14 +205,14 @@ public class AWCraftingManager {
 					recipe.setRegistryName(key);
 					addRecipe(recipe, mod.getModId().equals(AncientWarfareCore.MOD_ID));
 				} else {
-					AncientWarfareCore.log.info("Skipping recipe {} of type {} because it's not AW research recipe", key, type);
+					AncientWarfareCore.LOG.info("Skipping recipe {} of type {} because it's not AW research recipe", key, type);
 				}
 			}
 			catch (JsonParseException e) {
-				AncientWarfareCore.log.error("Parsing error loading recipe {}", key, e);
+				AncientWarfareCore.LOG.error("Parsing error loading recipe {}", key, e);
 			}
 			catch (IOException e) {
-				AncientWarfareCore.log.error("Couldn't read recipe {} from {}", key, file, e);
+				AncientWarfareCore.LOG.error("Couldn't read recipe {} from {}", key, file, e);
 			}
 			finally {
 				IOUtils.closeQuietly(reader);

@@ -86,14 +86,14 @@ public class CommandUtils extends CommandBase {
 			if (!exportFile.exists()) {
 				try {
 					if (!exportFile.getParentFile().mkdirs()) {
-						AncientWarfareCore.log.error("Unable to create folders for file : " + exportFile.getAbsolutePath());
+						AncientWarfareCore.LOG.error("Unable to create folders for file : " + exportFile.getAbsolutePath());
 					}
 					if (!exportFile.createNewFile()) {
-						AncientWarfareCore.log.error("Unable to open new file : " + exportFile.getAbsolutePath());
+						AncientWarfareCore.LOG.error("Unable to open new file : " + exportFile.getAbsolutePath());
 					}
 				}
 				catch (IOException e) {
-					AncientWarfareCore.log.error("Error opening file : " + exportFile.getAbsolutePath(), e);
+					AncientWarfareCore.LOG.error("Error opening file : " + exportFile.getAbsolutePath(), e);
 					return;
 				}
 			}
@@ -106,7 +106,7 @@ public class CommandUtils extends CommandBase {
 				}
 			}
 			catch (IOException e) {
-				AncientWarfareCore.log.error("Error exporting file: " + exportFile.getAbsolutePath(), e);
+				AncientWarfareCore.LOG.error("Error exporting file: " + exportFile.getAbsolutePath(), e);
 			}
 		}
 
@@ -164,7 +164,7 @@ public class CommandUtils extends CommandBase {
 				return (String) BIOME_NAME.get(b);
 			}
 			catch (IllegalAccessException e) {
-				AncientWarfareCore.log.error(e);
+				AncientWarfareCore.LOG.error(e);
 			}
 			return "";
 		}

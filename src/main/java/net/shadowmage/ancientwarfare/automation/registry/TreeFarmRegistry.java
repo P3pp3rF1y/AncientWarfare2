@@ -13,7 +13,7 @@ import net.minecraft.util.JsonUtils;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlocks;
+import net.shadowmage.ancientwarfare.automation.init.AWAutomationBlocks;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.ChorusFlowerDrop;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.ChorusScanner;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.DefaultTreeScanner;
@@ -36,7 +36,7 @@ public class TreeFarmRegistry {
 	private TreeFarmRegistry() {}
 
 	public static final ITreeScanner DEFAULT_TREE_SCANNER =
-			new DefaultTreeScanner(st -> st.getMaterial() == Material.WOOD && st.getBlock() != AWAutomationBlocks.worksiteTreeFarm
+			new DefaultTreeScanner(st -> st.getMaterial() == Material.WOOD && st.getBlock() != AWAutomationBlocks.TREE_FARM
 					, sl -> sl.getMaterial() == Material.LEAVES);
 
 	private static Set<ISapling> saplings = new HashSet<>();

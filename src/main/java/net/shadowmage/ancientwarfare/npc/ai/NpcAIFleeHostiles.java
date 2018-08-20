@@ -86,7 +86,7 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
 				if (nearestHostile instanceof EntityLivingBase)
 					npc.setAttackTarget((EntityLivingBase) nearestHostile);
 				else
-					AncientWarfareNPC.log.error("Attempted to flee an entity that isn't EntityLiving: '" + EntityList.getEntityString(nearestHostile) + "', ignoring! Please report this error.");
+					AncientWarfareNPC.LOG.error("Attempted to flee an entity that isn't EntityLiving: '" + EntityList.getEntityString(nearestHostile) + "', ignoring! Please report this error.");
 			}
 		}
 		return flee;

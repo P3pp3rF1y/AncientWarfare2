@@ -5,14 +5,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.item.ItemBase;
 import net.shadowmage.ancientwarfare.core.proxy.IClientRegister;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
-import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 
 public class ItemBaseStructure extends ItemBase implements IClientRegister {
 	public ItemBaseStructure(String regName) {
-		super(AncientWarfareStructures.MOD_ID, regName);
-		setCreativeTab(AWStructuresItemLoader.structureTab);
+		super(AncientWarfareStructure.MOD_ID, regName);
+		setCreativeTab(AncientWarfareStructure.TAB);
 
-		AncientWarfareStructures.proxy.addClientRegister(this);
+		AncientWarfareStructure.proxy.addClientRegister(this);
 	}
 
 	@Override

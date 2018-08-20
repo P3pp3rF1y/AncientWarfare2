@@ -68,7 +68,7 @@ public class NpcSkinManager {
 					readImageMap(reader, imageMap);
 				}
 				catch (IOException e) {
-					AncientWarfareCore.log.error("Error loading skin_pack.meta: ", e);
+					AncientWarfareCore.LOG.error("Error loading skin_pack.meta: ", e);
 					return false;
 				}
 			}
@@ -84,7 +84,7 @@ public class NpcSkinManager {
 							.ifPresent(e -> addNpcSkin(e.getKey(), loadSkinImage(relative, stream)));
 				}
 				catch (IOException e) {
-					AncientWarfareCore.log.error("Error loading image {}: ", relative, e);
+					AncientWarfareCore.LOG.error("Error loading image {}: ", relative, e);
 				}
 			}
 		});

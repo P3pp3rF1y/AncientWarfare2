@@ -1,7 +1,7 @@
 package net.shadowmage.ancientwarfare.structure.template.load;
 
 import net.shadowmage.ancientwarfare.core.util.StringTools;
-import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
 import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException.TemplateRuleParsingException;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
@@ -153,8 +153,8 @@ public class TemplateParser {
 						data += line1 + "\n";
 					}
 					TemplateRuleParsingException e1 = new TemplateRuleParsingException(data, e);
-					AncientWarfareStructures.log.error("Caught exception parsing template rule for structure: " + name);
-					AncientWarfareStructures.log.error(e1.getMessage());
+					AncientWarfareStructure.LOG.error("Caught exception parsing template rule for structure: " + name);
+					AncientWarfareStructure.LOG.error(e1.getMessage());
 				}
 				groupedLines.clear();
 			}
@@ -183,8 +183,8 @@ public class TemplateParser {
 						data += line1 + "\n";
 					}
 					TemplateRuleParsingException e1 = new TemplateRuleParsingException(data, e);
-					AncientWarfareStructures.log.error("Caught exception parsing template rule for structure: " + name);
-					AncientWarfareStructures.log.error(e1.getMessage());
+					AncientWarfareStructure.LOG.error("Caught exception parsing template rule for structure: " + name);
+					AncientWarfareStructure.LOG.error(e1.getMessage());
 				}
 				groupedLines.clear();
 			}

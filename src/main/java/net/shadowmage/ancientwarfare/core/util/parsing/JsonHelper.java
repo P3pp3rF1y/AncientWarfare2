@@ -84,7 +84,7 @@ public class JsonHelper {
 				tagCompound = JsonToNBT.getTagFromJson(JsonUtils.getString(obj, "nbt"));
 			}
 			catch (NBTException e) {
-				AncientWarfareCore.log.error("Error reading item stack nbt ", JsonUtils.getJsonObject(obj, "nbt"));
+				AncientWarfareCore.LOG.error("Error reading item stack nbt ", JsonUtils.getJsonObject(obj, "nbt"));
 			}
 		}
 

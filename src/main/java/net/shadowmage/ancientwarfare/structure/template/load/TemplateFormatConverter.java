@@ -15,7 +15,7 @@ import net.minecraft.tileentity.TileEntitySkull;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
-import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
@@ -172,7 +172,7 @@ public class TemplateFormatConverter {
 			if (rule.ruleNumber >= 1 && rules[rule.ruleNumber] == null) {
 				rules[rule.ruleNumber] = rule;
 			} else {
-				AncientWarfareStructures.log.error("error parsing template rules, duplicate rule number detected for: " + rule.ruleNumber);
+				AncientWarfareStructure.LOG.error("error parsing template rules, duplicate rule number detected for: " + rule.ruleNumber);
 			}
 		}
 

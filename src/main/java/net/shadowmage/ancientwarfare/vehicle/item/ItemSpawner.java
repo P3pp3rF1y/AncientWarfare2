@@ -96,7 +96,7 @@ public class ItemSpawner extends ItemBaseVehicle {
 			}
 			return EnumActionResult.SUCCESS;
 		}
-		AncientWarfareVehicles.log.error("Vehicle spawner item was missing NBT data, something may have corrupted this item");
+		AncientWarfareVehicles.LOG.error("Vehicle spawner item was missing NBT data, something may have corrupted this item");
 		return EnumActionResult.FAIL;
 	}
 

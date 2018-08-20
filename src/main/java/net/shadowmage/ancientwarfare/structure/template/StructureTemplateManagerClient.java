@@ -9,7 +9,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.util.TextureImageBased;
-import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 
 import javax.imageio.ImageIO;
@@ -111,7 +111,7 @@ public class StructureTemplateManagerClient {
 					Minecraft.getMinecraft().renderEngine.loadTexture(loc, new TextureImageBased(loc, image));
 					clientTemplateImages.put(imageName, loc);
 				} else {
-					AncientWarfareStructures.log.error("Error parsing image: " + file.getName() + " image was not of correct size. Found: " + image.getWidth() + "x" + image.getHeight() + "  Needed: " + AWStructureStatics.structureImageWidth + "x" + AWStructureStatics.structureImageHeight);
+					AncientWarfareStructure.LOG.error("Error parsing image: " + file.getName() + " image was not of correct size. Found: " + image.getWidth() + "x" + image.getHeight() + "  Needed: " + AWStructureStatics.structureImageWidth + "x" + AWStructureStatics.structureImageHeight);
 				}
 			}
 			catch (IOException e) {

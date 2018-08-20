@@ -29,7 +29,7 @@ public abstract class VehicleUpgradeBase implements IVehicleUpgradeType {
 	private ResourceLocation registryName;
 
 	public VehicleUpgradeBase(String name) {
-		registryName = new ResourceLocation(AncientWarfareVehicles.modID, name);
+		registryName = new ResourceLocation(AncientWarfareVehicles.MOD_ID, name);
 	}
 
 	@Override

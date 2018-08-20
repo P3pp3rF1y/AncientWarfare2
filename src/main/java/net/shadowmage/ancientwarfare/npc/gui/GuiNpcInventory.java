@@ -13,7 +13,7 @@ import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcInventory;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcCombat;
-import net.shadowmage.ancientwarfare.npc.item.AWNPCItems;
+import net.shadowmage.ancientwarfare.npc.init.AWNPCItems;
 
 public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
 
@@ -119,7 +119,7 @@ public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
 		slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false).addTooltip(isCombatNpc ? "guistrings.npc.weapon_slot" : "guistrings.npc.tool_slot");
 		addGuiElement(slot);
 
-		slot = new ItemSlot(26, 8 + 18 * 1, new ItemStack(AWNPCItems.woodenShield), this);
+		slot = new ItemSlot(26, 8 + 18 * 1, new ItemStack(AWNPCItems.WOODEN_SHIELD), this);
 		slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false).addTooltip(isCombatNpc ? "guistrings.npc.shield_slot" : "guistrings.npc.offhand_slot");
 		addGuiElement(slot);
 
@@ -139,11 +139,11 @@ public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
 		slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false).addTooltip("guistrings.npc.boots_slot");
 		addGuiElement(slot);
 
-		slot = new ItemSlot(28 + 18 * 2, 8 + 18 * 2, new ItemStack(AWNPCItems.upkeepOrder), this);
+		slot = new ItemSlot(28 + 18 * 2, 8 + 18 * 2, new ItemStack(AWNPCItems.UPKEEP_ORDER), this);
 		slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false).addTooltip("guistrings.npc.upkeep_order_slot");
 		addGuiElement(slot);
 
-		slot = new ItemSlot(28 + 18 * 2, 8 + 18 * 3, new ItemStack(AWNPCItems.routingOrder), this);
+		slot = new ItemSlot(28 + 18 * 2, 8 + 18 * 3, new ItemStack(AWNPCItems.ROUTING_ORDER), this);
 		slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false).addTooltip("guistrings.npc.manual_order_slot");
 		addGuiElement(slot);
 	}

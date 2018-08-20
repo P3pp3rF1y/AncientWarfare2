@@ -10,9 +10,9 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.entity.AWFakePlayer;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
@@ -21,7 +21,7 @@ import net.shadowmage.ancientwarfare.core.owner.IOwnable;
 import net.shadowmage.ancientwarfare.core.owner.Owner;
 import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
-import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks;
+import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilderTicked;
 
@@ -138,7 +138,7 @@ public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IO
 		if (builder.getWorld() == null) {
 			builder.setWorld(world);
 		}
-		if (ModuleStatus.automationLoaded || ModuleStatus.npcsLoaded) {
+		if (Loader.isModLoaded("ancientwarfareautomation") || Loader.isModLoaded("ancientwarfarenpc")) {
 			if (storedEnergy >= AWCoreStatics.energyPerWorkUnit) {
 				storedEnergy -= AWCoreStatics.energyPerWorkUnit;
 				processWork();
@@ -193,7 +193,7 @@ public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IO
 	public void onBlockBroken() {
 		if (!world.isRemote && !isStarted && builder != null && builder.getTemplate() != null) {
 			isStarted = true;//to prevent further drops
-			@Nonnull ItemStack item = new ItemStack(AWStructuresBlocks.builderBlock);
+			@Nonnull ItemStack item = new ItemStack(AWStructureBlocks.STRUCTURE_BUILDER_TICKED);
 			item.setTagInfo("structureName", new NBTTagString(builder.getTemplate().name));
 		}
 	}

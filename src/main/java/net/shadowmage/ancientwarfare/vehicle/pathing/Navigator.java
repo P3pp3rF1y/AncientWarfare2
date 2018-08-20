@@ -11,8 +11,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
-import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
+import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
 import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
 import net.shadowmage.ancientwarfare.vehicle.entity.IPathableEntity;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
@@ -210,7 +210,7 @@ public class Navigator implements IPathableCallback {
 			hasDoor = true;
 			return true;
 		}
-		if (block == AWStructuresBlocks.gateProxy) {
+		if (block == AWStructureBlocks.GATE_PROXY) {
 			WorldTools.getTile(entity.world, entityPos, TEGateProxy.class).ifPresent(proxy -> {
 				interactWithGate(false);
 				gate = proxy.getOwner().orElse(null);
@@ -250,7 +250,7 @@ public class Navigator implements IPathableCallback {
 			hasDoor = true;
 			return true;
 		}
-		if (block == AWStructuresBlocks.gateProxy) {
+		if (block == AWStructureBlocks.GATE_PROXY) {
 			WorldTools.getTile(entity.world, new BlockPos(x, y, z), TEGateProxy.class).ifPresent(proxy -> {
 				interactWithGate(false);
 				gate = proxy.getOwner().orElse(null);

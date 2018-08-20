@@ -10,10 +10,10 @@ import net.minecraft.util.JsonUtils;
 import net.shadowmage.ancientwarfare.core.registry.IRegistryDataParser;
 import net.shadowmage.ancientwarfare.core.util.parsing.JsonHelper;
 import net.shadowmage.ancientwarfare.core.util.parsing.ResourceLocationMatcher;
-import net.shadowmage.ancientwarfare.npc.entity.AWNPCEntityLoader;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
+import net.shadowmage.ancientwarfare.npc.init.AWNPCEntities;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -62,7 +62,7 @@ public class NpcDefaultsRegistry {
 		}
 
 		private void fillRemainingSubtypeDefaults(NpcDefault overallDefault, Map<String, NpcDefault> npcSubtypeDefaults) {
-			for (String subtype : AWNPCEntityLoader.getNpcMap().keySet().stream().filter(k -> !k.startsWith(FACTION_NPC_PREFIX)).collect(Collectors.toList())) {
+			for (String subtype : AWNPCEntities.getNpcMap().keySet().stream().filter(k -> !k.startsWith(FACTION_NPC_PREFIX)).collect(Collectors.toList())) {
 				if (!npcSubtypeDefaults.keySet().contains(subtype)) {
 					npcSubtypeDefaults.put(subtype, overallDefault);
 				}
@@ -193,7 +193,7 @@ public class NpcDefaultsRegistry {
 		}
 
 		private void fillRemainingSubtypeDefaults(NpcDefault overallDefault, Map<String, NpcDefault> npcSubtypeDefaults) {
-			for (String subtype : AWNPCEntityLoader.getNpcMap().keySet().stream().filter(k -> k.startsWith(FACTION_NPC_PREFIX)).map(k -> k.replace(FACTION_NPC_PREFIX, "")).collect(Collectors.toList())) {
+			for (String subtype : AWNPCEntities.getNpcMap().keySet().stream().filter(k -> k.startsWith(FACTION_NPC_PREFIX)).map(k -> k.replace(FACTION_NPC_PREFIX, "")).collect(Collectors.toList())) {
 				if (!npcSubtypeDefaults.keySet().contains(subtype)) {
 					npcSubtypeDefaults.put(subtype, overallDefault);
 				}

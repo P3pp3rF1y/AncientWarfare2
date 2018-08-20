@@ -11,7 +11,7 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
-import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
@@ -79,7 +79,7 @@ public class WorldStructureGenerator implements IWorldGenerator {
 		world.profiler.startSection("AWTemplateSelection");
 		StructureTemplate template = WorldGenStructureManager.INSTANCE.selectTemplateForGeneration(world, rng, x, y, z, face);
 		world.profiler.endSection();
-		AncientWarfareStructures.log.info("Template selection took: " + (System.currentTimeMillis() - t1) + " ms.");
+		AncientWarfareStructure.LOG.info("Template selection took: " + (System.currentTimeMillis() - t1) + " ms.");
 		if (template == null) {
 			return;
 		}
@@ -89,7 +89,7 @@ public class WorldStructureGenerator implements IWorldGenerator {
 		}
 		world.profiler.startSection("AWTemplateGeneration");
 		if (attemptStructureGenerationAt(world, new BlockPos(x, y, z), face, template, map)) {
-			AncientWarfareStructures.log.info(String.format("Generated structure: %s at %s, %s, %s, time: %sms", template.name, x, y, z, (System.currentTimeMillis() - t1)));
+			AncientWarfareStructure.LOG.info(String.format("Generated structure: %s at %s, %s, %s, time: %sms", template.name, x, y, z, (System.currentTimeMillis() - t1)));
 		}
 		world.profiler.endSection();
 	}
@@ -175,11 +175,11 @@ public class WorldStructureGenerator implements IWorldGenerator {
 
 		TownMap townMap = AWGameData.INSTANCE.getPerWorldData(world, TownMap.class);
 		if (townMap != null && townMap.intersectsWithTown(bb)) {
-			AncientWarfareStructures.log.info("Skipping structure generation: " + template.name + " at: " + bb + " for intersection with existing town");
+			AncientWarfareStructure.LOG.info("Skipping structure generation: " + template.name + " at: " + bb + " for intersection with existing town");
 			return false;
 		}
 		if (template.getValidationSettings().validatePlacement(world, pos.getX(), pos.getY(), pos.getZ(), face, template, bb)) {
-			AncientWarfareStructures.log.info("Validation took: " + (System.currentTimeMillis() - t1 + " ms"));
+			AncientWarfareStructure.LOG.info("Validation took: " + (System.currentTimeMillis() - t1 + " ms"));
 			generateStructureAt(world, pos, face, template, map);
 			return true;
 		}

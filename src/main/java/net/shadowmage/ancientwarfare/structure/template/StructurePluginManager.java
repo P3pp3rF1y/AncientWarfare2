@@ -9,9 +9,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
-import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
-import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.api.IStructurePluginLookup;
 import net.shadowmage.ancientwarfare.structure.api.IStructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.api.StructureContentPlugin;
@@ -61,13 +60,13 @@ public class StructurePluginManager implements IStructurePluginManager, IStructu
 			}
 		}
 
-		if (ModuleStatus.npcsLoaded) {
+		if (Loader.isModLoaded("ancientwarfarenpc")) {
 			loadNpcPlugin();
 		}
-		if (ModuleStatus.vehiclesLoaded) {
+		if (Loader.isModLoaded("ancientwarfarevehicle")) {
 			loadVehiclePlugin();
 		}
-		if (ModuleStatus.automationLoaded) {
+		if (Loader.isModLoaded("ancientwarfareautomation")) {
 			loadAutomationPlugin();
 		}
 
@@ -83,17 +82,17 @@ public class StructurePluginManager implements IStructurePluginManager, IStructu
 
 	private void loadNpcPlugin() {
 		addPlugin(new StructurePluginNpcs());
-		AncientWarfareStructures.log.info("Loaded NPC Module Structure Plugin");
+		AncientWarfareStructure.LOG.info("Loaded NPC Module Structure Plugin");
 	}
 
 	private void loadVehiclePlugin() {
 		addPlugin(new StructurePluginVehicles());
-		AncientWarfareStructures.log.info("Loaded Vehicle Module Structure Plugin");
+		AncientWarfareStructure.LOG.info("Loaded Vehicle Module Structure Plugin");
 	}
 
 	private void loadAutomationPlugin() {
 		addPlugin(new StructurePluginAutomation());
-		AncientWarfareStructures.log.info("Loaded Automation Module Structure Plugin");
+		AncientWarfareStructure.LOG.info("Loaded Automation Module Structure Plugin");
 	}
 
 	private void addPlugin(StructureContentPlugin plugin) {

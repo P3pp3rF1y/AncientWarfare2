@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.core.item;
 
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
-import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 
 public class ItemComponent extends ItemMulti {
 
@@ -22,6 +21,6 @@ public class ItemComponent extends ItemMulti {
 
 	public ItemComponent() {
 		super(AncientWarfareCore.MOD_ID, "component");
-		this.setCreativeTab(AWCoreBlockLoader.coreTab);
+		setCreativeTab(AncientWarfareCore.TAB);
 	}
 }
