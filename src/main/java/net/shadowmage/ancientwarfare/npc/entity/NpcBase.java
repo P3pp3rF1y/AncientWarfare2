@@ -59,6 +59,7 @@ import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 import net.shadowmage.ancientwarfare.npc.item.ItemShield;
 import net.shadowmage.ancientwarfare.npc.registry.NpcDefaultsRegistry;
+import net.shadowmage.ancientwarfare.npc.shims.ISleepShim;
 import net.shadowmage.ancientwarfare.npc.skin.NpcSkinManager;
 import net.shadowmage.ancientwarfare.vehicle.entity.IPathableEntity;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
@@ -103,6 +104,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	private String followingPlayerName;//set/cleared onInteract from player if player.team==this.team
 
 	private NpcLevelingStats levelingStats;
+
+	private static List<ISleepShim> sleepShims = new ArrayList<>();
 
 	/*
 	 * a single base texture for ALL npcs to share, used in case other textures were not set
@@ -1305,7 +1308,16 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	}
 
 	public boolean shouldSleep() {
-		return !world.isDaytime();
+		int votes;
+		if(!world.isDaytime()){
+				votes = 1;
+		}else{
+			votes = 0;
+		}
+		for (ISleepShim shim: sleepShims) {
+			votes += shim.shouldSleep(world,this);
+		}
+		return votes > 0;
 	}
 
 	// Only used by the renderer
@@ -1388,5 +1400,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	@Override
 	public void onStuckDetected() {
 		//noop
+	}
+
+	public static void addSleepShim(ISleepShim shim){
+		sleepShims.add(shim);
 	}
 }
