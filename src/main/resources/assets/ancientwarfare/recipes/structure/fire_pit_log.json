@@ -1,0 +1,17 @@
+{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        " S ",
+        "SSS"
+    ],
+    "key": {
+        "S": {
+            "item": "#STICKWOOD"
+        }
+    },
+    "result": {
+        "type": "minecraft:item_nbt",
+        "item": "ancientwarfarestructure:fire_pit",
+        "nbt": "{variant:\"log\",lit:0b}"
+    }
+}

@@ -267,7 +267,7 @@ public class BlockFirePit extends BlockBaseStructure {
 	public enum Variant implements IStringSerializable {
 		DEFAULT(Material.ROCK),
 		LOG(Material.WOOD),
-		RANDOM(Material.ROCK);
+		SQUARE(Material.ROCK);
 
 		private Material material;
 

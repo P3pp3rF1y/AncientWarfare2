@@ -8,7 +8,6 @@ import net.shadowmage.ancientwarfare.structure.block.BlockFirePit;
 public class ItemBlockFirePit extends ItemBlockBase {
 	public ItemBlockFirePit(Block block) {
 		super(block);
-		setHasSubtypes(true);
 	}
 
 	@Override

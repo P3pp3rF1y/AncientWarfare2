@@ -166,8 +166,8 @@ tile.fire_pit.default.lit.name=Fire Pit Lit
 tile.fire_pit.default.unlit.name=Fire Pit Unlit
 tile.fire_pit.log.lit.name=Wood only Fire Pit Lit
 tile.fire_pit.log.unlit.name=Wood only Fire Pit Unlit
-tile.fire_pit.random.lit.name=Square Fire Pit Lit
-tile.fire_pit.random.unlit.name=Square Fire Pit Unlit
+tile.fire_pit.square.lit.name=Square Fire Pit Lit
+tile.fire_pit.square.unlit.name=Square Fire Pit Unlit
 #npc
 tile.town_hall.name=Town Hall
 tile.recruiting_station.name=Recruiting Station

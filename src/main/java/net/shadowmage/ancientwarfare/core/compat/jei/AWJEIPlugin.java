@@ -11,6 +11,7 @@ import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import mezz.jei.api.recipe.transfer.IRecipeTransferRegistry;
 import mezz.jei.plugins.vanilla.crafting.ShapelessRecipeWrapper;
 import net.minecraft.inventory.Container;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.common.crafting.IShapedRecipe;
@@ -24,6 +25,7 @@ import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.crafting.ShapedResearchRecipe;
 import net.shadowmage.ancientwarfare.core.crafting.ShapelessResearchRecipe;
 import net.shadowmage.ancientwarfare.npc.item.AWNPCItems;
+import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks;
 import net.shadowmage.ancientwarfare.vehicle.item.AWVehicleItems;
 
 import javax.annotation.Nonnull;
@@ -35,6 +37,7 @@ public class AWJEIPlugin implements IModPlugin {
 	@Override
 	public void registerItemSubtypes(@Nonnull ISubtypeRegistry subtypeRegistry) {
 		subtypeRegistry.useNbtForSubtypes(AWNPCItems.npcSpawner);
+		subtypeRegistry.useNbtForSubtypes(Item.getItemFromBlock(AWStructuresBlocks.FIRE_PIT));
 		subtypeRegistry.registerSubtypeInterpreter(AWVehicleItems.spawner, itemStack -> Integer.toString(itemStack.getMetadata()) + ":" + (itemStack.hasTagCompound() ? itemStack.getTagCompound().toString() : ""));
 	}
 

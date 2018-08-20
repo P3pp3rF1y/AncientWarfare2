@@ -40,5 +40,12 @@
             "type": "forge:ore_dict",
             "ore": "ingotGold"
         }
+    },
+    {
+        "name": "COBBLESTONE",
+        "ingredient": {
+            "type": "forge:ore_dict",
+            "ore": "cobblestone"
+        }
     }
 ]
