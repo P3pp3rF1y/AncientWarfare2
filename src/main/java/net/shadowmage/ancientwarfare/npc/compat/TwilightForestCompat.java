@@ -9,9 +9,6 @@ public class TwilightForestCompat implements ICompat {
     public String getModId() {
         return "twilightforest";
     }
-//1000
-//13000
-
 
     @Override
     public void init() {
