@@ -23,6 +23,7 @@ import net.shadowmage.ancientwarfare.core.registry.RegistryLoader;
 import net.shadowmage.ancientwarfare.npc.command.CommandDebugAI;
 import net.shadowmage.ancientwarfare.npc.command.CommandFaction;
 import net.shadowmage.ancientwarfare.npc.compat.EpicSiegeCompat;
+import net.shadowmage.ancientwarfare.npc.compat.TwilightForestCompat;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.container.ContainerCombatOrder;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcBard;
@@ -46,7 +47,7 @@ import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
 import net.shadowmage.ancientwarfare.npc.registry.NpcDefaultsRegistry;
 import org.apache.logging.log4j.Logger;
 
-@Mod(name = "Ancient Warfare NPCs", modid = AncientWarfareNPC.modID, version = "@VERSION@", dependencies = "required-after:ancientwarfare")
+@Mod(name = "Ancient Warfare NPCs", modid = AncientWarfareNPC.modID, version = "@VERSION@", dependencies = "required-after:ancientwarfare;after:twilightforest")
 
 public class AncientWarfareNPC {
 	public static final String modID = "ancientwarfarenpc";
@@ -96,6 +97,7 @@ public class AncientWarfareNPC {
 		PacketBase.registerPacketType(NetworkHandler.PACKET_FACTION_UPDATE, PacketFactionUpdate.class);
 
 		CompatLoader.registerCompat(new EpicSiegeCompat());
+		CompatLoader.registerCompat(new TwilightForestCompat());
 
 		RegistryLoader.registerParser(new FactionRegistry.FactionParser());
 		RegistryLoader.registerParser(new NpcDefaultsRegistry.FactionNpcDefaultsParser());
