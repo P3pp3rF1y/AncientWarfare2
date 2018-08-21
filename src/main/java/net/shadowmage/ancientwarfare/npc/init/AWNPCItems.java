@@ -31,6 +31,7 @@ public class AWNPCItems {
 	public static final Item COMBAT_ORDER = InjectionTools.nullValue();
 	public static final Item ROUTING_ORDER = InjectionTools.nullValue();
 	public static final Item TRADE_ORDER = InjectionTools.nullValue();
+	public static final Item BARD_INSTRUMENT = InjectionTools.nullValue();
 
 	@SubscribeEvent
 	public static void register(RegistryEvent.Register<Item> event) {
@@ -49,11 +50,11 @@ public class AWNPCItems {
 		registry.register(new ItemShield("gold_shield", Item.ToolMaterial.WOOD));
 		registry.register(new ItemShield("diamond_shield", Item.ToolMaterial.WOOD));
 
-		registry.register(new ItemNpcSpawner());
 		registry.register(new ItemWorkOrder());
 		registry.register(new ItemUpkeepOrder());
 		registry.register(new ItemCombatOrder());
 		registry.register(new ItemRoutingOrder());
 		registry.register(new ItemTradeOrder());
+		registry.register(new ItemNpcSpawner());
 	}
 }

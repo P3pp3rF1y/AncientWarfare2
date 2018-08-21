@@ -31,6 +31,7 @@ import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -139,19 +140,25 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 	}
 
 	private static void getSpawnerSubItems(NonNullList<ItemStack> list) {
+		List<ItemStack> playerOwned = new ArrayList<>();
+		List<ItemStack> factionOwned = new ArrayList<>();
+
 		for (AWNPCEntities.NpcDeclaration dec : AWNPCEntities.getNpcMap().values()) {
 			if (dec.canSpawnBaseEntity()) {
 				if (dec.getNpcType().startsWith("faction.")) {
 					for (FactionDefinition faction : FactionRegistry.getFactions())
-						list.add(getStackForNpcType(dec.getNpcType(), "", faction.getName()));
+						factionOwned.add(getStackForNpcType(dec.getNpcType(), "", faction.getName()));
 				} else {
-					list.add(getStackForNpcType(dec.getNpcType(), "", ""));
+					playerOwned.add(getStackForNpcType(dec.getNpcType(), "", ""));
 				}
 			}
 			for (String sub : dec.getSubTypes()) {
-				list.add(getStackForNpcType(dec.getNpcType(), sub));
+				playerOwned.add(getStackForNpcType(dec.getNpcType(), sub));
 			}
 		}
+
+		list.addAll(playerOwned);
+		list.addAll(factionOwned);
 	}
 
 	private static ItemStack getStackForNpcType(String type, String npcSubtype) {
