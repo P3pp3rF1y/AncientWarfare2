@@ -145,5 +145,75 @@
             "type": "forge:ore_dict",
             "ore": "gemDiamond"
         }
+    },
+    {
+        "name": "CHEST",
+        "ingredient": {
+            "type": "forge:ore_dict",
+            "ore": "chest"
+        }
+    },
+    {
+        "name": "PANEGLASS",
+        "ingredient": {
+            "type": "forge:ore_dict",
+            "ore": "paneGlass"
+        }
+    },
+    {
+        "name": "FENCEWOOD",
+        "ingredient": {
+            "type": "forge:ore_dict",
+            "ore": "fenceWood"
+        }
+    },
+    {
+        "name": "STRING",
+        "ingredient": {
+            "type": "forge:ore_dict",
+            "ore": "string"
+        }
+    },
+    {
+        "name": "OBSIDIAN",
+        "ingredient": {
+            "type": "forge:ore_dict",
+            "ore": "obsidian"
+        }
+    },
+    {
+        "name": "WORKBENCH",
+        "ingredient": {
+            "type": "forge:ore_dict",
+            "ore": "workbench"
+        }
+    },
+    {
+        "name": "ENDERPEARL",
+        "ingredient": {
+            "type": "forge:ore_dict",
+            "ore": "enderpearl"
+        }
+    },
+    {
+        "name": "PAPER",
+        "ingredient": {
+            "type": "forge:ore_dict",
+            "ore": "paper"
+        }
+    },
+    {
+        "name": "LEATHER",
+        "ingredient": {
+            "type": "forge:ore_dict",
+            "ore": "leather"
+        }
+    },
+    {
+        "name": "FEATHER",
+        "ingredient": {
+            "type": "forge:ore_dict",
+            "ore": "feather"
+        }
     }
 ]

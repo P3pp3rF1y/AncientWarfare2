@@ -11,7 +11,7 @@
             "item": "#PLANKWOOD"
         },
         "F": {
-            "item": "minecraft:fence"
+            "item": "#FENCEWOOD"
         }
     },
     "result": {

@@ -8,7 +8,7 @@
     ],
     "key": {
         "P": {
-            "item": "minecraft:paper"
+            "item": "#PAPER"
         },
         "D": {
             "item": "#DYELIGHTGRAY"

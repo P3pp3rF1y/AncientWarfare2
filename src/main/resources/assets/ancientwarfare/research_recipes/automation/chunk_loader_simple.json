@@ -12,7 +12,7 @@
             "data": 0
         },
         "E": {
-            "item": "minecraft:ender_pearl"
+            "item": "#ENDERPEARL"
         }
     },
     "result": {

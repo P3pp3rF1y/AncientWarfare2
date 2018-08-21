@@ -11,7 +11,7 @@
             "item": "#PLANKWOOD"
         },
         "G": {
-            "item": "minecraft:glass_pane"
+            "item": "#PANEGLASS"
         }
     },
     "result": {

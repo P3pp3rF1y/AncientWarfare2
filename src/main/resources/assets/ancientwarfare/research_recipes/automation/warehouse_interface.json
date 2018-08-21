@@ -8,10 +8,10 @@
     ],
     "key": {
         "P": {
-            "item": "minecraft:paper"
+            "item": "#PAPER"
         },
         "C": {
-            "item": "minecraft:chest"
+            "item": "#CHEST"
         },
         "_": {
             "item": "#PLANKWOOD"
