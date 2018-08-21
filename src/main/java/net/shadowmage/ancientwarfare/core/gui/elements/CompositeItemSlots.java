@@ -39,12 +39,11 @@ public class CompositeItemSlots extends CompositeScrolled {
 		RenderTools.renderQuarteredTexture(256, 256, 0, 0, 256, 240, renderX, renderY, width, height);
 		setViewport();
 		for (GuiElement element : this.elements) {
-			if (element.renderY > renderY + height || element.renderY + element.height < renderY) {
-				continue;//manual frustrum culling of elements, on Y axis
+			if (element.renderY > renderY + height || element.renderY + element.height < renderY
+					|| element.renderX > renderX + width || element.renderX + element.width < renderX) {
+				continue;
 			}
-			if (element.renderX > renderX + width || element.renderX + element.width < renderX) {
-				continue;//manual frustrum culling of elements, on X axis
-			}
+
 			if (element instanceof ItemSlot) {
 				itemSlots.add((ItemSlot) element);
 			} else {
@@ -85,15 +84,9 @@ public class CompositeItemSlots extends CompositeScrolled {
 		}
 
 		//needs texture disabled (draw white quad @ alpha for highlight)
-		GlStateManager.disableDepth();
-		GlStateManager.disableLighting();
-		GlStateManager.disableTexture2D();
-		GlStateManager.color(1.f, 1.f, 1.f, 0.55f);
 		for (ItemSlot slot : itemSlots) {
 			renderSlotHighlight(slot, mouseX, mouseY);
 		}
-		GlStateManager.color(1.f, 1.f, 1.f, 1.f);
-
 		//reset renderabled and render-viewport
 		itemSlots.clear();
 		popViewport();
@@ -115,17 +108,18 @@ public class CompositeItemSlots extends CompositeScrolled {
 			return;
 		}
 		if (slot.highlightOnMouseOver && slot.isMouseOverElement(mouseX, mouseY)) {
-			/*
-			 *  TODO -- find proper alpha for blend..it is close now, but probably not an exact match for vanilla
-             *  highlighting
-             */
+			GlStateManager.disableDepth();
+			GlStateManager.disableLighting();
+			GlStateManager.disableTexture2D();
+			GlStateManager.color(1.f, 1.f, 1.f, 0.5f);
+
 			GlStateManager.enableBlend();
 			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			GlStateManager.glBegin(GL11.GL_QUADS);
 			GL11.glVertex2f(slot.renderX, slot.renderY);
-			GL11.glVertex2f(slot.renderX, slot.renderY + slot.height);
-			GL11.glVertex2f(slot.renderX + slot.width, slot.renderY + slot.height);
-			GL11.glVertex2d(slot.renderX + slot.width, slot.renderY);
+			GL11.glVertex2f(slot.renderX, (float) slot.renderY + slot.height);
+			GL11.glVertex2f((float) slot.renderX + slot.width, (float) slot.renderY + slot.height);
+			GL11.glVertex2d((float) slot.renderX + slot.width, (float) slot.renderY);
 			GlStateManager.glEnd();
 			GlStateManager.disableBlend();
 			if (slot.renderTooltip && !slot.getStack().isEmpty() && render != null) {
@@ -135,6 +129,8 @@ public class CompositeItemSlots extends CompositeScrolled {
 					this.render.handleItemStackTooltipRender(slot.getStack(), mouseX, mouseY);
 				}
 			}
+			GlStateManager.color(1.f, 1.f, 1.f, 1.f);
+			GlStateManager.enableDepth();
 		}
 	}
 
