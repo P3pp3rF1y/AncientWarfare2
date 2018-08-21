@@ -42,6 +42,71 @@
             "height": 229
         },
         {
+            "content_type": "item",
+            "items": [
+                {
+                    "name": "ancientwarfarenpc:npc_spawner",
+                    "nbt": "{npcSubtype:\"\",faction:\"desert\",npcType:\"faction.trader\"}"
+                },
+                {
+                    "name": "ancientwarfarenpc:npc_spawner",
+                    "nbt": "{npcSubtype:\"\",faction:\"custom_2\",npcType:\"faction.trader\"}"
+                },
+                {
+                    "name": "ancientwarfarenpc:npc_spawner",
+                    "nbt": "{npcSubtype:\"\",faction:\"viking\",npcType:\"faction.mounted_archer\"}"
+                },
+                {
+                    "name": "ancientwarfarenpc:npc_spawner",
+                    "nbt": "{npcSubtype:\"medic\",npcType:\"combat\"}"
+                },
+                {
+                    "name": "ancientwarfarenpc:npc_spawner",
+                    "nbt": "{npcSubtype:\"archer\",npcType:\"combat\"}"
+                },
+                {
+                    "name": "ancientwarfarenpc:diamond_shield"
+                },
+                {
+                    "name": "ancientwarfare:component",
+                    "data": 3
+                },
+                {
+                    "name": "ancientwarfare:component",
+                    "data": 3
+                },
+                {
+                    "name": "ancientwarfarenpc:stone_command_baton"
+                },
+                {
+                    "name": "ancientwarfare:gold_quill"
+                },
+                {
+                    "name": "ancientwarfarevehicle:spawner",
+                    "data": 4,
+                    "nbt": "{spawnData:{level:0}}"
+                },
+                {
+                    "name": "ancientwarfarevehicle:spawner",
+                    "data": 4,
+                    "nbt": "{spawnData:{level:0}}"
+                }
+            ]
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfare:backpack",
+            "data": 3
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfareautomation:stirling_generator"
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfare:research_book"
+        },
+        {
             "content_type": "text",
             "text": "In sweltering deserts may be encountered the desert strongholds of the Saracens. These fierce desert warriors defend their sun-parched territories with determination. Saracens can be found in isolated villages, outpost towers and in castles and walled cities.\nSaracens are a friendly nation and try to live peaceably but will defend themselves forcefully if attacked.\nSaracen Emirs are skilful and cunning fighters and are difficult to beat because of their speed.\nSaracen priests can resurrect fallen Saracens in battle and may call upon desert Djinns to aid them.\nSaracen traders have a very wide range of materials and items to trade and Saracen bazaars are legendary places to visit and trade."
         }

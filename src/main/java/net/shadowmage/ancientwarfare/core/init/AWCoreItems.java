@@ -13,6 +13,7 @@ import net.shadowmage.ancientwarfare.core.item.ItemBaseCore;
 import net.shadowmage.ancientwarfare.core.item.ItemComponent;
 import net.shadowmage.ancientwarfare.core.item.ItemHammer;
 import net.shadowmage.ancientwarfare.core.item.ItemInfoTool;
+import net.shadowmage.ancientwarfare.core.item.ItemManual;
 import net.shadowmage.ancientwarfare.core.item.ItemMulti;
 import net.shadowmage.ancientwarfare.core.item.ItemQuill;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
@@ -60,7 +61,7 @@ public class AWCoreItems {
 		registry.register(new ItemHammer("gold_hammer", Item.ToolMaterial.GOLD));
 		registry.register(new ItemHammer("diamond_hammer", Item.ToolMaterial.DIAMOND));
 
-		//registry.register(new ItemManual());
+		registry.register(new ItemManual());
 
 		//TODO break this out of here and replace with separate items in automation and NPCS / will need data fixer
 		ItemMulti component = new ItemComponent().listenToProxy(AncientWarfareCore.proxy);

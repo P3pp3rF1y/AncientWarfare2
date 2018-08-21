@@ -47,20 +47,20 @@ public class JsonHelper {
 		return getBlockState(parent, elementName, BlockStateMatcher::new, BlockStateMatcher::addProperty);
 	}
 
-	public static ItemStack getItemStack(JsonObject json, String elementName) {
-		return getItemStack(json, elementName, (i, c, m, t) -> {
+	public static ItemStack getItemStack(JsonElement json) {
+		return getItemStack(json, (i, c, m, t) -> {
 			ItemStack stack = new ItemStack(i, c, m);
 			stack.setTagCompound(t);
 			return stack;
 		});
 	}
 
-	private static <T> T getItemStack(JsonObject parent, String elementName, ItemStackCreator<T> creator) {
-		if (!JsonUtils.hasField(parent, elementName)) {
-			throw new JsonParseException("Expected " + elementName + " member in " + parent.toString());
+	public static ItemStack getItemStack(JsonObject json, String elementName) {
+		if (!JsonUtils.hasField(json, elementName)) {
+			throw new JsonParseException("Expected " + elementName + " member in " + json.toString());
 		}
 
-		return getItemStack(parent.get(elementName), creator);
+		return getItemStack(json.get(elementName));
 	}
 
 	private static <T> T getItemStack(JsonElement element, ItemStackCreator<T> creator) {
@@ -91,12 +91,16 @@ public class JsonHelper {
 		return creator.instantiate(item, count, meta, tagCompound);
 	}
 
-	public static ItemStackMatcher getItemStackMatcher(JsonObject element) {
+	public static ItemStackMatcher getItemStackMatcher(JsonElement element) {
 		return getItemStack(element, (i, c, m, t) -> new ItemStackMatcher.Builder(i).setMeta(m).setTagCompound(t).build());
 	}
 
 	public static ItemStackMatcher getItemStackMatcher(JsonObject parent, String elementName) {
-		return getItemStack(parent, elementName, (i, c, m, t) -> new ItemStackMatcher.Builder(i).setMeta(m).setTagCompound(t).build());
+		if (!JsonUtils.hasField(parent, elementName)) {
+			throw new JsonParseException("Expected " + elementName + " member in " + parent.toString());
+		}
+
+		return getItemStackMatcher(parent.get(elementName));
 	}
 
 	private static <T> T getBlockState(JsonObject stateJson, Function<Block, T> init, AddPropertyFunction<T> addProperty) {

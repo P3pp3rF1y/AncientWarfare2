@@ -78,6 +78,8 @@ public class ManualContentRegistry {
 					return TableOfContentsElement.parse(elementJson);
 				case "image":
 					return ImageElement.parse(elementJson);
+				case "item":
+					return ItemElement.parse(elementJson);
 				default:
 					return EMPTY_ELEMENT;
 			}
