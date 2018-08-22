@@ -1307,11 +1307,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	}
 
 	public boolean shouldSleep() {
-		if(CompatLoader.isCompatRegistered("twilightforest")){
-			if(((TwilightForestCompat)CompatLoader.getCompat("twilightforest")).isEntityInTF(this)){
-				long worldTime = this.world.getWorldTime() % 24000;
-				return (worldTime < 1000 || worldTime > 13000);
-			}
+		if(CompatLoader.isCompatRegistered("twilightforest") && (((TwilightForestCompat)CompatLoader.getCompat("twilightforest")).isEntityInTF(this))){
+			long worldTime = this.world.getWorldTime() % 24000;
+			return (worldTime < 1000 || worldTime > 13000);
 		}
 		return !world.isDaytime();
 	}
