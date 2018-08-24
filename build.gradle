@@ -50,6 +50,11 @@ repositories {
         ivyPattern 'http://www.google.com/FAKE_URL/ugly_workaround_because_curseforge_403.txt'
         artifactPattern "http://media.forgecdn.net/files/${infinitylib_cf}/[module]-[revision].[ext]"
     }
+    ivy {
+        name "twilightforest"
+        ivyPattern 'http://www.google.com/FAKE_URL/ugly_workaround_because_curseforge_403.txt'
+        artifactPattern "http://media.forgecdn.net/files/${twilightforest_cf}/[module]-${project.minecraft_version}-[revision]-universal.[ext]"
+    }
 }
 
 minecraft{
@@ -77,6 +82,7 @@ dependencies {
     deobfCompile "com.feed_the_beast.mods:FTBLib:${ftblib_version}"
     deobfCompile name: 'infinitylib', version: infinitylib_version, ext: 'jar'
     deobfCompile "com.infinityraider.agricraft:AgriCraft:${agricraft_version}"
+    deobfCompile name: 'twilightforest', version: twilightforest_version, ext: 'jar'
 }
 
 processResources{
