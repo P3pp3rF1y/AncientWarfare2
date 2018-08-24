@@ -55,6 +55,7 @@ public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
 						.generateLootForPools(world.rand, context.build())) {
 					InventoryTools.insertOrDropItem(mainInventory, fishStack, world, pos);
 				}
+				return true;
 			}
 			if (ink) {
 				ItemStack inkItem = new ItemStack(Items.DYE, 1, 0);
