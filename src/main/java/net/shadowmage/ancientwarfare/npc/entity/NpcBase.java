@@ -370,13 +370,13 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		if (getAttackTarget() != null || !hasHome()) {
 			return false;
 		}
-		if (world.isRainingAt(new BlockPos(MathHelper.floor(this.posX), MathHelper.floor(this.posY), MathHelper.floor(this.posZ))))
+		if (world.isRainingAt(getPosition()))
 			setRainedOn(true);
 		return shouldSleep() || isWaitingForRainToStop();
 	}
 
 	private boolean isWaitingForRainToStop() {
-		if (!worksInRain() || !this.world.isRaining()) {
+		if (worksInRain() || !this.world.isRaining()) {
 			// rain has stopped, reset
 			setRainedOn(false);
 			return false;
