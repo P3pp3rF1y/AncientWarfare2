@@ -3,35 +3,99 @@
         "player_default_standing": -50,
         "hostile_towards_factions": [
             {
-                "bandit": false
+                "empire": false
+            },
+            {
+                "norska": false
+            },
+            {
+                "sarkonid": false
+            },
+            {
+                "xoltec": false
+            },
+            {
+                "witchbane": false
+            },
+            {
+                "nogg": false
+            },
+            {
+                "buffloka": false
+            },
+            {
+                "zimba": false
+            },
+            {
+                "kong": false
+            },
+            {
+                "orc": false
+            },
+            {
+                "brigand": false
             },
             {
                 "pirate": false
             },
             {
-                "desert": false
+                "evil": false
             },
             {
-                "native": false
+                "good": false
             },
             {
-                "viking": false
+                "undead": false
             },
             {
-                "custom_1": false
-            },
-            {
-                "custom_2": false
-            },
-            {
-                "custom_3": false
+                "demon": false
             }
         ]
     },
     "factions": [
         {
-            "name": "bandit",
-            "color": "e01313",
+            "name": "empire",
+            "color": "800080"
+        },
+        {
+            "name": "norska",
+            "color": "9999FF"
+        },
+        {
+            "name": "sarkonid",
+            "color": "b20000"
+        },
+        {
+            "name": "xoltec",
+            "color": "ffa500"
+        },
+        {
+            "name": "witchbane",
+            "color": "ffffff"
+        },
+        {
+            "name": "nogg",
+            "color": "00cd00"
+        },
+        {
+            "name": "buffloka",
+            "color": "008000"
+        },
+        {
+            "name": "zimba",
+            "color": "ffff00"
+        },
+        {
+            "name": "kong",
+            "color": "004000"
+        },
+        {
+            "name": "orc",
+            "color": "404040"
+        },
+        {
+            "name": "brigand",
+            "color": "964b00",
             "hostile_towards_factions": [
                 {
                     "pirate": false
@@ -40,31 +104,23 @@
         },
         {
             "name": "pirate",
-            "color": "43c0c0"
+            "color": "cc7722"
         },
         {
-            "name": "desert",
-            "color": "d7d788"
+            "name": "evil",
+            "color": "000000"
         },
         {
-            "name": "native",
-            "color": "4fc458"
+            "name": "good",
+            "color": "66b266"
         },
         {
-            "name": "viking",
-            "color": "3d3d3d"
+            "name": "undead",
+            "color": "b2b2b2"
         },
         {
-            "name": "custom_1",
-            "color": "451d58"
-        },
-        {
-            "name": "custom_2",
-            "color": "1d4658"
-        },
-        {
-            "name": "custom_3",
-            "color": "58351d"
+            "name": "demon",
+            "color": "ff2400"
         }
     ]
 }
