@@ -1,24 +1,3 @@
-/*
- Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
- This software is distributed under the terms of the GNU General Public License.
- Please see COPYING for precise license information.
-
- This file is part of Ancient Warfare.
-
- Ancient Warfare is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- Ancient Warfare is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.structure.template;
 
 import net.minecraft.item.ItemStack;
@@ -29,6 +8,7 @@ import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
 
 public class StructureTemplate {
+	public static final Version CURRENT_VERSION = new Version(2, 2);
 
 	/*
 	 * base datas
@@ -36,6 +16,7 @@ public class StructureTemplate {
 	public final String name;
 	public final int xSize, ySize, zSize;
 	public final int xOffset, yOffset, zOffset;
+	private Version version;
 
 	/*
 	 * stored template data
@@ -51,9 +32,14 @@ public class StructureTemplate {
 	private StructureValidator validator;
 
 	public StructureTemplate(String name, int xSize, int ySize, int zSize, int xOffset, int yOffset, int zOffset) {
+		this(name, CURRENT_VERSION, xSize, ySize, zSize, xOffset, yOffset, zOffset);
+	}
+
+	public StructureTemplate(String name, Version version, int xSize, int ySize, int zSize, int xOffset, int yOffset, int zOffset) {
 		if (name == null) {
 			throw new IllegalArgumentException("cannot have null name for structure");
 		}
+		this.version = version;
 		this.name = name;
 		this.xSize = xSize;
 		this.ySize = ySize;
@@ -107,11 +93,7 @@ public class StructureTemplate {
 
 	@Override
 	public String toString() {
-		StringBuilder b = new StringBuilder();
-		b.append("name: ").append(name).append("\n");
-		b.append("size: ").append(xSize).append(", ").append(ySize).append(", ").append(zSize).append("\n");
-		b.append("buildKey: ").append(xOffset).append(", ").append(yOffset).append(", ").append(zOffset);
-		return b.toString();
+		return "name: " + name + "\n" + "size: " + xSize + ", " + ySize + ", " + zSize + "\n" + "buildKey: " + xOffset + ", " + yOffset + ", " + zOffset;
 	}
 
 	public NonNullList<ItemStack> getResourceList() {
@@ -153,5 +135,23 @@ public class StructureTemplate {
 		result = 31 * result + zOffset;
 		result = 31 * result + name.hashCode();
 		return result;
+	}
+
+	public static class Version {
+		private final int major;
+		private final int minor;
+
+		public Version(int major, int minor) {
+			this.major = major;
+			this.minor = minor;
+		}
+
+		public Version(String version) {
+			this(Integer.valueOf(version.substring(0, version.indexOf('.'))), Integer.valueOf(version.substring(version.indexOf('.') + 1)));
+		}
+
+		public boolean isGreaterThan(Version otherVersion) {
+			return major > otherVersion.major || minor > otherVersion.minor;
+		}
 	}
 }

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public class Json {
@@ -56,17 +57,21 @@ public class Json {
 	 * Parse a single-line string representing a json formatted object prefixed with JSON: and wrapped in brackets {}<br>
 	 * Returns a JsonObject representing the contents of the input string
 	 */
-	public static JsonObject parseJson(String data) {
-		if (data.startsWith("JSON:{") && data.endsWith("}")) {
+	public static Optional<JsonObject> parseJson(String data) {
+		if (isSerializedJSON(data)) {
 			JsonParser parser = new JsonParser(data.substring(6, data.length() - 1));
 			try {
-				return parser.process();
+				return Optional.of(parser.process());
 			}
 			catch (IOException e) {
-				e.printStackTrace();
+				//noop
 			}
 		}
-		return null;
+		return Optional.empty();
+	}
+
+	private static boolean isSerializedJSON(String data) {
+		return data.startsWith("JSON:{") && data.endsWith("}");
 	}
 
 	public static JsonObject parseJson(Reader reader) {
@@ -422,6 +427,10 @@ public class Json {
 
 		public String getStringValue() {
 			return value;
+		}
+
+		public void setStringValue(String value) {
+			this.value = value;
 		}
 
 		public boolean getBooleanValue() {

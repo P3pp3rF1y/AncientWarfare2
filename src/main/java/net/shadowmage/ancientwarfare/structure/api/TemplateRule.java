@@ -22,7 +22,6 @@
 package net.shadowmage.ancientwarfare.structure.api;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
@@ -35,10 +34,7 @@ import net.shadowmage.ancientwarfare.structure.template.build.StructureBuildingE
 
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 
 /*
  * base template-rule class.  Plugins should define their own rule classes.
@@ -91,41 +87,13 @@ public abstract class TemplateRule {
 	}
 
 	public final NBTTagCompound readTag(List<String> ruleData) throws TemplateRuleParsingException {
-		for (String line : ruleData)//new json format
+		for (String line : ruleData)
 		{
 			if (line.startsWith("JSON:{")) {
 				return JsonTagReader.parseTagCompound(line);
 			}
 		}
-		for (String line : ruleData)//old json format
-		{
-			if (line.toLowerCase(Locale.ENGLISH).startsWith("jsontag=")) {
-				try {
-					return JsonToNBT.getTagFromJson(line.split("=", -1)[1]);
-				}
-				catch (Exception e) {
-					e.printStackTrace();
-					throw new TemplateRuleParsingException("Caught exception while parsing json-nbt tag: " + line, e);
-				}
-			}
-		}
-		//old tag: format
-		List<String> tagLines = new ArrayList<>();
-		String line;
-		Iterator<String> it = ruleData.iterator();
-		while (it.hasNext() && (line = it.next()) != null) {
-			if (line.startsWith("tag:")) {
-				it.remove();
-				while (it.hasNext() && (line = it.next()) != null) {
-					it.remove();
-					if (line.startsWith(":endtag")) {
-						break;
-					}
-					tagLines.add(line);
-				}
-			}
-		}
-		return NBTTools.readNBTFrom(tagLines);
+		return new NBTTagCompound();
 	}
 
 	@Override

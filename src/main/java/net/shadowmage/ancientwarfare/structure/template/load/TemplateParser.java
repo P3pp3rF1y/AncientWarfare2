@@ -8,6 +8,7 @@ import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
 import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
+import net.shadowmage.ancientwarfare.structure.template.StructureTemplate.Version;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
 
 import java.util.ArrayList;
@@ -18,10 +19,7 @@ public class TemplateParser {
 
 	public static final TemplateParser INSTANCE = new TemplateParser();
 
-	private final TemplateFormatConverter converter;
-
 	private TemplateParser() {
-		converter = new TemplateFormatConverter();
 	}
 
 	public StructureTemplate parseTemplate(String fileName, List<String> templateLines) {
@@ -45,17 +43,17 @@ public class TemplateParser {
 
 		List<TemplateRule> parsedRules = new ArrayList<>();
 		List<TemplateRuleEntity> parsedEntities = new ArrayList<>();
-		TemplateRule[] ruleArray = null;
-		TemplateRuleEntity[] entityRuleArray = null;
+		TemplateRule[] ruleArray;
+		TemplateRuleEntity[] entityRuleArray;
 		StructureValidator validation = null;
 		List<String> groupedLines = new ArrayList<>();
 
 		int parsedLayers = 0;
 
 		String name = null;
+		Version version = null;
 		int xSize = 0, ySize = 0, zSize = 0, xOffset = 0, yOffset = 0, zOffset = 0;
 		short[] templateData = null;
-		boolean newVersion = false;
 		boolean[] initData = new boolean[4];
 		int highestParsedRule = 0;
 		while (it.hasNext()) {
@@ -72,8 +70,8 @@ public class TemplateParser {
 						break;
 					}
 					if (line.startsWith("version=")) {
-						newVersion = true;
 						initData[0] = true;
+						version = new Version(StringTools.safeParseString("=", line));
 					}
 					if (line.startsWith("name=")) {
 						name = StringTools.safeParseString("=", line);
@@ -102,14 +100,6 @@ public class TemplateParser {
 				templateData = new short[xSize * ySize * zSize];
 			}
 
-			if (!newVersion) {
-				try {
-					return converter.convertOldTemplate(fileName, lines);
-				}
-				catch (Exception e) {
-					throw new TemplateParsingException("Error parsing template: " + fileName + " at line: " + (converter.lineNumber + 1) + " for line: " + lines.get(converter.lineNumber));
-				}
-			}
 			/*
 			 * parse out validation data
              */
@@ -139,7 +129,7 @@ public class TemplateParser {
 					}
 				}
 				try {
-					TemplateRule rule = parseRule(groupedLines, "rule");
+					TemplateRule rule = parseRule(version, groupedLines, "rule");
 					if (rule != null) {
 						parsedRules.add(rule);
 						if (rule.ruleNumber > highestParsedRule) {
@@ -172,7 +162,7 @@ public class TemplateParser {
 					}
 				}
 				try {
-					TemplateRuleEntity rule = (TemplateRuleEntity) parseRule(groupedLines, "entity");
+					TemplateRuleEntity rule = (TemplateRuleEntity) parseRule(version, groupedLines, "entity");
 					if (rule != null) {
 						parsedEntities.add(rule);
 					}
@@ -224,15 +214,15 @@ public class TemplateParser {
 			ruleNumber++;
 		}
 
-		return constructTemplate(name, xSize, ySize, zSize, xOffset, yOffset, zOffset, templateData, ruleArray, entityRuleArray, validation);
+		return constructTemplate(name, version, xSize, ySize, zSize, xOffset, yOffset, zOffset, templateData, ruleArray, entityRuleArray, validation);
 	}
 
-	private TemplateRule parseRule(List<String> templateLines, String ruleType) throws TemplateRuleParsingException {
-		return StructurePluginManager.getRule(templateLines, ruleType);
+	private TemplateRule parseRule(Version version, List<String> templateLines, String ruleType) throws TemplateRuleParsingException {
+		return StructurePluginManager.getRule(version, templateLines, ruleType);
 	}
 
-	private StructureTemplate constructTemplate(String name, int x, int y, int z, int xo, int yo, int zo, short[] templateData, TemplateRule[] rules, TemplateRuleEntity[] entityRules, StructureValidator validation) {
-		StructureTemplate template = new StructureTemplate(name, x, y, z, xo, yo, zo);
+	private StructureTemplate constructTemplate(String name, Version version, int x, int y, int z, int xo, int yo, int zo, short[] templateData, TemplateRule[] rules, TemplateRuleEntity[] entityRules, StructureValidator validation) {
+		StructureTemplate template = new StructureTemplate(name, version, x, y, z, xo, yo, zo);
 		template.setRuleArray(rules);
 		template.setEntityRules(entityRules);
 		template.setTemplateData(templateData);

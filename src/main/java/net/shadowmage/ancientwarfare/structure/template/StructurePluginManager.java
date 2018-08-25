@@ -19,6 +19,8 @@ import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException.Temp
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
+import net.shadowmage.ancientwarfare.structure.template.StructureTemplate.Version;
+import net.shadowmage.ancientwarfare.structure.template.datafixes.DataFixManager;
 import net.shadowmage.ancientwarfare.structure.template.load.TemplateParser;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.StructurePluginAutomation;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.StructurePluginModDefault;
@@ -179,7 +181,7 @@ public class StructurePluginManager implements IStructurePluginManager, IStructu
 		addPlugin(plugin);
 	}
 
-	public static TemplateRule getRule(List<String> ruleData, String ruleType) throws TemplateRuleParsingException {
+	public static TemplateRule getRule(Version version, List<String> ruleData, String ruleType) throws TemplateRuleParsingException {
 		Iterator<String> it = ruleData.iterator();
 		String name = null;
 		int ruleNumber = -1;
@@ -210,12 +212,18 @@ public class StructurePluginManager implements IStructurePluginManager, IStructu
 				}
 			}
 		}
+
 		Class<? extends TemplateRule> clz = INSTANCE.getRuleByName(name);
 		if (clz == null) {
 			throw new TemplateRuleParsingException("Not enough data to create template rule.\n" + "Missing plugin for name: " + name + "\n" + "name: " + name + "\n" + "number:" + ruleNumber + "\n" + "ruleDataPackage.size:" + ruleDataPackage.size() + "\n");
 		} else if (name == null || ruleNumber < 0 || ruleDataPackage.isEmpty()) {
 			throw new TemplateRuleParsingException("Not enough data to create template rule.\n" + "name: " + name + "\n" + "number:" + ruleNumber + "\n" + "ruleDataPackage.size:" + ruleDataPackage.size() + "\n" + "ruleClass: " + clz);
 		}
+
+		if (StructureTemplate.CURRENT_VERSION.isGreaterThan(version)) {
+			ruleDataPackage = DataFixManager.fixRuleData(version, name, ruleDataPackage);
+		}
+
 		try {
 			TemplateRule rule = clz.getConstructor().newInstance();
 			rule.parseRule(ruleNumber, ruleDataPackage);

@@ -40,6 +40,8 @@ import net.shadowmage.ancientwarfare.structure.network.PacketStructureRemove;
 import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 import net.shadowmage.ancientwarfare.structure.template.WorldGenStructureManager;
+import net.shadowmage.ancientwarfare.structure.template.datafixes.DataFixManager;
+import net.shadowmage.ancientwarfare.structure.template.datafixes.fixers.FactionExpansionFixer;
 import net.shadowmage.ancientwarfare.structure.template.load.TemplateLoader;
 import net.shadowmage.ancientwarfare.structure.town.WorldTownGenerator;
 import net.shadowmage.ancientwarfare.structure.worldgen.WorldGenTickHandler;
@@ -51,7 +53,6 @@ import org.apache.logging.log4j.Logger;
 
 public class AncientWarfareStructure {
 	public static final String MOD_ID = "ancientwarfarestructure";
-	public static final String MOD_PREFIX = MOD_ID + ":";
 
 	public static final CreativeTabs TAB = new AWStructureTab();
 
@@ -103,6 +104,8 @@ public class AncientWarfareStructure {
 		proxy.init();
 
 		BlockDataManager.INSTANCE.load();
+
+		DataFixManager.registerRuleFixer("AWNpc", new FactionExpansionFixer());
 	}
 
 	@EventHandler

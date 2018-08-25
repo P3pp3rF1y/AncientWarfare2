@@ -40,8 +40,7 @@ import net.shadowmage.ancientwarfare.core.util.Json.JsonValue;
 public class JsonTagReader {
 
 	public static NBTTagCompound parseTagCompound(String tag) {
-		JsonObject object = Json.parseJson(tag);
-		return getTagFrom(object);
+		return Json.parseJson(tag).map(JsonTagReader::getTagFrom).orElse(new NBTTagCompound());
 	}
 
 	public static NBTTagCompound getTagFrom(JsonObject compoundTagObject) {

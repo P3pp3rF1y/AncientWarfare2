@@ -29,7 +29,7 @@ public class FactionExpansionEntityFixer implements IFixableData {
 			AncientWarfareNPC.MOD_ID + ":" + NPC_FACTION_TRADER
 	);
 
-	static final Map<String, String> RENAMES = new ImmutableMap.Builder<String, String>()
+	public static final Map<String, String> RENAMES = new ImmutableMap.Builder<String, String>()
 			.put("custom_3", "empire")
 			.put("viking", "norska")
 			.put("desert", "sarkonid")
