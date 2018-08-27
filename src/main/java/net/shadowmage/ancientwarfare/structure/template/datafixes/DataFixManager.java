@@ -19,11 +19,12 @@ public class DataFixManager {
 
 	public static FixResult<List<String>> fixRuleData(Version templateVersion, String ruleName, List<String> data) {
 		if (!ruleFixes.containsKey(ruleName)) {
-			return new FixResult<>(data, false);
+			return new FixResult.NotModified<>(data);
 		}
 
+		FixResult.Builder<List<String>> resultBuilder = new FixResult.Builder<>();
+
 		List<String> modifiedData = new ArrayList<>();
-		boolean modified = false;
 		for (String line : data) {
 			for (IDataFixer fixer : ruleFixes.get(ruleName).stream().sorted((o1, o2) -> {
 				if (o1.getVersion().isGreaterThan(o2.getVersion())) {
@@ -34,12 +35,10 @@ public class DataFixManager {
 				return 0;
 			}).collect(Collectors.toList())) {
 				if (fixer.getVersion().isGreaterThan(templateVersion)) {
-					FixResult<String> result = fixer.fix(line);
-					modified |= result.isModified();
-					modifiedData.add(result.getData());
+					modifiedData.add(resultBuilder.updateAndGetData(fixer.fix(line)));
 				}
 			}
 		}
-		return new FixResult<>(modifiedData, modified);
+		return resultBuilder.build(modifiedData);
 	}
 }

@@ -17,7 +17,7 @@ public class FactionExpansionFixer implements IDataFixer {
 		Optional<JsonObject> parsedJson = Json.parseJson(line);
 
 		if (!parsedJson.isPresent()) {
-			return new FixResult<>(line, false);
+			return new FixResult.NotModified<>(line);
 		}
 
 		JsonObject json = parsedJson.get();
@@ -27,7 +27,7 @@ public class FactionExpansionFixer implements IDataFixer {
 			factionName.setStringValue(FactionExpansionEntityFixer.RENAMES.getOrDefault(factionName.getStringValue(), factionName.getStringValue()));
 		}
 
-		return new FixResult<>(Json.getJsonData(json), true);
+		return new FixResult.Modified<>(Json.getJsonData(json), "FactionExpansionFixer");
 	}
 
 	@Override

@@ -51,6 +51,7 @@ public class TemplateParser {
 		short[] templateData = null;
 		boolean[] initData = new boolean[4];
 		int highestParsedRule = 0;
+		FixResult.Builder<StructureTemplate> resultBuilder = new FixResult.Builder<>();
 		boolean modified = false;
 		while (it.hasNext()) {
 			line = it.next();
@@ -123,11 +124,10 @@ public class TemplateParser {
 					}
 				}
 				try {
-					FixResult<TemplateRule> parsedRule = StructurePluginManager.getRule(version, groupedLines, "rule");
-					modified |= parsedRule.isModified();
-					parsedRules.add(parsedRule.getData());
-					if (parsedRule.getData().ruleNumber > highestParsedRule) {
-						highestParsedRule = parsedRule.getData().ruleNumber;
+					TemplateRule parsedRule = resultBuilder.updateAndGetData(StructurePluginManager.getRule(version, groupedLines, "rule"));
+					parsedRules.add(parsedRule);
+					if (parsedRule.ruleNumber > highestParsedRule) {
+						highestParsedRule = parsedRule.ruleNumber;
 					}
 				}
 				catch (TemplateRuleParsingException e) {
@@ -155,11 +155,7 @@ public class TemplateParser {
 					}
 				}
 				try {
-					FixResult<TemplateRule> parsedRule = StructurePluginManager.getRule(version, groupedLines, "entity");
-					modified |= parsedRule.isModified();
-					if (parsedRule.getData() != null) {
-						parsedEntities.add((TemplateRuleEntity) parsedRule.getData());
-					}
+					parsedEntities.add(resultBuilder.updateAndGetData(StructurePluginManager.getRule(version, groupedLines, "entity")));
 				}
 				catch (TemplateRuleParsingException e) {
 					StringBuilder data = new StringBuilder(e.getMessage() + "\n");
@@ -208,7 +204,7 @@ public class TemplateParser {
 			ruleNumber++;
 		}
 
-		return new FixResult<>(constructTemplate(name, version, xSize, ySize, zSize, xOffset, yOffset, zOffset, templateData, ruleArray, entityRuleArray, validation), modified);
+		return resultBuilder.build(constructTemplate(name, version, xSize, ySize, zSize, xOffset, yOffset, zOffset, templateData, ruleArray, entityRuleArray, validation));
 	}
 
 	private StructureTemplate constructTemplate(String name, Version version, int x, int y, int z, int xo, int yo, int zo, short[] templateData, TemplateRule[] rules, TemplateRuleEntity[] entityRules, StructureValidator validation) {

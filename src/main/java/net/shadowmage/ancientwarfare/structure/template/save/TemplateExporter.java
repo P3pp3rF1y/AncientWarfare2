@@ -39,7 +39,9 @@ public class TemplateExporter {
 			writer.newLine();
 			TemplateRule[] templateRules = template.getTemplateRules();
 			for (TemplateRule rule : templateRules) {
-				StructurePluginManager.writeRuleLines(rule, writer, "rule");
+				if (rule != null) { //TODO replace templateRules and entityRules with List/Set structures instead of relying and copying to arrays
+					StructurePluginManager.writeRuleLines(rule, writer, "rule");
+				}
 			}
 			writer.write("#### ENTITIES ####");
 			writer.newLine();

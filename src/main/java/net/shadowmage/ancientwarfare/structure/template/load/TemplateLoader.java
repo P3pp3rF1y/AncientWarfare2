@@ -142,11 +142,16 @@ public class TemplateLoader {
 
 	private int loadTemplate(Path fileName, List<String> lines, boolean saveFixedTemplate) {
 		FixResult<StructureTemplate> loadedTemplate = TemplateParser.INSTANCE.parseTemplate(fileName.toString(), lines);
-
 		StructureTemplate template = loadedTemplate.getData();
+
+		if (loadedTemplate.isModified()) {
+			AncientWarfareStructure.LOG.info("Template {} had following fixes applied: {}", fileName.toString(),
+					String.join(", ", loadedTemplate.getFixesApplied()));
+		}
 
 		if (saveFixedTemplate && loadedTemplate.isModified()) {
 			TemplateExporter.exportTo(template, fileName.getParent().toFile());
+			AncientWarfareStructure.LOG.info("Changes saved to {}", fileName.toString());
 		}
 
 		if (template != null) {

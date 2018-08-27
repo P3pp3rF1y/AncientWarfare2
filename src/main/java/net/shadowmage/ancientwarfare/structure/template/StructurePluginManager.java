@@ -104,8 +104,9 @@ public class StructurePluginManager implements IStructurePluginManager {
 		return pluginByBlock.get(block);
 	}
 
-	private Class<? extends TemplateRule> getRuleByName(String name) {
-		return this.ruleByID.get(name);
+	private <T extends TemplateRule> Class<T> getRuleByName(String name) {
+		//noinspection unchecked
+		return (Class<T>) this.ruleByID.get(name);
 	}
 
 	public TemplateRuleBlock getRuleForBlock(World world, Block block, int turns, BlockPos pos) {
@@ -176,7 +177,7 @@ public class StructurePluginManager implements IStructurePluginManager {
 		addPlugin(plugin);
 	}
 
-	public static FixResult<TemplateRule> getRule(Version version, List<String> ruleData, String ruleType) throws TemplateRuleParsingException {
+	public static <T extends TemplateRule> FixResult<T> getRule(Version version, List<String> ruleData, String ruleType) throws TemplateRuleParsingException {
 		Iterator<String> it = ruleData.iterator();
 		String name = null;
 		int ruleNumber = -1;
@@ -207,24 +208,22 @@ public class StructurePluginManager implements IStructurePluginManager {
 			}
 		}
 
-		Class<? extends TemplateRule> clz = INSTANCE.getRuleByName(name);
+		Class<T> clz = INSTANCE.getRuleByName(name);
 		if (clz == null) {
 			throw new TemplateRuleParsingException("Not enough data to create template rule.\n" + "Missing plugin for name: " + name + "\n" + "name: " + name + "\n" + "number:" + ruleNumber + "\n" + "ruleDataPackage.size:" + ruleDataPackage.size() + "\n");
 		} else if (name == null || ruleNumber < 0 || ruleDataPackage.isEmpty()) {
 			throw new TemplateRuleParsingException("Not enough data to create template rule.\n" + "name: " + name + "\n" + "number:" + ruleNumber + "\n" + "ruleDataPackage.size:" + ruleDataPackage.size() + "\n" + "ruleClass: " + clz);
 		}
 
-		boolean modified = false;
+		FixResult.Builder<T> resultBuilder = new FixResult.Builder<>();
 		if (StructureTemplate.CURRENT_VERSION.isGreaterThan(version)) {
-			FixResult<List<String>> result = DataFixManager.fixRuleData(version, name, ruleDataPackage);
-			ruleDataPackage = result.getData();
-			modified = result.isModified();
+			ruleDataPackage = resultBuilder.updateAndGetData(DataFixManager.fixRuleData(version, name, ruleDataPackage));
 		}
 
 		try {
-			TemplateRule rule = clz.getConstructor().newInstance();
+			T rule = clz.getConstructor().newInstance();
 			rule.parseRule(ruleNumber, ruleDataPackage);
-			return new FixResult<>(rule, modified);
+			return resultBuilder.build(rule);
 		}
 		catch (Exception e) {
 			throw new TemplateRuleParsingException("Error parsing plugin " + name, e);
