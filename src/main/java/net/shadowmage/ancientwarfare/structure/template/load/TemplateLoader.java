@@ -7,6 +7,8 @@ import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
+import net.shadowmage.ancientwarfare.structure.template.datafixes.FixResult;
+import net.shadowmage.ancientwarfare.structure.template.save.TemplateExporter;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplate;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplateManager;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplateParser;
@@ -61,9 +63,9 @@ public class TemplateLoader {
 		int loadedCount = 0;
 		if (AWStructureStatics.loadDefaultPack) {
 			//noinspection ConstantConditions
-			loadedCount += loadTemplatesFromSource(Loader.instance().activeModContainer().getSource(), DEFAULT_TEMPLATE_DIRECTORY);
+			loadedCount += loadTemplatesFromSource(Loader.instance().activeModContainer().getSource(), DEFAULT_TEMPLATE_DIRECTORY, false);
 		}
-		loadedCount += loadTemplatesFromSource(new File(INCLUDE_DIRECTORY), "");
+		loadedCount += loadTemplatesFromSource(new File(INCLUDE_DIRECTORY), "", true);
 
 		AncientWarfareStructure.LOG.info("Loaded " + loadedCount + " structure(s)");
 
@@ -97,7 +99,7 @@ public class TemplateLoader {
 		}
 	}
 
-	private int loadTemplatesFromSource(File source, String base) {
+	private int loadTemplatesFromSource(File source, String base, boolean saveFixedTemplate) {
 		AtomicInteger loaded = new AtomicInteger(0);
 		FileUtils.findFiles(source, base, (root, file) -> {
 			String relative = root.relativize(file).toString();
@@ -115,7 +117,7 @@ public class TemplateLoader {
 					if (extension.equals(AWStructureStatics.townTemplateExtension)) {
 						loadTownTemplate(lines);
 					} else {
-						loaded.addAndGet(loadTemplate(file.toString(), lines));
+						loaded.addAndGet(loadTemplate(file, lines, saveFixedTemplate));
 					}
 				}
 				catch (IOException e) {
@@ -138,8 +140,15 @@ public class TemplateLoader {
 		}
 	}
 
-	private int loadTemplate(String fileName, List<String> lines) {
-		StructureTemplate template = TemplateParser.INSTANCE.parseTemplate(fileName, lines);
+	private int loadTemplate(Path fileName, List<String> lines, boolean saveFixedTemplate) {
+		FixResult<StructureTemplate> loadedTemplate = TemplateParser.INSTANCE.parseTemplate(fileName.toString(), lines);
+
+		StructureTemplate template = loadedTemplate.getData();
+
+		if (saveFixedTemplate && loadedTemplate.isModified()) {
+			TemplateExporter.exportTo(template, fileName.getParent().toFile());
+		}
+
 		if (template != null) {
 			AncientWarfareStructure.LOG.info("Loaded Structure Template: [" + template.name + "] WorldGen: " + template.getValidationSettings().isWorldGenEnabled() + "  Survival: " + template.getValidationSettings().isSurvival());
 			StructureTemplateManager.INSTANCE.addTemplate(template);

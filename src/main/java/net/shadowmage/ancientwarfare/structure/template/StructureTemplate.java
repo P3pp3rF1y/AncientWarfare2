@@ -137,6 +137,10 @@ public class StructureTemplate {
 		return result;
 	}
 
+	public Version getVersion() {
+		return version;
+	}
+
 	public static class Version {
 		private final int major;
 		private final int minor;
@@ -151,7 +155,17 @@ public class StructureTemplate {
 		}
 
 		public boolean isGreaterThan(Version otherVersion) {
-			return major > otherVersion.major || minor > otherVersion.minor;
+			return getMajor() > otherVersion.getMajor() || getMinor() > otherVersion.getMinor();
+		}
+
+		public static final Version NONE = new Version(0, 0);
+
+		public int getMajor() {
+			return major;
+		}
+
+		public int getMinor() {
+			return minor;
 		}
 	}
 }

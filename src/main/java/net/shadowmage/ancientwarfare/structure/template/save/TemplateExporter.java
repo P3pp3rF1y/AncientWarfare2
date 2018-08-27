@@ -20,11 +20,12 @@ public class TemplateExporter {
 		File exportFile = new File(directory, template.name + "." + AWStructureStatics.templateExtension);
 		if (!exportFile.exists()) {
 			try {
-				exportFile.createNewFile();
+				if (!exportFile.createNewFile()) {
+					return false;
+				}
 			}
 			catch (IOException e) {
 				AncientWarfareStructure.LOG.error("Could not export template..could not create file : " + exportFile.getAbsolutePath());
-				e.printStackTrace();
 				return false;
 			}
 		}
@@ -49,7 +50,6 @@ public class TemplateExporter {
 		}
 		catch (IOException e) {
 			AncientWarfareStructure.LOG.error("Could not export template..could not create file : " + exportFile.getAbsolutePath());
-			e.printStackTrace();
 			return false;
 		}
 		return true;
@@ -77,7 +77,7 @@ public class TemplateExporter {
 		writer.newLine();
 		writer.write("header:");
 		writer.newLine();
-		writer.write("version=2.1");
+		writer.write("version=" + StructureTemplate.CURRENT_VERSION.getMajor() + "." + StructureTemplate.CURRENT_VERSION.getMinor());
 		writer.newLine();
 		writer.write("name=" + template.name);
 		writer.newLine();

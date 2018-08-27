@@ -19,7 +19,6 @@ import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
-import net.shadowmage.ancientwarfare.structure.template.load.TemplateParser;
 import net.shadowmage.ancientwarfare.structure.worldgen.WorldStructureGenerator;
 
 import java.io.BufferedWriter;
@@ -227,7 +226,6 @@ public abstract class StructureValidator {
 					}
 				}
 			}
-			TemplateParser.lineNumber++;
 		}
 
 		//defaulting templates to overworld dimension if no dimension list provided
@@ -398,7 +396,7 @@ public abstract class StructureValidator {
 	}
 
 	//*********************************************** UTILITY METHODS *************************************************//
-	protected boolean validateBorderBlocks(World world, StructureTemplate template, StructureBB bb, int minY, int maxY, boolean skipWater) {
+	protected boolean validateBorderBlocks(World world, StructureBB bb, int minY, int maxY, boolean skipWater) {
 		int bx;
 		int bz;
 		int borderSize = getBorderSize();
@@ -514,15 +512,12 @@ public abstract class StructureValidator {
 			handleClearAction(world, new BlockPos(x, y, z), template, bb);
 		}
 		Biome biome = world.provider.getBiomeForCoords(new BlockPos(x, 1, z));
-		IBlockState fillBlock = Blocks.GRASS.getDefaultState();
-		if (biome != null && biome.topBlock != null) {
-			fillBlock = biome.topBlock;
-		}
+		IBlockState fillBlock = biome.topBlock;
 		int y = bb.min.getY() + template.yOffset + step - 1;
 		BlockPos pos = new BlockPos(x, y, z);
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
-		if (block != null && block != Blocks.AIR && state.getMaterial() != Material.WATER && !AWStructureStatics.isSkippable(state)) {
+		if (block != Blocks.AIR && state.getMaterial() != Material.WATER && !AWStructureStatics.isSkippable(state)) {
 			world.setBlockState(pos, fillBlock);
 		}
 	}
@@ -535,10 +530,7 @@ public abstract class StructureValidator {
 		int step = WorldStructureGenerator.getStepNumber(x, z, bb.min.getX(), bb.max.getX(), bb.min.getZ(), bb.max.getZ());
 		maxFillY -= step;
 		Biome biome = world.provider.getBiomeForCoords(new BlockPos(x, 1, z));
-		IBlockState fillBlock = Blocks.GRASS.getDefaultState();
-		if (biome != null && biome.topBlock != null) {
-			fillBlock = biome.topBlock;
-		}
+		IBlockState fillBlock = biome.topBlock;
 		for (int y = maxFillY; y > 1; y--) {
 			BlockPos pos = new BlockPos(x, y, z);
 			IBlockState state = world.getBlockState(pos);
@@ -552,16 +544,13 @@ public abstract class StructureValidator {
 	private void underFill(World world, int x, int z, StructureBB bb) {
 		int topFilledY = WorldStructureGenerator.getTargetY(world, x, z, true);
 		Biome biome = world.provider.getBiomeForCoords(new BlockPos(x, 1, z));
-		IBlockState fillBlockID = Blocks.GRASS.getDefaultState();
-		if (biome != null && biome.topBlock != null) {
-			fillBlockID = biome.topBlock;
-		}
+		IBlockState fillBlock = biome.topBlock;
 		for (int y = topFilledY; y <= bb.min.getY() - 1; y++) {
-			world.setBlockState(new BlockPos(x, y, z), fillBlockID);
+			world.setBlockState(new BlockPos(x, y, z), fillBlock);
 		}
 	}
 
-	protected void prePlacementUnderfill(World world, StructureTemplate template, StructureBB bb) {
+	protected void prePlacementUnderfill(World world, StructureBB bb) {
 		if (getMaxFill() <= 0) {
 			return;
 		}

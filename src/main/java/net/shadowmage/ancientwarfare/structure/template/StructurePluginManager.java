@@ -11,7 +11,6 @@ import net.minecraftforge.fml.common.ModContainer;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
-import net.shadowmage.ancientwarfare.structure.api.IStructurePluginLookup;
 import net.shadowmage.ancientwarfare.structure.api.IStructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.api.StructureContentPlugin;
 import net.shadowmage.ancientwarfare.structure.api.StructurePluginRegistrationEvent;
@@ -21,7 +20,7 @@ import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate.Version;
 import net.shadowmage.ancientwarfare.structure.template.datafixes.DataFixManager;
-import net.shadowmage.ancientwarfare.structure.template.load.TemplateParser;
+import net.shadowmage.ancientwarfare.structure.template.datafixes.FixResult;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.StructurePluginAutomation;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.StructurePluginModDefault;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.StructurePluginNpcs;
@@ -35,7 +34,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-public class StructurePluginManager implements IStructurePluginManager, IStructurePluginLookup {
+public class StructurePluginManager implements IStructurePluginManager {
 	//TODO is there really a need for so much reflection or it can be rewritten using something like factory methods?
 
 	private final List<StructureContentPlugin> loadedContentPlugins = new ArrayList<>();
@@ -103,10 +102,6 @@ public class StructurePluginManager implements IStructurePluginManager, IStructu
 
 	public String getPluginNameFor(Block block) {
 		return pluginByBlock.get(block);
-	}
-
-	public String getPluginNameFor(Class<? extends TemplateRule> ruleClass) {
-		return this.idByRuleClass.get(ruleClass);
 	}
 
 	private Class<? extends TemplateRule> getRuleByName(String name) {
@@ -181,14 +176,13 @@ public class StructurePluginManager implements IStructurePluginManager, IStructu
 		addPlugin(plugin);
 	}
 
-	public static TemplateRule getRule(Version version, List<String> ruleData, String ruleType) throws TemplateRuleParsingException {
+	public static FixResult<TemplateRule> getRule(Version version, List<String> ruleData, String ruleType) throws TemplateRuleParsingException {
 		Iterator<String> it = ruleData.iterator();
 		String name = null;
 		int ruleNumber = -1;
 		String line;
 		List<String> ruleDataPackage = new ArrayList<>();
 		while (it.hasNext()) {
-			TemplateParser.lineNumber++;
 			line = it.next();
 			if (line.startsWith(ruleType + ":")) {
 				continue;
@@ -220,32 +214,30 @@ public class StructurePluginManager implements IStructurePluginManager, IStructu
 			throw new TemplateRuleParsingException("Not enough data to create template rule.\n" + "name: " + name + "\n" + "number:" + ruleNumber + "\n" + "ruleDataPackage.size:" + ruleDataPackage.size() + "\n" + "ruleClass: " + clz);
 		}
 
+		boolean modified = false;
 		if (StructureTemplate.CURRENT_VERSION.isGreaterThan(version)) {
-			ruleDataPackage = DataFixManager.fixRuleData(version, name, ruleDataPackage);
+			FixResult<List<String>> result = DataFixManager.fixRuleData(version, name, ruleDataPackage);
+			ruleDataPackage = result.getData();
+			modified = result.isModified();
 		}
 
 		try {
 			TemplateRule rule = clz.getConstructor().newInstance();
 			rule.parseRule(ruleNumber, ruleDataPackage);
-			return rule;
+			return new FixResult<>(rule, modified);
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			throw new TemplateRuleParsingException("Error parsing plugin " + name, e);
 		}
-		return null;
 	}
 
 	public static void writeRuleLines(TemplateRule rule, BufferedWriter out, String ruleType) throws IOException {
-		if (rule == null) {
-			return;
-		}
-		String id = INSTANCE.getPluginNameFor(rule.getClass());
-		if (id == null) {
+		if (!INSTANCE.idByRuleClass.containsKey(rule.getClass())) {
 			return;
 		}
 		out.write(ruleType + ":");
 		out.newLine();
-		out.write("plugin=" + id);
+		out.write("plugin=" + INSTANCE.idByRuleClass.containsKey(rule.getClass()));
 		out.newLine();
 		out.write("number=" + rule.ruleNumber);
 		out.newLine();

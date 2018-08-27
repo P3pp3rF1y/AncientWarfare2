@@ -17,13 +17,13 @@ public class DataFixManager {
 		ruleFixes.computeIfAbsent(ruleName, n -> new ArrayList<>()).add(fixer);
 	}
 
-	public static List<String> fixRuleData(Version templateVersion, String ruleName, List<String> data) {
+	public static FixResult<List<String>> fixRuleData(Version templateVersion, String ruleName, List<String> data) {
 		if (!ruleFixes.containsKey(ruleName)) {
-			return data;
+			return new FixResult<>(data, false);
 		}
 
 		List<String> modifiedData = new ArrayList<>();
-
+		boolean modified = false;
 		for (String line : data) {
 			for (IDataFixer fixer : ruleFixes.get(ruleName).stream().sorted((o1, o2) -> {
 				if (o1.getVersion().isGreaterThan(o2.getVersion())) {
@@ -34,10 +34,12 @@ public class DataFixManager {
 				return 0;
 			}).collect(Collectors.toList())) {
 				if (fixer.getVersion().isGreaterThan(templateVersion)) {
-					modifiedData.add(fixer.fix(line));
+					FixResult<String> result = fixer.fix(line);
+					modified |= result.isModified();
+					modifiedData.add(result.getData());
 				}
 			}
 		}
-		return modifiedData;
+		return new FixResult<>(modifiedData, modified);
 	}
 }

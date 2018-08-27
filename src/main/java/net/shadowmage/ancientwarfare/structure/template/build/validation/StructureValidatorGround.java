@@ -35,19 +35,19 @@ public class StructureValidatorGround extends StructureValidator {
 	public boolean validatePlacement(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
 		int minY = getMinY(template, bb);
 		int maxY = getMaxY(template, bb);
-		return validateBorderBlocks(world, template, bb, minY, maxY, false);
+		return validateBorderBlocks(world, bb, minY, maxY, false);
 	}
 
 	@Override
 	public void preGeneration(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureBB bb) {
 		prePlacementBorder(world, template, bb);
-		prePlacementUnderfill(world, template, bb);
+		prePlacementUnderfill(world, bb);
 	}
 
 	@Override
 	public void postGeneration(World world, BlockPos origin, StructureBB bb) {
 		Biome biome = world.provider.getBiomeForCoords(origin);
-		if (biome != null && biome.getEnableSnow()) {
+		if (biome.getEnableSnow()) {
 			WorldStructureGenerator.sprinkleSnow(world, bb, getBorderSize());
 		}
 	}
@@ -65,10 +65,7 @@ public class StructureValidatorGround extends StructureValidator {
 			handleClearAction(world, new BlockPos(x, y, z), template, bb);
 		}
 		Biome biome = world.provider.getBiomeForCoords(new BlockPos(x, 1, z));
-		IBlockState fillBlock = Blocks.GRASS.getDefaultState();
-		if (biome != null && biome.topBlock != null) {
-			fillBlock = biome.topBlock;
-		}
+		IBlockState fillBlock = biome.topBlock;
 		int y = bb.min.getY() + template.yOffset + step - 1;
 		BlockPos pos = new BlockPos(x, y, z);
 		IBlockState state = world.getBlockState(pos);

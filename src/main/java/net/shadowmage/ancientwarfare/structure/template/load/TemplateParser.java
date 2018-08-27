@@ -10,6 +10,7 @@ import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate.Version;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
+import net.shadowmage.ancientwarfare.structure.template.datafixes.FixResult;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -22,7 +23,7 @@ public class TemplateParser {
 	private TemplateParser() {
 	}
 
-	public StructureTemplate parseTemplate(String fileName, List<String> templateLines) {
+	public FixResult<StructureTemplate> parseTemplate(String fileName, List<String> templateLines) {
 		try {
 			return parseTemplateLines(fileName, templateLines);
 		}
@@ -31,13 +32,7 @@ public class TemplateParser {
 		}
 	}
 
-	/*
-	 * used for debug/error output purposes, to know what line number is currently being iterated over/read through
-	 */
-	public static int lineNumber = -1;
-
-	private StructureTemplate parseTemplateLines(String fileName, List<String> lines) throws IllegalArgumentException, TemplateParsingException {
-		lineNumber = -1;
+	private FixResult<StructureTemplate> parseTemplateLines(String fileName, List<String> lines) throws IllegalArgumentException, TemplateParsingException {
 		Iterator<String> it = lines.iterator();
 		String line;
 
@@ -51,13 +46,13 @@ public class TemplateParser {
 		int parsedLayers = 0;
 
 		String name = null;
-		Version version = null;
+		Version version = Version.NONE;
 		int xSize = 0, ySize = 0, zSize = 0, xOffset = 0, yOffset = 0, zOffset = 0;
 		short[] templateData = null;
 		boolean[] initData = new boolean[4];
 		int highestParsedRule = 0;
+		boolean modified = false;
 		while (it.hasNext()) {
-			lineNumber++;
 			line = it.next();
 			if (line.startsWith("#") || line.equals("")) {
 				continue;
@@ -65,7 +60,6 @@ public class TemplateParser {
 			if (line.startsWith("header:")) {
 				while (it.hasNext()) {
 					line = it.next();
-					lineNumber++;
 					if (line.startsWith(":endheader")) {
 						break;
 					}
@@ -129,20 +123,19 @@ public class TemplateParser {
 					}
 				}
 				try {
-					TemplateRule rule = parseRule(version, groupedLines, "rule");
-					if (rule != null) {
-						parsedRules.add(rule);
-						if (rule.ruleNumber > highestParsedRule) {
-							highestParsedRule = rule.ruleNumber;
-						}
+					FixResult<TemplateRule> parsedRule = StructurePluginManager.getRule(version, groupedLines, "rule");
+					modified |= parsedRule.isModified();
+					parsedRules.add(parsedRule.getData());
+					if (parsedRule.getData().ruleNumber > highestParsedRule) {
+						highestParsedRule = parsedRule.getData().ruleNumber;
 					}
 				}
 				catch (TemplateRuleParsingException e) {
-					String data = e.getMessage() + "\n";
+					StringBuilder data = new StringBuilder(e.getMessage() + "\n");
 					for (String line1 : groupedLines) {
-						data += line1 + "\n";
+						data.append(line1).append("\n");
 					}
-					TemplateRuleParsingException e1 = new TemplateRuleParsingException(data, e);
+					TemplateRuleParsingException e1 = new TemplateRuleParsingException(data.toString(), e);
 					AncientWarfareStructure.LOG.error("Caught exception parsing template rule for structure: " + name);
 					AncientWarfareStructure.LOG.error(e1.getMessage());
 				}
@@ -162,17 +155,18 @@ public class TemplateParser {
 					}
 				}
 				try {
-					TemplateRuleEntity rule = (TemplateRuleEntity) parseRule(version, groupedLines, "entity");
-					if (rule != null) {
-						parsedEntities.add(rule);
+					FixResult<TemplateRule> parsedRule = StructurePluginManager.getRule(version, groupedLines, "entity");
+					modified |= parsedRule.isModified();
+					if (parsedRule.getData() != null) {
+						parsedEntities.add((TemplateRuleEntity) parsedRule.getData());
 					}
 				}
 				catch (TemplateRuleParsingException e) {
-					String data = e.getMessage() + "\n";
+					StringBuilder data = new StringBuilder(e.getMessage() + "\n");
 					for (String line1 : groupedLines) {
-						data += line1 + "\n";
+						data.append(line1).append("\n");
 					}
-					TemplateRuleParsingException e1 = new TemplateRuleParsingException(data, e);
+					TemplateRuleParsingException e1 = new TemplateRuleParsingException(data.toString(), e);
 					AncientWarfareStructure.LOG.error("Caught exception parsing template rule for structure: " + name);
 					AncientWarfareStructure.LOG.error(e1.getMessage());
 				}
@@ -198,7 +192,7 @@ public class TemplateParser {
 		}
 
         /*
-         * initialze data for construction of template -- put rules into array
+		 * initialze data for construction of template -- put rules into array
          */
 		ruleArray = new TemplateRule[highestParsedRule + 1];
 		for (TemplateRule rule : parsedRules) {
@@ -214,11 +208,7 @@ public class TemplateParser {
 			ruleNumber++;
 		}
 
-		return constructTemplate(name, version, xSize, ySize, zSize, xOffset, yOffset, zOffset, templateData, ruleArray, entityRuleArray, validation);
-	}
-
-	private TemplateRule parseRule(Version version, List<String> templateLines, String ruleType) throws TemplateRuleParsingException {
-		return StructurePluginManager.getRule(version, templateLines, ruleType);
+		return new FixResult<>(constructTemplate(name, version, xSize, ySize, zSize, xOffset, yOffset, zOffset, templateData, ruleArray, entityRuleArray, validation), modified);
 	}
 
 	private StructureTemplate constructTemplate(String name, Version version, int x, int y, int z, int xo, int yo, int zo, short[] templateData, TemplateRule[] rules, TemplateRuleEntity[] entityRules, StructureValidator validation) {
@@ -236,7 +226,6 @@ public class TemplateParser {
 	private void parseLayer(List<String> templateLines, int yLayer, int xSize, int ySize, int zSize, short[] templateData) {
 		int z = 0;
 		for (String st : templateLines) {
-			lineNumber++;
 			if (st.startsWith("layer:") || st.startsWith(":endlayer")) {
 				continue;
 			}

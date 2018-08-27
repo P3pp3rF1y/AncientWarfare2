@@ -50,10 +50,9 @@ public class StructureValidatorIsland extends StructureValidator {
 
 	@Override
 	public boolean shouldIncludeForSelection(World world, int x, int y, int z, EnumFacing face, StructureTemplate template) {
-		int water = 0;
 		int startY = y - 1;
 		y = WorldStructureGenerator.getTargetY(world, x, z, true) + 1;
-		water = startY - y + 1;
+		int water = startY - y + 1;
 		return !(water < minWaterDepth || water > maxWaterDepth);
 	}
 
@@ -61,7 +60,7 @@ public class StructureValidatorIsland extends StructureValidator {
 	public boolean validatePlacement(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
 		int minY = y - maxWaterDepth;
 		int maxY = y - minWaterDepth;
-		return validateBorderBlocks(world, template, bb, minY, maxY, true);
+		return validateBorderBlocks(world, bb, minY, maxY, true);
 	}
 
 	@Override
