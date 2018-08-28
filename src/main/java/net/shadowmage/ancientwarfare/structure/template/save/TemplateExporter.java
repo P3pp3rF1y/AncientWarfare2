@@ -83,9 +83,9 @@ public class TemplateExporter {
 		writer.newLine();
 		writer.write("name=" + template.name);
 		writer.newLine();
-		writer.write("size=" + template.xSize + "," + template.ySize + "," + template.zSize);
+		writer.write("size=" + template.getSize().getX() + "," + template.getSize().getY() + "," + template.getSize().getZ());
 		writer.newLine();
-		writer.write("offset=" + template.xOffset + "," + template.yOffset + "," + template.zOffset);
+		writer.write("offset=" + template.getOffset().getX() + "," + template.getOffset().getY() + "," + template.getOffset().getZ());
 		writer.newLine();
 		writer.write(":endheader");
 		writer.newLine();
@@ -95,14 +95,14 @@ public class TemplateExporter {
 	private static void writeLayers(StructureTemplate template, BufferedWriter writer) throws IOException {
 		writer.write("#### LAYERS ####");
 		writer.newLine();
-		for (int y = 0; y < template.ySize; y++) {
+		for (int y = 0; y < template.getSize().getY(); y++) {
 			writer.write("layer: " + y);
 			writer.newLine();
-			for (int z = 0; z < template.zSize; z++) {
-				for (int x = 0; x < template.xSize; x++) {
-					short data = template.getTemplateData()[StructureTemplate.getIndex(x, y, z, template.xSize, template.ySize, template.zSize)];
+			for (int z = 0; z < template.getSize().getZ(); z++) {
+				for (int x = 0; x < template.getSize().getX(); x++) {
+					short data = template.getTemplateData()[StructureTemplate.getIndex(x, y, z, template.getSize())];
 					writer.write(String.valueOf(data));
-					if (x < template.xSize - 1) {
+					if (x < template.getSize().getX() - 1) {
 						writer.write(",");
 					}
 				}

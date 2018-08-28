@@ -60,13 +60,13 @@ public class StructureValidatorGround extends StructureValidator {
 		int topFilledY = WorldStructureGenerator.getTargetY(world, x, z, true);
 		int topNonAirBlock = world.getTopSolidOrLiquidBlock(new BlockPos(x, 1, z)).getY();
 		int step = WorldStructureGenerator.getStepNumber(x, z, bb.min.getX(), bb.max.getX(), bb.min.getZ(), bb.max.getZ());
-		int startY = Math.min(bb.min.getY() + template.yOffset + step, topFilledY + 1);
+		int startY = Math.min(bb.min.getY() + template.getOffset().getY() + step, topFilledY + 1);
 		for (int y = startY; y <= topNonAirBlock; y++) {
 			handleClearAction(world, new BlockPos(x, y, z), template, bb);
 		}
 		Biome biome = world.provider.getBiomeForCoords(new BlockPos(x, 1, z));
 		IBlockState fillBlock = biome.topBlock;
-		int y = bb.min.getY() + template.yOffset + step - 1;
+		int y = bb.min.getY() + template.getOffset().getY() + step - 1;
 		BlockPos pos = new BlockPos(x, y, z);
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();

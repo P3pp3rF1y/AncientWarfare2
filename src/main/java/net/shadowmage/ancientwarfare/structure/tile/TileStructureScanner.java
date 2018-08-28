@@ -159,7 +159,7 @@ public class TileStructureScanner extends TileUpdatable implements IBlockBreakHa
 
 	private void saveToScannerItemAndRestoreTemplate(String name, ItemStack scanner, StructureTemplate template, ItemStructureSettings settings) {
 		EnumFacing placementFacing = facing.getOpposite();
-		BlockPos key = pos.offset(placementFacing, template.zSize - template.zOffset).offset(EnumFacing.DOWN, 1);
+		BlockPos key = pos.offset(placementFacing, template.getSize().getZ() - template.getOffset().getZ()).offset(EnumFacing.DOWN, 1);
 		StructureBB bb = new StructureBB(key, placementFacing, template);
 		settings.setBuildKey(key, placementFacing);
 		settings.setName(name);
@@ -208,11 +208,11 @@ public class TileStructureScanner extends TileUpdatable implements IBlockBreakHa
 	}
 
 	private boolean offsetIsSame(StructureTemplate template, StructureTemplate dummyTemplate) {
-		return template.xOffset == dummyTemplate.xOffset && template.yOffset == dummyTemplate.yOffset && template.zOffset == dummyTemplate.zOffset;
+		return template.getOffset().equals(dummyTemplate.getOffset());
 	}
 
 	private boolean dimensionsAreSame(StructureTemplate template, StructureTemplate dummyTemplate) {
-		return template.xSize == dummyTemplate.xSize && template.ySize == dummyTemplate.ySize && template.zSize == dummyTemplate.zSize;
+		return template.getSize().equals(dummyTemplate.getSize());
 	}
 
 	@Override

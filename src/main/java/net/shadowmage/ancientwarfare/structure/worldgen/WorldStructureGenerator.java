@@ -156,7 +156,7 @@ public class WorldStructureGenerator implements IWorldGenerator {
 	public final boolean attemptStructureGenerationAt(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureMap map) {
 		long t1 = System.currentTimeMillis();
 		int prevY = pos.getY();
-		StructureBB bb = new StructureBB(pos, face, template.xSize, template.ySize, template.zSize, template.xOffset, template.yOffset, template.zOffset);
+		StructureBB bb = new StructureBB(pos, face, template.getSize(), template.getOffset());
 		int y = template.getValidationSettings().getAdjustedSpawnY(world, pos.getX(), pos.getY(), pos.getZ(), face, template, bb);
 		pos = new BlockPos(pos.getX(), y, pos.getZ());
 		bb.min = bb.min.up(y - prevY);

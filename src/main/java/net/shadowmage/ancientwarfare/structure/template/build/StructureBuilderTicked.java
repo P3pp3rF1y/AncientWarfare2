@@ -1,24 +1,3 @@
-/*
- Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
- This software is distributed under the terms of the GNU General Public License.
- Please see COPYING for precise license information.
-
- This file is part of Ancient Warfare.
-
- Ancient Warfare is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- Ancient Warfare is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.structure.template.build;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,6 +9,8 @@ import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
+
+import java.util.Optional;
 
 public class StructureBuilderTicked extends StructureBuilder {
 
@@ -60,12 +41,12 @@ public class StructureBuilderTicked extends StructureBuilder {
 			}
 		} else if (!this.isFinished()) {
 			while (!this.isFinished()) {
-				TemplateRule rule = template.getRuleAt(currentX, currentY, currentZ);
-				if (rule == null || !rule.shouldPlaceOnBuildPass(world, turns, destination, currentPriority)) {
+				Optional<TemplateRule> rule = template.getRuleAt(currentX, currentY, currentZ);
+				if (rule.map(r -> !r.shouldPlaceOnBuildPass(world, turns, destination, currentPriority)).orElse(false)) {
 					increment();//skip that position, was either air/null rule, or could not be placed on current pass, auto-increment to next
 				} else//place it...
 				{
-					this.placeRule(rule);
+					rule.ifPresent(this::placeRule);
 					break;
 				}
 			}
@@ -73,11 +54,11 @@ public class StructureBuilderTicked extends StructureBuilder {
 		}
 	}
 
-	protected boolean breakClearTargetBlock(EntityPlayer player) {
+	private boolean breakClearTargetBlock(EntityPlayer player) {
 		return BlockTools.breakBlockAndDrop(world, clearPos);
 	}
 
-	protected boolean incrementClear() {
+	private boolean incrementClear() {
 		clearPos = clearPos.east();
 		if (clearPos.getX() > bb.max.getX()) {
 			clearPos = new BlockPos(bb.min.getX(), clearPos.getY(), clearPos.getZ());

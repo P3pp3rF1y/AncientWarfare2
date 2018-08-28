@@ -27,6 +27,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
@@ -108,7 +109,7 @@ public final class TemplateScanner {
 									currentRulesAll.add(scannedBlockRule);
 								}
 							}
-							index = StructureTemplate.getIndex(destination.getX(), destination.getY(), destination.getZ(), xOutSize, ySize, zOutSize);
+							index = StructureTemplate.getIndex(destination.getX(), destination.getY(), destination.getZ(), new Vec3i(xOutSize, ySize, zOutSize));
 							templateRuleData[index] = (short) scannedBlockRule.ruleNumber;
 						}
 					}
@@ -144,7 +145,7 @@ public final class TemplateScanner {
 			entityRules[i] = scannedEntityRules.get(i);
 		}
 
-		StructureTemplate template = new StructureTemplate(name, xOutSize, ySize, zOutSize, key.getX(), key.getY(), key.getZ());
+		StructureTemplate template = new StructureTemplate(name, new Vec3i(xOutSize, ySize, zOutSize), key);
 		template.setTemplateData(templateRuleData);
 		template.setRuleArray(templateRules);
 		template.setEntityRules(entityRules);

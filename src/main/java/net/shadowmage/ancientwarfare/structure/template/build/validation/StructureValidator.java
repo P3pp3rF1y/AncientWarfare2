@@ -485,7 +485,7 @@ public abstract class StructureValidator {
 	protected int getMinY(StructureTemplate template, StructureBB bb) {
 		int minY = bb.min.getY() - getMaxFill() - 1;
 		if (getBorderSize() > 0) {
-			minY += template.yOffset;
+			minY += template.getOffset().getY();
 		}
 		return minY;
 	}
@@ -495,7 +495,7 @@ public abstract class StructureValidator {
 	 * for the input template and BB
 	 */
 	protected int getMaxY(StructureTemplate template, StructureBB bb) {
-		return bb.min.getY() + template.yOffset + getMaxLeveling();
+		return bb.min.getY() + template.getOffset().getY() + getMaxLeveling();
 	}
 
 	private int getMaxFillY(StructureTemplate template, StructureBB bb) {
@@ -508,12 +508,12 @@ public abstract class StructureValidator {
 		}
 		int topFilledY = WorldStructureGenerator.getTargetY(world, x, z, true);
 		int step = WorldStructureGenerator.getStepNumber(x, z, bb.min.getX(), bb.max.getX(), bb.min.getZ(), bb.max.getZ());
-		for (int y = bb.min.getY() + template.yOffset + step; y <= topFilledY; y++) {
+		for (int y = bb.min.getY() + template.getOffset().getY() + step; y <= topFilledY; y++) {
 			handleClearAction(world, new BlockPos(x, y, z), template, bb);
 		}
 		Biome biome = world.provider.getBiomeForCoords(new BlockPos(x, 1, z));
 		IBlockState fillBlock = biome.topBlock;
-		int y = bb.min.getY() + template.yOffset + step - 1;
+		int y = bb.min.getY() + template.getOffset().getY() + step - 1;
 		BlockPos pos = new BlockPos(x, y, z);
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();

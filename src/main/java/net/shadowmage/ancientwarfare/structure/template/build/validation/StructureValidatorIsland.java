@@ -44,8 +44,8 @@ public class StructureValidatorIsland extends StructureValidator {
 
 	@Override
 	protected void setDefaultSettings(StructureTemplate template) {
-		this.minWaterDepth = template.yOffset / 2;
-		this.maxWaterDepth = template.yOffset;
+		maxWaterDepth = template.getOffset().getY();
+		minWaterDepth = maxWaterDepth / 2;
 	}
 
 	@Override
@@ -81,7 +81,7 @@ public class StructureValidatorIsland extends StructureValidator {
 
 	@Override
 	public void handleClearAction(World world, BlockPos pos, StructureTemplate template, StructureBB bb) {
-		int maxWaterY = bb.min.getY() + template.yOffset - 1;
+		int maxWaterY = bb.min.getY() + template.getOffset().getY() - 1;
 		if (pos.getY() <= maxWaterY) {
 			world.setBlockState(pos, Blocks.WATER.getDefaultState());
 		} else {

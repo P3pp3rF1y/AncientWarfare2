@@ -33,7 +33,7 @@ public class StructureValidatorWater extends StructureValidator {
 
 	@Override
 	public void handleClearAction(World world, BlockPos pos, StructureTemplate template, StructureBB bb) {
-		if (pos.getY() < bb.min.getY() + template.yOffset) {
+		if (pos.getY() < bb.min.getY() + template.getOffset().getY()) {
 			world.setBlockState(pos, Blocks.WATER.getDefaultState());
 		} else {
 			super.handleClearAction(world, pos, template, bb);

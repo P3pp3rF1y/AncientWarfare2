@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.template.load;
 
+import net.minecraft.util.math.Vec3i;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
@@ -47,12 +48,12 @@ public class TemplateParser {
 
 		String name = null;
 		Version version = Version.NONE;
-		int xSize = 0, ySize = 0, zSize = 0, xOffset = 0, yOffset = 0, zOffset = 0;
+		Vec3i size = new Vec3i(0, 0, 0);
+		Vec3i offset = new Vec3i(0, 0, 0);
 		short[] templateData = null;
 		boolean[] initData = new boolean[4];
 		int highestParsedRule = 0;
 		FixResult.Builder<StructureTemplate> resultBuilder = new FixResult.Builder<>();
-		boolean modified = false;
 		while (it.hasNext()) {
 			line = it.next();
 			if (line.startsWith("#") || line.equals("")) {
@@ -74,16 +75,12 @@ public class TemplateParser {
 					}
 					if (line.startsWith("size=")) {
 						int[] sizes = StringTools.safeParseIntArray("=", line);
-						xSize = sizes[0];
-						ySize = sizes[1];
-						zSize = sizes[2];
+						size = new Vec3i(sizes[0], sizes[1], sizes[2]);
 						initData[2] = true;
 					}
 					if (line.startsWith("offset=")) {
 						int[] offsets = StringTools.safeParseIntArray("=", line);
-						xOffset = offsets[0];
-						yOffset = offsets[1];
-						zOffset = offsets[2];
+						offset = new Vec3i(offsets[0], offsets[1], offsets[2]);
 						initData[3] = true;
 					}
 				}
@@ -92,7 +89,7 @@ public class TemplateParser {
 						throw new TemplateParsingException("Could not parse template for " + fileName + " -- template was missing header or header data.");
 					}
 				}
-				templateData = new short[xSize * ySize * zSize];
+				templateData = new short[size.getX() * size.getY() * size.getZ()];
 			}
 
 			/*
@@ -181,7 +178,7 @@ public class TemplateParser {
 						break;
 					}
 				}
-				parseLayer(groupedLines, parsedLayers, xSize, ySize, zSize, templateData);
+				parseLayer(groupedLines, parsedLayers, size, templateData);
 				parsedLayers++;
 				groupedLines.clear();
 			}
@@ -204,11 +201,11 @@ public class TemplateParser {
 			ruleNumber++;
 		}
 
-		return resultBuilder.build(constructTemplate(name, version, xSize, ySize, zSize, xOffset, yOffset, zOffset, templateData, ruleArray, entityRuleArray, validation));
+		return resultBuilder.build(constructTemplate(name, version, size, offset, templateData, ruleArray, entityRuleArray, validation));
 	}
 
-	private StructureTemplate constructTemplate(String name, Version version, int x, int y, int z, int xo, int yo, int zo, short[] templateData, TemplateRule[] rules, TemplateRuleEntity[] entityRules, StructureValidator validation) {
-		StructureTemplate template = new StructureTemplate(name, version, x, y, z, xo, yo, zo);
+	private StructureTemplate constructTemplate(String name, Version version, Vec3i size, Vec3i offset, short[] templateData, TemplateRule[] rules, TemplateRuleEntity[] entityRules, StructureValidator validation) {
+		StructureTemplate template = new StructureTemplate(name, version, size, offset);
 		template.setRuleArray(rules);
 		template.setEntityRules(entityRules);
 		template.setTemplateData(templateData);
@@ -219,15 +216,15 @@ public class TemplateParser {
 	/*
 	 * should parse layer and insert direcly into templateData
 	 */
-	private void parseLayer(List<String> templateLines, int yLayer, int xSize, int ySize, int zSize, short[] templateData) {
+	private void parseLayer(List<String> templateLines, int yLayer, Vec3i size, short[] templateData) {
 		int z = 0;
 		for (String st : templateLines) {
 			if (st.startsWith("layer:") || st.startsWith(":endlayer")) {
 				continue;
 			}
 			short[] data = StringTools.parseShortArray(st);
-			for (int x = 0; x < xSize && x < data.length; x++) {
-				templateData[StructureTemplate.getIndex(x, yLayer, z, xSize, ySize, zSize)] = data[x];
+			for (int x = 0; x < size.getX() && x < data.length; x++) {
+				templateData[StructureTemplate.getIndex(x, yLayer, z, size)] = data[x];
 			}
 			z++;
 		}

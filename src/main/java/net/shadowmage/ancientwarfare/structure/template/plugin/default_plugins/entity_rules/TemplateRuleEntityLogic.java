@@ -1,24 +1,3 @@
-/*
- Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
- This software is distributed under the terms of the GNU General Public License.
- Please see COPYING for precise license information.
-
- This file is part of Ancient Warfare.
-
- Ancient Warfare is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- Ancient Warfare is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.entity_rules;
 
 import net.minecraft.entity.Entity;
@@ -41,11 +20,12 @@ import net.shadowmage.ancientwarfare.structure.template.build.StructureBuildingE
 import javax.annotation.Nonnull;
 
 public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
+	private static final String INVENTORY_DATA_TAG = "inventoryData";
+	private static final String EQUIPMENT_DATA_TAG = "equipmentData";
+	private NBTTagCompound tag = new NBTTagCompound();
 
-	public NBTTagCompound tag = new NBTTagCompound();
-
-	NonNullList<ItemStack> inventory;
-	NonNullList<ItemStack> equipment = NonNullList.withSize(EntityEquipmentSlot.values().length, ItemStack.EMPTY);
+	private NonNullList<ItemStack> inventory;
+	private NonNullList<ItemStack> equipment = NonNullList.withSize(EntityEquipmentSlot.values().length, ItemStack.EMPTY);
 
 	public TemplateRuleEntityLogic() {
 	}
@@ -128,7 +108,7 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
 				list.appendTag(itemTag);
 			}
 			invData.setTag("inventoryContents", list);
-			tag.setTag("inventoryData", invData);
+			tag.setTag(INVENTORY_DATA_TAG, invData);
 		}
 		if (equipment != null) {
 			NBTTagCompound invData = new NBTTagCompound();
@@ -145,7 +125,7 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
 				list.appendTag(itemTag);
 			}
 			invData.setTag("equipmentContents", list);
-			tag.setTag("equipmentData", invData);
+			tag.setTag(EQUIPMENT_DATA_TAG, invData);
 		}
 	}
 
@@ -153,8 +133,8 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
 	public void parseRuleData(NBTTagCompound tag) {
 		super.parseRuleData(tag);
 		this.tag = tag.getCompoundTag("entityData");
-		if (tag.hasKey("inventoryData")) {
-			NBTTagCompound inventoryTag = tag.getCompoundTag("inventoryData");
+		if (tag.hasKey(INVENTORY_DATA_TAG)) {
+			NBTTagCompound inventoryTag = tag.getCompoundTag(INVENTORY_DATA_TAG);
 			int length = inventoryTag.getInteger("length");
 			inventory = NonNullList.withSize(length, ItemStack.EMPTY);
 			NBTTagCompound itemTag;
@@ -170,8 +150,8 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
 				}
 			}
 		}
-		if (tag.hasKey("equipmentData")) {
-			NBTTagCompound inventoryTag = tag.getCompoundTag("equipmentData");
+		if (tag.hasKey(EQUIPMENT_DATA_TAG)) {
+			NBTTagCompound inventoryTag = tag.getCompoundTag(EQUIPMENT_DATA_TAG);
 			NBTTagCompound itemTag;
 			NBTTagList list = inventoryTag.getTagList("equipmentContents", Constants.NBT.TAG_COMPOUND);
 			int slot;

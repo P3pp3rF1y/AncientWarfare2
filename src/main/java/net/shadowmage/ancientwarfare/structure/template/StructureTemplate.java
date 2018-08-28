@@ -2,10 +2,13 @@ package net.shadowmage.ancientwarfare.structure.template;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.Vec3i;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
+
+import java.util.Optional;
 
 public class StructureTemplate {
 	public static final Version CURRENT_VERSION = new Version(2, 3);
@@ -14,8 +17,8 @@ public class StructureTemplate {
 	 * base datas
 	 */
 	public final String name;
-	public final int xSize, ySize, zSize;
-	public final int xOffset, yOffset, zOffset;
+	public final Vec3i size;
+	public final Vec3i offset;
 	private Version version;
 
 	/*
@@ -24,29 +27,25 @@ public class StructureTemplate {
 	private TemplateRule[] templateRules;
 	private TemplateRuleEntity[] entityRules;
 	private short[] templateData;
-	NonNullList<ItemStack> resourceList;
+	private NonNullList<ItemStack> resourceList;
 
 	/*
 	 * world generation placement validation settings
 	 */
 	private StructureValidator validator;
 
-	public StructureTemplate(String name, int xSize, int ySize, int zSize, int xOffset, int yOffset, int zOffset) {
-		this(name, CURRENT_VERSION, xSize, ySize, zSize, xOffset, yOffset, zOffset);
+	public StructureTemplate(String name, Vec3i size, Vec3i offset) {
+		this(name, CURRENT_VERSION, size, offset);
 	}
 
-	public StructureTemplate(String name, Version version, int xSize, int ySize, int zSize, int xOffset, int yOffset, int zOffset) {
+	public StructureTemplate(String name, Version version, Vec3i size, Vec3i offset) {
 		if (name == null) {
 			throw new IllegalArgumentException("cannot have null name for structure");
 		}
 		this.version = version;
 		this.name = name;
-		this.xSize = xSize;
-		this.ySize = ySize;
-		this.zSize = zSize;
-		this.xOffset = xOffset;
-		this.yOffset = yOffset;
-		this.zOffset = zOffset;
+		this.size = size;
+		this.offset = offset;
 	}
 
 	public TemplateRuleEntity[] getEntityRules() {
@@ -81,32 +80,28 @@ public class StructureTemplate {
 		this.validator = settings;
 	}
 
-	public TemplateRule getRuleAt(int x, int y, int z) {
-		int index = getIndex(x, y, z, xSize, ySize, zSize);
+	public Optional<TemplateRule> getRuleAt(int x, int y, int z) {
+		int index = getIndex(x, y, z, size);
 		int ruleIndex = index >= 0 && index < templateData.length ? templateData[index] : -1;
-		return ruleIndex >= 0 && ruleIndex < templateRules.length ? templateRules[ruleIndex] : null;
+		return ruleIndex >= 0 && ruleIndex < templateRules.length ? Optional.ofNullable(templateRules[ruleIndex]) : Optional.empty();
 	}
 
-	public static int getIndex(int x, int y, int z, int xSize, int ySize, int zSize) {
-		return (y * xSize * zSize) + (z * xSize) + x;
+	public static int getIndex(int x, int y, int z, Vec3i size) {
+		return (y * size.getX() * size.getZ()) + (z * size.getX()) + x;
 	}
 
 	@Override
 	public String toString() {
-		return "name: " + name + "\n" + "size: " + xSize + ", " + ySize + ", " + zSize + "\n" + "buildKey: " + xOffset + ", " + yOffset + ", " + zOffset;
+		return "name: " + name + "\n" + "size: " + size.getX() + ", " + size.getY() + ", " + size.getZ() + "\n" + "buildKey: " + offset.getX() + ", " + offset.getY() + ", " + offset.getZ();
 	}
 
 	public NonNullList<ItemStack> getResourceList() {
 		if (resourceList == null) {
-			TemplateRule rule;
 			NonNullList<ItemStack> stacks = NonNullList.create();
-			for (int x = 0; x < this.xSize; x++) {
-				for (int y = 0; y < this.ySize; y++) {
-					for (int z = 0; z < this.zSize; z++) {
-						rule = getRuleAt(x, y, z);
-						if (rule != null) {
-							rule.addResources(stacks);
-						}
+			for (int x = 0; x < size.getX(); x++) {
+				for (int y = 0; y < size.getY(); y++) {
+					for (int z = 0; z < size.getZ(); z++) {
+						getRuleAt(x, y, z).ifPresent(r -> r.addResources(stacks));
 					}
 				}
 			}
@@ -122,23 +117,27 @@ public class StructureTemplate {
 		if (!(o instanceof StructureTemplate))
 			return false;
 		StructureTemplate that = (StructureTemplate) o;
-		return xSize == that.xSize && ySize == that.ySize && zSize == that.zSize && xOffset == that.xOffset && yOffset == that.yOffset && zOffset == that.zOffset && name.equals(that.name);
+		return size.equals(that.size) && offset.equals(that.offset) && name.equals(that.name);
 	}
 
 	@Override
 	public int hashCode() {
-		int result = xSize;
-		result = 31 * result + ySize;
-		result = 31 * result + zSize;
-		result = 31 * result + xOffset;
-		result = 31 * result + yOffset;
-		result = 31 * result + zOffset;
+		int result = size.hashCode();
+		result = 31 * result + offset.hashCode();
 		result = 31 * result + name.hashCode();
 		return result;
 	}
 
 	public Version getVersion() {
 		return version;
+	}
+
+	public Vec3i getSize() {
+		return size;
+	}
+
+	public Vec3i getOffset() {
+		return offset;
 	}
 
 	public static class Version {

@@ -50,7 +50,7 @@ public class StructureValidatorSky extends StructureValidator {
 
 	@Override
 	public boolean shouldIncludeForSelection(World world, int x, int y, int z, EnumFacing face, StructureTemplate template) {
-		int remainingHeight = world.getActualHeight() - minFlyingHeight - (template.ySize - template.yOffset);
+		int remainingHeight = world.getActualHeight() - minFlyingHeight - (template.getSize().getY() - template.getOffset().getY());
 		return y < remainingHeight;
 	}
 
