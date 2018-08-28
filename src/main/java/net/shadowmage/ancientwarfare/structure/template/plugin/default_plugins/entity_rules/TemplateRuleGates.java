@@ -9,12 +9,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.owner.Owner;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.gates.types.Gate;
-import net.shadowmage.ancientwarfare.structure.template.build.StructureBuildingException;
-import net.shadowmage.ancientwarfare.structure.template.build.StructureBuildingException.EntityPlacementException;
 
 import java.util.Optional;
 
@@ -54,7 +53,7 @@ public class TemplateRuleGates extends TemplateRuleEntity {
 	}
 
 	@Override
-	public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) throws EntityPlacementException {
+	public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
 		BlockPos p1 = BlockTools.rotateAroundOrigin(pos1, turns).add(pos);
 		BlockPos p2 = BlockTools.rotateAroundOrigin(pos2, turns).add(pos);
 
@@ -71,7 +70,8 @@ public class TemplateRuleGates extends TemplateRuleEntity {
 		Optional<EntityGate> gate = Gate.constructGate(world, p1, p2, Gate.getGateByName(gateType), EnumFacing.HORIZONTALS[((orientation.ordinal() + turns) % 4)],
 				owner.isEmpty() ? Owner.EMPTY : new Owner(world, owner));
 		if (!gate.isPresent()) {
-			throw new StructureBuildingException.EntityPlacementException("Could not create gate for type: " + gateType);
+			AncientWarfareStructure.LOG.warn("Could not create gate for type: " + gateType);
+			return;
 		}
 		world.spawnEntity(gate.get());
 	}

@@ -1,24 +1,3 @@
-/*
- Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
- This software is distributed under the terms of the GNU General Public License.
- Please see COPYING for precise license information.
-
- This file is part of Ancient Warfare.
-
- Ancient Warfare is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- Ancient Warfare is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.structure.api;
 
 import net.minecraft.item.ItemStack;
@@ -29,7 +8,6 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException.TemplateRuleParsingException;
-import net.shadowmage.ancientwarfare.structure.template.build.StructureBuildingException;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -58,7 +36,7 @@ public abstract class TemplateRule {
 	/*
 	 * input params are the target position for placement of this rule and destination orientation
 	 */
-	public abstract void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) throws StructureBuildingException;
+	public abstract void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder);
 
 	public abstract void parseRuleData(NBTTagCompound tag);
 
@@ -80,7 +58,7 @@ public abstract class TemplateRule {
 		parseRuleData(tag);
 	}
 
-	public final void writeTag(BufferedWriter out, NBTTagCompound tag) throws IOException {
+	private void writeTag(BufferedWriter out, NBTTagCompound tag) throws IOException {
 		String line = JSON_PREFIX + tag.toString();
 		out.write(line);
 		out.newLine();

@@ -14,10 +14,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
-import net.shadowmage.ancientwarfare.structure.template.build.StructureBuildingException.EntityPlacementException;
 
 import javax.annotation.Nonnull;
+import java.util.Optional;
 
 public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
 	private static final String INVENTORY_DATA_TAG = "inventoryData";
@@ -55,15 +56,15 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
 	}
 
 	@Override
-	public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) throws EntityPlacementException {
-		Entity e = createEntity(world, turns, pos, builder);
-		world.spawnEntity(e);
+	public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
+		createEntity(world, turns, pos, builder).ifPresent(world::spawnEntity);
 	}
 
-	protected Entity createEntity(World world, int turns, BlockPos pos, IStructureBuilder builder) throws EntityPlacementException {
+	protected Optional<Entity> createEntity(World world, int turns, BlockPos pos, IStructureBuilder builder) {
 		Entity e = EntityList.createEntityByIDFromName(registryName, world);
 		if (e == null) {
-			throw new EntityPlacementException("Could not create entity for name: " + registryName.toString() + " Entity skipped during structure creation.\n" + "Entity data: " + tag);
+			AncientWarfareStructure.LOG.warn("Could not create entity for name: " + registryName.toString() + " Entity skipped during structure creation.\n" + "Entity data: " + tag);
+			return Optional.empty();
 		}
 		NBTTagList list = new NBTTagList();
 		list.appendTag(new NBTTagDouble(pos.getX() + BlockTools.rotateFloatX(xOffset, zOffset, turns)));
@@ -84,7 +85,7 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
 			}
 		}
 		e.rotationYaw = (rotation + 90.f * turns) % 360.f;
-		return e;
+		return Optional.of(e);
 	}
 
 	@Override

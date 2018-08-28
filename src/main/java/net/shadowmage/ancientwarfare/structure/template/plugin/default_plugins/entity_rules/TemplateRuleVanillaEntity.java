@@ -30,9 +30,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
-import net.shadowmage.ancientwarfare.structure.template.build.StructureBuildingException.EntityPlacementException;
 
 public class TemplateRuleVanillaEntity extends TemplateRuleEntity {
 
@@ -62,10 +62,11 @@ public class TemplateRuleVanillaEntity extends TemplateRuleEntity {
 	}
 
 	@Override
-	public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) throws EntityPlacementException {
+	public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
 		Entity e = EntityList.createEntityByIDFromName(registryName, world);
 		if (e == null) {
-			throw new EntityPlacementException("Could not create entity for type: " + registryName.toString());
+			AncientWarfareStructure.LOG.warn("Could not create entity for type: " + registryName.toString());
+			return;
 		}
 		float x1 = BlockTools.rotateFloatX(xOffset, zOffset, turns);
 		float z1 = BlockTools.rotateFloatZ(xOffset, zOffset, turns);
@@ -98,7 +99,7 @@ public class TemplateRuleVanillaEntity extends TemplateRuleEntity {
 
 	@Override
 	public void addResources(NonNullList<ItemStack> resources) {
-
+		//noop
 	}
 
 }

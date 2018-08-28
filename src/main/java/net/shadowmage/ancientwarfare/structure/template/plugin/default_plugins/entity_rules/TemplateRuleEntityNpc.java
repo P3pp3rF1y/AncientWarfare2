@@ -5,7 +5,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
-import net.shadowmage.ancientwarfare.structure.template.build.StructureBuildingException.EntityPlacementException;
+
+import java.util.Optional;
 
 public class TemplateRuleEntityNpc extends TemplateRuleEntityLogic {
 
@@ -17,12 +18,16 @@ public class TemplateRuleEntityNpc extends TemplateRuleEntityLogic {
 	}
 
 	@Override
-	protected Entity createEntity(World world, int turns, BlockPos pos, IStructureBuilder builder) throws EntityPlacementException {
-		Entity e = super.createEntity(world, turns, pos, builder);
+	protected Optional<Entity> createEntity(World world, int turns, BlockPos pos, IStructureBuilder builder) {
+		Optional<Entity> entity = super.createEntity(world, turns, pos, builder);
+		if (!entity.isPresent()) {
+			return Optional.empty();
+		}
+		Entity e = entity.get();
 		if (e instanceof NpcBase) {
 			NpcBase c = (NpcBase) e;
 			c.setHomeAreaAtCurrentPosition();
 		}
-		return e;
+		return Optional.of(e);
 	}
 }
