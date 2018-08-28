@@ -104,6 +104,10 @@ public class StructurePluginManager implements IStructurePluginManager {
 		return pluginByBlock.get(block);
 	}
 
+	private String getPluginNameFor(Class<? extends TemplateRule> ruleClass) {
+		return this.idByRuleClass.get(ruleClass);
+	}
+
 	private <T extends TemplateRule> Class<T> getRuleByName(String name) {
 		//noinspection unchecked
 		return (Class<T>) this.ruleByID.get(name);
@@ -236,7 +240,7 @@ public class StructurePluginManager implements IStructurePluginManager {
 		}
 		out.write(ruleType + ":");
 		out.newLine();
-		out.write("plugin=" + INSTANCE.idByRuleClass.containsKey(rule.getClass()));
+		out.write("plugin=" + INSTANCE.getPluginNameFor(rule.getClass()));
 		out.newLine();
 		out.write("number=" + rule.ruleNumber);
 		out.newLine();

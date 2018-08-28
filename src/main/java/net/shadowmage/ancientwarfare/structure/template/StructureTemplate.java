@@ -8,7 +8,7 @@ import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
 
 public class StructureTemplate {
-	public static final Version CURRENT_VERSION = new Version(2, 2);
+	public static final Version CURRENT_VERSION = new Version(2, 3);
 
 	/*
 	 * base datas

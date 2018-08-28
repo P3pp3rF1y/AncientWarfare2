@@ -1,11 +1,11 @@
 package net.shadowmage.ancientwarfare.structure.template.datafixes.fixers;
 
-import net.shadowmage.ancientwarfare.core.util.Json;
-import net.shadowmage.ancientwarfare.core.util.Json.JsonObject;
 import net.shadowmage.ancientwarfare.npc.datafixes.FactionExpansionEntityFixer;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate.Version;
 import net.shadowmage.ancientwarfare.structure.template.datafixes.FixResult;
 import net.shadowmage.ancientwarfare.structure.template.datafixes.IDataFixer;
+import net.shadowmage.ancientwarfare.structure.template.datafixes.fixers.json.Json;
+import net.shadowmage.ancientwarfare.structure.template.datafixes.fixers.json.Json.JsonObject;
 
 import java.util.Optional;
 
@@ -33,5 +33,10 @@ public class FactionExpansionFixer implements IDataFixer {
 	@Override
 	public Version getVersion() {
 		return VERSION;
+	}
+
+	@Override
+	public boolean isForRule(String ruleName) {
+		return ruleName.equals("AWNpc");
 	}
 }

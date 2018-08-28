@@ -6,4 +6,6 @@ public interface IDataFixer {
 	FixResult<String> fix(String line);
 
 	Version getVersion();
+
+	boolean isForRule(String ruleName);
 }

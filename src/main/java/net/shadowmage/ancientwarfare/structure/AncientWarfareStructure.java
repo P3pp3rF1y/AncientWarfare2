@@ -42,6 +42,7 @@ import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager
 import net.shadowmage.ancientwarfare.structure.template.WorldGenStructureManager;
 import net.shadowmage.ancientwarfare.structure.template.datafixes.DataFixManager;
 import net.shadowmage.ancientwarfare.structure.template.datafixes.fixers.FactionExpansionFixer;
+import net.shadowmage.ancientwarfare.structure.template.datafixes.fixers.json.JsonSimplificationFixer;
 import net.shadowmage.ancientwarfare.structure.template.load.TemplateLoader;
 import net.shadowmage.ancientwarfare.structure.town.WorldTownGenerator;
 import net.shadowmage.ancientwarfare.structure.worldgen.WorldGenTickHandler;
@@ -105,7 +106,8 @@ public class AncientWarfareStructure {
 
 		BlockDataManager.INSTANCE.load();
 
-		DataFixManager.registerRuleFixer("AWNpc", new FactionExpansionFixer());
+		DataFixManager.registerRuleFixer(new FactionExpansionFixer());
+		DataFixManager.registerRuleFixer(new JsonSimplificationFixer());
 	}
 
 	@EventHandler

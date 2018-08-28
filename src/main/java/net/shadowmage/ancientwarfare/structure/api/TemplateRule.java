@@ -22,13 +22,12 @@
 package net.shadowmage.ancientwarfare.structure.api;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.nbt.NBTException;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.util.Json;
-import net.shadowmage.ancientwarfare.core.util.JsonTagReader;
-import net.shadowmage.ancientwarfare.core.util.JsonTagWriter;
 import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException.TemplateRuleParsingException;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuildingException;
 
@@ -46,6 +45,7 @@ import java.util.List;
  */
 public abstract class TemplateRule {
 
+	public static final String JSON_PREFIX = "JSON:";
 	public int ruleNumber = -1;
 
 	/*
@@ -81,7 +81,7 @@ public abstract class TemplateRule {
 	}
 
 	public final void writeTag(BufferedWriter out, NBTTagCompound tag) throws IOException {
-		String line = Json.getJsonData(JsonTagWriter.getJsonForTag(tag));
+		String line = JSON_PREFIX + tag.toString();
 		out.write(line);
 		out.newLine();
 	}
@@ -89,8 +89,13 @@ public abstract class TemplateRule {
 	public final NBTTagCompound readTag(List<String> ruleData) throws TemplateRuleParsingException {
 		for (String line : ruleData)
 		{
-			if (line.startsWith("JSON:{")) {
-				return JsonTagReader.parseTagCompound(line);
+			if (line.startsWith(JSON_PREFIX)) {
+				try {
+					return JsonToNBT.getTagFromJson(line.substring(JSON_PREFIX.length()));
+				}
+				catch (NBTException e) {
+					throw new TemplateRuleParsingException("Issue parsing NBTTagCompound from JSON: " + line, e);
+				}
 			}
 		}
 		return new NBTTagCompound();
