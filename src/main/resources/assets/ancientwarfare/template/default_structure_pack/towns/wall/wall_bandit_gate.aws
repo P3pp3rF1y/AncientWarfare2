@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 12/21/2014 at: 14:32:55
+# Auto-generated structure template file. created on: 8/28/2018 at: 17:29:59
 # Lines beginning with # denote comments
 
 header:
-version=2.1
+version=2.3
 name=wall_bandit_gate
 size=16,7,3
 offset=15,1,2
@@ -73,7 +73,7 @@ rule:
 plugin=vanillaBlocks
 number=1
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:grass","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:grass",meta:0}
 :enddata
 :endrule
 
@@ -81,7 +81,7 @@ rule:
 plugin=vanillaBlocks
 number=2
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:dirt","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:dirt",meta:0}
 :enddata
 :endrule
 
@@ -89,7 +89,7 @@ rule:
 plugin=vanillaBlocks
 number=3
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:oak_stairs","id":"ss"},"meta":{"val":"4","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:oak_stairs",meta:4}
 :enddata
 :endrule
 
@@ -97,7 +97,7 @@ rule:
 plugin=vanillaBlocks
 number=4
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:oak_stairs","id":"ss"},"meta":{"val":"1","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:oak_stairs",meta:1}
 :enddata
 :endrule
 
@@ -105,7 +105,7 @@ rule:
 plugin=vanillaBlocks
 number=5
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:oak_stairs","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:oak_stairs",meta:0}
 :enddata
 :endrule
 
@@ -113,7 +113,7 @@ rule:
 plugin=vanillaBlocks
 number=6
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:oak_stairs","id":"ss"},"meta":{"val":"5","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:oak_stairs",meta:5}
 :enddata
 :endrule
 
@@ -121,7 +121,7 @@ rule:
 plugin=vanillaBlocks
 number=7
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:torch","id":"ss"},"meta":{"val":"5","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:torch",meta:5}
 :enddata
 :endrule
 
@@ -129,7 +129,7 @@ rule:
 plugin=vanillaBlocks
 number=8
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:log","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:log",meta:0}
 :enddata
 :endrule
 
@@ -137,7 +137,7 @@ rule:
 plugin=vanillaBlocks
 number=9
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stonebrick","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:stonebrick",meta:0}
 :enddata
 :endrule
 
@@ -145,7 +145,7 @@ rule:
 plugin=vanillaBlocks
 number=10
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:wooden_slab","id":"ss"},"meta":{"val":"8","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:wooden_slab",meta:8}
 :enddata
 :endrule
 
@@ -153,7 +153,7 @@ rule:
 plugin=vanillaBlocks
 number=11
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:double_wooden_slab","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:double_wooden_slab",meta:0}
 :enddata
 :endrule
 
@@ -161,7 +161,7 @@ rule:
 plugin=vanillaBlocks
 number=12
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:wooden_slab","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:wooden_slab",meta:0}
 :enddata
 :endrule
 
@@ -169,7 +169,7 @@ rule:
 plugin=vanillaBlocks
 number=13
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stone_brick_stairs","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:stone_brick_stairs",meta:0}
 :enddata
 :endrule
 
@@ -177,7 +177,7 @@ rule:
 plugin=vanillaBlocks
 number=14
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stone_brick_stairs","id":"ss"},"meta":{"val":"1","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:stone_brick_stairs",meta:1}
 :enddata
 :endrule
 
@@ -187,7 +187,7 @@ plugin=awGate
 number=0
 data:
 position=8,1,2
-JSON:{{"val":{"pos1":{"val":{"z":{"val":"0","id":"pi"},"y":{"val":"0","id":"pi"},"x":{"val":"-2","id":"pi"}},"id":"ct"},"orientation":{"val":"2","id":"pb"},"pos2":{"val":{"z":{"val":"0","id":"pi"},"y":{"val":"3","id":"pi"},"x":{"val":"1","id":"pi"}},"id":"ct"},"gateType":{"val":"gate.verticalWooden","id":"ss"}},"id":"ct"}}
+JSON:{owner:"",orientation:2b,pos1:{x:-2,y:0,z:0},pos2:{x:1,y:3,z:0},gateType:"gate.verticalWooden"}
 :enddata
 :endentity
 

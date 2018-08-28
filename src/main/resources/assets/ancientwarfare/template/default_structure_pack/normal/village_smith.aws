@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 11/14/2014 at: 18:35:46
+# Auto-generated structure template file. created on: 8/28/2018 at: 17:29:59
 # Lines beginning with # denote comments
 
 header:
-version=2.1
+version=2.3
 name=village_smith
 size=10,6,8
 offset=2,0,7
@@ -98,7 +98,7 @@ rule:
 plugin=vanillaBlocks
 number=1
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:cobblestone","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:cobblestone",meta:0}
 :enddata
 :endrule
 
@@ -106,7 +106,7 @@ rule:
 plugin=vanillaBlocks
 number=2
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stone_stairs","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:stone_stairs",meta:3}
 :enddata
 :endrule
 
@@ -114,7 +114,7 @@ rule:
 plugin=vanillaBlocks
 number=3
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:log","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:log",meta:0}
 :enddata
 :endrule
 
@@ -122,7 +122,7 @@ rule:
 plugin=vanillaBlocks
 number=4
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:planks","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:planks",meta:0}
 :enddata
 :endrule
 
@@ -130,7 +130,7 @@ rule:
 plugin=vanillaBlocks
 number=5
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:oak_stairs","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:oak_stairs",meta:0}
 :enddata
 :endrule
 
@@ -138,7 +138,7 @@ rule:
 plugin=vanillaBlocks
 number=6
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:oak_stairs","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:oak_stairs",meta:3}
 :enddata
 :endrule
 
@@ -146,7 +146,7 @@ rule:
 plugin=vanillaBlocks
 number=7
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:fence","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:fence",meta:0}
 :enddata
 :endrule
 
@@ -154,7 +154,7 @@ rule:
 plugin=vanillaInventory
 number=8
 data:
-JSON:{{"val":{"lootLevel":{"val":"1","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"1085","id":"pi"},"y":{"val":"5","id":"pi"},"x":{"val":"1309","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:chest",meta:3,lootLevel:1,teData:{x:1309,y:5,z:1085,id:"Chest"},inventoryData:{length:27,inventoryContents:[]}}
 :enddata
 :endrule
 
@@ -162,7 +162,7 @@ rule:
 plugin=vanillaBlocks
 number=9
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:lava","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:lava",meta:0}
 :enddata
 :endrule
 
@@ -170,7 +170,7 @@ rule:
 plugin=vanillaBlocks
 number=10
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:double_stone_slab","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:double_stone_slab",meta:0}
 :enddata
 :endrule
 
@@ -178,7 +178,7 @@ rule:
 plugin=vanillaBlocks
 number=11
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:glass_pane","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:glass_pane",meta:0}
 :enddata
 :endrule
 
@@ -186,7 +186,7 @@ rule:
 plugin=vanillaBlocks
 number=12
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:wooden_pressure_plate","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:wooden_pressure_plate",meta:0}
 :enddata
 :endrule
 
@@ -194,7 +194,7 @@ rule:
 plugin=awAutomationLogic
 number=13
 data:
-JSON:{{"val":{"teData":{"val":{"id":{"val":"Furnace","id":"ss"},"Items":{"val":[],"id":"ls"},"BurnTime":{"val":"0","id":"ps"},"z":{"val":"1086","id":"pi"},"y":{"val":"6","id":"pi"},"CookTime":{"val":"0","id":"ps"},"x":{"val":"1311","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:furnace","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:furnace",meta:3,teData:{CookTime:0s,BurnTime:0s,x:1311,y:6,Items:[],z:1086,id:"Furnace"}}
 :enddata
 :endrule
 
@@ -202,7 +202,7 @@ rule:
 plugin=vanillaBlocks
 number=14
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:iron_bars","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:iron_bars",meta:0}
 :enddata
 :endrule
 
@@ -210,7 +210,7 @@ rule:
 plugin=awAutomationLogic
 number=15
 data:
-JSON:{{"val":{"teData":{"val":{"id":{"val":"Furnace","id":"ss"},"Items":{"val":[],"id":"ls"},"BurnTime":{"val":"0","id":"ps"},"z":{"val":"1086","id":"pi"},"y":{"val":"7","id":"pi"},"CookTime":{"val":"0","id":"ps"},"x":{"val":"1311","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:furnace","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:furnace",meta:3,teData:{CookTime:0s,BurnTime:0s,x:1311,y:7,Items:[],z:1086,id:"Furnace"}}
 :enddata
 :endrule
 
@@ -218,7 +218,7 @@ rule:
 plugin=vanillaBlocks
 number=16
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stone_slab","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:stone_slab",meta:0}
 :enddata
 :endrule
 

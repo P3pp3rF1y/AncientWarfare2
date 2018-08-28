@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 12/22/2014 at: 17:35:30
+# Auto-generated structure template file. created on: 8/28/2018 at: 17:29:59
 # Lines beginning with # denote comments
 
 header:
-version=2.1
+version=2.3
 name=unique_tavern_pelirow
 size=18,10,12
 offset=5,1,11
@@ -178,7 +178,7 @@ rule:
 plugin=vanillaBlocks
 number=1
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:grass","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:grass",meta:0}
 :enddata
 :endrule
 
@@ -186,7 +186,7 @@ rule:
 plugin=vanillaBlocks
 number=2
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:dirt","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:dirt",meta:0}
 :enddata
 :endrule
 
@@ -194,7 +194,7 @@ rule:
 plugin=vanillaBlocks
 number=3
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:log2","id":"ss"},"meta":{"val":"8","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:log2",meta:8}
 :enddata
 :endrule
 
@@ -202,7 +202,7 @@ rule:
 plugin=vanillaBlocks
 number=4
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:log2","id":"ss"},"meta":{"val":"4","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:log2",meta:4}
 :enddata
 :endrule
 
@@ -210,7 +210,7 @@ rule:
 plugin=vanillaBlocks
 number=5
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:fence","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:fence",meta:0}
 :enddata
 :endrule
 
@@ -218,7 +218,7 @@ rule:
 plugin=vanillaBlocks
 number=6
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:wooden_slab","id":"ss"},"meta":{"val":"12","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:wooden_slab",meta:12}
 :enddata
 :endrule
 
@@ -226,7 +226,7 @@ rule:
 plugin=vanillaBlocks
 number=7
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:leaves2","id":"ss"},"meta":{"val":"4","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:leaves2",meta:4}
 :enddata
 :endrule
 
@@ -234,7 +234,7 @@ rule:
 plugin=vanillaBlocks
 number=8
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:acacia_stairs","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:acacia_stairs",meta:0}
 :enddata
 :endrule
 
@@ -242,7 +242,7 @@ rule:
 plugin=vanillaBlocks
 number=9
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:acacia_stairs","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:acacia_stairs",meta:3}
 :enddata
 :endrule
 
@@ -250,7 +250,7 @@ rule:
 plugin=vanillaBlocks
 number=10
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:acacia_stairs","id":"ss"},"meta":{"val":"1","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:acacia_stairs",meta:1}
 :enddata
 :endrule
 
@@ -258,7 +258,7 @@ rule:
 plugin=vanillaBlocks
 number=11
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:log2","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:log2",meta:0}
 :enddata
 :endrule
 
@@ -266,7 +266,7 @@ rule:
 plugin=vanillaBlocks
 number=12
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:planks","id":"ss"},"meta":{"val":"4","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:planks",meta:4}
 :enddata
 :endrule
 
@@ -274,7 +274,7 @@ rule:
 plugin=vanillaInventory
 number=13
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"id":{"val":"minecraft:fermented_spider_eye","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"16","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"},{"val":{"id":{"val":"minecraft:potion","id":"ss"},"Damage":{"val":"0","id":"pi"},"tag":{"val":{"Potion":{"val":"minecraft:awkward","id":"ss"}},"id":"ct"},"Count":{"val":"1","id":"pi"},"slot":{"val":"1","id":"pi"}},"id":"ct"},{"val":{"id":{"val":"minecraft:potion","id":"ss"},"Damage":{"val":"0","id":"pi"},"tag":{"val":{"Potion":{"val":"minecraft:awkward","id":"ss"}},"id":"ct"},"Count":{"val":"1","id":"pi"},"slot":{"val":"2","id":"pi"}},"id":"ct"},{"val":{"id":{"val":"minecraft:potion","id":"ss"},"Damage":{"val":"0","id":"pi"},"tag":{"val":{"Potion":{"val":"minecraft:awkward","id":"ss"}},"id":"ct"},"Count":{"val":"1","id":"pi"},"slot":{"val":"3","id":"pi"}},"id":"ct"},{"val":{"id":{"val":"minecraft:potion","id":"ss"},"Damage":{"val":"0","id":"pi"},"tag":{"val":{"Potion":{"val":"minecraft:healing","id":"ss"}},"id":"ct"},"Count":{"val":"1","id":"pi"},"slot":{"val":"4","id":"pi"}},"id":"ct"},{"val":{"id":{"val":"minecraft:potion","id":"ss"},"Damage":{"val":"0","id":"pi"},"tag":{"val":{"Potion":{"val":"minecraft:healing","id":"ss"}},"id":"ct"},"Count":{"val":"1","id":"pi"},"slot":{"val":"5","id":"pi"}},"id":"ct"},{"val":{"id":{"val":"minecraft:pumpkin_pie","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"12","id":"pi"}},"id":"ct"},{"val":{"id":{"val":"minecraft:pumpkin_pie","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"13","id":"pi"}},"id":"ct"},{"val":{"id":{"val":"minecraft:pumpkin_pie","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"14","id":"pi"}},"id":"ct"},{"val":{"id":{"val":"minecraft:pumpkin_pie","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"15","id":"pi"}},"id":"ct"},{"val":{"id":{"val":"minecraft:pumpkin_pie","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"16","id":"pi"}},"id":"ct"},{"val":{"id":{"val":"minecraft:glass_bottle","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"16","id":"pi"},"slot":{"val":"18","id":"pi"}},"id":"ct"},{"val":{"id":{"val":"minecraft:pumpkin_pie","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"21","id":"pi"}},"id":"ct"},{"val":{"id":{"val":"minecraft:pumpkin_pie","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"22","id":"pi"}},"id":"ct"},{"val":{"id":{"val":"minecraft:pumpkin_pie","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"23","id":"pi"}},"id":"ct"},{"val":{"id":{"val":"minecraft:pumpkin_pie","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"24","id":"pi"}},"id":"ct"},{"val":{"id":{"val":"minecraft:pumpkin_pie","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"25","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-76","id":"pi"},"y":{"val":"84","id":"pi"},"x":{"val":"50","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"5","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:chest",meta:5,lootLevel:0,teData:{x:50,y:84,z:-76,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:fermented_spider_eye",Count:16b,slot:0,Damage:0s},{id:"minecraft:potion",Count:1b,tag:{Potion:"minecraft:awkward"},slot:1,Damage:0s},{id:"minecraft:potion",Count:1b,tag:{Potion:"minecraft:awkward"},slot:2,Damage:0s},{id:"minecraft:potion",Count:1b,tag:{Potion:"minecraft:awkward"},slot:3,Damage:0s},{id:"minecraft:potion",Count:1b,tag:{Potion:"minecraft:healing"},slot:4,Damage:0s},{id:"minecraft:potion",Count:1b,tag:{Potion:"minecraft:healing"},slot:5,Damage:0s},{id:"minecraft:pumpkin_pie",Count:1b,slot:12,Damage:0s},{id:"minecraft:pumpkin_pie",Count:1b,slot:13,Damage:0s},{id:"minecraft:pumpkin_pie",Count:1b,slot:14,Damage:0s},{id:"minecraft:pumpkin_pie",Count:1b,slot:15,Damage:0s},{id:"minecraft:pumpkin_pie",Count:1b,slot:16,Damage:0s},{id:"minecraft:glass_bottle",Count:16b,slot:18,Damage:0s},{id:"minecraft:pumpkin_pie",Count:1b,slot:21,Damage:0s},{id:"minecraft:pumpkin_pie",Count:1b,slot:22,Damage:0s},{id:"minecraft:pumpkin_pie",Count:1b,slot:23,Damage:0s},{id:"minecraft:pumpkin_pie",Count:1b,slot:24,Damage:0s},{id:"minecraft:pumpkin_pie",Count:1b,slot:25,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -282,7 +282,7 @@ rule:
 plugin=vanillaBlocks
 number=14
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:fence_gate","id":"ss"},"meta":{"val":"1","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:fence_gate",meta:1}
 :enddata
 :endrule
 
@@ -290,7 +290,7 @@ rule:
 plugin=vanillaBlocks
 number=15
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:oak_stairs","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:oak_stairs",meta:3}
 :enddata
 :endrule
 
@@ -298,7 +298,7 @@ rule:
 plugin=vanillaBlocks
 number=16
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:cauldron","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:cauldron",meta:3}
 :enddata
 :endrule
 
@@ -306,7 +306,7 @@ rule:
 plugin=awAutomationLogic
 number=17
 data:
-JSON:{{"val":{"teData":{"val":{"id":{"val":"Furnace","id":"ss"},"Items":{"val":[{"val":{"id":{"val":"263","id":"ps"},"Damage":{"val":"1","id":"ps"},"Count":{"val":"16","id":"pb"},"Slot":{"val":"1","id":"pb"}},"id":"ct"},{"val":{"id":{"val":"364","id":"ps"},"Damage":{"val":"0","id":"ps"},"Count":{"val":"16","id":"pb"},"Slot":{"val":"2","id":"pb"}},"id":"ct"}],"id":"ls"},"BurnTime":{"val":"0","id":"ps"},"z":{"val":"-75","id":"pi"},"y":{"val":"84","id":"pi"},"CookTime":{"val":"0","id":"ps"},"x":{"val":"53","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:furnace","id":"ss"},"meta":{"val":"4","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:furnace",meta:4,teData:{CookTime:0s,BurnTime:0s,x:53,y:84,Items:[{Slot:1b,id:263s,Count:16b,Damage:1s},{Slot:2b,id:364s,Count:16b,Damage:0s}],z:-75,id:"Furnace"}}
 :enddata
 :endrule
 
@@ -314,7 +314,7 @@ rule:
 plugin=vanillaBlocks
 number=18
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:fence_gate","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:fence_gate",meta:3}
 :enddata
 :endrule
 
@@ -322,7 +322,7 @@ rule:
 plugin=vanillaBlocks
 number=19
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:oak_stairs","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:oak_stairs",meta:0}
 :enddata
 :endrule
 
@@ -330,7 +330,7 @@ rule:
 plugin=vanillaBlocks
 number=20
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:iron_bars","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:iron_bars",meta:0}
 :enddata
 :endrule
 
@@ -338,7 +338,7 @@ rule:
 plugin=vanillaBlocks
 number=21
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:oak_stairs","id":"ss"},"meta":{"val":"2","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:oak_stairs",meta:2}
 :enddata
 :endrule
 
@@ -346,7 +346,7 @@ rule:
 plugin=vanillaBlocks
 number=22
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:acacia_stairs","id":"ss"},"meta":{"val":"2","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:acacia_stairs",meta:2}
 :enddata
 :endrule
 
@@ -354,7 +354,7 @@ rule:
 plugin=vanillaDoors
 number=23
 data:
-JSON:{{"val":{"sideFlag":{"val":"8","id":"pb"},"blockName":{"val":"minecraft:wooden_door","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:wooden_door",meta:3,sideFlag:8b}
 :enddata
 :endrule
 
@@ -362,7 +362,7 @@ rule:
 plugin=vanillaDoors
 number=24
 data:
-JSON:{{"val":{"sideFlag":{"val":"9","id":"pb"},"blockName":{"val":"minecraft:wooden_door","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:wooden_door",meta:3,sideFlag:9b}
 :enddata
 :endrule
 
@@ -370,7 +370,7 @@ rule:
 plugin=vanillaBlocks
 number=25
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stained_glass_pane","id":"ss"},"meta":{"val":"1","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:stained_glass_pane",meta:1}
 :enddata
 :endrule
 
@@ -378,7 +378,7 @@ rule:
 plugin=vanillaBlocks
 number=26
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:torch","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:torch",meta:3}
 :enddata
 :endrule
 
@@ -386,7 +386,7 @@ rule:
 plugin=vanillaBlocks
 number=27
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:carpet","id":"ss"},"meta":{"val":"1","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:carpet",meta:1}
 :enddata
 :endrule
 
@@ -394,7 +394,7 @@ rule:
 plugin=vanillaBlocks
 number=28
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:torch","id":"ss"},"meta":{"val":"1","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:torch",meta:1}
 :enddata
 :endrule
 
@@ -402,7 +402,7 @@ rule:
 plugin=vanillaBlocks
 number=29
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:wooden_slab","id":"ss"},"meta":{"val":"4","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:wooden_slab",meta:4}
 :enddata
 :endrule
 
@@ -410,7 +410,7 @@ rule:
 plugin=vanillaBlocks
 number=30
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:wooden_pressure_plate","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:wooden_pressure_plate",meta:0}
 :enddata
 :endrule
 
@@ -418,7 +418,7 @@ rule:
 plugin=vanillaBlocks
 number=31
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:torch","id":"ss"},"meta":{"val":"2","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:torch",meta:2}
 :enddata
 :endrule
 
@@ -426,7 +426,7 @@ rule:
 plugin=vanillaBlocks
 number=32
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:trapdoor","id":"ss"},"meta":{"val":"1","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:trapdoor",meta:1}
 :enddata
 :endrule
 
@@ -434,7 +434,7 @@ rule:
 plugin=vanillaBlocks
 number=33
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:torch","id":"ss"},"meta":{"val":"4","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:torch",meta:4}
 :enddata
 :endrule
 
@@ -442,7 +442,7 @@ rule:
 plugin=vanillaDoors
 number=34
 data:
-JSON:{{"val":{"sideFlag":{"val":"0","id":"pb"},"blockName":{"val":"minecraft:wooden_door","id":"ss"},"meta":{"val":"8","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:wooden_door",meta:8,sideFlag:0b}
 :enddata
 :endrule
 
@@ -450,7 +450,7 @@ rule:
 plugin=vanillaDoors
 number=35
 data:
-JSON:{{"val":{"sideFlag":{"val":"0","id":"pb"},"blockName":{"val":"minecraft:wooden_door","id":"ss"},"meta":{"val":"9","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:wooden_door",meta:9,sideFlag:0b}
 :enddata
 :endrule
 
@@ -458,7 +458,7 @@ rule:
 plugin=vanillaBlocks
 number=36
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:lit_redstone_lamp","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:lit_redstone_lamp",meta:0}
 :enddata
 :endrule
 
@@ -466,7 +466,7 @@ rule:
 plugin=vanillaSign
 number=37
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:wall_sign","id":"ss"},"signContents1":{"val":"Bloated","id":"ss"},"signContents2":{"val":"Pumpkin","id":"ss"},"signContents0":{"val":"The ","id":"ss"},"meta":{"val":"4","id":"pi"},"signContents3":{"val":"","id":"ss"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{signContents0:"The §r",signContents2:"Pumpkin§r",buildPass:2,signContents1:"Bloated§r",blockName:"minecraft:wall_sign",signContents3:"",meta:4}
 :enddata
 :endrule
 
@@ -474,7 +474,7 @@ rule:
 plugin=vanillaSign
 number=38
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:wall_sign","id":"ss"},"signContents1":{"val":"Bar &","id":"ss"},"signContents2":{"val":"Grill","id":"ss"},"signContents0":{"val":"","id":"ss"},"meta":{"val":"5","id":"pi"},"signContents3":{"val":"","id":"ss"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{signContents0:"",signContents2:"Grill§r",buildPass:2,signContents1:"Bar &§r",blockName:"minecraft:wall_sign",signContents3:"",meta:5}
 :enddata
 :endrule
 
@@ -482,7 +482,7 @@ rule:
 plugin=vanillaSign
 number=39
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:wall_sign","id":"ss"},"signContents1":{"val":"Bar &","id":"ss"},"signContents2":{"val":"Grill","id":"ss"},"signContents0":{"val":"","id":"ss"},"meta":{"val":"4","id":"pi"},"signContents3":{"val":"","id":"ss"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{signContents0:"",signContents2:"Grill§r",buildPass:2,signContents1:"Bar &§r",blockName:"minecraft:wall_sign",signContents3:"",meta:4}
 :enddata
 :endrule
 
@@ -490,7 +490,7 @@ rule:
 plugin=vanillaSign
 number=40
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:wall_sign","id":"ss"},"signContents1":{"val":"Bloated","id":"ss"},"signContents2":{"val":"Pumpkin","id":"ss"},"signContents0":{"val":"The","id":"ss"},"meta":{"val":"5","id":"pi"},"signContents3":{"val":"","id":"ss"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{signContents0:"The§r",signContents2:"Pumpkin§r",buildPass:2,signContents1:"Bloated§r",blockName:"minecraft:wall_sign",signContents3:"",meta:5}
 :enddata
 :endrule
 
@@ -498,7 +498,7 @@ rule:
 plugin=vanillaBlocks
 number=41
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:wool","id":"ss"},"meta":{"val":"1","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:wool",meta:1}
 :enddata
 :endrule
 
@@ -506,7 +506,7 @@ rule:
 plugin=vanillaBlocks
 number=42
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:lever","id":"ss"},"meta":{"val":"13","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:lever",meta:13}
 :enddata
 :endrule
 
@@ -514,7 +514,7 @@ rule:
 plugin=vanillaBlocks
 number=43
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:torch","id":"ss"},"meta":{"val":"5","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:torch",meta:5}
 :enddata
 :endrule
 
@@ -522,7 +522,7 @@ rule:
 plugin=vanillaBlocks
 number=44
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:redstone_block","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:redstone_block",meta:0}
 :enddata
 :endrule
 
@@ -530,7 +530,7 @@ rule:
 plugin=vanillaBlocks
 number=45
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:planks","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:planks",meta:3}
 :enddata
 :endrule
 
@@ -538,7 +538,7 @@ rule:
 plugin=vanillaBlocks
 number=46
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:wooden_slab","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:wooden_slab",meta:3}
 :enddata
 :endrule
 
@@ -546,7 +546,7 @@ rule:
 plugin=vanillaBlocks
 number=47
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:jungle_stairs","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:jungle_stairs",meta:0}
 :enddata
 :endrule
 

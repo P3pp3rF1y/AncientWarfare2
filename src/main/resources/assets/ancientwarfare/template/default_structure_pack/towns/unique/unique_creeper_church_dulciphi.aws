@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 12/21/2014 at: 14:29:43
+# Auto-generated structure template file. created on: 8/28/2018 at: 17:29:59
 # Lines beginning with # denote comments
 
 header:
-version=2.1
+version=2.3
 name=unique_creeper_church_dulciphi
 size=25,16,29
 offset=7,1,28
@@ -534,7 +534,7 @@ rule:
 plugin=vanillaBlocks
 number=1
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:grass","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:grass",meta:0}
 :enddata
 :endrule
 
@@ -542,7 +542,7 @@ rule:
 plugin=vanillaBlocks
 number=2
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:dirt","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:dirt",meta:0}
 :enddata
 :endrule
 
@@ -550,7 +550,7 @@ rule:
 plugin=vanillaBlocks
 number=3
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:gravel","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:gravel",meta:0}
 :enddata
 :endrule
 
@@ -558,7 +558,7 @@ rule:
 plugin=vanillaBlocks
 number=4
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:cobblestone_wall","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:cobblestone_wall",meta:0}
 :enddata
 :endrule
 
@@ -566,7 +566,7 @@ rule:
 plugin=vanillaBlocks
 number=5
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:fence","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:fence",meta:0}
 :enddata
 :endrule
 
@@ -574,7 +574,7 @@ rule:
 plugin=vanillaBlocks
 number=6
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stonebrick","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:stonebrick",meta:0}
 :enddata
 :endrule
 
@@ -582,7 +582,7 @@ rule:
 plugin=vanillaBlocks
 number=7
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stonebrick","id":"ss"},"meta":{"val":"2","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:stonebrick",meta:2}
 :enddata
 :endrule
 
@@ -590,7 +590,7 @@ rule:
 plugin=vanillaBlocks
 number=8
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stone_slab","id":"ss"},"meta":{"val":"8","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:stone_slab",meta:8}
 :enddata
 :endrule
 
@@ -598,7 +598,7 @@ rule:
 plugin=vanillaBlocks
 number=9
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:wool","id":"ss"},"meta":{"val":"13","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:wool",meta:13}
 :enddata
 :endrule
 
@@ -606,7 +606,7 @@ rule:
 plugin=vanillaBlocks
 number=10
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:soul_sand","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:soul_sand",meta:0}
 :enddata
 :endrule
 
@@ -614,7 +614,7 @@ rule:
 plugin=vanillaBlocks
 number=11
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:double_stone_slab","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:double_stone_slab",meta:0}
 :enddata
 :endrule
 
@@ -622,7 +622,7 @@ rule:
 plugin=vanillaBlocks
 number=12
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stone_brick_stairs","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:stone_brick_stairs",meta:0}
 :enddata
 :endrule
 
@@ -630,7 +630,7 @@ rule:
 plugin=vanillaBlocks
 number=13
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stone_brick_stairs","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:stone_brick_stairs",meta:3}
 :enddata
 :endrule
 
@@ -638,7 +638,7 @@ rule:
 plugin=vanillaBlocks
 number=14
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stone_brick_stairs","id":"ss"},"meta":{"val":"1","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:stone_brick_stairs",meta:1}
 :enddata
 :endrule
 
@@ -646,7 +646,7 @@ rule:
 plugin=vanillaBlocks
 number=15
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:log","id":"ss"},"meta":{"val":"1","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:log",meta:1}
 :enddata
 :endrule
 
@@ -654,7 +654,7 @@ rule:
 plugin=vanillaBlocks
 number=16
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:fence_gate","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:fence_gate",meta:3}
 :enddata
 :endrule
 
@@ -662,7 +662,7 @@ rule:
 plugin=vanillaBlocks
 number=17
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:fence_gate","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:fence_gate",meta:0}
 :enddata
 :endrule
 
@@ -670,7 +670,7 @@ rule:
 plugin=vanillaBlocks
 number=18
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:torch","id":"ss"},"meta":{"val":"5","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:torch",meta:5}
 :enddata
 :endrule
 
@@ -678,7 +678,7 @@ rule:
 plugin=vanillaBlocks
 number=19
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stained_glass_pane","id":"ss"},"meta":{"val":"13","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:stained_glass_pane",meta:13}
 :enddata
 :endrule
 
@@ -686,7 +686,7 @@ rule:
 plugin=vanillaBlocks
 number=20
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:torch","id":"ss"},"meta":{"val":"1","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:torch",meta:1}
 :enddata
 :endrule
 
@@ -694,7 +694,7 @@ rule:
 plugin=vanillaBlocks
 number=21
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:bookshelf","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:bookshelf",meta:0}
 :enddata
 :endrule
 
@@ -702,7 +702,7 @@ rule:
 plugin=vanillaBlocks
 number=22
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:glass_pane","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:glass_pane",meta:0}
 :enddata
 :endrule
 
@@ -710,7 +710,7 @@ rule:
 plugin=vanillaBlocks
 number=23
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:birch_stairs","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:birch_stairs",meta:3}
 :enddata
 :endrule
 
@@ -718,7 +718,7 @@ rule:
 plugin=vanillaBlocks
 number=24
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stone_brick_stairs","id":"ss"},"meta":{"val":"2","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:stone_brick_stairs",meta:2}
 :enddata
 :endrule
 
@@ -726,7 +726,7 @@ rule:
 plugin=vanillaDoors
 number=25
 data:
-JSON:{{"val":{"sideFlag":{"val":"8","id":"pb"},"blockName":{"val":"minecraft:wooden_door","id":"ss"},"meta":{"val":"2","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:wooden_door",meta:2,sideFlag:8b}
 :enddata
 :endrule
 
@@ -734,7 +734,7 @@ rule:
 plugin=vanillaBlocks
 number=26
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:birch_stairs","id":"ss"},"meta":{"val":"2","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:birch_stairs",meta:2}
 :enddata
 :endrule
 
@@ -742,7 +742,7 @@ rule:
 plugin=vanillaDoors
 number=27
 data:
-JSON:{{"val":{"sideFlag":{"val":"8","id":"pb"},"blockName":{"val":"minecraft:wooden_door","id":"ss"},"meta":{"val":"1","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:wooden_door",meta:1,sideFlag:8b}
 :enddata
 :endrule
 
@@ -750,7 +750,7 @@ rule:
 plugin=vanillaDoors
 number=28
 data:
-JSON:{{"val":{"sideFlag":{"val":"8","id":"pb"},"blockName":{"val":"minecraft:iron_door","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:iron_door",meta:3,sideFlag:8b}
 :enddata
 :endrule
 
@@ -758,7 +758,7 @@ rule:
 plugin=vanillaDoors
 number=29
 data:
-JSON:{{"val":{"sideFlag":{"val":"9","id":"pb"},"blockName":{"val":"minecraft:iron_door","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:iron_door",meta:3,sideFlag:9b}
 :enddata
 :endrule
 
@@ -766,7 +766,7 @@ rule:
 plugin=vanillaBlocks
 number=30
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:torch","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:torch",meta:3}
 :enddata
 :endrule
 
@@ -774,7 +774,7 @@ rule:
 plugin=vanillaSign
 number=31
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:wall_sign","id":"ss"},"signContents1":{"val":"I know you","id":"ss"},"signContents2":{"val":"did it","id":"ss"},"signContents0":{"val":"","id":"ss"},"meta":{"val":"5","id":"pi"},"signContents3":{"val":"","id":"ss"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{signContents0:"",signContents2:"did it§r",buildPass:2,signContents1:"I know you§r",blockName:"minecraft:wall_sign",signContents3:"",meta:5}
 :enddata
 :endrule
 
@@ -782,7 +782,7 @@ rule:
 plugin=vanillaBlocks
 number=32
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:leaves","id":"ss"},"meta":{"val":"1","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:leaves",meta:1}
 :enddata
 :endrule
 
@@ -790,7 +790,7 @@ rule:
 plugin=vanillaDoors
 number=33
 data:
-JSON:{{"val":{"sideFlag":{"val":"8","id":"pb"},"blockName":{"val":"minecraft:wooden_door","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:wooden_door",meta:3,sideFlag:8b}
 :enddata
 :endrule
 
@@ -798,7 +798,7 @@ rule:
 plugin=vanillaBlocks
 number=34
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:quartz_stairs","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:quartz_stairs",meta:3}
 :enddata
 :endrule
 
@@ -806,7 +806,7 @@ rule:
 plugin=vanillaBlocks
 number=35
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:nether_brick_stairs","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:nether_brick_stairs",meta:3}
 :enddata
 :endrule
 
@@ -814,7 +814,7 @@ rule:
 plugin=vanillaBlocks
 number=36
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:nether_brick_stairs","id":"ss"},"meta":{"val":"2","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:nether_brick_stairs",meta:2}
 :enddata
 :endrule
 
@@ -822,7 +822,7 @@ rule:
 plugin=vanillaDoors
 number=37
 data:
-JSON:{{"val":{"sideFlag":{"val":"9","id":"pb"},"blockName":{"val":"minecraft:wooden_door","id":"ss"},"meta":{"val":"1","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:wooden_door",meta:1,sideFlag:9b}
 :enddata
 :endrule
 
@@ -830,7 +830,7 @@ rule:
 plugin=vanillaBlocks
 number=38
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stained_glass_pane","id":"ss"},"meta":{"val":"7","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:stained_glass_pane",meta:7}
 :enddata
 :endrule
 
@@ -838,7 +838,7 @@ rule:
 plugin=vanillaBlocks
 number=39
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:carpet","id":"ss"},"meta":{"val":"7","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:carpet",meta:7}
 :enddata
 :endrule
 
@@ -846,7 +846,7 @@ rule:
 plugin=vanillaSign
 number=40
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:wall_sign","id":"ss"},"signContents1":{"val":"Time Out","id":"ss"},"signContents2":{"val":"corner","id":"ss"},"signContents0":{"val":"","id":"ss"},"meta":{"val":"5","id":"pi"},"signContents3":{"val":"","id":"ss"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{signContents0:"",signContents2:"corner§r",buildPass:2,signContents1:"Time Out§r",blockName:"minecraft:wall_sign",signContents3:"",meta:5}
 :enddata
 :endrule
 
@@ -854,7 +854,7 @@ rule:
 plugin=vanillaDoors
 number=41
 data:
-JSON:{{"val":{"sideFlag":{"val":"0","id":"pb"},"blockName":{"val":"minecraft:wooden_door","id":"ss"},"meta":{"val":"8","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:wooden_door",meta:8,sideFlag:0b}
 :enddata
 :endrule
 
@@ -862,7 +862,7 @@ rule:
 plugin=vanillaDoors
 number=42
 data:
-JSON:{{"val":{"sideFlag":{"val":"0","id":"pb"},"blockName":{"val":"minecraft:wooden_door","id":"ss"},"meta":{"val":"8","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:wooden_door",meta:8,sideFlag:0b}
 :enddata
 :endrule
 
@@ -870,7 +870,7 @@ rule:
 plugin=vanillaDoors
 number=43
 data:
-JSON:{{"val":{"sideFlag":{"val":"0","id":"pb"},"blockName":{"val":"minecraft:wooden_door","id":"ss"},"meta":{"val":"8","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:wooden_door",meta:8,sideFlag:0b}
 :enddata
 :endrule
 
@@ -878,7 +878,7 @@ rule:
 plugin=vanillaDoors
 number=44
 data:
-JSON:{{"val":{"sideFlag":{"val":"0","id":"pb"},"blockName":{"val":"minecraft:iron_door","id":"ss"},"meta":{"val":"8","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:iron_door",meta:8,sideFlag:0b}
 :enddata
 :endrule
 
@@ -886,7 +886,7 @@ rule:
 plugin=vanillaDoors
 number=45
 data:
-JSON:{{"val":{"sideFlag":{"val":"0","id":"pb"},"blockName":{"val":"minecraft:iron_door","id":"ss"},"meta":{"val":"9","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:iron_door",meta:9,sideFlag:0b}
 :enddata
 :endrule
 
@@ -894,7 +894,7 @@ rule:
 plugin=vanillaSign
 number=46
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:wall_sign","id":"ss"},"signContents1":{"val":"Father for I","id":"ss"},"signContents2":{"val":"am about to sin","id":"ss"},"signContents0":{"val":"Forgive me","id":"ss"},"meta":{"val":"5","id":"pi"},"signContents3":{"val":"..kthnx","id":"ss"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{signContents0:"Forgive me§r",signContents2:"am about to sin§r",buildPass:2,signContents1:"Father for I§r",blockName:"minecraft:wall_sign",signContents3:"..kthnx§r",meta:5}
 :enddata
 :endrule
 
@@ -902,7 +902,7 @@ rule:
 plugin=vanillaSign
 number=47
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:wall_sign","id":"ss"},"signContents1":{"val":"CONFESS!","id":"ss"},"signContents2":{"val":"","id":"ss"},"signContents0":{"val":"","id":"ss"},"meta":{"val":"5","id":"pi"},"signContents3":{"val":"","id":"ss"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{signContents0:"",signContents2:"",buildPass:2,signContents1:"CONFESS!§r",blockName:"minecraft:wall_sign",signContents3:"",meta:5}
 :enddata
 :endrule
 
@@ -910,7 +910,7 @@ rule:
 plugin=vanillaBlocks
 number=48
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:nether_brick_fence","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:nether_brick_fence",meta:0}
 :enddata
 :endrule
 
@@ -918,7 +918,7 @@ rule:
 plugin=vanillaDoors
 number=49
 data:
-JSON:{{"val":{"sideFlag":{"val":"0","id":"pb"},"blockName":{"val":"minecraft:wooden_door","id":"ss"},"meta":{"val":"8","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:wooden_door",meta:8,sideFlag:0b}
 :enddata
 :endrule
 
@@ -926,7 +926,7 @@ rule:
 plugin=vanillaSign
 number=50
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:wall_sign","id":"ss"},"signContents1":{"val":"Confession","id":"ss"},"signContents2":{"val":"","id":"ss"},"signContents0":{"val":"","id":"ss"},"meta":{"val":"3","id":"pi"},"signContents3":{"val":"","id":"ss"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{signContents0:"",signContents2:"",buildPass:2,signContents1:"Confession§r",blockName:"minecraft:wall_sign",signContents3:"",meta:3}
 :enddata
 :endrule
 
@@ -934,7 +934,7 @@ rule:
 plugin=vanillaBlocks
 number=51
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:torch","id":"ss"},"meta":{"val":"2","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:torch",meta:2}
 :enddata
 :endrule
 
@@ -942,7 +942,7 @@ rule:
 plugin=vanillaBlocks
 number=52
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:glowstone","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:glowstone",meta:0}
 :enddata
 :endrule
 
@@ -950,7 +950,7 @@ rule:
 plugin=vanillaDoors
 number=53
 data:
-JSON:{{"val":{"sideFlag":{"val":"0","id":"pb"},"blockName":{"val":"minecraft:wooden_door","id":"ss"},"meta":{"val":"9","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:wooden_door",meta:9,sideFlag:0b}
 :enddata
 :endrule
 
@@ -958,7 +958,7 @@ rule:
 plugin=vanillaDoors
 number=54
 data:
-JSON:{{"val":{"sideFlag":{"val":"0","id":"pb"},"blockName":{"val":"minecraft:wooden_door","id":"ss"},"meta":{"val":"8","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:wooden_door",meta:8,sideFlag:0b}
 :enddata
 :endrule
 
@@ -966,7 +966,7 @@ rule:
 plugin=vanillaBlocks
 number=55
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stained_glass_pane","id":"ss"},"meta":{"val":"15","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:stained_glass_pane",meta:15}
 :enddata
 :endrule
 
@@ -974,7 +974,7 @@ rule:
 plugin=vanillaBlocks
 number=56
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:carpet","id":"ss"},"meta":{"val":"13","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:carpet",meta:13}
 :enddata
 :endrule
 
@@ -982,7 +982,7 @@ rule:
 plugin=vanillaBlocks
 number=57
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stone_brick_stairs","id":"ss"},"meta":{"val":"6","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:stone_brick_stairs",meta:6}
 :enddata
 :endrule
 
@@ -990,7 +990,7 @@ rule:
 plugin=vanillaBlocks
 number=58
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stone_brick_stairs","id":"ss"},"meta":{"val":"5","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:stone_brick_stairs",meta:5}
 :enddata
 :endrule
 
@@ -998,7 +998,7 @@ rule:
 plugin=vanillaBlocks
 number=59
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stone_brick_stairs","id":"ss"},"meta":{"val":"4","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:stone_brick_stairs",meta:4}
 :enddata
 :endrule
 
@@ -1006,7 +1006,7 @@ rule:
 plugin=vanillaBlocks
 number=60
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:lit_redstone_lamp","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:lit_redstone_lamp",meta:0}
 :enddata
 :endrule
 
@@ -1014,7 +1014,7 @@ rule:
 plugin=vanillaBlocks
 number=61
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:lever","id":"ss"},"meta":{"val":"9","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:lever",meta:9}
 :enddata
 :endrule
 
@@ -1022,7 +1022,7 @@ rule:
 plugin=vanillaBlocks
 number=62
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:lever","id":"ss"},"meta":{"val":"15","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:lever",meta:15}
 :enddata
 :endrule
 
@@ -1030,7 +1030,7 @@ rule:
 plugin=vanillaBlocks
 number=63
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stained_glass_pane","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:stained_glass_pane",meta:0}
 :enddata
 :endrule
 
@@ -1038,7 +1038,7 @@ rule:
 plugin=vanillaDoors
 number=64
 data:
-JSON:{{"val":{"sideFlag":{"val":"8","id":"pb"},"blockName":{"val":"minecraft:iron_door","id":"ss"},"meta":{"val":"1","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:iron_door",meta:1,sideFlag:8b}
 :enddata
 :endrule
 
@@ -1046,7 +1046,7 @@ rule:
 plugin=vanillaBlocks
 number=65
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:iron_bars","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:iron_bars",meta:0}
 :enddata
 :endrule
 
@@ -1054,7 +1054,7 @@ rule:
 plugin=vanillaBlocks
 number=66
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stone_brick_stairs","id":"ss"},"meta":{"val":"7","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:stone_brick_stairs",meta:7}
 :enddata
 :endrule
 
@@ -1062,7 +1062,7 @@ rule:
 plugin=vanillaBlocks
 number=67
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:lever","id":"ss"},"meta":{"val":"12","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:lever",meta:12}
 :enddata
 :endrule
 
@@ -1070,7 +1070,7 @@ rule:
 plugin=vanillaBlocks
 number=68
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stone_button","id":"ss"},"meta":{"val":"4","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:stone_button",meta:4}
 :enddata
 :endrule
 
@@ -1078,7 +1078,7 @@ rule:
 plugin=vanillaDoors
 number=69
 data:
-JSON:{{"val":{"sideFlag":{"val":"0","id":"pb"},"blockName":{"val":"minecraft:iron_door","id":"ss"},"meta":{"val":"8","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:iron_door",meta:8,sideFlag:0b}
 :enddata
 :endrule
 
@@ -1086,7 +1086,7 @@ rule:
 plugin=vanillaBlocks
 number=70
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:birch_stairs","id":"ss"},"meta":{"val":"1","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:birch_stairs",meta:1}
 :enddata
 :endrule
 
@@ -1094,7 +1094,7 @@ rule:
 plugin=vanillaBlocks
 number=71
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:birch_stairs","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:birch_stairs",meta:0}
 :enddata
 :endrule
 
@@ -1102,7 +1102,7 @@ rule:
 plugin=vanillaBlocks
 number=72
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:lever","id":"ss"},"meta":{"val":"10","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:2,blockName:"minecraft:lever",meta:10}
 :enddata
 :endrule
 
@@ -1110,7 +1110,7 @@ rule:
 plugin=vanillaBlocks
 number=73
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:wooden_slab","id":"ss"},"meta":{"val":"2","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{buildPass:0,blockName:"minecraft:wooden_slab",meta:2}
 :enddata
 :endrule
 
@@ -1120,7 +1120,7 @@ plugin=vanillaHangingEntity
 number=0
 data:
 position=17,4,3
-JSON:{{"val":{"entityData":{"val":{"Dir":{"val":"2","id":"pb"},"Motion":{"val":[{"val":"0.0","id":"pd"},{"val":"0.0","id":"pd"},{"val":"0.0","id":"pd"}],"id":"ls"},"OnGround":{"val":"0","id":"pb"},"TileY":{"val":"86","id":"pi"},"Dimension":{"val":"0","id":"pi"},"TileX":{"val":"92","id":"pi"},"Air":{"val":"300","id":"ps"},"TileZ":{"val":"-40","id":"pi"},"Motive":{"val":"Creebet","id":"ss"},"Direction":{"val":"0","id":"pb"},"Pos":{"val":[{"val":"93.0","id":"pd"},{"val":"86.5","id":"pd"},{"val":"-38.9375","id":"pd"}],"id":"ls"},"PortalCooldown":{"val":"0","id":"pi"},"Fire":{"val":"0","id":"ps"},"FallDistance":{"val":"0.0","id":"pf"},"Rotation":{"val":[{"val":"180.0","id":"pf"},{"val":"0.0","id":"pf"}],"id":"ls"},"Invulnerable":{"val":"0","id":"pb"}},"id":"ct"},"xOffset":{"val":"0.0","id":"pf"},"mobID":{"val":"painting","id":"ss"},"zOffset":{"val":"0.0625","id":"pf"},"rotation":{"val":"180.0","id":"pf"},"direction":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{xOffset:0.0f,rotation:180.0f,mobID:"minecraft:painting",zOffset:0.0625f,entityData:{Motion:[0.0d,0.0d,0.0d],Invulnerable:0b,OnGround:0b,Dimension:0,Air:300s,Dir:2b,PortalCooldown:0,Direction:0b,Rotation:[180.0f,0.0f],Motive:"Creebet",FallDistance:0.0f,Pos:[93.0d,86.5d,-38.9375d],Fire:0s,TileY:86,TileX:92,TileZ:-40},direction:0b}
 :enddata
 :endentity
 
