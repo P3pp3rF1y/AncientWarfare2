@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.npc.registry;
 import jdk.nashorn.internal.ir.annotations.Immutable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeMap;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -96,6 +97,10 @@ public class NpcDefault {
 		IAttributeInstance attribute = npc.getAttributeMap().getAttributeInstanceByName(attributeName);
 		if (attribute != null) {
 			attribute.setBaseValue(baseValue);
+
+			if (attribute.getAttribute() == SharedMonsterAttributes.MAX_HEALTH) {
+				npc.setHealth((float) baseValue);
+			}
 		}
 	}
 
