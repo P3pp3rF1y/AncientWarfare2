@@ -166,15 +166,17 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
 				npc.removeAITask(TASK_UPKEEP);
 				npc.removeAITask(TASK_IDLE_HUNGRY);
 			}
-		} else if (npc.getUpkeepPoint() != null) {
-			double d = npc.getDistanceSq(npc.getUpkeepPoint());
-			if (d > MIN_RANGE) {
-				npc.addAITask(TASK_MOVE);
-				moveToPosition(npc.getUpkeepPoint(), d);
-			} else {
-				npc.removeAITask(TASK_MOVE);
-				atUpkeep = true;
-			}
+		} else if (npc.getUpkeepPoint().isPresent()) {
+			npc.getUpkeepPoint().ifPresent(upkeepPoint -> {
+				double d = npc.getDistanceSq(upkeepPoint);
+				if (d > MIN_RANGE) {
+					npc.addAITask(TASK_MOVE);
+					moveToPosition(upkeepPoint, d);
+				} else {
+					npc.removeAITask(TASK_MOVE);
+					atUpkeep = true;
+				}
+			});
 		} else//no upkeep point, display no upkeep task/state icon
 		{
 			npc.addAITask(TASK_IDLE_HUNGRY);
@@ -183,7 +185,9 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
 	}
 
 	private boolean tryWithdrawUpkeep() {
-		return WorldTools.getItemHandlerFromTile(npc.world, npc.getUpkeepPoint(), npc.getUpkeepBlockSide()).map(h -> npc.withdrawFood(h)).orElse(false);
+		return npc.getUpkeepPoint()
+				.map(upkeepPoint -> WorldTools.getItemHandlerFromTile(npc.world, upkeepPoint, npc.getUpkeepBlockSide()).map(h -> npc.withdrawFood(h)).orElse(false))
+				.orElse(false);
 	}
 
 	private void updateRestock() {

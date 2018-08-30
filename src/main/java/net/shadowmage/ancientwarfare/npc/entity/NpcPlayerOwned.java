@@ -211,12 +211,8 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 	}
 
 	@Override
-	public BlockPos getUpkeepPoint() {
-		UpkeepOrder order = UpkeepOrder.getUpkeepOrder(upkeepStack);
-		if (order != null) {
-			return order.getUpkeepPosition();
-		}
-		return upkeepAutoBlock;
+	public Optional<BlockPos> getUpkeepPoint() {
+		return UpkeepOrder.getUpkeepOrder(upkeepStack).map(UpkeepOrder::getUpkeepPosition).orElse(Optional.ofNullable(upkeepAutoBlock));
 	}
 
 	@Override
@@ -226,29 +222,17 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 
 	@Override
 	public EnumFacing getUpkeepBlockSide() {
-		UpkeepOrder order = UpkeepOrder.getUpkeepOrder(upkeepStack);
-		if (order != null) {
-			return order.getUpkeepBlockSide();
-		}
-		return EnumFacing.DOWN;
+		return UpkeepOrder.getUpkeepOrder(upkeepStack).map(UpkeepOrder::getUpkeepBlockSide).orElse(EnumFacing.DOWN);
 	}
 
 	@Override
 	public int getUpkeepDimensionId() {
-		UpkeepOrder order = UpkeepOrder.getUpkeepOrder(upkeepStack);
-		if (order != null) {
-			return order.getUpkeepDimension();
-		}
-		return world.provider.getDimension();
+		return UpkeepOrder.getUpkeepOrder(upkeepStack).map(UpkeepOrder::getUpkeepDimension).orElse(world.provider.getDimension());
 	}
 
 	@Override
 	public int getUpkeepAmount() {
-		UpkeepOrder order = UpkeepOrder.getUpkeepOrder(upkeepStack);
-		if (order != null) {
-			return order.getUpkeepAmount();
-		}
-		return AWNPCStatics.npcDefaultUpkeepWithdraw;
+		return UpkeepOrder.getUpkeepOrder(upkeepStack).map(UpkeepOrder::getUpkeepAmount).orElse(AWNPCStatics.npcDefaultUpkeepWithdraw);
 	}
 
 	@Override

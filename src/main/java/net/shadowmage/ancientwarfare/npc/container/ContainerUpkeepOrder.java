@@ -10,14 +10,16 @@ import net.shadowmage.ancientwarfare.npc.init.AWNPCItems;
 import net.shadowmage.ancientwarfare.npc.orders.UpkeepOrder;
 
 import javax.annotation.Nonnull;
+import java.util.Optional;
 
 public class ContainerUpkeepOrder extends ContainerBase {
-
+	private static final String UPKEEP_ORDER_TAG = "upkeepOrder";
 	private EnumHand hand;
 	public final UpkeepOrder upkeepOrder;
 	public final ItemStack upkeepBlock;
 	private boolean hasChanged;
 
+	@SuppressWarnings("unused") //used in reflection
 	public ContainerUpkeepOrder(EntityPlayer player, int x, int y, int z) {
 		super(player);
 		this.hand = EntityTools.getHandHoldingItem(player, AWNPCItems.UPKEEP_ORDER);
@@ -25,23 +27,20 @@ public class ContainerUpkeepOrder extends ContainerBase {
 		if (stack.isEmpty()) {
 			throw new IllegalArgumentException("Cannot open Work Order GUI for null stack/item.");
 		}
-		upkeepOrder = UpkeepOrder.getUpkeepOrder(stack);
-		if (upkeepOrder == null) {
-			throw new IllegalArgumentException("Upkeep orders was null for some reason");
+		Optional<UpkeepOrder> order = UpkeepOrder.getUpkeepOrder(stack);
+		if (!order.isPresent()) {
+			throw new IllegalArgumentException("Upkeep orders was missing for some reason");
 		}
-		if (upkeepOrder.getUpkeepPosition() != null) {
-			upkeepBlock = new ItemStack(player.world.getBlockState(upkeepOrder.getUpkeepPosition()).getBlock());
-		} else {
-			upkeepBlock = ItemStack.EMPTY;
-		}
+		upkeepOrder = order.get();
+		upkeepBlock = upkeepOrder.getUpkeepPosition().map(blockPos -> new ItemStack(player.world.getBlockState(blockPos).getBlock())).orElse(ItemStack.EMPTY);
 		addPlayerSlots();
 		removeSlots();
 	}
 
 	@Override
 	public void handlePacketData(NBTTagCompound tag) {
-		if (tag.hasKey("upkeepOrder")) {
-			upkeepOrder.deserializeNBT(tag.getCompoundTag("upkeepOrder"));
+		if (tag.hasKey(UPKEEP_ORDER_TAG)) {
+			upkeepOrder.deserializeNBT(tag.getCompoundTag(UPKEEP_ORDER_TAG));
 			hasChanged = true;
 		}
 	}
@@ -56,7 +55,7 @@ public class ContainerUpkeepOrder extends ContainerBase {
 
 	public void onClose() {
 		NBTTagCompound outer = new NBTTagCompound();
-		outer.setTag("upkeepOrder", upkeepOrder.serializeNBT());
+		outer.setTag(UPKEEP_ORDER_TAG, upkeepOrder.serializeNBT());
 		sendDataToServer(outer);
 	}
 }
