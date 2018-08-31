@@ -101,7 +101,7 @@ public class SpawnerSettings {
 		this.pos = pos;
 	}
 
-	public void onUpdate() {
+	void onUpdate() {
 		if (!respondToRedstone) {
 			updateNormalMode();
 		} else if (redstoneMode) {
@@ -171,7 +171,7 @@ public class SpawnerSettings {
 		if (maxNearbyMonsters > 0 && mobRange > 0) {
 			int nearbyCount = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos, pos.add(1, 1, 1)).grow(mobRange, mobRange, mobRange)).size();
 			if (nearbyCount >= maxNearbyMonsters) {
-				AncientWarfareStructure.LOG.info("skipping spawning because of too many nearby entities");
+				AncientWarfareStructure.LOG.debug("skipping spawning because of too many nearby entities");
 				return;
 			}
 		}

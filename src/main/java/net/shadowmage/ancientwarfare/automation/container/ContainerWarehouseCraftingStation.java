@@ -33,6 +33,7 @@ import static net.minecraft.util.EnumActionResult.SUCCESS;
 
 public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWarehouseCraftingStation> implements ICraftingContainer {
 	private static final int BOOK_SLOT = 1;
+	private static final String CHANGE_LIST_TAG = "changeList";
 	public ContainerCraftingRecipeMemory containerCrafting;
 
 	private ItemQuantityMap itemMap = new ItemQuantityMap();
@@ -74,8 +75,6 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 			addSlotToContainer(slot);
 		}
 
-		int y1 = 8 + 3 * 18 + 8;
-		y1 = this.addPlayerSlots(y1);
 		TileWarehouseBase warehouse = tileEntity.getWarehouse();
 		if (warehouse != null) {
 			warehouse.addCraftingViewer(this);
@@ -116,10 +115,8 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 				{
 					return ItemStack.EMPTY;
 				}
-			} else if (slotClickedIndex < playerSlotStart + playerSlots) {
-				if (!mergeItemStack(slotStack, BOOK_SLOT, BOOK_SLOT + 1, false)) {
-					return ItemStack.EMPTY;
-				}
+			} else if (slotClickedIndex < playerSlotStart + playerSlots && !mergeItemStack(slotStack, BOOK_SLOT, BOOK_SLOT + 1, false)) {
+				return ItemStack.EMPTY;
 			}
 			if (slotStack.getCount() == 0) {
 				theSlot.putStack(ItemStack.EMPTY);
@@ -141,9 +138,8 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 
 	@Override
 	public void handlePacketData(NBTTagCompound tag) {
-		if (tag.hasKey("changeList")) {
-			AncientWarfareAutomation.LOG.info("rec. warehouse item map..");
-			handleChangeList(tag.getTagList("changeList", Constants.NBT.TAG_COMPOUND));
+		if (tag.hasKey(CHANGE_LIST_TAG)) {
+			handleChangeList(tag.getTagList(CHANGE_LIST_TAG, Constants.NBT.TAG_COMPOUND));
 		} else if (tag.hasKey("recipe")) {
 			containerCrafting.handleRecipeUpdate(tag);
 		}
@@ -206,13 +202,12 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 		}
 		if (changeList.tagCount() > 0) {
 			tag = new NBTTagCompound();
-			tag.setTag("changeList", changeList);
+			tag.setTag(CHANGE_LIST_TAG, changeList);
 			sendDataToClient(tag);
 		}
 	}
 
 	public void onWarehouseInventoryUpdated() {
-		AncientWarfareAutomation.LOG.info("update callback from warehouse...");
 		shouldUpdate = true;
 	}
 

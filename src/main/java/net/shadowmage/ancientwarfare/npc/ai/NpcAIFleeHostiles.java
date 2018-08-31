@@ -73,14 +73,11 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
 		findNearbyRelevantEntities();
 		if (!npc.nearbyHostiles.isEmpty()) {
 			Entity nearestHostile = npc.nearbyHostiles.iterator().next();
-			if (npc.getTownHallPosition() != null || npc.hasHome())
+			if (npc.getTownHallPosition().isPresent() || npc.hasHome())
 				flee = true;
 			else {
 				fleeVector = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.npc, MAX_FLEE_RANGE, HEIGHT_CHECK, new Vec3d(nearestHostile.posX, nearestHostile.posY, nearestHostile.posZ));
-				if (fleeVector == null || nearestHostile.getDistanceSq(fleeVector.x, fleeVector.y, fleeVector.z) < nearestHostile.getDistanceSq(this.npc))
-					flee = false; //did not find random flee-towards target, perhaps retry next tick
-				else
-					flee = true;
+				flee = fleeVector != null && nearestHostile.getDistanceSq(fleeVector.x, fleeVector.y, fleeVector.z) >= nearestHostile.getDistanceSq(this.npc);
 			}
 			if (flee) {
 				if (nearestHostile instanceof EntityLivingBase)
@@ -166,9 +163,8 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
 			}
 		}
 
-		if ((homeCompromised || !npc.hasHome()) && npc.getTownHallPosition() != null) {
-			pos = npc.getTownHallPosition();
-			distSq = npc.getDistanceSq(pos);
+		if (homeCompromised || !npc.hasHome()) {
+			distSq = npc.getTownHallPosition().map(townHallPos -> npc.getDistanceSq(townHallPos)).orElse(distSq);
 			// TODO: Check if within range of town hall and somehow defend it/themselves from present hostiles
 		}
 

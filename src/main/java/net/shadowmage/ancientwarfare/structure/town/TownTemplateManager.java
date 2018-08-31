@@ -38,22 +38,22 @@ public class TownTemplateManager {
 		return templates.values();
 	}
 
-	public List<TownTemplate> getTemplatesValidAtPosition(World world, int x, int z) {
+	List<TownTemplate> getTemplatesValidAtPosition(World world, int x, int z) {
 		if (world.provider == null) {
-			AncientWarfareStructure.LOG.info("World provider was null when trying to generate town");
+			AncientWarfareStructure.LOG.debug("World provider was null when trying to generate town");
 			return Collections.emptyList();
 		}
 		Biome biome = world.provider.getBiomeForCoords(new BlockPos(x, 1, z));
 		ResourceLocation rl = biome.getRegistryName();
 		if (rl == null) {
-			AncientWarfareStructure.LOG.info("Biome based on class {} isn't registered and because of that Ancient Warfare can't process biome validation. This may be an error which may need to be fixed by the mod that added the biome.", biome.getClass());
+			AncientWarfareStructure.LOG.debug("Biome based on class {} isn't registered and because of that Ancient Warfare can't process biome validation. This may be an error which may need to be fixed by the mod that added the biome.", biome.getClass());
 			return Collections.emptyList();
 		}
 		String biomeName = rl.toString();
 		return templates.values().stream().filter(t -> isDimensionValid(world.provider.getDimension(), t) && isBiomeValid(biomeName, t)).collect(Collectors.toList());
 	}
 
-	public Optional<TownTemplate> selectTemplateFittingArea(World world, TownBoundingArea area, List<TownTemplate> templates) {
+	Optional<TownTemplate> selectTemplateFittingArea(World world, TownBoundingArea area, List<TownTemplate> templates) {
 		TownTemplate selection = null;
 		int width = area.getChunkWidth();
 		int length = area.getChunkLength();

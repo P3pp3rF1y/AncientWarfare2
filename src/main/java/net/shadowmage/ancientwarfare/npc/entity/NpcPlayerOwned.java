@@ -35,12 +35,11 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 	private static final String TOWN_HALL_TAG = "townHall";
 	private static final String UPKEEP_POS_TAG = "upkeepPos";
 	public boolean isAlarmed = false;
-	private boolean deathNotifiedTownhall = false;
 
 	private Command playerIssuedCommand;
 	private int foodValueRemaining = 0;
 
-	protected NpcAIPlayerOwnedRideHorse horseAI;
+	NpcAIPlayerOwnedRideHorse horseAI;
 
 	private BlockPos townHallPosition;
 	private BlockPos upkeepAutoBlock;
@@ -64,11 +63,9 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 				horseAI.onKilled();
 			}
 			validateTownHallPosition();
-			TileTownHall townHall = getTownHall();
-			if (townHall != null) {
-				deathNotifiedTownhall = true;
+			getTownHall().ifPresent(townHall -> {
 				townHall.handleNpcDeath(this, source);
-			}
+			});
 		}
 		super.onDeath(source);
 	}
@@ -88,18 +85,19 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 	}
 
 	@Override
-	public BlockPos getTownHallPosition() {
-		return townHallPosition;
+	public Optional<BlockPos> getTownHallPosition() {
+		return Optional.ofNullable(townHallPosition);
 	}
 
-	public TileTownHall getTownHall() {
-		return WorldTools.getTile(world, getTownHallPosition(), TileTownHall.class).orElse(null);
+	public Optional<TileTownHall> getTownHall() {
+		return getTownHallPosition().flatMap(p -> WorldTools.getTile(world, p, TileTownHall.class));
 	}
 
 	public void handleTownHallBroadcast(TileTownHall tile, BlockPos position) {
 		validateTownHallPosition();
-		BlockPos pos = getTownHallPosition();
-		if (pos != null) {
+		Optional<BlockPos> townHallPos = getTownHallPosition();
+		if (townHallPos.isPresent()) {
+			BlockPos pos = townHallPos.get();
 			double curDist = getDistanceSq(pos.getX() + 0.5d, pos.getY(), pos.getZ() + 0.5d);
 			double newDist = getDistanceSq(position.getX() + 0.5d, position.getY(), position.getZ() + 0.5d);
 			if (newDist < curDist) {
@@ -115,14 +113,15 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 			}
 		}
 		// (un)set alarmed status
-		isAlarmed = getTownHall().alarmActive;
+		isAlarmed = getTownHall().map(t -> t.alarmActive).orElse(false);
 	}
 
 	private void validateTownHallPosition() {
-		BlockPos pos = getTownHallPosition();
-		if (pos == null) {
+		Optional<BlockPos> townHallPos = getTownHallPosition();
+		if (!townHallPos.isPresent()) {
 			return;
 		}
+		BlockPos pos = townHallPos.get();
 		if (!world.isBlockLoaded(pos)) {
 			return;
 		}//cannot validate, unloaded...assume good
@@ -153,7 +152,6 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 
 	private void handleAttackCommand(Command cmd) {
 		Entity e = cmd.getEntityTarget(world);
-		AncientWarfareNPC.LOG.info("Handling attack command : " + e);
 		if (e instanceof EntityLivingBase) {
 			EntityLivingBase elb = (EntityLivingBase) e;
 			if (canTarget(elb))//only attacked allowed targets

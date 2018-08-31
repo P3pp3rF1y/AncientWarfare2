@@ -48,13 +48,11 @@ public class TemplateLoader {
          */
 		File existTest = new File(OUTPUT_DIRECTORY);
 		if (!existTest.exists()) {
-			AncientWarfareStructure.LOG.info("Creating default Export Directory");
 			existTest.mkdirs();
 		}
 
 		existTest = new File(INCLUDE_DIRECTORY);
 		if (!existTest.exists()) {
-			AncientWarfareStructure.LOG.info("Creating default Include Directory");
 			existTest.mkdirs();
 		}
 	}
@@ -85,7 +83,7 @@ public class TemplateLoader {
 			BufferedImage image = ImageIO.read(is);
 			if (image != null && image.getWidth() == AWStructureStatics.structureImageWidth && image.getHeight() == AWStructureStatics.structureImageHeight) {
 				StructureTemplateManager.INSTANCE.addTemplateImage(img, image);
-				AncientWarfareStructure.LOG.info("loaded structure image of: " + img);
+				AncientWarfareStructure.LOG.debug("loaded structure image of: " + img);
 			} else {
 				if (image == null) {
 					AncientWarfareStructure.LOG.error("Error loading image {}", img);
