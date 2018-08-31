@@ -3,124 +3,338 @@
         "player_default_standing": -50,
         "hostile_towards_factions": [
             {
-                "empire": false
+                "empire": true
             },
             {
-                "norska": false
+                "norska": true
             },
             {
-                "sarkonid": false
+                "sarkonid": true
             },
             {
-                "xoltec": false
+                "xoltec": true
             },
             {
-                "witchbane": false
+                "witchbane": true
             },
             {
-                "nogg": false
+                "nogg": true
             },
             {
-                "buffloka": false
+                "buffloka": true
             },
             {
-                "zimba": false
+                "zimba": true
             },
             {
-                "kong": false
+                "kong": true
             },
             {
-                "orc": false
+                "orc": true
             },
             {
-                "brigand": false
+                "brigand": true
             },
             {
-                "pirate": false
+                "pirate": true
             },
             {
-                "evil": false
+                "evil": true
             },
             {
-                "good": false
+                "good": true
             },
             {
-                "undead": false
+                "undead": true
             },
             {
-                "demon": false
+                "demon": true
             }
         ]
     },
     "factions": [
         {
             "name": "empire",
-            "color": "800080"
+            "color": "800080",
+            "player_default_standing": -75,
+            "hostile_towards_factions": [
+                {
+                    "witchbane": false
+                },
+                {
+                    "nogg": false
+                },
+                {
+                    "good": false
+                }
+            ]
         },
         {
             "name": "norska",
-            "color": "9999FF"
+            "color": "9999FF",
+            "player_default_standing": -50,
+            "hostile_towards_factions": [
+                {
+                    "buffloka": false
+                },
+                {
+                    "zimba": false
+                },
+                {
+                    "good": false
+                }
+            ]
         },
         {
             "name": "sarkonid",
-            "color": "b20000"
+            "color": "b20000",
+            "player_default_standing": -50,
+            "hostile_towards_factions": [
+                {
+                    "good": false
+                }
+            ]
         },
         {
             "name": "xoltec",
-            "color": "ffa500"
+            "color": "ffa500",
+            "player_default_standing": -100,
+            "hostile_towards_factions": [
+                {
+                    "demon": false
+                }
+            ]
         },
         {
             "name": "witchbane",
-            "color": "ffffff"
+            "color": "ffffff",
+            "player_default_standing": -75,
+            "hostile_towards_factions": [
+                {
+                    "empire": false
+                }
+            ]
         },
         {
             "name": "nogg",
-            "color": "00cd00"
+            "color": "00cd00",
+            "player_default_standing": 25,
+            "hostile_towards_factions": [
+                {
+                    "empire": false
+                },
+                {
+                    "buffloka": false
+                },
+                {
+                    "zimba": false
+                },
+                {
+                    "good": false
+                }
+            ]
         },
         {
             "name": "buffloka",
-            "color": "008000"
+            "color": "008000",
+            "player_default_standing": -10,
+            "hostile_towards_factions": [
+                {
+                    "norska": false
+                },
+                {
+                    "nogg": false
+                },
+                {
+                    "zimba": false
+                },
+                {
+                    "good": false
+                }
+            ]
         },
         {
             "name": "zimba",
-            "color": "ffff00"
+            "color": "ffff00",
+            "player_default_standing": -10,
+            "hostile_towards_factions": [
+                {
+                    "norska": false
+                },
+                {
+                    "nogg": false
+                },
+                {
+                    "buffloka": false
+                },
+                {
+                    "good": false
+                }
+            ]
         },
         {
             "name": "kong",
-            "color": "004000"
+            "color": "004000",
+            "player_default_standing": -100,
+            "hostile_towards_factions": [
+                {
+                    "xoltec": false
+                },
+                {
+                    "evil": false
+                }
+            ]
         },
         {
             "name": "orc",
-            "color": "404040"
+            "color": "404040",
+            "player_default_standing": -200,
+            "hostile_towards_factions": [
+                {
+                    "brigand": false
+                },
+                {
+                    "pirate": false
+                },
+                {
+                    "evil": false
+                },
+                {
+                    "undead": false
+                },
+                {
+                    "demon": false
+                }
+            ]
         },
         {
             "name": "brigand",
             "color": "964b00",
+            "player_default_standing": -200,
             "hostile_towards_factions": [
                 {
+                    "orc": false
+                },
+                {
                     "pirate": false
+                },
+                {
+                    "evil": false
+                },
+                {
+                    "undead": false
+                },
+                {
+                    "demon": false
                 }
             ]
         },
         {
             "name": "pirate",
-            "color": "cc7722"
+            "color": "cc7722",
+            "player_default_standing": -200,
+            "hostile_towards_factions": [
+                {
+                    "orc": false
+                },
+                {
+                    "brigand": false
+                },
+                {
+                    "evil": false
+                }
+            ]
         },
         {
             "name": "evil",
-            "color": "000000"
+            "color": "000000",
+            "player_default_standing": -200,
+            "hostile_towards_factions": [
+                {
+                    "xoltec": false
+                },
+                {
+                    "kong": false
+                },
+                {
+                    "orc": false
+                },
+                {
+                    "brigand": false
+                },
+                {
+                    "pirate": false
+                },
+                {
+                    "undead": false
+                },
+                {
+                    "demon": false
+                }
+            ]
         },
         {
             "name": "good",
-            "color": "66b266"
+            "color": "66b266",
+            "player_default_standing": 150,
+            "hostile_towards_factions": [
+                {
+                    "empire": false
+                },
+                {
+                    "norska": false
+                },
+                {
+                    "sarkonid": false
+                },
+                {
+                    "nogg": false
+                },
+                {
+                    "buffloka": false
+                },
+                {
+                    "zimba": false
+                }
+            ]
         },
         {
             "name": "undead",
-            "color": "b2b2b2"
+            "color": "b2b2b2",
+            "player_default_standing": -200,
+            "hostile_towards_factions": [
+                {
+                    "orc": false
+                },
+                {
+                    "evil": false
+                },
+                {
+                    "demon": false
+                }
+            ]
         },
         {
             "name": "demon",
-            "color": "ff2400"
+            "color": "ff2400",
+            "player_default_standing": -200,
+            "hostile_towards_factions": [
+                {
+                    "xoltec": false
+                },
+                {
+                    "kong": false
+                },
+                {
+                    "orc": false
+                },
+                {
+                    "evil": false
+                },
+                {
+                    "undead": false
+                }
+            ]
         }
     ]
 }

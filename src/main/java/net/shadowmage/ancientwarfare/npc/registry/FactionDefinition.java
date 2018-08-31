@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.registry;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class FactionDefinition {
@@ -8,7 +9,7 @@ public class FactionDefinition {
 	private int playerDefaultStanding;
 	private final Set<String> hostileTowards;
 
-	public FactionDefinition(int playerDefaultStanding, Set<String> hostileTowards) {
+	FactionDefinition(int playerDefaultStanding, Set<String> hostileTowards) {
 		this.playerDefaultStanding = playerDefaultStanding;
 		this.hostileTowards = hostileTowards;
 	}
@@ -32,7 +33,7 @@ public class FactionDefinition {
 	}
 
 	public CopyBuilder copy(String name, int color) {
-		return new CopyBuilder(name, color, getPlayerDefaultStanding(), hostileTowards);
+		return new CopyBuilder(name, color, getPlayerDefaultStanding(), new HashSet<>(hostileTowards));
 	}
 
 	public int getPlayerDefaultStanding() {
@@ -52,17 +53,16 @@ public class FactionDefinition {
 			this.hostileTowards = hostileTowards;
 		}
 
-		public CopyBuilder setPlayerDefaultStanding(int playerDefaultStanding) {
+		void setPlayerDefaultStanding(int playerDefaultStanding) {
 			this.playerDefaultStanding = playerDefaultStanding;
-			return this;
 		}
 
-		public CopyBuilder addHostileTowards(String faction) {
+		CopyBuilder addHostileTowards(String faction) {
 			hostileTowards.add(faction);
 			return this;
 		}
 
-		public CopyBuilder removeHostileTowards(String faction) {
+		CopyBuilder removeHostileTowards(String faction) {
 			hostileTowards.remove(faction);
 			return this;
 		}

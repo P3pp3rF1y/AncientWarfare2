@@ -49,13 +49,14 @@ public class FactionRegistry {
 
 			for (JsonElement e : factionsArray) {
 				JsonObject faction = JsonUtils.getJsonObject(e, "faction");
-				FactionDefinition.CopyBuilder builder = defaultDefinition.copy(JsonUtils.getString(faction, "name"), Integer.parseInt(JsonUtils.getString(faction, "color"), 16));
+				String factionName = JsonUtils.getString(faction, "name");
+				FactionDefinition.CopyBuilder builder = defaultDefinition.copy(factionName, Integer.parseInt(JsonUtils.getString(faction, "color"), 16));
 				if (faction.has(PLAYER_DEFAULT_STANDING)) {
 					builder.setPlayerDefaultStanding(JsonUtils.getInt(faction, PLAYER_DEFAULT_STANDING));
 				}
+				builder.removeHostileTowards(factionName);
 				if (faction.has(HOSTILE_TOWARDS_FACTIONS)) {
 					Map<String, Boolean> hostileTowards = parseHostileTowards(faction);
-
 					hostileTowards.entrySet().stream().filter(Entry::getValue).map(Entry::getKey).forEach(builder::addHostileTowards);
 					hostileTowards.entrySet().stream().filter(entry -> !entry.getValue()).map(Entry::getKey).forEach(builder::removeHostileTowards);
 				}
