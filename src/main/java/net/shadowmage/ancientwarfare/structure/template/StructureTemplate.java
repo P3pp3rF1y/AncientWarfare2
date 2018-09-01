@@ -4,6 +4,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.Vec3i;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import net.shadowmage.ancientwarfare.core.util.MathUtils;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
@@ -80,14 +81,14 @@ public class StructureTemplate {
 		this.validator = settings;
 	}
 
-	public Optional<TemplateRule> getRuleAt(int x, int y, int z) {
-		int index = getIndex(x, y, z, size);
+	public Optional<TemplateRule> getRuleAt(Vec3i pos) {
+		int index = getIndex(pos, size);
 		int ruleIndex = index >= 0 && index < templateData.length ? templateData[index] : -1;
 		return ruleIndex >= 0 && ruleIndex < templateRules.length ? Optional.ofNullable(templateRules[ruleIndex]) : Optional.empty();
 	}
 
-	public static int getIndex(int x, int y, int z, Vec3i size) {
-		return (y * size.getX() * size.getZ()) + (z * size.getX()) + x;
+	public static int getIndex(Vec3i pos, Vec3i size) {
+		return (pos.getY() * size.getX() * size.getZ()) + (pos.getZ() * size.getX()) + pos.getX();
 	}
 
 	@Override
@@ -98,13 +99,7 @@ public class StructureTemplate {
 	public NonNullList<ItemStack> getResourceList() {
 		if (resourceList == null) {
 			NonNullList<ItemStack> stacks = NonNullList.create();
-			for (int x = 0; x < size.getX(); x++) {
-				for (int y = 0; y < size.getY(); y++) {
-					for (int z = 0; z < size.getZ(); z++) {
-						getRuleAt(x, y, z).ifPresent(r -> r.addResources(stacks));
-					}
-				}
-			}
+			MathUtils.getAllVecsInBox(Vec3i.NULL_VECTOR, size).forEach(pos -> getRuleAt(pos).ifPresent(r -> r.addResources(stacks)));
 			resourceList = InventoryTools.compactStackList(stacks);
 		}
 		return resourceList;

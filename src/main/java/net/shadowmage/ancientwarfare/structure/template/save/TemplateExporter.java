@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.template.save;
 
+import net.minecraft.util.math.Vec3i;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
@@ -100,7 +101,7 @@ public class TemplateExporter {
 			writer.newLine();
 			for (int z = 0; z < template.getSize().getZ(); z++) {
 				for (int x = 0; x < template.getSize().getX(); x++) {
-					short data = template.getTemplateData()[StructureTemplate.getIndex(x, y, z, template.getSize())];
+					short data = template.getTemplateData()[StructureTemplate.getIndex(new Vec3i(x, y, z), template.getSize())];
 					writer.write(String.valueOf(data));
 					if (x < template.getSize().getX() - 1) {
 						writer.write(",");

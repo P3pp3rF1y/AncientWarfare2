@@ -13,6 +13,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeDesert;
@@ -37,13 +38,13 @@ public class StructureBuilder implements IStructureBuilder {
 
 	protected StructureTemplate template;
 	protected World world;
-	protected BlockPos buildOrigin;
-	protected EnumFacing buildFace;
+	BlockPos buildOrigin;
+	EnumFacing buildFace;
 	protected int turns;
-	protected int maxPriority = 4;
-	protected int currentPriority;//current build priority...may not be needed anymore?
-	protected int currentX, currentY, currentZ;//coords in template
-	protected BlockPos destination;
+	int maxPriority = 4;
+	int currentPriority;//current build priority...may not be needed anymore?
+	Vec3i curTempPos;
+	BlockPos destination;
 
 	protected StructureBB bb;
 
@@ -62,7 +63,7 @@ public class StructureBuilder implements IStructureBuilder {
 		this.bb = bb;
 		buildOrigin = buildKey;
 		destination = BlockPos.ORIGIN;
-		currentX = currentY = currentZ = 0;
+		curTempPos = Vec3i.NULL_VECTOR;
 		currentPriority = 0;
 
 		turns = ((face.getHorizontalIndex() + 2) % 4);
@@ -87,7 +88,7 @@ public class StructureBuilder implements IStructureBuilder {
 
 	public void instantConstruction() {
 		while (!this.isFinished()) {
-			Optional<TemplateRule> rule = template.getRuleAt(currentX, currentY, currentZ);
+			Optional<TemplateRule> rule = template.getRuleAt(curTempPos);
 			if (rule.isPresent()) {
 				placeCurrentPosition(rule.get());
 			} else if (currentPriority == 0) {
@@ -153,15 +154,15 @@ public class StructureBuilder implements IStructureBuilder {
 		}
 	}
 
-	protected void placeRule(TemplateRule rule) {
+	void placeRule(TemplateRule rule) {
 		if (destination.getY() <= 0) {
 			return;
 		}
 		rule.handlePlacement(world, turns, destination, this);
 	}
 
-	protected void incrementDestination() {
-		destination = BlockTools.rotateInArea(new BlockPos(currentX, currentY, currentZ), template.getSize().getX(), template.getSize().getZ(), turns).add(bb.min);
+	void incrementDestination() {
+		destination = BlockTools.rotateInArea(new BlockPos(curTempPos), template.getSize().getX(), template.getSize().getZ(), turns).add(bb.min);
 	}
 
 	/*
@@ -169,6 +170,9 @@ public class StructureBuilder implements IStructureBuilder {
 	 * return false if template is finished
 	 */
 	private boolean incrementPosition() {
+		int currentX = curTempPos.getX();
+		int currentY = curTempPos.getY();
+		int currentZ = curTempPos.getZ();
 		currentX++;
 		if (currentX >= template.getSize().getX()) {
 			currentX = 0;
@@ -186,6 +190,7 @@ public class StructureBuilder implements IStructureBuilder {
 				}
 			}
 		}
+		curTempPos = new Vec3i(currentX, currentY, currentZ);
 		return true;
 	}
 
@@ -195,9 +200,9 @@ public class StructureBuilder implements IStructureBuilder {
 
 	public float getPercentDoneWithPass() {
 		float max = (float) template.getSize().getX() * template.getSize().getZ() * template.getSize().getY();
-		float current = (float) currentY * (template.getSize().getX() * template.getSize().getZ());//add layers done
-		current += currentZ * template.getSize().getX();//add rows done
-		current += currentX;//add blocks done
+		float current = (float) curTempPos.getY() * (template.getSize().getX() * template.getSize().getZ());//add layers done
+		current += curTempPos.getZ() * template.getSize().getX();//add rows done
+		current += curTempPos.getX();//add blocks done
 		return current / max;
 	}
 

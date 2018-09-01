@@ -24,7 +24,7 @@ public class TemplateParser {
 	private TemplateParser() {
 	}
 
-	public FixResult<StructureTemplate> parseTemplate(String fileName, List<String> templateLines) {
+	FixResult<StructureTemplate> parseTemplate(String fileName, List<String> templateLines) {
 		try {
 			return parseTemplateLines(fileName, templateLines);
 		}
@@ -33,7 +33,7 @@ public class TemplateParser {
 		}
 	}
 
-	private FixResult<StructureTemplate> parseTemplateLines(String fileName, List<String> lines) throws IllegalArgumentException, TemplateParsingException {
+	private FixResult<StructureTemplate> parseTemplateLines(String fileName, List<String> lines) throws TemplateParsingException {
 		Iterator<String> it = lines.iterator();
 		String line;
 
@@ -224,7 +224,7 @@ public class TemplateParser {
 			}
 			short[] data = StringTools.parseShortArray(st);
 			for (int x = 0; x < size.getX() && x < data.length; x++) {
-				templateData[StructureTemplate.getIndex(x, yLayer, z, size)] = data[x];
+				templateData[StructureTemplate.getIndex(new Vec3i(x, yLayer, z), size)] = data[x];
 			}
 			z++;
 		}

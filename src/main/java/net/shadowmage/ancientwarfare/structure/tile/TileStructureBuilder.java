@@ -31,16 +31,18 @@ import java.util.EnumSet;
 import java.util.Set;
 
 public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IOwnable, ITickable {
-
+	private static final String BUILDER_TAG = "builder";
+	private static final String BB_MIN_TAG = "bbMin";
+	private static final String BB_MAX_TAG = "bbMax";
 	private Owner owner;
 
-	StructureBuilderTicked builder;
+	private StructureBuilderTicked builder;
 	private boolean shouldRemove = false;
-	public boolean isStarted = false;
-	int workDelay = 20;
+	private boolean isStarted = false;
+	private int workDelay = 20;
 
-	double maxEnergyStored = 150;
-	double maxInput = 50;
+	private double maxEnergyStored;
+	private double maxInput;
 	private double storedEnergy;
 	public StructureBB clientBB;
 
@@ -54,8 +56,8 @@ public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IO
 	public AxisAlignedBB getRenderBoundingBox() {
 		AxisAlignedBB bb = super.getRenderBoundingBox();
 		if (clientBB != null) {
-			bb.expand(clientBB.min.getX() - pos.getX(), clientBB.min.getY() - pos.getY(), clientBB.min.getZ() - pos.getZ());
-			bb.expand(clientBB.max.getX() - pos.getX(), clientBB.max.getY() - pos.getY(), clientBB.max.getZ() - pos.getZ());
+			bb.expand((double) clientBB.min.getX() - pos.getX(), (double) clientBB.min.getY() - pos.getY(), (double) clientBB.min.getZ() - pos.getZ());
+			bb.expand((double) clientBB.max.getX() - pos.getX(), (double) clientBB.max.getY() - pos.getY(), (double) clientBB.max.getZ() - pos.getZ());
 		}
 		return bb;
 	}
@@ -121,7 +123,7 @@ public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IO
 	}
 
 	@Override
-	public boolean canInputTorque(EnumFacing from) {
+	public boolean canInputTorque(@Nullable EnumFacing from) {
 		return true;
 	}
 
@@ -151,9 +153,9 @@ public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IO
 		}
 	}
 
-	public void processWork() {
+	private void processWork() {
 		isStarted = true;
-		builder.tick(AWFakePlayer.get(world));
+		builder.tick();
 	}
 
 	/*
@@ -211,25 +213,25 @@ public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IO
 		super.writeUpdateNBT(tag);
 		StructureBB bb = builder.getBoundingBox();
 		if (bb != null) {
-			tag.setLong("bbMin", bb.min.toLong());
-			tag.setLong("bbMax", bb.max.toLong());
+			tag.setLong(BB_MIN_TAG, bb.min.toLong());
+			tag.setLong(BB_MAX_TAG, bb.max.toLong());
 		}
 	}
 
 	@Override
 	protected void handleUpdateNBT(NBTTagCompound tag) {
 		super.handleUpdateNBT(tag);
-		if (tag.hasKey("bbMin") && tag.hasKey("bbMax")) {
-			clientBB = new StructureBB(BlockPos.fromLong(tag.getLong("bbMin")), BlockPos.fromLong(tag.getLong("bbMax")));
+		if (tag.hasKey(BB_MIN_TAG) && tag.hasKey(BB_MAX_TAG)) {
+			clientBB = new StructureBB(BlockPos.fromLong(tag.getLong(BB_MIN_TAG)), BlockPos.fromLong(tag.getLong(BB_MAX_TAG)));
 		}
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
-		if (tag.hasKey("builder")) {
+		if (tag.hasKey(BUILDER_TAG)) {
 			builder = new StructureBuilderTicked();
-			builder.readFromNBT(tag.getCompoundTag("builder"));
+			builder.readFromNBT(tag.getCompoundTag(BUILDER_TAG));
 		} else {
 			this.shouldRemove = true;
 		}
@@ -244,7 +246,7 @@ public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IO
 		if (builder != null) {
 			NBTTagCompound builderTag = new NBTTagCompound();
 			builder.writeToNBT(builderTag);
-			tag.setTag("builder", builderTag);
+			tag.setTag(BUILDER_TAG, builderTag);
 		}
 		tag.setBoolean("started", isStarted);
 		tag.setDouble("storedEnergy", storedEnergy);
