@@ -4,18 +4,24 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntitySign;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
+import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
+
+import java.util.List;
 
 public class TemplateRuleBlockSign extends TemplateRuleVanillaBlocks {
 
-	public ITextComponent signContents[];
+	public static final String PLUGIN_NAME = "vanillaSign";
+	private ITextComponent signContents[];
 
 	public TemplateRuleBlockSign(World world, BlockPos pos, Block block, int meta, int turns) {
 		super(world, pos, block, meta, turns);
@@ -28,12 +34,13 @@ public class TemplateRuleBlockSign extends TemplateRuleVanillaBlocks {
 		}
 	}
 
-	public TemplateRuleBlockSign() {
+	public TemplateRuleBlockSign(int ruleNumber, List<String> lines) throws TemplateParsingException.TemplateRuleParsingException {
+		super(ruleNumber, lines);
 	}
 
 	@Override
 	public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
-		Block block = Block.getBlockFromName(blockName);
+		Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockName));
 		int meta = 0;
 		if (block == Blocks.STANDING_SIGN) {
 			meta = (this.meta + 4 * turns) % 16;
@@ -70,4 +77,8 @@ public class TemplateRuleBlockSign extends TemplateRuleVanillaBlocks {
 		}
 	}
 
+	@Override
+	protected String getPluginName() {
+		return PLUGIN_NAME;
+	}
 }

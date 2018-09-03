@@ -14,15 +14,18 @@ import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
+import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
 public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
 
-	public static final String INVENTORY_DATA_TAG = "inventoryData";
-	public int randomLootLevel = 0;
-	public NBTTagCompound tag = new NBTTagCompound();
+	private static final String INVENTORY_DATA_TAG = "inventoryData";
+	public static final String PLUGIN_NAME = "inventory";
+	private int randomLootLevel;
+	private NBTTagCompound tag;
 	private NonNullList<ItemStack> inventoryStacks;
 
 	public TemplateRuleBlockInventory(World world, BlockPos pos, Block block, int meta, int turns) {
@@ -43,7 +46,12 @@ public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
 					}
 				}
 			}
-			this.randomLootLevel = useKey ? keyStack.getItem() == Items.GOLD_INGOT ? 1 : keyStack.getItem() == Items.DIAMOND ? 2 : 3 : 0;
+			if (keyStack.getItem() == Items.GOLD_INGOT)
+				this.randomLootLevel = useKey ? 1 : 0;
+			else if (keyStack.getItem() == Items.DIAMOND)
+				this.randomLootLevel = useKey ? 2 : 0;
+			else
+				this.randomLootLevel = useKey ? 3 : 0;
 			inventoryStacks = NonNullList.withSize(inventory.getSizeInventory(), ItemStack.EMPTY);
 			@Nonnull ItemStack stack;
 			for (int i = 0; i < inventory.getSizeInventory(); i++) {
@@ -51,6 +59,7 @@ public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
 				inventory.setInventorySlotContents(i, ItemStack.EMPTY);
 				inventoryStacks.set(i, stack.isEmpty() ? ItemStack.EMPTY : stack.copy());
 			}
+			tag = new NBTTagCompound();
 			te.writeToNBT(tag);
 			for (int i = 0; i < inventory.getSizeInventory(); i++) {
 				inventory.setInventorySlotContents(i, inventoryStacks.get(i));
@@ -60,8 +69,8 @@ public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
 		}
 	}
 
-	public TemplateRuleBlockInventory() {
-
+	public TemplateRuleBlockInventory(int ruleNumber, List<String> lines) throws TemplateParsingException.TemplateRuleParsingException {
+		super(ruleNumber, lines);
 	}
 
 	@Override
@@ -144,5 +153,10 @@ public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
 		}
 		randomLootLevel = tag.getInteger("lootLevel");
 		this.tag = tag.getCompoundTag("teData");
+	}
+
+	@Override
+	protected String getPluginName() {
+		return PLUGIN_NAME;
 	}
 }

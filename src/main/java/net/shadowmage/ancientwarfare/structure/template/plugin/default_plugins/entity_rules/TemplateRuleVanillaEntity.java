@@ -1,24 +1,3 @@
-/*
- Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
- This software is distributed under the terms of the GNU General Public License.
- Please see COPYING for precise license information.
-
- This file is part of Ancient Warfare.
-
- Ancient Warfare is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- Ancient Warfare is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.entity_rules;
 
 import net.minecraft.entity.Entity;
@@ -32,16 +11,20 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
+import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
 
-public class TemplateRuleVanillaEntity extends TemplateRuleEntity {
+import java.util.List;
 
+public class TemplateRuleVanillaEntity extends TemplateRuleEntity {
+	public static final String PLUGIN_NAME = "vanillaEntities";
 	public ResourceLocation registryName;
 	public float xOffset;
 	public float zOffset;
 	public float rotation;
 
 	public TemplateRuleVanillaEntity(World world, Entity entity, int turns, int x, int y, int z) {
+		super(world, entity, turns, x, y, z);
 		this.registryName = EntityList.getKey(entity);
 		rotation = (entity.rotationYaw + 90.f * turns) % 360.f;
 		float x1, z1;
@@ -57,8 +40,8 @@ public class TemplateRuleVanillaEntity extends TemplateRuleEntity {
 		zOffset = BlockTools.rotateFloatZ(x1, z1, turns);
 	}
 
-	public TemplateRuleVanillaEntity() {
-
+	public TemplateRuleVanillaEntity(int ruleNumber, List<String> lines) throws TemplateParsingException.TemplateRuleParsingException {
+		super(ruleNumber, lines);
 	}
 
 	@Override
@@ -102,4 +85,8 @@ public class TemplateRuleVanillaEntity extends TemplateRuleEntity {
 		//noop
 	}
 
+	@Override
+	protected String getPluginName() {
+		return PLUGIN_NAME;
+	}
 }

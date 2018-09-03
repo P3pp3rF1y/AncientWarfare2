@@ -1,24 +1,3 @@
-/*
- Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
- This software is distributed under the terms of the GNU General Public License.
- Please see COPYING for precise license information.
-
- This file is part of Ancient Warfare.
-
- Ancient Warfare is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- Ancient Warfare is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins;
 
 import net.minecraft.block.Block;
@@ -43,14 +22,14 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.init.Blocks;
 import net.shadowmage.ancientwarfare.core.init.AWCoreBlocks;
-import net.shadowmage.ancientwarfare.structure.api.IStructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.api.StructureContentPlugin;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
+import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockDoors;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockInventory;
-import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockLogic;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockSign;
+import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockTile;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleFlowerPot;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleVanillaBlocks;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleVanillaSkull;
@@ -62,13 +41,8 @@ import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.e
 import java.util.HashSet;
 
 public class StructurePluginVanillaHandler implements StructureContentPlugin {
-
-	public StructurePluginVanillaHandler() {
-
-	}
-
 	@Override
-	public void addHandledBlocks(IStructurePluginManager manager) {
+	public void addHandledBlocks(StructurePluginManager manager) {
 		HashSet<Block> specialHandledBlocks = new HashSet<>();
 		specialHandledBlocks.add(Blocks.IRON_DOOR);
 		specialHandledBlocks.add(Blocks.SPRUCE_DOOR);
@@ -89,74 +63,74 @@ public class StructurePluginVanillaHandler implements StructureContentPlugin {
 		specialHandledBlocks.add(Blocks.CHEST);
 		specialHandledBlocks.add(Blocks.DROPPER);
 		specialHandledBlocks.add(Blocks.HOPPER);
-		specialHandledBlocks.add(Blocks.BEACON);
 		specialHandledBlocks.add(Blocks.TRAPPED_CHEST);
 		specialHandledBlocks.add(Blocks.FLOWER_POT);
 		specialHandledBlocks.add(Blocks.SKULL);
 
 		for (Block block : Block.REGISTRY) {
-			if (block != null && block.getRegistryName().getResourceDomain().equals("minecraft") && !specialHandledBlocks.contains(block)) {
-				manager.registerBlockHandler("vanillaBlocks", block, TemplateRuleVanillaBlocks.class);
+			//noinspection ConstantConditions
+			if (block.getRegistryName().getResourceDomain().equals("minecraft") && !specialHandledBlocks.contains(block)) {
+				manager.registerBlockHandler(TemplateRuleVanillaBlocks.PLUGIN_NAME, block, TemplateRuleVanillaBlocks::new, TemplateRuleVanillaBlocks::new);
 			}
 		}
 
-		manager.registerBlockHandler("vanillaDoors", Blocks.IRON_DOOR, TemplateRuleBlockDoors.class);
-		manager.registerBlockHandler("vanillaDoors", Blocks.SPRUCE_DOOR, TemplateRuleBlockDoors.class);
-		manager.registerBlockHandler("vanillaDoors", Blocks.OAK_DOOR, TemplateRuleBlockDoors.class);
-		manager.registerBlockHandler("vanillaDoors", Blocks.JUNGLE_DOOR, TemplateRuleBlockDoors.class);
-		manager.registerBlockHandler("vanillaDoors", Blocks.BIRCH_DOOR, TemplateRuleBlockDoors.class);
-		manager.registerBlockHandler("vanillaDoors", Blocks.ACACIA_DOOR, TemplateRuleBlockDoors.class);
-		manager.registerBlockHandler("vanillaDoors", Blocks.DARK_OAK_DOOR, TemplateRuleBlockDoors.class);
-		manager.registerBlockHandler("vanillaSign", Blocks.WALL_SIGN, TemplateRuleBlockSign.class);
-		manager.registerBlockHandler("vanillaSign", Blocks.STANDING_SIGN, TemplateRuleBlockSign.class);
-		manager.registerBlockHandler("vanillaLogic", Blocks.MOB_SPAWNER, TemplateRuleBlockLogic.class);
-		manager.registerBlockHandler("vanillaLogic", Blocks.COMMAND_BLOCK, TemplateRuleBlockLogic.class);
-		manager.registerBlockHandler("vanillaLogic", Blocks.BREWING_STAND, TemplateRuleBlockLogic.class);
-		manager.registerBlockHandler("vanillaLogic", Blocks.BEACON, TemplateRuleBlockLogic.class);
-		manager.registerBlockHandler("vanillaLogic", Blocks.LIT_FURNACE, TemplateRuleBlockLogic.class);
-		manager.registerBlockHandler("vanillaLogic", Blocks.FURNACE, TemplateRuleBlockLogic.class);
-		manager.registerBlockHandler("vanillaLogic", Blocks.BEACON, TemplateRuleBlockLogic.class);
-		manager.registerBlockHandler("vanillaInventory", Blocks.DISPENSER, TemplateRuleBlockInventory.class);
-		manager.registerBlockHandler("vanillaInventory", Blocks.CHEST, TemplateRuleBlockInventory.class);
-		manager.registerBlockHandler("vanillaInventory", Blocks.DROPPER, TemplateRuleBlockInventory.class);
-		manager.registerBlockHandler("vanillaInventory", Blocks.HOPPER, TemplateRuleBlockInventory.class);
-		manager.registerBlockHandler("vanillaInventory", Blocks.TRAPPED_CHEST, TemplateRuleBlockInventory.class);
-		manager.registerBlockHandler("vanillaFlowerPot", Blocks.FLOWER_POT, TemplateRuleFlowerPot.class);
-		manager.registerBlockHandler("vanillaSkull", Blocks.SKULL, TemplateRuleVanillaSkull.class);
+		manager.registerBlockHandler(TemplateRuleBlockDoors.PLUGIN_NAME, Blocks.IRON_DOOR, TemplateRuleBlockDoors::new, TemplateRuleBlockDoors::new);
+		manager.registerBlockHandler(TemplateRuleBlockDoors.PLUGIN_NAME, Blocks.SPRUCE_DOOR, TemplateRuleBlockDoors::new, TemplateRuleBlockDoors::new);
+		manager.registerBlockHandler(TemplateRuleBlockDoors.PLUGIN_NAME, Blocks.OAK_DOOR, TemplateRuleBlockDoors::new, TemplateRuleBlockDoors::new);
+		manager.registerBlockHandler(TemplateRuleBlockDoors.PLUGIN_NAME, Blocks.JUNGLE_DOOR, TemplateRuleBlockDoors::new, TemplateRuleBlockDoors::new);
+		manager.registerBlockHandler(TemplateRuleBlockDoors.PLUGIN_NAME, Blocks.BIRCH_DOOR, TemplateRuleBlockDoors::new, TemplateRuleBlockDoors::new);
+		manager.registerBlockHandler(TemplateRuleBlockDoors.PLUGIN_NAME, Blocks.ACACIA_DOOR, TemplateRuleBlockDoors::new, TemplateRuleBlockDoors::new);
+		manager.registerBlockHandler(TemplateRuleBlockDoors.PLUGIN_NAME, Blocks.DARK_OAK_DOOR, TemplateRuleBlockDoors::new, TemplateRuleBlockDoors::new);
+		manager.registerBlockHandler(TemplateRuleBlockSign.PLUGIN_NAME, Blocks.WALL_SIGN, TemplateRuleBlockSign::new, TemplateRuleBlockSign::new);
+		manager.registerBlockHandler(TemplateRuleBlockSign.PLUGIN_NAME, Blocks.STANDING_SIGN, TemplateRuleBlockSign::new, TemplateRuleBlockSign::new);
+		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, Blocks.MOB_SPAWNER, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
+		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, Blocks.COMMAND_BLOCK, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
+		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, Blocks.BREWING_STAND, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
+		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, Blocks.BEACON, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
+		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, Blocks.LIT_FURNACE, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
+		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, Blocks.FURNACE, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
+		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, Blocks.BEACON, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
+		manager.registerBlockHandler(TemplateRuleBlockInventory.PLUGIN_NAME, Blocks.DISPENSER, TemplateRuleBlockInventory::new, TemplateRuleBlockInventory::new);
+		manager.registerBlockHandler(TemplateRuleBlockInventory.PLUGIN_NAME, Blocks.CHEST, TemplateRuleBlockInventory::new, TemplateRuleBlockInventory::new);
+		manager.registerBlockHandler(TemplateRuleBlockInventory.PLUGIN_NAME, Blocks.DROPPER, TemplateRuleBlockInventory::new, TemplateRuleBlockInventory::new);
+		manager.registerBlockHandler(TemplateRuleBlockInventory.PLUGIN_NAME, Blocks.HOPPER, TemplateRuleBlockInventory::new, TemplateRuleBlockInventory::new);
+		manager.registerBlockHandler(TemplateRuleBlockInventory.PLUGIN_NAME, Blocks.TRAPPED_CHEST, TemplateRuleBlockInventory::new, TemplateRuleBlockInventory::new);
+		manager.registerBlockHandler(TemplateRuleFlowerPot.PLUGIN_NAME, Blocks.FLOWER_POT, TemplateRuleFlowerPot::new, TemplateRuleFlowerPot::new);
+		manager.registerBlockHandler(TemplateRuleVanillaSkull.PLUGIN_NAME, Blocks.SKULL, TemplateRuleVanillaSkull::new, TemplateRuleVanillaSkull::new);
 
-		manager.registerBlockHandler("awAdvancedSpawner", AWStructureBlocks.ADVANCED_SPAWNER, TemplateRuleBlockLogic.class);
-		manager.registerBlockHandler("awCoreLogic", AWCoreBlocks.ENGINEERING_STATION, TemplateRuleBlockLogic.class);
-		manager.registerBlockHandler("awCoreLogic", AWCoreBlocks.RESEARCH_STATION, TemplateRuleBlockLogic.class);
-		manager.registerBlockHandler("awStructureLogic", AWStructureBlocks.DRAFTING_STATION, TemplateRuleBlockLogic.class);
-		manager.registerBlockHandler("awStructureLogic", AWStructureBlocks.STRUCTURE_BUILDER_TICKED, TemplateRuleBlockLogic.class);
-		manager.registerBlockHandler("awStructureLogic", AWStructureBlocks.SOUND_BLOCK, TemplateRuleBlockLogic.class);
-		manager.registerBlockHandler("awStructureLogic", AWStructureBlocks.ADVANCED_LOOT_CHEST, TemplateRuleBlockLogic.class);
+		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, AWStructureBlocks.ADVANCED_SPAWNER, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
+		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, AWCoreBlocks.ENGINEERING_STATION, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
+		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, AWCoreBlocks.RESEARCH_STATION, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
+		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, AWStructureBlocks.DRAFTING_STATION, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
+		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, AWStructureBlocks.STRUCTURE_BUILDER_TICKED, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
+		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, AWStructureBlocks.SOUND_BLOCK, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
+		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, AWStructureBlocks.ADVANCED_LOOT_CHEST, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
 	}
 
 	@Override
-	public void addHandledEntities(IStructurePluginManager manager) {
-		manager.registerEntityHandler("vanillaEntities", EntityPig.class, TemplateRuleVanillaEntity.class);
-		manager.registerEntityHandler("vanillaEntities", EntitySheep.class, TemplateRuleVanillaEntity.class);
-		manager.registerEntityHandler("vanillaEntities", EntityCow.class, TemplateRuleVanillaEntity.class);
-		manager.registerEntityHandler("vanillaEntities", EntityChicken.class, TemplateRuleVanillaEntity.class);
-		manager.registerEntityHandler("vanillaEntities", EntityBoat.class, TemplateRuleVanillaEntity.class);
-		manager.registerEntityHandler("vanillaEntities", EntityIronGolem.class, TemplateRuleVanillaEntity.class);
-		manager.registerEntityHandler("vanillaEntities", EntityWolf.class, TemplateRuleVanillaEntity.class);
-		manager.registerEntityHandler("vanillaEntities", EntityOcelot.class, TemplateRuleVanillaEntity.class);
-		manager.registerEntityHandler("vanillaEntities", EntityWither.class, TemplateRuleVanillaEntity.class);
-		manager.registerEntityHandler("vanillaEntities", EntitySnowman.class, TemplateRuleVanillaEntity.class);
+	public void addHandledEntities(StructurePluginManager manager) {
+		manager.registerEntityHandler(TemplateRuleVanillaEntity.PLUGIN_NAME, EntityPig.class, TemplateRuleVanillaEntity::new, TemplateRuleVanillaEntity::new);
+		manager.registerEntityHandler(TemplateRuleVanillaEntity.PLUGIN_NAME, EntitySheep.class, TemplateRuleVanillaEntity::new, TemplateRuleVanillaEntity::new);
+		manager.registerEntityHandler(TemplateRuleVanillaEntity.PLUGIN_NAME, EntityCow.class, TemplateRuleVanillaEntity::new, TemplateRuleVanillaEntity::new);
+		manager.registerEntityHandler(TemplateRuleVanillaEntity.PLUGIN_NAME, EntityChicken.class, TemplateRuleVanillaEntity::new, TemplateRuleVanillaEntity::new);
+		manager.registerEntityHandler(TemplateRuleVanillaEntity.PLUGIN_NAME, EntityBoat.class, TemplateRuleVanillaEntity::new, TemplateRuleVanillaEntity::new);
+		manager.registerEntityHandler(TemplateRuleVanillaEntity.PLUGIN_NAME, EntityIronGolem.class, TemplateRuleVanillaEntity::new, TemplateRuleVanillaEntity::new);
+		manager.registerEntityHandler(TemplateRuleVanillaEntity.PLUGIN_NAME, EntityWolf.class, TemplateRuleVanillaEntity::new, TemplateRuleVanillaEntity::new);
+		manager.registerEntityHandler(TemplateRuleVanillaEntity.PLUGIN_NAME, EntityOcelot.class, TemplateRuleVanillaEntity::new, TemplateRuleVanillaEntity::new);
+		manager.registerEntityHandler(TemplateRuleVanillaEntity.PLUGIN_NAME, EntityWither.class, TemplateRuleVanillaEntity::new, TemplateRuleVanillaEntity::new);
+		manager.registerEntityHandler(TemplateRuleVanillaEntity.PLUGIN_NAME, EntitySnowman.class, TemplateRuleVanillaEntity::new, TemplateRuleVanillaEntity::new);
 
-		manager.registerEntityHandler("vanillaHangingEntity", EntityPainting.class, TemplateRuleEntityHanging.class);
-		manager.registerEntityHandler("vanillaHangingEntity", EntityItemFrame.class, TemplateRuleEntityHanging.class);
+		manager.registerEntityHandler(TemplateRuleEntityHanging.PLUGIN_NAME, EntityPainting.class, TemplateRuleEntityHanging::new, TemplateRuleEntityHanging::new);
+		manager.registerEntityHandler(TemplateRuleEntityHanging.PLUGIN_NAME, EntityItemFrame.class, TemplateRuleEntityHanging::new, TemplateRuleEntityHanging::new);
 
-		manager.registerEntityHandler("vanillaLogicEntity", EntityHorse.class, TemplateRuleEntityLogic.class);
-		manager.registerEntityHandler("vanillaLogicEntity", EntityVillager.class, TemplateRuleEntityLogic.class);
-		manager.registerEntityHandler("vanillaLogicEntity", EntityMinecartHopper.class, TemplateRuleEntityLogic.class);
-		manager.registerEntityHandler("vanillaLogicEntity", EntityMinecartChest.class, TemplateRuleEntityLogic.class);
-		manager.registerEntityHandler("vanillaLogicEntity", EntityMinecartEmpty.class, TemplateRuleEntityLogic.class);
-		manager.registerEntityHandler("vanillaLogicEntity", EntityMinecartFurnace.class, TemplateRuleEntityLogic.class);
-		manager.registerEntityHandler("vanillaLogicEntity", EntityMinecartTNT.class, TemplateRuleEntityLogic.class);
+		manager.registerEntityHandler(TemplateRuleEntityLogic.PLUGIN_NAME, EntityHorse.class, TemplateRuleEntityLogic::new, TemplateRuleEntityLogic::new);
+		manager.registerEntityHandler(TemplateRuleEntityLogic.PLUGIN_NAME, EntityVillager.class, TemplateRuleEntityLogic::new, TemplateRuleEntityLogic::new);
+		manager.registerEntityHandler(TemplateRuleEntityLogic.PLUGIN_NAME, EntityMinecartHopper.class, TemplateRuleEntityLogic::new, TemplateRuleEntityLogic::new);
+		manager.registerEntityHandler(TemplateRuleEntityLogic.PLUGIN_NAME, EntityMinecartChest.class, TemplateRuleEntityLogic::new, TemplateRuleEntityLogic::new);
+		manager.registerEntityHandler(TemplateRuleEntityLogic.PLUGIN_NAME, EntityMinecartEmpty.class, TemplateRuleEntityLogic::new, TemplateRuleEntityLogic::new);
+		manager.registerEntityHandler(TemplateRuleEntityLogic.PLUGIN_NAME, EntityMinecartFurnace.class, TemplateRuleEntityLogic::new, TemplateRuleEntityLogic::new);
+		manager.registerEntityHandler(TemplateRuleEntityLogic.PLUGIN_NAME, EntityMinecartTNT.class, TemplateRuleEntityLogic::new, TemplateRuleEntityLogic::new);
 
-		manager.registerEntityHandler("awGate", EntityGate.class, TemplateRuleGates.class);
+		manager.registerEntityHandler(TemplateRuleGates.PLUGIN_NAME, EntityGate.class, TemplateRuleGates::new, TemplateRuleGates::new);
 	}
 }

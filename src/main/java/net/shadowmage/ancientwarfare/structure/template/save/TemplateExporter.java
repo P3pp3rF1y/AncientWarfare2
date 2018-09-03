@@ -4,7 +4,6 @@ import net.minecraft.util.math.Vec3i;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
-import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
 
@@ -41,14 +40,14 @@ public class TemplateExporter {
 			TemplateRule[] templateRules = template.getTemplateRules();
 			for (TemplateRule rule : templateRules) {
 				if (rule != null) { //TODO replace templateRules and entityRules with List/Set structures instead of relying and copying to arrays
-					StructurePluginManager.writeRuleLines(rule, writer, "rule");
+					rule.writeRule(writer);
 				}
 			}
 			writer.write("#### ENTITIES ####");
 			writer.newLine();
 			templateRules = template.getEntityRules();
 			for (TemplateRule rule : templateRules) {
-				StructurePluginManager.writeRuleLines(rule, writer, "entity");
+				rule.writeRule(writer);
 			}
 		}
 		catch (IOException e) {

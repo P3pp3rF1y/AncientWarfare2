@@ -11,24 +11,28 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
+import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
 
+import java.util.List;
 import java.util.Optional;
 
 public class TemplateRuleEntityHanging extends TemplateRuleVanillaEntity {
-	private NBTTagCompound tag = new NBTTagCompound();
+	public static final String PLUGIN_NAME = "vanillaHangingEntity";
+	private NBTTagCompound tag;
 	private EnumFacing direction;
 
 	public TemplateRuleEntityHanging(World world, Entity entity, int turns, int x, int y, int z) {
 		super(world, entity, turns, x, y, z);
 		EntityHanging hanging = (EntityHanging) entity;
+		tag = new NBTTagCompound();
 		entity.writeToNBT(tag);
 		this.direction = EnumFacing.HORIZONTALS[(Optional.ofNullable(hanging.facingDirection).map(Enum::ordinal).orElse(0) + turns) % 4];
 		tag.removeTag("UUIDMost");
 		tag.removeTag("UUIDLeast");
 	}
 
-	public TemplateRuleEntityHanging() {
-
+	public TemplateRuleEntityHanging(int ruleNumber, List<String> lines) throws TemplateParsingException.TemplateRuleParsingException {
+		super(ruleNumber, lines);
 	}
 
 	@Override
@@ -66,4 +70,8 @@ public class TemplateRuleEntityHanging extends TemplateRuleVanillaEntity {
 		this.direction = EnumFacing.VALUES[tag.getByte("direction")];
 	}
 
+	@Override
+	protected String getPluginName() {
+		return PLUGIN_NAME;
+	}
 }

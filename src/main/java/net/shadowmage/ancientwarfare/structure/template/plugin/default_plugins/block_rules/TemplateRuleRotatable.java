@@ -14,21 +14,24 @@ import net.shadowmage.ancientwarfare.core.interfaces.IBoundedSite;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
+import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 
+import java.util.List;
 import java.util.Optional;
 
-public class TemplateRuleRotable extends TemplateRuleBlock {
+public class TemplateRuleRotatable extends TemplateRuleBlock {
 	private static final String TE_DATA_TAG = "teData";
-	public String blockName;
-	public int meta;
-	public int orientation;
+	public static final String PLUGIN_NAME = "rotatable";
+	private String blockName;
+	private int meta;
+	private int orientation;
 	private BlockPos p1;
 	private BlockPos p2;
 	NBTTagCompound tag;
 
-	public TemplateRuleRotable(World world, BlockPos pos, Block block, int meta, int turns) {
+	public TemplateRuleRotatable(World world, BlockPos pos, Block block, int meta, int turns) {
 		super(world, pos, block, meta, turns);
 		this.blockName = BlockDataManager.INSTANCE.getNameForBlock(block);
 		this.meta = meta;
@@ -51,7 +54,8 @@ public class TemplateRuleRotable extends TemplateRuleBlock {
 		}
 	}
 
-	public TemplateRuleRotable() {
+	public TemplateRuleRotatable(int ruleNumber, List<String> lines) throws TemplateParsingException.TemplateRuleParsingException {
+		super(ruleNumber, lines);
 	}
 
 	@Override
@@ -131,4 +135,8 @@ public class TemplateRuleRotable extends TemplateRuleBlock {
 		return buildPass == 0;
 	}
 
+	@Override
+	protected String getPluginName() {
+		return PLUGIN_NAME;
+	}
 }

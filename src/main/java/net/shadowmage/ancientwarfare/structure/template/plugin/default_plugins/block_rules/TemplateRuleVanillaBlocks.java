@@ -8,17 +8,20 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
+import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
 public class TemplateRuleVanillaBlocks extends TemplateRuleBlock {
 
+	public static final String PLUGIN_NAME = "vanillaBlocks";
 	public String blockName;
 	public Block block;
 	public int meta;
-	public int buildPass = 0;
+	public int buildPass;
 
 	/*
 	 * constructor for dynamic construction.  passed world and coords so that the rule can handle its own logic internally
@@ -31,8 +34,8 @@ public class TemplateRuleVanillaBlocks extends TemplateRuleBlock {
 		this.buildPass = BlockDataManager.INSTANCE.getPriorityForBlock(block);
 	}
 
-	public TemplateRuleVanillaBlocks() {
-
+	public TemplateRuleVanillaBlocks(int ruleNumber, List<String> lines) throws TemplateParsingException.TemplateRuleParsingException {
+		super(ruleNumber, lines);
 	}
 
 	@Override
@@ -56,9 +59,7 @@ public class TemplateRuleVanillaBlocks extends TemplateRuleBlock {
 		if (stack.isEmpty()) {
 			throw new IllegalArgumentException("Could not create item for block: " + block + " (lookup name: " + blockName + ") meta: " + meta);
 		}
-		if (!stack.isEmpty()) {
-			resources.add(stack);
-		}
+		resources.add(stack);
 	}
 
 	@Override
@@ -86,4 +87,8 @@ public class TemplateRuleVanillaBlocks extends TemplateRuleBlock {
 		this.buildPass = tag.getInteger("buildPass");
 	}
 
+	@Override
+	protected String getPluginName() {
+		return PLUGIN_NAME;
+	}
 }

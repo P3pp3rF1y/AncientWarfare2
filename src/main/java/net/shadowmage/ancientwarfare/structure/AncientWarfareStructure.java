@@ -42,6 +42,7 @@ import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager
 import net.shadowmage.ancientwarfare.structure.template.WorldGenStructureManager;
 import net.shadowmage.ancientwarfare.structure.template.datafixes.DataFixManager;
 import net.shadowmage.ancientwarfare.structure.template.datafixes.fixers.FactionExpansionFixer;
+import net.shadowmage.ancientwarfare.structure.template.datafixes.fixers.RuleNameConsolidationFixer;
 import net.shadowmage.ancientwarfare.structure.template.datafixes.fixers.json.JsonSimplificationFixer;
 import net.shadowmage.ancientwarfare.structure.template.load.TemplateLoader;
 import net.shadowmage.ancientwarfare.structure.town.WorldTownGenerator;
@@ -108,6 +109,7 @@ public class AncientWarfareStructure {
 
 		DataFixManager.registerRuleFixer(new FactionExpansionFixer());
 		DataFixManager.registerRuleFixer(new JsonSimplificationFixer());
+		DataFixManager.registerRuleNameFixer(new RuleNameConsolidationFixer());
 	}
 
 	@EventHandler
