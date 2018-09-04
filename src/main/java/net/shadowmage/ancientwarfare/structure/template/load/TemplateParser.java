@@ -14,8 +14,10 @@ import net.shadowmage.ancientwarfare.structure.template.build.validation.Structu
 import net.shadowmage.ancientwarfare.structure.template.datafixes.FixResult;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class TemplateParser {
 
@@ -37,10 +39,6 @@ public class TemplateParser {
 		Iterator<String> it = lines.iterator();
 		String line;
 
-		List<TemplateRule> parsedRules = new ArrayList<>();
-		List<TemplateRuleEntity> parsedEntities = new ArrayList<>();
-		TemplateRule[] ruleArray;
-		TemplateRuleEntity[] entityRuleArray;
 		StructureValidator validation = null;
 		List<String> groupedLines = new ArrayList<>();
 
@@ -53,6 +51,8 @@ public class TemplateParser {
 		short[] templateData = null;
 		boolean[] initData = new boolean[4];
 		int highestParsedRule = 0;
+		Map<Integer, TemplateRule> parsedRules = new HashMap<>();
+		Map<Integer, TemplateRuleEntity> parsedEntities = new HashMap<>();
 		FixResult.Builder<StructureTemplate> resultBuilder = new FixResult.Builder<>();
 		while (it.hasNext()) {
 			line = it.next();
@@ -122,7 +122,7 @@ public class TemplateParser {
 				}
 				try {
 					TemplateRule parsedRule = resultBuilder.updateAndGetData(StructurePluginManager.getRule(version, groupedLines, "rule"));
-					parsedRules.add(parsedRule);
+					parsedRules.put(parsedRule.ruleNumber, parsedRule);
 					if (parsedRule.ruleNumber > highestParsedRule) {
 						highestParsedRule = parsedRule.ruleNumber;
 					}
@@ -152,7 +152,8 @@ public class TemplateParser {
 					}
 				}
 				try {
-					parsedEntities.add(resultBuilder.updateAndGetData(StructurePluginManager.getRule(version, groupedLines, "entity")));
+					TemplateRuleEntity entityRule = resultBuilder.updateAndGetData(StructurePluginManager.getRule(version, groupedLines, "entity"));
+					parsedEntities.put(entityRule.ruleNumber, entityRule);
 				}
 				catch (TemplateRuleParsingException e) {
 					StringBuilder data = new StringBuilder(e.getMessage() + "\n");
@@ -184,29 +185,12 @@ public class TemplateParser {
 			}
 		}
 
-        /*
-		 * initialze data for construction of template -- put rules into array
-         */
-		ruleArray = new TemplateRule[highestParsedRule + 1];
-		for (TemplateRule rule : parsedRules) {
-			if (rule != null && rule.ruleNumber > 0) {
-				ruleArray[rule.ruleNumber] = rule;
-			}
-		}
-
-		entityRuleArray = new TemplateRuleEntity[parsedEntities.size()];
-		int ruleNumber = 0;
-		for (TemplateRuleEntity rule : parsedEntities) {
-			entityRuleArray[ruleNumber] = rule;
-			ruleNumber++;
-		}
-
-		return resultBuilder.build(constructTemplate(name, version, size, offset, templateData, ruleArray, entityRuleArray, validation));
+		return resultBuilder.build(constructTemplate(name, version, size, offset, templateData, parsedRules, parsedEntities, validation));
 	}
 
-	private StructureTemplate constructTemplate(String name, Version version, Vec3i size, Vec3i offset, short[] templateData, TemplateRule[] rules, TemplateRuleEntity[] entityRules, StructureValidator validation) {
+	private StructureTemplate constructTemplate(String name, Version version, Vec3i size, Vec3i offset, short[] templateData, Map<Integer, TemplateRule> rules, Map<Integer, TemplateRuleEntity> entityRules, StructureValidator validation) {
 		StructureTemplate template = new StructureTemplate(name, version, size, offset);
-		template.setRuleArray(rules);
+		template.setBlockRules(rules);
 		template.setEntityRules(entityRules);
 		template.setTemplateData(templateData);
 		template.setValidationSettings(validation);

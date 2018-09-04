@@ -100,11 +100,7 @@ public class StructureBuilder implements IStructureBuilder {
 	}
 
 	private void placeEntities() {
-		TemplateRuleEntity[] rules = template.getEntityRules();
-		for (TemplateRuleEntity rule : rules) {
-			if (rule == null) {
-				continue;
-			}
+		for (TemplateRuleEntity rule : template.getEntityRules().values()) {
 			destination = BlockTools.rotateInArea(rule.getPosition(), template.getSize().getX(), template.getSize().getZ(), turns).add(bb.min);
 			rule.handlePlacement(world, turns, destination, this);
 		}

@@ -37,16 +37,12 @@ public class TemplateExporter {
 
 			writer.write("#### RULES ####");
 			writer.newLine();
-			TemplateRule[] templateRules = template.getTemplateRules();
-			for (TemplateRule rule : templateRules) {
-				if (rule != null) { //TODO replace templateRules and entityRules with List/Set structures instead of relying and copying to arrays
-					rule.writeRule(writer);
-				}
+			for (TemplateRule rule : template.getBlockRules().values()) {
+				rule.writeRule(writer);
 			}
 			writer.write("#### ENTITIES ####");
 			writer.newLine();
-			templateRules = template.getEntityRules();
-			for (TemplateRule rule : templateRules) {
+			for (TemplateRule rule : template.getEntityRules().values()) {
 				rule.writeRule(writer);
 			}
 		}

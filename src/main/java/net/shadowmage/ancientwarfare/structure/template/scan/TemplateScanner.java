@@ -19,6 +19,7 @@ import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public final class TemplateScanner {
@@ -45,7 +46,7 @@ public final class TemplateScanner {
 		short[] templateRuleData = new short[xSize * ySize * zSize];
 
 		HashMap<String, List<TemplateRuleBlock>> pluginBlockRuleMap = new HashMap<>();
-		List<TemplateRule> currentRulesAll = new ArrayList<>();
+		Map<Integer, TemplateRule> blockRules = new HashMap<>();
 		Block scannedBlock;
 		List<TemplateRuleBlock> pluginBlockRules;
 		int index;
@@ -61,15 +62,11 @@ public final class TemplateScanner {
 					IBlockState scannedState = world.getBlockState(scannedPos);
 					scannedBlock = scannedState.getBlock();
 
-					if (scannedBlock != null && !AWStructureStatics.shouldSkipScan(scannedBlock) && !world.isAirBlock(scannedPos)) {
+					if (!AWStructureStatics.shouldSkipScan(scannedBlock) && !world.isAirBlock(scannedPos)) {
 						Optional<String> pluginId = StructurePluginManager.INSTANCE.getPluginNameFor(scannedBlock);
 						if (pluginId.isPresent()) {
 							meta = scannedBlock.getMetaFromState(scannedState);
-							pluginBlockRules = pluginBlockRuleMap.get(pluginId);
-							if (pluginBlockRules == null) {
-								pluginBlockRules = new ArrayList<>();
-								pluginBlockRuleMap.put(pluginId.get(), pluginBlockRules);
-							}
+							pluginBlockRules = pluginBlockRuleMap.computeIfAbsent(pluginId.get(), k -> new ArrayList<>());
 							Optional<TemplateRuleBlock> scannedBlockRule = Optional.empty();
 							for (TemplateRuleBlock rule : pluginBlockRules) {
 								if (rule.shouldReuseRule(world, scannedBlock, meta, turns, scannedPos)) {
@@ -83,7 +80,7 @@ public final class TemplateScanner {
 									scannedBlockRule.get().ruleNumber = nextRuleID;
 									nextRuleID++;
 									pluginBlockRules.add(scannedBlockRule.get());
-									currentRulesAll.add(scannedBlockRule.get());
+									blockRules.put(scannedBlockRule.get().ruleNumber, scannedBlockRule.get());
 								}
 							}
 							index = StructureTemplate.getIndex(destination, new Vec3i(xOutSize, ySize, zOutSize));
@@ -94,7 +91,7 @@ public final class TemplateScanner {
 			}//end scan z-level for
 		}//end scan y-level for
 
-		List<TemplateRuleEntity> scannedEntityRules = new ArrayList<>();
+		Map<Integer, TemplateRuleEntity> entityRules = new HashMap<>();
 		List<Entity> entitiesInAABB = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(min.getX(), min.getY(), min.getZ(), max.getX() + 1, max.getY() + 1, max.getZ() + 1));
 		nextRuleID = 0;
 		for (Entity e : entitiesInAABB) {
@@ -106,25 +103,14 @@ public final class TemplateScanner {
 				destination = BlockTools.rotateInArea(new BlockPos(ex, ey, ez).subtract(min), xSize, zSize, turns);
 				scannedEntityRule.get().ruleNumber = nextRuleID;
 				scannedEntityRule.get().setPosition(destination);
-				scannedEntityRules.add(scannedEntityRule.get());
+				entityRules.put(nextRuleID, scannedEntityRule.get());
 				nextRuleID++;
 			}
 		}
 
-		TemplateRule[] templateRules = new TemplateRule[currentRulesAll.size() + 1];
-		for (int i = 0; i < currentRulesAll.size(); i++)//offset by 1 -- we want a null rule for 0==air
-		{
-			templateRules[i + 1] = currentRulesAll.get(i);
-		}
-
-		TemplateRuleEntity[] entityRules = new TemplateRuleEntity[scannedEntityRules.size()];
-		for (int i = 0; i < scannedEntityRules.size(); i++) {
-			entityRules[i] = scannedEntityRules.get(i);
-		}
-
 		StructureTemplate template = new StructureTemplate(name, new Vec3i(xOutSize, ySize, zOutSize), key);
 		template.setTemplateData(templateRuleData);
-		template.setRuleArray(templateRules);
+		template.setBlockRules(blockRules);
 		template.setEntityRules(entityRules);
 		return template;
 	}

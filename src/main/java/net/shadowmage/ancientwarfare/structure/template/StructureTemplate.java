@@ -9,6 +9,7 @@ import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
 
+import java.util.Map;
 import java.util.Optional;
 
 public class StructureTemplate {
@@ -25,8 +26,8 @@ public class StructureTemplate {
 	/*
 	 * stored template data
 	 */
-	private TemplateRule[] templateRules;
-	private TemplateRuleEntity[] entityRules;
+	private Map<Integer, TemplateRule> blockRules;
+	private Map<Integer, TemplateRuleEntity> entityRules;
 	private short[] templateData;
 	private NonNullList<ItemStack> resourceList;
 
@@ -49,12 +50,12 @@ public class StructureTemplate {
 		this.offset = offset;
 	}
 
-	public TemplateRuleEntity[] getEntityRules() {
+	public Map<Integer, TemplateRuleEntity> getEntityRules() {
 		return entityRules;
 	}
 
-	public TemplateRule[] getTemplateRules() {
-		return templateRules;
+	public Map<Integer, TemplateRule> getBlockRules() {
+		return blockRules;
 	}
 
 	public short[] getTemplateData() {
@@ -65,11 +66,11 @@ public class StructureTemplate {
 		return validator;
 	}
 
-	public void setRuleArray(TemplateRule[] rules) {
-		this.templateRules = rules;
+	public void setBlockRules(Map<Integer, TemplateRule> rules) {
+		this.blockRules = rules;
 	}
 
-	public void setEntityRules(TemplateRuleEntity[] rules) {
+	public void setEntityRules(Map<Integer, TemplateRuleEntity> rules) {
 		this.entityRules = rules;
 	}
 
@@ -84,7 +85,7 @@ public class StructureTemplate {
 	public Optional<TemplateRule> getRuleAt(Vec3i pos) {
 		int index = getIndex(pos, size);
 		int ruleIndex = index >= 0 && index < templateData.length ? templateData[index] : -1;
-		return ruleIndex >= 0 && ruleIndex < templateRules.length ? Optional.ofNullable(templateRules[ruleIndex]) : Optional.empty();
+		return Optional.ofNullable(blockRules.get(ruleIndex));
 	}
 
 	public static int getIndex(Vec3i pos, Vec3i size) {

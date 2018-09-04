@@ -115,7 +115,7 @@ public class StructurePluginManager implements IStructurePluginRegister {
 	}
 
 	public Optional<TemplateRuleEntity> getRuleForEntity(World world, Entity entity, int turns, int x, int y, int z) {
-		return entityRuleHandlers.stream().filter(h -> entity.getClass().isInstance(h.obj)).map(h -> h.ruleCreator).findFirst()
+		return entityRuleHandlers.stream().filter(h -> h.obj.isAssignableFrom(entity.getClass())).map(h -> h.ruleCreator).findFirst()
 				.map(c -> c.create(world, entity, turns, x, y, z));
 	}
 
