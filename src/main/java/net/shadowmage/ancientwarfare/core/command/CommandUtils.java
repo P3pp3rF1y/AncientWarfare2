@@ -8,8 +8,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
@@ -23,9 +25,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -38,6 +40,7 @@ public class CommandUtils extends CommandBase {
 		subCommands.put("exportbiomes", new BiomeListCommand());
 		subCommands.put("exportblocks", new BlockListCommand());
 		subCommands.put("reloadmanual", new ReloadManualCommand());
+		subCommands.put("exportloottables", new LootTableListCommand());
 	}
 
 	@Override
@@ -68,7 +71,7 @@ public class CommandUtils extends CommandBase {
 	private abstract static class ExportCommand implements ISubCommand {
 		@Override
 		public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-			ArrayList<String> lines = getLines();
+			List<String> lines = getLines();
 			String fileName = args.length > 0 ? args[0] : getDefaultFileName();
 			File file = new File(AWCoreStatics.utilsExportPath, fileName);
 			exportToFile(file, getHeader(), lines);
@@ -79,9 +82,9 @@ public class CommandUtils extends CommandBase {
 
 		protected abstract String getDefaultFileName();
 
-		protected abstract ArrayList<String> getLines();
+		protected abstract List<String> getLines();
 
-		private static void exportToFile(File exportFile, String header, ArrayList<String> rows) {
+		private static void exportToFile(File exportFile, String header, List<String> rows) {
 
 			if (!exportFile.exists()) {
 				try {
@@ -127,11 +130,11 @@ public class CommandUtils extends CommandBase {
 		}
 
 		@Override
-		protected ArrayList<String> getLines() {
+		protected List<String> getLines() {
 			//noinspection ConstantConditions
 			return ForgeRegistries.ENTITIES.getValuesCollection().stream()
 					.map(e -> String.join(",", e.getRegistryName().toString(), e.getName(), e.getEntityClass().toString()))
-					.sorted(Comparator.naturalOrder()).collect(Collectors.toCollection(ArrayList::new));
+					.sorted(Comparator.naturalOrder()).collect(Collectors.toList());
 		}
 	}
 
@@ -149,14 +152,14 @@ public class CommandUtils extends CommandBase {
 		}
 
 		@Override
-		protected ArrayList<String> getLines() {
+		protected List<String> getLines() {
 			//noinspection ConstantConditions
 			return ForgeRegistries.BIOMES.getValuesCollection().stream()
 					.map(b -> String.join(",", b.getRegistryName().toString(), getBiomeName(b), b.getTempCategory().name()
 							, Boolean.toString(b.isHighHumidity()), Float.toString(b.getHeightVariation()), b.topBlock.getBlock().getRegistryName().toString()
 							, BiomeDictionary.getTypes(b).stream().map(BiomeDictionary.Type::getName).collect(Collectors.joining("|")),
 							b.getBiomeClass().toString()))
-					.sorted(Comparator.naturalOrder()).collect(Collectors.toCollection(ArrayList::new));
+					.sorted(Comparator.naturalOrder()).collect(Collectors.toList());
 		}
 
 		private String getBiomeName(Biome b) {
@@ -183,11 +186,11 @@ public class CommandUtils extends CommandBase {
 		}
 
 		@Override
-		protected ArrayList<String> getLines() {
+		protected List<String> getLines() {
 			//noinspection ConstantConditions
 			return ForgeRegistries.BLOCKS.getValuesCollection().stream()
 					.map(b -> String.join(",", b.getRegistryName().toString(), b.getLocalizedName()))
-					.sorted(Comparator.naturalOrder()).collect(Collectors.toCollection(ArrayList::new));
+					.sorted(Comparator.naturalOrder()).collect(Collectors.toList());
 		}
 
 	}
@@ -199,6 +202,23 @@ public class CommandUtils extends CommandBase {
 			if (senderEntity instanceof EntityPlayer) {
 				NetworkHandler.sendToPlayer((EntityPlayerMP) senderEntity, new PacketManualReload());
 			}
+		}
+	}
+
+	private class LootTableListCommand extends ExportCommand {
+		@Override
+		protected String getHeader() {
+			return "Registry Name";
+		}
+
+		@Override
+		protected String getDefaultFileName() {
+			return "loottablelist.csv";
+		}
+
+		@Override
+		protected List<String> getLines() {
+			return LootTableList.getAll().stream().map(ResourceLocation::toString).collect(Collectors.toList());
 		}
 	}
 }

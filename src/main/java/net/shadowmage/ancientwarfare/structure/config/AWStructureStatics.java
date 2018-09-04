@@ -1,24 +1,3 @@
-/*
- Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
- This software is distributed under the terms of the GNU General Public License.
- Please see COPYING for precise license information.
-
- This file is part of Ancient Warfare.
-
- Ancient Warfare is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- Ancient Warfare is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.structure.config;
 
 import net.minecraft.block.Block;
@@ -31,12 +10,15 @@ import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
 public class AWStructureStatics extends ModConfiguration {
+
+	public static Set<String> lootTableExclusions;
 
 	public AWStructureStatics(String mod) {
 		super(mod);
@@ -68,6 +50,8 @@ public class AWStructureStatics extends ModConfiguration {
 	private static final String worldGenBlocks = "d_world_gen_skippable_blocks";
 	private static final String targetBlocks = "e_world_gen_target_blocks";
 	private static final String scanSkippedBlocks = "f_scanner_skipped_blocks";
+	private static final String excludedLootTables = "g_excluded_loot_tables";
+
 
 	@Override
 	public void initializeCategories() {
@@ -76,7 +60,8 @@ public class AWStructureStatics extends ModConfiguration {
 		this.config.addCustomCategoryComment(excludedEntitiesCategory, "Entities that will not show up in the Mob Spawner Placer entity selection list.\nAdd any mobs here that will crash if spawned via the vanilla mob-spawner (usually complex NBT-defined entities).");
 		this.config.addCustomCategoryComment(worldGenBlocks, "Blocks that should be skipped/ignored during world gen -- should list all plant blocks/logs/foliage");
 		this.config.addCustomCategoryComment(targetBlocks, "List of target blocks that structures and towns can spawn on in addition to materials that are automatically whitelisted.");
-		this.config.addCustomCategoryComment(scanSkippedBlocks, "List of blocks that the structure scanner will completely ignore.\nWhenever these blocks are encountered the template will instead fill that block position with a hard-air rule.\nAdd any blocks to this list that may cause crashes when scanned or duplicated.\nVanilla blocks should not need to be added, but some mod-blocks may.\nBlock names must be specified by fully-qualified name (e.g. \"minecraft:stone\")");
+		this.config.addCustomCategoryComment(scanSkippedBlocks, "List of blocks that the structure scanner will completely ignore.\nWhenever these blocks are encountered the template will instead fill that block position with a hard-air rule.\nAdd any blocks to this list that may cause crashes when scanned or duplicated.\nVanilla blocks should not need to be added, but some mod-blocks may.\nBlock names must be specified by fully-qualified name (e.g. \"minecraft:chests/stronghold_corridor\")");
+		this.config.addCustomCategoryComment(excludedLootTables, "List of loot tables that should be excluded from loot chest placer GUI.\nLoot table names must be specified by fully-qualified name (e.g. \"minecraft:stone\")");
 	}
 
 	@Override
@@ -99,6 +84,8 @@ public class AWStructureStatics extends ModConfiguration {
 		initializeDefaultSkippedEntities();
 		initializeDefaultTargetBlocks();
 		initializeScannerSkippedBlocks();
+
+		lootTableExclusions = new HashSet<>(Arrays.asList(config.get(excludedLootTables, "excluded_loot_tables", new String[] {}).getStringList()));
 	}
 
 	private void initializeScannerSkippedBlocks() {
