@@ -1,4 +1,4 @@
-package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules;
+package net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;

@@ -22,11 +22,11 @@ import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate.Version;
 import net.shadowmage.ancientwarfare.structure.template.datafixes.DataFixManager;
 import net.shadowmage.ancientwarfare.structure.template.datafixes.FixResult;
-import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.StructurePluginAutomation;
-import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.StructurePluginModDefault;
-import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.StructurePluginNpcs;
-import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.StructurePluginVanillaHandler;
-import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.StructurePluginVehicles;
+import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.StructurePluginAutomation;
+import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.StructurePluginModDefault;
+import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.StructurePluginNpcs;
+import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.StructurePluginVanillaHandler;
+import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.StructurePluginVehicles;
 
 import java.util.ArrayList;
 import java.util.Iterator;
