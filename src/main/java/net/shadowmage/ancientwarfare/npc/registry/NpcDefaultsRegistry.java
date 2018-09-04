@@ -30,13 +30,13 @@ public class NpcDefaultsRegistry {
 	private NpcDefaultsRegistry() {}
 
 	private static Map<String, Map<String, NpcDefault>> factionNpcDefaults = new HashMap<>();
-	private static Map<String, NpcDefault> ownedNpcDefaults = new HashMap<>();
+	private static Map<String, OwnedNpcDefault> ownedNpcDefaults = new HashMap<>();
 
 	public static NpcDefault getFactionNpcDefault(NpcFaction npc) {
 		return factionNpcDefaults.get(npc.getFaction()).get(npc.getNpcType());
 	}
 
-	public static NpcDefault getOwnedNpcDefault(NpcPlayerOwned npc) {
+	public static OwnedNpcDefault getOwnedNpcDefault(NpcPlayerOwned npc) {
 		return ownedNpcDefaults.get(npc.getNpcType());
 	}
 
@@ -50,18 +50,44 @@ public class NpcDefaultsRegistry {
 
 		@Override
 		public void parse(JsonObject json) {
-			NpcDefault overallDefault = parseDefaults(json);
+			OwnedNpcDefault overallDefault = parseDefaults(json);
 
 			parseSubtypes(json, overallDefault);
 		}
 
-		private void parseSubtypes(JsonObject json, NpcDefault overallDefault) {
+		private OwnedNpcDefault parseDefaults(JsonObject json) {
+			JsonObject defaults = JsonUtils.getJsonObject(json, "defaults");
+			return new OwnedNpcDefault(getTargetList(defaults), getAttributes(defaults), getExperienceDrop(defaults).orElse(0),
+					getCanSwim(defaults).orElse(true), getCanBreakDoors(defaults).orElse(true), getEquipment(defaults));
+		}
+
+		private void parseSubtypes(JsonObject json, OwnedNpcDefault overallDefault) {
 			ownedNpcDefaults.putAll(JsonHelper.mapFromJson(json, "npc_subtypes", Map.Entry::getKey,
 					e -> getSubtypeDefault(e, s -> overallDefault)));
 			fillRemainingSubtypeDefaults(overallDefault, ownedNpcDefaults);
 		}
 
-		private void fillRemainingSubtypeDefaults(NpcDefault overallDefault, Map<String, NpcDefault> npcSubtypeDefaults) {
+		private OwnedNpcDefault getSubtypeDefault(Map.Entry<String, JsonElement> entry, Function<String, OwnedNpcDefault> setKey) {
+			JsonObject data = JsonUtils.getJsonObject(entry.getValue(), "");
+			OwnedNpcDefault npcSubtypeDefault = setKey.apply(entry.getKey());
+			npcSubtypeDefault = npcSubtypeDefault.setAttributes(getAttributes(data));
+			npcSubtypeDefault = getExperienceDrop(data).map(npcSubtypeDefault::setExperienceDrop).orElse(npcSubtypeDefault);
+			npcSubtypeDefault = getCanSwim(data).map(npcSubtypeDefault::setCanSwim).orElse(npcSubtypeDefault);
+			npcSubtypeDefault = getCanBreakDoors(data).map(npcSubtypeDefault::setCanBreakDoors).orElse(npcSubtypeDefault);
+			npcSubtypeDefault = npcSubtypeDefault.setEquipment(getEquipment(data));
+			return npcSubtypeDefault;
+		}
+
+		private Set<ResourceLocationMatcher> getTargetList(JsonObject json) {
+			if (!json.has("entities_to_target")) {
+				return Collections.emptySet();
+			}
+			JsonArray targets = JsonUtils.getJsonArray(json, "entities_to_target");
+			return StreamSupport.stream(targets.spliterator(), false).map(e -> new ResourceLocationMatcher(JsonUtils.getString(e, "")))
+					.collect(Collectors.toCollection(HashSet::new));
+		}
+
+		private void fillRemainingSubtypeDefaults(OwnedNpcDefault overallDefault, Map<String, OwnedNpcDefault> npcSubtypeDefaults) {
 			for (String subtype : AWNPCEntities.getNpcMap().keySet().stream().filter(k -> !k.startsWith(FACTION_NPC_PREFIX)).collect(Collectors.toList())) {
 				if (!npcSubtypeDefaults.keySet().contains(subtype)) {
 					npcSubtypeDefaults.put(subtype, overallDefault);
@@ -71,32 +97,19 @@ public class NpcDefaultsRegistry {
 	}
 
 	private abstract static class NpcDefaultsParserBase implements IRegistryDataParser {
-
-		protected NpcDefault getSubtypeDefault(Map.Entry<String, JsonElement> entry, Function<String, NpcDefault> setKey) {
-			JsonObject data = JsonUtils.getJsonObject(entry.getValue(), "");
-			NpcDefault npcSubtypeDefault = setKey.apply(entry.getKey());
-			npcSubtypeDefault = npcSubtypeDefault.addTargets(getTargetList(data));
-			npcSubtypeDefault = npcSubtypeDefault.setAttributes(getAttributes(data));
-			npcSubtypeDefault = getExperienceDrop(data).map(npcSubtypeDefault::setExperienceDrop).orElse(npcSubtypeDefault);
-			npcSubtypeDefault = getCanSwim(data).map(npcSubtypeDefault::setCanSwim).orElse(npcSubtypeDefault);
-			npcSubtypeDefault = getCanBreakDoors(data).map(npcSubtypeDefault::setCanBreakDoors).orElse(npcSubtypeDefault);
-			npcSubtypeDefault = npcSubtypeDefault.setEquipment(getEquipment(data));
-			return npcSubtypeDefault;
-		}
-
-		private Optional<Boolean> getCanBreakDoors(JsonObject json) {
+		protected Optional<Boolean> getCanBreakDoors(JsonObject json) {
 			return json.has("can_break_doors") ? Optional.of(JsonUtils.getBoolean(json, "can_break_doors")) : Optional.empty();
 		}
 
-		private Optional<Boolean> getCanSwim(JsonObject json) {
+		protected Optional<Boolean> getCanSwim(JsonObject json) {
 			return json.has("can_swim") ? Optional.of(JsonUtils.getBoolean(json, "can_swim")) : Optional.empty();
 		}
 
-		private Optional<Integer> getExperienceDrop(JsonObject json) {
+		protected Optional<Integer> getExperienceDrop(JsonObject json) {
 			return json.has("experience_drop") ? Optional.of(JsonUtils.getInt(json, "experience_drop")) : Optional.empty();
 		}
 
-		private Map<String, Double> getAttributes(JsonObject json) {
+		protected Map<String, Double> getAttributes(JsonObject json) {
 			if (!json.has("attributes")) {
 				return Collections.emptyMap();
 			}
@@ -104,7 +117,7 @@ public class NpcDefaultsRegistry {
 			return JsonHelper.mapFromJson(json, "attributes", Map.Entry::getKey, e -> (double) JsonUtils.getFloat(e.getValue(), ""));
 		}
 
-		private Map<Integer, Item> getEquipment(JsonObject json) {
+		protected Map<Integer, Item> getEquipment(JsonObject json) {
 			if (!json.has("equipment")) {
 				return Collections.emptyMap();
 			}
@@ -126,21 +139,6 @@ public class NpcDefaultsRegistry {
 					throw new JsonParseException("Invalid equipment slot name \"" + slotName + "\"");
 			}
 		}
-
-		private Set<ResourceLocationMatcher> getTargetList(JsonObject json) {
-			if (!json.has("entities_to_target")) {
-				return Collections.emptySet();
-			}
-			JsonArray targets = JsonUtils.getJsonArray(json, "entities_to_target");
-			return StreamSupport.stream(targets.spliterator(), false).map(e -> new ResourceLocationMatcher(JsonUtils.getString(e, "")))
-					.collect(Collectors.toCollection(HashSet::new));
-		}
-
-		protected NpcDefault parseDefaults(JsonObject json) {
-			JsonObject defaults = JsonUtils.getJsonObject(json, "defaults");
-			return new NpcDefault(getTargetList(defaults), getAttributes(defaults), getExperienceDrop(defaults).orElse(0),
-					getCanSwim(defaults).orElse(true), getCanBreakDoors(defaults).orElse(true), getEquipment(defaults));
-		}
 	}
 
 	public static class FactionNpcDefaultsParser extends NpcDefaultsParserBase {
@@ -158,9 +156,26 @@ public class NpcDefaultsRegistry {
 			parseFactions(json, npcSubtypeDefaults);
 		}
 
+		private NpcDefault parseDefaults(JsonObject json) {
+			JsonObject defaults = JsonUtils.getJsonObject(json, "defaults");
+			return new NpcDefault(getAttributes(defaults), getExperienceDrop(defaults).orElse(0),
+					getCanSwim(defaults).orElse(true), getCanBreakDoors(defaults).orElse(true), getEquipment(defaults));
+		}
+
 		private void parseFactions(JsonObject json, Map<String, NpcDefault> npcSubtypeDefaults) {
 			JsonHelper.mapFromJson(json, "factions", factionNpcDefaults, Map.Entry::getKey, e -> getFactionDefaults(npcSubtypeDefaults, e));
 			fillRemainingFactionDefaults(npcSubtypeDefaults);
+		}
+
+		private NpcDefault getSubtypeDefault(Map.Entry<String, JsonElement> entry, Function<String, NpcDefault> setKey) {
+			JsonObject data = JsonUtils.getJsonObject(entry.getValue(), "");
+			NpcDefault npcSubtypeDefault = setKey.apply(entry.getKey());
+			npcSubtypeDefault = npcSubtypeDefault.setAttributes(getAttributes(data));
+			npcSubtypeDefault = getExperienceDrop(data).map(npcSubtypeDefault::setExperienceDrop).orElse(npcSubtypeDefault);
+			npcSubtypeDefault = getCanSwim(data).map(npcSubtypeDefault::setCanSwim).orElse(npcSubtypeDefault);
+			npcSubtypeDefault = getCanBreakDoors(data).map(npcSubtypeDefault::setCanBreakDoors).orElse(npcSubtypeDefault);
+			npcSubtypeDefault = npcSubtypeDefault.setEquipment(getEquipment(data));
+			return npcSubtypeDefault;
 		}
 
 		private Map<String, NpcDefault> parseSubtypes(JsonObject json, NpcDefault overallDefault) {

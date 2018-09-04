@@ -50,6 +50,11 @@
             {
                 "demon": true
             }
+        ],
+        "entities_to_target": [
+            "minecraft:zombie",
+            "minecraft:skeleton",
+            "minecraft:slime"
         ]
     },
     "factions": [

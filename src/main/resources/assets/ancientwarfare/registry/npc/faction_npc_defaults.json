@@ -1,10 +1,5 @@
 {
     "defaults": {
-        "entities_to_target": [
-            "minecraft:zombie",
-            "minecraft:skeleton",
-            "minecraft:slime"
-        ],
         "attributes": [
             {
                 "generic.maxHealth": 50
