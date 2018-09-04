@@ -11,9 +11,10 @@ import net.minecraftforge.fml.common.ModContainer;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
-import net.shadowmage.ancientwarfare.structure.api.IStructurePluginManager;
+import net.shadowmage.ancientwarfare.structure.api.IStructurePluginRegister;
 import net.shadowmage.ancientwarfare.structure.api.StructureContentPlugin;
 import net.shadowmage.ancientwarfare.structure.api.StructurePluginRegistrationEvent;
+import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
 import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException.TemplateRuleParsingException;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
@@ -27,23 +28,16 @@ import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.S
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.StructurePluginVanillaHandler;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.StructurePluginVehicles;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
-public class StructurePluginManager implements IStructurePluginManager {
-	//TODO is there really a need for so much reflection or it can be rewritten using something like factory methods?
-
+public class StructurePluginManager implements IStructurePluginRegister {
 	private final List<StructureContentPlugin> loadedContentPlugins = new ArrayList<>();
 
-	private final HashMap<Class<? extends Entity>, Class<? extends TemplateRuleEntity>> entityRules = new HashMap<>();
-	private final HashMap<Block, Class<? extends TemplateRuleBlock>> blockRules = new HashMap<>();
-	private final HashMap<Class<? extends TemplateRule>, String> idByRuleClass = new HashMap<>();
-	private final HashMap<String, Class<? extends TemplateRule>> ruleByID = new HashMap<>();
-	private final HashMap<Block, String> pluginByBlock = new HashMap<>();
+	private final List<RuleHandler<Block, IBlockRuleCreator, IRuleDeserializer<TemplateRuleBlock>>> blockRuleHandlers = new ArrayList<>();
+	private final List<RuleHandler<Class<? extends Entity>, IEntityRuleCreator, IRuleDeserializer<TemplateRuleEntity>>> entityRuleHandlers = new ArrayList<>();
 
 	public static final StructurePluginManager INSTANCE = new StructurePluginManager();
 
@@ -51,13 +45,11 @@ public class StructurePluginManager implements IStructurePluginManager {
 	}
 
 	public void loadPlugins() {
-		this.addPlugin(new StructurePluginVanillaHandler());
+		addPlugin(new StructurePluginVanillaHandler());
 
 		for (ModContainer container : Loader.instance().getActiveModList()) {
-			if (!isDefaultMods(container.getModId())) {
-				if (!MinecraftForge.EVENT_BUS.post(new StructurePluginRegistrationEvent(this, container.getModId()))) {
-					this.addPlugin(new StructurePluginModDefault(container.getModId()));
-				}
+			if (!isDefaultMods(container.getModId()) && !MinecraftForge.EVENT_BUS.post(new StructurePluginRegistrationEvent(this, container.getModId()))) {
+				addPlugin(new StructurePluginModDefault(container.getModId()));
 			}
 		}
 
@@ -100,83 +92,41 @@ public class StructurePluginManager implements IStructurePluginManager {
 		loadedContentPlugins.add(plugin);
 	}
 
-	public String getPluginNameFor(Block block) {
-		return pluginByBlock.get(block);
+	public Optional<String> getPluginNameFor(Block block) {
+		return blockRuleHandlers.stream().filter(h -> h.obj == block).map(h -> h.pluginName).findFirst();
 	}
 
-	private String getPluginNameFor(Class<? extends TemplateRule> ruleClass) {
-		return this.idByRuleClass.get(ruleClass);
+	private Optional<? extends IRuleDeserializer> getDeserializerByName(String name) {
+		Optional<IRuleDeserializer<TemplateRuleBlock>> result = blockRuleHandlers.stream().filter(h -> h.pluginName.equals(name)).map(h -> h.deserializer).findFirst();
+		if (result.isPresent()) {
+			return result;
+		}
+		return entityRuleHandlers.stream().filter(h -> h.pluginName.equals(name)).map(h -> h.deserializer).findFirst();
 	}
 
-	private <T extends TemplateRule> Class<T> getRuleByName(String name) {
-		//noinspection unchecked
-		return (Class<T>) this.ruleByID.get(name);
-	}
-
-	public TemplateRuleBlock getRuleForBlock(World world, Block block, int turns, BlockPos pos) {
-		Class<? extends TemplateRuleBlock> clz = blockRules.get(block);
-		if (clz != null) {
+	public Optional<TemplateRuleBlock> getRuleForBlock(World world, Block block, int turns, BlockPos pos) {
+		Optional<IBlockRuleCreator> creator = blockRuleHandlers.stream().filter(h -> h.obj == block).map(h -> h.ruleCreator).findFirst();
+		if (creator.isPresent()) {
 			IBlockState state = world.getBlockState(pos);
 			int meta = state.getBlock().getMetaFromState(state);
-			try {
-				return clz.getConstructor(World.class, BlockPos.class, Block.class, int.class, int.class).newInstance(world, pos, block, meta, turns);
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
+			return Optional.of(creator.get().create(world, pos, block, meta, turns));
 		}
-		return null;
+		return Optional.empty();
 	}
 
-	public TemplateRuleEntity getRuleForEntity(World world, Entity entity, int turns, int x, int y, int z) {
-		Class<? extends Entity> entityClass = entity.getClass();
-		if (this.entityRules.containsKey(entityClass)) {
-			Class<? extends TemplateRuleEntity> entityRuleClass = this.entityRules.get(entityClass);
-			if (entityRuleClass != null) {
-				try {
-					return entityRuleClass.getConstructor(World.class, Entity.class, int.class, int.class, int.class, int.class).newInstance(world, entity, turns, x, y, z);
-				}
-				catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return null;//TODO
+	public Optional<TemplateRuleEntity> getRuleForEntity(World world, Entity entity, int turns, int x, int y, int z) {
+		return entityRuleHandlers.stream().filter(h -> entity.getClass().isInstance(h.obj)).map(h -> h.ruleCreator).findFirst()
+				.map(c -> c.create(world, entity, turns, x, y, z));
 	}
 
-	public void registerEntityHandler(String pluginName, Class<? extends Entity> entityClass, Class<? extends TemplateRuleEntity> ruleClass) {
-		if (ruleByID.containsKey(pluginName)) {
-			if (!ruleByID.get(pluginName).equals(ruleClass)) {
-				Class<? extends TemplateRule> clz = ruleByID.get(pluginName);
-				throw new IllegalArgumentException("Attempt to overwrite " + clz + " with " + ruleClass + " by " + pluginName + " for entityClass: " + entityClass);
-			}
-		} else {
-			ruleByID.put(pluginName, ruleClass);
-		}
-		entityRules.put(entityClass, ruleClass);
-		if (!idByRuleClass.containsKey(ruleClass))
-			idByRuleClass.put(ruleClass, pluginName);
+	public void registerEntityHandler(String pluginName, Class<? extends Entity> entityClass, IEntityRuleCreator creator, IRuleDeserializer<TemplateRuleEntity> deserializer) {
+		entityRuleHandlers.add(new RuleHandler<>(entityClass, pluginName, creator, deserializer));
 	}
 
-	public void registerBlockHandler(String pluginName, Block block, Class<? extends TemplateRuleBlock> ruleClass) {
-		if (ruleByID.containsKey(pluginName)) {
-			if (!ruleByID.get(pluginName).equals(ruleClass)) {
-				Class<? extends TemplateRule> clz = ruleByID.get(pluginName);
-				throw new IllegalArgumentException("Attempt to overwrite " + clz + " with " + ruleClass + " by " + pluginName + " for block: " + block);
-			}
-		} else {
-			ruleByID.put(pluginName, ruleClass);
-		}
-		if (idByRuleClass.containsKey(ruleClass)) {
-			pluginByBlock.put(block, idByRuleClass.get(ruleClass));
-		} else {
-			idByRuleClass.put(ruleClass, pluginName);
-			pluginByBlock.put(block, pluginName);
-		}
-		blockRules.put(block, ruleClass);
+	public void registerBlockHandler(String pluginName, Block block, IBlockRuleCreator creator, IRuleDeserializer<TemplateRuleBlock> deserializer) {
+		blockRuleHandlers.add(new RuleHandler<>(block, pluginName, creator, deserializer));
 	}
 
-	@Override
 	public void registerPlugin(StructureContentPlugin plugin) {
 		addPlugin(plugin);
 	}
@@ -212,45 +162,61 @@ public class StructurePluginManager implements IStructurePluginManager {
 			}
 		}
 
-		Class<T> clz = INSTANCE.getRuleByName(name);
-		if (clz == null) {
-			throw new TemplateRuleParsingException("Not enough data to create template rule.\n" + "Missing plugin for name: " + name + "\n" + "name: " + name + "\n" + "number:" + ruleNumber + "\n" + "ruleDataPackage.size:" + ruleDataPackage.size() + "\n");
-		} else if (name == null || ruleNumber < 0 || ruleDataPackage.isEmpty()) {
-			throw new TemplateRuleParsingException("Not enough data to create template rule.\n" + "name: " + name + "\n" + "number:" + ruleNumber + "\n" + "ruleDataPackage.size:" + ruleDataPackage.size() + "\n" + "ruleClass: " + clz);
+		if (name == null || ruleNumber < 0 || ruleDataPackage.isEmpty()) {
+			throw new TemplateRuleParsingException("Not enough data to create template rule.\n" + "name: " + name + "\n" + "number:" + ruleNumber + "\n" + "ruleDataPackage.size:" + ruleDataPackage.size() + "\n");
 		}
 
 		FixResult.Builder<T> resultBuilder = new FixResult.Builder<>();
+
+		name = resultBuilder.updateAndGetData(DataFixManager.fixRuleName(version, name));
+		Optional<? extends IRuleDeserializer> deserializer = INSTANCE.getDeserializerByName(name);
+		if (!deserializer.isPresent()) {
+			throw new TemplateRuleParsingException("Not enough data to create template rule.\n" + "Missing plugin for name: " + name + "\n" + "name: " + name + "\n" + "number:" + ruleNumber + "\n" + "ruleDataPackage.size:" + ruleDataPackage.size() + "\n");
+		}
+
 		if (StructureTemplate.CURRENT_VERSION.isGreaterThan(version)) {
 			ruleDataPackage = resultBuilder.updateAndGetData(DataFixManager.fixRuleData(version, name, ruleDataPackage));
 		}
 
+		TemplateRule rule = deserializer.get().deserialize(ruleNumber, ruleDataPackage);
+
+		T actualRule;
 		try {
-			T rule = clz.getConstructor().newInstance();
-			rule.parseRule(ruleNumber, ruleDataPackage);
-			return resultBuilder.build(rule);
+			//noinspection unchecked
+			actualRule = (T) rule;
 		}
-		catch (Exception e) {
-			throw new TemplateRuleParsingException("Error parsing plugin " + name, e);
+		catch (ClassCastException e) {
+			throw new TemplateRuleParsingException("Incorrect rule type is being returned\n");
+		}
+
+		return resultBuilder.build(actualRule);
+	}
+
+	private class RuleHandler<T, U extends IRuleCreator, V extends IRuleDeserializer> {
+		private final T obj;
+		private final String pluginName;
+		private U ruleCreator;
+		private V deserializer;
+
+		RuleHandler(T obj, String pluginName, U creator, V deserializer) {
+			this.obj = obj;
+			this.pluginName = pluginName;
+			this.ruleCreator = creator;
+			this.deserializer = deserializer;
 		}
 	}
 
-	public static void writeRuleLines(TemplateRule rule, BufferedWriter out, String ruleType) throws IOException {
-		if (!INSTANCE.idByRuleClass.containsKey(rule.getClass())) {
-			return;
-		}
-		out.write(ruleType + ":");
-		out.newLine();
-		out.write("plugin=" + INSTANCE.getPluginNameFor(rule.getClass()));
-		out.newLine();
-		out.write("number=" + rule.ruleNumber);
-		out.newLine();
-		out.write("data:");
-		out.newLine();
-		rule.writeRule(out);
-		out.write(":enddata");
-		out.newLine();
-		out.write(":end" + ruleType);
-		out.newLine();
-		out.newLine();
+	interface IRuleCreator {}
+
+	public interface IBlockRuleCreator extends IRuleCreator {
+		TemplateRuleBlock create(World world, BlockPos pos, Block block, int meta, int turns);
+	}
+
+	public interface IEntityRuleCreator extends IRuleCreator {
+		TemplateRuleEntity create(World world, Entity entity, int turns, int x, int y, int z);
+	}
+
+	public interface IRuleDeserializer<T extends TemplateRule> {
+		T deserialize(int ruleNumber, List<String> lines) throws TemplateParsingException.TemplateRuleParsingException;
 	}
 }

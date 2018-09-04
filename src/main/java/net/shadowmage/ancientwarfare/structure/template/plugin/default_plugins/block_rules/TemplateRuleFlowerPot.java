@@ -11,8 +11,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
+import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
+
+import java.util.List;
 
 public class TemplateRuleFlowerPot extends TemplateRuleVanillaBlocks {
+	public static final String PLUGIN_NAME = "vanillaFlowerPot";
 	private static final String ITEM_NAME_TAG = "itemName";
 	private String itemName;
 	private int itemMeta;
@@ -23,12 +27,14 @@ public class TemplateRuleFlowerPot extends TemplateRuleVanillaBlocks {
 			Item item = t.getFlowerPotItem();
 			itemMeta = t.getFlowerPotData();
 			if (item != null) {
+				//noinspection ConstantConditions - item must be registered to be in the flower pot
 				itemName = item.getRegistryName().toString();
 			}
 		});
 	}
 
-	public TemplateRuleFlowerPot() {
+	public TemplateRuleFlowerPot(int ruleNumber, List<String> lines) throws TemplateParsingException.TemplateRuleParsingException {
+		super(ruleNumber, lines);
 	}
 
 	@Override
@@ -62,5 +68,10 @@ public class TemplateRuleFlowerPot extends TemplateRuleVanillaBlocks {
 			itemName = tag.getString(ITEM_NAME_TAG);
 		}
 		itemMeta = tag.getInteger("itemMeta");
+	}
+
+	@Override
+	protected String getPluginName() {
+		return PLUGIN_NAME;
 	}
 }

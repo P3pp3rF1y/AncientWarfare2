@@ -1,24 +1,3 @@
-/*
- Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
- This software is distributed under the terms of the GNU General Public License.
- Please see COPYING for precise license information.
-
- This file is part of Ancient Warfare.
-
- Ancient Warfare is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- Ancient Warfare is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins;
 
 import net.minecraft.entity.Entity;
@@ -27,9 +6,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.init.AWNPCBlocks;
-import net.shadowmage.ancientwarfare.structure.api.IStructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.api.StructureContentPlugin;
-import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockLogic;
+import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
+import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockTile;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.entity_rules.TemplateRuleEntityNpc;
 
 public class StructurePluginNpcs implements StructureContentPlugin {
@@ -39,16 +18,16 @@ public class StructurePluginNpcs implements StructureContentPlugin {
 	}
 
 	@Override
-	public void addHandledBlocks(IStructurePluginManager manager) {
-		manager.registerBlockHandler("awTownHall", AWNPCBlocks.TOWN_HALL, TemplateRuleBlockLogic.class);
+	public void addHandledBlocks(StructurePluginManager manager) {
+		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, AWNPCBlocks.TOWN_HALL, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
 	}
 
 	@Override
-	public void addHandledEntities(IStructurePluginManager manager) {
+	public void addHandledEntities(StructurePluginManager manager) {
 		for (ResourceLocation registryName : ForgeRegistries.ENTITIES.getKeys()) {
 			Class<? extends Entity> clazz = EntityList.getClass(registryName);
 			if (NpcBase.class.isAssignableFrom(clazz)) {
-				manager.registerEntityHandler("AWNpc", clazz, TemplateRuleEntityNpc.class);
+				manager.registerEntityHandler(TemplateRuleEntityNpc.PLUGIN_NAME, clazz, TemplateRuleEntityNpc::new, TemplateRuleEntityNpc::new);
 			}
 		}
 	}

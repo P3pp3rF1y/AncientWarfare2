@@ -10,11 +10,15 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
+import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 
+import java.util.List;
+
 public class TemplateRuleTorqueMultiblock extends TemplateRuleBlock {
 
+	public static final String PLUGIN_NAME = "awTorqueMulti";
 	int meta;
 	private String blockName;
 	NBTTagCompound tag;
@@ -27,7 +31,8 @@ public class TemplateRuleTorqueMultiblock extends TemplateRuleBlock {
 		WorldTools.getTile(world, pos).ifPresent(t -> t.writeToNBT(tag));
 	}
 
-	public TemplateRuleTorqueMultiblock() {
+	public TemplateRuleTorqueMultiblock(int ruleNumber, List<String> lines) throws TemplateParsingException.TemplateRuleParsingException {
+		super(ruleNumber, lines);
 	}
 
 	@Override
@@ -74,5 +79,10 @@ public class TemplateRuleTorqueMultiblock extends TemplateRuleBlock {
 	@Override
 	public boolean shouldPlaceOnBuildPass(World world, int turns, BlockPos pos, int buildPass) {
 		return buildPass == 0;
+	}
+
+	@Override
+	protected String getPluginName() {
+		return PLUGIN_NAME;
 	}
 }

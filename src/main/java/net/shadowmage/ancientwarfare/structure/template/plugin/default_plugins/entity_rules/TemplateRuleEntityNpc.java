@@ -5,12 +5,17 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
+import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
 
+import java.util.List;
 import java.util.Optional;
 
 public class TemplateRuleEntityNpc extends TemplateRuleEntityLogic {
 
-	public TemplateRuleEntityNpc() {
+	public static final String PLUGIN_NAME = "AWNpc";
+
+	public TemplateRuleEntityNpc(int ruleNumber, List<String> lines) throws TemplateParsingException.TemplateRuleParsingException {
+		super(ruleNumber, lines);
 	}
 
 	public TemplateRuleEntityNpc(World world, Entity entity, int turns, int x, int y, int z) {
@@ -29,5 +34,10 @@ public class TemplateRuleEntityNpc extends TemplateRuleEntityLogic {
 			c.setHomeAreaAtCurrentPosition();
 		}
 		return Optional.of(e);
+	}
+
+	@Override
+	protected String getPluginName() {
+		return PLUGIN_NAME;
 	}
 }

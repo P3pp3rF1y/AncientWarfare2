@@ -6,8 +6,12 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
+import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
 
-public class TemplateRuleVanillaSkull extends TemplateRuleBlockLogic {
+import java.util.List;
+
+public class TemplateRuleVanillaSkull extends TemplateRuleBlockTile {
+	public static final String PLUGIN_NAME = "vanillaSkull";
 	public int rotation;
 
 	public TemplateRuleVanillaSkull(World world, BlockPos pos, Block block, int meta, int turns) {
@@ -17,7 +21,8 @@ public class TemplateRuleVanillaSkull extends TemplateRuleBlockLogic {
 		rotation = t;
 	}
 
-	public TemplateRuleVanillaSkull() {
+	public TemplateRuleVanillaSkull(int ruleNumber, List<String> lines) throws TemplateParsingException.TemplateRuleParsingException {
+		super(ruleNumber, lines);
 	}
 
 	@Override
@@ -46,5 +51,10 @@ public class TemplateRuleVanillaSkull extends TemplateRuleBlockLogic {
 	public void parseRuleData(NBTTagCompound tag) {
 		super.parseRuleData(tag);
 		rotation = this.tag.getInteger("Rot");
+	}
+
+	@Override
+	protected String getPluginName() {
+		return PLUGIN_NAME;
 	}
 }

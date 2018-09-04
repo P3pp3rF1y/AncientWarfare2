@@ -1,24 +1,3 @@
-/*
- Copyright 2012-2014 John Cummens (aka Shadowmage, Shadowmage4513)
- This software is distributed under the terms of the GNU General Public License.
- Please see COPYING for precise license information.
-
- This file is part of Ancient Warfare 2.
-
- Ancient Warfare 2 is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- Ancient Warfare is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules;
 
 import net.minecraft.block.Block;
@@ -29,12 +8,15 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
+import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
+
+import java.util.List;
 
 public class TemplateRuleBlockDoors extends TemplateRuleVanillaBlocks {
 
-	byte sideFlag = 0;
-	boolean isTop = false;
+	public static final String PLUGIN_NAME = "doors";
+	private byte sideFlag;
 
 	public TemplateRuleBlockDoors(World world, BlockPos pos, Block block, int meta, int turns) {
 		super(world, pos, block, meta, turns);
@@ -44,7 +26,8 @@ public class TemplateRuleBlockDoors extends TemplateRuleVanillaBlocks {
 		}
 	}
 
-	public TemplateRuleBlockDoors() {
+	public TemplateRuleBlockDoors(int ruleNumber, List<String> lines) throws TemplateParsingException.TemplateRuleParsingException {
+		super(ruleNumber, lines);
 	}
 
 	@Override
@@ -78,7 +61,7 @@ public class TemplateRuleBlockDoors extends TemplateRuleVanillaBlocks {
 	public boolean shouldReuseRule(World world, Block block, int meta, int turns, BlockPos pos) {
 		IBlockState state = world.getBlockState(pos.up());
 		Block block1 = state.getBlock();
-		return block1 != null && blockName.equals(BlockDataManager.INSTANCE.getNameForBlock(block1)) && block1.getMetaFromState(state) == sideFlag;
+		return blockName.equals(BlockDataManager.INSTANCE.getNameForBlock(block1)) && block1.getMetaFromState(state) == sideFlag;
 	}
 
 	@Override
@@ -88,4 +71,8 @@ public class TemplateRuleBlockDoors extends TemplateRuleVanillaBlocks {
 		}
 	}
 
+	@Override
+	protected String getPluginName() {
+		return PLUGIN_NAME;
+	}
 }

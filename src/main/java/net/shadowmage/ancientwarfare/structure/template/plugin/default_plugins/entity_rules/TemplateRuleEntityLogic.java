@@ -16,23 +16,29 @@ import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
+import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 import java.util.Optional;
 
 public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
 	private static final String INVENTORY_DATA_TAG = "inventoryData";
 	private static final String EQUIPMENT_DATA_TAG = "equipmentData";
-	private NBTTagCompound tag = new NBTTagCompound();
+	public static final String PLUGIN_NAME = "vanillaLogicEntity";
+	private NBTTagCompound tag;
 
 	private NonNullList<ItemStack> inventory;
-	private NonNullList<ItemStack> equipment = NonNullList.withSize(EntityEquipmentSlot.values().length, ItemStack.EMPTY);
+	private NonNullList<ItemStack> equipment;
 
-	public TemplateRuleEntityLogic() {
+	public TemplateRuleEntityLogic(int ruleNumber, List<String> lines) throws TemplateParsingException.TemplateRuleParsingException {
+		super(ruleNumber, lines);
 	}
 
 	public TemplateRuleEntityLogic(World world, Entity entity, int turns, int x, int y, int z) {
 		super(world, entity, turns, x, y, z);
+		initEquipment();
+		tag = new NBTTagCompound();
 		entity.writeToNBT(tag);
 		if (entity instanceof EntityLiving)//handles villagers / potentially other living npcs with inventories
 		{
@@ -53,6 +59,10 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
 		}
 		tag.removeTag("UUIDMost");
 		tag.removeTag("UUIDLeast");
+	}
+
+	private void initEquipment() {
+		equipment = NonNullList.withSize(EntityEquipmentSlot.values().length, ItemStack.EMPTY);
 	}
 
 	@Override
@@ -151,6 +161,9 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
 				}
 			}
 		}
+
+		initEquipment(); //here instead of with field because call to super is done before field can be initialized
+
 		if (tag.hasKey(EQUIPMENT_DATA_TAG)) {
 			NBTTagCompound inventoryTag = tag.getCompoundTag(EQUIPMENT_DATA_TAG);
 			NBTTagCompound itemTag;
@@ -168,4 +181,8 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
 		}
 	}
 
+	@Override
+	protected String getPluginName() {
+		return PLUGIN_NAME;
+	}
 }

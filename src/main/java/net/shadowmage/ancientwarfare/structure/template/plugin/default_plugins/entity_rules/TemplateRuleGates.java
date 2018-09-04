@@ -11,31 +11,23 @@ import net.shadowmage.ancientwarfare.core.owner.Owner;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
+import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.gates.types.Gate;
 
+import java.util.List;
 import java.util.Optional;
 
 public class TemplateRuleGates extends TemplateRuleEntity {
 
+	public static final String PLUGIN_NAME = "awGate";
 	private String owner;
 	private String gateType;
 	private EnumFacing orientation;
-	private BlockPos pos1 = BlockPos.ORIGIN;
-	private BlockPos pos2 = BlockPos.ORIGIN;
+	private BlockPos pos1;
+	private BlockPos pos2;
 
-	/*
-	 * scanner-constructor.  called when scanning an entity.
-	 *
-	 * @param world  the world containing the scanned area
-	 * @param entity the entity being scanned
-	 * @param turns  how many 90' turns to rotate entity for storage in template
-	 * @param x      world x-coord of the enitty (floor(posX)
-	 * @param y      world y-coord of the enitty (floor(posY)
-	 * @param z      world z-coord of the enitty (floor(posZ)
-	 */
-	@SuppressWarnings("unused") //used in reflection
 	public TemplateRuleGates(World world, Entity entity, int turns, int x, int y, int z) {
 		super(world, entity, turns, x, y, z);
 		EntityGate gate = (EntityGate) entity;
@@ -47,9 +39,8 @@ public class TemplateRuleGates extends TemplateRuleEntity {
 		this.owner = gate.getOwner().getName();
 	}
 
-	@SuppressWarnings("unused") //used in reflection
-	public TemplateRuleGates() {
-
+	public TemplateRuleGates(int ruleNumber, List<String> lines) throws TemplateParsingException.TemplateRuleParsingException {
+		super(ruleNumber, lines);
 	}
 
 	@Override
@@ -104,4 +95,8 @@ public class TemplateRuleGates extends TemplateRuleEntity {
 		return buildPass == 3;
 	}
 
+	@Override
+	protected String getPluginName() {
+		return PLUGIN_NAME;
+	}
 }

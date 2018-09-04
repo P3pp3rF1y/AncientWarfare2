@@ -12,7 +12,7 @@ import net.shadowmage.ancientwarfare.structure.template.build.validation.Structu
 import java.util.Optional;
 
 public class StructureTemplate {
-	public static final Version CURRENT_VERSION = new Version(2, 3);
+	public static final Version CURRENT_VERSION = new Version(2, 4);
 
 	/*
 	 * base datas

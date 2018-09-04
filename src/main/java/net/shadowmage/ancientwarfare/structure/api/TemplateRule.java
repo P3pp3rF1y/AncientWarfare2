@@ -30,7 +30,6 @@ public abstract class TemplateRule {
 	 * all sub-classes must implement a no-param constructor for when loaded from file (at which point they should initialize from the parseRuleData method)
 	 */
 	public TemplateRule() {
-
 	}
 
 	/*
@@ -47,10 +46,27 @@ public abstract class TemplateRule {
 	public abstract boolean shouldPlaceOnBuildPass(World world, int turns, BlockPos pos, int buildPass);
 
 	public void writeRule(BufferedWriter out) throws IOException {
+		out.write(getRuleType() + ":");
+		out.newLine();
+		out.write("plugin=" + getPluginName());
+		out.newLine();
+		out.write("number=" + ruleNumber);
+		out.newLine();
+		out.write("data:");
+		out.newLine();
 		NBTTagCompound tag = new NBTTagCompound();
 		writeRuleData(tag);
 		writeTag(out, tag);
+		out.write(":enddata");
+		out.newLine();
+		out.write(":end" + getRuleType());
+		out.newLine();
+		out.newLine();
 	}
+
+	protected abstract String getPluginName();
+
+	protected abstract String getRuleType();
 
 	public void parseRule(int ruleNumber, List<String> lines) throws TemplateRuleParsingException {
 		this.ruleNumber = ruleNumber;
@@ -64,7 +80,7 @@ public abstract class TemplateRule {
 		out.newLine();
 	}
 
-	public final NBTTagCompound readTag(List<String> ruleData) throws TemplateRuleParsingException {
+	final NBTTagCompound readTag(List<String> ruleData) throws TemplateRuleParsingException {
 		for (String line : ruleData)
 		{
 			if (line.startsWith(JSON_PREFIX)) {
