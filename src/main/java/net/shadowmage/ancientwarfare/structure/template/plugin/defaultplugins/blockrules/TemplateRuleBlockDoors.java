@@ -16,11 +16,9 @@ import java.util.List;
 public class TemplateRuleBlockDoors extends TemplateRuleVanillaBlocks {
 
 	public static final String PLUGIN_NAME = "doors";
-	private boolean lower;
 
 	public TemplateRuleBlockDoors(World world, BlockPos pos, IBlockState state, int turns) {
 		super(world, pos, state, turns);
-		lower = world.getBlockState(pos.up()).getBlock() == state.getBlock();
 	}
 
 	public TemplateRuleBlockDoors(int ruleNumber, List<String> lines) throws TemplateParsingException.TemplateRuleParsingException {
@@ -30,7 +28,7 @@ public class TemplateRuleBlockDoors extends TemplateRuleVanillaBlocks {
 	@Override
 	public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
 		IBlockState rotatedState = BlockTools.rotateFacing(state, turns);
-		if (lower) {
+		if (state.getValue(BlockDoor.HALF) == BlockDoor.EnumDoorHalf.LOWER) {
 			world.setBlockState(pos, rotatedState.withProperty(BlockDoor.HALF, BlockDoor.EnumDoorHalf.LOWER), 2);
 			world.setBlockState(pos.up(), rotatedState.withProperty(BlockDoor.HALF, BlockDoor.EnumDoorHalf.UPPER), 2);
 		}
@@ -39,18 +37,16 @@ public class TemplateRuleBlockDoors extends TemplateRuleVanillaBlocks {
 	@Override
 	public void writeRuleData(NBTTagCompound tag) {
 		super.writeRuleData(tag);
-		tag.setBoolean("lower", lower);
 	}
 
 	@Override
 	public void parseRuleData(NBTTagCompound tag) {
 		super.parseRuleData(tag);
-		lower = tag.getBoolean("lower");
 	}
 
 	@Override
 	public void addResources(NonNullList<ItemStack> resources) {
-		if (lower) {
+		if (state.getValue(BlockDoor.HALF) == BlockDoor.EnumDoorHalf.LOWER) {
 			super.addResources(resources);
 		}
 	}

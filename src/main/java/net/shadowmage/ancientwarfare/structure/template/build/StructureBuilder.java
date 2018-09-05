@@ -146,7 +146,7 @@ public class StructureBuilder implements IStructureBuilder {
 
 	private void placeAir() {
 		if (!template.getValidationSettings().isPreserveBlocks()) {
-			template.getValidationSettings().handleClearAction(world, destination, template, bb);
+			world.setBlockToAir(destination);
 		}
 	}
 
