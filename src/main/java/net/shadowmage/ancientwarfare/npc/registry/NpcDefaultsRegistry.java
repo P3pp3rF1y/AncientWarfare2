@@ -8,6 +8,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.util.JsonUtils;
 import net.shadowmage.ancientwarfare.core.registry.IRegistryDataParser;
+import net.shadowmage.ancientwarfare.core.util.RegistryTools;
 import net.shadowmage.ancientwarfare.core.util.parsing.JsonHelper;
 import net.shadowmage.ancientwarfare.core.util.parsing.ResourceLocationMatcher;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
@@ -122,7 +123,7 @@ public class NpcDefaultsRegistry {
 				return Collections.emptyMap();
 			}
 			return JsonHelper.mapFromJson(json, "equipment", e -> parseEquipmentSlot(e.getKey()),
-					e -> JsonHelper.getItem(JsonUtils.getString(e.getValue(), "")));
+					e -> RegistryTools.getItem(JsonUtils.getString(e.getValue(), "")));
 		}
 
 		private int parseEquipmentSlot(String slotName) {

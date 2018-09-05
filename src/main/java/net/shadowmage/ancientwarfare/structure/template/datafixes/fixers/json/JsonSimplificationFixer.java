@@ -8,7 +8,7 @@ import net.shadowmage.ancientwarfare.structure.template.datafixes.IDataFixer;
 
 public class JsonSimplificationFixer implements IDataFixer {
 	@Override
-	public FixResult<String> fix(String line) {
+	public FixResult<String> fix(String ruleName, String line) {
 		if (!Json.isSerializedJSON(line)) {
 			return new FixResult.NotModified<>(line);
 		}

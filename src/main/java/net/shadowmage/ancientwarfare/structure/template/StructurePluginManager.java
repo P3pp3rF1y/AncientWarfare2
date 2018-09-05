@@ -104,14 +104,9 @@ public class StructurePluginManager implements IStructurePluginRegister {
 		return entityRuleHandlers.stream().filter(h -> h.pluginName.equals(name)).map(h -> h.deserializer).findFirst();
 	}
 
-	public Optional<TemplateRuleBlock> getRuleForBlock(World world, Block block, int turns, BlockPos pos) {
-		Optional<IBlockRuleCreator> creator = blockRuleHandlers.stream().filter(h -> h.obj == block).map(h -> h.ruleCreator).findFirst();
-		if (creator.isPresent()) {
-			IBlockState state = world.getBlockState(pos);
-			int meta = state.getBlock().getMetaFromState(state);
-			return Optional.of(creator.get().create(world, pos, block, meta, turns));
-		}
-		return Optional.empty();
+	public Optional<TemplateRuleBlock> getRuleForBlock(World world, IBlockState state, int turns, BlockPos pos) {
+		Optional<IBlockRuleCreator> creator = blockRuleHandlers.stream().filter(h -> h.obj == state.getBlock()).map(h -> h.ruleCreator).findFirst();
+		return creator.map(c -> c.create(world, pos, state, turns));
 	}
 
 	public Optional<TemplateRuleEntity> getRuleForEntity(World world, Entity entity, int turns, int x, int y, int z) {
@@ -198,7 +193,7 @@ public class StructurePluginManager implements IStructurePluginRegister {
 		private U ruleCreator;
 		private V deserializer;
 
-		RuleHandler(T obj, String pluginName, U creator, V deserializer) {
+		private RuleHandler(T obj, String pluginName, U creator, V deserializer) {
 			this.obj = obj;
 			this.pluginName = pluginName;
 			this.ruleCreator = creator;
@@ -209,7 +204,7 @@ public class StructurePluginManager implements IStructurePluginRegister {
 	interface IRuleCreator {}
 
 	public interface IBlockRuleCreator extends IRuleCreator {
-		TemplateRuleBlock create(World world, BlockPos pos, Block block, int meta, int turns);
+		TemplateRuleBlock create(World world, BlockPos pos, IBlockState state, int turns);
 	}
 
 	public interface IEntityRuleCreator extends IRuleCreator {

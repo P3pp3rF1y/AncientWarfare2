@@ -13,7 +13,7 @@ public class FactionExpansionFixer implements IDataFixer {
 	private static final Version VERSION = new Version(2, 2);
 
 	@Override
-	public FixResult<String> fix(String line) {
+	public FixResult<String> fix(String ruleName, String line) {
 		Optional<JsonObject> parsedJson = Json.parseJson(line);
 
 		if (!parsedJson.isPresent()) {

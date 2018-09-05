@@ -15,12 +15,10 @@ import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.JsonUtils;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.core.util.RegistryTools;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -34,7 +32,7 @@ import java.util.stream.StreamSupport;
 public class JsonHelper {
 
 	public static IBlockState getBlockState(JsonObject parent, String elementName) {
-		return getBlockState(parent, elementName, Block::getDefaultState, JsonHelper::getBlockState);
+		return getBlockState(parent, elementName, Block::getDefaultState, BlockTools::updateProperty);
 	}
 
 	public static BlockStateMatcher getBlockStateMatcher(JsonObject stateJson) {
@@ -65,12 +63,12 @@ public class JsonHelper {
 
 	private static <T> T getItemStack(JsonElement element, ItemStackCreator<T> creator) {
 		if (element.isJsonPrimitive()) {
-			return creator.instantiate(getItem(element.getAsString()), 1, -1, null);
+			return creator.instantiate(RegistryTools.getItem(element.getAsString()), 1, -1, null);
 		}
 
 		JsonObject obj = element.getAsJsonObject();
 		String registryName = JsonUtils.getString(obj, "name");
-		Item item = getItem(registryName);
+		Item item = RegistryTools.getItem(registryName);
 
 		int count = JsonUtils.hasField(obj, "count") ? JsonUtils.getInt(obj, "count") : 1;
 
@@ -103,55 +101,12 @@ public class JsonHelper {
 		return getItemStackMatcher(parent.get(elementName));
 	}
 
-	private static <T> T getBlockState(JsonObject stateJson, Function<Block, T> init, AddPropertyFunction<T> addProperty) {
-		return getBlockState(getBlockNameAndProperties(stateJson), init, addProperty);
+	private static <T> T getBlockState(JsonObject stateJson, Function<Block, T> init, BlockTools.AddPropertyFunction<T> addProperty) {
+		return BlockTools.getBlockState(getBlockNameAndProperties(stateJson), init, addProperty);
 	}
 
-	private static <T> T getBlockState(JsonObject parent, String elementName, Function<Block, T> init, AddPropertyFunction<T> addProperty) {
-		return getBlockState(getBlockNameAndProperties(parent, elementName), init, addProperty);
-	}
-
-	private static <T> T getBlockState(Tuple<String, Map<String, String>> blockProps, Function<Block, T> init, AddPropertyFunction<T> addProperty) {
-
-		String registryName = blockProps.getFirst();
-		Map<String, String> properties = blockProps.getSecond();
-
-		Block block = getBlock(registryName);
-
-		T ret = init.apply(block);
-		BlockStateContainer stateContainer = block.getBlockState();
-
-		for (Entry<String, String> prop : properties.entrySet()) {
-			IProperty<?> property = stateContainer.getProperty(prop.getKey());
-			//noinspection ConstantConditions
-			Optional<?> value = getValueHelper(property, prop.getValue());
-
-			if (!value.isPresent()) {
-				throw new MissingResourceException("Invalid value \"" + prop.getValue() + "\" for property \"" + prop.getKey() + "\"", IProperty.class.getName(), prop.getKey());
-			}
-			//noinspection ConstantConditions
-			ret = addProperty.apply(ret, property, (Comparable<?>) value.get());
-		}
-
-		return ret;
-	}
-
-	private static Block getBlock(String registryName) {
-		return getRegistryEntry(registryName, ForgeRegistries.BLOCKS);
-	}
-
-	public static Item getItem(String registryName) {
-		return getRegistryEntry(registryName, ForgeRegistries.ITEMS);
-	}
-
-	private static <T extends IForgeRegistryEntry<T>> T getRegistryEntry(String registryName, IForgeRegistry<T> registry) {
-		ResourceLocation key = new ResourceLocation(registryName);
-		if (!registry.containsKey(key)) {
-			throw new MissingResourceException("Unable to find entry with registry name \"" + registryName + "\"",
-					registry.getRegistrySuperType().getName(), registryName);
-		}
-		//noinspection ConstantConditions
-		return registry.getValue(key);
+	private static <T> T getBlockState(JsonObject parent, String elementName, Function<Block, T> init, BlockTools.AddPropertyFunction<T> addProperty) {
+		return BlockTools.getBlockState(getBlockNameAndProperties(parent, elementName), init, addProperty);
 	}
 
 	private static Tuple<String, Map<String, String>> getBlockNameAndProperties(JsonObject stateJson) {
@@ -180,11 +135,6 @@ public class JsonHelper {
 		return property.parseValue(valueString);
 	}
 
-	private static <T extends Comparable<T>> IBlockState getBlockState(IBlockState state, IProperty<T> property, Comparable<?> value) {
-		//noinspection unchecked
-		return state.withProperty(property, (T) value);
-	}
-
 	public static Predicate<IBlockState> getBlockStateMatcher(JsonObject json, String arrayElement, String individualElement) {
 		if (json.has(arrayElement)) {
 			JsonArray stateMatchers = JsonUtils.getJsonArray(json, arrayElement);
@@ -193,10 +143,6 @@ public class JsonHelper {
 					.toArray(BlockStateMatcher[]::new));
 		}
 		return getBlockStateMatcher(json, individualElement);
-	}
-
-	private interface AddPropertyFunction<T> {
-		T apply(T obj, IProperty<?> property, Comparable<?> value);
 	}
 
 	public static PropertyState getPropertyState(IBlockState state, JsonObject parent, String elementName) {

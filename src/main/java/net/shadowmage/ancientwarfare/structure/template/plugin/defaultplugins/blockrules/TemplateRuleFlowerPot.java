@@ -1,6 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,8 +21,8 @@ public class TemplateRuleFlowerPot extends TemplateRuleVanillaBlocks {
 	private String itemName;
 	private int itemMeta;
 
-	public TemplateRuleFlowerPot(World world, BlockPos pos, Block block, int meta, int turns) {
-		super(world, pos, block, meta, turns);
+	public TemplateRuleFlowerPot(World world, BlockPos pos, IBlockState state, int turns) {
+		super(world, pos, state, turns);
 		WorldTools.getTile(world, pos, TileEntityFlowerPot.class).ifPresent(t -> {
 			Item item = t.getFlowerPotItem();
 			itemMeta = t.getFlowerPotData();
@@ -38,7 +38,7 @@ public class TemplateRuleFlowerPot extends TemplateRuleVanillaBlocks {
 	}
 
 	@Override
-	public boolean shouldReuseRule(World world, Block block, int meta, int turns, BlockPos pos) {
+	public boolean shouldReuseRule(World world, IBlockState state, int turns, BlockPos pos) {
 		return false;
 	}
 

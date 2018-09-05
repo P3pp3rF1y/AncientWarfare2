@@ -26,15 +26,6 @@ public abstract class TemplateRule {
 	public static final String JSON_PREFIX = "JSON:";
 	public int ruleNumber = -1;
 
-	/*
-	 * all sub-classes must implement a no-param constructor for when loaded from file (at which point they should initialize from the parseRuleData method)
-	 */
-	public TemplateRule() {
-	}
-
-	/*
-	 * input params are the target position for placement of this rule and destination orientation
-	 */
 	public abstract void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder);
 
 	public abstract void parseRuleData(NBTTagCompound tag);

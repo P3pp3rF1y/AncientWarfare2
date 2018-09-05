@@ -1,6 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -15,7 +15,6 @@ import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
-import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -28,8 +27,8 @@ public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
 	private NBTTagCompound tag;
 	private NonNullList<ItemStack> inventoryStacks;
 
-	public TemplateRuleBlockInventory(World world, BlockPos pos, Block block, int meta, int turns) {
-		super(world, pos, block, meta, turns);
+	public TemplateRuleBlockInventory(World world, BlockPos pos, IBlockState state, int turns) {
+		super(world, pos, state, turns);
 		TileEntity te = world.getTileEntity(pos);
 		if (te instanceof IInventory) {
 			IInventory inventory = (IInventory) te;
@@ -76,15 +75,15 @@ public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
 	@Override
 	public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
 		super.handlePlacement(world, turns, pos, builder);
-		int localMeta = BlockDataManager.INSTANCE.getRotatedMeta(block, this.meta, turns);
-		world.setBlockState(pos, block.getStateFromMeta(localMeta), 3);
+		world.setBlockState(pos, BlockTools.rotateFacing(state, turns), 3);
 		TileEntity te = world.getTileEntity(pos);
 		if (!(te instanceof IInventory)) {
 			return;
 		}
 		IInventory inventory = (IInventory) te;
 		//TODO look into changing this so that the whole TE doesn't need reloading from custom NBT
-		tag.setString("id", block.getRegistryName().toString());
+		//noinspection ConstantConditions
+		tag.setString("id", state.getBlock().getRegistryName().toString());
 		tag.setInteger("x", pos.getX());
 		tag.setInteger("y", pos.getY());
 		tag.setInteger("z", pos.getZ());
@@ -103,7 +102,7 @@ public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
 	}
 
 	@Override
-	public boolean shouldReuseRule(World world, Block block, int meta, int turns, BlockPos pos) {
+	public boolean shouldReuseRule(World world, IBlockState state, int turns, BlockPos pos) {
 		return false;
 	}
 

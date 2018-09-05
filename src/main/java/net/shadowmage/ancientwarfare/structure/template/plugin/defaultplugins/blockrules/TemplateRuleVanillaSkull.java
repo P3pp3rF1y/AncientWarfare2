@@ -1,6 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -14,8 +14,8 @@ public class TemplateRuleVanillaSkull extends TemplateRuleBlockTile {
 	public static final String PLUGIN_NAME = "vanillaSkull";
 	public int rotation;
 
-	public TemplateRuleVanillaSkull(World world, BlockPos pos, Block block, int meta, int turns) {
-		super(world, pos, block, meta, turns);
+	public TemplateRuleVanillaSkull(World world, BlockPos pos, IBlockState state, int turns) {
+		super(world, pos, state, turns);
 		int t = tag.getInteger("Rot");
 		t = getRotation(t, turns);
 		rotation = t;

@@ -5,6 +5,7 @@ import net.shadowmage.ancientwarfare.structure.template.StructureTemplate.Versio
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 public class DataFixManager {
@@ -27,17 +28,18 @@ public class DataFixManager {
 
 		List<String> modifiedData = new ArrayList<>();
 		for (String line : data) {
-			modifiedData.add(fixData(ruleFixes, templateVersion, ruleName, resultBuilder, line));
+			modifiedData.add(fixData(ruleFixes, templateVersion, ruleName, resultBuilder, line, (f, d) -> ((IDataFixer) f).fix(ruleName, d)));
 		}
 
 		return resultBuilder.build(modifiedData);
 	}
 
-	private static <T> String fixData(List<? extends IDataFixer> fixes, Version templateVersion, String ruleName, FixResult.Builder<T> resultBuilder, String data) {
+	private static <T> String fixData(List<? extends IFixer> fixes, Version templateVersion, String ruleName, FixResult.Builder<T> resultBuilder, String data,
+			BiFunction<IFixer, String, FixResult<String>> doFix) {
 		String ret = data;
-		for (IDataFixer fixer : fixes.stream().filter(f -> f.isForRule(ruleName)).sorted(VERSION_ASCENDING).collect(Collectors.toList())) {
+		for (IFixer fixer : fixes.stream().filter(f -> f.isForRule(ruleName)).sorted(VERSION_ASCENDING).collect(Collectors.toList())) {
 			if (fixer.getVersion().isGreaterThan(templateVersion)) {
-				ret = resultBuilder.updateAndGetData(fixer.fix(data));
+				ret = resultBuilder.updateAndGetData(doFix.apply(fixer, ret));
 			}
 		}
 		return ret;
@@ -45,10 +47,10 @@ public class DataFixManager {
 
 	public static FixResult<String> fixRuleName(Version templateVersion, String ruleName) {
 		FixResult.Builder<String> ret = new FixResult.Builder<>();
-		return ret.build(fixData(ruleNameFixes, templateVersion, ruleName, ret, ruleName));
+		return ret.build(fixData(ruleNameFixes, templateVersion, ruleName, ret, ruleName, (f, n) -> ((IRuleNameFixer) f).fix(n)));
 	}
 
-	private static final Comparator<IDataFixer> VERSION_ASCENDING = (o1, o2) -> {
+	private static final Comparator<IFixer> VERSION_ASCENDING = (o1, o2) -> {
 		if (o1.getVersion().isGreaterThan(o2.getVersion())) {
 			return 1;
 		} else if (o2.getVersion().isGreaterThan(o1.getVersion())) {
