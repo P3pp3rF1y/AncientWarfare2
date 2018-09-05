@@ -48,7 +48,7 @@ public class CropAgricraftCrop implements ICrop {
 		NonNullList<ItemStack> drops = NonNullList.create();
 
 		//getting drops and setting stage separately instead of calling onHarvest because of inventory full check
-		crop.getDrops(drops::add, false, false);
+		crop.getDrops(drops::add, false, false, true);
 
 		if (!InventoryTools.canInventoryHold(inventory, drops) || !crop.setGrowthStage(0)) {
 			return false;
