@@ -12,7 +12,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
-import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks;
+import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
 import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
 
 public class PathWorldAccess {
@@ -144,7 +144,7 @@ public class PathWorldAccess {
 	public boolean isDoor(BlockPos pos) {
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
-		if (block == AWStructuresBlocks.gateProxy) {
+		if (block == AWStructureBlocks.GATE_PROXY) {
 			return WorldTools.getTile(world, pos, TEGateProxy.class)
 					.map(proxy -> proxy.getOwner().map(p -> p.getGateType().canSoldierActivate()).orElse(false)).orElse(true);
 		}

@@ -14,12 +14,11 @@ import net.shadowmage.ancientwarfare.automation.registry.TreeFarmRegistry;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.ITree;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.ITreeScanner;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
-import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
-import net.shadowmage.ancientwarfare.structure.template.load.TemplateParser;
 import net.shadowmage.ancientwarfare.structure.worldgen.WorldStructureGenerator;
 
 import java.io.BufferedWriter;
@@ -35,22 +34,22 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 public abstract class StructureValidator {
-	public static final String PROP_WORLD_GEN = "enableWorldGen";
-	public static final String PROP_UNIQUE = "unique";
-	public static final String PROP_SURVIVAL = "survival";
-	public static final String PROP_PRESERVE_BLOCKS = "preserveBlocks";
-	public static final String PROP_SELECTION_WEIGHT = "selectionWeight";
-	public static final String PROP_CLUSTER_VALUE = "clusterValue";
-	public static final String PROP_MIN_DUPLICATE_DISTANCE = "minDuplicateDistance";
-	public static final String PROP_BORDER_SIZE = "borderSize";
-	public static final String PROP_MAX_LEVELING = "maxLeveling";
-	public static final String PROP_MAX_FILL = "maxFill";
+	static final String PROP_WORLD_GEN = "enableWorldGen";
+	static final String PROP_UNIQUE = "unique";
+	static final String PROP_SURVIVAL = "survival";
+	static final String PROP_PRESERVE_BLOCKS = "preserveBlocks";
+	static final String PROP_SELECTION_WEIGHT = "selectionWeight";
+	static final String PROP_CLUSTER_VALUE = "clusterValue";
+	static final String PROP_MIN_DUPLICATE_DISTANCE = "minDuplicateDistance";
+	static final String PROP_BORDER_SIZE = "borderSize";
+	static final String PROP_MAX_LEVELING = "maxLeveling";
+	static final String PROP_MAX_FILL = "maxFill";
 	public static final String PROP_BIOME_WHITE_LIST = "biomeWhiteList";
 	public static final String PROP_DIMENSION_WHITE_LIST = "dimensionWhiteList";
 	public static final String PROP_BIOME_LIST = "biomeList";
 	public static final String PROP_DIMENSION_LIST = "dimensionList";
 	public static final String PROP_BLOCK_LIST = "blockList";
-	public static final String PROP_BLOCK_SWAP = "blockSwap";
+	static final String PROP_BLOCK_SWAP = "blockSwap";
 
 	public final StructureValidationType validationType;
 
@@ -154,7 +153,7 @@ public abstract class StructureValidator {
 		}
 	}
 
-	public static boolean startLow(String text, String test) {
+	static boolean startLow(String text, String test) {
 		return text.toLowerCase(Locale.ENGLISH).startsWith(test);
 	}
 
@@ -227,7 +226,6 @@ public abstract class StructureValidator {
 					}
 				}
 			}
-			TemplateParser.lineNumber++;
 		}
 
 		//defaulting templates to overworld dimension if no dimension list provided
@@ -287,7 +285,7 @@ public abstract class StructureValidator {
 		out.newLine();
 		out.write("biomeWhiteList=" + validator.isBiomeWhiteList());
 		out.newLine();
-		out.write("biomeList=" + StringTools.getCSVValueFor(validator.getBiomeList().toArray(new String[validator.getBiomeList().size()])));
+		out.write("biomeList=" + StringTools.getCSVValueFor(validator.getBiomeList().toArray(new String[0])));
 		out.newLine();
 		out.write("leveling=" + validator.getMaxLeveling());
 		out.newLine();
@@ -376,29 +374,27 @@ public abstract class StructureValidator {
 	}
 
 	public final void setBiomeList(Collection<String> biomes) {
-		Set<String> blocks = new HashSet<>();
-		blocks.addAll(biomes);
-		properties.get(PROP_BIOME_LIST).setValue(blocks);
+		properties.get(PROP_BIOME_LIST).setValue(new HashSet<>(biomes));
 	}
 
 	public Set<String> getBiomeList() {
 		return properties.get(PROP_BIOME_LIST).getDataStringSet();
 	}
 
-	public int getMaxFill() {
+	int getMaxFill() {
 		return properties.get(PROP_MAX_FILL).getDataInt();
 	}
 
-	public int getMaxLeveling() {
+	int getMaxLeveling() {
 		return properties.get(PROP_MAX_LEVELING).getDataInt();
 	}
 
-	public int getBorderSize() {
+	int getBorderSize() {
 		return properties.get(PROP_BORDER_SIZE).getDataInt();
 	}
 
 	//*********************************************** UTILITY METHODS *************************************************//
-	protected boolean validateBorderBlocks(World world, StructureTemplate template, StructureBB bb, int minY, int maxY, boolean skipWater) {
+	boolean validateBorderBlocks(World world, StructureBB bb, int minY, int maxY, boolean skipWater) {
 		int bx;
 		int bz;
 		int borderSize = getBorderSize();
@@ -429,21 +425,21 @@ public abstract class StructureValidator {
 	/*
 	 * validates both top block height and block type for the input position and settings
 	 */
-	protected boolean validateBlockHeightAndType(World world, int x, int z, int min, int max, boolean skipWater, Predicate<IBlockState> isValidState) {
+	boolean validateBlockHeightAndType(World world, int x, int z, int min, int max, boolean skipWater, Predicate<IBlockState> isValidState) {
 		return validateBlockType(world, x, validateBlockHeight(world, x, z, min, max, skipWater), z, isValidState);
 	}
 
 	private boolean validateBlockHeightTypeAndBiome(World world, int x, int z, int min, int max, boolean skipWater, boolean riverBiomeValid, Predicate<IBlockState> isValidState) {
 		BlockPos pos = new BlockPos(x, 1, z);
 		if (!riverBiomeValid && BiomeDictionary.hasType(world.provider.getBiomeForCoords(pos), BiomeDictionary.Type.RIVER)) {
-			AncientWarfareStructures.log.debug("Rejected for placement into river biome at {}", pos.toString());
+			AncientWarfareStructure.LOG.debug("Rejected for placement into river biome at {}", pos.toString());
 			return false;
 		}
 
 		return validateBlockHeightAndType(world, x, z, min, max, skipWater, isValidState);
 	}
 
-	protected boolean validateBlockHeightTypeAndBiome(World world, int x, int z, int min, int max, boolean skipWater, boolean riverBiomeValid) {
+	boolean validateBlockHeightTypeAndBiome(World world, int x, int z, int min, int max, boolean skipWater, boolean riverBiomeValid) {
 		return validateBlockHeightTypeAndBiome(world, x, z, min, max, skipWater, riverBiomeValid, AWStructureStatics::isValidTargetBlock);
 	}
 
@@ -454,7 +450,7 @@ public abstract class StructureValidator {
 	private int validateBlockHeight(World world, int x, int z, int minimumAcceptableY, int maximumAcceptableY, boolean skipWater) {
 		int topFilledY = WorldStructureGenerator.getTargetY(world, x, z, skipWater);
 		if (topFilledY < minimumAcceptableY || topFilledY > maximumAcceptableY) {
-			AncientWarfareStructures.log.info("rejected for leveling or depth test. foundY: " + topFilledY + " min: " + minimumAcceptableY + " max:" + maximumAcceptableY + " at: " + x + "," + topFilledY + "," + z);
+			AncientWarfareStructure.LOG.debug("rejected for leveling or depth test. foundY: " + topFilledY + " min: " + minimumAcceptableY + " max:" + maximumAcceptableY + " at: " + x + "," + topFilledY + "," + z);
 			return -1;
 		}
 		return topFilledY;
@@ -470,11 +466,11 @@ public abstract class StructureValidator {
 		IBlockState state = world.getBlockState(new BlockPos(x, y, z));
 		Block block = state.getBlock();
 		if (block == Blocks.AIR) {
-			AncientWarfareStructures.log.info("rejected for non-matching block: air" + " at: " + x + "," + y + "," + z);
+			AncientWarfareStructure.LOG.debug("rejected for non-matching block: air" + " at: " + x + "," + y + "," + z);
 			return false;
 		}
 		if (!isValidState.test(state)) {
-			AncientWarfareStructures.log.info("Rejected for non-matching block: " + BlockDataManager.INSTANCE.getNameForBlock(block) + " at: " + x + "," + y + "," + z);
+			AncientWarfareStructure.LOG.debug("Rejected for non-matching block: " + BlockDataManager.INSTANCE.getNameForBlock(block) + " at: " + x + "," + y + "," + z);
 			return false;
 		}
 		return true;
@@ -484,10 +480,10 @@ public abstract class StructureValidator {
 	 * return the lowest acceptable Y level for a filled block
 	 * for the input template and BB
 	 */
-	protected int getMinY(StructureTemplate template, StructureBB bb) {
+	int getMinY(StructureTemplate template, StructureBB bb) {
 		int minY = bb.min.getY() - getMaxFill() - 1;
 		if (getBorderSize() > 0) {
-			minY += template.yOffset;
+			minY += template.getOffset().getY();
 		}
 		return minY;
 	}
@@ -496,8 +492,8 @@ public abstract class StructureValidator {
 	 * return the highest acceptable Y level for a filled block
 	 * for the input template and BB
 	 */
-	protected int getMaxY(StructureTemplate template, StructureBB bb) {
-		return bb.min.getY() + template.yOffset + getMaxLeveling();
+	int getMaxY(StructureTemplate template, StructureBB bb) {
+		return bb.min.getY() + template.getOffset().getY() + getMaxLeveling();
 	}
 
 	private int getMaxFillY(StructureTemplate template, StructureBB bb) {
@@ -510,19 +506,16 @@ public abstract class StructureValidator {
 		}
 		int topFilledY = WorldStructureGenerator.getTargetY(world, x, z, true);
 		int step = WorldStructureGenerator.getStepNumber(x, z, bb.min.getX(), bb.max.getX(), bb.min.getZ(), bb.max.getZ());
-		for (int y = bb.min.getY() + template.yOffset + step; y <= topFilledY; y++) {
+		for (int y = bb.min.getY() + template.getOffset().getY() + step; y <= topFilledY; y++) {
 			handleClearAction(world, new BlockPos(x, y, z), template, bb);
 		}
 		Biome biome = world.provider.getBiomeForCoords(new BlockPos(x, 1, z));
-		IBlockState fillBlock = Blocks.GRASS.getDefaultState();
-		if (biome != null && biome.topBlock != null) {
-			fillBlock = biome.topBlock;
-		}
-		int y = bb.min.getY() + template.yOffset + step - 1;
+		IBlockState fillBlock = biome.topBlock;
+		int y = bb.min.getY() + template.getOffset().getY() + step - 1;
 		BlockPos pos = new BlockPos(x, y, z);
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
-		if (block != null && block != Blocks.AIR && state.getMaterial() != Material.WATER && !AWStructureStatics.isSkippable(state)) {
+		if (block != Blocks.AIR && state.getMaterial() != Material.WATER && !AWStructureStatics.isSkippable(state)) {
 			world.setBlockState(pos, fillBlock);
 		}
 	}
@@ -535,10 +528,7 @@ public abstract class StructureValidator {
 		int step = WorldStructureGenerator.getStepNumber(x, z, bb.min.getX(), bb.max.getX(), bb.min.getZ(), bb.max.getZ());
 		maxFillY -= step;
 		Biome biome = world.provider.getBiomeForCoords(new BlockPos(x, 1, z));
-		IBlockState fillBlock = Blocks.GRASS.getDefaultState();
-		if (biome != null && biome.topBlock != null) {
-			fillBlock = biome.topBlock;
-		}
+		IBlockState fillBlock = biome.topBlock;
 		for (int y = maxFillY; y > 1; y--) {
 			BlockPos pos = new BlockPos(x, y, z);
 			IBlockState state = world.getBlockState(pos);
@@ -552,16 +542,13 @@ public abstract class StructureValidator {
 	private void underFill(World world, int x, int z, StructureBB bb) {
 		int topFilledY = WorldStructureGenerator.getTargetY(world, x, z, true);
 		Biome biome = world.provider.getBiomeForCoords(new BlockPos(x, 1, z));
-		IBlockState fillBlockID = Blocks.GRASS.getDefaultState();
-		if (biome != null && biome.topBlock != null) {
-			fillBlockID = biome.topBlock;
-		}
+		IBlockState fillBlock = biome.topBlock;
 		for (int y = topFilledY; y <= bb.min.getY() - 1; y++) {
-			world.setBlockState(new BlockPos(x, y, z), fillBlockID);
+			world.setBlockState(new BlockPos(x, y, z), fillBlock);
 		}
 	}
 
-	protected void prePlacementUnderfill(World world, StructureTemplate template, StructureBB bb) {
+	void prePlacementUnderfill(World world, StructureBB bb) {
 		if (getMaxFill() <= 0) {
 			return;
 		}
@@ -574,7 +561,7 @@ public abstract class StructureValidator {
 		}
 	}
 
-	protected void prePlacementBorder(World world, StructureTemplate template, StructureBB bb) {
+	void prePlacementBorder(World world, StructureTemplate template, StructureBB bb) {
 		int borderSize = getBorderSize();
 		if (borderSize <= 0) {
 			return;

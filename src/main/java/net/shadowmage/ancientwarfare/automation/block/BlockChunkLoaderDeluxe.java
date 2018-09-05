@@ -10,8 +10,7 @@ import net.shadowmage.ancientwarfare.automation.tile.TileChunkLoaderDeluxe;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 
 public class BlockChunkLoaderDeluxe extends BlockChunkLoaderSimple {
-
-	protected BlockChunkLoaderDeluxe(String regName) {
+	public BlockChunkLoaderDeluxe(String regName) {
 		super(regName);
 	}
 

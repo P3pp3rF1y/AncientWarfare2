@@ -51,7 +51,7 @@ public class StructureValidatorHarbor extends StructureValidator {
          */
 		Block block = world.getBlockState(new BlockPos(x, y - 1, z)).getBlock();
 		if (block != null && validTargetBlocks.contains(BlockDataManager.INSTANCE.getNameForBlock(block))) {
-			testMin = new BlockPos(x, y, z).offset(face, template.zOffset);
+			testMin = new BlockPos(x, y, z).offset(face, template.getOffset().getZ());
 			int by = WorldStructureGenerator.getTargetY(world, testMin.getX(), testMin.getZ(), false);
 			if (y - by > getMaxFill()) {
 				return false;
@@ -66,7 +66,7 @@ public class StructureValidatorHarbor extends StructureValidator {
 
 	@Override
 	public int getAdjustedSpawnY(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
-		testMin = new BlockPos(x, y, z).offset(face, template.zOffset);
+		testMin = new BlockPos(x, y, z).offset(face, template.getOffset().getZ());
 		return WorldStructureGenerator.getTargetY(world, testMin.getX(), testMin.getZ(), false) + 1;
 	}
 
@@ -132,7 +132,7 @@ public class StructureValidatorHarbor extends StructureValidator {
 
 	@Override
 	public void handleClearAction(World world, BlockPos pos, StructureTemplate template, StructureBB bb) {
-		if (pos.getY() >= bb.min.getY() + template.yOffset) {
+		if (pos.getY() >= bb.min.getY() + template.getOffset().getY()) {
 			super.handleClearAction(world, pos, template, bb);
 		} else {
 			world.setBlockState(pos, Blocks.WATER.getDefaultState());

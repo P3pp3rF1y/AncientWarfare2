@@ -31,7 +31,7 @@ public class FileUtils {
 					root = fs.getPath("/" + base);
 				}
 				catch (IOException e) {
-					AncientWarfareCore.log.error("Error loading FileSystem from jar: ", e);
+					AncientWarfareCore.LOG.error("Error loading FileSystem from jar: ", e);
 					return;
 				}
 			} else if (source.isDirectory()) {
@@ -53,7 +53,7 @@ public class FileUtils {
 					itr = Files.walk(root).iterator();
 				}
 				catch (IOException e) {
-					AncientWarfareCore.log.error("Error iterating filesystem for: {}", root, e);
+					AncientWarfareCore.LOG.error("Error iterating filesystem for: {}", root, e);
 					return;
 				}
 

@@ -16,9 +16,9 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
-import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
-import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
+import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -101,7 +101,7 @@ public class SpawnerSettings {
 		this.pos = pos;
 	}
 
-	public void onUpdate() {
+	void onUpdate() {
 		if (!respondToRedstone) {
 			updateNormalMode();
 		} else if (redstoneMode) {
@@ -171,7 +171,7 @@ public class SpawnerSettings {
 		if (maxNearbyMonsters > 0 && mobRange > 0) {
 			int nearbyCount = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos, pos.add(1, 1, 1)).grow(mobRange, mobRange, mobRange)).size();
 			if (nearbyCount >= maxNearbyMonsters) {
-				AncientWarfareStructures.log.info("skipping spawning because of too many nearby entities");
+				AncientWarfareStructure.LOG.debug("skipping spawning because of too many nearby entities");
 				return;
 			}
 		}
@@ -427,7 +427,7 @@ public class SpawnerSettings {
 				int b2 = settings.remainingSpawnCount;
 				int a = (a1 << 16) | (grpIndex & 0x0000ffff);
 				int b = (index << 16) | (b2 & 0x0000ffff);
-				world.addBlockEvent(spawnPos, AWStructuresBlocks.advancedSpawner, a, b);
+				world.addBlockEvent(spawnPos, AWStructureBlocks.ADVANCED_SPAWNER, a, b);
 				index++;
 			}
 		}
@@ -509,11 +509,11 @@ public class SpawnerSettings {
 		public final void setEntityToSpawn(ResourceLocation entityId) {
 			this.entityId = entityId;
 			if (!ForgeRegistries.ENTITIES.containsKey(this.entityId)) {
-				AncientWarfareStructures.log.error(entityId + " is not a valid entityId.  Spawner default to Zombie.");
+				AncientWarfareStructure.LOG.error(entityId + " is not a valid entityId.  Spawner default to Zombie.");
 				this.entityId = new ResourceLocation("zombie");
 			}
 			if (AWStructureStatics.excludedSpawnerEntities.contains(this.entityId.toString())) {
-				AncientWarfareStructures.log.error(entityId + " has been set as an invalid entity for spawners!  Spawner default to Zombie.");
+				AncientWarfareStructure.LOG.error(entityId + " has been set as an invalid entity for spawners!  Spawner default to Zombie.");
 				this.entityId = new ResourceLocation("zombie");
 			}
 		}

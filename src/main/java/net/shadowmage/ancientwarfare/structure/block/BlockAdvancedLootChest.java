@@ -15,8 +15,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.proxy.IClientRegister;
-import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
-import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.render.ParticleDummyModel;
 import net.shadowmage.ancientwarfare.structure.render.RenderAdvancedLootChest;
 import net.shadowmage.ancientwarfare.structure.render.RenderItemAdvancedLootChest;
@@ -26,12 +25,12 @@ import javax.annotation.Nullable;
 import java.util.Random;
 
 public class BlockAdvancedLootChest extends BlockChest implements IClientRegister {
-	protected BlockAdvancedLootChest() {
+	public BlockAdvancedLootChest() {
 		super(Type.BASIC);
-		setRegistryName(AncientWarfareStructures.MOD_ID, "advanced_loot_chest");
+		setRegistryName(AncientWarfareStructure.MOD_ID, "advanced_loot_chest");
 		setUnlocalizedName("advanced_loot_chest");
-		setCreativeTab(AWStructuresItemLoader.structureTab);
-		AncientWarfareStructures.proxy.addClientRegister(this);
+		setCreativeTab(AncientWarfareStructure.TAB);
+		AncientWarfareStructure.proxy.addClientRegister(this);
 
 		setHardness(2.5F);
 		setSoundType(SoundType.WOOD);

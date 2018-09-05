@@ -3,9 +3,8 @@ package net.shadowmage.ancientwarfare.npc.entity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 
-/*
- * Created by Olivier on 09/07/2015.
- */
+import java.util.Optional;
+
 public interface IKeepFood {
 
 	int getUpkeepAmount();
@@ -16,5 +15,5 @@ public interface IKeepFood {
 
 	void setUpkeepAutoPosition(BlockPos pos);
 
-	BlockPos getUpkeepPoint();
+	Optional<BlockPos> getUpkeepPoint();
 }

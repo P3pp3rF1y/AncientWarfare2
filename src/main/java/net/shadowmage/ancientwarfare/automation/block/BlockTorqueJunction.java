@@ -27,7 +27,7 @@ import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 
 public class BlockTorqueJunction extends BlockTorqueTransportSided implements IBakeryProvider {
-	protected BlockTorqueJunction(String regName) {
+	public BlockTorqueJunction(String regName) {
 		super(regName);
 	}
 

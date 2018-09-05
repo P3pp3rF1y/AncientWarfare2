@@ -54,14 +54,6 @@ public class GuiSoundBlock extends GuiContainerBase<ContainerSoundBlock> {
 		random.setChecked(data.getIsRandom());
 		area.addGuiElement(random);
 
-		Checkbox redstone = new Checkbox(128, totalHeight, 16, 16, "guistrings.redstone") {
-			@Override
-			public void onToggled() {
-				getContainer().redstoneInteraction = checked();
-			}
-		};
-		redstone.setChecked(getContainer().redstoneInteraction);
-		area.addGuiElement(redstone);
 		totalHeight += 16;
 
 		NumberInput playerRange = new NumberInput(100, totalHeight, 55, getContainer().range, this) {
@@ -134,16 +126,6 @@ public class GuiSoundBlock extends GuiContainerBase<ContainerSoundBlock> {
 		area.addGuiElement(input);
 		startHeight += 12;
 
-		area.addGuiElement(new Label(8, startHeight + 1, "guistrings.length"));
-		NumberInput length = new NumberInput(88, startHeight, 60, entry.length(), this) {
-			@Override
-			public void onValueUpdated(float value) {
-				entry.setLength(value);
-			}
-		};
-		area.addGuiElement(length);
-		startHeight += 12;
-
 		area.addGuiElement(new Label(8, startHeight + 1, "guistrings.volume"));
 		NumberInput volume = new NumberInput(88, startHeight, 60, entry.volume(), this) {
 			@Override
@@ -152,7 +134,7 @@ public class GuiSoundBlock extends GuiContainerBase<ContainerSoundBlock> {
 			}
 		};
 		area.addGuiElement(volume);
-		startHeight += 12;
+		startHeight += 24;
 
 		area.addGuiElement(new Button(160, y, 55, 12, "guistrings.up") {
 			@Override

@@ -13,12 +13,11 @@ import net.shadowmage.ancientwarfare.core.block.BlockBase;
 import net.shadowmage.ancientwarfare.core.proxy.IClientRegister;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
-import net.shadowmage.ancientwarfare.npc.item.AWNPCItemLoader;
 
 public class BlockBaseNPC extends BlockBase implements IClientRegister {
 	public BlockBaseNPC(Material material, String regName) {
-		super(material, AncientWarfareNPC.modID, regName);
-		setCreativeTab(AWNPCItemLoader.npcTab);
+		super(material, AncientWarfareNPC.MOD_ID, regName);
+		setCreativeTab(AncientWarfareNPC.TAB);
 
 		AncientWarfareNPC.proxy.addClientRegister(this);
 	}

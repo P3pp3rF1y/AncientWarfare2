@@ -44,16 +44,15 @@ public class StructureValidatorIsland extends StructureValidator {
 
 	@Override
 	protected void setDefaultSettings(StructureTemplate template) {
-		this.minWaterDepth = template.yOffset / 2;
-		this.maxWaterDepth = template.yOffset;
+		maxWaterDepth = template.getOffset().getY();
+		minWaterDepth = maxWaterDepth / 2;
 	}
 
 	@Override
 	public boolean shouldIncludeForSelection(World world, int x, int y, int z, EnumFacing face, StructureTemplate template) {
-		int water = 0;
 		int startY = y - 1;
 		y = WorldStructureGenerator.getTargetY(world, x, z, true) + 1;
-		water = startY - y + 1;
+		int water = startY - y + 1;
 		return !(water < minWaterDepth || water > maxWaterDepth);
 	}
 
@@ -61,7 +60,7 @@ public class StructureValidatorIsland extends StructureValidator {
 	public boolean validatePlacement(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
 		int minY = y - maxWaterDepth;
 		int maxY = y - minWaterDepth;
-		return validateBorderBlocks(world, template, bb, minY, maxY, true);
+		return validateBorderBlocks(world, bb, minY, maxY, true);
 	}
 
 	@Override
@@ -82,7 +81,7 @@ public class StructureValidatorIsland extends StructureValidator {
 
 	@Override
 	public void handleClearAction(World world, BlockPos pos, StructureTemplate template, StructureBB bb) {
-		int maxWaterY = bb.min.getY() + template.yOffset - 1;
+		int maxWaterY = bb.min.getY() + template.getOffset().getY() - 1;
 		if (pos.getY() <= maxWaterY) {
 			world.setBlockState(pos, Blocks.WATER.getDefaultState());
 		} else {

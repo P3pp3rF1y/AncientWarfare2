@@ -4,7 +4,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
-import net.shadowmage.ancientwarfare.core.api.AWItems;
+import net.shadowmage.ancientwarfare.core.init.AWCoreItems;
 import net.shadowmage.ancientwarfare.core.item.ItemBackpack;
 
 import javax.annotation.Nonnull;
@@ -31,7 +31,7 @@ public class ItemHandlerBackpack implements IItemHandlerModifiable {
 	@Override
 	public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
 		ItemStack ret = stack;
-		if (stack.getItem() != AWItems.backpack) {
+		if (stack.getItem() != AWCoreItems.BACKPACK) {
 			ItemStackHandler handler = getHandler(backpackStack);
 			ret = handler.insertItem(slot, stack, simulate);
 			saveToStack(handler);

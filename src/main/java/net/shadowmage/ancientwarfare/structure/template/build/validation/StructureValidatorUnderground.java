@@ -48,7 +48,7 @@ public class StructureValidatorUnderground extends StructureValidator {
 	@Override
 	public boolean shouldIncludeForSelection(World world, int x, int y, int z, EnumFacing face, StructureTemplate template) {
 		y = WorldStructureGenerator.getTargetY(world, x, z, true);
-		int tHeight = (template.ySize - template.yOffset);
+		int tHeight = (template.getSize().getY() - template.getOffset().getY());
 		int low = minGenerationDepth + tHeight + minOverfill;
 		return y > low;
 	}
@@ -57,13 +57,13 @@ public class StructureValidatorUnderground extends StructureValidator {
 	public int getAdjustedSpawnY(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
 		y = WorldStructureGenerator.getTargetY(world, x, z, true);
 		int range = maxGenerationDepth - minGenerationDepth + 1;
-		int tHeight = (template.ySize - template.yOffset);
+		int tHeight = (template.getSize().getY() - template.getOffset().getY());
 		return y - minOverfill - world.rand.nextInt(range) - tHeight;
 	}
 
 	@Override
 	public boolean validatePlacement(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
-		int minY = bb.min.getY() + template.yOffset + minOverfill;
+		int minY = bb.min.getY() + template.getOffset().getY() + minOverfill;
 		int topBlockY;
 		for (int bx = bb.min.getX(); bx <= bb.max.getX(); bx++) {
 			for (int bz = bb.min.getZ(); bz <= bb.max.getZ(); bz++) {

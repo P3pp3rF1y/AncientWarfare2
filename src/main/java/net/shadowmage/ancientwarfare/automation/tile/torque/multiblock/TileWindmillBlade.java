@@ -6,8 +6,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlocks;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
+import net.shadowmage.ancientwarfare.automation.init.AWAutomationBlocks;
 import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 import net.shadowmage.ancientwarfare.core.util.BlockFinder;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -187,7 +187,7 @@ public class TileWindmillBlade extends TileUpdatable implements ITickable {
 		if (currentPos.getDistance(pos.getX(), pos.getY(), pos.getZ()) < maxRadius) {
 			for (EnumFacing facing : EnumFacing.VALUES) {
 				BlockPos offsetPos = currentPos.offset(facing);
-				if (!searchedPositions.contains(offsetPos) && world.getBlockState(offsetPos).getBlock() == AWAutomationBlocks.windmillBlade) {
+				if (!searchedPositions.contains(offsetPos) && world.getBlockState(offsetPos).getBlock() == AWAutomationBlocks.WINDMILL_BLADE) {
 					connectedBlocks.add(offsetPos);
 					searchedPositions.add(offsetPos);
 					getConnectedBlades(maxRadius, connectedBlocks, searchedPositions, offsetPos);

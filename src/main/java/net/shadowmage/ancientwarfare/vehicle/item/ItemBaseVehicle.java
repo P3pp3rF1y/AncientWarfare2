@@ -10,8 +10,8 @@ import net.shadowmage.ancientwarfare.vehicle.AncientWarfareVehicles;
 
 public abstract class ItemBaseVehicle extends ItemBase implements IClientRegister {
 	public ItemBaseVehicle(String regName) {
-		super(AncientWarfareVehicles.modID, regName);
-		setCreativeTab(AWVehicleItemLoader.vehicleTab);
+		super(AncientWarfareVehicles.MOD_ID, regName);
+		setCreativeTab(AncientWarfareVehicles.TAB);
 
 		AncientWarfareNPC.proxy.addClientRegister(this);
 	}

@@ -20,9 +20,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class NpcSkinManager {
 
@@ -68,7 +70,7 @@ public class NpcSkinManager {
 					readImageMap(reader, imageMap);
 				}
 				catch (IOException e) {
-					AncientWarfareCore.log.error("Error loading skin_pack.meta: ", e);
+					AncientWarfareCore.LOG.error("Error loading skin_pack.meta: ", e);
 					return false;
 				}
 			}
@@ -80,11 +82,16 @@ public class NpcSkinManager {
 
 			if (extension.equals("png")) {
 				try (InputStream stream = Files.newInputStream(file)) {
-					imageMap.entrySet().stream().filter(e -> e.getValue().contains(relative)).findFirst()
-							.ifPresent(e -> addNpcSkin(e.getKey(), loadSkinImage(relative, stream)));
+					List<String> skinMappings = imageMap.entrySet().stream().filter(e -> e.getValue().contains(relative))
+							.map(Map.Entry::getKey).collect(Collectors.toList());
+					if (!skinMappings.isEmpty()) {
+						ResourceLocation skinRegistryName = loadSkinImage(relative, stream);
+						skinMappings.forEach(skinMapping -> addNpcSkin(skinMapping, skinRegistryName));
+					}
+
 				}
 				catch (IOException e) {
-					AncientWarfareCore.log.error("Error loading image {}: ", relative, e);
+					AncientWarfareCore.LOG.error("Error loading image {}: ", relative, e);
 				}
 			}
 		});

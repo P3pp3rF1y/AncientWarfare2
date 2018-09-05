@@ -6,7 +6,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
@@ -67,7 +67,7 @@ public class TownGenerator {
 	 * Call this to initialize and start the generation of the town
 	 */
 	public void generate() {
-		AncientWarfareStructures.log.info("Generating town at: " + townBounds.getCenterX() + " : " + townBounds.getCenterZ());
+		AncientWarfareStructure.LOG.info("Generating town at: " + townBounds.getCenterX() + " : " + townBounds.getCenterZ());
 		determineStructuresToGenerate();
 		TownGeneratorBorders.generateBorders(world, exteriorBounds, wallsBounds, maximalBounds);
 		TownGeneratorBorders.levelTownArea(world, wallsBounds);

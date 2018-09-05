@@ -37,7 +37,7 @@ public abstract class VehicleArmorBase implements IVehicleArmor {
 	private ResourceLocation registryName;
 
 	public VehicleArmorBase(String regName) {
-		registryName = new ResourceLocation(AncientWarfareVehicles.modID, regName);
+		registryName = new ResourceLocation(AncientWarfareVehicles.MOD_ID, regName);
 	}
 
 	@Override

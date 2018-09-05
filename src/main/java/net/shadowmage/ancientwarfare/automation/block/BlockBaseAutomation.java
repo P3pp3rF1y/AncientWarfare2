@@ -9,7 +9,6 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
-import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.BlockBase;
 import net.shadowmage.ancientwarfare.core.proxy.IClientRegister;
@@ -19,7 +18,7 @@ public abstract class BlockBaseAutomation extends BlockBase implements IClientRe
 
 	public BlockBaseAutomation(Material material, String regName) {
 		super(material, AncientWarfareAutomation.MOD_ID, regName);
-		setCreativeTab(AWAutomationItemLoader.automationTab);
+		setCreativeTab(AncientWarfareAutomation.TAB);
 
 		AncientWarfareAutomation.proxy.addClientRegister(this);
 	}

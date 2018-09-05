@@ -1,24 +1,3 @@
-/*
- Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
- This software is distributed under the terms of the GNU General Public License.
- Please see COPYING for precise license information.
-
- This file is part of Ancient Warfare.
-
- Ancient Warfare is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- Ancient Warfare is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.structure.template.build;
 
 import net.minecraft.util.EnumFacing;
@@ -35,20 +14,20 @@ public class StructureBB extends Zone {
 	}
 
 	public StructureBB(BlockPos pos, EnumFacing face, StructureTemplate template) {
-		this(pos, face, template.xSize, template.ySize, template.zSize, template.xOffset, template.yOffset, template.zOffset);
+		this(pos, face, template.getSize(), template.getOffset());
 	}
 
-	public StructureBB(BlockPos pos, EnumFacing face, int xSize, int ySize, int zSize, int xOffset, int yOffset, int zOffset) {
+	public StructureBB(BlockPos pos, EnumFacing face, Vec3i size, Vec3i offset) {
 		/*
 		 * we simply take the clicked on position
          * and walk left/forward/down by the structure offsets
          */
-		BlockPos c1 = pos.offset(face.rotateYCCW(), xOffset).offset(face, zOffset).up(-yOffset);
+		BlockPos c1 = pos.offset(face.rotateYCCW(), offset.getX()).offset(face, offset.getZ()).up(-offset.getY());
 		/*
 		 * the second corner starts as a copy of the first corner
          * which then walks right, backwards, and up to arrive at the actual second corner
          */
-		BlockPos c2 = c1.offset(face.rotateY(), xSize - 1).offset(face, -(zSize - 1)).up(ySize - 1);
+		BlockPos c2 = c1.offset(face.rotateY(), size.getX() - 1).offset(face, -(size.getZ() - 1)).up(size.getY() - 1);
 		/*
 		 * finally, set the min/max of this BB to the min/max of the two corners
          */
@@ -171,8 +150,9 @@ public class StructureBB extends Zone {
 
 			case EAST:
 				return min;
+			default:
+				return out;
 		}
-		return out;
 	}
 
 	private BlockPos getFRCorner(EnumFacing face, BlockPos out) {
@@ -188,8 +168,9 @@ public class StructureBB extends Zone {
 
 			case EAST:
 				return new BlockPos(min.getX(), min.getY(), max.getZ());
+			default:
+				return out;
 		}
-		return out;
 	}
 
 	public BlockPos getRLCorner(EnumFacing face, BlockPos out) {
@@ -205,8 +186,9 @@ public class StructureBB extends Zone {
 
 			case EAST:
 				return new BlockPos(max.getX(), min.getY(), min.getZ());
+			default:
+				return out;
 		}
-		return out;
 	}
 
 	private BlockPos getRRCorner(EnumFacing face, BlockPos out) {
@@ -222,8 +204,9 @@ public class StructureBB extends Zone {
 
 			case EAST:
 				return new BlockPos(max.getX(), min.getY(), max.getZ());
+			default:
+				return out;
 		}
-		return out;
 	}
 
 	public StructureBB copy() {

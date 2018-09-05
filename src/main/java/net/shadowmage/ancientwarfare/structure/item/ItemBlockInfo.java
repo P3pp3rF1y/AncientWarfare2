@@ -11,7 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
-import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 
 public class ItemBlockInfo extends ItemBaseStructure {
@@ -27,9 +27,9 @@ public class ItemBlockInfo extends ItemBaseStructure {
 			if (pos != null) {
 				IBlockState state = world.getBlockState(pos);
 				Block block = state.getBlock();
-				AncientWarfareStructures.log.info("block: " + BlockDataManager.INSTANCE.getNameForBlock(block) + ", meta: " + block.getMetaFromState(state));
+				AncientWarfareStructure.LOG.info("block: " + BlockDataManager.INSTANCE.getNameForBlock(block) + ", meta: " + block.getMetaFromState(state));
 				if (block.hasTileEntity(state)) {
-					AncientWarfareStructures.log.info("tile: " + WorldTools.getTile(world, pos).map(t -> t.getClass().toString()).orElse(""));
+					AncientWarfareStructure.LOG.info("tile: " + WorldTools.getTile(world, pos).map(t -> t.getClass().toString()).orElse(""));
 				}
 			}
 		}

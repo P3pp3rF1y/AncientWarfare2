@@ -12,7 +12,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.core.tile.IBlockBreakHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
-import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks;
+import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 
@@ -107,7 +107,7 @@ public class TileDraftingStation extends TileEntity implements ITickable, IBlock
 
 	private boolean tryFinish() {
 		if (outputSlot.getStackInSlot(0).isEmpty()) {
-			@Nonnull ItemStack item = new ItemStack(AWStructuresBlocks.builderBlock);
+			@Nonnull ItemStack item = new ItemStack(AWStructureBlocks.STRUCTURE_BUILDER_TICKED);
 			item.setTagInfo("structureName", new NBTTagString(structureName));
 			outputSlot.setStackInSlot(0, item);
 			return true;

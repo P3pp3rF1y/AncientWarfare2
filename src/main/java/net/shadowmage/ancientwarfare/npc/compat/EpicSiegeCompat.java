@@ -19,7 +19,7 @@ public class EpicSiegeCompat implements ICompat {
 			EventHandler.INSTANCE.registerAdditionalHostileAICheck(e -> hostileAI.isInstance(e));
 		}
 		catch (ClassNotFoundException e) {
-			AncientWarfareNPC.log.error("Unable to find ESM_EntityAINearestAttackableTarget ai class", e);
+			AncientWarfareNPC.LOG.error("Unable to find ESM_EntityAINearestAttackableTarget ai class", e);
 		}
 	}
 }

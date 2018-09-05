@@ -11,7 +11,7 @@
             "item": "#STICKWOOD"
         },
         "F": {
-            "item": "minecraft:feather"
+            "item": "#FEATHER"
         },
         "M": {
             "item": "#INGOTIRON"

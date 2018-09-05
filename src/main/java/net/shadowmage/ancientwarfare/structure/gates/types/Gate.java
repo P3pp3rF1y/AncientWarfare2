@@ -10,15 +10,15 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
-import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.owner.Owner;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
-import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
-import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.entity.DualBoundingBox;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.gates.IGateType;
+import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
+import net.shadowmage.ancientwarfare.structure.init.AWStructureItems;
 import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
 
 import java.util.HashMap;
@@ -84,7 +84,7 @@ public class Gate implements IGateType {
 		if (id >= 0 && id < gateTypes.length && gateTypes[id] == null) {
 			gateTypes[id] = this;
 		}
-		this.displayStack = new ItemStack(AWItems.gateSpawner, 1, id);
+		this.displayStack = new ItemStack(AWStructureItems.GATE_SPAWNER, 1, id);
 		this.textureLocation = new ResourceLocation("ancientwarfare:textures/model/structure/gate/gate" + textureLocation);
 	}
 
@@ -125,7 +125,7 @@ public class Gate implements IGateType {
 
 	@Override
 	public ItemStack getConstructingItem() {
-		return new ItemStack(AWItems.gateSpawner, 1, this.globalID);
+		return new ItemStack(AWStructureItems.GATE_SPAWNER, 1, this.globalID);
 	}
 
 	@Override
@@ -265,7 +265,7 @@ public class Gate implements IGateType {
 			for (int y = min.getY(); y <= max.getY(); y++) {
 				for (int z = min.getZ(); z <= max.getZ(); z++) {
 					id = world.getBlockState(new BlockPos(x, y, z)).getBlock();
-					if (id == AWStructuresBlocks.gateProxy) {
+					if (id == AWStructureBlocks.GATE_PROXY) {
 						world.setBlockToAir(new BlockPos(x, y, z));
 					}
 				}
@@ -283,7 +283,7 @@ public class Gate implements IGateType {
 					if (!gate.world.isAirBlock(pos)) {
 						block.dropBlockAsItem(gate.world, pos, state, 0);
 					}
-					if (gate.world.setBlockState(pos, AWStructuresBlocks.gateProxy.getDefaultState())) {
+					if (gate.world.setBlockState(pos, AWStructureBlocks.GATE_PROXY.getDefaultState())) {
 						WorldTools.getTile(gate.world, pos, TEGateProxy.class).ifPresent(t -> t.setOwner(gate));
 					}
 				}
@@ -302,7 +302,7 @@ public class Gate implements IGateType {
 				for (int z = min.getZ(); z <= max.getZ(); z++) {
 					BlockPos pos = new BlockPos(x, y, z);
 					if (!world.isAirBlock(pos)) {
-						AncientWarfareStructures.log.info("could not create gate for non-air block at: " + x + "," + y + "," + z + " block: " + world.getBlockState(pos).getBlock());
+						AncientWarfareStructure.LOG.info("could not create gate for non-air block at: " + x + "," + y + "," + z + " block: " + world.getBlockState(pos).getBlock());
 						return Optional.empty();
 					}
 				}

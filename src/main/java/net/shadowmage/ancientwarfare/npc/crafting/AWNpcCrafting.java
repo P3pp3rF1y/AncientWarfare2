@@ -12,27 +12,27 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
-import net.shadowmage.ancientwarfare.npc.item.AWNPCItems;
+import net.shadowmage.ancientwarfare.npc.init.AWNPCItems;
 
 import javax.annotation.Nonnull;
 
-@Mod.EventBusSubscriber(modid = AncientWarfareNPC.modID)
+@Mod.EventBusSubscriber(modid = AncientWarfareNPC.MOD_ID)
 public class AWNpcCrafting {
 
 	@SubscribeEvent
 	public static void register(RegistryEvent.Register<IRecipe> event) {
 		IForgeRegistry<IRecipe> registry = event.getRegistry();
-		registry.register(new OrderCopyingRecipe("upkeep_order_copy", AWNPCItems.upkeepOrder));
-		registry.register(new OrderCopyingRecipe("routing_order_copy", AWNPCItems.routingOrder));
-		registry.register(new OrderCopyingRecipe("combat_order_copy", AWNPCItems.combatOrder));
-		registry.register(new OrderCopyingRecipe("work_order_copy", AWNPCItems.workOrder));
+		registry.register(new OrderCopyingRecipe("upkeep_order_copy", AWNPCItems.UPKEEP_ORDER));
+		registry.register(new OrderCopyingRecipe("routing_order_copy", AWNPCItems.ROUTING_ORDER));
+		registry.register(new OrderCopyingRecipe("combat_order_copy", AWNPCItems.COMBAT_ORDER));
+		registry.register(new OrderCopyingRecipe("work_order_copy", AWNPCItems.WORK_ORDER));
 	}
 
 	private static class OrderCopyingRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
 		private final Item item;
 
 		private OrderCopyingRecipe(String name, Item item) {
-			setRegistryName(new ResourceLocation(AncientWarfareNPC.modID, name));
+			setRegistryName(new ResourceLocation(AncientWarfareNPC.MOD_ID, name));
 			this.item = item;
 		}
 

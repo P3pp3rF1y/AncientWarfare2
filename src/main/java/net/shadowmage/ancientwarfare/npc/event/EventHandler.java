@@ -12,6 +12,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
+import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -58,7 +60,8 @@ public class EventHandler {
 			// all mobs that can attack somebody should have targetTasks
 			int targetTaskPriority = getHostileAIPriority(entity);
 			if (targetTaskPriority != -1) {
-				entity.targetTasks.addTask(targetTaskPriority, new EntityAINearestAttackableTarget<>(entity, NpcBase.class, 0, AncientWarfareNPC.statics.autoTargettingConfigLos, false, e -> !e.isPassive()));
+				entity.targetTasks.addTask(targetTaskPriority, new EntityAINearestAttackableTarget<>(entity, NpcBase.class, 0, AncientWarfareNPC.statics.autoTargettingConfigLos, false,
+						e -> e != null && !e.isPassive() && (!(e instanceof NpcFaction) || FactionRegistry.getFaction(((NpcFaction) e).getFaction()).isTarget(entity))));
 				// add this entity to the internal list of hostile mobs, so NPC's know to fight it
 				NpcAI.addHostileEntity(entity);
 			}

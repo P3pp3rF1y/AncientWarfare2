@@ -1,6 +1,6 @@
 package net.shadowmage.ancientwarfare.core.upgrade;
 
-import net.shadowmage.ancientwarfare.core.api.AWItems;
+import net.shadowmage.ancientwarfare.automation.init.AWAutomationItems;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -32,7 +32,7 @@ public enum WorksiteUpgrade {
 	 * Should be used to return localization key for this upgrade.  Should be used in a worksite-upgrade-list GUI (or other...)
 	 */
 	public String unlocalizedName() {
-		return AWItems.worksiteUpgrade.getUnlocalizedName() + "." + ordinal();
+		return AWAutomationItems.WORKSITE_UPGRADE.getUnlocalizedName() + "." + ordinal();
 	}
 
 	/*

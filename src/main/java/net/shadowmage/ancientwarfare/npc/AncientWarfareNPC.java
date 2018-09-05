@@ -13,7 +13,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
-import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.compat.CompatLoader;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.gamedata.WorldData;
@@ -37,48 +36,42 @@ import net.shadowmage.ancientwarfare.npc.container.ContainerTownHall;
 import net.shadowmage.ancientwarfare.npc.container.ContainerTradeOrder;
 import net.shadowmage.ancientwarfare.npc.container.ContainerUpkeepOrder;
 import net.shadowmage.ancientwarfare.npc.container.ContainerWorkOrder;
-import net.shadowmage.ancientwarfare.npc.entity.AWNPCEntityLoader;
 import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
+import net.shadowmage.ancientwarfare.npc.init.AWNPCEntities;
 import net.shadowmage.ancientwarfare.npc.network.PacketFactionUpdate;
 import net.shadowmage.ancientwarfare.npc.network.PacketNpcCommand;
 import net.shadowmage.ancientwarfare.npc.proxy.NpcCommonProxy;
 import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
 import net.shadowmage.ancientwarfare.npc.registry.NpcDefaultsRegistry;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-@Mod(name = "Ancient Warfare NPCs", modid = AncientWarfareNPC.modID, version = "@VERSION@", dependencies = "required-after:ancientwarfare")
+@Mod(name = "Ancient Warfare NPCs", modid = AncientWarfareNPC.MOD_ID, version = "@VERSION@", dependencies = "required-after:ancientwarfare")
 
 public class AncientWarfareNPC {
-	public static final String modID = "ancientwarfarenpc";
-	public static final String MOD_PREFIX = modID + ":";
+	public static final String MOD_ID = "ancientwarfarenpc";
+	public static final String MOD_PREFIX = MOD_ID + ":";
 
-	@Instance(value = modID)
+	public static final AWNPCTab TAB = new AWNPCTab();
+
+	@Instance(value = MOD_ID)
 	public static AncientWarfareNPC instance;
 
 	@SidedProxy(clientSide = "net.shadowmage.ancientwarfare.npc.proxy.NpcClientProxy", serverSide = "net.shadowmage.ancientwarfare.npc.proxy.NpcCommonProxy")
 	public static NpcCommonProxy proxy;
 
-	public static Logger log;
-
+	public static final Logger LOG = LogManager.getLogger(MOD_ID);
 	public static AWNPCStatics statics;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent evt) {
-		log = evt.getModLog();
-
-		ModuleStatus.npcsLoaded = true;
-
-        /*
-		 * setup module-owned config file and config-access class
-         */
 		statics = new AWNPCStatics("AncientWarfareNpc");
-		proxy.preInit();//must be loaded after configs
+
+		proxy.preInit();
+
 		MinecraftForge.EVENT_BUS.register(this);
 		MinecraftForge.EVENT_BUS.register(net.shadowmage.ancientwarfare.npc.event.EventHandler.INSTANCE);
 
-        /*
-		 * register containers
-         */
 		NetworkHandler.registerContainer(NetworkHandler.GUI_NPC_INVENTORY, ContainerNpcInventory.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_NPC_WORK_ORDER, ContainerWorkOrder.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_NPC_UPKEEP_ORDER, ContainerUpkeepOrder.class);
@@ -109,11 +102,8 @@ public class AncientWarfareNPC {
 
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent evt) {
-		/*
-		 * save config for any changes that were made during loading stages
-         */
 		proxy.loadSkins();
-		AWNPCEntityLoader.loadNpcSubtypeEquipment();
+		AWNPCEntities.loadNpcSubtypeEquipment();
 		MinecraftForge.EVENT_BUS.register(FactionTracker.INSTANCE);
 
 		statics.save();

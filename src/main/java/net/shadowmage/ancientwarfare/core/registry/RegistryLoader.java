@@ -80,7 +80,7 @@ public class RegistryLoader {
 			loadRegistries(mod, root, include);
 		}
 		catch (IOException e) {
-			AncientWarfareCore.log.error("Error loading FileSystem from jar: ", e);
+			AncientWarfareCore.LOG.error("Error loading FileSystem from jar: ", e);
 		}
 		finally {
 			IOUtils.closeQuietly(fs);
@@ -98,7 +98,7 @@ public class RegistryLoader {
 			itr = Files.walk(root).iterator();
 		}
 		catch (IOException e) {
-			AncientWarfareCore.log.error("Error iterating filesystem for: {}", root, e);
+			AncientWarfareCore.LOG.error("Error iterating filesystem for: {}", root, e);
 			return;
 		}
 		while (itr != null && itr.hasNext()) {
@@ -126,12 +126,12 @@ public class RegistryLoader {
 			Optional<IRegistryDataParser> parser = getParser(shortName, json);
 
 			if (!parser.isPresent()) {
-				AncientWarfareCore.log.error("No parser defined for file name {}", shortName);
+				AncientWarfareCore.LOG.error("No parser defined for file name {}", shortName);
 				return;
 			}
 
 			if (loadedRegistries.containsKey(registryName)) {
-				AncientWarfareCore.log.info("Registry {} has already been loaded in overrides, skipping...", registryName.toString());
+				AncientWarfareCore.LOG.info("Registry {} has already been loaded in overrides, skipping...", registryName.toString());
 				return;
 			}
 			loadedRegistries.put(registryName, parser.get().getName());
@@ -143,13 +143,13 @@ public class RegistryLoader {
 			parser.get().parse(json);
 		}
 		catch (JsonParseException e) {
-			AncientWarfareCore.log.error("Parsing error loading registry {}", registryName, e);
+			AncientWarfareCore.LOG.error("Parsing error loading registry {}", registryName, e);
 		}
 		catch (MissingResourceException e) {
-			AncientWarfareCore.log.error(e.getMessage());
+			AncientWarfareCore.LOG.error(e.getMessage());
 		}
 		catch (IOException e) {
-			AncientWarfareCore.log.error("Couldn't read registry {} from {}", registryName, file, e);
+			AncientWarfareCore.LOG.error("Couldn't read registry {} from {}", registryName, file, e);
 		}
 		finally {
 			IOUtils.closeQuietly(reader);

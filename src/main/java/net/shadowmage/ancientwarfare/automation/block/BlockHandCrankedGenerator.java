@@ -22,8 +22,7 @@ import net.shadowmage.ancientwarfare.automation.tile.torque.TileHandCrankedGener
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 
 public class BlockHandCrankedGenerator extends BlockTorqueBase implements IBakeryProvider {
-
-	protected BlockHandCrankedGenerator(String regName) {
+	public BlockHandCrankedGenerator(String regName) {
 		super(Material.ROCK, regName);
 	}
 

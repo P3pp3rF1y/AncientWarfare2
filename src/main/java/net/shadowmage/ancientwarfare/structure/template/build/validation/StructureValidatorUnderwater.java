@@ -43,10 +43,9 @@ public class StructureValidatorUnderwater extends StructureValidator {
 
 	@Override
 	public boolean shouldIncludeForSelection(World world, int x, int y, int z, EnumFacing face, StructureTemplate template) {
-		int water = 0;
 		int startY = y;
 		y = WorldStructureGenerator.getTargetY(world, x, z, true) + 1;
-		water = startY - y;
+		int water = startY - y;
 		return !(water < minWaterDepth || water > maxWaterDepth);
 	}
 
@@ -59,13 +58,13 @@ public class StructureValidatorUnderwater extends StructureValidator {
 	public boolean validatePlacement(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
 		int minY = getMinY(template, bb);
 		int maxY = getMaxY(template, bb);
-		return validateBorderBlocks(world, template, bb, minY, maxY, true);
+		return validateBorderBlocks(world, bb, minY, maxY, true);
 	}
 
 	@Override
 	public void preGeneration(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureBB bb) {
 		prePlacementBorder(world, template, bb);
-		prePlacementUnderfill(world, template, bb);
+		prePlacementUnderfill(world, bb);
 	}
 
 	@Override

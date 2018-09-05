@@ -6,7 +6,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
-import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
 import net.shadowmage.ancientwarfare.structure.gamedata.TownMap;
@@ -30,7 +30,7 @@ public class TownPlacementValidator {
 	 * @param z world z to search from
 	 * @return maximal bounding area for a town, or null if no acceptable area was found starting in the specified chunk
 	 */
-	public static TownBoundingArea findGenerationPosition(World world, int x, int z) {
+	static TownBoundingArea findGenerationPosition(World world, int x, int z) {
 		if (world == null) {
 			return null;
 		}
@@ -93,7 +93,7 @@ public class TownPlacementValidator {
 		return area;
 	}
 
-	public static boolean validateAreaForPlacement(World world, TownBoundingArea area) {
+	static boolean validateAreaForPlacement(World world, TownBoundingArea area) {
 		return validateStructureCollision(world, area);
 	}
 
@@ -108,7 +108,7 @@ public class TownPlacementValidator {
 		map.getEntriesNear(world, area.getCenterX(), area.getCenterZ(), size, true, entries);
 		for (StructureEntry e : entries) {
 			if (e.getBB().crossWith(bb)) {
-				AncientWarfareStructures.log.info("Skipping town generation at: " + area + " for intersection with existing structure at: " + e.getBB());
+				AncientWarfareStructure.LOG.debug("Skipping town generation at: " + area + " for intersection with existing structure at: " + e.getBB());
 				return false;
 			}
 		}
@@ -116,7 +116,10 @@ public class TownPlacementValidator {
 	}
 
 	private static void expandBoundingArea(World world, TownBoundingArea area) {
-		boolean xneg = true, xpos = true, zneg = true, zpos = true;//if should try and expand on this direction next pass, once set to false it never checks that direction again
+		boolean xneg = true;//if should try and expand on this direction next pass, once set to false it never checks that direction again
+		boolean xpos = true;
+		boolean zneg = true;
+		boolean zpos = true;
 		boolean didExpand = false;//set to true if any expansion occurred on that pass.  if false at end of pass, will break out of loop as no more expansion is possible
 		do {
 			didExpand = false;
@@ -222,7 +225,7 @@ public class TownPlacementValidator {
 				return -1;//return invalid Y if liquid block is too low
 			}
 			if (!AWStructureStatics.isValidTargetBlock(state)) {
-				AncientWarfareStructures.log.info("rejecting town chunk for non-target block: " + block + " :: " + chunk.x + ":" + chunk.z);
+				AncientWarfareStructure.LOG.debug("rejecting town chunk for non-target block: " + block + " :: " + chunk.x + ":" + chunk.z);
 				return -1;
 			}
 			return y;//if not skippable and is valid target block, return that y-level

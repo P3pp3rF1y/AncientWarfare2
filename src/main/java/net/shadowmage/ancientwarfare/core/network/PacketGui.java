@@ -69,7 +69,7 @@ public class PacketGui extends PacketBase {
 		} else if (player.openContainer instanceof ContainerBase) {
 			((ContainerBase) player.openContainer).onPacketData(packetData);
 		} else {
-			AncientWarfareCore.log.error("Invalid target found when processing GUI/Container packet : " + player.openContainer + " packet: " + packetData);
+			AncientWarfareCore.LOG.error("Invalid target found when processing GUI/Container packet : " + player.openContainer + " packet: " + packetData);
 		}
 	}
 

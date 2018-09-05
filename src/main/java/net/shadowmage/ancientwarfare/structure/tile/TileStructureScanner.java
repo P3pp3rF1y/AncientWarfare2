@@ -14,7 +14,7 @@ import net.shadowmage.ancientwarfare.core.tile.IBlockBreakHandler;
 import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
-import net.shadowmage.ancientwarfare.structure.item.AWStructuresItems;
+import net.shadowmage.ancientwarfare.structure.init.AWStructureItems;
 import net.shadowmage.ancientwarfare.structure.item.ItemStructureScanner;
 import net.shadowmage.ancientwarfare.structure.item.ItemStructureSettings;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
@@ -33,7 +33,7 @@ public class TileStructureScanner extends TileUpdatable implements IBlockBreakHa
 		@Nonnull
 		@Override
 		public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-			return stack.getItem() == AWStructuresItems.structureScanner ? super.insertItem(slot, stack, simulate) : stack;
+			return stack.getItem() == AWStructureItems.STRUCTURE_SCANNER ? super.insertItem(slot, stack, simulate) : stack;
 		}
 
 		@Override
@@ -64,7 +64,7 @@ public class TileStructureScanner extends TileUpdatable implements IBlockBreakHa
 
 	private void updateRenderFacing() {
 		ItemStack scanner = getScannerInventory().getStackInSlot(0);
-		EnumFacing newRenderFacing = scanner.getItem() == AWStructuresItems.structureScanner &&
+		EnumFacing newRenderFacing = scanner.getItem() == AWStructureItems.STRUCTURE_SCANNER &&
 				ItemStructureScanner.readyToExport(scanner)
 				? EnumFacing.UP : facing;
 
@@ -116,7 +116,7 @@ public class TileStructureScanner extends TileUpdatable implements IBlockBreakHa
 	@SideOnly(Side.CLIENT)
 	public AxisAlignedBB getRenderBoundingBox() {
 		ItemStack scanner = scannerInventory.getStackInSlot(0);
-		if (scanner.getItem() != AWStructuresItems.structureScanner) {
+		if (scanner.getItem() != AWStructureItems.STRUCTURE_SCANNER) {
 			return super.getRenderBoundingBox();
 		}
 
@@ -136,7 +136,7 @@ public class TileStructureScanner extends TileUpdatable implements IBlockBreakHa
 	public void restoreTemplate(String name) {
 		ItemStack scanner = scannerInventory.getStackInSlot(0);
 
-		if (scanner.getItem() != AWStructuresItems.structureScanner) {
+		if (scanner.getItem() != AWStructureItems.STRUCTURE_SCANNER) {
 			return;
 		}
 
@@ -159,7 +159,7 @@ public class TileStructureScanner extends TileUpdatable implements IBlockBreakHa
 
 	private void saveToScannerItemAndRestoreTemplate(String name, ItemStack scanner, StructureTemplate template, ItemStructureSettings settings) {
 		EnumFacing placementFacing = facing.getOpposite();
-		BlockPos key = pos.offset(placementFacing, template.zSize - template.zOffset).offset(EnumFacing.DOWN, 1);
+		BlockPos key = pos.offset(placementFacing, template.getSize().getZ() - template.getOffset().getZ()).offset(EnumFacing.DOWN, 1);
 		StructureBB bb = new StructureBB(key, placementFacing, template);
 		settings.setBuildKey(key, placementFacing);
 		settings.setName(name);
@@ -208,11 +208,11 @@ public class TileStructureScanner extends TileUpdatable implements IBlockBreakHa
 	}
 
 	private boolean offsetIsSame(StructureTemplate template, StructureTemplate dummyTemplate) {
-		return template.xOffset == dummyTemplate.xOffset && template.yOffset == dummyTemplate.yOffset && template.zOffset == dummyTemplate.zOffset;
+		return template.getOffset().equals(dummyTemplate.getOffset());
 	}
 
 	private boolean dimensionsAreSame(StructureTemplate template, StructureTemplate dummyTemplate) {
-		return template.xSize == dummyTemplate.xSize && template.ySize == dummyTemplate.ySize && template.zSize == dummyTemplate.zSize;
+		return template.getSize().equals(dummyTemplate.getSize());
 	}
 
 	@Override

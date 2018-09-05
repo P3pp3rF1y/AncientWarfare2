@@ -12,8 +12,8 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.gui.GuiResearchBook;
+import net.shadowmage.ancientwarfare.core.init.AWCoreItems;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 
 import javax.annotation.Nullable;
@@ -42,7 +42,7 @@ public class ItemResearchBook extends ItemBaseCore {
 
 	@Nullable
 	public static String getResearcherName(ItemStack stack) {
-		if (!stack.isEmpty() && stack.getItem() == AWItems.researchBook && stack.hasTagCompound() && stack.getTagCompound().hasKey("researcherName")) {
+		if (!stack.isEmpty() && stack.getItem() == AWCoreItems.RESEARCH_BOOK && stack.hasTagCompound() && stack.getTagCompound().hasKey("researcherName")) {
 			return stack.getTagCompound().getString("researcherName");
 		}
 		return null;

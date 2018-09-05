@@ -10,7 +10,7 @@
             "item": "#PLANKWOOD"
         },
         "L": {
-            "item": "minecraft:leather"
+            "item": "#LEATHER"
         }
     },
     "result": {

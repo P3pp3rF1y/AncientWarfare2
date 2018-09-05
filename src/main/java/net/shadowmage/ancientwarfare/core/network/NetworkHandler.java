@@ -174,7 +174,7 @@ public final class NetworkHandler implements IGuiHandler {
 				return clz.getConstructor(EntityPlayer.class, int.class, int.class, int.class).newInstance(player, x, y, z);
 			}
 			catch (Exception e) {
-				AncientWarfareCore.log.error("Error instantiating GUI container on server: ", e);
+				AncientWarfareCore.LOG.error("Error instantiating GUI container on server: ", e);
 			}
 		}
 		return null;
@@ -190,7 +190,7 @@ public final class NetworkHandler implements IGuiHandler {
 					return clz.getConstructor(ContainerBase.class).newInstance(container);
 			}
 			catch (Exception e) {
-				AncientWarfareCore.log.error("Error instantiating client GUI: ", e);
+				AncientWarfareCore.LOG.error("Error instantiating client GUI: ", e);
 			}
 		}
 		return null;

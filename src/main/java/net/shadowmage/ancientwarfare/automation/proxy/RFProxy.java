@@ -2,8 +2,8 @@ package net.shadowmage.ancientwarfare.automation.proxy;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.Loader;
 import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
-import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 
 public class RFProxy {
@@ -11,7 +11,7 @@ public class RFProxy {
 	public static RFProxy instance;
 
 	public static void loadInstance() {
-		if (ModuleStatus.redstoneFluxEnabled) {
+		if (Loader.isModLoaded("redstoneflux")) {
 			try {
 				instance = (RFProxy) Class.forName("net.shadowmage.ancientwarfare.automation.proxy.RFProxyActual").newInstance();
 				AncientWarfareAutomation.LOG.info("RF Compatability loaded successfully");

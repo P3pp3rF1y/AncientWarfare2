@@ -545,7 +545,7 @@ public class InventoryTools {
 
 		for (ItemStack itemstack : loot) {
 			if (randomSlots.isEmpty()) {
-				AncientWarfareCore.log.warn("Tried to over-fill a container");
+				AncientWarfareCore.LOG.warn("Tried to over-fill a container");
 				return;
 			}
 

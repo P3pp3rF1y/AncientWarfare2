@@ -8,14 +8,14 @@
     ],
     "key": {
         "P": {
-            "item": "minecraft:paper"
+            "item": "#PAPER"
         },
         "S": {
             "item": "minecraft:stone",
             "data": 0
         },
         "W": {
-            "item": "minecraft:crafting_table"
+            "item": "#WORKBENCH"
         },
         "_": {
             "item": "#PLANKWOOD"

@@ -125,7 +125,7 @@ public class NpcClientProxy extends NpcCommonProxy {
 			return Optional.of(loc);
 		}
 		catch (IOException e) {
-			AncientWarfareNPC.log.error("Error reading image {}", imageName);
+			AncientWarfareNPC.LOG.error("Error reading image {}", imageName);
 		}
 		return Optional.empty();
 	}

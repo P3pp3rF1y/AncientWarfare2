@@ -8,10 +8,10 @@
     ],
     "key": {
         "B": {
-            "item": "minecraft:obsidian"
+            "item": "#OBSIDIAN"
         },
         "E": {
-            "item": "minecraft:ender_pearl"
+            "item": "#ENDERPEARL"
         }
     },
     "result": {

@@ -12,7 +12,7 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.npc.orders.UpkeepOrder;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ItemUpkeepOrder extends ItemOrders {
@@ -23,11 +23,8 @@ public class ItemUpkeepOrder extends ItemOrders {
 
 	@Override
 	public List<BlockPos> getPositionsForRender(ItemStack stack) {
-		List<BlockPos> positionList = new ArrayList<>();
-		UpkeepOrder order = UpkeepOrder.getUpkeepOrder(stack);
-		if (order != null && order.getUpkeepPosition() != null)
-			positionList.add(order.getUpkeepPosition());
-		return positionList;
+		return UpkeepOrder.getUpkeepOrder(stack).map(o -> o.getUpkeepPosition().map(Collections::singletonList).orElse(Collections.emptyList()))
+				.orElse(Collections.emptyList());
 	}
 
 	@Override
@@ -39,15 +36,17 @@ public class ItemUpkeepOrder extends ItemOrders {
 
 	@Override
 	public void onKeyAction(EntityPlayer player, ItemStack stack, ItemAltFunction altFunction) {
-		UpkeepOrder upkeepOrder = UpkeepOrder.getUpkeepOrder(stack);
-		if (upkeepOrder != null) {
-			BlockPos hit = BlockTools.getBlockClickedOn(player, player.world, false);
-			if (upkeepOrder.addUpkeepPosition(player.world, hit)) {
-				upkeepOrder.write(stack);
-				player.sendMessage(new TextComponentTranslation("guistrings.npc.upkeep_point_set"));
-			} else
-				NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_UPKEEP_ORDER, 0, 0, 0);
-		}
+		UpkeepOrder.getUpkeepOrder(stack).ifPresent(upkeepOrder -> {
+					BlockPos hit = BlockTools.getBlockClickedOn(player, player.world, false);
+					if (hit != null) {
+						if (upkeepOrder.addUpkeepPosition(player.world, hit)) {
+							upkeepOrder.write(stack);
+							player.sendMessage(new TextComponentTranslation("guistrings.npc.upkeep_point_set"));
+						}
+					} else
+						NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_UPKEEP_ORDER, 0, 0, 0);
+				}
+		);
 	}
 
 }

@@ -22,7 +22,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.proxy.IClientRegister;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
-import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
 
 import javax.annotation.Nullable;
@@ -36,10 +36,10 @@ public final class BlockGateProxy extends BlockContainer implements IClientRegis
 		super(Material.ROCK);
 		setCreativeTab(null);
 		setUnlocalizedName("gate_proxy");
-		setRegistryName(new ResourceLocation(AncientWarfareStructures.MOD_ID, "gate_proxy"));
+		setRegistryName(new ResourceLocation(AncientWarfareStructure.MOD_ID, "gate_proxy"));
 		setResistance(2000.f);
 		setHardness(5.f);
-		AncientWarfareStructures.proxy.addClientRegister(this);
+		AncientWarfareStructure.proxy.addClientRegister(this);
 	}
 
 	@Override

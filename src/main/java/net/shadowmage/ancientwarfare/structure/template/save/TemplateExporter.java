@@ -1,9 +1,9 @@
 package net.shadowmage.ancientwarfare.structure.template.save;
 
-import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
+import net.minecraft.util.math.Vec3i;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
-import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
 
@@ -20,11 +20,12 @@ public class TemplateExporter {
 		File exportFile = new File(directory, template.name + "." + AWStructureStatics.templateExtension);
 		if (!exportFile.exists()) {
 			try {
-				exportFile.createNewFile();
+				if (!exportFile.createNewFile()) {
+					return false;
+				}
 			}
 			catch (IOException e) {
-				AncientWarfareStructures.log.error("Could not export template..could not create file : " + exportFile.getAbsolutePath());
-				e.printStackTrace();
+				AncientWarfareStructure.LOG.error("Could not export template..could not create file : " + exportFile.getAbsolutePath());
 				return false;
 			}
 		}
@@ -36,20 +37,17 @@ public class TemplateExporter {
 
 			writer.write("#### RULES ####");
 			writer.newLine();
-			TemplateRule[] templateRules = template.getTemplateRules();
-			for (TemplateRule rule : templateRules) {
-				StructurePluginManager.writeRuleLines(rule, writer, "rule");
+			for (TemplateRule rule : template.getBlockRules().values()) {
+				rule.writeRule(writer);
 			}
 			writer.write("#### ENTITIES ####");
 			writer.newLine();
-			templateRules = template.getEntityRules();
-			for (TemplateRule rule : templateRules) {
-				StructurePluginManager.writeRuleLines(rule, writer, "entity");
+			for (TemplateRule rule : template.getEntityRules().values()) {
+				rule.writeRule(writer);
 			}
 		}
 		catch (IOException e) {
-			AncientWarfareStructures.log.error("Could not export template..could not create file : " + exportFile.getAbsolutePath());
-			e.printStackTrace();
+			AncientWarfareStructure.LOG.error("Could not export template..could not create file : " + exportFile.getAbsolutePath());
 			return false;
 		}
 		return true;
@@ -77,13 +75,13 @@ public class TemplateExporter {
 		writer.newLine();
 		writer.write("header:");
 		writer.newLine();
-		writer.write("version=2.1");
+		writer.write("version=" + StructureTemplate.CURRENT_VERSION.getMajor() + "." + StructureTemplate.CURRENT_VERSION.getMinor());
 		writer.newLine();
 		writer.write("name=" + template.name);
 		writer.newLine();
-		writer.write("size=" + template.xSize + "," + template.ySize + "," + template.zSize);
+		writer.write("size=" + template.getSize().getX() + "," + template.getSize().getY() + "," + template.getSize().getZ());
 		writer.newLine();
-		writer.write("offset=" + template.xOffset + "," + template.yOffset + "," + template.zOffset);
+		writer.write("offset=" + template.getOffset().getX() + "," + template.getOffset().getY() + "," + template.getOffset().getZ());
 		writer.newLine();
 		writer.write(":endheader");
 		writer.newLine();
@@ -93,14 +91,14 @@ public class TemplateExporter {
 	private static void writeLayers(StructureTemplate template, BufferedWriter writer) throws IOException {
 		writer.write("#### LAYERS ####");
 		writer.newLine();
-		for (int y = 0; y < template.ySize; y++) {
+		for (int y = 0; y < template.getSize().getY(); y++) {
 			writer.write("layer: " + y);
 			writer.newLine();
-			for (int z = 0; z < template.zSize; z++) {
-				for (int x = 0; x < template.xSize; x++) {
-					short data = template.getTemplateData()[StructureTemplate.getIndex(x, y, z, template.xSize, template.ySize, template.zSize)];
+			for (int z = 0; z < template.getSize().getZ(); z++) {
+				for (int x = 0; x < template.getSize().getX(); x++) {
+					short data = template.getTemplateData()[StructureTemplate.getIndex(new Vec3i(x, y, z), template.getSize())];
 					writer.write(String.valueOf(data));
-					if (x < template.xSize - 1) {
+					if (x < template.getSize().getX() - 1) {
 						writer.write(",");
 					}
 				}

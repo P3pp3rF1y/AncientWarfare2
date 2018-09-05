@@ -8,10 +8,10 @@
     ],
     "key": {
         "P": {
-            "item": "minecraft:paper"
+            "item": "#PAPER"
         },
         "W": {
-            "item": "minecraft:crafting_table"
+            "item": "#WORKBENCH"
         },
         "I": {
             "item": "#INGOTIRON"

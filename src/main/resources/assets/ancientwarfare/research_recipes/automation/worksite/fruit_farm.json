@@ -8,7 +8,7 @@
     ],
     "key": {
         "C": {
-            "item": "minecraft:chest"
+            "item": "#CHEST"
         },
         "A": {
             "item": "minecraft:apple"

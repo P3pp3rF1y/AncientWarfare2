@@ -347,8 +347,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		return getDistanceSq(home.getX() + 0.5d, home.getY(), home.getZ() + 0.5d);
 	}
 
-	public BlockPos getTownHallPosition() {
-		return null;//NOOP on non-player owned npc
+	public Optional<BlockPos> getTownHallPosition() {
+		return Optional.empty();//NOOP on non-player owned npc
 	}
 
 	public void setHomeAreaAtCurrentPosition() {
@@ -370,13 +370,13 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		if (getAttackTarget() != null || !hasHome()) {
 			return false;
 		}
-		if (world.isRainingAt(new BlockPos(MathHelper.floor(this.posX), MathHelper.floor(this.posY), MathHelper.floor(this.posZ))))
+		if (world.isRainingAt(getPosition()))
 			setRainedOn(true);
 		return shouldSleep() || isWaitingForRainToStop();
 	}
 
 	private boolean isWaitingForRainToStop() {
-		if (!worksInRain() || !this.world.isRaining()) {
+		if (worksInRain() || !this.world.isRaining()) {
 			// rain has stopped, reset
 			setRainedOn(false);
 			return false;
@@ -996,9 +996,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	public void writeEntityToNBT(NBTTagCompound tag) {
 		super.writeEntityToNBT(tag);
 		if (!hasHome()) {
-			BlockPos position = getTownHallPosition();
-			if (position != null)
-				setHomePosAndDistance(position, getHomeRange());
+			Optional<BlockPos> position = getTownHallPosition();
+			if (position.isPresent())
+				setHomePosAndDistance(position.get(), getHomeRange());
 			else
 				setHomeAreaAtCurrentPosition();
 		}

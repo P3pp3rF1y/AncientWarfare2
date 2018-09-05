@@ -14,7 +14,7 @@ import net.shadowmage.ancientwarfare.automation.tile.TileChunkLoaderSimple;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
 public class BlockChunkLoaderSimple extends BlockBaseAutomation {
-	protected BlockChunkLoaderSimple(String regName) {
+	public BlockChunkLoaderSimple(String regName) {
 		super(Material.ROCK, regName);
 		setHardness(2.f);
 	}

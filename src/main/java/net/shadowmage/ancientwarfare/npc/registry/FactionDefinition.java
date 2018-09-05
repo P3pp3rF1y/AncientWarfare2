@@ -1,5 +1,10 @@
 package net.shadowmage.ancientwarfare.npc.registry;
 
+import net.minecraft.entity.Entity;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.shadowmage.ancientwarfare.core.util.parsing.ResourceLocationMatcher;
+
+import java.util.HashSet;
 import java.util.Set;
 
 public class FactionDefinition {
@@ -7,14 +12,16 @@ public class FactionDefinition {
 	private int color;
 	private int playerDefaultStanding;
 	private final Set<String> hostileTowards;
+	private final Set<ResourceLocationMatcher> targetList;
 
-	public FactionDefinition(int playerDefaultStanding, Set<String> hostileTowards) {
+	FactionDefinition(int playerDefaultStanding, Set<String> hostileTowards, Set<ResourceLocationMatcher> targetList) {
 		this.playerDefaultStanding = playerDefaultStanding;
 		this.hostileTowards = hostileTowards;
+		this.targetList = targetList;
 	}
 
-	private FactionDefinition(String name, int color, int playerDefaultStanding, Set<String> hostileTowards) {
-		this(playerDefaultStanding, hostileTowards);
+	private FactionDefinition(String name, int color, int playerDefaultStanding, Set<String> hostileTowards, Set<ResourceLocationMatcher> targetList) {
+		this(playerDefaultStanding, hostileTowards, targetList);
 		this.name = name;
 		this.color = color;
 	}
@@ -32,43 +39,54 @@ public class FactionDefinition {
 	}
 
 	public CopyBuilder copy(String name, int color) {
-		return new CopyBuilder(name, color, getPlayerDefaultStanding(), hostileTowards);
+		return new CopyBuilder(name, color, getPlayerDefaultStanding(), new HashSet<>(hostileTowards), new HashSet<>(targetList));
 	}
 
 	public int getPlayerDefaultStanding() {
 		return playerDefaultStanding;
 	}
 
+	public boolean isTarget(Entity entity) {
+		//noinspection ConstantConditions
+		return EntityRegistry.getEntry(entity.getClass()) != null
+				&& targetList.stream().anyMatch(m -> m.test(EntityRegistry.getEntry(entity.getClass()).getRegistryName()));
+	}
 	public static class CopyBuilder {
 		private final String name;
 		private final int color;
 		private int playerDefaultStanding;
 		private Set<String> hostileTowards;
+		private Set<ResourceLocationMatcher> targetList;
 
-		private CopyBuilder(String name, int color, int playerDefaultStanding, Set<String> hostileTowards) {
+		private CopyBuilder(String name, int color, int playerDefaultStanding, Set<String> hostileTowards, Set<ResourceLocationMatcher> targetList) {
 			this.name = name;
 			this.color = color;
 			this.playerDefaultStanding = playerDefaultStanding;
 			this.hostileTowards = hostileTowards;
+			this.targetList = targetList;
 		}
 
-		public CopyBuilder setPlayerDefaultStanding(int playerDefaultStanding) {
+		void setPlayerDefaultStanding(int playerDefaultStanding) {
 			this.playerDefaultStanding = playerDefaultStanding;
-			return this;
 		}
 
-		public CopyBuilder addHostileTowards(String faction) {
+		CopyBuilder addHostileTowards(String faction) {
 			hostileTowards.add(faction);
 			return this;
 		}
 
-		public CopyBuilder removeHostileTowards(String faction) {
+		CopyBuilder removeHostileTowards(String faction) {
 			hostileTowards.remove(faction);
 			return this;
 		}
 
+		CopyBuilder overrideTargetList(Set<ResourceLocationMatcher> targetList) {
+			this.targetList = targetList;
+			return this;
+		}
+
 		public FactionDefinition build() {
-			return new FactionDefinition(name, color, playerDefaultStanding, hostileTowards);
+			return new FactionDefinition(name, color, playerDefaultStanding, hostileTowards, targetList);
 		}
 	}
 }

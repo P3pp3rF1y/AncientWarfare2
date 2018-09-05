@@ -8,7 +8,7 @@
     ],
     "key": {
         "C": {
-            "item": "minecraft:chest"
+            "item": "#CHEST"
         },
         "S": {
             "item": "minecraft:stonebrick",
