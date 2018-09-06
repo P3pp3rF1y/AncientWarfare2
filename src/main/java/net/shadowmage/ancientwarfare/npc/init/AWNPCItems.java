@@ -9,6 +9,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.shadowmage.ancientwarfare.core.util.InjectionTools;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.item.ItemBardInstrument;
+import net.shadowmage.ancientwarfare.npc.item.ItemCoin;
 import net.shadowmage.ancientwarfare.npc.item.ItemCombatOrder;
 import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
@@ -32,6 +33,7 @@ public class AWNPCItems {
 	public static final Item ROUTING_ORDER = InjectionTools.nullValue();
 	public static final Item TRADE_ORDER = InjectionTools.nullValue();
 	public static final Item BARD_INSTRUMENT = InjectionTools.nullValue();
+	public static final Item COIN = InjectionTools.nullValue();
 
 	@SubscribeEvent
 	public static void register(RegistryEvent.Register<Item> event) {
@@ -56,5 +58,7 @@ public class AWNPCItems {
 		registry.register(new ItemRoutingOrder());
 		registry.register(new ItemTradeOrder());
 		registry.register(new ItemNpcSpawner());
+
+		registry.register(new ItemCoin());
 	}
 }

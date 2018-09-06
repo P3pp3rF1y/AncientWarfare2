@@ -35,6 +35,7 @@ public class AWJEIPlugin implements IModPlugin {
 	public void registerItemSubtypes(@Nonnull ISubtypeRegistry subtypeRegistry) {
 		subtypeRegistry.useNbtForSubtypes(AWNPCItems.NPC_SPAWNER);
 		subtypeRegistry.useNbtForSubtypes(Item.getItemFromBlock(AWStructureBlocks.FIRE_PIT));
+		subtypeRegistry.useNbtForSubtypes(AWNPCItems.COIN);
 		//noinspection ConstantConditions
 		subtypeRegistry.registerSubtypeInterpreter(AWVehicleItems.SPAWNER, itemStack -> Integer.toString(itemStack.getMetadata()) + ":" + (itemStack.hasTagCompound() ? itemStack.getTagCompound().toString() : ""));
 	}

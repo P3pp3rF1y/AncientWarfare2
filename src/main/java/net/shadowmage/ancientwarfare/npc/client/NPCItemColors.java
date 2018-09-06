@@ -5,6 +5,7 @@ import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.npc.init.AWNPCItems;
+import net.shadowmage.ancientwarfare.npc.item.ItemCoin;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 import net.shadowmage.ancientwarfare.npc.registry.FactionDefinition;
 import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
@@ -32,5 +33,7 @@ public class NPCItemColors {
 			return -1;
 
 		}), AWNPCItems.NPC_SPAWNER);
+
+		itemColors.registerItemColorHandler(((stack, tintindex) -> ItemCoin.getMetal(stack).getColor()), AWNPCItems.COIN);
 	}
 }

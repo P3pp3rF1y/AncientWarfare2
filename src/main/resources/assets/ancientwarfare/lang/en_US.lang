@@ -109,6 +109,9 @@ entity.ancientwarfarenpc.combat.medic.name=Medic
 entity.ancientwarfarenpc.combat.engineer.name=Engineer
 entity.ancientwarfarenpc.combat.commander.name=Commander
 entity.ancientwarfarenpc.siege_engineer.name=Siege Engineer
+item.coin.gold.name=Gold Dragon
+item.coin.silver.name=Silver Stag
+item.coin.copper.name=Copper Owl
 
 #vehicle
 
