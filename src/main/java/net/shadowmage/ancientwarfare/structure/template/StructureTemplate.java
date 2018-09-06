@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class StructureTemplate {
-	public static final Version CURRENT_VERSION = new Version(2, 5);
+	public static final Version CURRENT_VERSION = new Version(2, 6);
 
 	/*
 	 * base datas

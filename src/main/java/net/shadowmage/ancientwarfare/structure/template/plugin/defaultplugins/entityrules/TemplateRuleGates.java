@@ -69,6 +69,7 @@ public class TemplateRuleGates extends TemplateRuleEntity {
 
 	@Override
 	public void parseRuleData(NBTTagCompound tag) {
+		super.parseRuleData(tag);
 		gateType = tag.getString("gateType");
 		orientation = EnumFacing.VALUES[tag.getByte("orientation")];
 		pos1 = getBlockPosFromNBT(tag.getCompoundTag("pos1"));
@@ -78,6 +79,7 @@ public class TemplateRuleGates extends TemplateRuleEntity {
 
 	@Override
 	public void writeRuleData(NBTTagCompound tag) {
+		super.writeRuleData(tag);
 		tag.setString("gateType", gateType);
 		tag.setByte("orientation", (byte) orientation.ordinal());
 		tag.setTag("pos1", writeBlockPosToNBT(new NBTTagCompound(), pos1));

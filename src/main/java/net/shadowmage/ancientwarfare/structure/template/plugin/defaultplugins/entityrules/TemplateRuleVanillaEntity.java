@@ -61,6 +61,7 @@ public class TemplateRuleVanillaEntity extends TemplateRuleEntity {
 
 	@Override
 	public void writeRuleData(NBTTagCompound tag) {
+		super.writeRuleData(tag);
 		tag.setString("mobID", registryName.toString());
 		tag.setFloat("xOffset", xOffset);
 		tag.setFloat("zOffset", zOffset);
@@ -69,6 +70,7 @@ public class TemplateRuleVanillaEntity extends TemplateRuleEntity {
 
 	@Override
 	public void parseRuleData(NBTTagCompound tag) {
+		super.parseRuleData(tag);
 		registryName = new ResourceLocation(tag.getString("mobID"));
 		xOffset = tag.getFloat("xOffset");
 		zOffset = tag.getFloat("zOffset");
