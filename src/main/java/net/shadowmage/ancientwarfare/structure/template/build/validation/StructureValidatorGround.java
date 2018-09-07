@@ -42,6 +42,11 @@ public class StructureValidatorGround extends StructureValidator {
 	public void preGeneration(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureBB bb) {
 		prePlacementBorder(world, template, bb);
 		prePlacementUnderfill(world, bb);
+		clearBB(world, bb);
+	}
+
+	private void clearBB(World world, StructureBB bb) {
+		BlockPos.getAllInBox(bb.min, bb.max).forEach(world::setBlockToAir);
 	}
 
 	@Override
