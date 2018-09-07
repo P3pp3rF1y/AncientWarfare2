@@ -1,13 +1,10 @@
 package net.shadowmage.ancientwarfare.core.util.parsing;
 
-import com.google.common.base.Optional;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.block.Block;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -24,7 +21,6 @@ import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.MissingResourceException;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.StreamSupport;
@@ -131,10 +127,6 @@ public class JsonHelper {
 		return getBlockNameAndProperties(JsonUtils.getJsonObject(parent, elementName));
 	}
 
-	private static <T extends Comparable<T>> Optional<T> getValueHelper(IProperty<T> property, String valueString) {
-		return property.parseValue(valueString);
-	}
-
 	public static Predicate<IBlockState> getBlockStateMatcher(JsonObject json, String arrayElement, String individualElement) {
 		if (json.has(arrayElement)) {
 			JsonArray stateMatchers = JsonUtils.getJsonArray(json, arrayElement);
@@ -156,21 +148,7 @@ public class JsonHelper {
 		String propName = propJson.getKey();
 		String propValue = propJson.getValue().getAsString();
 
-		BlockStateContainer stateContainer = state.getBlock().getBlockState();
-
-		IProperty<?> property = stateContainer.getProperty(propName);
-		if (property == null) {
-			//noinspection ConstantConditions
-			throw new MissingResourceException("Block \"" + state.getBlock().getRegistryName().toString() + "\" doesn't have \"" + propName + "\" property",
-					IProperty.class.getName(), propName);
-		}
-		Optional<?> value = getValueHelper(property, propValue);
-		if (!value.isPresent()) {
-			throw new MissingResourceException("Invalid value \"" + propValue + "\" for property \"" + propName + "\"", IProperty.class.getName(), propName);
-		}
-
-		//noinspection unchecked
-		return new PropertyState(property, (Comparable) value.get());
+		return BlockTools.getPropertyState(state.getBlock(), state.getBlock().getBlockState(), propName, propValue);
 	}
 
 	public static PropertyStateMatcher getPropertyStateMatcher(IBlockState state, JsonObject parent, String elementName) {

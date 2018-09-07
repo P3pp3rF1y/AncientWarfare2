@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.core.util;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -28,11 +27,13 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.entity.AWFakePlayer;
+import net.shadowmage.ancientwarfare.core.util.parsing.PropertyState;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 import java.util.MissingResourceException;
+import java.util.Optional;
 import java.util.function.Function;
 
 public class BlockTools {
@@ -304,14 +305,14 @@ public class BlockTools {
 
 		for (Map.Entry<String, String> prop : properties.entrySet()) {
 			IProperty<?> property = stateContainer.getProperty(prop.getKey());
-			//noinspection ConstantConditions
-			Optional<?> value = getValueHelper(property, prop.getValue());
 
-			if (!value.isPresent()) {
-				throw new MissingResourceException("Invalid value \"" + prop.getValue() + "\" for property \"" + prop.getKey() + "\"", IProperty.class.getName(), prop.getKey());
+			if (property == null) {
+				//noinspection ConstantConditions
+				throw new MissingResourceException("Block \"" + block.getRegistryName().toString() + "\" doesn't have \"" + prop.getKey() + "\" property",
+						IProperty.class.getName(), prop.getKey());
 			}
-			//noinspection ConstantConditions
-			ret = addProperty.apply(ret, property, (Comparable<?>) value.get());
+
+			ret = addProperty.apply(ret, property, getPropertyState(block, stateContainer, prop.getKey(), prop.getValue()).getValue());
 		}
 
 		return ret;
@@ -323,7 +324,12 @@ public class BlockTools {
 	}
 
 	private static <T extends Comparable<T>> Optional<T> getValueHelper(IProperty<T> property, String valueString) {
-		return property.parseValue(valueString);
+		return toJUtilOptional(property.parseValue(valueString));
+	}
+
+	@SuppressWarnings({"OptionalUsedAsFieldOrParameterType", "Guava"})
+	private static <T> Optional<T> toJUtilOptional(com.google.common.base.Optional<T> optional) {
+		return optional.transform(Optional::of).or(Optional::empty);
 	}
 
 	public static IBlockState rotateFacing(IBlockState state, int turns) {
@@ -410,6 +416,26 @@ public class BlockTools {
 				}
 			})
 			.build();
+
+	public static PropertyState getPropertyState(Block block, BlockStateContainer stateContainer, String propName, String propValue) {
+		IProperty<?> property = stateContainer.getProperty(propName);
+		if (property == null) {
+			//noinspection ConstantConditions
+			throw new MissingResourceException("Block \"" + block.getRegistryName().toString() + "\" doesn't have \"" + propName + "\" property",
+					IProperty.class.getName(), propName);
+		}
+
+		return getPropertyState(property, propName, propValue);
+	}
+
+	private static <T extends Comparable<T>, V extends T> PropertyState<T, V> getPropertyState(IProperty<T> property, String propName, String propValue) {
+		Optional<?> value = getValueHelper(property, propValue);
+		if (!value.isPresent()) {
+			throw new MissingResourceException("Invalid value \"" + propValue + "\" for property \"" + propName + "\"", IProperty.class.getName(), propName);
+		}
+		//noinspection unchecked
+		return new PropertyState<>(property, (V) value.get());
+	}
 
 	private interface IRotator<T extends Comparable<T>> {
 
