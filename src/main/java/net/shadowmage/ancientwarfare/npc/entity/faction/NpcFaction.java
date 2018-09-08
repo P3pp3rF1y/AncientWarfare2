@@ -93,7 +93,7 @@ public abstract class NpcFaction extends NpcBase {
 			return standing < 0;
 		} else if (e instanceof NpcFaction) {
 			NpcFaction npc = (NpcFaction) e;
-			return FactionRegistry.getFaction(getFaction()).isHostileTowards(npc.getFaction());
+			return !npc.getFaction().equals(factionName) && FactionRegistry.getFaction(getFaction()).isHostileTowards(npc.getFaction());
 		} else {
 			return FactionRegistry.getFaction(factionName).isTarget(e);
 		}
