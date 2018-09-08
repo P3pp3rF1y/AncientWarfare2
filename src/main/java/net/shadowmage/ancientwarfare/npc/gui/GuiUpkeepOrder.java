@@ -41,17 +41,6 @@ public class GuiUpkeepOrder extends GuiContainerBase<ContainerUpkeepOrder> {
 			label = new Label(8 + 18 + 4, 8, StringTools.formatPos(pos.get()));
 			addGuiElement(label);
 
-			button = new Button(8 + 18 + 10, 8 + 10, 55, 12, "guistrings.npc.remove_upkeep_point") {
-				@Override
-				protected void onPressed() {
-					getContainer().upkeepOrder.removeUpkeepPoint();
-					hasChanged = true;
-					refreshGui();
-				}
-			};
-
-			addGuiElement(button);
-
 			button = new Button(8 + 18 + 55 + 20, 8 + 10, 55, 12, getSideName(getContainer().upkeepOrder.getUpkeepBlockSide())) {
 				@Override
 				protected void onPressed() {
