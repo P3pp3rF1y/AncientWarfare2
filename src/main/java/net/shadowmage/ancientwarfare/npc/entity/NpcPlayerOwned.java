@@ -63,11 +63,17 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 				horseAI.onKilled();
 			}
 			validateTownHallPosition();
-			getTownHall().ifPresent(townHall -> {
-				townHall.handleNpcDeath(this, source);
-			});
+			getTownHall().ifPresent(townHall -> townHall.handleNpcDeath(this, source));
 		}
 		super.onDeath(source);
+	}
+
+	@Override
+	protected void onRepack() {
+		super.onRepack();
+		if (horseAI != null) {
+			horseAI.onKilled();
+		}
 	}
 
 	@Override
