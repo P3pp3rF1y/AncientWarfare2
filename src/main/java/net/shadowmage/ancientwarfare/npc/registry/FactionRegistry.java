@@ -9,6 +9,7 @@ import net.shadowmage.ancientwarfare.core.util.parsing.JsonHelper;
 import net.shadowmage.ancientwarfare.core.util.parsing.ResourceLocationMatcher;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -19,18 +20,14 @@ import java.util.stream.StreamSupport;
 public class FactionRegistry {
 	private FactionRegistry() {}
 
-	private static Set<FactionDefinition> factions = new HashSet<>();
-
-	public static Set<FactionDefinition> getFactions() {
-		return factions;
-	}
+	private static Map<String, FactionDefinition> factions = new HashMap<>();
 
 	public static Set<String> getFactionNames() {
-		return factions.stream().map(FactionDefinition::getName).collect(Collectors.toCollection(HashSet::new));
+		return factions.keySet();
 	}
 
 	public static FactionDefinition getFaction(String name) {
-		return factions.stream().filter(f -> f.getName().equals(name)).findFirst().orElse(EMPTY_FACTION);
+		return factions.getOrDefault(name, EMPTY_FACTION);
 	}
 
 	public static class FactionParser implements IRegistryDataParser {
@@ -69,7 +66,7 @@ public class FactionRegistry {
 					builder.overrideTargetList(parseTargetList(faction));
 				}
 
-				factions.add(builder.build());
+				factions.put(factionName, builder.build());
 			}
 		}
 
@@ -87,5 +84,5 @@ public class FactionRegistry {
 		}
 	}
 
-	private static final FactionDefinition EMPTY_FACTION = new FactionDefinition(0, new HashSet<>(), new HashSet<>());
+	private static final FactionDefinition EMPTY_FACTION = new FactionDefinition(0, new HashSet<>(), new HashSet<>()).copy("", -1).build();
 }

@@ -36,22 +36,27 @@ public class NpcAIPlayerOwnedFollowCommand extends NpcAI<NpcPlayerOwned> {
 	@Override
 	public void resetTask() {
 		Command cmd = npc.getCurrentCommand();
-		if (cmd != null) {
-			//allow command to persist until next run of the task
-			if (npc.getAttackTarget() == null || !cmd.type.isPersistent()) {
-				npc.handlePlayerCommand(null);
-			}
+		if (cmd != null && (npc.getAttackTarget() == null || !cmd.type.isPersistent())) {
+			npc.handlePlayerCommand(null);
 		}
 	}
 
 	@Override
 	public void startExecuting() {
-		//TODO
+		//noop
 	}
 
 	@Override
 	public void updateTask() {
 		Command cmd = npc.getCurrentCommand();
+		handleCommand(cmd);
+		if (!cmd.type.isPersistent()) {
+			npc.setPlayerCommand(null);
+		}
+	}
+
+	@SuppressWarnings("squid:S1199")
+	private void handleCommand(Command cmd) {
 		switch (cmd.type)//handle instant type commands
 		{
 			case CLEAR_HOME: {
@@ -86,23 +91,8 @@ public class NpcAIPlayerOwnedFollowCommand extends NpcAI<NpcPlayerOwned> {
 			}
 			case MOVE: {
 				handleMoveCommand(cmd);
-				return;
+				break;
 			}
-		}
-		if (!cmd.type.isPersistent()) {
-			npc.setPlayerCommand(null);
-		}
-	}
-
-	private void handleMoveCommand(Command cmd) {
-		if (moveTargetPos == null || moveTargetPos != cmd.pos) {
-			moveTargetPos = cmd.pos;
-		}
-		double sqDist = npc.getDistanceSq(moveTargetPos);
-		if (sqDist > MIN_RANGE) {
-			moveToPosition(moveTargetPos, sqDist);//not finished moving...move along path (or at least try)
-		} else {
-			npc.setPlayerCommand(null);//finished moving..clear the command...
 		}
 	}
 
@@ -120,12 +110,29 @@ public class NpcAIPlayerOwnedFollowCommand extends NpcAI<NpcPlayerOwned> {
 			moveToEntity(e, sqDist);//move to entity...
 		} else {
 			npc.getNavigator().clearPath();//clear path to stop moving
-			if (e instanceof EntityHorse && e.getPassengers().isEmpty()) {
-				npc.startRiding(e);
-				e.prevRotationYaw = e.rotationYaw = npc.rotationYaw % 360F;
-				npc.setPlayerCommand(null);//clear command if horse was mounted successfully..
+			if (e instanceof EntityHorse) {
+				if (!npc.isRiding() && e.getPassengers().isEmpty()) {
+					npc.startRiding(e);
+					e.prevRotationYaw = e.rotationYaw = npc.rotationYaw % 360F;
+					npc.setPlayerCommand(null);//clear command if horse was mounted successfully..
+				} else if (npc.isRiding() && npc.getRidingEntity() == e) {
+					npc.dismountRidingEntity();
+					npc.setPlayerCommand(null);
+				}
 			}
 			//do not clear command, guard command is persistent
+		}
+	}
+
+	private void handleMoveCommand(Command cmd) {
+		if (moveTargetPos == null || moveTargetPos != cmd.pos) {
+			moveTargetPos = cmd.pos;
+		}
+		double sqDist = npc.getDistanceSq(moveTargetPos);
+		if (sqDist > MIN_RANGE) {
+			moveToPosition(moveTargetPos, sqDist);//not finished moving...move along path (or at least try)
+		} else {
+			npc.setPlayerCommand(null);//finished moving..clear the command...
 		}
 	}
 

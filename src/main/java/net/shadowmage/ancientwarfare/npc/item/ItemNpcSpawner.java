@@ -26,7 +26,6 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 import net.shadowmage.ancientwarfare.npc.init.AWNPCEntities;
 import net.shadowmage.ancientwarfare.npc.init.AWNPCItems;
-import net.shadowmage.ancientwarfare.npc.registry.FactionDefinition;
 import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
 
 import javax.annotation.Nonnull;
@@ -146,8 +145,8 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 		for (AWNPCEntities.NpcDeclaration dec : AWNPCEntities.getNpcMap().values()) {
 			if (dec.canSpawnBaseEntity()) {
 				if (dec.getNpcType().startsWith("faction.")) {
-					for (FactionDefinition faction : FactionRegistry.getFactions())
-						factionOwned.add(getStackForNpcType(dec.getNpcType(), "", faction.getName()));
+					for (String factionName : FactionRegistry.getFactionNames())
+						factionOwned.add(getStackForNpcType(dec.getNpcType(), "", factionName));
 				} else {
 					playerOwned.add(getStackForNpcType(dec.getNpcType(), "", ""));
 				}

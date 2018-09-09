@@ -12,11 +12,11 @@ public class PropertyState<T extends Comparable<T>, V extends T> {
 		this.value = value;
 	}
 
-	public IProperty<?> getProperty() {
+	public IProperty<T> getProperty() {
 		return property;
 	}
 
-	public Comparable<?> getValue() {
+	public V getValue() {
 		return value;
 	}
 

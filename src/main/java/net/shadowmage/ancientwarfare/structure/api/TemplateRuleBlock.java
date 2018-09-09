@@ -9,9 +9,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.NBTHelper;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 
 import java.util.List;
+import java.util.MissingResourceException;
 
 public abstract class TemplateRuleBlock extends TemplateRule {
 	protected IBlockState state;
@@ -46,7 +48,13 @@ public abstract class TemplateRuleBlock extends TemplateRule {
 
 	@Override
 	public void parseRuleData(NBTTagCompound tag) {
-		state = NBTHelper.getBlockState(tag.getCompoundTag("blockState"));
+		try {
+			state = NBTHelper.getBlockState(tag.getCompoundTag("blockState"));
+		}
+		catch (MissingResourceException e) {
+			AncientWarfareStructure.LOG.warn("Unable to find blockstate while parsing structure template thus replacing it with air - {}.", e.getMessage());
+			state = Blocks.AIR.getDefaultState();
+		}
 	}
 
 	@Override
