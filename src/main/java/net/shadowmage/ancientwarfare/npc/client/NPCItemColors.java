@@ -7,7 +7,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.npc.init.AWNPCItems;
 import net.shadowmage.ancientwarfare.npc.item.ItemCoin;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
-import net.shadowmage.ancientwarfare.npc.registry.FactionDefinition;
 import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
 
 @SideOnly(Side.CLIENT)
@@ -23,10 +22,9 @@ public class NPCItemColors {
 			if (tintIndex == 1 || tintIndex == 2) {
 				String factionName = ItemNpcSpawner.getFaction(stack).orElse("");
 				if (tintIndex == 2) {
-					return FactionRegistry.getFactions().stream().anyMatch(f -> f.getName().equals(factionName)) ? FACTION_TOP_COLOR : -1;
+					return FactionRegistry.getFactionNames().contains(factionName) ? FACTION_TOP_COLOR : -1;
 				} else {
-					return FactionRegistry.getFactions().stream().filter(f -> f.getName().equals(factionName))
-							.map(FactionDefinition::getColor).findFirst().orElse(-1);
+					return FactionRegistry.getFaction(factionName).getColor();
 				}
 			}
 
