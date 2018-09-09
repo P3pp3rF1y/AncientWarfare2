@@ -163,7 +163,7 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
 
 	private boolean shear(BlockPos position, IShearable block, ItemStack shears) {
 		if (block.isShearable(shears, world, position)) {
-			NonNullList<ItemStack> drops = InventoryTools.toNonNullList(block.onSheared(shears, world, position, getFortune()));
+			List<ItemStack> drops = block.onSheared(shears, world, position, getFortune());
 			drops = InventoryTools.insertItems(plantableInventory, drops, false);
 			InventoryTools.insertOrDropItems(mainInventory, drops, world, pos);
 			world.setBlockToAir(position);

@@ -134,13 +134,13 @@ public abstract class TileWorksiteFarm extends TileWorksiteBoundedInventory {
 	}
 
 	private boolean inventoryCanHold(NonNullList<ItemStack> stacks) {
-		NonNullList<ItemStack> remainingStacks = InventoryTools.insertItems(plantableInventory, stacks, true);
+		List<ItemStack> remainingStacks = InventoryTools.insertItems(plantableInventory, stacks, true);
 		remainingStacks = InventoryTools.insertItems(mainInventory, remainingStacks, true);
 		return remainingStacks.isEmpty();
 	}
 
 	private void insertOrDropCrops(BlockPos pos, NonNullList<ItemStack> stacks) {
-		NonNullList<ItemStack> remainingItems = InventoryTools.insertItems(plantableInventory, stacks, false);
+		List<ItemStack> remainingItems = InventoryTools.insertItems(plantableInventory, stacks, false);
 		InventoryTools.insertOrDropItems(mainInventory, remainingItems, world, pos);
 	}
 

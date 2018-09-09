@@ -16,6 +16,7 @@ import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Optional;
 
 public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
@@ -51,8 +52,13 @@ public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
 			if (fish) {
 				LootContext.Builder context = new LootContext.Builder((WorldServer) world);
 				context.withLuck(getFortune());
-				for (ItemStack fishStack : this.world.getLootTableManager().getLootTableFromLocation(LootTableList.GAMEPLAY_FISHING)
-						.generateLootForPools(world.rand, context.build())) {
+				List<ItemStack> fishStacks = world.getLootTableManager().getLootTableFromLocation(LootTableList.GAMEPLAY_FISHING).generateLootForPools(world.rand, context.build());
+
+				if (!InventoryTools.canInventoryHold(mainInventory, fishStacks)) {
+					return false;
+				}
+
+				for (ItemStack fishStack : fishStacks) {
 					InventoryTools.insertOrDropItem(mainInventory, fishStack, world, pos);
 				}
 				return true;
@@ -63,6 +69,10 @@ public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
 				if (fortune > 0) {
 					inkItem.grow(world.rand.nextInt(fortune + 1));
 				}
+				if (!InventoryTools.canInventoryHold(mainInventory, inkItem)) {
+					return false;
+				}
+
 				InventoryTools.insertOrDropItem(mainInventory, inkItem, world, pos);
 				return true;
 			}
