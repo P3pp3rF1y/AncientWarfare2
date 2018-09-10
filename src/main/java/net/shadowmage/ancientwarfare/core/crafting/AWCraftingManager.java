@@ -161,6 +161,7 @@ public class AWCraftingManager {
 	public static void registerIngredients() {
 		CraftingHelper.register(new ResourceLocation(AncientWarfareCore.MOD_ID, "item_count"), (IIngredientFactory) (c, j) -> new IngredientCount(CraftingHelper.getItemStack(j, c)));
 		CraftingHelper.register(new ResourceLocation(AncientWarfareCore.MOD_ID, "ore_dict_count"), (IIngredientFactory) (c, j) -> new IngredientOreCount(JsonUtils.getString(j, "ore"), JsonUtils.getInt(j, "count", 1)));
+		CraftingHelper.register(new ResourceLocation(AncientWarfareCore.MOD_ID, "item_nbt_relaxed"), (IIngredientFactory) (c, j) -> new IngredientNBTRelaxed(CraftingHelper.getItemStack(j, c)));
 	}
 
 	@SuppressWarnings({"squid:S3725", "squid:S3878"})

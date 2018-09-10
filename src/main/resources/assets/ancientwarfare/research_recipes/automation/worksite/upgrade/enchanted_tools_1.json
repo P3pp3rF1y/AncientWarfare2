@@ -7,9 +7,9 @@
     ],
     "key": {
         "B": {
-            "type": "minecraft:item_nbt",
+            "type": "ancientwarfare:item_nbt_relaxed",
             "item": "minecraft:enchanted_book",
-            "nbt": "{ench:[{lvl:1s,id:35s}]}"
+            "nbt": "{StoredEnchantments:[{lvl:1s,id:35s}]}"
         },
         "I": {
             "item": "#INGOTIRON"
