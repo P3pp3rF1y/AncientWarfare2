@@ -7,7 +7,7 @@ public class FTBCompat implements ICompat {
 
 	@Override
 	public String getModId() {
-		return "ftbu";
+		return "ftblib";
 	}
 
 	@Override
