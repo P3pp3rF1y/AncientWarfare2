@@ -297,6 +297,7 @@ public class AWCraftingManager {
 		T ret = initialize.get();
 
 		if (!recipe.isValid()) {
+			ret = onFail.apply(ret, Ingredient.EMPTY);
 			return ret;
 		}
 
