@@ -47,6 +47,7 @@ import net.shadowmage.ancientwarfare.npc.datafixes.FactionEntityFixer;
 import net.shadowmage.ancientwarfare.npc.datafixes.FactionExpansionEntityFixer;
 import net.shadowmage.ancientwarfare.npc.datafixes.FactionExpansionItemFixer;
 import net.shadowmage.ancientwarfare.npc.datafixes.FactionSpawnerItemFixer;
+import net.shadowmage.ancientwarfare.npc.datafixes.RoutingOrderFilterCountsFixer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -54,7 +55,7 @@ import org.apache.logging.log4j.Logger;
 public class AncientWarfareCore {
 
 	public static final String MOD_ID = "ancientwarfare";
-	private static final int DATA_FIXER_VERSION = 5;
+	private static final int DATA_FIXER_VERSION = 6;
 
 	public static final CreativeTabs TAB = new AWCoreTab();
 
@@ -116,6 +117,7 @@ public class AncientWarfareCore {
 		fixes.registerFix(FixTypes.ITEM_INSTANCE, new ResearchNoteFixer());
 		fixes.registerFix(FixTypes.ENTITY, new FactionExpansionEntityFixer());
 		fixes.registerFix(FixTypes.ITEM_INSTANCE, new FactionExpansionItemFixer());
+		fixes.registerFix(FixTypes.ITEM_INSTANCE, new RoutingOrderFilterCountsFixer());
 	}
 
 	@EventHandler
