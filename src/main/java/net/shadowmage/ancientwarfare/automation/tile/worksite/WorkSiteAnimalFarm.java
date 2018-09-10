@@ -95,7 +95,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 		};
 
 		setSideInventory(RelativeSide.FRONT, foodInventory, RelativeSide.FRONT);
-		setSideInventory(RelativeSide.BOTTOM, foodInventory, RelativeSide.TOP);
+		setSideInventory(RelativeSide.BOTTOM, toolInventory, RelativeSide.TOP);
 	}
 
 	private boolean isFood(Item item) {

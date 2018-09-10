@@ -10,27 +10,20 @@ import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 public class NpcAIDoor extends EntityAIBase {
 	private final EntityLiving theEntity;
 	private final boolean close;
 	private BlockPos doorPos = new BlockPos(0, 0, 0);
 	private IBlockState doorState;
-	private int timer;
-	private float interactionPosX;
-	private float interactionPosZ;
-	private boolean allDoors;
 
 	public NpcAIDoor(EntityLiving living, boolean closeBehind) {
 		this.theEntity = living;
 		this.close = closeBehind;
-	}
-
-	public EntityAIBase enableAllDoors() {
-		allDoors = true;
-		return this;
 	}
 
 	@Override
@@ -38,17 +31,17 @@ public class NpcAIDoor extends EntityAIBase {
 		PathNavigateGround pathnavigate = (PathNavigateGround) this.theEntity.getNavigator();
 		if (!pathnavigate.getEnterDoors() || pathnavigate.noPath())
 			return false;
-		Path pathentity = pathnavigate.getPath();
-		for (int i = 0; i < Math.min(pathentity.getCurrentPathIndex() + 2, pathentity.getCurrentPathLength()); ++i) {
-			PathPoint pathpoint = pathentity.getPathPointFromIndex(i);
+		Path path = pathnavigate.getPath();
+		if (path == null) {
+			return false;
+		}
+
+		for (int i = 0; i < Math.min(path.getCurrentPathIndex() + 2, path.getCurrentPathLength()); ++i) {
+			PathPoint pathpoint = path.getPathPointFromIndex(i);
 
 			if (this.theEntity.getDistanceSq(pathpoint.x, this.theEntity.posY, pathpoint.z) <= 2.25D) {
-				this.doorPos = new BlockPos(pathpoint.x, pathpoint.y, pathpoint.z);
-				if (findDoor()) {
-					return true;
-				}
-				this.doorPos = this.doorPos.up();
-				if (findDoor()) {
+				BlockPos potentialDoorPos = new BlockPos(pathpoint.x, pathpoint.y, pathpoint.z);
+				if (findDoor(potentialDoorPos) || findDoor(potentialDoorPos.up())) {
 					return true;
 				}
 			}
@@ -56,36 +49,27 @@ public class NpcAIDoor extends EntityAIBase {
 
 		if (!this.theEntity.collidedHorizontally)
 			return false;
-		this.doorPos = new BlockPos(MathHelper.floor(this.theEntity.posX), MathHelper.floor(this.theEntity.posY), MathHelper.floor(this.theEntity.posZ));
-		if (findDoor()) {
-			return true;
-		}
-		this.doorPos = this.doorPos.up();
-		return findDoor();
+		BlockPos potentialDoorPos = new BlockPos(MathHelper.floor(this.theEntity.posX), MathHelper.floor(this.theEntity.posY), MathHelper.floor(this.theEntity.posZ));
+		return findDoor(potentialDoorPos) || findDoor(potentialDoorPos.up());
 	}
 
 	@Override
 	public final boolean shouldContinueExecuting() {
-		return close && timer > 0;
+		return isCloseToDoor() || isFriendlyInDoor();
+	}
+
+	private boolean isFriendlyInDoor() {
+		return !theEntity.world.getEntitiesWithinAABB(NpcBase.class, new AxisAlignedBB(doorPos.add(-3, -3, -3), doorPos.add(3, 3, 3)),
+				n -> n != null && !n.isHostileTowards(theEntity)).isEmpty();
+	}
+
+	private boolean isCloseToDoor() {
+		return theEntity.getDistanceSq(doorPos) <= 2.25D;
 	}
 
 	@Override
 	public final void startExecuting() {
 		doDoorInteraction(true);
-		this.timer = 20;
-		this.interactionPosX = (float) ((double) (this.doorPos.getX() + 0.5F) - this.theEntity.posX);
-		this.interactionPosZ = (float) ((double) (this.doorPos.getZ() + 0.5F) - this.theEntity.posZ);
-	}
-
-	@Override
-	public final void updateTask() {
-		this.timer--;
-		float f = (float) ((double) (this.doorPos.getX() + 0.5F) - this.theEntity.posX);
-		float f1 = (float) ((double) (this.doorPos.getZ() + 0.5F) - this.theEntity.posZ);
-		float f2 = this.interactionPosX * f + this.interactionPosZ * f1;
-		if (f2 < 0.0F) {
-			this.timer = 0;
-		}
 	}
 
 	@Override
@@ -95,11 +79,15 @@ public class NpcAIDoor extends EntityAIBase {
 		}
 	}
 
-	private boolean findDoor() {
-		this.doorState = this.theEntity.world.getBlockState(this.doorPos);
+	private boolean findDoor(BlockPos potentialDoorPos) {
+		this.doorState = this.theEntity.world.getBlockState(potentialDoorPos);
 		if (doorState.getBlock() instanceof BlockDoor) {
-			return allDoors || doorState.getMaterial() == Material.WOOD;
+			if (doorState.getMaterial() == Material.WOOD) {
+				this.doorPos = potentialDoorPos;
+				return true;
+			}
 		} else if (doorState.getBlock() instanceof BlockFenceGate) {
+			this.doorPos = potentialDoorPos;
 			return true;
 		}
 		this.doorState = null;

@@ -163,6 +163,7 @@ public class AWCraftingManager {
 		CraftingHelper.register(new ResourceLocation(AncientWarfareCore.MOD_ID, "ore_dict_count"), (IIngredientFactory) (c, j) -> new IngredientOreCount(JsonUtils.getString(j, "ore"), JsonUtils.getInt(j, "count", 1)));
 	}
 
+	@SuppressWarnings({"squid:S3725", "squid:S3878"})
 	private static void loadRecipes(ModContainer mod, File source, String base) {
 		JsonContext ctx = new JsonContext(mod.getModId());
 
@@ -233,7 +234,7 @@ public class AWCraftingManager {
 		}
 	}
 
-	private static InventoryCrafting fillCraftingMatrixFromInventory(List<ItemStack> resources) {
+	public static InventoryCrafting fillCraftingMatrixFromInventory(List<ItemStack> resources) {
 		InventoryCrafting invCrafting = new InventoryCrafting(new Container() {
 			@Override
 			public boolean canInteractWith(EntityPlayer playerIn) {
@@ -291,10 +292,12 @@ public class AWCraftingManager {
 		}, stopOnFail);
 	}
 
+	@SuppressWarnings("squid:UnusedPrivateMethod")
 	private static <T> T getRecipeInventoryMatch(ICraftingRecipe recipe, IItemHandler inventory, Supplier<T> initialize, TriFunction<T, Integer, ItemStack, T> onMatch, BiFunction<T, Ingredient, T> onFail, boolean stopOnFail) {
 		T ret = initialize.get();
 
 		if (!recipe.isValid()) {
+			ret = onFail.apply(ret, Ingredient.EMPTY);
 			return ret;
 		}
 

@@ -252,15 +252,15 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 		@Nonnull ItemStack stack;
 		int val;
 		int eaten = 0;
-		for (int i = 0; i < handler.getSlots(); i++) {
-			stack = handler.getStackInSlot(i);
+		for (int slot = 0; slot < handler.getSlots(); slot++) {
+			stack = handler.getStackInSlot(slot);
 			val = AncientWarfareNPC.statics.getFoodValue(stack);
 			if (val <= 0) {
 				continue;
 			}
 			while (eaten < amount && !stack.isEmpty()) {
 				eaten += val;
-				stack.shrink(1);
+				handler.extractItem(slot, 1, false);
 			}
 		}
 		setFoodRemaining(getFoodRemaining() + eaten);
