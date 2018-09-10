@@ -192,28 +192,29 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
 
 	private boolean tryFillFromRequest(TileWarehouseInterface tile, InterfaceFillRequest request) {
 		List<IWarehouseStorageTile> potentialStorage = storageMap.getDestinations();
-		int found;
-		int moved;
-		ItemStack stack;
-		int stackSize;
 		IItemHandler inventory = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+		int remainingToTake = request.requestAmount;
 		for (IWarehouseStorageTile source : potentialStorage) {
-			found = source.getQuantityStored(request.requestedItem);
+			int found = source.getQuantityStored(request.requestedItem);
 			if (found > 0) {
-				stack = request.requestedItem.copy();
-				stack.setCount(found > stack.getMaxStackSize() ? stack.getMaxStackSize() : found);
-				stackSize = stack.getCount();
+				ItemStack stack = request.requestedItem.copy();
+				int countToTake = Math.min(Math.min(stack.getMaxStackSize(), found), remainingToTake);
+
+				stack.setCount(countToTake);
 				stack = InventoryTools.mergeItemStack(inventory, stack);
-				if (stack.isEmpty() || stack.getCount() != stackSize) {
-					moved = stack.isEmpty() ? stackSize : stackSize - stack.getCount();
+				if (stack.isEmpty() || stack.getCount() != countToTake) {
+					int moved = stack.isEmpty() ? countToTake : countToTake - stack.getCount();
 					source.extractItem(request.requestedItem, moved);
 					cachedItemMap.decreaseCount(request.requestedItem, moved);
 					updateViewers();
-					return true;
+					remainingToTake -= moved;
+					if (remainingToTake <= 0) {
+						return true;
+					}
 				}
 			}
 		}
-		return false;
+		return remainingToTake != request.requestAmount;
 	}
 
 	public final void getItems(ItemQuantityMap map) {
