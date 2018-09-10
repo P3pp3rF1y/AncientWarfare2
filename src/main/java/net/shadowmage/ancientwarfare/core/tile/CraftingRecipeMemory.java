@@ -99,11 +99,11 @@ public class CraftingRecipeMemory {
 		return recipe;
 	}
 
-	public ItemStack getCraftingResult() {
-		return recipe.getCraftingResult(craftMatrix);
+	public ItemStack getCraftingResult(InventoryCrafting invCrafting) {
+		return recipe.getCraftingResult(invCrafting);
 	}
 
-	public NonNullList<ItemStack> getRemainingItems() {
-		return recipe.getRemainingItems(craftMatrix);
+	public NonNullList<ItemStack> getRemainingItems(InventoryCrafting invCrafting) {
+		return recipe.getRemainingItems(invCrafting);
 	}
 }

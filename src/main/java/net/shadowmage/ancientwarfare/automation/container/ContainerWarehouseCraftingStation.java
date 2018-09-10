@@ -14,7 +14,6 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.items.wrapper.PlayerInvWrapper;
-import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseBase;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseCraftingStation;
 import net.shadowmage.ancientwarfare.core.container.ContainerCraftingRecipeMemory;
@@ -58,7 +57,8 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 					NonNullList<ItemStack> resources = InventoryTools.removeItems(AWCraftingManager.getRecipeInventoryMatch(recipe, combinedHandler), reusableStacks);
 					InventoryTools.removeItems(handler, resources);
 
-					NonNullList<ItemStack> remainingItems = InventoryTools.removeItems(recipe.getRemainingItems(tileEntity.craftingRecipeMemory.craftMatrix), reusableStacks);
+					NonNullList<ItemStack> remainingItems = InventoryTools.removeItems(tileEntity.craftingRecipeMemory.getRemainingItems(
+							AWCraftingManager.fillCraftingMatrixFromInventory(resources)), reusableStacks);
 					InventoryTools.insertOrDropItems(handler, remainingItems, tileEntity.getWorld(), tileEntity.getPos());
 
 					return new OnTakeResult(SUCCESS, stack);
@@ -75,6 +75,8 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 			addSlotToContainer(slot);
 		}
 
+		int y1 = 8 + 3 * 18 + 8;
+		addPlayerSlots(y1);
 		TileWarehouseBase warehouse = tileEntity.getWarehouse();
 		if (warehouse != null) {
 			warehouse.addCraftingViewer(this);

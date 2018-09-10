@@ -38,7 +38,7 @@ public class ContainerEngineeringStation extends ContainerTileBase<TileEngineeri
 					InventoryTools.removeItems(tileEntity.extraSlots, resources);
 
 					ForgeHooks.setCraftingPlayer(player);
-					NonNullList<ItemStack> remainingItems = tileEntity.craftingRecipeMemory.getRemainingItems();
+					NonNullList<ItemStack> remainingItems = tileEntity.craftingRecipeMemory.getRemainingItems(AWCraftingManager.fillCraftingMatrixFromInventory(resources));
 					ForgeHooks.setCraftingPlayer(null);
 					InventoryTools.insertOrDropItems(tileEntity.extraSlots, remainingItems, tileEntity.getWorld(), tileEntity.getPos());
 
@@ -57,12 +57,11 @@ public class ContainerEngineeringStation extends ContainerTileBase<TileEngineeri
 		}
 
 		Slot slot;
-		int x2, y2, slotNum;
 		for (int y1 = 0; y1 < 2; y1++) {
-			y2 = y1 * 18 + 8 + 3 * 18 + 4;
+			int y2 = y1 * 18 + 8 + 3 * 18 + 4;
 			for (int x1 = 0; x1 < 9; x1++) {
-				x2 = x1 * 18 + 8;
-				slotNum = y1 * 9 + x1;
+				int x2 = x1 * 18 + 8;
+				int slotNum = y1 * 9 + x1;
 				slot = new SlotItemHandler(tileEntity.extraSlots, slotNum, x2, y2);
 				addSlotToContainer(slot);
 			}
@@ -102,9 +101,9 @@ public class ContainerEngineeringStation extends ContainerTileBase<TileEngineeri
 				} else if (slotClickedIndex < playerSlotStart) {//storage slots
 					if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotEnd, false))//merge into player inventory
 						return ItemStack.EMPTY;
-				} else if (slotClickedIndex < playerSlotEnd) {//player slots, merge into storage
-					if (!mergeItemStack(slotStack, BOOK_SLOT, BOOK_SLOT + 1, false) && !this.mergeItemStack(slotStack, storageSlotsStart, playerSlotStart, false))//merge into storage
-						return ItemStack.EMPTY;
+				} else if (slotClickedIndex < playerSlotEnd && !mergeItemStack(slotStack, BOOK_SLOT, BOOK_SLOT + 1, false)
+						&& !this.mergeItemStack(slotStack, storageSlotsStart, playerSlotStart, false)) {
+					return ItemStack.EMPTY;
 				}
 			}
 			if (slotStack.getCount() == 0) {
