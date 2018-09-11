@@ -120,16 +120,13 @@ public class NpcWorker extends NpcPlayerOwned implements IWorker {
 	}
 
 	@Override
-	public boolean shouldBeAtHome() {
+	public boolean shouldSleep() {
 		WorkOrder order = WorkOrder.getWorkOrder(ordersStack);
 		if (order == null || !order.isNightShift()) {
-			return super.shouldBeAtHome();
-		} else {
-			if (getAttackTarget() != null || !hasHome() || !world.provider.hasSkyLight()) {
-				return false;
-			}
-			return world.isDaytime() || world.isRainingAt(getPosition());
+			return super.shouldSleep();
 		}
+
+		return world.isDaytime();
 	}
 
 	@Override
