@@ -130,13 +130,18 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
 
 		Iterator<BlockPos> it = wood ? trunkBlocksToChop.iterator() : leafBlocksToChop.iterator();
 		BlockPos position = it.next();
-		it.remove();
 		IBlockState state = world.getBlockState(position);
+		if (state.getMaterial() == Material.AIR) {
+			it.remove();
+			return false;
+		}
+
 		IBlockExtraDrop extraDrop = TreeFarmRegistry.getBlockExtraDrop(state);
 		NonNullList<ItemStack> extraDrops = extraDrop.getDrops(world, position, state, getFortune());
 		if (!harvestBlock(position)) {
 			return false;
 		}
+		it.remove();
 		InventoryTools.insertOrDropItems(inventoryForDrops, extraDrops, world, position);
 		return true;
 	}
