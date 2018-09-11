@@ -1,0 +1,69 @@
+{
+    "mod": "plants2",
+    "fruits": [
+        {
+            "type": "picked_drop",
+            "fruit": {
+                "name": "plants2:bush",
+                "properties": {
+                    "type": "raspberry"
+                }
+            },
+            "ripe": {
+                "fruit": "true"
+            },
+            "new": {
+                "fruit": "false"
+            },
+            "drop": "plants2:raspberry"
+        },
+        {
+            "type": "picked_drop",
+            "fruit": {
+                "name": "plants2:bush",
+                "properties": {
+                    "type": "huckleberry"
+                }
+            },
+            "ripe": {
+                "fruit": "true"
+            },
+            "new": {
+                "fruit": "false"
+            },
+            "drop": "plants2:huckleberry"
+        },
+        {
+            "type": "picked_drop",
+            "fruit": {
+                "name": "plants2:bush",
+                "properties": {
+                    "type": "blueberry"
+                }
+            },
+            "ripe": {
+                "fruit": "true"
+            },
+            "new": {
+                "fruit": "false"
+            },
+            "drop": "plants2:blueberry"
+        },
+        {
+            "type": "picked_drop",
+            "fruit": {
+                "name": "plants2:bush",
+                "properties": {
+                    "type": "blackberry"
+                }
+            },
+            "ripe": {
+                "fruit": "true"
+            },
+            "new": {
+                "fruit": "false"
+            },
+            "drop": "plants2:blackberry"
+        }
+    ]
+}
