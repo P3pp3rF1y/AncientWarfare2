@@ -16,8 +16,11 @@ import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 
 public class WorldTools {
 	private WorldTools() {}
@@ -82,5 +85,15 @@ public class WorldTools {
 
 	public static boolean clickInteractableTileWithHand(World world, BlockPos pos, EntityPlayer player, EnumHand hand) {
 		return getTile(world, pos, IInteractableTile.class).map(t -> t.onBlockClicked(player, hand)).orElse(false);
+	}
+
+	private static final Map<Integer, Function<World, Boolean>> DIMENSION_DAY_TIMES = new HashMap<>();
+
+	public static void registerDimensionDaytimeLogic(int dimension, Function<World, Boolean> isDayTime) {
+		DIMENSION_DAY_TIMES.put(dimension, isDayTime);
+	}
+
+	public static boolean isDaytimeInDimension(World world) {
+		return DIMENSION_DAY_TIMES.getOrDefault(world.provider.getDimension(), World::isDaytime).apply(world);
 	}
 }

@@ -51,6 +51,7 @@ import net.shadowmage.ancientwarfare.core.owner.IOwnable;
 import net.shadowmage.ancientwarfare.core.owner.Owner;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.ai.NpcNavigator;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
@@ -1305,7 +1306,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	}
 
 	public boolean shouldSleep() {
-		return !world.isDaytime();
+		return !WorldTools.isDaytimeInDimension(world);
 	}
 
 	// Only used by the renderer
