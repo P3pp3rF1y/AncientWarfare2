@@ -1,0 +1,146 @@
+{
+    "mod": "twilightforest",
+    "tree_scanners": [
+        {
+            "type": "default",
+            "trunk": {
+                "name": "twilightforest:twilight_log",
+                "properties": {
+                    "variant": "canopy"
+                }
+            },
+            "leaf": {
+                "name": "twilightforest:twilight_leaves",
+                "properties": {
+                    "variant": "canopy"
+                }
+            },
+            "max_leaf_distance": 4,
+            "next_block_search": "all_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "twilightforest:twilight_log",
+                "properties": {
+                    "variant": "dark"
+                }
+            },
+            "leaf": {
+                "name": "twilightforest:dark_leaves"
+            },
+            "max_leaf_distance": 6,
+            "next_block_search": "all_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "twilightforest:twilight_log",
+                "properties": {
+                    "variant": "mangrove"
+                }
+            },
+            "leaf": {
+                "name": "twilightforest:twilight_leaves",
+                "properties": {
+                    "variant": "mangrove"
+                }
+            },
+            "max_leaf_distance": 4,
+            "next_block_search": "all_around"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "twilightforest:magic_log",
+                "properties": {
+                    "variant": "time"
+                }
+            },
+            "leaf": {
+                "name": "twilightforest:magic_leaves",
+                "properties": {
+                    "variant": "time"
+                }
+            },
+            "max_leaf_distance": 4,
+            "next_block_search": "connected_around"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "twilightforest:magic_log",
+                "properties": {
+                    "variant": "trans"
+                }
+            },
+            "leaf": {
+                "name": "twilightforest:magic_leaves",
+                "properties": {
+                    "variant": "trans"
+                }
+            },
+            "max_leaf_distance": 4,
+            "next_block_search": "all_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "twilightforest:twilight_log",
+                "properties": {
+                    "variant": "oak"
+                }
+            },
+            "leaves": [
+                {
+                    "name": "twilightforest:twilight_leaves",
+                    "properties": {
+                        "variant": "oak"
+                    }
+                },
+                {
+                    "name": "twilightforest:twilight_leaves",
+                    "properties": {
+                        "variant": "rainboak"
+                    }
+                }
+            ],
+            "max_leaf_distance": 4,
+            "next_block_search": "all_around"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "twilightforest:magic_log",
+                "properties": {
+                    "variant": "sort"
+                }
+            },
+            "leaf": {
+                "name": "twilightforest:magic_leaves",
+                "properties": {
+                    "variant": "sort"
+                }
+            },
+            "max_leaf_distance": 2,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "twilightforest:magic_log",
+                "properties": {
+                    "variant": "mine"
+                }
+            },
+            "leaf": {
+                "name": "twilightforest:magic_leaves",
+                "properties": {
+                    "variant": "mine"
+                }
+            },
+            "max_leaf_distance": 2,
+            "next_block_search": "connected_around"
+        }
+    ]
+}
