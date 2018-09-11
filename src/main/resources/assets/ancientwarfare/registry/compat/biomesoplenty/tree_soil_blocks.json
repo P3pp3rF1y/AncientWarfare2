@@ -1,0 +1,11 @@
+{
+    "mod": "biomesoplenty",
+    "soils": [
+        {
+            "name": "biomesoplenty:grass"
+        },
+        {
+            "name": "biomesoplenty:dirt"
+        }
+    ]
+}
