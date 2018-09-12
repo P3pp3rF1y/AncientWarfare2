@@ -19,7 +19,7 @@
         },
         {
             "content_type": "text",
-            "text": "The Research Book can be assigned to the player by holding it in your hand, and right clicking. A text message will appear saying that the Researcher is set for the Book. Right click again to open the Research Book. \nBy default, the Research Book displays a list of all the Researches, and if a research is clicked on, what can be unlocked by completing that research. This can be changed to an Item list by clicking the checkbox on the upper left hand corner. The Item list displays a list of all the items in Ancient Warfare, and if the item is clicked on, the appropriate research that is needed for that item is displayed. "
+            "text": "The Research Book can be assigned to the player by holding it in your hand, and right clicking. A text message will appear saying that the Researcher is set for the Book. Right click again to open the Research Book. Multiple books bound to the same user will share research. \nBy default, the Research Book displays a list of all the Researches, and if a research is clicked on, what can be unlocked by completing that research. This can be changed to an Item list by clicking the checkbox on the upper left hand corner. The Item list displays a list of all the items in Ancient Warfare, and if the item is clicked on, the appropriate research that is needed for that item is displayed. "
         },
         {
             "content_type": "heading",

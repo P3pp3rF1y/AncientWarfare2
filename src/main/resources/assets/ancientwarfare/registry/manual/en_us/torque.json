@@ -28,7 +28,7 @@
         },
         {
             "content_type": "text",
-            "text": "The Windmill is a multi-block structure for generating torque. It consists of a windmill control block and windmill blade blocks. The size of the windmill blade blocks being any odd size from a minimum of 5x5 to a maximum of 17x17, one block thick. Once the blade blocks are correctly arranged, they will render into the actual blades of a windmill. Place the windmill controller block on either side of the central shaft of the blades. Two control blocks will provide no benefit, only one controller will receive power. The larger the windmill, the more Torque is outputted."
+            "text": "The Windmill is a multi-block structure for generating torque. It consists of a windmill control block and windmill blade blocks. The size of the windmill blade blocks being a full sqaure of any odd size from a minimum of 5x5 to a maximum of 17x17, one block thick. Once the blade blocks are correctly arranged, they will render into the actual blades of a windmill. Place the windmill controller block on either side of the central shaft of the blades. Two control blocks will provide no benefit, only one controller will receive power. The larger the windmill, the more Torque is outputted."
         },
         {
             "content_type": "heading",
