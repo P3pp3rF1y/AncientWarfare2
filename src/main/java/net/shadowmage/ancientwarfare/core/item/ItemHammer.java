@@ -99,6 +99,7 @@ public class ItemHammer extends ItemBaseCore implements IItemKeyInterface {
 		}
 		Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot, stack);
 		multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", this.attackDamage, 0));
+		multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", -3.1D, 0));
 		return multimap;
 	}
 
