@@ -58,7 +58,7 @@ public class AWEntityRegistry {
 	 */
 	public abstract static class EntityDeclaration {
 
-		protected final Class<? extends Entity> entityClass;
+		private final Class<? extends Entity> entityClass;
 		private final String entityName;
 		private final int id;
 		private final String modID;
@@ -91,6 +91,10 @@ public class AWEntityRegistry {
 		public abstract int updateFrequency();
 
 		public abstract boolean sendsVelocityUpdates();
+
+		public Class<? extends Entity> getEntityClass() {
+			return entityClass;
+		}
 	}
 
 }

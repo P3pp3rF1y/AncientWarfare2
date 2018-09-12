@@ -31,6 +31,9 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.datafix.DataFixer;
+import net.minecraft.util.datafix.FixTypes;
+import net.minecraft.util.datafix.walkers.ItemStackData;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
@@ -1051,6 +1054,11 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 			setIsAIEnabled(tag.getBoolean(AI_ENABLED_TAG));
 		}
 		owner = Owner.deserializeFromNBT(tag);
+	}
+
+	public static void registerFixesNpc(DataFixer fixer, Class<?> entityClass) {
+		EntityLiving.registerFixesMob(fixer, entityClass);
+		fixer.registerWalker(FixTypes.ENTITY, new ItemStackData(entityClass, ORDERS_STACK_TAG, UPKEEP_STACK_TAG));
 	}
 
 	private void writeBaseTags(NBTTagCompound tag) {

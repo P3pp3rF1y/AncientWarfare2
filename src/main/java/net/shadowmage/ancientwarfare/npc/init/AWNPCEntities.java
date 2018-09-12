@@ -281,7 +281,7 @@ public class AWNPCEntities {
 		@Override
 		public NpcFaction createEntity(World world, String subType, String factionName) {
 			try {
-				return (NpcFaction) entityClass.getConstructor(World.class, String.class).newInstance(world, factionName);
+				return (NpcFaction) getEntityClass().getConstructor(World.class, String.class).newInstance(world, factionName);
 			}
 			catch (Exception e) {
 				AncientWarfareNPC.LOG.error("Couldn't create entity:" + e.getMessage());
