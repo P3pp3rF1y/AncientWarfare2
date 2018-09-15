@@ -55,6 +55,8 @@ public class StructurePluginVanillaHandler implements StructureContentPlugin {
 		specialHandledBlocks.add(Blocks.WALL_SIGN);
 		specialHandledBlocks.add(Blocks.MOB_SPAWNER);
 		specialHandledBlocks.add(Blocks.COMMAND_BLOCK);
+		specialHandledBlocks.add(Blocks.CHAIN_COMMAND_BLOCK);
+		specialHandledBlocks.add(Blocks.REPEATING_COMMAND_BLOCK);
 		specialHandledBlocks.add(Blocks.BREWING_STAND);
 		specialHandledBlocks.add(Blocks.BEACON);
 		specialHandledBlocks.add(Blocks.DISPENSER);
@@ -90,6 +92,9 @@ public class StructurePluginVanillaHandler implements StructureContentPlugin {
 		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, Blocks.LIT_FURNACE, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
 		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, Blocks.FURNACE, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
 		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, Blocks.BEACON, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
+		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, Blocks.COMMAND_BLOCK, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
+		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, Blocks.CHAIN_COMMAND_BLOCK, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
+		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, Blocks.REPEATING_COMMAND_BLOCK, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
 		manager.registerBlockHandler(TemplateRuleBlockInventory.PLUGIN_NAME, Blocks.DISPENSER, TemplateRuleBlockInventory::new, TemplateRuleBlockInventory::new);
 		manager.registerBlockHandler(TemplateRuleBlockInventory.PLUGIN_NAME, Blocks.CHEST, TemplateRuleBlockInventory::new, TemplateRuleBlockInventory::new);
 		manager.registerBlockHandler(TemplateRuleBlockInventory.PLUGIN_NAME, Blocks.DROPPER, TemplateRuleBlockInventory::new, TemplateRuleBlockInventory::new);
