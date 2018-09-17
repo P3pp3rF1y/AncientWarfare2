@@ -51,12 +51,11 @@ public class BlockStateMatcher implements Predicate<IBlockState> {
 	}
 
 	public static class PropertyMapMatcher implements Predicate<Map<IProperty<?>, Comparable<?>>> {
-		private static final Predicate<Map.Entry<IProperty<?>, Comparable<?>>> NOT_FOUND_PROPERTY_MATCHER = propEntry -> true;
-		private final Map<IProperty<?>, PropertyMatcher> propertyMatchers = new HashMap<>();
+		private final Map<IProperty<?>, Comparable<?>> propertyValues = new HashMap<>();
 
 		void addProperty(IProperty<?> property, Comparable<?> value) {
 			//noinspection unchecked
-			propertyMatchers.put(property, new PropertyMatcher(property, value));
+			propertyValues.put(property, value);
 		}
 
 		@Override
@@ -68,65 +67,22 @@ public class BlockStateMatcher implements Predicate<IBlockState> {
 
 			PropertyMapMatcher that = (PropertyMapMatcher) o;
 
-			return propertyMatchers.equals(that.propertyMatchers);
+			return propertyValues.equals(that.propertyValues);
 		}
 
 		@Override
 		public int hashCode() {
-			return propertyMatchers.hashCode();
+			return propertyValues.hashCode();
 		}
 
 		@Override
 		public boolean test(Map<IProperty<?>, Comparable<?>> properties) {
-			for (Map.Entry<IProperty<?>, Comparable<?>> property : properties.entrySet()) {
-				boolean matches;
-				if (propertyMatchers.containsKey(property.getKey())) {
-					//noinspection unchecked
-					matches = propertyMatchers.get(property.getKey()).test(property);
-				} else {
-					matches = NOT_FOUND_PROPERTY_MATCHER.test(property);
-				}
-				if (!matches) {
+			for (Map.Entry<IProperty<?>, Comparable<?>> property : propertyValues.entrySet()) {
+				if (!properties.containsKey(property.getKey()) || !property.getValue().equals(properties.get(property.getKey()))) {
 					return false;
 				}
 			}
 			return true;
-		}
-	}
-
-	public static class PropertyMatcher<T extends Comparable<T>> implements Predicate<Map.Entry<IProperty<T>, Comparable<T>>> {
-		private final IProperty<T> property;
-		private final Comparable<T> value;
-
-		PropertyMatcher(IProperty<T> property, Comparable<T> value) {
-			this.property = property;
-			this.value = value;
-		}
-
-		@Override
-		public boolean test(Map.Entry<IProperty<T>, Comparable<T>> prop) {
-			return property.equals(prop.getKey()) && value.equals(prop.getValue());
-		}
-
-		@Override
-		public boolean equals(Object o) {
-			if (this == o)
-				return true;
-			if (o == null || getClass() != o.getClass())
-				return false;
-
-			PropertyMatcher<?> that = (PropertyMatcher<?>) o;
-
-			if (!property.equals(that.property))
-				return false;
-			return value.equals(that.value);
-		}
-
-		@Override
-		public int hashCode() {
-			int result = property.hashCode();
-			result = 31 * result + value.hashCode();
-			return result;
 		}
 	}
 }
