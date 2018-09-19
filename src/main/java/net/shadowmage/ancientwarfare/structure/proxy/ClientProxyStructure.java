@@ -22,6 +22,7 @@ import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
 import net.shadowmage.ancientwarfare.structure.render.DraftingStationRenderer;
 import net.shadowmage.ancientwarfare.structure.render.ParticleDummyModel;
 import net.shadowmage.ancientwarfare.structure.render.RenderGateHelper;
+import net.shadowmage.ancientwarfare.structure.sounds.SoundLoader;
 import net.shadowmage.ancientwarfare.structure.tile.TileSoundBlock;
 
 @SuppressWarnings("unused")
@@ -45,6 +46,7 @@ public class ClientProxyStructure extends ClientProxyBase {
 	public void init() {
 		super.init();
 
+		ResourceUtils.registerReloadListener(new SoundLoader());
 		Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler((state, world, pos, tintIndex) -> {
 			IBlockState disguiseState = WorldTools.getTile(world, pos, TileSoundBlock.class).filter(t -> t.getDisguiseState() != null)
 					.map(TileSoundBlock::getDisguiseState).orElse(Blocks.JUKEBOX.getDefaultState());
