@@ -20,6 +20,8 @@ public class NpcAIDoor extends EntityAIBase {
 	private final boolean close;
 	private BlockPos doorPos = new BlockPos(0, 0, 0);
 	private IBlockState doorState;
+	private static final int RECHECK_INTERVAL = 40;
+	private int doorCheckCooldown = RECHECK_INTERVAL;
 
 	public NpcAIDoor(EntityLiving living, boolean closeBehind) {
 		this.theEntity = living;
@@ -51,6 +53,18 @@ public class NpcAIDoor extends EntityAIBase {
 			return false;
 		BlockPos potentialDoorPos = new BlockPos(MathHelper.floor(this.theEntity.posX), MathHelper.floor(this.theEntity.posY), MathHelper.floor(this.theEntity.posZ));
 		return findDoor(potentialDoorPos) || findDoor(potentialDoorPos.up());
+	}
+
+	@Override
+	public void updateTask() {
+		super.updateTask();
+
+		if (doorCheckCooldown <= 0) {
+			doorCheckCooldown = RECHECK_INTERVAL;
+			doDoorInteraction(true);
+		} else {
+			doorCheckCooldown--;
+		}
 	}
 
 	@Override
