@@ -56,7 +56,7 @@ public class NpcAIDoor extends EntityAIBase {
 		for (int i = Math.max(path.getCurrentPathIndex() - 1, 0); i < Math.min(path.getCurrentPathIndex() + 2, path.getCurrentPathLength()); ++i) {
 			PathPoint pathpoint = path.getPathPointFromIndex(i);
 
-			if (this.theEntity.getDistanceSq(pathpoint.x + 0.5D, this.theEntity.posY, pathpoint.z + 0.5D) <= 1D) {
+			if (this.theEntity.getDistanceSq(pathpoint.x + 0.5D, this.theEntity.posY, pathpoint.z + 0.5D) <= 1.5D) {
 				BlockPos potentialDoorPos = new BlockPos(pathpoint.x, pathpoint.y, pathpoint.z);
 				if (findDoor(potentialDoorPos)) {
 					interactWithDoor(potentialDoorPos, true);
@@ -116,12 +116,12 @@ public class NpcAIDoor extends EntityAIBase {
 
 	private boolean isFriendlyInDoor(BlockPos doorPos) {
 		return !theEntity.world.getEntitiesWithinAABB(NpcBase.class,
-				new AxisAlignedBB(new Vec3d(doorPos).addVector(0.5D, 0.5D, 0.5D), new Vec3d(doorPos).addVector(0.5D, 0.5D, 0.5D)).grow(1.1D),
+				new AxisAlignedBB(new Vec3d(doorPos).addVector(0.5D, 0.5D, 0.5D), new Vec3d(doorPos).addVector(0.5D, 0.5D, 0.5D)).grow(2.1D),
 				n -> n != null && !n.isHostileTowards(theEntity)).isEmpty();
 	}
 
 	private boolean isCloseToDoor(BlockPos doorPos) {
-		return doorPos.distanceSqToCenter(theEntity.posX, theEntity.posY, theEntity.posZ) <= 1D;
+		return doorPos.distanceSqToCenter(theEntity.posX, theEntity.posY, theEntity.posZ) <= 2D;
 	}
 
 	private boolean isDoor(BlockPos potentialDoorPos) {
