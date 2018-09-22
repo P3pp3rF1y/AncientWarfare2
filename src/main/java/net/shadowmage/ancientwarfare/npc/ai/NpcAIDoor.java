@@ -13,13 +13,17 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 public class NpcAIDoor extends EntityAIBase {
 	private final EntityLiving theEntity;
 	private final boolean close;
-	private BlockPos doorPos = new BlockPos(0, 0, 0);
-	private IBlockState doorState;
+	private Set<BlockPos> doorPositions = new HashSet<>();
 	private static final int RECHECK_INTERVAL = 40;
 	private int doorCheckCooldown = RECHECK_INTERVAL;
 
@@ -33,21 +37,14 @@ public class NpcAIDoor extends EntityAIBase {
 		PathNavigateGround pathnavigate = (PathNavigateGround) this.theEntity.getNavigator();
 		if (!pathnavigate.getEnterDoors() || pathnavigate.noPath())
 			return false;
+
 		Path path = pathnavigate.getPath();
 		if (path == null) {
 			return false;
 		}
 
-		for (int i = 0; i < Math.min(path.getCurrentPathIndex() + 2, path.getCurrentPathLength()); ++i) {
-			PathPoint pathpoint = path.getPathPointFromIndex(i);
-
-			if (this.theEntity.getDistanceSq(pathpoint.x, this.theEntity.posY, pathpoint.z) <= 2.25D) {
-				BlockPos potentialDoorPos = new BlockPos(pathpoint.x, pathpoint.y, pathpoint.z);
-				if (findDoor(potentialDoorPos) || findDoor(potentialDoorPos.up())) {
-					return true;
-				}
-			}
-		}
+		if (addDoorCloseOnThePath(path))
+			return true;
 
 		if (!this.theEntity.collidedHorizontally)
 			return false;
@@ -55,13 +52,58 @@ public class NpcAIDoor extends EntityAIBase {
 		return findDoor(potentialDoorPos) || findDoor(potentialDoorPos.up());
 	}
 
+	private boolean addDoorCloseOnThePath(Path path) {
+		for (int i = Math.max(path.getCurrentPathIndex() - 1, 0); i < Math.min(path.getCurrentPathIndex() + 2, path.getCurrentPathLength()); ++i) {
+			PathPoint pathpoint = path.getPathPointFromIndex(i);
+
+			if (this.theEntity.getDistanceSq(pathpoint.x + 0.5D, this.theEntity.posY, pathpoint.z + 0.5D) <= 1D) {
+				BlockPos potentialDoorPos = new BlockPos(pathpoint.x, pathpoint.y, pathpoint.z);
+				if (findDoor(potentialDoorPos)) {
+					interactWithDoor(potentialDoorPos, true);
+					return true;
+				} else if (findDoor(potentialDoorPos.up())) {
+					interactWithDoor(potentialDoorPos.up(), true);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	@Override
 	public void updateTask() {
 		super.updateTask();
 
+		closeTooFarAwayDoor();
+		recheckDoorOpen();
+		addDoorCloseOnThePath();
+	}
+
+	private void closeTooFarAwayDoor() {
+		Iterator<BlockPos> it = doorPositions.iterator();
+		while (it.hasNext()) {
+			BlockPos doorPos = it.next();
+			if (!(isCloseToDoor(doorPos) || isFriendlyInDoor(doorPos))) {
+				it.remove();
+				if (close) {
+					interactWithDoor(doorPos, false);
+				}
+			}
+		}
+	}
+
+	private void addDoorCloseOnThePath() {
+		Path path = this.theEntity.getNavigator().getPath();
+		if (path == null) {
+			return;
+		}
+		addDoorCloseOnThePath(path);
+	}
+
+	private void recheckDoorOpen() {
 		if (doorCheckCooldown <= 0) {
 			doorCheckCooldown = RECHECK_INTERVAL;
-			doDoorInteraction(true);
+			doorPositions.forEach(doorPos -> interactWithDoor(doorPos, true));
 		} else {
 			doorCheckCooldown--;
 		}
@@ -69,70 +111,69 @@ public class NpcAIDoor extends EntityAIBase {
 
 	@Override
 	public final boolean shouldContinueExecuting() {
-		return isCloseToDoor() || isFriendlyInDoor();
+		return !doorPositions.isEmpty();
 	}
 
-	private boolean isFriendlyInDoor() {
-		return !theEntity.world.getEntitiesWithinAABB(NpcBase.class, new AxisAlignedBB(doorPos.add(-3, -3, -3), doorPos.add(3, 3, 3)),
+	private boolean isFriendlyInDoor(BlockPos doorPos) {
+		return !theEntity.world.getEntitiesWithinAABB(NpcBase.class,
+				new AxisAlignedBB(new Vec3d(doorPos).addVector(0.5D, 0.5D, 0.5D), new Vec3d(doorPos).addVector(0.5D, 0.5D, 0.5D)).grow(1.1D),
 				n -> n != null && !n.isHostileTowards(theEntity)).isEmpty();
 	}
 
-	private boolean isCloseToDoor() {
-		return theEntity.getDistanceSq(doorPos) <= 2.25D;
+	private boolean isCloseToDoor(BlockPos doorPos) {
+		return doorPos.distanceSqToCenter(theEntity.posX, theEntity.posY, theEntity.posZ) <= 1D;
 	}
 
-	@Override
-	public final void startExecuting() {
-		doDoorInteraction(true);
-	}
-
-	@Override
-	public final void resetTask() {
-		if (this.close) {
-			doDoorInteraction(false);
-		}
-	}
-
-	private boolean findDoor(BlockPos potentialDoorPos) {
-		this.doorState = this.theEntity.world.getBlockState(potentialDoorPos);
+	private boolean isDoor(BlockPos potentialDoorPos) {
+		IBlockState doorState = theEntity.world.getBlockState(potentialDoorPos);
 		if (doorState.getBlock() instanceof BlockDoor) {
 			if (doorState.getMaterial() == Material.WOOD) {
-				this.doorPos = potentialDoorPos;
 				return true;
 			}
 		} else if (doorState.getBlock() instanceof BlockFenceGate) {
-			this.doorPos = potentialDoorPos;
 			return true;
 		}
-		this.doorState = null;
 		return false;
 	}
 
-	private void doDoorInteraction(boolean isOpening) {
+	private boolean findDoor(BlockPos potentialDoorPos) {
+		if (isDoor(potentialDoorPos) && !doorPositions.contains(potentialDoorPos)) {
+			doorPositions.add(potentialDoorPos);
+			return true;
+		}
+		return false;
+	}
+
+	private void interactWithDoor(BlockPos doorPos, boolean isOpening) {
+		IBlockState doorState = theEntity.world.getBlockState(doorPos);
 		if (doorState.getBlock() instanceof BlockDoor) {
-			((BlockDoor) doorState.getBlock()).toggleDoor(this.theEntity.world, this.doorPos, isOpening);
+			((BlockDoor) doorState.getBlock()).toggleDoor(theEntity.world, doorPos, isOpening);
 		} else if (doorState.getBlock() instanceof BlockFenceGate) {
-			boolean fenceGateOpen = doorState.getValue(BlockFenceGate.OPEN);
-			if (isOpening) {
-				if (!fenceGateOpen) {
-					EnumFacing entityFacing = EnumFacing.fromAngle((double) this.theEntity.rotationYaw);
-					openFenceGate(doorState, doorPos, entityFacing);
-					IBlockState state = this.theEntity.world.getBlockState(doorPos.up());
-					if (state.getBlock() instanceof BlockFenceGate) {
-						openFenceGate(state, doorPos.up(), entityFacing);
-					}
-				}
-			} else {
-				doorState = doorState.withProperty(BlockFenceGate.OPEN, false);
-				this.theEntity.world.setBlockState(doorPos, doorState, 10);
-				IBlockState state = this.theEntity.world.getBlockState(doorPos.up());
+			interactWithFenceGate(doorPos, isOpening, doorState);
+		}
+	}
+
+	private void interactWithFenceGate(BlockPos doorPos, boolean isOpening, IBlockState doorState) {
+		boolean fenceGateOpen = doorState.getValue(BlockFenceGate.OPEN);
+		if (isOpening) {
+			if (!fenceGateOpen) {
+				EnumFacing entityFacing = EnumFacing.fromAngle((double) theEntity.rotationYaw);
+				openFenceGate(doorState, doorPos, entityFacing);
+				IBlockState state = theEntity.world.getBlockState(doorPos.up());
 				if (state.getBlock() instanceof BlockFenceGate) {
-					state = state.withProperty(BlockFenceGate.OPEN, false);
-					this.theEntity.world.setBlockState(doorPos.up(), state, 10);
+					openFenceGate(state, doorPos.up(), entityFacing);
 				}
 			}
-			this.theEntity.world.playEvent(null, doorState.getValue(BlockFenceGate.OPEN) ? 1008 : 1014, doorPos, 0);
+		} else {
+			doorState = doorState.withProperty(BlockFenceGate.OPEN, false);
+			theEntity.world.setBlockState(doorPos, doorState, 10);
+			IBlockState state = theEntity.world.getBlockState(doorPos.up());
+			if (state.getBlock() instanceof BlockFenceGate) {
+				state = state.withProperty(BlockFenceGate.OPEN, false);
+				theEntity.world.setBlockState(doorPos.up(), state, 10);
+			}
 		}
+		theEntity.world.playEvent(null, doorState.getValue(BlockFenceGate.OPEN) ? 1008 : 1014, doorPos, 0);
 	}
 
 	private void openFenceGate(IBlockState state, BlockPos pos, EnumFacing entityFacing) {
@@ -142,6 +183,6 @@ public class NpcAIDoor extends EntityAIBase {
 		}
 
 		updatedState = updatedState.withProperty(BlockFenceGate.OPEN, true);
-		this.theEntity.world.setBlockState(pos, updatedState, 10);
+		theEntity.world.setBlockState(pos, updatedState, 10);
 	}
 }
