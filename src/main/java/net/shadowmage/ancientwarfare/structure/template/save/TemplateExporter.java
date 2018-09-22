@@ -9,8 +9,10 @@ import net.shadowmage.ancientwarfare.structure.template.build.validation.Structu
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
 
 public class TemplateExporter {
@@ -29,7 +31,7 @@ public class TemplateExporter {
 				return false;
 			}
 		}
-		try (FileWriter fileWriter = new FileWriter(exportFile); BufferedWriter writer = new BufferedWriter(fileWriter)) {
+		try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(exportFile), StandardCharsets.ISO_8859_1))) {
 
 			writeHeader(template, writer);
 			writeValidationSettings(template.getValidationSettings(), writer);
