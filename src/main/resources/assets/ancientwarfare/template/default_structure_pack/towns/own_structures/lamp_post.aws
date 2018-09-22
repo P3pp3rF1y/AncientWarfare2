@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 8/28/2018 at: 17:29:59
+# Auto-generated structure template file. created on: 9/22/2018 at: 16:7:2
 # Lines beginning with # denote comments
 
 header:
-version=2.3
+version=2.6
 name=lamp_post
 size=1,2,1
 offset=0,0,0
@@ -44,7 +44,7 @@ rule:
 plugin=vanillaBlocks
 number=1
 data:
-JSON:{buildPass:0,blockName:"minecraft:fence",meta:0}
+JSON:{blockState:{blockName:"minecraft:fence",properties:{east:"false",south:"false",north:"false",west:"false"}},buildPass:0}
 :enddata
 :endrule
 
@@ -52,7 +52,7 @@ rule:
 plugin=vanillaBlocks
 number=2
 data:
-JSON:{buildPass:2,blockName:"minecraft:torch",meta:5}
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"up"}},buildPass:2}
 :enddata
 :endrule
 

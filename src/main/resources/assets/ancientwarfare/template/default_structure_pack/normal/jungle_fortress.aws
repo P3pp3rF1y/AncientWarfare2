@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 8/28/2018 at: 17:29:59
+# Auto-generated structure template file. created on: 9/22/2018 at: 16:7:2
 # Lines beginning with # denote comments
 
 header:
-version=2.3
+version=2.6
 name=jungle_fortress
 size=25,33,21
 offset=10,1,20
@@ -797,7 +797,7 @@ rule:
 plugin=vanillaBlocks
 number=1
 data:
-JSON:{buildPass:0,blockName:"minecraft:grass",meta:0}
+JSON:{blockState:{blockName:"minecraft:grass",properties:{snowy:"false"}},buildPass:0}
 :enddata
 :endrule
 
@@ -805,7 +805,7 @@ rule:
 plugin=vanillaBlocks
 number=2
 data:
-JSON:{buildPass:0,blockName:"minecraft:dirt",meta:0}
+JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"dirt",snowy:"false"}},buildPass:0}
 :enddata
 :endrule
 
@@ -813,7 +813,7 @@ rule:
 plugin=vanillaBlocks
 number=3
 data:
-JSON:{buildPass:2,blockName:"minecraft:tallgrass",meta:1}
+JSON:{blockState:{blockName:"minecraft:tallgrass",properties:{type:"tall_grass"}},buildPass:2}
 :enddata
 :endrule
 
@@ -821,7 +821,7 @@ rule:
 plugin=vanillaBlocks
 number=4
 data:
-JSON:{buildPass:0,blockName:"minecraft:leaves",meta:7}
+JSON:{blockState:{blockName:"minecraft:leaves",properties:{check_decay:"false",decayable:"false",variant:"jungle"}},buildPass:0}
 :enddata
 :endrule
 
@@ -829,7 +829,7 @@ rule:
 plugin=vanillaBlocks
 number=5
 data:
-JSON:{buildPass:2,blockName:"minecraft:tallgrass",meta:2}
+JSON:{blockState:{blockName:"minecraft:tallgrass",properties:{type:"fern"}},buildPass:2}
 :enddata
 :endrule
 
@@ -837,7 +837,7 @@ rule:
 plugin=vanillaBlocks
 number=6
 data:
-JSON:{buildPass:2,blockName:"minecraft:vine",meta:2}
+JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"false",south:"false",north:"false",west:"true",up:"false"}},buildPass:2}
 :enddata
 :endrule
 
@@ -845,7 +845,7 @@ rule:
 plugin=vanillaBlocks
 number=7
 data:
-JSON:{buildPass:0,blockName:"minecraft:log",meta:3}
+JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"jungle",axis:"y"}},buildPass:0}
 :enddata
 :endrule
 
@@ -853,7 +853,7 @@ rule:
 plugin=vanillaBlocks
 number=8
 data:
-JSON:{buildPass:2,blockName:"minecraft:torch",meta:5}
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"up"}},buildPass:2}
 :enddata
 :endrule
 
@@ -861,7 +861,7 @@ rule:
 plugin=vanillaBlocks
 number=9
 data:
-JSON:{buildPass:2,blockName:"minecraft:vine",meta:1}
+JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"false",south:"true",north:"false",west:"false",up:"false"}},buildPass:2}
 :enddata
 :endrule
 
@@ -869,7 +869,7 @@ rule:
 plugin=vanillaBlocks
 number=10
 data:
-JSON:{buildPass:2,blockName:"minecraft:vine",meta:4}
+JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"false",south:"false",north:"true",west:"false",up:"false"}},buildPass:2}
 :enddata
 :endrule
 
@@ -877,7 +877,7 @@ rule:
 plugin=vanillaBlocks
 number=11
 data:
-JSON:{buildPass:0,blockName:"minecraft:log",meta:7}
+JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"jungle",axis:"x"}},buildPass:0}
 :enddata
 :endrule
 
@@ -885,7 +885,7 @@ rule:
 plugin=vanillaBlocks
 number=12
 data:
-JSON:{buildPass:0,blockName:"minecraft:log",meta:11}
+JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"jungle",axis:"z"}},buildPass:0}
 :enddata
 :endrule
 
@@ -893,7 +893,7 @@ rule:
 plugin=vanillaBlocks
 number=13
 data:
-JSON:{buildPass:0,blockName:"minecraft:leaves",meta:15}
+JSON:{blockState:{blockName:"minecraft:leaves",properties:{check_decay:"true",decayable:"false",variant:"jungle"}},buildPass:0}
 :enddata
 :endrule
 
@@ -901,7 +901,7 @@ rule:
 plugin=vanillaBlocks
 number=14
 data:
-JSON:{buildPass:2,blockName:"minecraft:vine",meta:8}
+JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"true",south:"false",north:"false",west:"false",up:"false"}},buildPass:2}
 :enddata
 :endrule
 
@@ -909,7 +909,7 @@ rule:
 plugin=vanillaBlocks
 number=15
 data:
-JSON:{buildPass:2,blockName:"minecraft:torch",meta:1}
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"east"}},buildPass:2}
 :enddata
 :endrule
 
@@ -917,7 +917,7 @@ rule:
 plugin=vanillaBlocks
 number=16
 data:
-JSON:{buildPass:2,blockName:"minecraft:torch",meta:2}
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"west"}},buildPass:2}
 :enddata
 :endrule
 
@@ -925,7 +925,7 @@ rule:
 plugin=vanillaBlocks
 number=17
 data:
-JSON:{buildPass:2,blockName:"minecraft:torch",meta:3}
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"south"}},buildPass:2}
 :enddata
 :endrule
 
@@ -933,7 +933,7 @@ rule:
 plugin=vanillaBlocks
 number=18
 data:
-JSON:{buildPass:0,blockName:"minecraft:wooden_slab",meta:11}
+JSON:{blockState:{blockName:"minecraft:wooden_slab",properties:{half:"top",variant:"jungle"}},buildPass:0}
 :enddata
 :endrule
 
@@ -941,7 +941,7 @@ rule:
 plugin=vanillaBlocks
 number=19
 data:
-JSON:{buildPass:0,blockName:"minecraft:jungle_stairs",meta:0}
+JSON:{blockState:{blockName:"minecraft:jungle_stairs",properties:{half:"bottom",shape:"straight",facing:"east"}},buildPass:0}
 :enddata
 :endrule
 
@@ -949,7 +949,7 @@ rule:
 plugin=vanillaBlocks
 number=20
 data:
-JSON:{buildPass:2,blockName:"minecraft:torch",meta:4}
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"north"}},buildPass:2}
 :enddata
 :endrule
 
@@ -957,7 +957,7 @@ rule:
 plugin=vanillaBlocks
 number=21
 data:
-JSON:{buildPass:0,blockName:"minecraft:jungle_stairs",meta:3}
+JSON:{blockState:{blockName:"minecraft:jungle_stairs",properties:{half:"bottom",shape:"straight",facing:"north"}},buildPass:0}
 :enddata
 :endrule
 
@@ -965,7 +965,7 @@ rule:
 plugin=vanillaBlocks
 number=22
 data:
-JSON:{buildPass:2,blockName:"minecraft:cocoa",meta:4}
+JSON:{blockState:{blockName:"minecraft:cocoa",properties:{facing:"south",age:"1"}},buildPass:2}
 :enddata
 :endrule
 
@@ -973,7 +973,7 @@ rule:
 plugin=vanillaBlocks
 number=23
 data:
-JSON:{buildPass:2,blockName:"minecraft:cocoa",meta:1}
+JSON:{blockState:{blockName:"minecraft:cocoa",properties:{facing:"west",age:"0"}},buildPass:2}
 :enddata
 :endrule
 
@@ -981,7 +981,7 @@ rule:
 plugin=vanillaBlocks
 number=24
 data:
-JSON:{buildPass:2,blockName:"minecraft:cocoa",meta:5}
+JSON:{blockState:{blockName:"minecraft:cocoa",properties:{facing:"west",age:"1"}},buildPass:2}
 :enddata
 :endrule
 
@@ -989,7 +989,7 @@ rule:
 plugin=vanillaBlocks
 number=25
 data:
-JSON:{buildPass:0,blockName:"minecraft:jungle_stairs",meta:1}
+JSON:{blockState:{blockName:"minecraft:jungle_stairs",properties:{half:"bottom",shape:"straight",facing:"west"}},buildPass:0}
 :enddata
 :endrule
 
@@ -997,7 +997,7 @@ rule:
 plugin=vanillaBlocks
 number=26
 data:
-JSON:{buildPass:2,blockName:"minecraft:cocoa",meta:2}
+JSON:{blockState:{blockName:"minecraft:cocoa",properties:{facing:"north",age:"0"}},buildPass:2}
 :enddata
 :endrule
 
@@ -1005,7 +1005,7 @@ rule:
 plugin=vanillaBlocks
 number=27
 data:
-JSON:{buildPass:2,blockName:"minecraft:cocoa",meta:3}
+JSON:{blockState:{blockName:"minecraft:cocoa",properties:{facing:"east",age:"0"}},buildPass:2}
 :enddata
 :endrule
 
@@ -1013,7 +1013,7 @@ rule:
 plugin=vanillaBlocks
 number=28
 data:
-JSON:{buildPass:0,blockName:"minecraft:jungle_stairs",meta:2}
+JSON:{blockState:{blockName:"minecraft:jungle_stairs",properties:{half:"bottom",shape:"straight",facing:"south"}},buildPass:0}
 :enddata
 :endrule
 
@@ -1021,7 +1021,7 @@ rule:
 plugin=vanillaBlocks
 number=29
 data:
-JSON:{buildPass:0,blockName:"minecraft:jungle_stairs",meta:7}
+JSON:{blockState:{blockName:"minecraft:jungle_stairs",properties:{half:"top",shape:"straight",facing:"north"}},buildPass:0}
 :enddata
 :endrule
 
@@ -1029,7 +1029,7 @@ rule:
 plugin=vanillaBlocks
 number=30
 data:
-JSON:{buildPass:0,blockName:"minecraft:jungle_stairs",meta:4}
+JSON:{blockState:{blockName:"minecraft:jungle_stairs",properties:{half:"top",shape:"straight",facing:"east"}},buildPass:0}
 :enddata
 :endrule
 
@@ -1037,7 +1037,7 @@ rule:
 plugin=vanillaBlocks
 number=31
 data:
-JSON:{buildPass:0,blockName:"minecraft:jungle_stairs",meta:5}
+JSON:{blockState:{blockName:"minecraft:jungle_stairs",properties:{half:"top",shape:"straight",facing:"west"}},buildPass:0}
 :enddata
 :endrule
 
@@ -1045,7 +1045,7 @@ rule:
 plugin=vanillaBlocks
 number=32
 data:
-JSON:{buildPass:0,blockName:"minecraft:planks",meta:3}
+JSON:{blockState:{blockName:"minecraft:planks",properties:{variant:"jungle"}},buildPass:0}
 :enddata
 :endrule
 
@@ -1053,7 +1053,7 @@ rule:
 plugin=vanillaBlocks
 number=33
 data:
-JSON:{buildPass:0,blockName:"minecraft:jungle_stairs",meta:6}
+JSON:{blockState:{blockName:"minecraft:jungle_stairs",properties:{half:"top",shape:"straight",facing:"south"}},buildPass:0}
 :enddata
 :endrule
 
@@ -1061,15 +1061,15 @@ rule:
 plugin=vanillaBlocks
 number=34
 data:
-JSON:{buildPass:0,blockName:"minecraft:leaves",meta:3}
+JSON:{blockState:{blockName:"minecraft:leaves",properties:{check_decay:"false",decayable:"true",variant:"jungle"}},buildPass:0}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=35
 data:
-JSON:{buildPass:0,blockName:"minecraft:chest",meta:5,lootLevel:0,teData:{x:-163,y:117,Items:[{Slot:0b,id:298s,Count:1b,Damage:0s},{Slot:1b,id:300s,Count:1b,Damage:0s},{Slot:2b,id:373s,Count:1b,Damage:0s},{Slot:11b,id:31s,Count:1b,Damage:2s},{Slot:21b,id:280s,Count:1b,Damage:0s},{Slot:22b,id:280s,Count:1b,Damage:0s}],z:213,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_helmet",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_leggings",Count:1b,slot:1,Damage:0s},{id:"minecraft:potion",Count:1b,tag:{Potion:"minecraft:water"},slot:2,Damage:0s},{id:"minecraft:tallgrass",Count:1b,slot:11,Damage:2s},{id:"minecraft:stick",Count:1b,slot:21,Damage:0s},{id:"minecraft:stick",Count:1b,slot:22,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:0,teData:{x:-163,y:117,Items:[{Slot:0b,id:298s,Count:1b,Damage:0s},{Slot:1b,id:300s,Count:1b,Damage:0s},{Slot:2b,id:373s,Count:1b,Damage:0s},{Slot:11b,id:31s,Count:1b,Damage:2s},{Slot:21b,id:280s,Count:1b,Damage:0s},{Slot:22b,id:280s,Count:1b,Damage:0s}],z:213,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_helmet",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_leggings",Count:1b,slot:1,Damage:0s},{id:"minecraft:potion",Count:1b,tag:{Potion:"minecraft:water"},slot:2,Damage:0s},{id:"minecraft:tallgrass",Count:1b,slot:11,Damage:2s},{id:"minecraft:stick",Count:1b,slot:21,Damage:0s},{id:"minecraft:stick",Count:1b,slot:22,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -1077,7 +1077,7 @@ rule:
 plugin=vanillaBlocks
 number=36
 data:
-JSON:{buildPass:2,blockName:"minecraft:bed",meta:1}
+JSON:{blockState:{blockName:"minecraft:bed",properties:{part:"foot",facing:"west",occupied:"false"}},buildPass:2}
 :enddata
 :endrule
 
@@ -1085,15 +1085,15 @@ rule:
 plugin=vanillaBlocks
 number=37
 data:
-JSON:{buildPass:2,blockName:"minecraft:bed",meta:9}
+JSON:{blockState:{blockName:"minecraft:bed",properties:{part:"head",facing:"west",occupied:"false"}},buildPass:2}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=38
 data:
-JSON:{buildPass:0,blockName:"minecraft:chest",meta:3,lootLevel:0,teData:{x:-160,y:117,Items:[{Slot:0b,id:299s,Count:1b,Damage:0s},{Slot:1b,id:301s,Count:1b,Damage:0s},{Slot:9b,id:38s,Count:1b,Damage:4s},{Slot:12b,id:296s,Count:2b,Damage:0s},{Slot:13b,id:296s,Count:1b,Damage:0s},{Slot:19b,id:351s,Count:1b,Damage:3s},{Slot:20b,id:351s,Count:1b,Damage:3s}],z:213,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_chestplate",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_boots",Count:1b,slot:1,Damage:0s},{id:"minecraft:red_flower",Count:1b,slot:9,Damage:4s},{id:"minecraft:wheat",Count:2b,slot:12,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:13,Damage:0s},{id:"minecraft:dye",Count:1b,slot:19,Damage:3s},{id:"minecraft:dye",Count:1b,slot:20,Damage:3s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{x:-160,y:117,Items:[{Slot:0b,id:299s,Count:1b,Damage:0s},{Slot:1b,id:301s,Count:1b,Damage:0s},{Slot:9b,id:38s,Count:1b,Damage:4s},{Slot:12b,id:296s,Count:2b,Damage:0s},{Slot:13b,id:296s,Count:1b,Damage:0s},{Slot:19b,id:351s,Count:1b,Damage:3s},{Slot:20b,id:351s,Count:1b,Damage:3s}],z:213,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_chestplate",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_boots",Count:1b,slot:1,Damage:0s},{id:"minecraft:red_flower",Count:1b,slot:9,Damage:4s},{id:"minecraft:wheat",Count:2b,slot:12,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:13,Damage:0s},{id:"minecraft:dye",Count:1b,slot:19,Damage:3s},{id:"minecraft:dye",Count:1b,slot:20,Damage:3s}]}}
 :enddata
 :endrule
 
@@ -1101,7 +1101,7 @@ rule:
 plugin=vanillaBlocks
 number=39
 data:
-JSON:{buildPass:2,blockName:"minecraft:bed",meta:8}
+JSON:{blockState:{blockName:"minecraft:bed",properties:{part:"head",facing:"south",occupied:"false"}},buildPass:2}
 :enddata
 :endrule
 
@@ -1109,7 +1109,7 @@ rule:
 plugin=vanillaBlocks
 number=40
 data:
-JSON:{buildPass:2,blockName:"minecraft:bed",meta:2}
+JSON:{blockState:{blockName:"minecraft:bed",properties:{part:"foot",facing:"north",occupied:"false"}},buildPass:2}
 :enddata
 :endrule
 
@@ -1117,7 +1117,7 @@ rule:
 plugin=vanillaBlocks
 number=41
 data:
-JSON:{buildPass:2,blockName:"minecraft:bed",meta:0}
+JSON:{blockState:{blockName:"minecraft:bed",properties:{part:"foot",facing:"south",occupied:"false"}},buildPass:2}
 :enddata
 :endrule
 
@@ -1125,15 +1125,15 @@ rule:
 plugin=vanillaBlocks
 number=42
 data:
-JSON:{buildPass:2,blockName:"minecraft:bed",meta:10}
+JSON:{blockState:{blockName:"minecraft:bed",properties:{part:"head",facing:"north",occupied:"false"}},buildPass:2}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=43
 data:
-JSON:{buildPass:0,blockName:"minecraft:chest",meta:4,lootLevel:0,teData:{x:-160,y:117,Items:[{Slot:0b,id:298s,Count:1b,Damage:0s},{Slot:1b,id:299s,Count:1b,Damage:0s},{Slot:2b,id:296s,Count:1b,Damage:0s},{Slot:3b,id:296s,Count:1b,Damage:0s},{Slot:11b,id:296s,Count:1b,Damage:0s},{Slot:12b,id:280s,Count:2b,Damage:0s}],z:216,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_helmet",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_chestplate",Count:1b,slot:1,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:2,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:3,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:11,Damage:0s},{id:"minecraft:stick",Count:2b,slot:12,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{x:-160,y:117,Items:[{Slot:0b,id:298s,Count:1b,Damage:0s},{Slot:1b,id:299s,Count:1b,Damage:0s},{Slot:2b,id:296s,Count:1b,Damage:0s},{Slot:3b,id:296s,Count:1b,Damage:0s},{Slot:11b,id:296s,Count:1b,Damage:0s},{Slot:12b,id:280s,Count:2b,Damage:0s}],z:216,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_helmet",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_chestplate",Count:1b,slot:1,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:2,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:3,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:11,Damage:0s},{id:"minecraft:stick",Count:2b,slot:12,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -1141,7 +1141,7 @@ rule:
 plugin=vanillaBlocks
 number=44
 data:
-JSON:{buildPass:0,blockName:"minecraft:birch_stairs",meta:2}
+JSON:{blockState:{blockName:"minecraft:birch_stairs",properties:{half:"bottom",shape:"straight",facing:"south"}},buildPass:0}
 :enddata
 :endrule
 
@@ -1149,7 +1149,7 @@ rule:
 plugin=vanillaBlocks
 number=45
 data:
-JSON:{buildPass:0,blockName:"minecraft:birch_stairs",meta:0}
+JSON:{blockState:{blockName:"minecraft:birch_stairs",properties:{half:"bottom",shape:"straight",facing:"east"}},buildPass:0}
 :enddata
 :endrule
 
@@ -1157,7 +1157,7 @@ rule:
 plugin=vanillaBlocks
 number=46
 data:
-JSON:{buildPass:0,blockName:"minecraft:birch_stairs",meta:1}
+JSON:{blockState:{blockName:"minecraft:birch_stairs",properties:{half:"bottom",shape:"straight",facing:"west"}},buildPass:0}
 :enddata
 :endrule
 
@@ -1165,7 +1165,7 @@ rule:
 plugin=vanillaBlocks
 number=47
 data:
-JSON:{buildPass:0,blockName:"minecraft:fence",meta:0}
+JSON:{blockState:{blockName:"minecraft:fence",properties:{east:"false",south:"false",north:"false",west:"false"}},buildPass:0}
 :enddata
 :endrule
 
@@ -1173,31 +1173,31 @@ rule:
 plugin=vanillaBlocks
 number=48
 data:
-JSON:{buildPass:0,blockName:"minecraft:birch_stairs",meta:3}
+JSON:{blockState:{blockName:"minecraft:birch_stairs",properties:{half:"bottom",shape:"straight",facing:"north"}},buildPass:0}
 :enddata
 :endrule
 
 rule:
-plugin=awAutomationLogic
+plugin=blockTile
 number=49
 data:
-JSON:{buildPass:0,blockName:"minecraft:furnace",meta:5,teData:{CookTime:0s,BurnTime:0s,x:-167,y:117,Items:[],z:224,id:"Furnace"}}
+JSON:{blockState:{blockName:"minecraft:furnace",properties:{facing:"east"}},buildPass:0,teData:{CookTime:0s,BurnTime:0s,x:-167,y:117,Items:[],z:224,id:"Furnace"}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=50
 data:
-JSON:{buildPass:0,blockName:"minecraft:chest",meta:4,lootLevel:0,teData:{x:-170,y:117,Items:[{Slot:0b,id:373s,Count:1b,Damage:0s},{Slot:2b,id:392s,Count:9b,Damage:0s},{Slot:5b,id:373s,Count:1b,Damage:8230s},{Slot:7b,id:373s,Count:1b,Damage:0s},{Slot:8b,id:373s,Count:1b,Damage:8201s},{Slot:9b,id:373s,Count:1b,Damage:8193s},{Slot:11b,id:364s,Count:12b,Damage:0s},{Slot:12b,id:373s,Count:1b,Damage:8227s},{Slot:15b,id:296s,Count:26b,Damage:0s},{Slot:19b,id:373s,Count:1b,Damage:0s},{Slot:21b,id:373s,Count:1b,Damage:0s},{Slot:23b,id:320s,Count:12b,Damage:0s},{Slot:25b,id:351s,Count:27b,Damage:3s}],z:225,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:potion",Count:1b,tag:{Potion:"minecraft:water"},slot:0,Damage:0s},{id:"minecraft:potato",Count:9b,slot:2,Damage:0s},{id:"minecraft:potion",Count:1b,tag:{Potion:"minecraft:night_vision"},slot:5,Damage:0s},{id:"minecraft:potion",Count:1b,tag:{Potion:"minecraft:water"},slot:7,Damage:0s},{id:"minecraft:potion",Count:1b,tag:{Potion:"minecraft:strength"},slot:8,Damage:0s},{id:"minecraft:potion",Count:1b,tag:{Potion:"minecraft:regeneration"},slot:9,Damage:0s},{id:"minecraft:cooked_beef",Count:12b,slot:11,Damage:0s},{id:"minecraft:potion",Count:1b,tag:{Potion:"minecraft:fire_resistance"},slot:12,Damage:0s},{id:"minecraft:wheat",Count:26b,slot:15,Damage:0s},{id:"minecraft:potion",Count:1b,tag:{Potion:"minecraft:water"},slot:19,Damage:0s},{id:"minecraft:potion",Count:1b,tag:{Potion:"minecraft:water"},slot:21,Damage:0s},{id:"minecraft:cooked_porkchop",Count:12b,slot:23,Damage:0s},{id:"minecraft:dye",Count:27b,slot:25,Damage:3s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{x:-170,y:117,Items:[{Slot:0b,id:373s,Count:1b,Damage:0s},{Slot:2b,id:392s,Count:9b,Damage:0s},{Slot:5b,id:373s,Count:1b,Damage:8230s},{Slot:7b,id:373s,Count:1b,Damage:0s},{Slot:8b,id:373s,Count:1b,Damage:8201s},{Slot:9b,id:373s,Count:1b,Damage:8193s},{Slot:11b,id:364s,Count:12b,Damage:0s},{Slot:12b,id:373s,Count:1b,Damage:8227s},{Slot:15b,id:296s,Count:26b,Damage:0s},{Slot:19b,id:373s,Count:1b,Damage:0s},{Slot:21b,id:373s,Count:1b,Damage:0s},{Slot:23b,id:320s,Count:12b,Damage:0s},{Slot:25b,id:351s,Count:27b,Damage:3s}],z:225,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:potion",Count:1b,tag:{Potion:"minecraft:water"},slot:0,Damage:0s},{id:"minecraft:potato",Count:9b,slot:2,Damage:0s},{id:"minecraft:potion",Count:1b,tag:{Potion:"minecraft:night_vision"},slot:5,Damage:0s},{id:"minecraft:potion",Count:1b,tag:{Potion:"minecraft:water"},slot:7,Damage:0s},{id:"minecraft:potion",Count:1b,tag:{Potion:"minecraft:strength"},slot:8,Damage:0s},{id:"minecraft:potion",Count:1b,tag:{Potion:"minecraft:regeneration"},slot:9,Damage:0s},{id:"minecraft:cooked_beef",Count:12b,slot:11,Damage:0s},{id:"minecraft:potion",Count:1b,tag:{Potion:"minecraft:fire_resistance"},slot:12,Damage:0s},{id:"minecraft:wheat",Count:26b,slot:15,Damage:0s},{id:"minecraft:potion",Count:1b,tag:{Potion:"minecraft:water"},slot:19,Damage:0s},{id:"minecraft:potion",Count:1b,tag:{Potion:"minecraft:water"},slot:21,Damage:0s},{id:"minecraft:cooked_porkchop",Count:12b,slot:23,Damage:0s},{id:"minecraft:dye",Count:27b,slot:25,Damage:3s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=awAutomationLogic
+plugin=blockTile
 number=51
 data:
-JSON:{buildPass:0,blockName:"minecraft:furnace",meta:5,teData:{CookTime:0s,BurnTime:0s,x:-167,y:117,Items:[],z:225,id:"Furnace"}}
+JSON:{blockState:{blockName:"minecraft:furnace",properties:{facing:"east"}},buildPass:0,teData:{CookTime:0s,BurnTime:0s,x:-167,y:117,Items:[],z:225,id:"Furnace"}}
 :enddata
 :endrule
 
@@ -1205,167 +1205,167 @@ rule:
 plugin=vanillaBlocks
 number=52
 data:
-JSON:{buildPass:2,blockName:"minecraft:carpet",meta:13}
+JSON:{blockState:{blockName:"minecraft:carpet",properties:{color:"green"}},buildPass:2}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=53
 data:
-JSON:{buildPass:0,blockName:"minecraft:chest",meta:3,lootLevel:1,teData:{x:-162,y:121,Items:[{Slot:0b,id:266s,Count:1b,Damage:0s}],z:213,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:1,teData:{x:-162,y:121,Items:[{Slot:0b,id:266s,Count:1b,Damage:0s}],z:213,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=54
 data:
-JSON:{buildPass:0,blockName:"minecraft:chest",meta:3,lootLevel:2,teData:{x:-161,y:121,Items:[{Slot:0b,id:264s,Count:1b,Damage:0s}],z:213,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:diamond",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:2,teData:{x:-161,y:121,Items:[{Slot:0b,id:264s,Count:1b,Damage:0s}],z:213,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:diamond",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=55
 data:
-JSON:{buildPass:0,blockName:"minecraft:chest",meta:3,lootLevel:2,teData:{x:-172,y:121,Items:[{Slot:0b,id:264s,Count:1b,Damage:0s}],z:214,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:diamond",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:2,teData:{x:-172,y:121,Items:[{Slot:0b,id:264s,Count:1b,Damage:0s}],z:214,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:diamond",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=56
 data:
-JSON:{buildPass:0,blockName:"minecraft:chest",meta:3,lootLevel:2,teData:{x:-171,y:121,Items:[{Slot:0b,id:264s,Count:1b,Damage:0s}],z:214,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:diamond",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:2,teData:{x:-171,y:121,Items:[{Slot:0b,id:264s,Count:1b,Damage:0s}],z:214,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:diamond",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=57
 data:
-JSON:{buildPass:0,blockName:"minecraft:chest",meta:4,lootLevel:1,teData:{x:-160,y:121,Items:[{Slot:0b,id:266s,Count:1b,Damage:0s}],z:214,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:1,teData:{x:-160,y:121,Items:[{Slot:0b,id:266s,Count:1b,Damage:0s}],z:214,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=58
 data:
-JSON:{buildPass:0,blockName:"minecraft:chest",meta:4,lootLevel:3,teData:{x:-170,y:121,Items:[{Slot:0b,id:388s,Count:1b,Damage:0s}],z:215,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:emerald",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:3,teData:{x:-170,y:121,Items:[{Slot:0b,id:388s,Count:1b,Damage:0s}],z:215,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:emerald",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=59
 data:
-JSON:{buildPass:0,blockName:"minecraft:chest",meta:4,lootLevel:1,teData:{x:-160,y:121,Items:[{Slot:0b,id:266s,Count:1b,Damage:0s}],z:215,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:1,teData:{x:-160,y:121,Items:[{Slot:0b,id:266s,Count:1b,Damage:0s}],z:215,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=60
 data:
-JSON:{buildPass:0,blockName:"minecraft:chest",meta:4,lootLevel:3,teData:{x:-170,y:121,Items:[{Slot:0b,id:388s,Count:1b,Damage:0s}],z:216,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:emerald",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:3,teData:{x:-170,y:121,Items:[{Slot:0b,id:388s,Count:1b,Damage:0s}],z:216,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:emerald",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=61
 data:
-JSON:{buildPass:0,blockName:"minecraft:chest",meta:2,lootLevel:3,teData:{x:-162,y:121,Items:[{Slot:0b,id:388s,Count:1b,Damage:0s}],z:216,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:emerald",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},buildPass:0,lootLevel:3,teData:{x:-162,y:121,Items:[{Slot:0b,id:388s,Count:1b,Damage:0s}],z:216,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:emerald",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=62
 data:
-JSON:{buildPass:0,blockName:"minecraft:chest",meta:2,lootLevel:2,teData:{x:-161,y:121,Items:[{Slot:0b,id:264s,Count:1b,Damage:0s}],z:216,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:diamond",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},buildPass:0,lootLevel:2,teData:{x:-161,y:121,Items:[{Slot:0b,id:264s,Count:1b,Damage:0s}],z:216,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:diamond",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=63
 data:
-JSON:{buildPass:0,blockName:"minecraft:chest",meta:2,lootLevel:1,teData:{x:-172,y:121,Items:[{Slot:0b,id:266s,Count:1b,Damage:0s}],z:217,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},buildPass:0,lootLevel:1,teData:{x:-172,y:121,Items:[{Slot:0b,id:266s,Count:1b,Damage:0s}],z:217,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=64
 data:
-JSON:{buildPass:0,blockName:"minecraft:chest",meta:2,lootLevel:1,teData:{x:-171,y:121,Items:[{Slot:0b,id:266s,Count:1b,Damage:0s}],z:217,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},buildPass:0,lootLevel:1,teData:{x:-171,y:121,Items:[{Slot:0b,id:266s,Count:1b,Damage:0s}],z:217,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=65
 data:
-JSON:{buildPass:0,blockName:"minecraft:chest",meta:3,lootLevel:0,teData:{x:-163,y:121,Items:[{Slot:0b,id:300s,Count:1b,Damage:0s},{Slot:1b,id:299s,Count:1b,Damage:0s},{Slot:3b,id:38s,Count:1b,Damage:7s},{Slot:12b,id:296s,Count:2b,Damage:0s},{Slot:20b,id:351s,Count:1b,Damage:3s},{Slot:21b,id:351s,Count:1b,Damage:3s},{Slot:22b,id:351s,Count:5b,Damage:3s}],z:220,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_leggings",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_chestplate",Count:1b,slot:1,Damage:0s},{id:"minecraft:red_flower",Count:1b,slot:3,Damage:7s},{id:"minecraft:wheat",Count:2b,slot:12,Damage:0s},{id:"minecraft:dye",Count:1b,slot:20,Damage:3s},{id:"minecraft:dye",Count:1b,slot:21,Damage:3s},{id:"minecraft:dye",Count:5b,slot:22,Damage:3s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{x:-163,y:121,Items:[{Slot:0b,id:300s,Count:1b,Damage:0s},{Slot:1b,id:299s,Count:1b,Damage:0s},{Slot:3b,id:38s,Count:1b,Damage:7s},{Slot:12b,id:296s,Count:2b,Damage:0s},{Slot:20b,id:351s,Count:1b,Damage:3s},{Slot:21b,id:351s,Count:1b,Damage:3s},{Slot:22b,id:351s,Count:5b,Damage:3s}],z:220,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_leggings",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_chestplate",Count:1b,slot:1,Damage:0s},{id:"minecraft:red_flower",Count:1b,slot:3,Damage:7s},{id:"minecraft:wheat",Count:2b,slot:12,Damage:0s},{id:"minecraft:dye",Count:1b,slot:20,Damage:3s},{id:"minecraft:dye",Count:1b,slot:21,Damage:3s},{id:"minecraft:dye",Count:5b,slot:22,Damage:3s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=66
 data:
-JSON:{buildPass:0,blockName:"minecraft:chest",meta:3,lootLevel:1,teData:{x:-173,y:121,Items:[{Slot:0b,id:266s,Count:1b,Damage:0s}],z:221,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:1,teData:{x:-173,y:121,Items:[{Slot:0b,id:266s,Count:1b,Damage:0s}],z:221,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=67
 data:
-JSON:{buildPass:0,blockName:"minecraft:chest",meta:3,lootLevel:3,teData:{x:-172,y:121,Items:[{Slot:0b,id:388s,Count:1b,Damage:0s}],z:221,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:emerald",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:3,teData:{x:-172,y:121,Items:[{Slot:0b,id:388s,Count:1b,Damage:0s}],z:221,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:emerald",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=68
 data:
-JSON:{buildPass:0,blockName:"minecraft:chest",meta:5,lootLevel:1,teData:{x:-174,y:121,Items:[{Slot:0b,id:266s,Count:1b,Damage:0s}],z:222,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:1,teData:{x:-174,y:121,Items:[{Slot:0b,id:266s,Count:1b,Damage:0s}],z:222,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=69
 data:
-JSON:{buildPass:0,blockName:"minecraft:chest",meta:5,lootLevel:2,teData:{x:-174,y:121,Items:[{Slot:0b,id:264s,Count:1b,Damage:0s}],z:223,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:diamond",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:2,teData:{x:-174,y:121,Items:[{Slot:0b,id:264s,Count:1b,Damage:0s}],z:223,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:diamond",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=70
 data:
-JSON:{buildPass:0,blockName:"minecraft:chest",meta:4,lootLevel:0,teData:{x:-161,y:121,Items:[{Slot:0b,id:300s,Count:1b,Damage:0s},{Slot:1b,id:301s,Count:1b,Damage:0s},{Slot:2b,id:296s,Count:13b,Damage:0s},{Slot:3b,id:373s,Count:1b,Damage:0s}],z:223,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_leggings",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_boots",Count:1b,slot:1,Damage:0s},{id:"minecraft:wheat",Count:13b,slot:2,Damage:0s},{id:"minecraft:potion",Count:1b,tag:{Potion:"minecraft:water"},slot:3,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{x:-161,y:121,Items:[{Slot:0b,id:300s,Count:1b,Damage:0s},{Slot:1b,id:301s,Count:1b,Damage:0s},{Slot:2b,id:296s,Count:13b,Damage:0s},{Slot:3b,id:373s,Count:1b,Damage:0s}],z:223,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_leggings",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_boots",Count:1b,slot:1,Damage:0s},{id:"minecraft:wheat",Count:13b,slot:2,Damage:0s},{id:"minecraft:potion",Count:1b,tag:{Potion:"minecraft:water"},slot:3,Damage:0s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=71
 data:
-JSON:{buildPass:0,blockName:"minecraft:chest",meta:2,lootLevel:1,teData:{x:-173,y:121,Items:[{Slot:0b,id:266s,Count:1b,Damage:0s}],z:224,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},buildPass:0,lootLevel:1,teData:{x:-173,y:121,Items:[{Slot:0b,id:266s,Count:1b,Damage:0s}],z:224,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=72
 data:
-JSON:{buildPass:0,blockName:"minecraft:chest",meta:2,lootLevel:1,teData:{x:-172,y:121,Items:[{Slot:0b,id:266s,Count:1b,Damage:0s}],z:224,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},buildPass:0,lootLevel:1,teData:{x:-172,y:121,Items:[{Slot:0b,id:266s,Count:1b,Damage:0s}],z:224,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -1373,23 +1373,23 @@ rule:
 plugin=vanillaBlocks
 number=73
 data:
-JSON:{buildPass:2,blockName:"minecraft:vine",meta:0}
+JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"false",south:"false",north:"false",west:"false",up:"false"}},buildPass:2}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=74
 data:
-JSON:{buildPass:0,blockName:"minecraft:chest",meta:4,lootLevel:0,teData:{x:-171,y:124,Items:[{Slot:0b,id:302s,Count:1b,Damage:0s},{Slot:1b,id:304s,Count:1b,Damage:0s},{Slot:2b,id:305s,Count:1b,Damage:0s},{Slot:3b,id:106s,Count:4b,Damage:0s},{Slot:4b,id:297s,Count:3b,Damage:0s},{Slot:13b,id:280s,Count:1b,Damage:0s},{Slot:14b,id:280s,Count:1b,Damage:0s},{Slot:20b,id:296s,Count:1b,Damage:0s},{Slot:21b,id:351s,Count:2b,Damage:3s}],z:214,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:chainmail_helmet",Count:1b,slot:0,Damage:0s},{id:"minecraft:chainmail_leggings",Count:1b,slot:1,Damage:0s},{id:"minecraft:chainmail_boots",Count:1b,slot:2,Damage:0s},{id:"minecraft:vine",Count:4b,slot:3,Damage:0s},{id:"minecraft:bread",Count:3b,slot:4,Damage:0s},{id:"minecraft:stick",Count:1b,slot:13,Damage:0s},{id:"minecraft:stick",Count:1b,slot:14,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:20,Damage:0s},{id:"minecraft:dye",Count:2b,slot:21,Damage:3s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{x:-171,y:124,Items:[{Slot:0b,id:302s,Count:1b,Damage:0s},{Slot:1b,id:304s,Count:1b,Damage:0s},{Slot:2b,id:305s,Count:1b,Damage:0s},{Slot:3b,id:106s,Count:4b,Damage:0s},{Slot:4b,id:297s,Count:3b,Damage:0s},{Slot:13b,id:280s,Count:1b,Damage:0s},{Slot:14b,id:280s,Count:1b,Damage:0s},{Slot:20b,id:296s,Count:1b,Damage:0s},{Slot:21b,id:351s,Count:2b,Damage:3s}],z:214,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:chainmail_helmet",Count:1b,slot:0,Damage:0s},{id:"minecraft:chainmail_leggings",Count:1b,slot:1,Damage:0s},{id:"minecraft:chainmail_boots",Count:1b,slot:2,Damage:0s},{id:"minecraft:vine",Count:4b,slot:3,Damage:0s},{id:"minecraft:bread",Count:3b,slot:4,Damage:0s},{id:"minecraft:stick",Count:1b,slot:13,Damage:0s},{id:"minecraft:stick",Count:1b,slot:14,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:20,Damage:0s},{id:"minecraft:dye",Count:2b,slot:21,Damage:3s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=75
 data:
-JSON:{buildPass:0,blockName:"minecraft:chest",meta:3,lootLevel:0,teData:{x:-163,y:124,Items:[{Slot:0b,id:301s,Count:1b,Damage:0s},{Slot:1b,id:298s,Count:1b,Damage:0s},{Slot:13b,id:280s,Count:1b,Damage:0s},{Slot:14b,id:280s,Count:1b,Damage:0s},{Slot:19b,id:351s,Count:1b,Damage:3s},{Slot:21b,id:373s,Count:1b,Damage:0s},{Slot:22b,id:296s,Count:2b,Damage:0s},{Slot:23b,id:280s,Count:1b,Damage:0s},{Slot:24b,id:280s,Count:1b,Damage:0s}],z:214,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_boots",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_helmet",Count:1b,slot:1,Damage:0s},{id:"minecraft:stick",Count:1b,slot:13,Damage:0s},{id:"minecraft:stick",Count:1b,slot:14,Damage:0s},{id:"minecraft:dye",Count:1b,slot:19,Damage:3s},{id:"minecraft:potion",Count:1b,tag:{Potion:"minecraft:water"},slot:21,Damage:0s},{id:"minecraft:wheat",Count:2b,slot:22,Damage:0s},{id:"minecraft:stick",Count:1b,slot:23,Damage:0s},{id:"minecraft:stick",Count:1b,slot:24,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{x:-163,y:124,Items:[{Slot:0b,id:301s,Count:1b,Damage:0s},{Slot:1b,id:298s,Count:1b,Damage:0s},{Slot:13b,id:280s,Count:1b,Damage:0s},{Slot:14b,id:280s,Count:1b,Damage:0s},{Slot:19b,id:351s,Count:1b,Damage:3s},{Slot:21b,id:373s,Count:1b,Damage:0s},{Slot:22b,id:296s,Count:2b,Damage:0s},{Slot:23b,id:280s,Count:1b,Damage:0s},{Slot:24b,id:280s,Count:1b,Damage:0s}],z:214,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_boots",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_helmet",Count:1b,slot:1,Damage:0s},{id:"minecraft:stick",Count:1b,slot:13,Damage:0s},{id:"minecraft:stick",Count:1b,slot:14,Damage:0s},{id:"minecraft:dye",Count:1b,slot:19,Damage:3s},{id:"minecraft:potion",Count:1b,tag:{Potion:"minecraft:water"},slot:21,Damage:0s},{id:"minecraft:wheat",Count:2b,slot:22,Damage:0s},{id:"minecraft:stick",Count:1b,slot:23,Damage:0s},{id:"minecraft:stick",Count:1b,slot:24,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -1397,7 +1397,7 @@ rule:
 plugin=vanillaBlocks
 number=76
 data:
-JSON:{buildPass:2,blockName:"minecraft:bed",meta:11}
+JSON:{blockState:{blockName:"minecraft:bed",properties:{part:"head",facing:"east",occupied:"false"}},buildPass:2}
 :enddata
 :endrule
 
@@ -1405,95 +1405,95 @@ rule:
 plugin=vanillaBlocks
 number=77
 data:
-JSON:{buildPass:2,blockName:"minecraft:bed",meta:3}
+JSON:{blockState:{blockName:"minecraft:bed",properties:{part:"foot",facing:"east",occupied:"false"}},buildPass:2}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=78
 data:
-JSON:{buildPass:0,blockName:"minecraft:chest",meta:2,lootLevel:0,teData:{x:-172,y:124,Items:[{Slot:0b,id:307s,Count:1b,Damage:0s},{Slot:1b,id:280s,Count:2b,Damage:0s},{Slot:2b,id:306s,Count:1b,Damage:0s},{Slot:3b,id:365s,Count:1b,Damage:0s},{Slot:4b,id:350s,Count:4b,Damage:0s},{Slot:5b,id:364s,Count:5b,Damage:0s},{Slot:10b,id:296s,Count:3b,Damage:0s},{Slot:11b,id:351s,Count:1b,Damage:3s}],z:217,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:iron_chestplate",Count:1b,slot:0,Damage:0s},{id:"minecraft:stick",Count:2b,slot:1,Damage:0s},{id:"minecraft:iron_helmet",Count:1b,slot:2,Damage:0s},{id:"minecraft:chicken",Count:1b,slot:3,Damage:0s},{id:"minecraft:cooked_fish",Count:4b,slot:4,Damage:0s},{id:"minecraft:cooked_beef",Count:5b,slot:5,Damage:0s},{id:"minecraft:wheat",Count:3b,slot:10,Damage:0s},{id:"minecraft:dye",Count:1b,slot:11,Damage:3s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},buildPass:0,lootLevel:0,teData:{x:-172,y:124,Items:[{Slot:0b,id:307s,Count:1b,Damage:0s},{Slot:1b,id:280s,Count:2b,Damage:0s},{Slot:2b,id:306s,Count:1b,Damage:0s},{Slot:3b,id:365s,Count:1b,Damage:0s},{Slot:4b,id:350s,Count:4b,Damage:0s},{Slot:5b,id:364s,Count:5b,Damage:0s},{Slot:10b,id:296s,Count:3b,Damage:0s},{Slot:11b,id:351s,Count:1b,Damage:3s}],z:217,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:iron_chestplate",Count:1b,slot:0,Damage:0s},{id:"minecraft:stick",Count:2b,slot:1,Damage:0s},{id:"minecraft:iron_helmet",Count:1b,slot:2,Damage:0s},{id:"minecraft:chicken",Count:1b,slot:3,Damage:0s},{id:"minecraft:cooked_fish",Count:4b,slot:4,Damage:0s},{id:"minecraft:cooked_beef",Count:5b,slot:5,Damage:0s},{id:"minecraft:wheat",Count:3b,slot:10,Damage:0s},{id:"minecraft:dye",Count:1b,slot:11,Damage:3s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=79
 data:
-JSON:{buildPass:0,blockName:"minecraft:chest",meta:2,lootLevel:0,teData:{x:-171,y:124,Items:[],z:217,id:"Chest"},inventoryData:{length:27,inventoryContents:[]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},buildPass:0,lootLevel:0,teData:{x:-171,y:124,Items:[],z:217,id:"Chest"},inventoryData:{length:27,inventoryContents:[]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=80
 data:
-JSON:{buildPass:0,blockName:"minecraft:chest",meta:3,lootLevel:0,teData:{x:-162,y:124,Items:[{Slot:0b,id:299s,Count:1b,Damage:0s},{Slot:1b,id:298s,Count:1b,Damage:0s},{Slot:21b,id:351s,Count:2b,Damage:3s},{Slot:23b,id:373s,Count:1b,Damage:0s}],z:218,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_chestplate",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_helmet",Count:1b,slot:1,Damage:0s},{id:"minecraft:dye",Count:2b,slot:21,Damage:3s},{id:"minecraft:potion",Count:1b,tag:{Potion:"minecraft:water"},slot:23,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{x:-162,y:124,Items:[{Slot:0b,id:299s,Count:1b,Damage:0s},{Slot:1b,id:298s,Count:1b,Damage:0s},{Slot:21b,id:351s,Count:2b,Damage:3s},{Slot:23b,id:373s,Count:1b,Damage:0s}],z:218,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_chestplate",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_helmet",Count:1b,slot:1,Damage:0s},{id:"minecraft:dye",Count:2b,slot:21,Damage:3s},{id:"minecraft:potion",Count:1b,tag:{Potion:"minecraft:water"},slot:23,Damage:0s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=81
 data:
-JSON:{buildPass:0,blockName:"minecraft:chest",meta:3,lootLevel:0,teData:{x:-160,y:124,Items:[{Slot:0b,id:300s,Count:1b,Damage:0s},{Slot:1b,id:301s,Count:1b,Damage:0s},{Slot:5b,id:373s,Count:1b,Damage:0s},{Slot:12b,id:280s,Count:1b,Damage:0s},{Slot:13b,id:280s,Count:1b,Damage:0s}],z:218,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_leggings",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_boots",Count:1b,slot:1,Damage:0s},{id:"minecraft:potion",Count:1b,tag:{Potion:"minecraft:water"},slot:5,Damage:0s},{id:"minecraft:stick",Count:1b,slot:12,Damage:0s},{id:"minecraft:stick",Count:1b,slot:13,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{x:-160,y:124,Items:[{Slot:0b,id:300s,Count:1b,Damage:0s},{Slot:1b,id:301s,Count:1b,Damage:0s},{Slot:5b,id:373s,Count:1b,Damage:0s},{Slot:12b,id:280s,Count:1b,Damage:0s},{Slot:13b,id:280s,Count:1b,Damage:0s}],z:218,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_leggings",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_boots",Count:1b,slot:1,Damage:0s},{id:"minecraft:potion",Count:1b,tag:{Potion:"minecraft:water"},slot:5,Damage:0s},{id:"minecraft:stick",Count:1b,slot:12,Damage:0s},{id:"minecraft:stick",Count:1b,slot:13,Damage:0s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=82
 data:
-JSON:{buildPass:0,blockName:"minecraft:chest",meta:5,lootLevel:0,teData:{x:-168,y:124,Items:[{Slot:0b,id:305s,Count:1b,Damage:0s},{Slot:1b,id:303s,Count:1b,Damage:0s},{Slot:2b,id:297s,Count:3b,Damage:0s},{Slot:13b,id:39s,Count:1b,Damage:0s},{Slot:20b,id:106s,Count:2b,Damage:0s},{Slot:24b,id:38s,Count:1b,Damage:4s}],z:219,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:chainmail_boots",Count:1b,slot:0,Damage:0s},{id:"minecraft:chainmail_chestplate",Count:1b,slot:1,Damage:0s},{id:"minecraft:bread",Count:3b,slot:2,Damage:0s},{id:"minecraft:brown_mushroom",Count:1b,slot:13,Damage:0s},{id:"minecraft:vine",Count:2b,slot:20,Damage:0s},{id:"minecraft:red_flower",Count:1b,slot:24,Damage:4s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:0,teData:{x:-168,y:124,Items:[{Slot:0b,id:305s,Count:1b,Damage:0s},{Slot:1b,id:303s,Count:1b,Damage:0s},{Slot:2b,id:297s,Count:3b,Damage:0s},{Slot:13b,id:39s,Count:1b,Damage:0s},{Slot:20b,id:106s,Count:2b,Damage:0s},{Slot:24b,id:38s,Count:1b,Damage:4s}],z:219,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:chainmail_boots",Count:1b,slot:0,Damage:0s},{id:"minecraft:chainmail_chestplate",Count:1b,slot:1,Damage:0s},{id:"minecraft:bread",Count:3b,slot:2,Damage:0s},{id:"minecraft:brown_mushroom",Count:1b,slot:13,Damage:0s},{id:"minecraft:vine",Count:2b,slot:20,Damage:0s},{id:"minecraft:red_flower",Count:1b,slot:24,Damage:4s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=83
 data:
-JSON:{buildPass:0,blockName:"minecraft:chest",meta:3,lootLevel:1,teData:{x:-173,y:124,Items:[{Slot:0b,id:266s,Count:1b,Damage:0s}],z:221,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:1,teData:{x:-173,y:124,Items:[{Slot:0b,id:266s,Count:1b,Damage:0s}],z:221,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=84
 data:
-JSON:{buildPass:0,blockName:"minecraft:chest",meta:3,lootLevel:1,teData:{x:-172,y:124,Items:[{Slot:0b,id:266s,Count:1b,Damage:0s}],z:221,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:1,teData:{x:-172,y:124,Items:[{Slot:0b,id:266s,Count:1b,Damage:0s}],z:221,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=85
 data:
-JSON:{buildPass:0,blockName:"minecraft:chest",meta:4,lootLevel:1,teData:{x:-171,y:124,Items:[{Slot:0b,id:266s,Count:1b,Damage:0s}],z:222,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:1,teData:{x:-171,y:124,Items:[{Slot:0b,id:266s,Count:1b,Damage:0s}],z:222,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=86
 data:
-JSON:{buildPass:0,blockName:"minecraft:chest",meta:4,lootLevel:1,teData:{x:-171,y:124,Items:[{Slot:0b,id:266s,Count:1b,Damage:0s}],z:223,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:1,teData:{x:-171,y:124,Items:[{Slot:0b,id:266s,Count:1b,Damage:0s}],z:223,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=87
 data:
-JSON:{buildPass:0,blockName:"minecraft:chest",meta:3,lootLevel:0,teData:{x:-168,y:124,Items:[{Slot:0b,id:304s,Count:1b,Damage:0s},{Slot:1b,id:303s,Count:1b,Damage:0s},{Slot:2b,id:302s,Count:1b,Damage:0s},{Slot:3b,id:267s,Count:1b,Damage:0s},{Slot:4b,id:262s,Count:3b,Damage:0s},{Slot:12b,id:351s,Count:1b,Damage:3s}],z:223,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:chainmail_leggings",Count:1b,slot:0,Damage:0s},{id:"minecraft:chainmail_chestplate",Count:1b,slot:1,Damage:0s},{id:"minecraft:chainmail_helmet",Count:1b,slot:2,Damage:0s},{id:"minecraft:iron_sword",Count:1b,slot:3,Damage:0s},{id:"minecraft:arrow",Count:3b,slot:4,Damage:0s},{id:"minecraft:dye",Count:1b,slot:12,Damage:3s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{x:-168,y:124,Items:[{Slot:0b,id:304s,Count:1b,Damage:0s},{Slot:1b,id:303s,Count:1b,Damage:0s},{Slot:2b,id:302s,Count:1b,Damage:0s},{Slot:3b,id:267s,Count:1b,Damage:0s},{Slot:4b,id:262s,Count:3b,Damage:0s},{Slot:12b,id:351s,Count:1b,Damage:3s}],z:223,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:chainmail_leggings",Count:1b,slot:0,Damage:0s},{id:"minecraft:chainmail_chestplate",Count:1b,slot:1,Damage:0s},{id:"minecraft:chainmail_helmet",Count:1b,slot:2,Damage:0s},{id:"minecraft:iron_sword",Count:1b,slot:3,Damage:0s},{id:"minecraft:arrow",Count:3b,slot:4,Damage:0s},{id:"minecraft:dye",Count:1b,slot:12,Damage:3s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=88
 data:
-JSON:{buildPass:0,blockName:"minecraft:chest",meta:2,lootLevel:1,teData:{x:-172,y:124,Items:[{Slot:0b,id:266s,Count:1b,Damage:0s}],z:224,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},buildPass:0,lootLevel:1,teData:{x:-172,y:124,Items:[{Slot:0b,id:266s,Count:1b,Damage:0s}],z:224,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -1502,8 +1502,7 @@ entity:
 plugin=AWNpc
 number=0
 data:
-position=11,13,15
-JSON:{xOffset:0.5f,equipmentData:{equipmentContents:[{id:"minecraft:iron_sword",Count:1b,slot:0,Damage:0s}]},rotation:184.11517f,mobID:"ancientwarfarenpc:faction.soldier",zOffset:0.5f,entityData:{Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.325d,Name:"generic.movementSpeed"},{Base:60.0d,Name:"generic.followRange"},{Base:2.0d,Name:"generic.attackDamage"}],Invulnerable:0b,AbsorptionAmount:0.0f,PortalCooldown:0,FallDistance:0.0f,levelingStats:{level:0,xp:0,entryList:[]},DeathTime:0s,DropChances:[1.0f,1.0f,1.0f,1.0f,1.0f],PersistenceRequired:1b,HealF:20.0f,owner:"shadowmage4513",Motion:[0.0d,-0.0784000015258789d,0.0d],armorValueOverride:-1,Leashed:0b,Health:20s,OnGround:1b,Dimension:0,Air:300s,Rotation:[4.115172f,0.0f],CustomName:"",Pos:[-164.5d,117.0d,214.5d],Fire:-1s,attackDamageOverride:-1,customTex:"",CanPickUpLoot:0b,factionName:"kong",HurtTime:0s,AttackTime:0s,CustomNameVisible:0b}}
+JSON:{xOffset:0.5f,equipmentData:{equipmentContents:[{id:"minecraft:iron_sword",Count:1b,slot:0,Damage:0s}]},rotation:184.11517f,mobID:"ancientwarfarenpc:faction.soldier",zOffset:0.5f,position:3024529391631L,entityData:{Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.325d,Name:"generic.movementSpeed"},{Base:60.0d,Name:"generic.followRange"},{Base:2.0d,Name:"generic.attackDamage"}],Invulnerable:0b,AbsorptionAmount:0.0f,PortalCooldown:0,FallDistance:0.0f,levelingStats:{level:0,xp:0,entryList:[]},DeathTime:0s,DropChances:[1.0f,1.0f,1.0f,1.0f,1.0f],PersistenceRequired:1b,HealF:20.0f,owner:"shadowmage4513",Motion:[0.0d,-0.0784000015258789d,0.0d],armorValueOverride:-1,Leashed:0b,Health:20s,OnGround:1b,Dimension:0,Air:300s,Rotation:[4.115172f,0.0f],CustomName:"",Pos:[-164.5d,117.0d,214.5d],Fire:-1s,attackDamageOverride:-1,customTex:"",CanPickUpLoot:0b,factionName:"kong",HurtTime:0s,AttackTime:0s,CustomNameVisible:0b}}
 :enddata
 :endentity
 
@@ -1511,8 +1510,7 @@ entity:
 plugin=AWNpc
 number=1
 data:
-position=15,13,15
-JSON:{xOffset:0.58192474f,equipmentData:{equipmentContents:[{id:"minecraft:iron_sword",Count:1b,slot:0,Damage:0s}]},rotation:185.71799f,mobID:"ancientwarfarenpc:faction.soldier",zOffset:0.41244215f,entityData:{Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.325d,Name:"generic.movementSpeed"},{Base:60.0d,Name:"generic.followRange"},{Base:2.0d,Name:"generic.attackDamage"}],Invulnerable:0b,AbsorptionAmount:0.0f,PortalCooldown:0,FallDistance:0.0f,levelingStats:{level:0,xp:0,entryList:[]},DeathTime:0s,DropChances:[1.0f,1.0f,1.0f,1.0f,1.0f],PersistenceRequired:1b,HealF:20.0f,owner:"shadowmage4513",Motion:[0.0d,-0.0784000015258789d,0.0d],armorValueOverride:-1,Leashed:0b,Health:20s,OnGround:1b,Dimension:0,Air:300s,Rotation:[5.717983f,0.0f],CustomName:"",Pos:[-168.58192473558535d,117.0d,214.5875578687931d],Fire:-1s,attackDamageOverride:-1,customTex:"",CanPickUpLoot:0b,factionName:"kong",HurtTime:0s,AttackTime:0s,CustomNameVisible:0b}}
+JSON:{xOffset:0.58192474f,equipmentData:{equipmentContents:[{id:"minecraft:iron_sword",Count:1b,slot:0,Damage:0s}]},rotation:185.71799f,mobID:"ancientwarfarenpc:faction.soldier",zOffset:0.41244215f,position:4124041019407L,entityData:{Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.325d,Name:"generic.movementSpeed"},{Base:60.0d,Name:"generic.followRange"},{Base:2.0d,Name:"generic.attackDamage"}],Invulnerable:0b,AbsorptionAmount:0.0f,PortalCooldown:0,FallDistance:0.0f,levelingStats:{level:0,xp:0,entryList:[]},DeathTime:0s,DropChances:[1.0f,1.0f,1.0f,1.0f,1.0f],PersistenceRequired:1b,HealF:20.0f,owner:"shadowmage4513",Motion:[0.0d,-0.0784000015258789d,0.0d],armorValueOverride:-1,Leashed:0b,Health:20s,OnGround:1b,Dimension:0,Air:300s,Rotation:[5.717983f,0.0f],CustomName:"",Pos:[-168.58192473558535d,117.0d,214.5875578687931d],Fire:-1s,attackDamageOverride:-1,customTex:"",CanPickUpLoot:0b,factionName:"kong",HurtTime:0s,AttackTime:0s,CustomNameVisible:0b}}
 :enddata
 :endentity
 
@@ -1520,8 +1518,7 @@ entity:
 plugin=AWNpc
 number=2
 data:
-position=15,13,8
-JSON:{xOffset:0.27141052f,equipmentData:{equipmentContents:[{id:"minecraft:iron_sword",Count:1b,slot:0,Damage:0s}]},rotation:183.86162f,mobID:"ancientwarfarenpc:faction.soldier",zOffset:0.3f,entityData:{Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.325d,Name:"generic.movementSpeed"},{Base:60.0d,Name:"generic.followRange"},{Base:2.0d,Name:"generic.attackDamage"}],Invulnerable:0b,AbsorptionAmount:0.0f,PortalCooldown:0,FallDistance:0.0f,levelingStats:{level:0,xp:0,entryList:[]},DeathTime:0s,DropChances:[1.0f,1.0f,1.0f,1.0f,1.0f],PersistenceRequired:1b,HealF:20.0f,owner:"shadowmage4513",Motion:[0.0d,-0.0784000015258789d,0.0d],armorValueOverride:-1,Leashed:0b,Health:20s,OnGround:1b,Dimension:0,Air:300s,Rotation:[3.8616195f,0.0f],CustomName:"",Pos:[-168.27141053494634d,117.0d,221.69999998807907d],Fire:-1s,attackDamageOverride:-1,customTex:"",CanPickUpLoot:0b,factionName:"kong",HurtTime:0s,AttackTime:0s,CustomNameVisible:0b}}
+JSON:{xOffset:0.27141052f,equipmentData:{equipmentContents:[{id:"minecraft:iron_sword",Count:1b,slot:0,Damage:0s}]},rotation:183.86162f,mobID:"ancientwarfarenpc:faction.soldier",zOffset:0.3f,position:4124041019400L,entityData:{Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.325d,Name:"generic.movementSpeed"},{Base:60.0d,Name:"generic.followRange"},{Base:2.0d,Name:"generic.attackDamage"}],Invulnerable:0b,AbsorptionAmount:0.0f,PortalCooldown:0,FallDistance:0.0f,levelingStats:{level:0,xp:0,entryList:[]},DeathTime:0s,DropChances:[1.0f,1.0f,1.0f,1.0f,1.0f],PersistenceRequired:1b,HealF:20.0f,owner:"shadowmage4513",Motion:[0.0d,-0.0784000015258789d,0.0d],armorValueOverride:-1,Leashed:0b,Health:20s,OnGround:1b,Dimension:0,Air:300s,Rotation:[3.8616195f,0.0f],CustomName:"",Pos:[-168.27141053494634d,117.0d,221.69999998807907d],Fire:-1s,attackDamageOverride:-1,customTex:"",CanPickUpLoot:0b,factionName:"kong",HurtTime:0s,AttackTime:0s,CustomNameVisible:0b}}
 :enddata
 :endentity
 
@@ -1529,8 +1526,7 @@ entity:
 plugin=AWNpc
 number=3
 data:
-position=8,13,6
-JSON:{xOffset:0.5f,equipmentData:{equipmentContents:[{id:"minecraft:iron_sword",Count:1b,slot:0,Damage:0s}]},rotation:185.97284f,mobID:"ancientwarfarenpc:faction.soldier",zOffset:0.5f,entityData:{Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.325d,Name:"generic.movementSpeed"},{Base:60.0d,Name:"generic.followRange"},{Base:2.0d,Name:"generic.attackDamage"}],Invulnerable:0b,AbsorptionAmount:0.0f,PortalCooldown:0,FallDistance:0.0f,levelingStats:{level:0,xp:0,entryList:[]},DeathTime:0s,DropChances:[1.0f,1.0f,1.0f,1.0f,1.0f],PersistenceRequired:1b,HealF:20.0f,owner:"shadowmage4513",Motion:[0.0d,-0.0784000015258789d,0.0d],armorValueOverride:-1,Leashed:0b,Health:20s,OnGround:1b,Dimension:0,Air:300s,Rotation:[5.972842f,0.0f],CustomName:"",Pos:[-161.5d,117.0d,223.5d],Fire:-1s,attackDamageOverride:-1,customTex:"",CanPickUpLoot:0b,factionName:"kong",HurtTime:0s,AttackTime:0s,CustomNameVisible:0b}}
+JSON:{xOffset:0.5f,equipmentData:{equipmentContents:[{id:"minecraft:iron_sword",Count:1b,slot:0,Damage:0s}]},rotation:185.97284f,mobID:"ancientwarfarenpc:faction.soldier",zOffset:0.5f,position:2199895670790L,entityData:{Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.325d,Name:"generic.movementSpeed"},{Base:60.0d,Name:"generic.followRange"},{Base:2.0d,Name:"generic.attackDamage"}],Invulnerable:0b,AbsorptionAmount:0.0f,PortalCooldown:0,FallDistance:0.0f,levelingStats:{level:0,xp:0,entryList:[]},DeathTime:0s,DropChances:[1.0f,1.0f,1.0f,1.0f,1.0f],PersistenceRequired:1b,HealF:20.0f,owner:"shadowmage4513",Motion:[0.0d,-0.0784000015258789d,0.0d],armorValueOverride:-1,Leashed:0b,Health:20s,OnGround:1b,Dimension:0,Air:300s,Rotation:[5.972842f,0.0f],CustomName:"",Pos:[-161.5d,117.0d,223.5d],Fire:-1s,attackDamageOverride:-1,customTex:"",CanPickUpLoot:0b,factionName:"kong",HurtTime:0s,AttackTime:0s,CustomNameVisible:0b}}
 :enddata
 :endentity
 
@@ -1538,8 +1534,7 @@ entity:
 plugin=AWNpc
 number=4
 data:
-position=16,17,10
-JSON:{xOffset:0.040388584f,equipmentData:{equipmentContents:[{id:"minecraft:bow",Count:1b,slot:0,Damage:0s}]},rotation:180.01993f,mobID:"ancientwarfarenpc:faction.archer",zOffset:0.28667837f,entityData:{Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.325d,Name:"generic.movementSpeed"},{Base:60.0d,Name:"generic.followRange"},{Base:2.0d,Name:"generic.attackDamage"}],Invulnerable:0b,AbsorptionAmount:0.0f,PortalCooldown:0,FallDistance:0.0f,levelingStats:{level:0,xp:0,entryList:[]},DeathTime:0s,DropChances:[1.0f,1.0f,1.0f,1.0f,1.0f],PersistenceRequired:1b,HealF:20.0f,owner:"shadowmage4513",Motion:[0.0d,-0.0784000015258789d,0.0d],armorValueOverride:-1,Leashed:0b,Health:20s,OnGround:1b,Dimension:0,Air:300s,Rotation:[0.019935248f,0.0f],CustomName:"",Pos:[-169.0403885822807d,121.0d,219.71332161688858d],Fire:-1s,attackDamageOverride:-1,customTex:"",CanPickUpLoot:0b,factionName:"kong",HurtTime:0s,AttackTime:0s,CustomNameVisible:0b}}
+JSON:{xOffset:0.040388584f,equipmentData:{equipmentContents:[{id:"minecraft:bow",Count:1b,slot:0,Damage:0s}]},rotation:180.01993f,mobID:"ancientwarfarenpc:faction.archer",zOffset:0.28667837f,position:4399187361802L,entityData:{Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.325d,Name:"generic.movementSpeed"},{Base:60.0d,Name:"generic.followRange"},{Base:2.0d,Name:"generic.attackDamage"}],Invulnerable:0b,AbsorptionAmount:0.0f,PortalCooldown:0,FallDistance:0.0f,levelingStats:{level:0,xp:0,entryList:[]},DeathTime:0s,DropChances:[1.0f,1.0f,1.0f,1.0f,1.0f],PersistenceRequired:1b,HealF:20.0f,owner:"shadowmage4513",Motion:[0.0d,-0.0784000015258789d,0.0d],armorValueOverride:-1,Leashed:0b,Health:20s,OnGround:1b,Dimension:0,Air:300s,Rotation:[0.019935248f,0.0f],CustomName:"",Pos:[-169.0403885822807d,121.0d,219.71332161688858d],Fire:-1s,attackDamageOverride:-1,customTex:"",CanPickUpLoot:0b,factionName:"kong",HurtTime:0s,AttackTime:0s,CustomNameVisible:0b}}
 :enddata
 :endentity
 
@@ -1547,8 +1542,7 @@ entity:
 plugin=AWNpc
 number=5
 data:
-position=7,20,12
-JSON:{xOffset:0.5f,equipmentData:{equipmentContents:[{id:"minecraft:bow",Count:1b,slot:0,Damage:0s}]},rotation:184.20688f,mobID:"ancientwarfarenpc:faction.archer",zOffset:0.5f,entityData:{Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.325d,Name:"generic.movementSpeed"},{Base:60.0d,Name:"generic.followRange"},{Base:2.0d,Name:"generic.attackDamage"}],Invulnerable:0b,AbsorptionAmount:0.0f,PortalCooldown:0,FallDistance:0.0f,levelingStats:{level:0,xp:0,entryList:[]},DeathTime:0s,DropChances:[1.0f,1.0f,1.0f,1.0f,1.0f],PersistenceRequired:1b,HealF:20.0f,owner:"shadowmage4513",Motion:[0.0d,-0.0784000015258789d,0.0d],armorValueOverride:-1,Leashed:0b,Health:20s,OnGround:1b,Dimension:0,Air:300s,Rotation:[4.206884f,0.0f],CustomName:"",Pos:[-160.5d,124.0d,217.5d],Fire:-1s,attackDamageOverride:-1,customTex:"",CanPickUpLoot:0b,factionName:"kong",HurtTime:0s,AttackTime:0s,CustomNameVisible:0b}}
+JSON:{xOffset:0.5f,equipmentData:{equipmentContents:[{id:"minecraft:bow",Count:1b,slot:0,Damage:0s}]},rotation:184.20688f,mobID:"ancientwarfarenpc:faction.archer",zOffset:0.5f,position:1925487525900L,entityData:{Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.325d,Name:"generic.movementSpeed"},{Base:60.0d,Name:"generic.followRange"},{Base:2.0d,Name:"generic.attackDamage"}],Invulnerable:0b,AbsorptionAmount:0.0f,PortalCooldown:0,FallDistance:0.0f,levelingStats:{level:0,xp:0,entryList:[]},DeathTime:0s,DropChances:[1.0f,1.0f,1.0f,1.0f,1.0f],PersistenceRequired:1b,HealF:20.0f,owner:"shadowmage4513",Motion:[0.0d,-0.0784000015258789d,0.0d],armorValueOverride:-1,Leashed:0b,Health:20s,OnGround:1b,Dimension:0,Air:300s,Rotation:[4.206884f,0.0f],CustomName:"",Pos:[-160.5d,124.0d,217.5d],Fire:-1s,attackDamageOverride:-1,customTex:"",CanPickUpLoot:0b,factionName:"kong",HurtTime:0s,AttackTime:0s,CustomNameVisible:0b}}
 :enddata
 :endentity
 
@@ -1556,8 +1550,7 @@ entity:
 plugin=AWNpc
 number=6
 data:
-position=9,13,10
-JSON:{xOffset:0.10149157f,equipmentData:{equipmentContents:[{id:"minecraft:bow",Count:1b,slot:0,Damage:0s}]},rotation:180.51746f,mobID:"ancientwarfarenpc:faction.archer",zOffset:0.95823956f,entityData:{Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.325d,Name:"generic.movementSpeed"},{Base:60.0d,Name:"generic.followRange"},{Base:2.0d,Name:"generic.attackDamage"}],Invulnerable:0b,AbsorptionAmount:0.0f,PortalCooldown:0,FallDistance:0.0f,levelingStats:{level:0,xp:0,entryList:[]},DeathTime:0s,DropChances:[1.0f,1.0f,1.0f,1.0f,1.0f],PersistenceRequired:1b,HealF:20.0f,owner:"shadowmage4513",Motion:[0.0d,-0.0784000015258789d,0.0d],armorValueOverride:-1,Leashed:0b,Health:20s,OnGround:1b,Dimension:0,Air:300s,Rotation:[0.5174574f,0.0f],CustomName:"",Pos:[-162.10149154865292d,117.0d,219.04176041464535d],Fire:-1s,attackDamageOverride:-1,customTex:"",CanPickUpLoot:0b,factionName:"kong",HurtTime:0s,AttackTime:0s,CustomNameVisible:0b}}
+JSON:{xOffset:0.10149157f,equipmentData:{equipmentContents:[{id:"minecraft:bow",Count:1b,slot:0,Damage:0s}]},rotation:180.51746f,mobID:"ancientwarfarenpc:faction.archer",zOffset:0.95823956f,position:2474773577738L,entityData:{Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.325d,Name:"generic.movementSpeed"},{Base:60.0d,Name:"generic.followRange"},{Base:2.0d,Name:"generic.attackDamage"}],Invulnerable:0b,AbsorptionAmount:0.0f,PortalCooldown:0,FallDistance:0.0f,levelingStats:{level:0,xp:0,entryList:[]},DeathTime:0s,DropChances:[1.0f,1.0f,1.0f,1.0f,1.0f],PersistenceRequired:1b,HealF:20.0f,owner:"shadowmage4513",Motion:[0.0d,-0.0784000015258789d,0.0d],armorValueOverride:-1,Leashed:0b,Health:20s,OnGround:1b,Dimension:0,Air:300s,Rotation:[0.5174574f,0.0f],CustomName:"",Pos:[-162.10149154865292d,117.0d,219.04176041464535d],Fire:-1s,attackDamageOverride:-1,customTex:"",CanPickUpLoot:0b,factionName:"kong",HurtTime:0s,AttackTime:0s,CustomNameVisible:0b}}
 :enddata
 :endentity
 
@@ -1565,8 +1558,7 @@ entity:
 plugin=AWNpc
 number=7
 data:
-position=19,13,9
-JSON:{xOffset:0.6785683f,equipmentData:{equipmentContents:[{id:"minecraft:bow",Count:1b,slot:0,Damage:0s}]},rotation:182.31392f,mobID:"ancientwarfarenpc:faction.archer",zOffset:0.3213377f,entityData:{Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.325d,Name:"generic.movementSpeed"},{Base:60.0d,Name:"generic.followRange"},{Base:2.0d,Name:"generic.attackDamage"}],Invulnerable:0b,AbsorptionAmount:0.0f,PortalCooldown:0,FallDistance:0.0f,levelingStats:{level:0,xp:0,entryList:[]},DeathTime:0s,DropChances:[1.0f,1.0f,1.0f,1.0f,1.0f],PersistenceRequired:1b,HealF:20.0f,owner:"shadowmage4513",Motion:[0.0d,-0.0784000015258789d,0.0d],armorValueOverride:-1,Leashed:0b,Health:20s,OnGround:1b,Dimension:0,Air:300s,Rotation:[2.313913f,0.0f],CustomName:"",Pos:[-172.67856830681913d,117.0d,220.67866229314617d],Fire:-1s,attackDamageOverride:-1,customTex:"",CanPickUpLoot:0b,factionName:"kong",HurtTime:0s,AttackTime:0s,CustomNameVisible:0b}}
+JSON:{xOffset:0.6785683f,equipmentData:{equipmentContents:[{id:"minecraft:bow",Count:1b,slot:0,Damage:0s}]},rotation:182.31392f,mobID:"ancientwarfarenpc:faction.archer",zOffset:0.3213377f,position:5223552647177L,entityData:{Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.325d,Name:"generic.movementSpeed"},{Base:60.0d,Name:"generic.followRange"},{Base:2.0d,Name:"generic.attackDamage"}],Invulnerable:0b,AbsorptionAmount:0.0f,PortalCooldown:0,FallDistance:0.0f,levelingStats:{level:0,xp:0,entryList:[]},DeathTime:0s,DropChances:[1.0f,1.0f,1.0f,1.0f,1.0f],PersistenceRequired:1b,HealF:20.0f,owner:"shadowmage4513",Motion:[0.0d,-0.0784000015258789d,0.0d],armorValueOverride:-1,Leashed:0b,Health:20s,OnGround:1b,Dimension:0,Air:300s,Rotation:[2.313913f,0.0f],CustomName:"",Pos:[-172.67856830681913d,117.0d,220.67866229314617d],Fire:-1s,attackDamageOverride:-1,customTex:"",CanPickUpLoot:0b,factionName:"kong",HurtTime:0s,AttackTime:0s,CustomNameVisible:0b}}
 :enddata
 :endentity
 
@@ -1574,8 +1566,7 @@ entity:
 plugin=AWNpc
 number=8
 data:
-position=19,13,15
-JSON:{xOffset:0.2635628f,equipmentData:{equipmentContents:[{id:"minecraft:bow",Count:1b,slot:0,Damage:0s}]},rotation:225.76738f,mobID:"ancientwarfarenpc:faction.archer",zOffset:0.72980905f,entityData:{Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.325d,Name:"generic.movementSpeed"},{Base:60.0d,Name:"generic.followRange"},{Base:2.0d,Name:"generic.attackDamage"}],Invulnerable:0b,AbsorptionAmount:0.0f,PortalCooldown:0,FallDistance:0.0f,levelingStats:{level:0,xp:0,entryList:[]},DeathTime:0s,DropChances:[1.0f,1.0f,1.0f,1.0f,1.0f],PersistenceRequired:1b,HealF:20.0f,owner:"shadowmage4513",Motion:[0.0d,-0.0784000015258789d,0.0d],armorValueOverride:-1,Leashed:0b,Health:20s,OnGround:1b,Dimension:0,Air:300s,Rotation:[45.76738f,0.0f],CustomName:"",Pos:[-172.2635627709988d,117.0d,214.2701909554635d],Fire:-1s,attackDamageOverride:-1,customTex:"",CanPickUpLoot:0b,factionName:"kong",HurtTime:0s,AttackTime:0s,CustomNameVisible:0b}}
+JSON:{xOffset:0.2635628f,equipmentData:{equipmentContents:[{id:"minecraft:bow",Count:1b,slot:0,Damage:0s}]},rotation:225.76738f,mobID:"ancientwarfarenpc:faction.archer",zOffset:0.72980905f,position:5223552647183L,entityData:{Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.325d,Name:"generic.movementSpeed"},{Base:60.0d,Name:"generic.followRange"},{Base:2.0d,Name:"generic.attackDamage"}],Invulnerable:0b,AbsorptionAmount:0.0f,PortalCooldown:0,FallDistance:0.0f,levelingStats:{level:0,xp:0,entryList:[]},DeathTime:0s,DropChances:[1.0f,1.0f,1.0f,1.0f,1.0f],PersistenceRequired:1b,HealF:20.0f,owner:"shadowmage4513",Motion:[0.0d,-0.0784000015258789d,0.0d],armorValueOverride:-1,Leashed:0b,Health:20s,OnGround:1b,Dimension:0,Air:300s,Rotation:[45.76738f,0.0f],CustomName:"",Pos:[-172.2635627709988d,117.0d,214.2701909554635d],Fire:-1s,attackDamageOverride:-1,customTex:"",CanPickUpLoot:0b,factionName:"kong",HurtTime:0s,AttackTime:0s,CustomNameVisible:0b}}
 :enddata
 :endentity
 
@@ -1583,8 +1574,7 @@ entity:
 plugin=AWNpc
 number=9
 data:
-position=12,13,17
-JSON:{xOffset:0.5f,equipmentData:{equipmentContents:[{id:"minecraft:bow",Count:1b,slot:0,Damage:0s}]},rotation:182.53403f,mobID:"ancientwarfarenpc:faction.archer",zOffset:0.5f,entityData:{Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.325d,Name:"generic.movementSpeed"},{Base:60.0d,Name:"generic.followRange"},{Base:2.0d,Name:"generic.attackDamage"}],Invulnerable:0b,AbsorptionAmount:0.0f,PortalCooldown:0,FallDistance:0.0f,levelingStats:{level:0,xp:0,entryList:[]},DeathTime:0s,DropChances:[1.0f,1.0f,1.0f,1.0f,1.0f],PersistenceRequired:1b,HealF:20.0f,owner:"shadowmage4513",Motion:[0.0d,-0.0784000015258789d,0.0d],armorValueOverride:-1,Leashed:0b,Health:20s,OnGround:1b,Dimension:0,Air:300s,Rotation:[2.5340326f,0.0f],CustomName:"",Pos:[-165.5d,117.0d,212.5d],Fire:-1s,attackDamageOverride:-1,customTex:"",CanPickUpLoot:0b,factionName:"kong",HurtTime:0s,AttackTime:0s,CustomNameVisible:0b}}
+JSON:{xOffset:0.5f,equipmentData:{equipmentContents:[{id:"minecraft:bow",Count:1b,slot:0,Damage:0s}]},rotation:182.53403f,mobID:"ancientwarfarenpc:faction.archer",zOffset:0.5f,position:3299407298577L,entityData:{Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.325d,Name:"generic.movementSpeed"},{Base:60.0d,Name:"generic.followRange"},{Base:2.0d,Name:"generic.attackDamage"}],Invulnerable:0b,AbsorptionAmount:0.0f,PortalCooldown:0,FallDistance:0.0f,levelingStats:{level:0,xp:0,entryList:[]},DeathTime:0s,DropChances:[1.0f,1.0f,1.0f,1.0f,1.0f],PersistenceRequired:1b,HealF:20.0f,owner:"shadowmage4513",Motion:[0.0d,-0.0784000015258789d,0.0d],armorValueOverride:-1,Leashed:0b,Health:20s,OnGround:1b,Dimension:0,Air:300s,Rotation:[2.5340326f,0.0f],CustomName:"",Pos:[-165.5d,117.0d,212.5d],Fire:-1s,attackDamageOverride:-1,customTex:"",CanPickUpLoot:0b,factionName:"kong",HurtTime:0s,AttackTime:0s,CustomNameVisible:0b}}
 :enddata
 :endentity
 
@@ -1592,8 +1582,7 @@ entity:
 plugin=AWNpc
 number=10
 data:
-position=15,13,5
-JSON:{xOffset:0.5f,equipmentData:{equipmentContents:[{id:"minecraft:book",Count:1b,slot:0,Damage:0s}]},rotation:182.53102f,mobID:"ancientwarfarenpc:faction.priest",zOffset:0.5f,entityData:{Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.325d,Name:"generic.movementSpeed"},{Base:60.0d,Name:"generic.followRange"},{Base:2.0d,Name:"generic.attackDamage"}],Invulnerable:0b,AbsorptionAmount:0.0f,PortalCooldown:0,FallDistance:0.0f,levelingStats:{level:0,xp:0,entryList:[]},DeathTime:0s,DropChances:[1.0f,1.0f,1.0f,1.0f,1.0f],PersistenceRequired:1b,HealF:20.0f,owner:"shadowmage4513",Motion:[0.0d,-0.0784000015258789d,0.0d],armorValueOverride:-1,Leashed:0b,Health:20s,OnGround:1b,Dimension:0,Air:300s,Rotation:[2.5310278f,0.0f],CustomName:"",Pos:[-168.5d,117.0d,224.5d],Fire:-1s,attackDamageOverride:-1,customTex:"",CanPickUpLoot:0b,factionName:"kong",HurtTime:0s,AttackTime:0s,CustomNameVisible:0b}}
+JSON:{xOffset:0.5f,equipmentData:{equipmentContents:[{id:"minecraft:book",Count:1b,slot:0,Damage:0s}]},rotation:182.53102f,mobID:"ancientwarfarenpc:faction.priest",zOffset:0.5f,position:4124041019397L,entityData:{Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.325d,Name:"generic.movementSpeed"},{Base:60.0d,Name:"generic.followRange"},{Base:2.0d,Name:"generic.attackDamage"}],Invulnerable:0b,AbsorptionAmount:0.0f,PortalCooldown:0,FallDistance:0.0f,levelingStats:{level:0,xp:0,entryList:[]},DeathTime:0s,DropChances:[1.0f,1.0f,1.0f,1.0f,1.0f],PersistenceRequired:1b,HealF:20.0f,owner:"shadowmage4513",Motion:[0.0d,-0.0784000015258789d,0.0d],armorValueOverride:-1,Leashed:0b,Health:20s,OnGround:1b,Dimension:0,Air:300s,Rotation:[2.5310278f,0.0f],CustomName:"",Pos:[-168.5d,117.0d,224.5d],Fire:-1s,attackDamageOverride:-1,customTex:"",CanPickUpLoot:0b,factionName:"kong",HurtTime:0s,AttackTime:0s,CustomNameVisible:0b}}
 :enddata
 :endentity
 
@@ -1601,8 +1590,7 @@ entity:
 plugin=AWNpc
 number=11
 data:
-position=9,13,5
-JSON:{xOffset:0.5f,equipmentData:{equipmentContents:[{id:"minecraft:bow",Count:1b,slot:0,Damage:0s}]},rotation:180.49515f,mobID:"ancientwarfarenpc:faction.archer",zOffset:0.5f,entityData:{Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.325d,Name:"generic.movementSpeed"},{Base:60.0d,Name:"generic.followRange"},{Base:2.0d,Name:"generic.attackDamage"}],Invulnerable:0b,AbsorptionAmount:0.0f,PortalCooldown:0,FallDistance:0.0f,levelingStats:{level:0,xp:0,entryList:[]},DeathTime:0s,DropChances:[1.0f,1.0f,1.0f,1.0f,1.0f],PersistenceRequired:1b,HealF:20.0f,owner:"shadowmage4513",Motion:[0.0d,-0.0784000015258789d,0.0d],armorValueOverride:-1,Leashed:0b,Health:20s,OnGround:1b,Dimension:0,Air:300s,Rotation:[0.49514148f,0.0f],CustomName:"",Pos:[-162.5d,117.0d,224.5d],Fire:-1s,attackDamageOverride:-1,customTex:"",CanPickUpLoot:0b,factionName:"kong",HurtTime:0s,AttackTime:0s,CustomNameVisible:0b}}
+JSON:{xOffset:0.5f,equipmentData:{equipmentContents:[{id:"minecraft:bow",Count:1b,slot:0,Damage:0s}]},rotation:180.49515f,mobID:"ancientwarfarenpc:faction.archer",zOffset:0.5f,position:2474773577733L,entityData:{Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.325d,Name:"generic.movementSpeed"},{Base:60.0d,Name:"generic.followRange"},{Base:2.0d,Name:"generic.attackDamage"}],Invulnerable:0b,AbsorptionAmount:0.0f,PortalCooldown:0,FallDistance:0.0f,levelingStats:{level:0,xp:0,entryList:[]},DeathTime:0s,DropChances:[1.0f,1.0f,1.0f,1.0f,1.0f],PersistenceRequired:1b,HealF:20.0f,owner:"shadowmage4513",Motion:[0.0d,-0.0784000015258789d,0.0d],armorValueOverride:-1,Leashed:0b,Health:20s,OnGround:1b,Dimension:0,Air:300s,Rotation:[0.49514148f,0.0f],CustomName:"",Pos:[-162.5d,117.0d,224.5d],Fire:-1s,attackDamageOverride:-1,customTex:"",CanPickUpLoot:0b,factionName:"kong",HurtTime:0s,AttackTime:0s,CustomNameVisible:0b}}
 :enddata
 :endentity
 
@@ -1610,8 +1598,7 @@ entity:
 plugin=AWNpc
 number=12
 data:
-position=5,17,9
-JSON:{xOffset:0.5f,equipmentData:{equipmentContents:[{id:"minecraft:bow",Count:1b,slot:0,Damage:0s}]},rotation:183.4039f,mobID:"ancientwarfarenpc:faction.archer",zOffset:0.5f,entityData:{Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.325d,Name:"generic.movementSpeed"},{Base:60.0d,Name:"generic.followRange"},{Base:2.0d,Name:"generic.attackDamage"}],Invulnerable:0b,AbsorptionAmount:0.0f,PortalCooldown:0,FallDistance:0.0f,levelingStats:{level:0,xp:0,entryList:[]},DeathTime:0s,DropChances:[1.0f,1.0f,1.0f,1.0f,1.0f],PersistenceRequired:1b,HealF:20.0f,owner:"shadowmage4513",Motion:[0.0d,-0.0784000015258789d,0.0d],armorValueOverride:-1,Leashed:0b,Health:20s,OnGround:1b,Dimension:0,Air:300s,Rotation:[3.4038937f,0.0f],CustomName:"",Pos:[-158.5d,121.0d,220.5d],Fire:-1s,attackDamageOverride:-1,customTex:"",CanPickUpLoot:0b,factionName:"kong",HurtTime:0s,AttackTime:0s,CustomNameVisible:0b}}
+JSON:{xOffset:0.5f,equipmentData:{equipmentContents:[{id:"minecraft:bow",Count:1b,slot:0,Damage:0s}]},rotation:183.4039f,mobID:"ancientwarfarenpc:faction.archer",zOffset:0.5f,position:1375530385417L,entityData:{Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.325d,Name:"generic.movementSpeed"},{Base:60.0d,Name:"generic.followRange"},{Base:2.0d,Name:"generic.attackDamage"}],Invulnerable:0b,AbsorptionAmount:0.0f,PortalCooldown:0,FallDistance:0.0f,levelingStats:{level:0,xp:0,entryList:[]},DeathTime:0s,DropChances:[1.0f,1.0f,1.0f,1.0f,1.0f],PersistenceRequired:1b,HealF:20.0f,owner:"shadowmage4513",Motion:[0.0d,-0.0784000015258789d,0.0d],armorValueOverride:-1,Leashed:0b,Health:20s,OnGround:1b,Dimension:0,Air:300s,Rotation:[3.4038937f,0.0f],CustomName:"",Pos:[-158.5d,121.0d,220.5d],Fire:-1s,attackDamageOverride:-1,customTex:"",CanPickUpLoot:0b,factionName:"kong",HurtTime:0s,AttackTime:0s,CustomNameVisible:0b}}
 :enddata
 :endentity
 
@@ -1619,8 +1606,7 @@ entity:
 plugin=AWNpc
 number=13
 data:
-position=6,17,13
-JSON:{xOffset:0.5f,equipmentData:{equipmentContents:[{id:"minecraft:bow",Count:1b,slot:0,Damage:0s}]},rotation:186.20679f,mobID:"ancientwarfarenpc:faction.archer",zOffset:0.5f,entityData:{Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.325d,Name:"generic.movementSpeed"},{Base:60.0d,Name:"generic.followRange"},{Base:2.0d,Name:"generic.attackDamage"}],Invulnerable:0b,AbsorptionAmount:0.0f,PortalCooldown:0,FallDistance:0.0f,levelingStats:{level:0,xp:0,entryList:[]},DeathTime:0s,DropChances:[1.0f,1.0f,1.0f,1.0f,1.0f],PersistenceRequired:1b,HealF:20.0f,owner:"shadowmage4513",Motion:[0.0d,-0.0784000015258789d,0.0d],armorValueOverride:-1,Leashed:0b,Health:20s,OnGround:1b,Dimension:0,Air:300s,Rotation:[6.2067857f,0.0f],CustomName:"",Pos:[-159.5d,121.0d,216.5d],Fire:-1s,attackDamageOverride:-1,customTex:"",CanPickUpLoot:0b,factionName:"kong",HurtTime:0s,AttackTime:0s,CustomNameVisible:0b}}
+JSON:{xOffset:0.5f,equipmentData:{equipmentContents:[{id:"minecraft:bow",Count:1b,slot:0,Damage:0s}]},rotation:186.20679f,mobID:"ancientwarfarenpc:faction.archer",zOffset:0.5f,position:1650408292365L,entityData:{Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.325d,Name:"generic.movementSpeed"},{Base:60.0d,Name:"generic.followRange"},{Base:2.0d,Name:"generic.attackDamage"}],Invulnerable:0b,AbsorptionAmount:0.0f,PortalCooldown:0,FallDistance:0.0f,levelingStats:{level:0,xp:0,entryList:[]},DeathTime:0s,DropChances:[1.0f,1.0f,1.0f,1.0f,1.0f],PersistenceRequired:1b,HealF:20.0f,owner:"shadowmage4513",Motion:[0.0d,-0.0784000015258789d,0.0d],armorValueOverride:-1,Leashed:0b,Health:20s,OnGround:1b,Dimension:0,Air:300s,Rotation:[6.2067857f,0.0f],CustomName:"",Pos:[-159.5d,121.0d,216.5d],Fire:-1s,attackDamageOverride:-1,customTex:"",CanPickUpLoot:0b,factionName:"kong",HurtTime:0s,AttackTime:0s,CustomNameVisible:0b}}
 :enddata
 :endentity
 

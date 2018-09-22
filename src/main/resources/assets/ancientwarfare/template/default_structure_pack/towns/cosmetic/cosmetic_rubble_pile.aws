@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 8/28/2018 at: 17:29:59
+# Auto-generated structure template file. created on: 9/22/2018 at: 16:7:2
 # Lines beginning with # denote comments
 
 header:
-version=2.3
+version=2.6
 name=cosmetic_rubble_pile
 size=6,3,5
 offset=3,0,4
@@ -59,7 +59,7 @@ rule:
 plugin=vanillaBlocks
 number=1
 data:
-JSON:{buildPass:0,blockName:"minecraft:cobblestone",meta:0}
+JSON:{blockState:{blockName:"minecraft:cobblestone",properties:{}},buildPass:0}
 :enddata
 :endrule
 

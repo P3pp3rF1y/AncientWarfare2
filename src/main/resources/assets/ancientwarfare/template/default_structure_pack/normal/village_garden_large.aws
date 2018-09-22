@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 8/28/2018 at: 17:29:59
+# Auto-generated structure template file. created on: 9/22/2018 at: 16:7:2
 # Lines beginning with # denote comments
 
 header:
-version=2.3
+version=2.6
 name=village_garden_large
 size=13,2,9
 offset=6,0,8
@@ -60,7 +60,7 @@ rule:
 plugin=vanillaBlocks
 number=1
 data:
-JSON:{buildPass:0,blockName:"minecraft:log",meta:0}
+JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"oak",axis:"y"}},buildPass:0}
 :enddata
 :endrule
 
@@ -68,7 +68,7 @@ rule:
 plugin=vanillaBlocks
 number=2
 data:
-JSON:{buildPass:0,blockName:"minecraft:farmland",meta:0}
+JSON:{blockState:{blockName:"minecraft:farmland",properties:{moisture:"0"}},buildPass:0}
 :enddata
 :endrule
 
@@ -76,7 +76,7 @@ rule:
 plugin=vanillaBlocks
 number=3
 data:
-JSON:{buildPass:0,blockName:"minecraft:water",meta:0}
+JSON:{blockState:{blockName:"minecraft:water",properties:{level:"0"}},buildPass:0}
 :enddata
 :endrule
 
@@ -84,7 +84,7 @@ rule:
 plugin=vanillaBlocks
 number=4
 data:
-JSON:{buildPass:0,blockName:"minecraft:farmland",meta:0}
+JSON:{blockState:{blockName:"minecraft:farmland",properties:{moisture:"0"}},buildPass:0}
 :enddata
 :endrule
 
@@ -92,7 +92,7 @@ rule:
 plugin=vanillaBlocks
 number=5
 data:
-JSON:{buildPass:2,blockName:"minecraft:carrots",meta:7}
+JSON:{blockState:{blockName:"minecraft:carrots",properties:{age:"7"}},buildPass:2}
 :enddata
 :endrule
 
@@ -100,7 +100,7 @@ rule:
 plugin=vanillaBlocks
 number=6
 data:
-JSON:{buildPass:2,blockName:"minecraft:carrots",meta:2}
+JSON:{blockState:{blockName:"minecraft:carrots",properties:{age:"2"}},buildPass:2}
 :enddata
 :endrule
 
@@ -108,7 +108,7 @@ rule:
 plugin=vanillaBlocks
 number=7
 data:
-JSON:{buildPass:2,blockName:"minecraft:carrots",meta:3}
+JSON:{blockState:{blockName:"minecraft:carrots",properties:{age:"3"}},buildPass:2}
 :enddata
 :endrule
 
@@ -116,7 +116,7 @@ rule:
 plugin=vanillaBlocks
 number=8
 data:
-JSON:{buildPass:2,blockName:"minecraft:carrots",meta:4}
+JSON:{blockState:{blockName:"minecraft:carrots",properties:{age:"4"}},buildPass:2}
 :enddata
 :endrule
 
@@ -124,7 +124,7 @@ rule:
 plugin=vanillaBlocks
 number=9
 data:
-JSON:{buildPass:2,blockName:"minecraft:carrots",meta:5}
+JSON:{blockState:{blockName:"minecraft:carrots",properties:{age:"5"}},buildPass:2}
 :enddata
 :endrule
 
@@ -132,7 +132,7 @@ rule:
 plugin=vanillaBlocks
 number=10
 data:
-JSON:{buildPass:2,blockName:"minecraft:carrots",meta:6}
+JSON:{blockState:{blockName:"minecraft:carrots",properties:{age:"6"}},buildPass:2}
 :enddata
 :endrule
 
@@ -140,7 +140,7 @@ rule:
 plugin=vanillaBlocks
 number=11
 data:
-JSON:{buildPass:2,blockName:"minecraft:potatoes",meta:5}
+JSON:{blockState:{blockName:"minecraft:potatoes",properties:{age:"5"}},buildPass:2}
 :enddata
 :endrule
 
@@ -148,7 +148,7 @@ rule:
 plugin=vanillaBlocks
 number=12
 data:
-JSON:{buildPass:2,blockName:"minecraft:potatoes",meta:4}
+JSON:{blockState:{blockName:"minecraft:potatoes",properties:{age:"4"}},buildPass:2}
 :enddata
 :endrule
 
@@ -156,7 +156,7 @@ rule:
 plugin=vanillaBlocks
 number=13
 data:
-JSON:{buildPass:2,blockName:"minecraft:potatoes",meta:6}
+JSON:{blockState:{blockName:"minecraft:potatoes",properties:{age:"6"}},buildPass:2}
 :enddata
 :endrule
 
@@ -164,7 +164,7 @@ rule:
 plugin=vanillaBlocks
 number=14
 data:
-JSON:{buildPass:2,blockName:"minecraft:potatoes",meta:2}
+JSON:{blockState:{blockName:"minecraft:potatoes",properties:{age:"2"}},buildPass:2}
 :enddata
 :endrule
 
@@ -172,7 +172,7 @@ rule:
 plugin=vanillaBlocks
 number=15
 data:
-JSON:{buildPass:2,blockName:"minecraft:potatoes",meta:7}
+JSON:{blockState:{blockName:"minecraft:potatoes",properties:{age:"7"}},buildPass:2}
 :enddata
 :endrule
 
@@ -180,7 +180,7 @@ rule:
 plugin=vanillaBlocks
 number=16
 data:
-JSON:{buildPass:2,blockName:"minecraft:potatoes",meta:3}
+JSON:{blockState:{blockName:"minecraft:potatoes",properties:{age:"3"}},buildPass:2}
 :enddata
 :endrule
 
@@ -188,7 +188,7 @@ rule:
 plugin=vanillaBlocks
 number=17
 data:
-JSON:{buildPass:2,blockName:"minecraft:wheat",meta:2}
+JSON:{blockState:{blockName:"minecraft:wheat",properties:{age:"2"}},buildPass:2}
 :enddata
 :endrule
 
@@ -196,7 +196,7 @@ rule:
 plugin=vanillaBlocks
 number=18
 data:
-JSON:{buildPass:2,blockName:"minecraft:wheat",meta:7}
+JSON:{blockState:{blockName:"minecraft:wheat",properties:{age:"7"}},buildPass:2}
 :enddata
 :endrule
 
@@ -204,7 +204,7 @@ rule:
 plugin=vanillaBlocks
 number=19
 data:
-JSON:{buildPass:2,blockName:"minecraft:wheat",meta:6}
+JSON:{blockState:{blockName:"minecraft:wheat",properties:{age:"6"}},buildPass:2}
 :enddata
 :endrule
 
@@ -212,7 +212,7 @@ rule:
 plugin=vanillaBlocks
 number=20
 data:
-JSON:{buildPass:2,blockName:"minecraft:wheat",meta:3}
+JSON:{blockState:{blockName:"minecraft:wheat",properties:{age:"3"}},buildPass:2}
 :enddata
 :endrule
 
@@ -220,7 +220,7 @@ rule:
 plugin=vanillaBlocks
 number=21
 data:
-JSON:{buildPass:2,blockName:"minecraft:wheat",meta:4}
+JSON:{blockState:{blockName:"minecraft:wheat",properties:{age:"4"}},buildPass:2}
 :enddata
 :endrule
 
@@ -228,7 +228,7 @@ rule:
 plugin=vanillaBlocks
 number=22
 data:
-JSON:{buildPass:2,blockName:"minecraft:wheat",meta:5}
+JSON:{blockState:{blockName:"minecraft:wheat",properties:{age:"5"}},buildPass:2}
 :enddata
 :endrule
 

@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 8/28/2018 at: 17:29:59
+# Auto-generated structure template file. created on: 9/22/2018 at: 16:7:2
 # Lines beginning with # denote comments
 
 header:
-version=2.3
+version=2.6
 name=cosmetic_log_pile
 size=5,3,8
 offset=2,1,7
@@ -68,7 +68,7 @@ rule:
 plugin=vanillaBlocks
 number=1
 data:
-JSON:{buildPass:0,blockName:"minecraft:grass",meta:0}
+JSON:{blockState:{blockName:"minecraft:grass",properties:{snowy:"false"}},buildPass:0}
 :enddata
 :endrule
 
@@ -76,7 +76,7 @@ rule:
 plugin=vanillaBlocks
 number=2
 data:
-JSON:{buildPass:0,blockName:"minecraft:dirt",meta:0}
+JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"dirt",snowy:"false"}},buildPass:0}
 :enddata
 :endrule
 
@@ -84,7 +84,7 @@ rule:
 plugin=vanillaBlocks
 number=3
 data:
-JSON:{buildPass:0,blockName:"minecraft:log",meta:9}
+JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"spruce",axis:"z"}},buildPass:0}
 :enddata
 :endrule
 
@@ -92,7 +92,7 @@ rule:
 plugin=vanillaBlocks
 number=4
 data:
-JSON:{buildPass:0,blockName:"minecraft:log",meta:8}
+JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"oak",axis:"z"}},buildPass:0}
 :enddata
 :endrule
 
@@ -100,7 +100,7 @@ rule:
 plugin=vanillaBlocks
 number=5
 data:
-JSON:{buildPass:0,blockName:"minecraft:log",meta:11}
+JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"jungle",axis:"z"}},buildPass:0}
 :enddata
 :endrule
 
@@ -108,7 +108,7 @@ rule:
 plugin=vanillaBlocks
 number=6
 data:
-JSON:{buildPass:0,blockName:"minecraft:log",meta:10}
+JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"birch",axis:"z"}},buildPass:0}
 :enddata
 :endrule
 

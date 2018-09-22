@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 8/28/2018 at: 17:29:59
+# Auto-generated structure template file. created on: 9/22/2018 at: 16:7:2
 # Lines beginning with # denote comments
 
 header:
-version=2.3
+version=2.6
 name=village_house_garden
 size=9,7,12
 offset=6,0,11
@@ -136,7 +136,7 @@ rule:
 plugin=vanillaBlocks
 number=1
 data:
-JSON:{buildPass:0,blockName:"minecraft:stone_stairs",meta:3}
+JSON:{blockState:{blockName:"minecraft:stone_stairs",properties:{half:"bottom",shape:"straight",facing:"north"}},buildPass:0}
 :enddata
 :endrule
 
@@ -144,7 +144,7 @@ rule:
 plugin=vanillaBlocks
 number=2
 data:
-JSON:{buildPass:0,blockName:"minecraft:cobblestone",meta:0}
+JSON:{blockState:{blockName:"minecraft:cobblestone",properties:{}},buildPass:0}
 :enddata
 :endrule
 
@@ -152,7 +152,7 @@ rule:
 plugin=vanillaBlocks
 number=3
 data:
-JSON:{buildPass:0,blockName:"minecraft:planks",meta:0}
+JSON:{blockState:{blockName:"minecraft:planks",properties:{variant:"oak"}},buildPass:0}
 :enddata
 :endrule
 
@@ -160,7 +160,7 @@ rule:
 plugin=vanillaBlocks
 number=4
 data:
-JSON:{buildPass:0,blockName:"minecraft:double_stone_slab",meta:0}
+JSON:{blockState:{blockName:"minecraft:double_stone_slab",properties:{seamless:"false",variant:"stone"}},buildPass:0}
 :enddata
 :endrule
 
@@ -168,7 +168,7 @@ rule:
 plugin=vanillaBlocks
 number=5
 data:
-JSON:{buildPass:0,blockName:"minecraft:grass",meta:0}
+JSON:{blockState:{blockName:"minecraft:grass",properties:{snowy:"false"}},buildPass:0}
 :enddata
 :endrule
 
@@ -176,15 +176,15 @@ rule:
 plugin=vanillaBlocks
 number=6
 data:
-JSON:{buildPass:0,blockName:"minecraft:dirt",meta:0}
+JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"dirt",snowy:"false"}},buildPass:0}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaDoors
+plugin=doors
 number=7
 data:
-JSON:{buildPass:2,blockName:"minecraft:wooden_door",meta:3,sideFlag:0b}
+JSON:{blockState:{blockName:"minecraft:wooden_door",properties:{hinge:"left",half:"lower",powered:"false",facing:"north",open:"false"}},buildPass:2}
 :enddata
 :endrule
 
@@ -192,7 +192,7 @@ rule:
 plugin=vanillaBlocks
 number=8
 data:
-JSON:{buildPass:0,blockName:"minecraft:oak_stairs",meta:0}
+JSON:{blockState:{blockName:"minecraft:oak_stairs",properties:{half:"bottom",shape:"straight",facing:"east"}},buildPass:0}
 :enddata
 :endrule
 
@@ -200,7 +200,7 @@ rule:
 plugin=vanillaBlocks
 number=9
 data:
-JSON:{buildPass:0,blockName:"minecraft:fence",meta:0}
+JSON:{blockState:{blockName:"minecraft:fence",properties:{east:"false",south:"false",north:"false",west:"false"}},buildPass:0}
 :enddata
 :endrule
 
@@ -208,23 +208,23 @@ rule:
 plugin=vanillaBlocks
 number=10
 data:
-JSON:{buildPass:0,blockName:"minecraft:oak_stairs",meta:3}
+JSON:{blockState:{blockName:"minecraft:oak_stairs",properties:{half:"bottom",shape:"straight",facing:"north"}},buildPass:0}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaDoors
+plugin=doors
 number=11
 data:
-JSON:{buildPass:2,blockName:"minecraft:wooden_door",meta:3,sideFlag:0b}
+JSON:{blockState:{blockName:"minecraft:wooden_door",properties:{hinge:"left",half:"lower",powered:"false",facing:"north",open:"false"}},buildPass:2}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaDoors
+plugin=doors
 number=12
 data:
-JSON:{buildPass:2,blockName:"minecraft:wooden_door",meta:8,sideFlag:0b}
+JSON:{blockState:{blockName:"minecraft:wooden_door",properties:{hinge:"left",half:"upper",powered:"false",facing:"north",open:"false"}},buildPass:2}
 :enddata
 :endrule
 
@@ -232,7 +232,7 @@ rule:
 plugin=vanillaBlocks
 number=13
 data:
-JSON:{buildPass:0,blockName:"minecraft:glass_pane",meta:0}
+JSON:{blockState:{blockName:"minecraft:glass_pane",properties:{east:"false",south:"false",north:"false",west:"false"}},buildPass:0}
 :enddata
 :endrule
 
@@ -240,7 +240,7 @@ rule:
 plugin=vanillaBlocks
 number=14
 data:
-JSON:{buildPass:0,blockName:"minecraft:log",meta:0}
+JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"oak",axis:"y"}},buildPass:0}
 :enddata
 :endrule
 
@@ -248,15 +248,15 @@ rule:
 plugin=vanillaBlocks
 number=15
 data:
-JSON:{buildPass:2,blockName:"minecraft:wooden_pressure_plate",meta:0}
+JSON:{blockState:{blockName:"minecraft:wooden_pressure_plate",properties:{powered:"false"}},buildPass:2}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaDoors
+plugin=doors
 number=16
 data:
-JSON:{buildPass:2,blockName:"minecraft:wooden_door",meta:8,sideFlag:0b}
+JSON:{blockState:{blockName:"minecraft:wooden_door",properties:{hinge:"left",half:"upper",powered:"false",facing:"north",open:"false"}},buildPass:2}
 :enddata
 :endrule
 
@@ -264,7 +264,7 @@ rule:
 plugin=vanillaBlocks
 number=17
 data:
-JSON:{buildPass:2,blockName:"minecraft:torch",meta:4}
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"north"}},buildPass:2}
 :enddata
 :endrule
 
@@ -272,7 +272,7 @@ rule:
 plugin=vanillaBlocks
 number=18
 data:
-JSON:{buildPass:2,blockName:"minecraft:torch",meta:3}
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"south"}},buildPass:2}
 :enddata
 :endrule
 
@@ -280,7 +280,7 @@ rule:
 plugin=vanillaBlocks
 number=19
 data:
-JSON:{buildPass:0,blockName:"minecraft:oak_stairs",meta:2}
+JSON:{blockState:{blockName:"minecraft:oak_stairs",properties:{half:"bottom",shape:"straight",facing:"south"}},buildPass:0}
 :enddata
 :endrule
 

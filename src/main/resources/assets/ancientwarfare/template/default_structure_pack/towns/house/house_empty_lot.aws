@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 8/28/2018 at: 17:29:59
+# Auto-generated structure template file. created on: 9/22/2018 at: 16:7:2
 # Lines beginning with # denote comments
 
 header:
-version=2.3
+version=2.6
 name=house_empty_lot
 size=12,3,12
 offset=5,1,11
@@ -80,7 +80,7 @@ rule:
 plugin=vanillaBlocks
 number=1
 data:
-JSON:{buildPass:0,blockName:"minecraft:grass",meta:0}
+JSON:{blockState:{blockName:"minecraft:grass",properties:{snowy:"false"}},buildPass:0}
 :enddata
 :endrule
 
@@ -88,7 +88,7 @@ rule:
 plugin=vanillaBlocks
 number=2
 data:
-JSON:{buildPass:0,blockName:"minecraft:fence",meta:0}
+JSON:{blockState:{blockName:"minecraft:fence",properties:{east:"false",south:"false",north:"false",west:"false"}},buildPass:0}
 :enddata
 :endrule
 
@@ -96,7 +96,7 @@ rule:
 plugin=vanillaBlocks
 number=3
 data:
-JSON:{buildPass:2,blockName:"minecraft:yellow_flower",meta:0}
+JSON:{blockState:{blockName:"minecraft:yellow_flower",properties:{type:"dandelion"}},buildPass:2}
 :enddata
 :endrule
 
@@ -104,7 +104,7 @@ rule:
 plugin=vanillaBlocks
 number=4
 data:
-JSON:{buildPass:2,blockName:"minecraft:double_plant",meta:3}
+JSON:{blockState:{blockName:"minecraft:double_plant",properties:{half:"lower",variant:"double_fern",facing:"north"}},buildPass:2}
 :enddata
 :endrule
 
@@ -112,7 +112,7 @@ rule:
 plugin=vanillaBlocks
 number=5
 data:
-JSON:{buildPass:2,blockName:"minecraft:tallgrass",meta:1}
+JSON:{blockState:{blockName:"minecraft:tallgrass",properties:{type:"tall_grass"}},buildPass:2}
 :enddata
 :endrule
 
@@ -120,7 +120,7 @@ rule:
 plugin=vanillaBlocks
 number=6
 data:
-JSON:{buildPass:2,blockName:"minecraft:red_flower",meta:5}
+JSON:{blockState:{blockName:"minecraft:red_flower",properties:{type:"orange_tulip"}},buildPass:2}
 :enddata
 :endrule
 
@@ -128,7 +128,7 @@ rule:
 plugin=vanillaBlocks
 number=7
 data:
-JSON:{buildPass:0,blockName:"minecraft:leaves",meta:7}
+JSON:{blockState:{blockName:"minecraft:leaves",properties:{check_decay:"false",decayable:"false",variant:"jungle"}},buildPass:0}
 :enddata
 :endrule
 
@@ -136,7 +136,7 @@ rule:
 plugin=vanillaBlocks
 number=8
 data:
-JSON:{buildPass:2,blockName:"minecraft:red_flower",meta:0}
+JSON:{blockState:{blockName:"minecraft:red_flower",properties:{type:"poppy"}},buildPass:2}
 :enddata
 :endrule
 
@@ -144,7 +144,7 @@ rule:
 plugin=vanillaBlocks
 number=9
 data:
-JSON:{buildPass:2,blockName:"minecraft:double_plant",meta:5}
+JSON:{blockState:{blockName:"minecraft:double_plant",properties:{half:"lower",variant:"paeonia",facing:"north"}},buildPass:2}
 :enddata
 :endrule
 
@@ -152,7 +152,7 @@ rule:
 plugin=vanillaBlocks
 number=10
 data:
-JSON:{buildPass:0,blockName:"minecraft:leaves",meta:4}
+JSON:{blockState:{blockName:"minecraft:leaves",properties:{check_decay:"false",decayable:"false",variant:"oak"}},buildPass:0}
 :enddata
 :endrule
 
@@ -160,7 +160,7 @@ rule:
 plugin=vanillaBlocks
 number=11
 data:
-JSON:{buildPass:0,blockName:"minecraft:leaves",meta:15}
+JSON:{blockState:{blockName:"minecraft:leaves",properties:{check_decay:"true",decayable:"false",variant:"jungle"}},buildPass:0}
 :enddata
 :endrule
 
@@ -168,7 +168,7 @@ rule:
 plugin=vanillaBlocks
 number=12
 data:
-JSON:{buildPass:2,blockName:"minecraft:double_plant",meta:2}
+JSON:{blockState:{blockName:"minecraft:double_plant",properties:{half:"lower",variant:"double_grass",facing:"north"}},buildPass:2}
 :enddata
 :endrule
 
@@ -176,7 +176,7 @@ rule:
 plugin=vanillaBlocks
 number=13
 data:
-JSON:{buildPass:2,blockName:"minecraft:double_plant",meta:4}
+JSON:{blockState:{blockName:"minecraft:double_plant",properties:{half:"lower",variant:"double_rose",facing:"north"}},buildPass:2}
 :enddata
 :endrule
 
@@ -184,7 +184,7 @@ rule:
 plugin=vanillaBlocks
 number=14
 data:
-JSON:{buildPass:2,blockName:"minecraft:torch",meta:5}
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"up"}},buildPass:2}
 :enddata
 :endrule
 
@@ -192,7 +192,7 @@ rule:
 plugin=vanillaSign
 number=15
 data:
-JSON:{signContents0:"For§r",signContents2:"",buildPass:2,signContents1:"Sale§r",blockName:"minecraft:standing_sign",signContents3:"",meta:0}
+JSON:{signContents0:"For§r�r",blockState:{blockName:"minecraft:standing_sign",properties:{rotation:"0"}},signContents2:"",buildPass:2,signContents1:"Sale§r�r",signContents3:""}
 :enddata
 :endrule
 
@@ -200,7 +200,7 @@ rule:
 plugin=vanillaSign
 number=16
 data:
-JSON:{signContents0:"See§r",signContents2:"",buildPass:2,signContents1:"Mayor§r",blockName:"minecraft:standing_sign",signContents3:"",meta:0}
+JSON:{signContents0:"See§r�r",blockState:{blockName:"minecraft:standing_sign",properties:{rotation:"0"}},signContents2:"",buildPass:2,signContents1:"Mayor§r�r",signContents3:""}
 :enddata
 :endrule
 
@@ -208,7 +208,7 @@ rule:
 plugin=vanillaBlocks
 number=17
 data:
-JSON:{buildPass:2,blockName:"minecraft:double_plant",meta:9}
+JSON:{blockState:{blockName:"minecraft:double_plant",properties:{half:"upper",variant:"sunflower",facing:"north"}},buildPass:2}
 :enddata
 :endrule
 
@@ -216,7 +216,7 @@ rule:
 plugin=vanillaBlocks
 number=18
 data:
-JSON:{buildPass:2,blockName:"minecraft:double_plant",meta:8}
+JSON:{blockState:{blockName:"minecraft:double_plant",properties:{half:"upper",variant:"sunflower",facing:"north"}},buildPass:2}
 :enddata
 :endrule
 
@@ -224,7 +224,7 @@ rule:
 plugin=vanillaBlocks
 number=19
 data:
-JSON:{buildPass:2,blockName:"minecraft:double_plant",meta:11}
+JSON:{blockState:{blockName:"minecraft:double_plant",properties:{half:"upper",variant:"sunflower",facing:"north"}},buildPass:2}
 :enddata
 :endrule
 

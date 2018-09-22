@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 8/28/2018 at: 17:39:2
+# Auto-generated structure template file. created on: 9/22/2018 at: 16:7:2
 # Lines beginning with # denote comments
 
 header:
-version=2.3
+version=2.6
 name=lava_trap
 size=8,12,11
 offset=3,5,10
@@ -194,7 +194,7 @@ rule:
 plugin=vanillaBlocks
 number=1
 data:
-JSON:{buildPass:0,blockName:"minecraft:stone",meta:0}
+JSON:{blockState:{blockName:"minecraft:stone",properties:{variant:"stone"}},buildPass:0}
 :enddata
 :endrule
 
@@ -202,7 +202,7 @@ rule:
 plugin=vanillaBlocks
 number=2
 data:
-JSON:{buildPass:0,blockName:"minecraft:piston",meta:1}
+JSON:{blockState:{blockName:"minecraft:piston",properties:{facing:"up",extended:"false"}},buildPass:0}
 :enddata
 :endrule
 
@@ -210,7 +210,7 @@ rule:
 plugin=vanillaBlocks
 number=3
 data:
-JSON:{buildPass:2,blockName:"minecraft:unpowered_repeater",meta:2}
+JSON:{blockState:{blockName:"minecraft:unpowered_repeater",properties:{delay:"1",facing:"north",locked:"false"}},buildPass:2}
 :enddata
 :endrule
 
@@ -218,7 +218,7 @@ rule:
 plugin=vanillaBlocks
 number=4
 data:
-JSON:{buildPass:2,blockName:"minecraft:redstone_wire",meta:0}
+JSON:{blockState:{blockName:"minecraft:redstone_wire",properties:{east:"none",south:"none",north:"none",west:"none",power:"0"}},buildPass:2}
 :enddata
 :endrule
 
@@ -226,7 +226,7 @@ rule:
 plugin=vanillaBlocks
 number=5
 data:
-JSON:{buildPass:2,blockName:"minecraft:unpowered_repeater",meta:1}
+JSON:{blockState:{blockName:"minecraft:unpowered_repeater",properties:{delay:"1",facing:"west",locked:"false"}},buildPass:2}
 :enddata
 :endrule
 
@@ -234,7 +234,7 @@ rule:
 plugin=vanillaBlocks
 number=6
 data:
-JSON:{buildPass:0,blockName:"minecraft:stonebrick",meta:0}
+JSON:{blockState:{blockName:"minecraft:stonebrick",properties:{variant:"stonebrick"}},buildPass:0}
 :enddata
 :endrule
 
@@ -242,7 +242,7 @@ rule:
 plugin=vanillaBlocks
 number=7
 data:
-JSON:{buildPass:2,blockName:"minecraft:unpowered_repeater",meta:14}
+JSON:{blockState:{blockName:"minecraft:unpowered_repeater",properties:{delay:"4",facing:"north",locked:"false"}},buildPass:2}
 :enddata
 :endrule
 
@@ -250,7 +250,7 @@ rule:
 plugin=vanillaBlocks
 number=8
 data:
-JSON:{buildPass:2,blockName:"minecraft:unpowered_repeater",meta:0}
+JSON:{blockState:{blockName:"minecraft:unpowered_repeater",properties:{delay:"1",facing:"south",locked:"false"}},buildPass:2}
 :enddata
 :endrule
 
@@ -258,7 +258,7 @@ rule:
 plugin=vanillaBlocks
 number=9
 data:
-JSON:{buildPass:2,blockName:"minecraft:redstone_torch",meta:3}
+JSON:{blockState:{blockName:"minecraft:redstone_torch",properties:{facing:"south"}},buildPass:2}
 :enddata
 :endrule
 
@@ -266,7 +266,7 @@ rule:
 plugin=vanillaBlocks
 number=10
 data:
-JSON:{buildPass:2,blockName:"minecraft:redstone_wire",meta:15}
+JSON:{blockState:{blockName:"minecraft:redstone_wire",properties:{east:"none",south:"none",north:"none",west:"none",power:"15"}},buildPass:2}
 :enddata
 :endrule
 
@@ -274,7 +274,7 @@ rule:
 plugin=vanillaBlocks
 number=11
 data:
-JSON:{buildPass:0,blockName:"minecraft:stone_brick_stairs",meta:3}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"north"}},buildPass:0}
 :enddata
 :endrule
 
@@ -282,7 +282,7 @@ rule:
 plugin=vanillaBlocks
 number=12
 data:
-JSON:{buildPass:0,blockName:"minecraft:stone_brick_stairs",meta:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"east"}},buildPass:0}
 :enddata
 :endrule
 
@@ -290,7 +290,7 @@ rule:
 plugin=vanillaBlocks
 number=13
 data:
-JSON:{buildPass:0,blockName:"minecraft:stone_brick_stairs",meta:1}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"west"}},buildPass:0}
 :enddata
 :endrule
 
@@ -298,23 +298,23 @@ rule:
 plugin=vanillaBlocks
 number=14
 data:
-JSON:{buildPass:0,blockName:"minecraft:stone_brick_stairs",meta:2}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"south"}},buildPass:0}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=15
 data:
-JSON:{buildPass:0,blockName:"minecraft:trapped_chest",meta:2,lootLevel:2,teData:{x:-122,y:105,z:188,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:diamond",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:trapped_chest",properties:{facing:"north"}},buildPass:0,lootLevel:2,teData:{x:-122,y:105,z:188,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:diamond",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=16
 data:
-JSON:{buildPass:0,blockName:"minecraft:trapped_chest",meta:2,lootLevel:3,teData:{x:-121,y:105,z:188,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:emerald",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:trapped_chest",properties:{facing:"north"}},buildPass:0,lootLevel:3,teData:{x:-121,y:105,z:188,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:emerald",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -322,7 +322,7 @@ rule:
 plugin=vanillaBlocks
 number=17
 data:
-JSON:{buildPass:2,blockName:"minecraft:redstone_wire",meta:14}
+JSON:{blockState:{blockName:"minecraft:redstone_wire",properties:{east:"none",south:"none",north:"none",west:"none",power:"14"}},buildPass:2}
 :enddata
 :endrule
 
@@ -330,7 +330,7 @@ rule:
 plugin=vanillaBlocks
 number=18
 data:
-JSON:{buildPass:2,blockName:"minecraft:torch",meta:2}
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"west"}},buildPass:2}
 :enddata
 :endrule
 
@@ -338,7 +338,7 @@ rule:
 plugin=vanillaBlocks
 number=19
 data:
-JSON:{buildPass:2,blockName:"minecraft:torch",meta:1}
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"east"}},buildPass:2}
 :enddata
 :endrule
 
@@ -346,7 +346,7 @@ rule:
 plugin=vanillaBlocks
 number=20
 data:
-JSON:{buildPass:2,blockName:"minecraft:unlit_redstone_torch",meta:5}
+JSON:{blockState:{blockName:"minecraft:unlit_redstone_torch",properties:{facing:"up"}},buildPass:2}
 :enddata
 :endrule
 
@@ -354,7 +354,7 @@ rule:
 plugin=vanillaBlocks
 number=21
 data:
-JSON:{buildPass:0,blockName:"minecraft:stone_brick_stairs",meta:4}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"east"}},buildPass:0}
 :enddata
 :endrule
 
@@ -362,7 +362,7 @@ rule:
 plugin=vanillaBlocks
 number=22
 data:
-JSON:{buildPass:0,blockName:"minecraft:stone_brick_stairs",meta:5}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"west"}},buildPass:0}
 :enddata
 :endrule
 
@@ -370,7 +370,7 @@ rule:
 plugin=vanillaBlocks
 number=23
 data:
-JSON:{buildPass:0,blockName:"minecraft:stone_brick_stairs",meta:7}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"north"}},buildPass:0}
 :enddata
 :endrule
 
@@ -378,7 +378,7 @@ rule:
 plugin=vanillaBlocks
 number=24
 data:
-JSON:{buildPass:2,blockName:"minecraft:torch",meta:3}
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"south"}},buildPass:2}
 :enddata
 :endrule
 
@@ -386,7 +386,7 @@ rule:
 plugin=vanillaBlocks
 number=25
 data:
-JSON:{buildPass:0,blockName:"minecraft:stone_brick_stairs",meta:6}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"south"}},buildPass:0}
 :enddata
 :endrule
 
@@ -394,7 +394,7 @@ rule:
 plugin=vanillaBlocks
 number=26
 data:
-JSON:{buildPass:0,blockName:"minecraft:piston_head",meta:10}
+JSON:{blockState:{blockName:"minecraft:piston_head",properties:{facing:"north",short:"false",type:"sticky"}},buildPass:0}
 :enddata
 :endrule
 
@@ -402,7 +402,7 @@ rule:
 plugin=vanillaBlocks
 number=27
 data:
-JSON:{buildPass:0,blockName:"minecraft:sticky_piston",meta:11}
+JSON:{blockState:{blockName:"minecraft:sticky_piston",properties:{facing:"south",extended:"true"}},buildPass:0}
 :enddata
 :endrule
 
@@ -410,7 +410,7 @@ rule:
 plugin=vanillaBlocks
 number=28
 data:
-JSON:{buildPass:2,blockName:"minecraft:redstone_torch",meta:5}
+JSON:{blockState:{blockName:"minecraft:redstone_torch",properties:{facing:"up"}},buildPass:2}
 :enddata
 :endrule
 
@@ -418,7 +418,7 @@ rule:
 plugin=vanillaBlocks
 number=29
 data:
-JSON:{buildPass:2,blockName:"minecraft:torch",meta:4}
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"north"}},buildPass:2}
 :enddata
 :endrule
 
@@ -426,7 +426,7 @@ rule:
 plugin=vanillaBlocks
 number=30
 data:
-JSON:{buildPass:0,blockName:"minecraft:piston",meta:12}
+JSON:{blockState:{blockName:"minecraft:piston",properties:{facing:"west",extended:"true"}},buildPass:0}
 :enddata
 :endrule
 
@@ -434,7 +434,7 @@ rule:
 plugin=vanillaBlocks
 number=31
 data:
-JSON:{buildPass:0,blockName:"minecraft:piston_head",meta:4}
+JSON:{blockState:{blockName:"minecraft:piston_head",properties:{facing:"west",short:"false",type:"normal"}},buildPass:0}
 :enddata
 :endrule
 
@@ -442,7 +442,7 @@ rule:
 plugin=vanillaBlocks
 number=32
 data:
-JSON:{buildPass:0,blockName:"minecraft:piston_head",meta:5}
+JSON:{blockState:{blockName:"minecraft:piston_head",properties:{facing:"east",short:"false",type:"normal"}},buildPass:0}
 :enddata
 :endrule
 
@@ -450,7 +450,7 @@ rule:
 plugin=vanillaBlocks
 number=33
 data:
-JSON:{buildPass:0,blockName:"minecraft:piston",meta:13}
+JSON:{blockState:{blockName:"minecraft:piston",properties:{facing:"east",extended:"true"}},buildPass:0}
 :enddata
 :endrule
 
@@ -458,7 +458,7 @@ rule:
 plugin=vanillaBlocks
 number=34
 data:
-JSON:{buildPass:2,blockName:"minecraft:redstone_wire",meta:11}
+JSON:{blockState:{blockName:"minecraft:redstone_wire",properties:{east:"none",south:"none",north:"none",west:"none",power:"11"}},buildPass:2}
 :enddata
 :endrule
 
@@ -466,7 +466,7 @@ rule:
 plugin=vanillaBlocks
 number=35
 data:
-JSON:{buildPass:2,blockName:"minecraft:redstone_wire",meta:12}
+JSON:{blockState:{blockName:"minecraft:redstone_wire",properties:{east:"none",south:"none",north:"none",west:"none",power:"12"}},buildPass:2}
 :enddata
 :endrule
 
@@ -474,7 +474,7 @@ rule:
 plugin=vanillaBlocks
 number=36
 data:
-JSON:{buildPass:2,blockName:"minecraft:redstone_wire",meta:13}
+JSON:{blockState:{blockName:"minecraft:redstone_wire",properties:{east:"none",south:"none",north:"none",west:"none",power:"13"}},buildPass:2}
 :enddata
 :endrule
 
@@ -482,7 +482,7 @@ rule:
 plugin=vanillaBlocks
 number=37
 data:
-JSON:{buildPass:0,blockName:"minecraft:lava",meta:0}
+JSON:{blockState:{blockName:"minecraft:lava",properties:{level:"0"}},buildPass:0}
 :enddata
 :endrule
 
@@ -490,7 +490,7 @@ rule:
 plugin=vanillaBlocks
 number=38
 data:
-JSON:{buildPass:0,blockName:"minecraft:stone_slab",meta:5}
+JSON:{blockState:{blockName:"minecraft:stone_slab",properties:{half:"bottom",variant:"stone_brick"}},buildPass:0}
 :enddata
 :endrule
 

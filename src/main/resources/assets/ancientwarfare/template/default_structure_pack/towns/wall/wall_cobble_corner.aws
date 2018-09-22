@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 8/28/2018 at: 17:29:59
+# Auto-generated structure template file. created on: 9/22/2018 at: 16:7:3
 # Lines beginning with # denote comments
 
 header:
-version=2.3
+version=2.6
 name=wall_cobble_corner
 size=17,12,17
 offset=15,1,15
@@ -266,7 +266,7 @@ rule:
 plugin=vanillaBlocks
 number=1
 data:
-JSON:{buildPass:0,blockName:"minecraft:grass",meta:0}
+JSON:{blockState:{blockName:"minecraft:grass",properties:{snowy:"false"}},buildPass:0}
 :enddata
 :endrule
 
@@ -274,7 +274,7 @@ rule:
 plugin=vanillaBlocks
 number=2
 data:
-JSON:{buildPass:0,blockName:"minecraft:cobblestone",meta:0}
+JSON:{blockState:{blockName:"minecraft:cobblestone",properties:{}},buildPass:0}
 :enddata
 :endrule
 
@@ -282,7 +282,7 @@ rule:
 plugin=vanillaBlocks
 number=3
 data:
-JSON:{buildPass:0,blockName:"minecraft:dirt",meta:0}
+JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"dirt",snowy:"false"}},buildPass:0}
 :enddata
 :endrule
 
@@ -290,7 +290,7 @@ rule:
 plugin=vanillaBlocks
 number=4
 data:
-JSON:{buildPass:2,blockName:"minecraft:torch",meta:5}
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"up"}},buildPass:2}
 :enddata
 :endrule
 
@@ -298,7 +298,7 @@ rule:
 plugin=vanillaBlocks
 number=5
 data:
-JSON:{buildPass:0,blockName:"minecraft:stone_stairs",meta:3}
+JSON:{blockState:{blockName:"minecraft:stone_stairs",properties:{half:"bottom",shape:"straight",facing:"north"}},buildPass:0}
 :enddata
 :endrule
 
@@ -306,7 +306,7 @@ rule:
 plugin=vanillaBlocks
 number=6
 data:
-JSON:{buildPass:0,blockName:"minecraft:stone_stairs",meta:1}
+JSON:{blockState:{blockName:"minecraft:stone_stairs",properties:{half:"bottom",shape:"straight",facing:"west"}},buildPass:0}
 :enddata
 :endrule
 
@@ -314,7 +314,7 @@ rule:
 plugin=vanillaBlocks
 number=7
 data:
-JSON:{buildPass:2,blockName:"minecraft:torch",meta:1}
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"east"}},buildPass:2}
 :enddata
 :endrule
 
@@ -322,7 +322,7 @@ rule:
 plugin=vanillaBlocks
 number=8
 data:
-JSON:{buildPass:2,blockName:"minecraft:torch",meta:3}
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"south"}},buildPass:2}
 :enddata
 :endrule
 
@@ -330,7 +330,7 @@ rule:
 plugin=vanillaBlocks
 number=9
 data:
-JSON:{buildPass:0,blockName:"minecraft:stone_slab",meta:3}
+JSON:{blockState:{blockName:"minecraft:stone_slab",properties:{half:"bottom",variant:"cobblestone"}},buildPass:0}
 :enddata
 :endrule
 
@@ -338,7 +338,7 @@ rule:
 plugin=vanillaBlocks
 number=10
 data:
-JSON:{buildPass:0,blockName:"minecraft:stone_stairs",meta:2}
+JSON:{blockState:{blockName:"minecraft:stone_stairs",properties:{half:"bottom",shape:"straight",facing:"south"}},buildPass:0}
 :enddata
 :endrule
 
