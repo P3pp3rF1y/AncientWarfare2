@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -110,7 +111,7 @@ public class TemplateLoader {
 				loadImageFromPath(file, name);
 			} else if (extension.equals(AWStructureStatics.townTemplateExtension) || extension.equals(AWStructureStatics.templateExtension)) {
 				List<String> lines;
-				try (BufferedReader reader = Files.newBufferedReader(file)) {
+				try (BufferedReader reader = Files.newBufferedReader(file, StandardCharsets.ISO_8859_1)) {
 					lines = reader.lines().filter(l -> !l.startsWith("#")).collect(Collectors.toList());
 					if (extension.equals(AWStructureStatics.townTemplateExtension)) {
 						loadTownTemplate(lines);
