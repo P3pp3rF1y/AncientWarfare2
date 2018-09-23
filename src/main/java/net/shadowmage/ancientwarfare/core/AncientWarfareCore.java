@@ -1,14 +1,12 @@
 package net.shadowmage.ancientwarfare.core;
 
 import codechicken.lib.CodeChickenLib;
-import net.minecraft.util.datafix.FixTypes;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.ModFixs;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -31,26 +29,23 @@ import net.shadowmage.ancientwarfare.core.container.ContainerManual;
 import net.shadowmage.ancientwarfare.core.container.ContainerResearchBook;
 import net.shadowmage.ancientwarfare.core.container.ContainerResearchStation;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
-import net.shadowmage.ancientwarfare.core.datafixes.ResearchNoteFixer;
-import net.shadowmage.ancientwarfare.core.datafixes.TileIdFixer;
-import net.shadowmage.ancientwarfare.core.datafixes.TileOwnerFixer;
-import net.shadowmage.ancientwarfare.core.datafixes.VehicleOwnerFixer;
+import net.shadowmage.ancientwarfare.core.datafixes.AWDataFixes;
 import net.shadowmage.ancientwarfare.core.entity.AWFakePlayer;
-import net.shadowmage.ancientwarfare.core.item.AWCoreItemLoader;
+import net.shadowmage.ancientwarfare.core.init.AWCoreItems;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
 import net.shadowmage.ancientwarfare.core.registry.RegistryLoader;
 import net.shadowmage.ancientwarfare.core.registry.ResearchRegistry;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
-import net.shadowmage.ancientwarfare.npc.datafixes.FactionEntityFixer;
-import net.shadowmage.ancientwarfare.npc.datafixes.FactionSpawnerItemFixer;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @Mod(name = "Ancient Warfare Core", modid = AncientWarfareCore.MOD_ID, version = "@VERSION@", guiFactory = "net.shadowmage.ancientwarfare.core.gui.options.OptionsGuiFactory", dependencies = CodeChickenLib.MOD_VERSION_DEP)
 public class AncientWarfareCore {
 
 	public static final String MOD_ID = "ancientwarfare";
-	private static final int DATA_FIXER_VERSION = 4;
+
+	public static final CreativeTabs TAB = new AWCoreTab();
 
 	@Instance(value = AncientWarfareCore.MOD_ID)
 	public static AncientWarfareCore instance;
@@ -58,31 +53,20 @@ public class AncientWarfareCore {
 	@SidedProxy(clientSide = "net.shadowmage.ancientwarfare.core.proxy.ClientProxy", serverSide = "net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase")
 	public static CommonProxyBase proxy;
 
-	public static Logger log;
+	public static final Logger LOG = LogManager.getLogger(MOD_ID);
 
 	public static AWCoreStatics statics;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent evt) {
-		/*
-		 * setup config file and logger
-         */
-		log = evt.getModLog();
 		statics = new AWCoreStatics("AncientWarfare");
 
-        /*
-         * register server-side network handler and anything that needs loaded on the event busses
-         */
-		NetworkHandler.INSTANCE.registerNetwork();//register network handler, server side
+		NetworkHandler.INSTANCE.registerNetwork();
 
 		MinecraftForge.EVENT_BUS.register(ResearchTracker.INSTANCE);
 		MinecraftForge.EVENT_BUS.register(this);
 		MinecraftForge.EVENT_BUS.register(this);
 
-
-        /*
-         * register GUIs, containers, client-side network handler, renderers
-         */
 		NetworkHandler.registerContainer(NetworkHandler.GUI_CRAFTING, ContainerEngineeringStation.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_RESEARCH_STATION, ContainerResearchStation.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_BACKPACK, ContainerBackpack.class);
@@ -102,7 +86,7 @@ public class AncientWarfareCore {
 
 		proxy.init();
 
-		AWCoreItemLoader.INSTANCE.load();
+		AWCoreItems.load();
 
 		AWCraftingManager.registerIngredients();
 
@@ -112,13 +96,7 @@ public class AncientWarfareCore {
 
 		CompatLoader.init();
 
-		ModFixs fixes = FMLCommonHandler.instance().getDataFixer().init(MOD_ID, DATA_FIXER_VERSION);
-		fixes.registerFix(FixTypes.ENTITY, new VehicleOwnerFixer());
-		fixes.registerFix(FixTypes.BLOCK_ENTITY, new TileOwnerFixer());
-		fixes.registerFix(FixTypes.BLOCK_ENTITY, new TileIdFixer());
-		fixes.registerFix(FixTypes.ENTITY, new FactionEntityFixer());
-		fixes.registerFix(FixTypes.ITEM_INSTANCE, new FactionSpawnerItemFixer());
-		fixes.registerFix(FixTypes.ITEM_INSTANCE, new ResearchNoteFixer());
+		AWDataFixes.registerDataFixes();
 	}
 
 	@EventHandler

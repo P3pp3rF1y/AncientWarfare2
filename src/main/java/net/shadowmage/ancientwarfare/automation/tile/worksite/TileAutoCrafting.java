@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -60,10 +61,10 @@ public class TileAutoCrafting extends TileWorksiteBase {
 
 	private void craftItem() {
 		NonNullList<ItemStack> resources = AWCraftingManager.getRecipeInventoryMatch(craftingRecipeMemory.getRecipe(), resourceInventory);
-		@Nonnull ItemStack result = craftingRecipeMemory.getCraftingResult();
+		InventoryCrafting invCrafting = AWCraftingManager.fillCraftingMatrixFromInventory(resources);
+		@Nonnull ItemStack result = craftingRecipeMemory.getCraftingResult(invCrafting);
 		useResources(resources);
-		//TODO add setting / unsetting player similar to SlotCrafting
-		NonNullList<ItemStack> remainingItems = craftingRecipeMemory.getRemainingItems();
+		NonNullList<ItemStack> remainingItems = craftingRecipeMemory.getRemainingItems(invCrafting);
 
 		for (ItemStack stack : remainingItems) {
 			if (stack.isEmpty()) {
@@ -169,6 +170,7 @@ public class TileAutoCrafting extends TileWorksiteBase {
 		return (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && facing != null) || super.hasCapability(capability, facing);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Nullable
 	@Override
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {

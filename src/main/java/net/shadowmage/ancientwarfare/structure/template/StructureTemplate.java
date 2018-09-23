@@ -1,74 +1,61 @@
-/*
- Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
- This software is distributed under the terms of the GNU General Public License.
- Please see COPYING for precise license information.
-
- This file is part of Ancient Warfare.
-
- Ancient Warfare is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- Ancient Warfare is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.structure.template;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.Vec3i;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import net.shadowmage.ancientwarfare.core.util.MathUtils;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
 
+import java.util.Map;
+import java.util.Optional;
+
 public class StructureTemplate {
+	public static final Version CURRENT_VERSION = new Version(2, 6);
 
 	/*
 	 * base datas
 	 */
 	public final String name;
-	public final int xSize, ySize, zSize;
-	public final int xOffset, yOffset, zOffset;
+	public final Vec3i size;
+	public final Vec3i offset;
+	private Version version;
 
 	/*
 	 * stored template data
 	 */
-	private TemplateRule[] templateRules;
-	private TemplateRuleEntity[] entityRules;
+	private Map<Integer, TemplateRule> blockRules;
+	private Map<Integer, TemplateRuleEntity> entityRules;
 	private short[] templateData;
-	NonNullList<ItemStack> resourceList;
+	private NonNullList<ItemStack> resourceList;
 
 	/*
 	 * world generation placement validation settings
 	 */
 	private StructureValidator validator;
 
-	public StructureTemplate(String name, int xSize, int ySize, int zSize, int xOffset, int yOffset, int zOffset) {
+	public StructureTemplate(String name, Vec3i size, Vec3i offset) {
+		this(name, CURRENT_VERSION, size, offset);
+	}
+
+	public StructureTemplate(String name, Version version, Vec3i size, Vec3i offset) {
 		if (name == null) {
 			throw new IllegalArgumentException("cannot have null name for structure");
 		}
+		this.version = version;
 		this.name = name;
-		this.xSize = xSize;
-		this.ySize = ySize;
-		this.zSize = zSize;
-		this.xOffset = xOffset;
-		this.yOffset = yOffset;
-		this.zOffset = zOffset;
+		this.size = size;
+		this.offset = offset;
 	}
 
-	public TemplateRuleEntity[] getEntityRules() {
+	public Map<Integer, TemplateRuleEntity> getEntityRules() {
 		return entityRules;
 	}
 
-	public TemplateRule[] getTemplateRules() {
-		return templateRules;
+	public Map<Integer, TemplateRule> getBlockRules() {
+		return blockRules;
 	}
 
 	public short[] getTemplateData() {
@@ -79,11 +66,11 @@ public class StructureTemplate {
 		return validator;
 	}
 
-	public void setRuleArray(TemplateRule[] rules) {
-		this.templateRules = rules;
+	public void setBlockRules(Map<Integer, TemplateRule> rules) {
+		this.blockRules = rules;
 	}
 
-	public void setEntityRules(TemplateRuleEntity[] rules) {
+	public void setEntityRules(Map<Integer, TemplateRuleEntity> rules) {
 		this.entityRules = rules;
 	}
 
@@ -95,39 +82,25 @@ public class StructureTemplate {
 		this.validator = settings;
 	}
 
-	public TemplateRule getRuleAt(int x, int y, int z) {
-		int index = getIndex(x, y, z, xSize, ySize, zSize);
+	public Optional<TemplateRule> getRuleAt(Vec3i pos) {
+		int index = getIndex(pos, size);
 		int ruleIndex = index >= 0 && index < templateData.length ? templateData[index] : -1;
-		return ruleIndex >= 0 && ruleIndex < templateRules.length ? templateRules[ruleIndex] : null;
+		return Optional.ofNullable(blockRules.get(ruleIndex));
 	}
 
-	public static int getIndex(int x, int y, int z, int xSize, int ySize, int zSize) {
-		return (y * xSize * zSize) + (z * xSize) + x;
+	public static int getIndex(Vec3i pos, Vec3i size) {
+		return (pos.getY() * size.getX() * size.getZ()) + (pos.getZ() * size.getX()) + pos.getX();
 	}
 
 	@Override
 	public String toString() {
-		StringBuilder b = new StringBuilder();
-		b.append("name: ").append(name).append("\n");
-		b.append("size: ").append(xSize).append(", ").append(ySize).append(", ").append(zSize).append("\n");
-		b.append("buildKey: ").append(xOffset).append(", ").append(yOffset).append(", ").append(zOffset);
-		return b.toString();
+		return "name: " + name + "\n" + "size: " + size.getX() + ", " + size.getY() + ", " + size.getZ() + "\n" + "buildKey: " + offset.getX() + ", " + offset.getY() + ", " + offset.getZ();
 	}
 
 	public NonNullList<ItemStack> getResourceList() {
 		if (resourceList == null) {
-			TemplateRule rule;
 			NonNullList<ItemStack> stacks = NonNullList.create();
-			for (int x = 0; x < this.xSize; x++) {
-				for (int y = 0; y < this.ySize; y++) {
-					for (int z = 0; z < this.zSize; z++) {
-						rule = getRuleAt(x, y, z);
-						if (rule != null) {
-							rule.addResources(stacks);
-						}
-					}
-				}
-			}
+			MathUtils.getAllVecsInBox(Vec3i.NULL_VECTOR, size).forEach(pos -> getRuleAt(pos).ifPresent(r -> r.addResources(stacks)));
 			resourceList = InventoryTools.compactStackList(stacks);
 		}
 		return resourceList;
@@ -140,18 +113,54 @@ public class StructureTemplate {
 		if (!(o instanceof StructureTemplate))
 			return false;
 		StructureTemplate that = (StructureTemplate) o;
-		return xSize == that.xSize && ySize == that.ySize && zSize == that.zSize && xOffset == that.xOffset && yOffset == that.yOffset && zOffset == that.zOffset && name.equals(that.name);
+		return size.equals(that.size) && offset.equals(that.offset) && name.equals(that.name);
 	}
 
 	@Override
 	public int hashCode() {
-		int result = xSize;
-		result = 31 * result + ySize;
-		result = 31 * result + zSize;
-		result = 31 * result + xOffset;
-		result = 31 * result + yOffset;
-		result = 31 * result + zOffset;
+		int result = size.hashCode();
+		result = 31 * result + offset.hashCode();
 		result = 31 * result + name.hashCode();
 		return result;
+	}
+
+	public Version getVersion() {
+		return version;
+	}
+
+	public Vec3i getSize() {
+		return size;
+	}
+
+	public Vec3i getOffset() {
+		return offset;
+	}
+
+	public static class Version {
+		private final int major;
+		private final int minor;
+
+		public Version(int major, int minor) {
+			this.major = major;
+			this.minor = minor;
+		}
+
+		public Version(String version) {
+			this(Integer.valueOf(version.substring(0, version.indexOf('.'))), Integer.valueOf(version.substring(version.indexOf('.') + 1)));
+		}
+
+		public boolean isGreaterThan(Version otherVersion) {
+			return getMajor() > otherVersion.getMajor() || getMinor() > otherVersion.getMinor();
+		}
+
+		public static final Version NONE = new Version(0, 0);
+
+		public int getMajor() {
+			return major;
+		}
+
+		public int getMinor() {
+			return minor;
+		}
 	}
 }

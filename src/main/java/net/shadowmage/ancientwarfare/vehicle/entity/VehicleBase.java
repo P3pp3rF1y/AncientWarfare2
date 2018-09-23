@@ -886,7 +886,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 			this.firingVarsHelper.deserializeNBT(pb.readCompoundTag());
 		}
 		catch (IOException e) {
-			AncientWarfareVehicles.log.error(e);
+			AncientWarfareVehicles.LOG.error(e);
 		}
 		this.localLaunchPower = pb.readFloat();
 		this.localTurretPitch = pb.readFloat();

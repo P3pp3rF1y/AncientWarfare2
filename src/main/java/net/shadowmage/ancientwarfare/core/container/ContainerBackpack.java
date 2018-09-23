@@ -9,7 +9,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.SlotItemHandler;
-import net.shadowmage.ancientwarfare.core.api.AWItems;
+import net.shadowmage.ancientwarfare.core.init.AWCoreItems;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
@@ -27,7 +27,7 @@ public class ContainerBackpack extends ContainerBase {
 	public ContainerBackpack(EntityPlayer player, int x, int y, int z) {
 		super(player);
 
-		this.hand = EntityTools.getHandHoldingItem(player, AWItems.backpack);
+		this.hand = EntityTools.getHandHoldingItem(player, AWCoreItems.BACKPACK);
 		backpackStack = player.getHeldItem(hand);
 		backpackSlotIndex = hand == EnumHand.MAIN_HAND ? player.inventory.currentItem : -1;
 
@@ -40,7 +40,7 @@ public class ContainerBackpack extends ContainerBase {
 			addSlotToContainer(new SlotItemHandler(handler, i, xPos, yPos) {
 				@Override
 				public boolean isItemValid(ItemStack itemStack) {
-					return itemStack.getItem() != AWItems.backpack && super.isItemValid(itemStack);
+					return itemStack.getItem() != AWCoreItems.BACKPACK && super.isItemValid(itemStack);
 				}
 			});
 		}

@@ -14,7 +14,7 @@ public class StructureEntry {
 
 	public StructureEntry(int x, int y, int z, EnumFacing face, StructureTemplate template) {
 		name = template.name;
-		bb = new StructureBB(new BlockPos(x, y, z), face, template.xSize, template.ySize, template.zSize, template.xOffset, template.yOffset, template.zOffset);
+		bb = new StructureBB(new BlockPos(x, y, z), face, template.getSize(), template.getOffset());
 		value = template.getValidationSettings().getClusterValue();
 	}
 

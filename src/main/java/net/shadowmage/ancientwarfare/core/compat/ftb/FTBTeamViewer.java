@@ -35,6 +35,6 @@ public class FTBTeamViewer extends DefaultTeamViewer {
 	@Override
 	public boolean areFriendly(World world, UUID player1, @Nullable UUID player2, String playerName1, String playerName2) {
 		return super.areFriendly(world, player1, player2, playerName1, playerName2) ||
-				checkFTBPlayers(player1, player2, t -> t.getFirst().team != null && (t.getFirst().team.isMember(t.getSecond()) || t.getFirst().team.isAlly(t.getSecond())));
+				checkFTBPlayers(player1, player2, t -> t.getFirst().team != null && t.getFirst().team.isAlly(t.getSecond()));
 	}
 }

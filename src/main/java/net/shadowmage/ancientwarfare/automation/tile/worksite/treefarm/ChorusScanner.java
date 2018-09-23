@@ -9,17 +9,24 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ChorusScanner implements ITreeScanner {
 	@Override
 	public ITree scanTree(World world, BlockPos pos) {
 		Branch branch = new Branch();
-		scanBranchHarvestableBlocks(branch, world, pos, EnumFacing.DOWN);
+		Set<BlockPos> scannedPositions = new HashSet<>();
+		scanBranchHarvestableBlocks(scannedPositions, branch, world, pos, EnumFacing.DOWN);
 		return branch;
 	}
 
-	private void scanBranchHarvestableBlocks(Branch parentBranch, World world, BlockPos startPos, EnumFacing avoidDirection) {
+	private void scanBranchHarvestableBlocks(Set<BlockPos> scannedPositions, Branch parentBranch, World world, BlockPos startPos, EnumFacing avoidDirection) {
+		if (!scannedPositions.add(startPos)) {
+			return;
+		}
+
 		boolean continueSearch;
 		BlockPos currentPos = startPos;
 		EnumFacing avoidNext = avoidDirection;
@@ -46,10 +53,14 @@ public class ChorusScanner implements ITreeScanner {
 				continueSearch = true;
 				EnumFacing nextFacing = connectedSides.get(0);
 				currentPos = currentPos.offset(nextFacing);
+				if (!scannedPositions.add(currentPos)) {
+					return;
+				}
+
 				avoidNext = nextFacing.getOpposite();
 			} else if (connectedSides.size() > 1) {
 				//multiple branches attached
-				scanConnectedBranchsBlocks(childBranch, world, currentPos, connectedSides);
+				scanConnectedBranchsBlocks(scannedPositions, childBranch, world, currentPos, connectedSides);
 				childBranch.updateMature();
 				return;
 			}
@@ -59,9 +70,9 @@ public class ChorusScanner implements ITreeScanner {
 		childBranch.setMature();
 	}
 
-	private void scanConnectedBranchsBlocks(Branch parentBranch, World world, BlockPos currentPos, List<EnumFacing> connectedSides) {
+	private void scanConnectedBranchsBlocks(Set<BlockPos> scannedPositions, Branch parentBranch, World world, BlockPos currentPos, List<EnumFacing> connectedSides) {
 		for (EnumFacing side : connectedSides) {
-			scanBranchHarvestableBlocks(parentBranch, world, currentPos.offset(side), side.getOpposite());
+			scanBranchHarvestableBlocks(scannedPositions, parentBranch, world, currentPos.offset(side), side.getOpposite());
 		}
 	}
 

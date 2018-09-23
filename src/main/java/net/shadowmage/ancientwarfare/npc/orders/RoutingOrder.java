@@ -17,11 +17,7 @@ import javax.annotation.Nonnull;
 import java.util.List;
 
 public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implements INBTSerializable<NBTTagCompound> {
-
-	int routeDimension;
-
-	public RoutingOrder() {
-	}
+	private static final String ORDERS_TAG = "orders";
 
 	public void addRoutePoint(EnumFacing side, BlockPos pos) {
 		add(new RoutePoint(side, pos));
@@ -58,8 +54,9 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
 	public static RoutingOrder getRoutingOrder(ItemStack stack) {
 		if (!stack.isEmpty() && stack.getItem() instanceof ItemRoutingOrder) {
 			RoutingOrder order = new RoutingOrder();
-			if (stack.hasTagCompound() && stack.getTagCompound().hasKey("orders")) {
-				order.deserializeNBT(stack.getTagCompound().getCompoundTag("orders"));
+			//noinspection ConstantConditions
+			if (stack.hasTagCompound() && stack.getTagCompound().hasKey(ORDERS_TAG)) {
+				order.deserializeNBT(stack.getTagCompound().getCompoundTag(ORDERS_TAG));
 			}
 			return order;
 		}
@@ -68,7 +65,7 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
 
 	public void write(ItemStack stack) {
 		if (!stack.isEmpty() && stack.getItem() instanceof ItemRoutingOrder) {
-			stack.setTagInfo("orders", serializeNBT());
+			stack.setTagInfo(ORDERS_TAG, serializeNBT());
 		}
 	}
 
@@ -93,17 +90,18 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
 	}
 
 	public static class RoutePoint {
-		boolean ignoreDamage, ignoreTag;
-		RouteType routeType = RouteType.FILL_TARGET_TO;
-		BlockPos target = BlockPos.ORIGIN;
-		EnumFacing blockSide = EnumFacing.DOWN;
-		NonNullList<ItemStack> filters = NonNullList.withSize(12, ItemStack.EMPTY);
+		private boolean ignoreDamage;
+		private boolean ignoreTag;
+		private RouteType routeType = RouteType.FILL_TARGET_TO;
+		private BlockPos target = BlockPos.ORIGIN;
+		private EnumFacing blockSide = EnumFacing.DOWN;
+		private NonNullList<ItemStack> filters = NonNullList.withSize(12, ItemStack.EMPTY);
 
 		private RoutePoint(NBTTagCompound tag) {
 			readFromNBT(tag);
 		}
 
-		public RoutePoint(EnumFacing side, BlockPos target) {
+		private RoutePoint(EnumFacing side, BlockPos target) {
 			this.target = target;
 			this.blockSide = side;
 		}
@@ -148,15 +146,15 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
 			return ignoreTag;
 		}
 
-		public void toggleIgnoreDamage() {
+		private void toggleIgnoreDamage() {
 			ignoreDamage = !ignoreDamage;
 		}
 
-		public void toggleIgnoreTag() {
+		private void toggleIgnoreTag() {
 			ignoreTag = !ignoreTag;
 		}
 
-		private int depositAllItems(IItemHandler from, IItemHandler to, boolean reversed) {
+		private int depositAllItems(IItemHandler from, IItemHandler to) {
 			int movedStacks = 0;
 			int movedSize = 0;
 			for (ItemStack filter : filters) {
@@ -169,7 +167,7 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
 			return movedStacks;
 		}
 
-		private int depositAllItemsExcept(IItemHandler from, IItemHandler to, boolean reversed) {
+		private int depositAllItemsExcept(IItemHandler from, IItemHandler to) {
 			float movedStacks = 0;
 			for (ItemStack stack : InventoryTools.getIterator(from)) {
 				if (matchesFilter(stack)) {
@@ -187,22 +185,19 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
 			return filters.stream().anyMatch(s -> !s.isEmpty() && InventoryTools.doItemStacksMatch(stack, s, ignoreDamage, ignoreTag));
 		}
 
-		private int fillTo(IItemHandler from, IItemHandler to, boolean reversed) {
+		private int fillTo(IItemHandler from, IItemHandler to) {
 			int moved = 0;
-			int toMove = 0;
-			int foundCount = 0;
-			int m1;
 			for (ItemStack filter : filters) {
 				if (filter.isEmpty()) {
 					continue;
 				}
-				foundCount = InventoryTools.getCountOf(to, filter);
-				toMove = filter.getCount();
+				int foundCount = InventoryTools.getCountOf(to, filter);
+				int toMove = filter.getCount();
 				if (foundCount > toMove) {
 					continue;
 				}
 				toMove -= foundCount;
-				m1 = InventoryTools.transferItems(from, to, filter, toMove, ignoreDamage, ignoreTag);
+				int m1 = InventoryTools.transferItems(from, to, filter, toMove, ignoreDamage, ignoreTag);
 				moved += m1 / filter.getMaxStackSize();
 			}
 			return moved;
@@ -224,98 +219,94 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
 			return movedTotal;
 		}
 
-		private int depositExact(IItemHandler from, IItemHandler to, boolean reversed) {
+		private int depositExact(IItemHandler from, IItemHandler to) {
 			int movedTotal = 0;
-			int toMove = 0;
-			int foundCount = 0;
-			int moved;
 			for (ItemStack filter : filters) {
 				if (filter.isEmpty()) {
 					continue;
 				}
-				foundCount = InventoryTools.getCountOf(from, filter);
-				toMove = filter.getCount();
+				int foundCount = InventoryTools.getCountOf(from, filter);
+				int toMove = filter.getCount();
 				if (foundCount < toMove) {
 					continue;
 				}
 				if (!InventoryTools.canInventoryHold(to, filter))
 					continue;
-				moved = InventoryTools.transferItems(from, to, filter, toMove, ignoreDamage, ignoreTag);
+				int moved = InventoryTools.transferItems(from, to, filter, toMove, ignoreDamage, ignoreTag);
 				movedTotal += moved / filter.getMaxStackSize();
 			}
 			return movedTotal;
 		}
 
-		private int fillAtLeast(IItemHandler from, IItemHandler to, boolean reversed) {
+		private int fillAtLeast(IItemHandler from, IItemHandler to) {
 			int movedTotal = 0;
-			int toMove = 0;
-			int foundCount = 0;
-			int existingCount = 0;
-			int moved;
 			for (ItemStack filter : filters) {
 				if (filter.isEmpty()) {
 					continue;
 				}
-				foundCount = InventoryTools.getCountOf(from, filter);
-				existingCount = InventoryTools.getCountOf(to, filter);
-				toMove = filter.getCount() - existingCount; // we only want to move items up to the specified filter size
-				if (toMove < 1) {
+				int foundCount = InventoryTools.getCountOf(from, filter);
+				int existingCount = InventoryTools.getCountOf(to, filter);
+				int toMove = filter.getCount() - existingCount; // we only want to move items up to the specified filter size
+				if (toMove < 1 || foundCount < toMove) {
 					// the target already has more than the filter specifies
+					// or the source doesn't have enough to fulfill the minimum requirement
 					continue;
 				}
 
-				if (foundCount < toMove) {
-					// the source doesn't have enough to fulfill the minimum requirement
-					continue;
-				}
 				@Nonnull ItemStack filterAdjusted = filter.copy();
 				filterAdjusted.setCount(toMove);
 				if (!InventoryTools.canInventoryHold(to, filterAdjusted))
 					continue;
-				moved = InventoryTools.transferItems(from, to, filterAdjusted, foundCount, ignoreDamage, ignoreTag);
+				int moved = InventoryTools.transferItems(from, to, filterAdjusted, foundCount, ignoreDamage, ignoreTag);
 				movedTotal += moved / filter.getMaxStackSize();
 			}
 			return movedTotal;
 		}
 
-		private final void readFromNBT(NBTTagCompound tag) {
+		private void readFromNBT(NBTTagCompound tag) {
 			routeType = RouteType.values()[tag.getInteger("type")];
 			target = BlockPos.fromLong(tag.getLong("position"));
 			blockSide = EnumFacing.VALUES[tag.getByte("blockSide")];
 			ignoreDamage = tag.getBoolean("ignoreDamage");
 			ignoreTag = tag.getBoolean("ignoreTag");
 			NBTTagList filterList = tag.getTagList("filterList", Constants.NBT.TAG_COMPOUND);
-			NBTTagCompound itemTag;
-			int slot;
+			int[] filterCounts = tag.getIntArray("filterCounts");
 			for (int i = 0; i < filterList.tagCount(); i++) {
-				itemTag = filterList.getCompoundTagAt(i);
-				slot = itemTag.getInteger("slot");
+				NBTTagCompound itemTag = filterList.getCompoundTagAt(i);
+				int slot = itemTag.getInteger("slot");
 
 				while (slot >= filters.size()) {
 					filters.add(ItemStack.EMPTY);
 				}
 
-				filters.set(slot, new ItemStack(itemTag));
+				ItemStack filterStack = new ItemStack(itemTag);
+				filterStack.setCount(filterCounts[slot]);
+				filters.set(slot, filterStack);
 			}
 		}
 
-		private final NBTTagCompound writeToNBT(NBTTagCompound tag) {
+		private NBTTagCompound writeToNBT(NBTTagCompound tag) {
 			tag.setInteger("type", routeType.ordinal());
 			tag.setLong("position", target.toLong());
 			tag.setByte("blockSide", (byte) blockSide.ordinal());
 			tag.setBoolean("ignoreDamage", ignoreDamage);
 			tag.setBoolean("ignoreTag", ignoreTag);
 			NBTTagList filterList = new NBTTagList();
-			NBTTagCompound itemTag;
+			int[] filterCounts = new int[filters.size()];
 			for (int i = 0; i < filters.size(); i++) {
 				if (filters.get(i).isEmpty()) {
+					filterCounts[i] = 0;
 					continue;
 				}
-				itemTag = filters.get(i).writeToNBT(new NBTTagCompound());
+				filterCounts[i] = filters.get(i).getCount();
+				ItemStack filterCopy = filters.get(i).copy();
+				filterCopy.setCount(1);
+				NBTTagCompound itemTag = filterCopy.writeToNBT(new NBTTagCompound());
 				itemTag.setInteger("slot", i);
 				filterList.appendTag(itemTag);
 			}
 			tag.setTag("filterList", filterList);
+			tag.setIntArray("filterCounts", filterCounts);
 			return tag;
 		}
 
@@ -427,22 +418,22 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
 	public int handleRouteAction(RoutePoint p, IItemHandler npc, IItemHandler target) {
 		switch (p.routeType) {
 			case FILL_COURIER_TO:
-				return p.fillTo(target, npc, true);
+				return p.fillTo(target, npc);
 
 			case FILL_TARGET_TO:
-				return p.fillTo(npc, target, false);
+				return p.fillTo(npc, target);
 
 			case DEPOSIT_ALL_EXCEPT:
-				return p.depositAllItemsExcept(npc, target, false);
+				return p.depositAllItemsExcept(npc, target);
 
 			case DEPOSIT_ALL_OF:
-				return p.depositAllItems(npc, target, false);
+				return p.depositAllItems(npc, target);
 
 			case WITHDRAW_ALL_EXCEPT:
-				return p.depositAllItemsExcept(target, npc, true);
+				return p.depositAllItemsExcept(target, npc);
 
 			case WITHDRAW_ALL_OF:
-				return p.depositAllItems(target, npc, true);
+				return p.depositAllItems(target, npc);
 
 			case DEPOSIT_RATIO:
 				return p.depositRatio(npc, target, false);
@@ -451,16 +442,16 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
 				return p.depositRatio(target, npc, true);
 
 			case DEPOSIT_EXACT:
-				return p.depositExact(npc, target, false);
+				return p.depositExact(npc, target);
 
 			case WITHDRAW_EXACT:
-				return p.depositExact(target, npc, true);
+				return p.depositExact(target, npc);
 
 			case FILL_MINIMUM:
-				return p.fillAtLeast(npc, target, false);
+				return p.fillAtLeast(npc, target);
 
 			case TAKE_MINIMUM:
-				return p.fillAtLeast(target, npc, true);
+				return p.fillAtLeast(target, npc);
 
 			default:
 				return 0;

@@ -41,7 +41,7 @@ public class ItemStructureScanner extends ItemBaseStructure implements IItemKeyI
 	private static final String STRUCTURE_NAME_TAG = "structureName";
 	private static final String INCLUDE_TAG = "include";
 
-	ItemStructureScanner(String name) {
+	public ItemStructureScanner(String name) {
 		super(name);
 		setMaxStackSize(1);
 	}

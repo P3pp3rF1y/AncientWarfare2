@@ -1,9 +1,9 @@
 package net.shadowmage.ancientwarfare.automation;
 
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -38,7 +38,6 @@ import net.shadowmage.ancientwarfare.automation.registry.CropFarmRegistry;
 import net.shadowmage.ancientwarfare.automation.registry.FruitFarmRegistry;
 import net.shadowmage.ancientwarfare.automation.registry.TreeFarmRegistry;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
-import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.compat.CompatLoader;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
@@ -56,32 +55,20 @@ public class AncientWarfareAutomation {
 	@SidedProxy(clientSide = "net.shadowmage.ancientwarfare.automation.proxy.ClientProxyAutomation", serverSide = "net.shadowmage.ancientwarfare.core.proxy.CommonProxy")
 	public static CommonProxyBase proxy;
 
+	public static final CreativeTabs TAB = new AWAutomationTab();
+
 	public static final Logger LOG = LogManager.getLogger(MOD_ID);
 
 	public static AWAutomationStatics statics;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent evt) {
-		ModuleStatus.automationLoaded = true;
-		if (Loader.isModLoaded("redstoneflux")) {
-			ModuleStatus.redstoneFluxEnabled = true;
-			AncientWarfareAutomation.LOG.info("Detecting Redstone Flux is loaded, enabling RF Compatibility");
-		}
 		RFProxy.loadInstance();
 
-        /*
-		 * setup module-owned config file and config-access class
-         */
 		statics = new AWAutomationStatics("AncientWarfareAutomation");
 
-        /*
-		 * must be loaded after items/blocks, as it needs them registered
-         */
 		proxy.preInit();
 
-        /*
-		 * register containers
-         */
 		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_INVENTORY_SIDE_ADJUST, ContainerWorksiteInventorySideSelection.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_ANIMAL_CONTROL, ContainerWorksiteAnimalControl.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_AUTO_CRAFT, ContainerWorksiteAutoCrafting.class);
@@ -102,9 +89,6 @@ public class AncientWarfareAutomation {
 		NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_STOCK, ContainerWarehouseStockViewer.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_BOUNDS, ContainerWorksiteBoundsAdjust.class);
 
-        /*
-		 * register tick-handlers
-         */
 		MinecraftForge.EVENT_BUS.register(this);
 
 		ForgeChunkManager.setForcedChunkLoadingCallback(this, AWChunkLoader.INSTANCE);
@@ -122,9 +106,6 @@ public class AncientWarfareAutomation {
 
 	@EventHandler
 	public void init(FMLInitializationEvent evt) {
-		/*
-		 * construct recipes, load plugins
-         */
 		proxy.init();
 
 		statics.save();

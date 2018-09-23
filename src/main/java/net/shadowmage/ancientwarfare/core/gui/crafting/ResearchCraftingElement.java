@@ -1,13 +1,13 @@
 package net.shadowmage.ancientwarfare.core.gui.crafting;
 
 import net.minecraft.item.ItemStack;
-import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.container.ContainerCraftingRecipeMemory;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Composite;
 import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
 import net.shadowmage.ancientwarfare.core.gui.elements.TexturedButton;
+import net.shadowmage.ancientwarfare.core.init.AWCoreItems;
 
 public class ResearchCraftingElement extends Composite {
 	private static final int ELEMENT_WIDTH = 176;
@@ -22,7 +22,7 @@ public class ResearchCraftingElement extends Composite {
 		super(gui, topLeftX, topLeftY, ELEMENT_WIDTH, ELEMENT_HEIGHT);
 		this.container = container;
 
-		ItemSlot bookSlotIcon = new ItemSlot(8, 8, new ItemStack(AWItems.researchBook), gui);
+		ItemSlot bookSlotIcon = new ItemSlot(8, 8, new ItemStack(AWCoreItems.RESEARCH_BOOK), gui);
 		bookSlotIcon.setRenderTooltip(false).setHighlightOnMouseOver(false).setRenderSlotBackground(false).setRenderItemQuantity(false);
 		addGuiElement(bookSlotIcon);
 

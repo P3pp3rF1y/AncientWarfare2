@@ -9,8 +9,8 @@ import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 
 public abstract class ItemBaseNPC extends ItemBase implements IClientRegister {
 	public ItemBaseNPC(String regName) {
-		super(AncientWarfareNPC.modID, regName);
-		setCreativeTab(AWNPCItemLoader.npcTab);
+		super(AncientWarfareNPC.MOD_ID, regName);
+		setCreativeTab(AncientWarfareNPC.TAB);
 
 		AncientWarfareNPC.proxy.addClientRegister(this);
 	}

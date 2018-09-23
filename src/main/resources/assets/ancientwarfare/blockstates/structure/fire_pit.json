@@ -1,0 +1,26 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "transform": "forge:default-block"
+    },
+    "variants": {
+        "lit=true,variant=default": {
+            "model": "ancientwarfare:structure/fire_pit"
+        },
+        "lit=true,variant=log": {
+            "model": "ancientwarfare:structure/fire_pit_log"
+        },
+        "lit=true,variant=square": {
+            "model": "ancientwarfare:structure/fire_pit_square"
+        },
+        "lit=false,variant=default": {
+            "model": "ancientwarfare:structure/fire_pit_unlit"
+        },
+        "lit=false,variant=log": {
+            "model": "ancientwarfare:structure/fire_pit_log_unlit"
+        },
+        "lit=false,variant=square": {
+            "model": "ancientwarfare:structure/fire_pit_square_unlit"
+        }
+    }
+}

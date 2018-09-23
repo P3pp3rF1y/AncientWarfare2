@@ -1,0 +1,20 @@
+{
+    "mod": "plants2",
+    "saplings": [
+        {
+            "sapling": {
+                "name": "plants2:nether_sapling"
+            }
+        },
+        {
+            "sapling": {
+                "name": "plants2:sapling_0"
+            }
+        },
+        {
+            "sapling": {
+                "name": "plants2:crystal_sapling"
+            }
+        }
+    ]
+}

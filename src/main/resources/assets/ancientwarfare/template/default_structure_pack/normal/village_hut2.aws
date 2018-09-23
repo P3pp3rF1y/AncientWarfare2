@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 11/12/2014 at: 17:15:37
+# Auto-generated structure template file. created on: 9/22/2018 at: 16:7:2
 # Lines beginning with # denote comments
 
 header:
-version=2.1
+version=2.6
 name=village_hut2
 size=4,6,6
 offset=1,0,5
@@ -86,7 +86,7 @@ rule:
 plugin=vanillaBlocks
 number=1
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:cobblestone","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:cobblestone",properties:{}},buildPass:0}
 :enddata
 :endrule
 
@@ -94,7 +94,7 @@ rule:
 plugin=vanillaBlocks
 number=2
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:dirt","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"dirt",snowy:"false"}},buildPass:0}
 :enddata
 :endrule
 
@@ -102,7 +102,7 @@ rule:
 plugin=vanillaBlocks
 number=3
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stone_stairs","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:stone_stairs",properties:{half:"bottom",shape:"straight",facing:"north"}},buildPass:0}
 :enddata
 :endrule
 
@@ -110,7 +110,7 @@ rule:
 plugin=vanillaBlocks
 number=4
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:log","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"oak",axis:"y"}},buildPass:0}
 :enddata
 :endrule
 
@@ -118,15 +118,15 @@ rule:
 plugin=vanillaBlocks
 number=5
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:planks","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:planks",properties:{variant:"oak"}},buildPass:0}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaDoors
+plugin=doors
 number=6
 data:
-JSON:{{"val":{"sideFlag":{"val":"0","id":"pb"},"blockName":{"val":"minecraft:wooden_door","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:wooden_door",properties:{hinge:"left",half:"lower",powered:"false",facing:"north",open:"false"}},buildPass:2}
 :enddata
 :endrule
 
@@ -134,15 +134,15 @@ rule:
 plugin=vanillaBlocks
 number=7
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:glass_pane","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:glass_pane",properties:{east:"false",south:"false",north:"false",west:"false"}},buildPass:0}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaDoors
+plugin=doors
 number=8
 data:
-JSON:{{"val":{"sideFlag":{"val":"0","id":"pb"},"blockName":{"val":"minecraft:wooden_door","id":"ss"},"meta":{"val":"8","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:wooden_door",properties:{hinge:"left",half:"upper",powered:"false",facing:"north",open:"false"}},buildPass:2}
 :enddata
 :endrule
 

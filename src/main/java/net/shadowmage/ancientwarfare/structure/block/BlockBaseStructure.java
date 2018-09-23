@@ -12,15 +12,14 @@ import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.BlockBase;
 import net.shadowmage.ancientwarfare.core.proxy.IClientRegister;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
-import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
-import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 
 public class BlockBaseStructure extends BlockBase implements IClientRegister {
 	BlockBaseStructure(Material material, String regName) {
-		super(material, AncientWarfareStructures.MOD_ID, regName);
-		setCreativeTab(AWStructuresItemLoader.structureTab);
+		super(material, AncientWarfareStructure.MOD_ID, regName);
+		setCreativeTab(AncientWarfareStructure.TAB);
 
-		AncientWarfareStructures.proxy.addClientRegister(this);
+		AncientWarfareStructure.proxy.addClientRegister(this);
 	}
 
 	@Override

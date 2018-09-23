@@ -14,7 +14,6 @@ import net.shadowmage.ancientwarfare.structure.worldgen.WorldGenTickHandler.Stru
 import net.shadowmage.ancientwarfare.structure.worldgen.WorldStructureGenerator;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
@@ -26,7 +25,7 @@ public class TownGeneratorStructures {
 		for (TownPartQuadrant tq : gen.quadrants) {
 			tq.addBlocks(blocks);
 		}
-		sortBlocksByDistance(blocks);
+		blocks.sort(new TownPartBlockComparator());
 		generateUniques(blocks, gen.uniqueTemplatesToGenerate, gen);
 		generateMains(blocks, gen.mainTemplatesToGenerate, gen);
 		generateHouses(blocks, gen.houseTemplatesToGenerate, gen);
@@ -246,9 +245,9 @@ public class TownGeneratorStructures {
 		}
 		int minX = x;
 		int minZ = z;
-		int maxX = x + t.xSize - 1;
-		int maxY = y + (t.ySize - 1 - t.yOffset);
-		int maxZ = z + t.zSize - 1;
+		int maxX = x + t.getSize().getX() - 1;
+		int maxY = y + (t.getSize().getY() - 1 - t.getOffset().getY());
+		int maxZ = z + t.getSize().getZ() - 1;
 
 		for (int x1 = minX; x1 <= maxX; x1++) {
 			for (int z1 = minZ; z1 <= maxZ; z1++) {
@@ -259,10 +258,10 @@ public class TownGeneratorStructures {
 				}
 			}
 		}
-		x -= (t.xSize / 2);
-		z -= (t.zSize / 2);
-		x += t.xOffset;
-		z += t.zOffset;
+		x -= (t.getSize().getX() / 2);
+		z -= (t.getSize().getZ() / 2);
+		x += t.getOffset().getX();
+		z += t.getOffset().getZ();
 		WorldGenTickHandler.INSTANCE.addStructureForGeneration(new StructureBuilder(world, t, EnumFacing.SOUTH, new BlockPos(x, y, z)));
 	}
 
@@ -296,8 +295,8 @@ public class TownGeneratorStructures {
 			}
 		}
 		face = face.getOpposite();//reverse face from road edge...
-		int width = face.getAxis() == EnumFacing.Axis.Z ? template.xSize : template.zSize;
-		int length = face.getAxis() == EnumFacing.Axis.Z ? template.zSize : template.xSize;
+		int width = face.getAxis() == EnumFacing.Axis.Z ? template.getSize().getX() : template.getSize().getZ();
+		int length = face.getAxis() == EnumFacing.Axis.Z ? template.getSize().getZ() : template.getSize().getX();
 		if (face == EnumFacing.SOUTH || face == EnumFacing.NORTH) {
 			width += expansion;
 		}//temporarily expand the size of the bb by the town-template building expansion size, ensures there is room around buildings
@@ -347,11 +346,11 @@ public class TownGeneratorStructures {
 
 		//find corners of the bb for the structure
 		BlockPos min = new BlockPos(plot.bb.min.getX() + wAdj, gen.townBounds.min.getY(), plot.bb.min.getZ() + lAdj);
-		BlockPos max = new BlockPos(min.getX() + (width - 1), min.getY() + template.ySize, min.getZ() + (length - 1));
+		BlockPos max = new BlockPos(min.getX() + (width - 1), min.getY() + template.getSize().getY(), min.getZ() + (length - 1));
 		StructureBB bb = new StructureBB(min, max);
 
-		BlockPos buildKey = bb.getRLCorner(face, BlockPos.ORIGIN).offset(face.rotateY(), template.xOffset).offset(face.getOpposite(), template.zOffset).up(gen.townBounds.min.getY() - template.yOffset);
-		bb.add(0, -template.yOffset, 0);
+		BlockPos buildKey = bb.getRLCorner(face, BlockPos.ORIGIN).offset(face.rotateY(), template.getOffset().getX()).offset(face.getOpposite(), template.getOffset().getZ()).up(gen.townBounds.min.getY() - template.getOffset().getY());
+		bb.add(0, -template.getOffset().getY(), 0);
 		gen.structureDoors.add(buildKey);
 		WorldGenTickHandler.INSTANCE.addStructureForGeneration(new StructureBuilder(gen.world, template, face, buildKey, bb));
 	}
@@ -360,19 +359,14 @@ public class TownGeneratorStructures {
 	 * pull a random template from the input generation list, does not remove
 	 */
 	private static StructureTemplate getRandomTemplate(List<StructureTemplate> templatesToGenerate, Random rng) {
-		if (templatesToGenerate.size() == 0) {
+		if (templatesToGenerate.isEmpty()) {
 			return null;
 		}
 		int roll = rng.nextInt(templatesToGenerate.size());
 		return templatesToGenerate.get(roll);
 	}
 
-	private static void sortBlocksByDistance(List<TownPartBlock> blocks) {
-		Collections.sort(blocks, new TownPartBlockComparator());
-	}
-
 	public static class TownPartBlockComparator implements Comparator<TownPartBlock> {
-
 		@Override
 		public int compare(TownPartBlock o1, TownPartBlock o2) {
 			if (o1.distFromTownCenter < o2.distFromTownCenter) {

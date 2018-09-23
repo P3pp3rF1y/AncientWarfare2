@@ -126,8 +126,9 @@ public class ItemCommandBaton extends ItemBaseNPC implements IItemKeyInterface {
 			return super.getAttributeModifiers(slot, stack);
 		}
 
-		Multimap multimap = super.getAttributeModifiers(slot, stack);
+		Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot, stack);
 		multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", this.attackDamage, 0));
+		multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", -2.3D, 0));
 		return multimap;
 	}
 

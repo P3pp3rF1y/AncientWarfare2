@@ -161,8 +161,10 @@ public class AWCraftingManager {
 	public static void registerIngredients() {
 		CraftingHelper.register(new ResourceLocation(AncientWarfareCore.MOD_ID, "item_count"), (IIngredientFactory) (c, j) -> new IngredientCount(CraftingHelper.getItemStack(j, c)));
 		CraftingHelper.register(new ResourceLocation(AncientWarfareCore.MOD_ID, "ore_dict_count"), (IIngredientFactory) (c, j) -> new IngredientOreCount(JsonUtils.getString(j, "ore"), JsonUtils.getInt(j, "count", 1)));
+		CraftingHelper.register(new ResourceLocation(AncientWarfareCore.MOD_ID, "item_nbt_relaxed"), (IIngredientFactory) (c, j) -> new IngredientNBTRelaxed(CraftingHelper.getItemStack(j, c)));
 	}
 
+	@SuppressWarnings({"squid:S3725", "squid:S3878"})
 	private static void loadRecipes(ModContainer mod, File source, String base) {
 		JsonContext ctx = new JsonContext(mod.getModId());
 
@@ -176,7 +178,7 @@ public class AWCraftingManager {
 					LOAD_CONSTANTS.invoke(ctx, new Object[] {json});
 				}
 				catch (IOException | IllegalAccessException | InvocationTargetException e) {
-					AncientWarfareCore.log.error("Error loading _constants.json: ", e);
+					AncientWarfareCore.LOG.error("Error loading _constants.json: ", e);
 					return false;
 				}
 				finally {
@@ -205,14 +207,14 @@ public class AWCraftingManager {
 					recipe.setRegistryName(key);
 					addRecipe(recipe, mod.getModId().equals(AncientWarfareCore.MOD_ID));
 				} else {
-					AncientWarfareCore.log.info("Skipping recipe {} of type {} because it's not AW research recipe", key, type);
+					AncientWarfareCore.LOG.info("Skipping recipe {} of type {} because it's not AW research recipe", key, type);
 				}
 			}
 			catch (JsonParseException e) {
-				AncientWarfareCore.log.error("Parsing error loading recipe {}", key, e);
+				AncientWarfareCore.LOG.error("Parsing error loading recipe {}", key, e);
 			}
 			catch (IOException e) {
-				AncientWarfareCore.log.error("Couldn't read recipe {} from {}", key, file, e);
+				AncientWarfareCore.LOG.error("Couldn't read recipe {} from {}", key, file, e);
 			}
 			finally {
 				IOUtils.closeQuietly(reader);
@@ -233,7 +235,7 @@ public class AWCraftingManager {
 		}
 	}
 
-	private static InventoryCrafting fillCraftingMatrixFromInventory(List<ItemStack> resources) {
+	public static InventoryCrafting fillCraftingMatrixFromInventory(List<ItemStack> resources) {
 		InventoryCrafting invCrafting = new InventoryCrafting(new Container() {
 			@Override
 			public boolean canInteractWith(EntityPlayer playerIn) {
@@ -256,7 +258,18 @@ public class AWCraftingManager {
 	public static ICraftingRecipe findMatchingRecipe(World world, NonNullList<ItemStack> inputs, ItemStack result) {
 		InventoryCrafting inv = fillCraftingMatrixFromInventory(inputs);
 		List<ICraftingRecipe> recipes = findMatchingRecipesNoResearchCheck(inv, world);
-		return recipes.stream().filter(r -> recipeResultsEqual(result, r, inv)).findFirst().orElse(NoRecipeWrapper.INSTANCE);
+
+		if (recipes.isEmpty()) {
+			return NoRecipeWrapper.INSTANCE;
+		}
+
+		//if there's only one match just return
+		if (recipes.size() == 1) {
+			return recipes.get(0);
+		}
+
+		//if there's multiple, filter by result and return the first that matches by result, just in case none match by result return the first recipe in the list
+		return recipes.stream().filter(r -> recipeResultsEqual(result, r, inv)).findFirst().orElse(recipes.get(0));
 	}
 
 	private static boolean recipeResultsEqual(ItemStack result, ICraftingRecipe r, InventoryCrafting inv) {
@@ -291,10 +304,12 @@ public class AWCraftingManager {
 		}, stopOnFail);
 	}
 
+	@SuppressWarnings("squid:UnusedPrivateMethod")
 	private static <T> T getRecipeInventoryMatch(ICraftingRecipe recipe, IItemHandler inventory, Supplier<T> initialize, TriFunction<T, Integer, ItemStack, T> onMatch, BiFunction<T, Ingredient, T> onFail, boolean stopOnFail) {
 		T ret = initialize.get();
 
 		if (!recipe.isValid()) {
+			ret = onFail.apply(ret, Ingredient.EMPTY);
 			return ret;
 		}
 

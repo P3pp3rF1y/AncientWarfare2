@@ -33,6 +33,7 @@ public class NpcAIMedicBase extends NpcAI<NpcBase> {
 				return true;
 			return false;
 		};
+		setMutexBits(MOVE | ATTACK);
 	}
 
 	@Override

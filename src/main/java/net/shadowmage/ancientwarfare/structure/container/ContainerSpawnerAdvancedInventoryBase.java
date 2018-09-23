@@ -10,7 +10,7 @@ import net.minecraftforge.items.SlotItemHandler;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketGui;
-import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks;
+import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings;
 
 import javax.annotation.Nonnull;
@@ -39,7 +39,7 @@ public class ContainerSpawnerAdvancedInventoryBase extends ContainerBase {
 					public boolean isItemValid(@Nonnull ItemStack stack) {
 						if (stack.getItem() instanceof ItemBlock) {
 							ItemBlock block = (ItemBlock) stack.getItem();
-							if (block.getBlock() == AWStructuresBlocks.advancedSpawner) {
+							if (block.getBlock() == AWStructureBlocks.ADVANCED_SPAWNER) {
 								return false;
 							}
 						}

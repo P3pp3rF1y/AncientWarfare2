@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 12/21/2014 at: 14:15:59
+# Auto-generated structure template file. created on: 9/22/2018 at: 16:7:2
 # Lines beginning with # denote comments
 
 header:
-version=2.1
+version=2.6
 name=house_empty_lot
 size=12,3,12
 offset=5,1,11
@@ -80,7 +80,7 @@ rule:
 plugin=vanillaBlocks
 number=1
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:grass","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:grass",properties:{snowy:"false"}},buildPass:0}
 :enddata
 :endrule
 
@@ -88,7 +88,7 @@ rule:
 plugin=vanillaBlocks
 number=2
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:fence","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:fence",properties:{east:"false",south:"false",north:"false",west:"false"}},buildPass:0}
 :enddata
 :endrule
 
@@ -96,7 +96,7 @@ rule:
 plugin=vanillaBlocks
 number=3
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:yellow_flower","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:yellow_flower",properties:{type:"dandelion"}},buildPass:2}
 :enddata
 :endrule
 
@@ -104,7 +104,7 @@ rule:
 plugin=vanillaBlocks
 number=4
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:double_plant","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:double_plant",properties:{half:"lower",variant:"double_fern",facing:"north"}},buildPass:2}
 :enddata
 :endrule
 
@@ -112,7 +112,7 @@ rule:
 plugin=vanillaBlocks
 number=5
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:tallgrass","id":"ss"},"meta":{"val":"1","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:tallgrass",properties:{type:"tall_grass"}},buildPass:2}
 :enddata
 :endrule
 
@@ -120,7 +120,7 @@ rule:
 plugin=vanillaBlocks
 number=6
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:red_flower","id":"ss"},"meta":{"val":"5","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:red_flower",properties:{type:"orange_tulip"}},buildPass:2}
 :enddata
 :endrule
 
@@ -128,7 +128,7 @@ rule:
 plugin=vanillaBlocks
 number=7
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:leaves","id":"ss"},"meta":{"val":"7","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:leaves",properties:{check_decay:"false",decayable:"false",variant:"jungle"}},buildPass:0}
 :enddata
 :endrule
 
@@ -136,7 +136,7 @@ rule:
 plugin=vanillaBlocks
 number=8
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:red_flower","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:red_flower",properties:{type:"poppy"}},buildPass:2}
 :enddata
 :endrule
 
@@ -144,7 +144,7 @@ rule:
 plugin=vanillaBlocks
 number=9
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:double_plant","id":"ss"},"meta":{"val":"5","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:double_plant",properties:{half:"lower",variant:"paeonia",facing:"north"}},buildPass:2}
 :enddata
 :endrule
 
@@ -152,7 +152,7 @@ rule:
 plugin=vanillaBlocks
 number=10
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:leaves","id":"ss"},"meta":{"val":"4","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:leaves",properties:{check_decay:"false",decayable:"false",variant:"oak"}},buildPass:0}
 :enddata
 :endrule
 
@@ -160,7 +160,7 @@ rule:
 plugin=vanillaBlocks
 number=11
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:leaves","id":"ss"},"meta":{"val":"15","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:leaves",properties:{check_decay:"true",decayable:"false",variant:"jungle"}},buildPass:0}
 :enddata
 :endrule
 
@@ -168,7 +168,7 @@ rule:
 plugin=vanillaBlocks
 number=12
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:double_plant","id":"ss"},"meta":{"val":"2","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:double_plant",properties:{half:"lower",variant:"double_grass",facing:"north"}},buildPass:2}
 :enddata
 :endrule
 
@@ -176,7 +176,7 @@ rule:
 plugin=vanillaBlocks
 number=13
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:double_plant","id":"ss"},"meta":{"val":"4","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:double_plant",properties:{half:"lower",variant:"double_rose",facing:"north"}},buildPass:2}
 :enddata
 :endrule
 
@@ -184,7 +184,7 @@ rule:
 plugin=vanillaBlocks
 number=14
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:torch","id":"ss"},"meta":{"val":"5","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"up"}},buildPass:2}
 :enddata
 :endrule
 
@@ -192,7 +192,7 @@ rule:
 plugin=vanillaSign
 number=15
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:standing_sign","id":"ss"},"signContents1":{"val":"Sale","id":"ss"},"signContents2":{"val":"","id":"ss"},"signContents0":{"val":"For","id":"ss"},"meta":{"val":"0","id":"pi"},"signContents3":{"val":"","id":"ss"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{signContents0:"ForÂ§r§r",blockState:{blockName:"minecraft:standing_sign",properties:{rotation:"0"}},signContents2:"",buildPass:2,signContents1:"SaleÂ§r§r",signContents3:""}
 :enddata
 :endrule
 
@@ -200,7 +200,7 @@ rule:
 plugin=vanillaSign
 number=16
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:standing_sign","id":"ss"},"signContents1":{"val":"Mayor","id":"ss"},"signContents2":{"val":"","id":"ss"},"signContents0":{"val":"See","id":"ss"},"meta":{"val":"0","id":"pi"},"signContents3":{"val":"","id":"ss"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{signContents0:"SeeÂ§r§r",blockState:{blockName:"minecraft:standing_sign",properties:{rotation:"0"}},signContents2:"",buildPass:2,signContents1:"MayorÂ§r§r",signContents3:""}
 :enddata
 :endrule
 
@@ -208,7 +208,7 @@ rule:
 plugin=vanillaBlocks
 number=17
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:double_plant","id":"ss"},"meta":{"val":"9","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:double_plant",properties:{half:"upper",variant:"sunflower",facing:"north"}},buildPass:2}
 :enddata
 :endrule
 
@@ -216,7 +216,7 @@ rule:
 plugin=vanillaBlocks
 number=18
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:double_plant","id":"ss"},"meta":{"val":"8","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:double_plant",properties:{half:"upper",variant:"sunflower",facing:"north"}},buildPass:2}
 :enddata
 :endrule
 
@@ -224,7 +224,7 @@ rule:
 plugin=vanillaBlocks
 number=19
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:double_plant","id":"ss"},"meta":{"val":"11","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:double_plant",properties:{half:"upper",variant:"sunflower",facing:"north"}},buildPass:2}
 :enddata
 :endrule
 

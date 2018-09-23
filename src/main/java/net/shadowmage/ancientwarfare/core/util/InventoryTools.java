@@ -48,11 +48,11 @@ public class InventoryTools {
 		return insertItem(handler, stack, true).isEmpty();
 	}
 
-	public static boolean canInventoryHold(IItemHandler handler, NonNullList<ItemStack> stacks) {
+	public static boolean canInventoryHold(IItemHandler handler, List<ItemStack> stacks) {
 		return insertItems(handler, stacks, true).isEmpty();
 	}
 
-	public static NonNullList<ItemStack> insertItems(IItemHandler handler, NonNullList<ItemStack> stacks, boolean simulate) {
+	public static List<ItemStack> insertItems(IItemHandler handler, List<ItemStack> stacks, boolean simulate) {
 		NonNullList<ItemStack> remainingItems = NonNullList.create();
 		if (simulate) {
 			handler = cloneItemHandler(handler);
@@ -545,7 +545,7 @@ public class InventoryTools {
 
 		for (ItemStack itemstack : loot) {
 			if (randomSlots.isEmpty()) {
-				AncientWarfareCore.log.warn("Tried to over-fill a container");
+				AncientWarfareCore.LOG.warn("Tried to over-fill a container");
 				return;
 			}
 
@@ -710,7 +710,7 @@ public class InventoryTools {
 		}
 	}
 
-	public static void insertOrDropItems(IItemHandler handler, NonNullList<ItemStack> stacks, World world, BlockPos pos) {
+	public static void insertOrDropItems(IItemHandler handler, List<ItemStack> stacks, World world, BlockPos pos) {
 		for (ItemStack stack : stacks) {
 			insertOrDropItem(handler, stack, world, pos);
 		}

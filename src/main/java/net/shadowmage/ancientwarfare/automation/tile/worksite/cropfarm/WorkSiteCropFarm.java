@@ -117,15 +117,16 @@ public class WorkSiteCropFarm extends TileWorksiteFarm {
 
 	@Override
 	protected Optional<IWorksiteAction> getNextAction() {
-		if (hasToPlant()) {
-			return Optional.of(PLANT_ACTION);
+		if (!blocksToHarvest.isEmpty()) {
+			return Optional.of(HARVEST_ACTION);
 		} else if (hasToFertilize()) {
 			return Optional.of(FERTILIZE_ACTION);
+		} else if (hasToPlant()) {
+			return Optional.of(PLANT_ACTION);
 		} else if (!blocksToTill.isEmpty()) {
 			return Optional.of(TILL_ACTION);
-		} else if (!blocksToHarvest.isEmpty()) {
-			return Optional.of(HARVEST_ACTION);
 		}
+
 		return Optional.empty();
 	}
 

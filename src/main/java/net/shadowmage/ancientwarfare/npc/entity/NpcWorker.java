@@ -19,6 +19,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite.WorkType;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.item.ItemHammer;
 import net.shadowmage.ancientwarfare.core.item.ItemQuill;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIDoor;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFleeHostiles;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
@@ -120,16 +121,13 @@ public class NpcWorker extends NpcPlayerOwned implements IWorker {
 	}
 
 	@Override
-	public boolean shouldBeAtHome() {
+	public boolean shouldSleep() {
 		WorkOrder order = WorkOrder.getWorkOrder(ordersStack);
 		if (order == null || !order.isNightShift()) {
-			return super.shouldBeAtHome();
-		} else {
-			if (getAttackTarget() != null || !hasHome() || !world.provider.hasSkyLight()) {
-				return false;
-			}
-			return world.isDaytime() || world.isRainingAt(getPosition());
+			return super.shouldSleep();
 		}
+
+		return WorldTools.isDaytimeInDimension(world);
 	}
 
 	@Override

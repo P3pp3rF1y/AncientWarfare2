@@ -46,7 +46,7 @@ public class BlockWorksiteBase extends BlockBaseAutomation implements IRotatable
 		return WorldTools.getTile(world, pos, IRotatableTile.class).map(t -> state.withProperty(FACING, t.getPrimaryFacing())).orElse(state);
 	}
 
-	BlockWorksiteBase setTileFactory(Supplier<TileEntity> renderFactory) {
+	public BlockWorksiteBase setTileFactory(Supplier<TileEntity> renderFactory) {
 		this.tileFactory = renderFactory;
 		return this;
 	}

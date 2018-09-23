@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.structure.block;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -8,7 +9,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
-import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 
 import java.util.HashMap;
 import java.util.List;
@@ -76,7 +77,7 @@ public class BlockDataManager {
 			id = StringTools.safeParseInt(bits[1]);
 			block = Block.getBlockFromName(name);
 			if (block == null) {
-				AncientWarfareStructures.log.error("ERROR parsing block name from name mapping: " + name + " id: " + id + " found: " + block);
+				AncientWarfareStructure.LOG.error("ERROR parsing block name from name mapping: " + name + " id: " + id + " found: " + block);
 				continue;
 			}
 			blockNameToBlock.put(name, block);
@@ -190,21 +191,6 @@ public class BlockDataManager {
 	}
 
 	/*
-	 * return the new meta for the input block after rotating clockwise 90' x the input number of turns
-	 */
-	public int getRotatedMeta(Block block, int meta, int turns) {
-		BlockInfo info = blockInfoMap.get(block);
-		if (info != null) {
-			int rm = meta;
-			for (int i = 0; i < turns; i++) {
-				rm = info.getRotatedMeta(rm);
-			}
-			return rm;
-		}
-		return meta;
-	}
-
-	/*
 	 * return the build-priority for the block<br>
 	 * 0==solid block, no requisites, e.g. stone<br>
 	 * 1==second-pass building, e.g. torches<br>
@@ -252,12 +238,13 @@ public class BlockDataManager {
 	 * returned stack-size is dependent upon how many input items are needed for that block
 	 * usually 1, but can be 2 for double-slabs
 	 */
-	public ItemStack getInventoryStackForBlock(Block block, int meta) {
-		BlockInfo info = blockInfoMap.get(block);
+	public ItemStack getInventoryStackForBlock(IBlockState state) {
+		BlockInfo info = blockInfoMap.get(state.getBlock());
+		int meta = state.getBlock().getMetaFromState(state);
 		if (info != null) {
-			return info.getStackFor(block, meta);
+			return info.getStackFor(state.getBlock(), meta);
 		}
-		return new ItemStack(block, 1, meta);
+		return new ItemStack(state.getBlock(), 1, meta);
 	}
 
 	private class BlockInfo {
@@ -275,13 +262,6 @@ public class BlockDataManager {
 		public void setRotations(byte[] rotations) {
 			this.rotations = rotations;
 			this.hasRotation = true;
-		}
-
-		public int getRotatedMeta(int meta) {
-			if (!hasRotation) {
-				return meta;
-			}
-			return rotations[meta];
 		}
 
 		public ItemStack getStackFor(Block block, int meta) {

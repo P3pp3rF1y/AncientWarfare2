@@ -27,8 +27,10 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
+import net.shadowmage.ancientwarfare.npc.entity.NpcTrader;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
-import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionTrader;
+import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
 
@@ -41,7 +43,7 @@ import java.util.Set;
 public class ItemSpawnerPlacer extends ItemBaseStructure {
 	private static final String SPAWNER_DATA_TAG = "spawnerData";
 
-	ItemSpawnerPlacer(String name) {
+	public ItemSpawnerPlacer(String name) {
 		super(name);
 		MinecraftForge.EVENT_BUS.register(this);
 	}
@@ -75,7 +77,7 @@ public class ItemSpawnerPlacer extends ItemBaseStructure {
 			//noinspection ConstantConditions
 			if (stack.hasTagCompound() && stack.getTagCompound().hasKey(SPAWNER_DATA_TAG)) {
 				BlockPos placePos = traceResult.getBlockPos().offset(traceResult.sideHit);
-				if (player.world.setBlockState(placePos, AWStructuresBlocks.advancedSpawner.getDefaultState())) {
+				if (player.world.setBlockState(placePos, AWStructureBlocks.ADVANCED_SPAWNER.getDefaultState())) {
 					WorldTools.getTile(player.world, placePos, TileAdvancedSpawner.class)
 							.ifPresent(t -> {
 								SpawnerSettings settings = new SpawnerSettings();
@@ -150,6 +152,8 @@ public class ItemSpawnerPlacer extends ItemBaseStructure {
 
 	private static final Map<Class, Set<String>> ENTITY_TAGS = new ImmutableMap.Builder<Class, Set<String>>()
 			.put(NpcFaction.class, Collections.singleton("factionName"))
+			.put(NpcFactionTrader.class, Collections.singleton("tradeList"))
+			.put(NpcTrader.class, Collections.singleton("tradeAI"))
 			.put(EntityVillager.class, ImmutableSet.of("Offers", "Profession", "ProfessionName", "Career", "CareerLevel"))
 			.put(EntityHorse.class, Collections.singleton("Variant"))
 			.put(EntityLiving.class, ImmutableSet.of("HandItems", "HandDropChances", "ArmorItems", "ArmorDropChances"))

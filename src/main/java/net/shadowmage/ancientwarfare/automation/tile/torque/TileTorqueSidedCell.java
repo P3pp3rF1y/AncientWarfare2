@@ -5,8 +5,8 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.common.Loader;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
-import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.SidedTorqueCell;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
@@ -176,7 +176,7 @@ public abstract class TileTorqueSidedCell extends TileTorqueBase {
 				updatedConnections[i] = (cache[i].canInputTorque(dir.getOpposite()) && canOutputTorque(dir)) || (cache[i].canOutputTorque(dir.getOpposite()) && canInputTorque(dir));
 			}
 		}
-		if (ModuleStatus.redstoneFluxEnabled) {
+		if (Loader.isModLoaded("redstoneflux")) {
 			TileEntity[] tes = getRFCache();
 			for (int i = 0; i < tes.length; i++) {
 				if (cache[i] != null) {

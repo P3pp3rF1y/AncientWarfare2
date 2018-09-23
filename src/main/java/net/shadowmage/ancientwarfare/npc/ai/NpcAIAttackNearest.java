@@ -17,6 +17,15 @@ public class NpcAIAttackNearest extends EntityAINearestAttackableTarget {
 	}
 
 	@Override
+	public boolean shouldExecute() {
+		boolean ret = super.shouldExecute();
+		if (!ret && taskOwner.getAttackTarget() != null && taskOwner.getAttackTarget().isDead) {
+			taskOwner.setAttackTarget(null);
+		}
+		return ret;
+	}
+
+	@Override
 	protected boolean isSuitableTarget(EntityLivingBase target, boolean unused) {
 		return AIHelper.isTarget((NpcBase) this.taskOwner, target, shouldCheckSight);
 	}

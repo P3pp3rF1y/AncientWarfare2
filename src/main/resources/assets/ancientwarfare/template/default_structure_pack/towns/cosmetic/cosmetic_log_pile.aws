@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 12/21/2014 at: 14:16:29
+# Auto-generated structure template file. created on: 9/22/2018 at: 16:7:2
 # Lines beginning with # denote comments
 
 header:
-version=2.1
+version=2.6
 name=cosmetic_log_pile
 size=5,3,8
 offset=2,1,7
@@ -68,7 +68,7 @@ rule:
 plugin=vanillaBlocks
 number=1
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:grass","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:grass",properties:{snowy:"false"}},buildPass:0}
 :enddata
 :endrule
 
@@ -76,7 +76,7 @@ rule:
 plugin=vanillaBlocks
 number=2
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:dirt","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"dirt",snowy:"false"}},buildPass:0}
 :enddata
 :endrule
 
@@ -84,7 +84,7 @@ rule:
 plugin=vanillaBlocks
 number=3
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:log","id":"ss"},"meta":{"val":"9","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"spruce",axis:"z"}},buildPass:0}
 :enddata
 :endrule
 
@@ -92,7 +92,7 @@ rule:
 plugin=vanillaBlocks
 number=4
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:log","id":"ss"},"meta":{"val":"8","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"oak",axis:"z"}},buildPass:0}
 :enddata
 :endrule
 
@@ -100,7 +100,7 @@ rule:
 plugin=vanillaBlocks
 number=5
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:log","id":"ss"},"meta":{"val":"11","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"jungle",axis:"z"}},buildPass:0}
 :enddata
 :endrule
 
@@ -108,7 +108,7 @@ rule:
 plugin=vanillaBlocks
 number=6
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:log","id":"ss"},"meta":{"val":"10","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"birch",axis:"z"}},buildPass:0}
 :enddata
 :endrule
 

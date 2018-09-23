@@ -2,7 +2,7 @@ package net.shadowmage.ancientwarfare.structure.town;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
-import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 
 import java.util.ArrayList;
@@ -332,7 +332,7 @@ public final class TownTemplate {
 		validateStructureList(exteriorStructureEntries);
 		TownStructureEntry e = getLamp();
 		if (e != null && StructureTemplateManager.INSTANCE.getTemplate(e.templateName) == null) {
-			AncientWarfareStructures.log.error("Error loading lamp template: " + e.templateName);
+			AncientWarfareStructure.LOG.error("Error loading lamp template: " + e.templateName);
 		}
 		wallTotalWeights = validateWallList(walls, wallTotalWeights);
 		cornersTotalWeight = validateWallList(cornerWalls, cornersTotalWeight);
@@ -346,7 +346,7 @@ public final class TownTemplate {
 		TownStructureEntry e;
 		while (it.hasNext() && (e = it.next()) != null) {
 			if (StructureTemplateManager.INSTANCE.getTemplate(e.templateName) == null) {
-				AncientWarfareStructures.log.error("Error loading structure template: " + e.templateName + " for town: " + townTypeName);
+				AncientWarfareStructure.LOG.error("Error loading structure template: " + e.templateName + " for town: " + townTypeName);
 				it.remove();
 			}
 		}
@@ -357,7 +357,7 @@ public final class TownTemplate {
 		TownWallEntry e;
 		while (it.hasNext() && (e = it.next()) != null) {
 			if (StructureTemplateManager.INSTANCE.getTemplate(e.templateName) == null) {
-				AncientWarfareStructures.log.error("Error loading structure template: " + e.templateName + " for town: " + townTypeName);
+				AncientWarfareStructure.LOG.error("Error loading structure template: " + e.templateName + " for town: " + townTypeName);
 				it.remove();
 				originalWeight -= e.weight;
 			}
@@ -367,11 +367,11 @@ public final class TownTemplate {
 
 	public final boolean isValid() {
 		if (wallStyle > 0 && cornerWalls.isEmpty()) {
-			AncientWarfareStructures.log.error("Town template of: " + townTypeName + " is missing corner wall type for specified wall style of: " + wallStyle);
+			AncientWarfareStructure.LOG.error("Town template of: " + townTypeName + " is missing corner wall type for specified wall style of: " + wallStyle);
 			return false;
 		}
 		if (wallStyle > 1 && (walls.isEmpty() || gateCenterWalls.isEmpty() || gateLeftWalls.isEmpty() || gateRightWalls.isEmpty())) {
-			AncientWarfareStructures.log.error("Town template of: " + townTypeName + " is missing one or more wall types for specified wall style of: " + wallStyle);
+			AncientWarfareStructure.LOG.error("Town template of: " + townTypeName + " is missing one or more wall types for specified wall style of: " + wallStyle);
 			return false;
 		}
 		return townTypeName != null && !townTypeName.isEmpty();

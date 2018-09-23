@@ -9,13 +9,17 @@ import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
+import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall.NpcDeathEntry;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class NpcAIPlayerOwnedPriest extends NpcAI<NpcPlayerOwned> {
 
-	private static final int UPDATE_FREQ = 200, RESURRECTION_TIME = 100;
+	private static final int UPDATE_FREQ = 200;
+	private static final int RESURRECTION_TIME = 100;
 	private int lastCheckTicks = -1;
 	private NpcDeathEntry entryToRes;
 	private int resurrectionDelay = 0;
@@ -30,7 +34,7 @@ public class NpcAIPlayerOwnedPriest extends NpcAI<NpcPlayerOwned> {
 		if (!npc.getIsAIEnabled()) {
 			return false;
 		}
-		return (lastCheckTicks == -1 || npc.ticksExisted - lastCheckTicks > UPDATE_FREQ) && npc.getTownHall() != null && !npc.getTownHall().getDeathList().isEmpty();
+		return (lastCheckTicks == -1 || npc.ticksExisted - lastCheckTicks > UPDATE_FREQ) && npc.getTownHall().map(t -> !t.getDeathList().isEmpty()).orElse(false);
 	}
 
 	@Override
@@ -38,12 +42,12 @@ public class NpcAIPlayerOwnedPriest extends NpcAI<NpcPlayerOwned> {
 		if (!npc.getIsAIEnabled()) {
 			return false;
 		}
-		return npc.getTownHall() != null && entryToRes != null && !entryToRes.resurrected && entryToRes.beingResurrected;
+		return npc.getTownHall().isPresent() && entryToRes != null && !entryToRes.resurrected && entryToRes.beingResurrected;
 	}
 
 	@Override
 	public void startExecuting() {
-		List<NpcDeathEntry> list = npc.getTownHall().getDeathList();
+		List<NpcDeathEntry> list = npc.getTownHall().map(TileTownHall::getDeathList).orElse(Collections.emptyList());
 		for (NpcDeathEntry entry : list) {
 			if (entry.canRes && !entry.resurrected && !entry.beingResurrected) {
 				this.entryToRes = entry;
@@ -58,7 +62,11 @@ public class NpcAIPlayerOwnedPriest extends NpcAI<NpcPlayerOwned> {
 		if (entryToRes == null || entryToRes.resurrected) {
 			return;
 		}
-		BlockPos pos = npc.getTownHallPosition();
+		Optional<BlockPos> townHallPos = npc.getTownHallPosition();
+		if (!townHallPos.isPresent()) {
+			return;
+		}
+		BlockPos pos = townHallPos.get();
 		double dist = npc.getDistanceSq(pos.getX() + 0.5d, pos.getY(), pos.getZ() + 0.5d);
 		if (dist > AWNPCStatics.npcActionRange * AWNPCStatics.npcActionRange) {
 			moveToPosition(pos, dist);
@@ -73,7 +81,7 @@ public class NpcAIPlayerOwnedPriest extends NpcAI<NpcPlayerOwned> {
 		}
 	}
 
-	protected void resurrectTarget() {
+	private void resurrectTarget() {
 		NpcBase resdNpc = ItemNpcSpawner.createNpcFromItem(npc.world, entryToRes.stackToSpawn);
 		entryToRes.beingResurrected = false;
 		if (resdNpc != null) {
@@ -92,7 +100,7 @@ public class NpcAIPlayerOwnedPriest extends NpcAI<NpcPlayerOwned> {
 			resdNpc.motionY = 0;
 			entryToRes.resurrected = npc.world.spawnEntity(resdNpc);
 		}
-		npc.getTownHall().informViewers();
+		npc.getTownHall().ifPresent(TileTownHall::informViewers);
 		entryToRes = null;
 	}
 

@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 11/8/2014 at: 15:48:48
+# Auto-generated structure template file. created on: 9/22/2018 at: 16:7:2
 # Lines beginning with # denote comments
 
 header:
-version=2.1
+version=2.6
 name=desert_tower
 size=15,20,13
 offset=7,2,12
@@ -22,7 +22,7 @@ minDuplicateDistance=40
 dimensionWhiteList=true
 dimensionList=0
 biomeWhiteList=true
-biomeList=minecraft:desert,minecraft:desert_hills,minecraft:savanna,minecraft:mutated_savanna_rock,minecraft:savanna_rock,minecraft:mutated_desert,minecraft:mutated_savanna,biomesoplenty:lush_desert
+biomeList=minecraft:mutated_savanna_rock,minecraft:desert,minecraft:mutated_desert,minecraft:savanna_rock,minecraft:desert_hills,biomesoplenty:lush_desert,minecraft:mutated_savanna,minecraft:savanna
 leveling=3
 fill=3
 border=3
@@ -338,7 +338,7 @@ rule:
 plugin=vanillaBlocks
 number=1
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:sandstone","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:sandstone",properties:{type:"sandstone"}},buildPass:0}
 :enddata
 :endrule
 
@@ -346,7 +346,7 @@ rule:
 plugin=vanillaBlocks
 number=2
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:sand","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:sand",properties:{variant:"sand"}},buildPass:0}
 :enddata
 :endrule
 
@@ -354,7 +354,7 @@ rule:
 plugin=vanillaBlocks
 number=3
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stonebrick","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:stonebrick",properties:{variant:"stonebrick"}},buildPass:0}
 :enddata
 :endrule
 
@@ -362,7 +362,7 @@ rule:
 plugin=vanillaBlocks
 number=4
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:double_stone_slab","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:double_stone_slab",properties:{seamless:"false",variant:"stone"}},buildPass:0}
 :enddata
 :endrule
 
@@ -370,7 +370,7 @@ rule:
 plugin=vanillaBlocks
 number=5
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stone","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:stone",properties:{variant:"stone"}},buildPass:0}
 :enddata
 :endrule
 
@@ -378,23 +378,23 @@ rule:
 plugin=vanillaBlocks
 number=6
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:double_wooden_slab","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:double_wooden_slab",properties:{variant:"oak"}},buildPass:0}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=7
 data:
-JSON:{{"val":{"lootLevel":{"val":"1","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"id":{"val":"minecraft:gold_ingot","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"Items":{"val":[{"val":{"id":{"val":"266","id":"ps"},"Damage":{"val":"0","id":"ps"},"Count":{"val":"1","id":"pb"},"Slot":{"val":"0","id":"pb"}},"id":"ct"}],"id":"ls"},"z":{"val":"-1298","id":"pi"},"y":{"val":"26","id":"pi"},"x":{"val":"536","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"5","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:1,teData:{x:536,y:26,Items:[{Slot:0b,id:266s,Count:1b,Damage:0s}],z:-1298,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=8
 data:
-JSON:{{"val":{"lootLevel":{"val":"2","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"id":{"val":"minecraft:diamond","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"Items":{"val":[{"val":{"id":{"val":"264","id":"ps"},"Damage":{"val":"0","id":"ps"},"Count":{"val":"1","id":"pb"},"Slot":{"val":"0","id":"pb"}},"id":"ct"}],"id":"ls"},"z":{"val":"-1298","id":"pi"},"y":{"val":"26","id":"pi"},"x":{"val":"537","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"5","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:2,teData:{x:537,y:26,Items:[{Slot:0b,id:264s,Count:1b,Damage:0s}],z:-1298,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:diamond",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -402,7 +402,7 @@ rule:
 plugin=vanillaBlocks
 number=9
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:wooden_slab","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:wooden_slab",properties:{half:"bottom",variant:"oak"}},buildPass:0}
 :enddata
 :endrule
 
@@ -410,23 +410,23 @@ rule:
 plugin=vanillaBlocks
 number=10
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:oak_stairs","id":"ss"},"meta":{"val":"2","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:oak_stairs",properties:{half:"bottom",shape:"straight",facing:"south"}},buildPass:0}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaDoors
+plugin=doors
 number=11
 data:
-JSON:{{"val":{"sideFlag":{"val":"0","id":"pb"},"blockName":{"val":"minecraft:wooden_door","id":"ss"},"meta":{"val":"2","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:wooden_door",properties:{hinge:"left",half:"lower",powered:"false",facing:"west",open:"false"}},buildPass:2}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaDoors
+plugin=doors
 number=12
 data:
-JSON:{{"val":{"sideFlag":{"val":"0","id":"pb"},"blockName":{"val":"minecraft:wooden_door","id":"ss"},"meta":{"val":"2","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:wooden_door",properties:{hinge:"left",half:"lower",powered:"false",facing:"west",open:"false"}},buildPass:2}
 :enddata
 :endrule
 
@@ -434,7 +434,7 @@ rule:
 plugin=vanillaBlocks
 number=13
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stone_button","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:stone_button",properties:{powered:"false",facing:"south"}},buildPass:2}
 :enddata
 :endrule
 
@@ -442,7 +442,7 @@ rule:
 plugin=vanillaBlocks
 number=14
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stone_button","id":"ss"},"meta":{"val":"1","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:stone_button",properties:{powered:"false",facing:"east"}},buildPass:2}
 :enddata
 :endrule
 
@@ -450,39 +450,39 @@ rule:
 plugin=vanillaBlocks
 number=15
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:lever","id":"ss"},"meta":{"val":"2","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:lever",properties:{powered:"false",facing:"west"}},buildPass:2}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaDoors
+plugin=doors
 number=16
 data:
-JSON:{{"val":{"sideFlag":{"val":"0","id":"pb"},"blockName":{"val":"minecraft:wooden_door","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:wooden_door",properties:{hinge:"left",half:"lower",powered:"false",facing:"east",open:"false"}},buildPass:2}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaDoors
+plugin=doors
 number=17
 data:
-JSON:{{"val":{"sideFlag":{"val":"0","id":"pb"},"blockName":{"val":"minecraft:wooden_door","id":"ss"},"meta":{"val":"7","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:wooden_door",properties:{hinge:"left",half:"lower",powered:"false",facing:"north",open:"true"}},buildPass:2}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=18
 data:
-JSON:{{"val":{"lootLevel":{"val":"1","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"id":{"val":"minecraft:gold_ingot","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"Items":{"val":[{"val":{"id":{"val":"266","id":"ps"},"Damage":{"val":"0","id":"ps"},"Count":{"val":"1","id":"pb"},"Slot":{"val":"0","id":"pb"}},"id":"ct"}],"id":"ls"},"z":{"val":"-1288","id":"pi"},"y":{"val":"26","id":"pi"},"x":{"val":"536","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"4","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:1,teData:{x:536,y:26,Items:[{Slot:0b,id:266s,Count:1b,Damage:0s}],z:-1288,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=19
 data:
-JSON:{{"val":{"lootLevel":{"val":"1","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"id":{"val":"minecraft:gold_ingot","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"Items":{"val":[{"val":{"id":{"val":"266","id":"ps"},"Damage":{"val":"0","id":"ps"},"Count":{"val":"1","id":"pb"},"Slot":{"val":"0","id":"pb"}},"id":"ct"}],"id":"ls"},"z":{"val":"-1288","id":"pi"},"y":{"val":"26","id":"pi"},"x":{"val":"537","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"4","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:1,teData:{x:537,y:26,Items:[{Slot:0b,id:266s,Count:1b,Damage:0s}],z:-1288,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -490,39 +490,39 @@ rule:
 plugin=vanillaBlocks
 number=20
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:oak_stairs","id":"ss"},"meta":{"val":"1","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:oak_stairs",properties:{half:"bottom",shape:"straight",facing:"west"}},buildPass:0}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaDoors
+plugin=doors
 number=21
 data:
-JSON:{{"val":{"sideFlag":{"val":"0","id":"pb"},"blockName":{"val":"minecraft:wooden_door","id":"ss"},"meta":{"val":"9","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:wooden_door",properties:{hinge:"right",half:"upper",powered:"false",facing:"north",open:"false"}},buildPass:2}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaDoors
+plugin=doors
 number=22
 data:
-JSON:{{"val":{"sideFlag":{"val":"0","id":"pb"},"blockName":{"val":"minecraft:wooden_door","id":"ss"},"meta":{"val":"8","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:wooden_door",properties:{hinge:"left",half:"upper",powered:"false",facing:"north",open:"false"}},buildPass:2}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaDoors
+plugin=doors
 number=23
 data:
-JSON:{{"val":{"sideFlag":{"val":"0","id":"pb"},"blockName":{"val":"minecraft:wooden_door","id":"ss"},"meta":{"val":"8","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:wooden_door",properties:{hinge:"left",half:"upper",powered:"false",facing:"north",open:"false"}},buildPass:2}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaDoors
+plugin=doors
 number=24
 data:
-JSON:{{"val":{"sideFlag":{"val":"0","id":"pb"},"blockName":{"val":"minecraft:wooden_door","id":"ss"},"meta":{"val":"8","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:wooden_door",properties:{hinge:"left",half:"upper",powered:"false",facing:"north",open:"false"}},buildPass:2}
 :enddata
 :endrule
 
@@ -530,7 +530,7 @@ rule:
 plugin=vanillaBlocks
 number=25
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:oak_stairs","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:oak_stairs",properties:{half:"bottom",shape:"straight",facing:"east"}},buildPass:0}
 :enddata
 :endrule
 
@@ -538,7 +538,7 @@ rule:
 plugin=vanillaBlocks
 number=26
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:torch","id":"ss"},"meta":{"val":"2","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"west"}},buildPass:2}
 :enddata
 :endrule
 
@@ -546,7 +546,7 @@ rule:
 plugin=vanillaBlocks
 number=27
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:torch","id":"ss"},"meta":{"val":"1","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"east"}},buildPass:2}
 :enddata
 :endrule
 
@@ -554,7 +554,7 @@ rule:
 plugin=vanillaBlocks
 number=28
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:torch","id":"ss"},"meta":{"val":"4","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"north"}},buildPass:2}
 :enddata
 :endrule
 
@@ -562,7 +562,7 @@ rule:
 plugin=vanillaBlocks
 number=29
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:torch","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"south"}},buildPass:2}
 :enddata
 :endrule
 
@@ -570,7 +570,7 @@ rule:
 plugin=vanillaBlocks
 number=30
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stone_brick_stairs","id":"ss"},"meta":{"val":"7","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"north"}},buildPass:0}
 :enddata
 :endrule
 
@@ -578,7 +578,7 @@ rule:
 plugin=vanillaBlocks
 number=31
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stone_brick_stairs","id":"ss"},"meta":{"val":"5","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"west"}},buildPass:0}
 :enddata
 :endrule
 
@@ -586,7 +586,7 @@ rule:
 plugin=vanillaBlocks
 number=32
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stone_brick_stairs","id":"ss"},"meta":{"val":"6","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"south"}},buildPass:0}
 :enddata
 :endrule
 
@@ -594,7 +594,7 @@ rule:
 plugin=vanillaBlocks
 number=33
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stone_brick_stairs","id":"ss"},"meta":{"val":"4","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"east"}},buildPass:0}
 :enddata
 :endrule
 
@@ -602,7 +602,7 @@ rule:
 plugin=vanillaBlocks
 number=34
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:oak_stairs","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:oak_stairs",properties:{half:"bottom",shape:"straight",facing:"north"}},buildPass:0}
 :enddata
 :endrule
 
@@ -610,7 +610,7 @@ rule:
 plugin=vanillaBlocks
 number=35
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stone_slab","id":"ss"},"meta":{"val":"8","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:stone_slab",properties:{half:"top",variant:"stone"}},buildPass:0}
 :enddata
 :endrule
 
@@ -618,7 +618,7 @@ rule:
 plugin=vanillaBlocks
 number=36
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stone_brick_stairs","id":"ss"},"meta":{"val":"1","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"west"}},buildPass:0}
 :enddata
 :endrule
 
@@ -626,7 +626,7 @@ rule:
 plugin=vanillaBlocks
 number=37
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stone_brick_stairs","id":"ss"},"meta":{"val":"2","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"south"}},buildPass:0}
 :enddata
 :endrule
 
@@ -634,7 +634,7 @@ rule:
 plugin=vanillaBlocks
 number=38
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stone_brick_stairs","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"north"}},buildPass:0}
 :enddata
 :endrule
 
@@ -642,7 +642,7 @@ rule:
 plugin=vanillaBlocks
 number=39
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stone_brick_stairs","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"east"}},buildPass:0}
 :enddata
 :endrule
 
@@ -650,7 +650,7 @@ rule:
 plugin=vanillaBlocks
 number=40
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stone_slab","id":"ss"},"meta":{"val":"5","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:stone_slab",properties:{half:"bottom",variant:"stone_brick"}},buildPass:0}
 :enddata
 :endrule
 
@@ -658,7 +658,7 @@ rule:
 plugin=vanillaBlocks
 number=41
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stone_slab","id":"ss"},"meta":{"val":"13","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:stone_slab",properties:{half:"top",variant:"stone_brick"}},buildPass:0}
 :enddata
 :endrule
 
@@ -666,7 +666,7 @@ rule:
 plugin=vanillaBlocks
 number=42
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stone_slab","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:stone_slab",properties:{half:"bottom",variant:"stone"}},buildPass:0}
 :enddata
 :endrule
 
@@ -674,7 +674,7 @@ rule:
 plugin=vanillaBlocks
 number=43
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:double_stone_slab","id":"ss"},"meta":{"val":"5","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:double_stone_slab",properties:{seamless:"false",variant:"stone_brick"}},buildPass:0}
 :enddata
 :endrule
 
@@ -682,23 +682,23 @@ rule:
 plugin=vanillaBlocks
 number=44
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:wooden_pressure_plate","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:wooden_pressure_plate",properties:{powered:"false"}},buildPass:2}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaDoors
+plugin=doors
 number=45
 data:
-JSON:{{"val":{"sideFlag":{"val":"0","id":"pb"},"blockName":{"val":"minecraft:iron_door","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:iron_door",properties:{hinge:"left",half:"lower",powered:"false",facing:"east",open:"false"}},buildPass:2}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaDoors
+plugin=doors
 number=46
 data:
-JSON:{{"val":{"sideFlag":{"val":"0","id":"pb"},"blockName":{"val":"minecraft:iron_door","id":"ss"},"meta":{"val":"8","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:iron_door",properties:{hinge:"left",half:"upper",powered:"false",facing:"north",open:"false"}},buildPass:2}
 :enddata
 :endrule
 
@@ -707,8 +707,7 @@ entity:
 plugin=AWNpc
 number=0
 data:
-position=5,7,6
-JSON:{{"val":{"entityData":{"val":{"factionName":{"val":"desert","id":"ss"},"DropChances":{"val":[{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"}],"id":"ls"},"Attributes":{"val":[{"val":{"Name":{"val":"generic.maxHealth","id":"ss"},"Base":{"val":"20.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.knockbackResistance","id":"ss"},"Base":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.movementSpeed","id":"ss"},"Base":{"val":"0.325","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.followRange","id":"ss"},"Base":{"val":"60.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.attackDamage","id":"ss"},"Base":{"val":"2.0","id":"pd"}},"id":"ct"}],"id":"ls"},"Motion":{"val":[{"val":"0.0","id":"pd"},{"val":"-0.0784000015258789","id":"pd"},{"val":"0.0","id":"pd"}],"id":"ls"},"CustomName":{"val":"","id":"ss"},"Health":{"val":"20","id":"ps"},"HealF":{"val":"20.0","id":"pf"},"CustomNameVisible":{"val":"0","id":"pb"},"AttackTime":{"val":"0","id":"ps"},"Fire":{"val":"-1","id":"ps"},"attackDamageOverride":{"val":"-1","id":"pi"},"Invulnerable":{"val":"0","id":"pb"},"DeathTime":{"val":"0","id":"ps"},"AbsorptionAmount":{"val":"0.0","id":"pf"},"OnGround":{"val":"1","id":"pb"},"HurtTime":{"val":"0","id":"ps"},"Dimension":{"val":"0","id":"pi"},"Air":{"val":"300","id":"ps"},"customTex":{"val":"","id":"ss"},"armorValueOverride":{"val":"-1","id":"pi"},"Pos":{"val":[{"val":"533.5","id":"pd"},{"val":"31.0","id":"pd"},{"val":"-1294.5","id":"pd"}],"id":"ls"},"CanPickUpLoot":{"val":"0","id":"pb"},"PortalCooldown":{"val":"0","id":"pi"},"PersistenceRequired":{"val":"1","id":"pb"},"Leashed":{"val":"0","id":"pb"},"owner":{"val":"shadowmage4513","id":"ss"},"FallDistance":{"val":"0.0","id":"pf"},"Rotation":{"val":[{"val":"6.1307564","id":"pf"},{"val":"0.0","id":"pf"}],"id":"ls"},"levelingStats":{"val":{"level":{"val":"0","id":"pi"},"xp":{"val":"0","id":"pi"},"entryList":{"val":[],"id":"ls"}},"id":"ct"}},"id":"ct"},"xOffset":{"val":"0.5","id":"pf"},"mobID":{"val":"ancientwarfarenpc:faction.archer","id":"ss"},"zOffset":{"val":"0.5","id":"pf"},"rotation":{"val":"276.13077","id":"pf"},"equipmentData":{"val":{"equipmentContents":{"val":[{"val":{"id":{"val":"minecraft:bow","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"},"length":{"val":"5","id":"pi"}},"id":"ct"}},"id":"ct"}}
+JSON:{xOffset:0.5f,equipmentData:{equipmentContents:[{id:"minecraft:bow",Count:1b,slot:0,Damage:0s}]},rotation:276.13077f,mobID:"ancientwarfarenpc:faction.archer",zOffset:0.5f,position:1374859296774L,entityData:{Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.325d,Name:"generic.movementSpeed"},{Base:60.0d,Name:"generic.followRange"},{Base:2.0d,Name:"generic.attackDamage"}],Invulnerable:0b,AbsorptionAmount:0.0f,PortalCooldown:0,FallDistance:0.0f,levelingStats:{level:0,xp:0,entryList:[]},DeathTime:0s,DropChances:[1.0f,1.0f,1.0f,1.0f,1.0f],PersistenceRequired:1b,HealF:20.0f,owner:"shadowmage4513",Motion:[0.0d,-0.0784000015258789d,0.0d],armorValueOverride:-1,Leashed:0b,Health:20s,OnGround:1b,Dimension:0,Air:300s,Rotation:[6.1307564f,0.0f],CustomName:"",Pos:[533.5d,31.0d,-1294.5d],Fire:-1s,attackDamageOverride:-1,customTex:"",CanPickUpLoot:0b,factionName:"sarkonid",HurtTime:0s,AttackTime:0s,CustomNameVisible:0b}}
 :enddata
 :endentity
 
@@ -716,8 +715,7 @@ entity:
 plugin=AWNpc
 number=1
 data:
-position=8,7,6
-JSON:{{"val":{"entityData":{"val":{"factionName":{"val":"desert","id":"ss"},"DropChances":{"val":[{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"}],"id":"ls"},"Attributes":{"val":[{"val":{"Name":{"val":"generic.maxHealth","id":"ss"},"Base":{"val":"20.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.knockbackResistance","id":"ss"},"Base":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.movementSpeed","id":"ss"},"Base":{"val":"0.325","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.followRange","id":"ss"},"Base":{"val":"60.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.attackDamage","id":"ss"},"Base":{"val":"2.0","id":"pd"}},"id":"ct"}],"id":"ls"},"Motion":{"val":[{"val":"0.0","id":"pd"},{"val":"-0.0784000015258789","id":"pd"},{"val":"0.0","id":"pd"}],"id":"ls"},"CustomName":{"val":"","id":"ss"},"Health":{"val":"20","id":"ps"},"HealF":{"val":"20.0","id":"pf"},"CustomNameVisible":{"val":"0","id":"pb"},"AttackTime":{"val":"0","id":"ps"},"Fire":{"val":"-1","id":"ps"},"attackDamageOverride":{"val":"-1","id":"pi"},"Invulnerable":{"val":"0","id":"pb"},"DeathTime":{"val":"0","id":"ps"},"AbsorptionAmount":{"val":"0.0","id":"pf"},"OnGround":{"val":"1","id":"pb"},"HurtTime":{"val":"0","id":"ps"},"Dimension":{"val":"0","id":"pi"},"Air":{"val":"300","id":"ps"},"customTex":{"val":"","id":"ss"},"armorValueOverride":{"val":"-1","id":"pi"},"Pos":{"val":[{"val":"533.5","id":"pd"},{"val":"31.0","id":"pd"},{"val":"-1291.5","id":"pd"}],"id":"ls"},"CanPickUpLoot":{"val":"0","id":"pb"},"PortalCooldown":{"val":"0","id":"pi"},"PersistenceRequired":{"val":"1","id":"pb"},"Leashed":{"val":"0","id":"pb"},"owner":{"val":"shadowmage4513","id":"ss"},"FallDistance":{"val":"0.0","id":"pf"},"Rotation":{"val":[{"val":"3.0712688","id":"pf"},{"val":"0.0","id":"pf"}],"id":"ls"},"levelingStats":{"val":{"level":{"val":"0","id":"pi"},"xp":{"val":"0","id":"pi"},"entryList":{"val":[],"id":"ls"}},"id":"ct"}},"id":"ct"},"xOffset":{"val":"0.5","id":"pf"},"mobID":{"val":"ancientwarfarenpc:faction.archer","id":"ss"},"zOffset":{"val":"0.5","id":"pf"},"rotation":{"val":"273.07126","id":"pf"},"equipmentData":{"val":{"equipmentContents":{"val":[{"val":{"id":{"val":"minecraft:bow","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"},"length":{"val":"5","id":"pi"}},"id":"ct"}},"id":"ct"}}
+JSON:{xOffset:0.5f,equipmentData:{equipmentContents:[{id:"minecraft:bow",Count:1b,slot:0,Damage:0s}]},rotation:273.07126f,mobID:"ancientwarfarenpc:faction.archer",zOffset:0.5f,position:2199493017606L,entityData:{Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.325d,Name:"generic.movementSpeed"},{Base:60.0d,Name:"generic.followRange"},{Base:2.0d,Name:"generic.attackDamage"}],Invulnerable:0b,AbsorptionAmount:0.0f,PortalCooldown:0,FallDistance:0.0f,levelingStats:{level:0,xp:0,entryList:[]},DeathTime:0s,DropChances:[1.0f,1.0f,1.0f,1.0f,1.0f],PersistenceRequired:1b,HealF:20.0f,owner:"shadowmage4513",Motion:[0.0d,-0.0784000015258789d,0.0d],armorValueOverride:-1,Leashed:0b,Health:20s,OnGround:1b,Dimension:0,Air:300s,Rotation:[3.0712688f,0.0f],CustomName:"",Pos:[533.5d,31.0d,-1291.5d],Fire:-1s,attackDamageOverride:-1,customTex:"",CanPickUpLoot:0b,factionName:"sarkonid",HurtTime:0s,AttackTime:0s,CustomNameVisible:0b}}
 :enddata
 :endentity
 
@@ -725,8 +723,7 @@ entity:
 plugin=AWNpc
 number=2
 data:
-position=9,2,6
-JSON:{{"val":{"entityData":{"val":{"factionName":{"val":"desert","id":"ss"},"DropChances":{"val":[{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"}],"id":"ls"},"Attributes":{"val":[{"val":{"Name":{"val":"generic.maxHealth","id":"ss"},"Base":{"val":"20.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.knockbackResistance","id":"ss"},"Base":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.movementSpeed","id":"ss"},"Base":{"val":"0.325","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.followRange","id":"ss"},"Base":{"val":"60.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.attackDamage","id":"ss"},"Base":{"val":"2.0","id":"pd"}},"id":"ct"}],"id":"ls"},"Motion":{"val":[{"val":"0.0","id":"pd"},{"val":"-0.0784000015258789","id":"pd"},{"val":"0.0","id":"pd"}],"id":"ls"},"CustomName":{"val":"","id":"ss"},"Health":{"val":"20","id":"ps"},"HealF":{"val":"20.0","id":"pf"},"CustomNameVisible":{"val":"0","id":"pb"},"AttackTime":{"val":"0","id":"ps"},"Fire":{"val":"-1","id":"ps"},"attackDamageOverride":{"val":"-1","id":"pi"},"Invulnerable":{"val":"0","id":"pb"},"DeathTime":{"val":"0","id":"ps"},"AbsorptionAmount":{"val":"0.0","id":"pf"},"OnGround":{"val":"1","id":"pb"},"HurtTime":{"val":"0","id":"ps"},"Dimension":{"val":"0","id":"pi"},"Air":{"val":"300","id":"ps"},"customTex":{"val":"","id":"ss"},"armorValueOverride":{"val":"-1","id":"pi"},"Pos":{"val":[{"val":"533.6854724634752","id":"pd"},{"val":"26.0","id":"pd"},{"val":"-1290.3089976295867","id":"pd"}],"id":"ls"},"CanPickUpLoot":{"val":"0","id":"pb"},"PortalCooldown":{"val":"0","id":"pi"},"PersistenceRequired":{"val":"1","id":"pb"},"Leashed":{"val":"0","id":"pb"},"owner":{"val":"shadowmage4513","id":"ss"},"FallDistance":{"val":"0.0","id":"pf"},"Rotation":{"val":[{"val":"221.76736","id":"pf"},{"val":"0.0","id":"pf"}],"id":"ls"},"levelingStats":{"val":{"level":{"val":"0","id":"pi"},"xp":{"val":"0","id":"pi"},"entryList":{"val":[],"id":"ls"}},"id":"ct"}},"id":"ct"},"xOffset":{"val":"0.69100237","id":"pf"},"mobID":{"val":"ancientwarfarenpc:faction.soldier","id":"ss"},"zOffset":{"val":"0.3145275","id":"pf"},"rotation":{"val":"131.76736","id":"pf"},"equipmentData":{"val":{"equipmentContents":{"val":[{"val":{"id":{"val":"minecraft:iron_sword","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"},"length":{"val":"5","id":"pi"}},"id":"ct"}},"id":"ct"}}
+JSON:{xOffset:0.69100237f,equipmentData:{equipmentContents:[{id:"minecraft:iron_sword",Count:1b,slot:0,Damage:0s}]},rotation:131.76736f,mobID:"ancientwarfarenpc:faction.soldier",zOffset:0.3145275f,position:2474035380230L,entityData:{Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.325d,Name:"generic.movementSpeed"},{Base:60.0d,Name:"generic.followRange"},{Base:2.0d,Name:"generic.attackDamage"}],Invulnerable:0b,AbsorptionAmount:0.0f,PortalCooldown:0,FallDistance:0.0f,levelingStats:{level:0,xp:0,entryList:[]},DeathTime:0s,DropChances:[1.0f,1.0f,1.0f,1.0f,1.0f],PersistenceRequired:1b,HealF:20.0f,owner:"shadowmage4513",Motion:[0.0d,-0.0784000015258789d,0.0d],armorValueOverride:-1,Leashed:0b,Health:20s,OnGround:1b,Dimension:0,Air:300s,Rotation:[221.76736f,0.0f],CustomName:"",Pos:[533.6854724634752d,26.0d,-1290.3089976295867d],Fire:-1s,attackDamageOverride:-1,customTex:"",CanPickUpLoot:0b,factionName:"sarkonid",HurtTime:0s,AttackTime:0s,CustomNameVisible:0b}}
 :enddata
 :endentity
 
@@ -734,8 +731,7 @@ entity:
 plugin=AWNpc
 number=3
 data:
-position=6,2,7
-JSON:{{"val":{"entityData":{"val":{"factionName":{"val":"desert","id":"ss"},"DropChances":{"val":[{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"}],"id":"ls"},"Attributes":{"val":[{"val":{"Name":{"val":"generic.maxHealth","id":"ss"},"Base":{"val":"20.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.knockbackResistance","id":"ss"},"Base":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.movementSpeed","id":"ss"},"Base":{"val":"0.325","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.followRange","id":"ss"},"Base":{"val":"60.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.attackDamage","id":"ss"},"Base":{"val":"2.0","id":"pd"}},"id":"ct"}],"id":"ls"},"Motion":{"val":[{"val":"0.0","id":"pd"},{"val":"-0.0784000015258789","id":"pd"},{"val":"0.0","id":"pd"}],"id":"ls"},"CustomName":{"val":"","id":"ss"},"Health":{"val":"20","id":"ps"},"HealF":{"val":"20.0","id":"pf"},"CustomNameVisible":{"val":"0","id":"pb"},"AttackTime":{"val":"0","id":"ps"},"Fire":{"val":"-1","id":"ps"},"attackDamageOverride":{"val":"-1","id":"pi"},"Invulnerable":{"val":"0","id":"pb"},"DeathTime":{"val":"0","id":"ps"},"AbsorptionAmount":{"val":"0.0","id":"pf"},"OnGround":{"val":"1","id":"pb"},"HurtTime":{"val":"0","id":"ps"},"Dimension":{"val":"0","id":"pi"},"Air":{"val":"300","id":"ps"},"customTex":{"val":"","id":"ss"},"armorValueOverride":{"val":"-1","id":"pi"},"Pos":{"val":[{"val":"532.3814669723726","id":"pd"},{"val":"26.0","id":"pd"},{"val":"-1293.699999988079","id":"pd"}],"id":"ls"},"CanPickUpLoot":{"val":"0","id":"pb"},"PortalCooldown":{"val":"0","id":"pi"},"PersistenceRequired":{"val":"1","id":"pb"},"Leashed":{"val":"0","id":"pb"},"owner":{"val":"shadowmage4513","id":"ss"},"FallDistance":{"val":"0.0","id":"pf"},"Rotation":{"val":[{"val":"-96.44199","id":"pf"},{"val":"0.0","id":"pf"}],"id":"ls"},"levelingStats":{"val":{"level":{"val":"0","id":"pi"},"xp":{"val":"0","id":"pi"},"entryList":{"val":[],"id":"ls"}},"id":"ct"}},"id":"ct"},"xOffset":{"val":"0.3","id":"pf"},"mobID":{"val":"ancientwarfarenpc:faction.soldier","id":"ss"},"zOffset":{"val":"0.618533","id":"pf"},"rotation":{"val":"173.55801","id":"pf"},"equipmentData":{"val":{"equipmentContents":{"val":[{"val":{"id":{"val":"minecraft:iron_sword","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"},"length":{"val":"5","id":"pi"}},"id":"ct"}},"id":"ct"}}
+JSON:{xOffset:0.3f,equipmentData:{equipmentContents:[{id:"minecraft:iron_sword",Count:1b,slot:0,Damage:0s}]},rotation:173.55801f,mobID:"ancientwarfarenpc:faction.soldier",zOffset:0.618533f,position:1649401659399L,entityData:{Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.325d,Name:"generic.movementSpeed"},{Base:60.0d,Name:"generic.followRange"},{Base:2.0d,Name:"generic.attackDamage"}],Invulnerable:0b,AbsorptionAmount:0.0f,PortalCooldown:0,FallDistance:0.0f,levelingStats:{level:0,xp:0,entryList:[]},DeathTime:0s,DropChances:[1.0f,1.0f,1.0f,1.0f,1.0f],PersistenceRequired:1b,HealF:20.0f,owner:"shadowmage4513",Motion:[0.0d,-0.0784000015258789d,0.0d],armorValueOverride:-1,Leashed:0b,Health:20s,OnGround:1b,Dimension:0,Air:300s,Rotation:[-96.44199f,0.0f],CustomName:"",Pos:[532.3814669723726d,26.0d,-1293.699999988079d],Fire:-1s,attackDamageOverride:-1,customTex:"",CanPickUpLoot:0b,factionName:"sarkonid",HurtTime:0s,AttackTime:0s,CustomNameVisible:0b}}
 :enddata
 :endentity
 
@@ -743,8 +739,7 @@ entity:
 plugin=awGate
 number=4
 data:
-position=7,2,9
-JSON:{{"val":{"pos1":{"val":{"z":{"val":"0","id":"pi"},"y":{"val":"0","id":"pi"},"x":{"val":"-1","id":"pi"}},"id":"ct"},"orientation":{"val":"2","id":"pb"},"pos2":{"val":{"z":{"val":"0","id":"pi"},"y":{"val":"2","id":"pi"},"x":{"val":"1","id":"pi"}},"id":"ct"},"owner":{"val":"shadowmage4513","id":"ss"},"gateType":{"val":"gate.verticalWooden","id":"ss"}},"id":"ct"}}
+JSON:{owner:"shadowmage4513",orientation:2b,pos1:{x:-1,y:0,z:0},pos2:{x:1,y:2,z:0},position:1924279566345L,gateType:"gate.verticalWooden"}
 :enddata
 :endentity
 
@@ -752,8 +747,7 @@ entity:
 plugin=AWNpc
 number=5
 data:
-position=5,17,7
-JSON:{{"val":{"entityData":{"val":{"factionName":{"val":"desert","id":"ss"},"DropChances":{"val":[{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"}],"id":"ls"},"Attributes":{"val":[{"val":{"Name":{"val":"generic.maxHealth","id":"ss"},"Base":{"val":"20.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.knockbackResistance","id":"ss"},"Base":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.movementSpeed","id":"ss"},"Base":{"val":"0.325","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.followRange","id":"ss"},"Base":{"val":"60.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.attackDamage","id":"ss"},"Base":{"val":"2.0","id":"pd"}},"id":"ct"}],"id":"ls"},"Motion":{"val":[{"val":"0.0","id":"pd"},{"val":"-0.0784000015258789","id":"pd"},{"val":"0.0","id":"pd"}],"id":"ls"},"CustomName":{"val":"","id":"ss"},"Health":{"val":"20","id":"ps"},"HealF":{"val":"20.0","id":"pf"},"CustomNameVisible":{"val":"0","id":"pb"},"AttackTime":{"val":"0","id":"ps"},"Fire":{"val":"-1","id":"ps"},"attackDamageOverride":{"val":"-1","id":"pi"},"Invulnerable":{"val":"0","id":"pb"},"DeathTime":{"val":"0","id":"ps"},"AbsorptionAmount":{"val":"0.0","id":"pf"},"OnGround":{"val":"1","id":"pb"},"HurtTime":{"val":"0","id":"ps"},"Dimension":{"val":"0","id":"pi"},"Air":{"val":"300","id":"ps"},"customTex":{"val":"","id":"ss"},"armorValueOverride":{"val":"-1","id":"pi"},"Pos":{"val":[{"val":"532.3864964439526","id":"pd"},{"val":"41.0","id":"pd"},{"val":"-1294.4492603613428","id":"pd"}],"id":"ls"},"CanPickUpLoot":{"val":"0","id":"pb"},"PortalCooldown":{"val":"0","id":"pi"},"PersistenceRequired":{"val":"1","id":"pb"},"Leashed":{"val":"0","id":"pb"},"owner":{"val":"shadowmage4513","id":"ss"},"FallDistance":{"val":"0.0","id":"pf"},"Rotation":{"val":[{"val":"-110.98001","id":"pf"},{"val":"0.0","id":"pf"}],"id":"ls"},"levelingStats":{"val":{"level":{"val":"0","id":"pi"},"xp":{"val":"0","id":"pi"},"entryList":{"val":[],"id":"ls"}},"id":"ct"}},"id":"ct"},"xOffset":{"val":"0.55073965","id":"pf"},"mobID":{"val":"ancientwarfarenpc:faction.archer","id":"ss"},"zOffset":{"val":"0.6135036","id":"pf"},"rotation":{"val":"159.01999","id":"pf"},"equipmentData":{"val":{"equipmentContents":{"val":[{"val":{"id":{"val":"minecraft:bow","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"},"length":{"val":"5","id":"pi"}},"id":"ct"}},"id":"ct"}}
+JSON:{xOffset:0.55073965f,equipmentData:{equipmentContents:[{id:"minecraft:bow",Count:1b,slot:0,Damage:0s}]},rotation:159.01999f,mobID:"ancientwarfarenpc:faction.archer",zOffset:0.6135036f,position:1375530385415L,entityData:{Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.325d,Name:"generic.movementSpeed"},{Base:60.0d,Name:"generic.followRange"},{Base:2.0d,Name:"generic.attackDamage"}],Invulnerable:0b,AbsorptionAmount:0.0f,PortalCooldown:0,FallDistance:0.0f,levelingStats:{level:0,xp:0,entryList:[]},DeathTime:0s,DropChances:[1.0f,1.0f,1.0f,1.0f,1.0f],PersistenceRequired:1b,HealF:20.0f,owner:"shadowmage4513",Motion:[0.0d,-0.0784000015258789d,0.0d],armorValueOverride:-1,Leashed:0b,Health:20s,OnGround:1b,Dimension:0,Air:300s,Rotation:[-110.98001f,0.0f],CustomName:"",Pos:[532.3864964439526d,41.0d,-1294.4492603613428d],Fire:-1s,attackDamageOverride:-1,customTex:"",CanPickUpLoot:0b,factionName:"sarkonid",HurtTime:0s,AttackTime:0s,CustomNameVisible:0b}}
 :enddata
 :endentity
 
@@ -761,8 +755,7 @@ entity:
 plugin=AWNpc
 number=6
 data:
-position=9,17,4
-JSON:{{"val":{"entityData":{"val":{"factionName":{"val":"desert","id":"ss"},"DropChances":{"val":[{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"}],"id":"ls"},"Attributes":{"val":[{"val":{"Name":{"val":"generic.maxHealth","id":"ss"},"Base":{"val":"20.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.knockbackResistance","id":"ss"},"Base":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.movementSpeed","id":"ss"},"Base":{"val":"0.325","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.followRange","id":"ss"},"Base":{"val":"60.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.attackDamage","id":"ss"},"Base":{"val":"2.0","id":"pd"}},"id":"ct"}],"id":"ls"},"Motion":{"val":[{"val":"0.0","id":"pd"},{"val":"-0.0784000015258789","id":"pd"},{"val":"0.0","id":"pd"}],"id":"ls"},"CustomName":{"val":"","id":"ss"},"Health":{"val":"20","id":"ps"},"HealF":{"val":"20.0","id":"pf"},"CustomNameVisible":{"val":"0","id":"pb"},"AttackTime":{"val":"0","id":"ps"},"Fire":{"val":"-1","id":"ps"},"attackDamageOverride":{"val":"-1","id":"pi"},"Invulnerable":{"val":"0","id":"pb"},"DeathTime":{"val":"0","id":"ps"},"AbsorptionAmount":{"val":"0.0","id":"pf"},"OnGround":{"val":"1","id":"pb"},"HurtTime":{"val":"0","id":"ps"},"Dimension":{"val":"0","id":"pi"},"Air":{"val":"300","id":"ps"},"customTex":{"val":"","id":"ss"},"armorValueOverride":{"val":"-1","id":"pi"},"Pos":{"val":[{"val":"535.5","id":"pd"},{"val":"41.0","id":"pd"},{"val":"-1290.5","id":"pd"}],"id":"ls"},"CanPickUpLoot":{"val":"0","id":"pb"},"PortalCooldown":{"val":"0","id":"pi"},"PersistenceRequired":{"val":"1","id":"pb"},"Leashed":{"val":"0","id":"pb"},"owner":{"val":"shadowmage4513","id":"ss"},"FallDistance":{"val":"0.0","id":"pf"},"Rotation":{"val":[{"val":"4.1930137","id":"pf"},{"val":"0.0","id":"pf"}],"id":"ls"},"levelingStats":{"val":{"level":{"val":"0","id":"pi"},"xp":{"val":"0","id":"pi"},"entryList":{"val":[],"id":"ls"}},"id":"ct"}},"id":"ct"},"xOffset":{"val":"0.5","id":"pf"},"mobID":{"val":"ancientwarfarenpc:faction.archer","id":"ss"},"zOffset":{"val":"0.5","id":"pf"},"rotation":{"val":"274.19302","id":"pf"},"equipmentData":{"val":{"equipmentContents":{"val":[{"val":{"id":{"val":"minecraft:bow","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"},"length":{"val":"5","id":"pi"}},"id":"ct"}},"id":"ct"}}
+JSON:{xOffset:0.5f,equipmentData:{equipmentContents:[{id:"minecraft:bow",Count:1b,slot:0,Damage:0s}]},rotation:274.19302f,mobID:"ancientwarfarenpc:faction.archer",zOffset:0.5f,position:2475042013188L,entityData:{Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.325d,Name:"generic.movementSpeed"},{Base:60.0d,Name:"generic.followRange"},{Base:2.0d,Name:"generic.attackDamage"}],Invulnerable:0b,AbsorptionAmount:0.0f,PortalCooldown:0,FallDistance:0.0f,levelingStats:{level:0,xp:0,entryList:[]},DeathTime:0s,DropChances:[1.0f,1.0f,1.0f,1.0f,1.0f],PersistenceRequired:1b,HealF:20.0f,owner:"shadowmage4513",Motion:[0.0d,-0.0784000015258789d,0.0d],armorValueOverride:-1,Leashed:0b,Health:20s,OnGround:1b,Dimension:0,Air:300s,Rotation:[4.1930137f,0.0f],CustomName:"",Pos:[535.5d,41.0d,-1290.5d],Fire:-1s,attackDamageOverride:-1,customTex:"",CanPickUpLoot:0b,factionName:"sarkonid",HurtTime:0s,AttackTime:0s,CustomNameVisible:0b}}
 :enddata
 :endentity
 
@@ -770,8 +763,7 @@ entity:
 plugin=AWNpc
 number=7
 data:
-position=10,11,6
-JSON:{{"val":{"entityData":{"val":{"factionName":{"val":"desert","id":"ss"},"DropChances":{"val":[{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"}],"id":"ls"},"Attributes":{"val":[{"val":{"Name":{"val":"generic.maxHealth","id":"ss"},"Base":{"val":"20.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.knockbackResistance","id":"ss"},"Base":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.movementSpeed","id":"ss"},"Base":{"val":"0.325","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.followRange","id":"ss"},"Base":{"val":"60.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.attackDamage","id":"ss"},"Base":{"val":"2.0","id":"pd"}},"id":"ct"}],"id":"ls"},"Motion":{"val":[{"val":"0.0","id":"pd"},{"val":"-0.0784000015258789","id":"pd"},{"val":"0.0","id":"pd"}],"id":"ls"},"CustomName":{"val":"","id":"ss"},"Health":{"val":"20","id":"ps"},"HealF":{"val":"20.0","id":"pf"},"CustomNameVisible":{"val":"0","id":"pb"},"AttackTime":{"val":"0","id":"ps"},"Fire":{"val":"-1","id":"ps"},"attackDamageOverride":{"val":"-1","id":"pi"},"Invulnerable":{"val":"0","id":"pb"},"DeathTime":{"val":"0","id":"ps"},"AbsorptionAmount":{"val":"0.0","id":"pf"},"OnGround":{"val":"1","id":"pb"},"HurtTime":{"val":"0","id":"ps"},"Dimension":{"val":"0","id":"pi"},"Air":{"val":"300","id":"ps"},"customTex":{"val":"","id":"ss"},"armorValueOverride":{"val":"-1","id":"pi"},"Pos":{"val":[{"val":"533.5","id":"pd"},{"val":"35.5","id":"pd"},{"val":"-1289.5","id":"pd"}],"id":"ls"},"CanPickUpLoot":{"val":"0","id":"pb"},"PortalCooldown":{"val":"0","id":"pi"},"PersistenceRequired":{"val":"1","id":"pb"},"Leashed":{"val":"0","id":"pb"},"owner":{"val":"shadowmage4513","id":"ss"},"FallDistance":{"val":"0.0","id":"pf"},"Rotation":{"val":[{"val":"5.598395","id":"pf"},{"val":"0.0","id":"pf"}],"id":"ls"},"levelingStats":{"val":{"level":{"val":"0","id":"pi"},"xp":{"val":"0","id":"pi"},"entryList":{"val":[],"id":"ls"}},"id":"ct"}},"id":"ct"},"xOffset":{"val":"0.5","id":"pf"},"mobID":{"val":"ancientwarfarenpc:faction.archer","id":"ss"},"zOffset":{"val":"0.5","id":"pf"},"rotation":{"val":"275.5984","id":"pf"},"equipmentData":{"val":{"equipmentContents":{"val":[{"val":{"id":{"val":"minecraft:bow","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"},"length":{"val":"5","id":"pi"}},"id":"ct"}},"id":"ct"}}
+JSON:{xOffset:0.5f,equipmentData:{equipmentContents:[{id:"minecraft:bow",Count:1b,slot:0,Damage:0s}]},rotation:275.5984f,mobID:"ancientwarfarenpc:faction.archer",zOffset:0.5f,position:2749517266950L,entityData:{Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.325d,Name:"generic.movementSpeed"},{Base:60.0d,Name:"generic.followRange"},{Base:2.0d,Name:"generic.attackDamage"}],Invulnerable:0b,AbsorptionAmount:0.0f,PortalCooldown:0,FallDistance:0.0f,levelingStats:{level:0,xp:0,entryList:[]},DeathTime:0s,DropChances:[1.0f,1.0f,1.0f,1.0f,1.0f],PersistenceRequired:1b,HealF:20.0f,owner:"shadowmage4513",Motion:[0.0d,-0.0784000015258789d,0.0d],armorValueOverride:-1,Leashed:0b,Health:20s,OnGround:1b,Dimension:0,Air:300s,Rotation:[5.598395f,0.0f],CustomName:"",Pos:[533.5d,35.5d,-1289.5d],Fire:-1s,attackDamageOverride:-1,customTex:"",CanPickUpLoot:0b,factionName:"sarkonid",HurtTime:0s,AttackTime:0s,CustomNameVisible:0b}}
 :enddata
 :endentity
 
@@ -779,8 +771,7 @@ entity:
 plugin=AWNpc
 number=8
 data:
-position=7,11,8
-JSON:{{"val":{"entityData":{"val":{"factionName":{"val":"desert","id":"ss"},"DropChances":{"val":[{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"}],"id":"ls"},"Attributes":{"val":[{"val":{"Name":{"val":"generic.maxHealth","id":"ss"},"Base":{"val":"20.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.knockbackResistance","id":"ss"},"Base":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.movementSpeed","id":"ss"},"Base":{"val":"0.325","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.followRange","id":"ss"},"Base":{"val":"60.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.attackDamage","id":"ss"},"Base":{"val":"2.0","id":"pd"}},"id":"ct"}],"id":"ls"},"Motion":{"val":[{"val":"0.0","id":"pd"},{"val":"-0.0784000015258789","id":"pd"},{"val":"0.0","id":"pd"}],"id":"ls"},"CustomName":{"val":"","id":"ss"},"Health":{"val":"20","id":"ps"},"HealF":{"val":"20.0","id":"pf"},"CustomNameVisible":{"val":"0","id":"pb"},"AttackTime":{"val":"0","id":"ps"},"Fire":{"val":"-1","id":"ps"},"attackDamageOverride":{"val":"-1","id":"pi"},"Invulnerable":{"val":"0","id":"pb"},"DeathTime":{"val":"0","id":"ps"},"AbsorptionAmount":{"val":"0.0","id":"pf"},"OnGround":{"val":"1","id":"pb"},"HurtTime":{"val":"0","id":"ps"},"Dimension":{"val":"0","id":"pi"},"Air":{"val":"300","id":"ps"},"customTex":{"val":"","id":"ss"},"armorValueOverride":{"val":"-1","id":"pi"},"Pos":{"val":[{"val":"531.5","id":"pd"},{"val":"35.5","id":"pd"},{"val":"-1292.5","id":"pd"}],"id":"ls"},"CanPickUpLoot":{"val":"0","id":"pb"},"PortalCooldown":{"val":"0","id":"pi"},"PersistenceRequired":{"val":"1","id":"pb"},"Leashed":{"val":"0","id":"pb"},"owner":{"val":"shadowmage4513","id":"ss"},"FallDistance":{"val":"0.0","id":"pf"},"Rotation":{"val":[{"val":"3.7042382","id":"pf"},{"val":"0.0","id":"pf"}],"id":"ls"},"levelingStats":{"val":{"level":{"val":"0","id":"pi"},"xp":{"val":"0","id":"pi"},"entryList":{"val":[],"id":"ls"}},"id":"ct"}},"id":"ct"},"xOffset":{"val":"0.5","id":"pf"},"mobID":{"val":"ancientwarfarenpc:faction.archer","id":"ss"},"zOffset":{"val":"0.5","id":"pf"},"rotation":{"val":"273.70422","id":"pf"},"equipmentData":{"val":{"equipmentContents":{"val":[{"val":{"id":{"val":"minecraft:bow","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"},"length":{"val":"5","id":"pi"}},"id":"ct"}},"id":"ct"}}
+JSON:{xOffset:0.5f,equipmentData:{equipmentContents:[{id:"minecraft:bow",Count:1b,slot:0,Damage:0s}]},rotation:273.70422f,mobID:"ancientwarfarenpc:faction.archer",zOffset:0.5f,position:1924883546120L,entityData:{Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.325d,Name:"generic.movementSpeed"},{Base:60.0d,Name:"generic.followRange"},{Base:2.0d,Name:"generic.attackDamage"}],Invulnerable:0b,AbsorptionAmount:0.0f,PortalCooldown:0,FallDistance:0.0f,levelingStats:{level:0,xp:0,entryList:[]},DeathTime:0s,DropChances:[1.0f,1.0f,1.0f,1.0f,1.0f],PersistenceRequired:1b,HealF:20.0f,owner:"shadowmage4513",Motion:[0.0d,-0.0784000015258789d,0.0d],armorValueOverride:-1,Leashed:0b,Health:20s,OnGround:1b,Dimension:0,Air:300s,Rotation:[3.7042382f,0.0f],CustomName:"",Pos:[531.5d,35.5d,-1292.5d],Fire:-1s,attackDamageOverride:-1,customTex:"",CanPickUpLoot:0b,factionName:"sarkonid",HurtTime:0s,AttackTime:0s,CustomNameVisible:0b}}
 :enddata
 :endentity
 
@@ -788,8 +779,7 @@ entity:
 plugin=AWNpc
 number=9
 data:
-position=4,11,6
-JSON:{{"val":{"entityData":{"val":{"factionName":{"val":"desert","id":"ss"},"DropChances":{"val":[{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"}],"id":"ls"},"Attributes":{"val":[{"val":{"Name":{"val":"generic.maxHealth","id":"ss"},"Base":{"val":"20.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.knockbackResistance","id":"ss"},"Base":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.movementSpeed","id":"ss"},"Base":{"val":"0.325","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.followRange","id":"ss"},"Base":{"val":"60.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.attackDamage","id":"ss"},"Base":{"val":"2.0","id":"pd"}},"id":"ct"}],"id":"ls"},"Motion":{"val":[{"val":"0.0","id":"pd"},{"val":"-0.0784000015258789","id":"pd"},{"val":"0.0","id":"pd"}],"id":"ls"},"CustomName":{"val":"","id":"ss"},"Health":{"val":"20","id":"ps"},"HealF":{"val":"20.0","id":"pf"},"CustomNameVisible":{"val":"0","id":"pb"},"AttackTime":{"val":"0","id":"ps"},"Fire":{"val":"-1","id":"ps"},"attackDamageOverride":{"val":"-1","id":"pi"},"Invulnerable":{"val":"0","id":"pb"},"DeathTime":{"val":"0","id":"ps"},"AbsorptionAmount":{"val":"0.0","id":"pf"},"OnGround":{"val":"1","id":"pb"},"HurtTime":{"val":"0","id":"ps"},"Dimension":{"val":"0","id":"pi"},"Air":{"val":"300","id":"ps"},"customTex":{"val":"","id":"ss"},"armorValueOverride":{"val":"-1","id":"pi"},"Pos":{"val":[{"val":"533.5","id":"pd"},{"val":"35.5","id":"pd"},{"val":"-1295.5","id":"pd"}],"id":"ls"},"CanPickUpLoot":{"val":"0","id":"pb"},"PortalCooldown":{"val":"0","id":"pi"},"PersistenceRequired":{"val":"1","id":"pb"},"Leashed":{"val":"0","id":"pb"},"owner":{"val":"shadowmage4513","id":"ss"},"FallDistance":{"val":"0.0","id":"pf"},"Rotation":{"val":[{"val":"1.6845059","id":"pf"},{"val":"0.0","id":"pf"}],"id":"ls"},"levelingStats":{"val":{"level":{"val":"0","id":"pi"},"xp":{"val":"0","id":"pi"},"entryList":{"val":[],"id":"ls"}},"id":"ct"}},"id":"ct"},"xOffset":{"val":"0.5","id":"pf"},"mobID":{"val":"ancientwarfarenpc:faction.archer","id":"ss"},"zOffset":{"val":"0.5","id":"pf"},"rotation":{"val":"271.6845","id":"pf"},"equipmentData":{"val":{"equipmentContents":{"val":[{"val":{"id":{"val":"minecraft:bow","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"},"length":{"val":"5","id":"pi"}},"id":"ct"}},"id":"ct"}}
+JSON:{xOffset:0.5f,equipmentData:{equipmentContents:[{id:"minecraft:bow",Count:1b,slot:0,Damage:0s}]},rotation:271.6845f,mobID:"ancientwarfarenpc:faction.archer",zOffset:0.5f,position:1100249825286L,entityData:{Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.325d,Name:"generic.movementSpeed"},{Base:60.0d,Name:"generic.followRange"},{Base:2.0d,Name:"generic.attackDamage"}],Invulnerable:0b,AbsorptionAmount:0.0f,PortalCooldown:0,FallDistance:0.0f,levelingStats:{level:0,xp:0,entryList:[]},DeathTime:0s,DropChances:[1.0f,1.0f,1.0f,1.0f,1.0f],PersistenceRequired:1b,HealF:20.0f,owner:"shadowmage4513",Motion:[0.0d,-0.0784000015258789d,0.0d],armorValueOverride:-1,Leashed:0b,Health:20s,OnGround:1b,Dimension:0,Air:300s,Rotation:[1.6845059f,0.0f],CustomName:"",Pos:[533.5d,35.5d,-1295.5d],Fire:-1s,attackDamageOverride:-1,customTex:"",CanPickUpLoot:0b,factionName:"sarkonid",HurtTime:0s,AttackTime:0s,CustomNameVisible:0b}}
 :enddata
 :endentity
 
@@ -797,8 +787,7 @@ entity:
 plugin=AWNpc
 number=10
 data:
-position=10,17,11
-JSON:{{"val":{"entityData":{"val":{"factionName":{"val":"desert","id":"ss"},"DropChances":{"val":[{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"}],"id":"ls"},"Attributes":{"val":[{"val":{"Name":{"val":"generic.maxHealth","id":"ss"},"Base":{"val":"20.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.knockbackResistance","id":"ss"},"Base":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.movementSpeed","id":"ss"},"Base":{"val":"0.325","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.followRange","id":"ss"},"Base":{"val":"60.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.attackDamage","id":"ss"},"Base":{"val":"2.0","id":"pd"}},"id":"ct"}],"id":"ls"},"Motion":{"val":[{"val":"0.0","id":"pd"},{"val":"-0.0784000015258789","id":"pd"},{"val":"0.0","id":"pd"}],"id":"ls"},"CustomName":{"val":"","id":"ss"},"Health":{"val":"20","id":"ps"},"HealF":{"val":"20.0","id":"pf"},"CustomNameVisible":{"val":"0","id":"pb"},"AttackTime":{"val":"0","id":"ps"},"Fire":{"val":"-1","id":"ps"},"attackDamageOverride":{"val":"-1","id":"pi"},"Invulnerable":{"val":"0","id":"pb"},"DeathTime":{"val":"0","id":"ps"},"AbsorptionAmount":{"val":"0.0","id":"pf"},"OnGround":{"val":"1","id":"pb"},"HurtTime":{"val":"0","id":"ps"},"Dimension":{"val":"0","id":"pi"},"Air":{"val":"300","id":"ps"},"customTex":{"val":"","id":"ss"},"armorValueOverride":{"val":"-1","id":"pi"},"Pos":{"val":[{"val":"528.3000000119209","id":"pd"},{"val":"41.5","id":"pd"},{"val":"-1289.5161833639622","id":"pd"}],"id":"ls"},"CanPickUpLoot":{"val":"0","id":"pb"},"PortalCooldown":{"val":"0","id":"pi"},"PersistenceRequired":{"val":"1","id":"pb"},"Leashed":{"val":"0","id":"pb"},"owner":{"val":"shadowmage4513","id":"ss"},"FallDistance":{"val":"0.0","id":"pf"},"Rotation":{"val":[{"val":"-271.1647","id":"pf"},{"val":"0.0","id":"pf"}],"id":"ls"},"levelingStats":{"val":{"level":{"val":"0","id":"pi"},"xp":{"val":"0","id":"pi"},"entryList":{"val":[],"id":"ls"}},"id":"ct"}},"id":"ct"},"xOffset":{"val":"0.48381662","id":"pf"},"mobID":{"val":"ancientwarfarenpc:faction.soldier","id":"ss"},"zOffset":{"val":"0.7","id":"pf"},"rotation":{"val":"-1.1647034","id":"pf"},"equipmentData":{"val":{"equipmentContents":{"val":[{"val":{"id":{"val":"minecraft:iron_sword","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"},"length":{"val":"5","id":"pi"}},"id":"ct"}},"id":"ct"}}
+JSON:{xOffset:0.48381662f,equipmentData:{equipmentContents:[{id:"minecraft:iron_sword",Count:1b,slot:0,Damage:0s}]},rotation:-1.1647034f,mobID:"ancientwarfarenpc:faction.soldier",zOffset:0.7f,position:2749919920139L,entityData:{Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.325d,Name:"generic.movementSpeed"},{Base:60.0d,Name:"generic.followRange"},{Base:2.0d,Name:"generic.attackDamage"}],Invulnerable:0b,AbsorptionAmount:0.0f,PortalCooldown:0,FallDistance:0.0f,levelingStats:{level:0,xp:0,entryList:[]},DeathTime:0s,DropChances:[1.0f,1.0f,1.0f,1.0f,1.0f],PersistenceRequired:1b,HealF:20.0f,owner:"shadowmage4513",Motion:[0.0d,-0.0784000015258789d,0.0d],armorValueOverride:-1,Leashed:0b,Health:20s,OnGround:1b,Dimension:0,Air:300s,Rotation:[-271.1647f,0.0f],CustomName:"",Pos:[528.3000000119209d,41.5d,-1289.5161833639622d],Fire:-1s,attackDamageOverride:-1,customTex:"",CanPickUpLoot:0b,factionName:"sarkonid",HurtTime:0s,AttackTime:0s,CustomNameVisible:0b}}
 :enddata
 :endentity
 
@@ -806,8 +795,7 @@ entity:
 plugin=AWNpc
 number=11
 data:
-position=7,11,3
-JSON:{{"val":{"entityData":{"val":{"factionName":{"val":"desert","id":"ss"},"DropChances":{"val":[{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"}],"id":"ls"},"Attributes":{"val":[{"val":{"Name":{"val":"generic.maxHealth","id":"ss"},"Base":{"val":"20.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.knockbackResistance","id":"ss"},"Base":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.movementSpeed","id":"ss"},"Base":{"val":"0.325","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.followRange","id":"ss"},"Base":{"val":"60.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.attackDamage","id":"ss"},"Base":{"val":"2.0","id":"pd"}},"id":"ct"}],"id":"ls"},"Motion":{"val":[{"val":"0.0","id":"pd"},{"val":"-0.0784000015258789","id":"pd"},{"val":"0.0","id":"pd"}],"id":"ls"},"CustomName":{"val":"","id":"ss"},"Health":{"val":"20","id":"ps"},"HealF":{"val":"20.0","id":"pf"},"CustomNameVisible":{"val":"0","id":"pb"},"AttackTime":{"val":"0","id":"ps"},"Fire":{"val":"-1","id":"ps"},"attackDamageOverride":{"val":"-1","id":"pi"},"Invulnerable":{"val":"0","id":"pb"},"DeathTime":{"val":"0","id":"ps"},"AbsorptionAmount":{"val":"0.0","id":"pf"},"OnGround":{"val":"1","id":"pb"},"HurtTime":{"val":"0","id":"ps"},"Dimension":{"val":"0","id":"pi"},"Air":{"val":"300","id":"ps"},"customTex":{"val":"","id":"ss"},"armorValueOverride":{"val":"-1","id":"pi"},"Pos":{"val":[{"val":"536.5","id":"pd"},{"val":"35.5","id":"pd"},{"val":"-1292.5","id":"pd"}],"id":"ls"},"CanPickUpLoot":{"val":"0","id":"pb"},"PortalCooldown":{"val":"0","id":"pi"},"PersistenceRequired":{"val":"1","id":"pb"},"Leashed":{"val":"0","id":"pb"},"owner":{"val":"shadowmage4513","id":"ss"},"FallDistance":{"val":"0.0","id":"pf"},"Rotation":{"val":[{"val":"3.8838153","id":"pf"},{"val":"0.0","id":"pf"}],"id":"ls"},"levelingStats":{"val":{"level":{"val":"0","id":"pi"},"xp":{"val":"0","id":"pi"},"entryList":{"val":[],"id":"ls"}},"id":"ct"}},"id":"ct"},"xOffset":{"val":"0.5","id":"pf"},"mobID":{"val":"ancientwarfarenpc:faction.archer","id":"ss"},"zOffset":{"val":"0.5","id":"pf"},"rotation":{"val":"273.88382","id":"pf"},"equipmentData":{"val":{"equipmentContents":{"val":[{"val":{"id":{"val":"minecraft:bow","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"},"length":{"val":"5","id":"pi"}},"id":"ct"}},"id":"ct"}}
+JSON:{xOffset:0.5f,equipmentData:{equipmentContents:[{id:"minecraft:bow",Count:1b,slot:0,Damage:0s}]},rotation:273.88382f,mobID:"ancientwarfarenpc:faction.archer",zOffset:0.5f,position:1924883546115L,entityData:{Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.325d,Name:"generic.movementSpeed"},{Base:60.0d,Name:"generic.followRange"},{Base:2.0d,Name:"generic.attackDamage"}],Invulnerable:0b,AbsorptionAmount:0.0f,PortalCooldown:0,FallDistance:0.0f,levelingStats:{level:0,xp:0,entryList:[]},DeathTime:0s,DropChances:[1.0f,1.0f,1.0f,1.0f,1.0f],PersistenceRequired:1b,HealF:20.0f,owner:"shadowmage4513",Motion:[0.0d,-0.0784000015258789d,0.0d],armorValueOverride:-1,Leashed:0b,Health:20s,OnGround:1b,Dimension:0,Air:300s,Rotation:[3.8838153f,0.0f],CustomName:"",Pos:[536.5d,35.5d,-1292.5d],Fire:-1s,attackDamageOverride:-1,customTex:"",CanPickUpLoot:0b,factionName:"sarkonid",HurtTime:0s,AttackTime:0s,CustomNameVisible:0b}}
 :enddata
 :endentity
 
@@ -815,8 +803,7 @@ entity:
 plugin=AWNpc
 number=12
 data:
-position=11,17,2
-JSON:{{"val":{"entityData":{"val":{"factionName":{"val":"desert","id":"ss"},"DropChances":{"val":[{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"},{"val":"1.0","id":"pf"}],"id":"ls"},"Attributes":{"val":[{"val":{"Name":{"val":"generic.maxHealth","id":"ss"},"Base":{"val":"20.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.knockbackResistance","id":"ss"},"Base":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.movementSpeed","id":"ss"},"Base":{"val":"0.325","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.followRange","id":"ss"},"Base":{"val":"60.0","id":"pd"}},"id":"ct"},{"val":{"Name":{"val":"generic.attackDamage","id":"ss"},"Base":{"val":"2.0","id":"pd"}},"id":"ct"}],"id":"ls"},"Motion":{"val":[{"val":"0.0","id":"pd"},{"val":"-0.0784000015258789","id":"pd"},{"val":"0.0","id":"pd"}],"id":"ls"},"CustomName":{"val":"","id":"ss"},"Health":{"val":"20","id":"ps"},"HealF":{"val":"20.0","id":"pf"},"CustomNameVisible":{"val":"0","id":"pb"},"AttackTime":{"val":"0","id":"ps"},"Fire":{"val":"-1","id":"ps"},"attackDamageOverride":{"val":"-1","id":"pi"},"Invulnerable":{"val":"0","id":"pb"},"DeathTime":{"val":"0","id":"ps"},"AbsorptionAmount":{"val":"0.0","id":"pf"},"OnGround":{"val":"1","id":"pb"},"HurtTime":{"val":"0","id":"ps"},"Dimension":{"val":"0","id":"pi"},"Air":{"val":"300","id":"ps"},"customTex":{"val":"","id":"ss"},"armorValueOverride":{"val":"-1","id":"pi"},"Pos":{"val":[{"val":"537.5479014968912","id":"pd"},{"val":"41.5","id":"pd"},{"val":"-1288.9987050208229","id":"pd"}],"id":"ls"},"CanPickUpLoot":{"val":"0","id":"pb"},"PortalCooldown":{"val":"0","id":"pi"},"PersistenceRequired":{"val":"1","id":"pb"},"Leashed":{"val":"0","id":"pb"},"owner":{"val":"shadowmage4513","id":"ss"},"FallDistance":{"val":"0.0","id":"pf"},"Rotation":{"val":[{"val":"-542.6198","id":"pf"},{"val":"0.0","id":"pf"}],"id":"ls"},"levelingStats":{"val":{"level":{"val":"0","id":"pi"},"xp":{"val":"0","id":"pi"},"entryList":{"val":[],"id":"ls"}},"id":"ct"}},"id":"ct"},"xOffset":{"val":"0.0012949705","id":"pf"},"mobID":{"val":"ancientwarfarenpc:faction.soldier","id":"ss"},"zOffset":{"val":"0.4520985","id":"pf"},"rotation":{"val":"-272.6198","id":"pf"},"equipmentData":{"val":{"equipmentContents":{"val":[{"val":{"id":{"val":"minecraft:iron_sword","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"},"length":{"val":"5","id":"pi"}},"id":"ct"}},"id":"ct"}}
+JSON:{xOffset:0.0012949705f,equipmentData:{equipmentContents:[{id:"minecraft:iron_sword",Count:1b,slot:0,Damage:0s}]},rotation:-272.6198f,mobID:"ancientwarfarenpc:faction.soldier",zOffset:0.4520985f,position:3024797827074L,entityData:{Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.325d,Name:"generic.movementSpeed"},{Base:60.0d,Name:"generic.followRange"},{Base:2.0d,Name:"generic.attackDamage"}],Invulnerable:0b,AbsorptionAmount:0.0f,PortalCooldown:0,FallDistance:0.0f,levelingStats:{level:0,xp:0,entryList:[]},DeathTime:0s,DropChances:[1.0f,1.0f,1.0f,1.0f,1.0f],PersistenceRequired:1b,HealF:20.0f,owner:"shadowmage4513",Motion:[0.0d,-0.0784000015258789d,0.0d],armorValueOverride:-1,Leashed:0b,Health:20s,OnGround:1b,Dimension:0,Air:300s,Rotation:[-542.6198f,0.0f],CustomName:"",Pos:[537.5479014968912d,41.5d,-1288.9987050208229d],Fire:-1s,attackDamageOverride:-1,customTex:"",CanPickUpLoot:0b,factionName:"sarkonid",HurtTime:0s,AttackTime:0s,CustomNameVisible:0b}}
 :enddata
 :endentity
 

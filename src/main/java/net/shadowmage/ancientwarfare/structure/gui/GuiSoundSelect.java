@@ -1,32 +1,13 @@
-/*
- Copyright 2015 Olivier Sylvain (aka GotoLink)
- This software is distributed under the terms of the GNU General Public License.
- Please see COPYING for precise license information.
-
- This file is part of Ancient Warfare.
-
- Ancient Warfare is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- Ancient Warfare is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.structure.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
+import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
+import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
 import net.shadowmage.ancientwarfare.core.util.SongPlayData;
 
@@ -65,6 +46,18 @@ public class GuiSoundSelect extends GuiContainerBase {
 				}
 			}
 		};
+		Listener l = new Listener(Listener.MOUSE_UP) {
+			@Override
+			public boolean onEvent(GuiElement widget, ActivationEvent evt) {
+				if (evt.mButton == 1 && widget.isMouseOverElement(evt.mx, evt.my)) {
+					((Text) widget).setText("");
+					refreshGui();
+				}
+
+				return false;
+			}
+		};
+		selectionLabel.addNewListener(l);
 		addGuiElement(selectionLabel);
 		area = new CompositeScrolled(this, 0, 40, 256, 200);
 		addGuiElement(area);

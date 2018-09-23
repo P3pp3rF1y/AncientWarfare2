@@ -130,13 +130,18 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
 
 		Iterator<BlockPos> it = wood ? trunkBlocksToChop.iterator() : leafBlocksToChop.iterator();
 		BlockPos position = it.next();
-		it.remove();
 		IBlockState state = world.getBlockState(position);
+		if (state.getMaterial() == Material.AIR) {
+			it.remove();
+			return false;
+		}
+
 		IBlockExtraDrop extraDrop = TreeFarmRegistry.getBlockExtraDrop(state);
 		NonNullList<ItemStack> extraDrops = extraDrop.getDrops(world, position, state, getFortune());
 		if (!harvestBlock(position)) {
 			return false;
 		}
+		it.remove();
 		InventoryTools.insertOrDropItems(inventoryForDrops, extraDrops, world, position);
 		return true;
 	}
@@ -163,7 +168,7 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
 
 	private boolean shear(BlockPos position, IShearable block, ItemStack shears) {
 		if (block.isShearable(shears, world, position)) {
-			NonNullList<ItemStack> drops = InventoryTools.toNonNullList(block.onSheared(shears, world, position, getFortune()));
+			List<ItemStack> drops = block.onSheared(shears, world, position, getFortune());
 			drops = InventoryTools.insertItems(plantableInventory, drops, false);
 			InventoryTools.insertOrDropItems(mainInventory, drops, world, pos);
 			world.setBlockToAir(position);

@@ -11,7 +11,7 @@
             "item": "#PLANKWOOD"
         },
         "C": {
-            "item": "minecraft:chest"
+            "item": "#CHEST"
         }
     },
     "result": {

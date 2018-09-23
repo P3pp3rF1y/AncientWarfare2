@@ -36,7 +36,7 @@ public class VehicleMaterial implements IVehicleMaterial {
 
 	private MaterialLevel getLevel(int num) {
 		if (num < 0 || num >= this.materialLevels.length) {
-			AncientWarfareVehicles.log.error("out of range vehicle material requested. num: " + num + " current levels: " + this.materialLevels.length);
+			AncientWarfareVehicles.LOG.error("out of range vehicle material requested. num: " + num + " current levels: " + this.materialLevels.length);
 			return new MaterialLevel();
 		}
 		return this.materialLevels[num];

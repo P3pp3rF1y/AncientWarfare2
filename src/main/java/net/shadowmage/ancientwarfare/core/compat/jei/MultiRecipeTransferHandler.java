@@ -58,7 +58,7 @@ public class MultiRecipeTransferHandler<C extends Container & ICraftingContainer
 				if (ingredient.getAllIngredients().isEmpty()) {
 					inputs.add(ItemStack.EMPTY);
 				} else {
-					inputs.add(ingredient.getDisplayedIngredient());
+					inputs.add(getNonNullIngredientStack(ingredient.getAllIngredients()));
 				}
 			}
 		}
@@ -94,10 +94,7 @@ public class MultiRecipeTransferHandler<C extends Container & ICraftingContainer
 			String message = I18n.format("jei.tooltip.error.recipe.transfer.inventory.full");
 			return handlerHelper.createUserErrorWithTooltip(message);
 		}
-
-		@SuppressWarnings("squid:S00108")
-		List<Integer> missingItems = AWCraftingManager.getRecipeInventoryMatch(recipe, allInventories, ArrayList::new, (a, i, s) -> {
-		}, (a, in) -> addMissingItem(a, in, inputs), false);
+		@SuppressWarnings("squid:S00108") List<Integer> missingItems = getMissingItems(inputs, recipe, allInventories);
 
 		if (!missingItems.isEmpty()) {
 			String message = I18n.format("jei.tooltip.error.recipe.transfer.missing");
@@ -109,6 +106,21 @@ public class MultiRecipeTransferHandler<C extends Container & ICraftingContainer
 		}
 
 		return null;
+	}
+
+	private List<Integer> getMissingItems(NonNullList<ItemStack> inputs, ICraftingRecipe recipe, IItemHandlerModifiable allInventories) {
+		return AWCraftingManager.getRecipeInventoryMatch(recipe, allInventories, ArrayList::new, (a, i, s) -> {},
+				(a, in) -> addMissingItem(a, in, inputs), false);
+	}
+
+	private ItemStack getNonNullIngredientStack(List<ItemStack> allIngredients) {
+		for (ItemStack stack : allIngredients) {
+			//because some mods apparently link null stacks to the ingredients in JEI
+			if (stack != null) {
+				return stack;
+			}
+		}
+		return ItemStack.EMPTY;
 	}
 
 	private void addMissingItem(List<Integer> missingItems, Ingredient missingIngredient, NonNullList<ItemStack> inputs) {

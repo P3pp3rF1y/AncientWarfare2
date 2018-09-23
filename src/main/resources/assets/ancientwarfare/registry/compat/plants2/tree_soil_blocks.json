@@ -1,0 +1,8 @@
+{
+    "mod": "plants2",
+    "soils": [
+        {
+            "name": "minecraft:netherrack"
+        }
+    ]
+}

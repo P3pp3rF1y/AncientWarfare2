@@ -26,7 +26,7 @@ public class RegularCraftingWrapper implements ICraftingRecipe {
 
 	@Override
 	public boolean isValid() {
-		return true;
+		return !getIngredients().isEmpty();
 	}
 
 	@Override

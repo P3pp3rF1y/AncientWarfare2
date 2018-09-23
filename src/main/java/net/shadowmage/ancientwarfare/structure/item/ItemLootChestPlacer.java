@@ -17,8 +17,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
-import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks;
 import net.shadowmage.ancientwarfare.structure.gui.GuiLootChestPlacer;
+import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedLootChest;
 
 import java.util.Optional;
@@ -53,8 +53,8 @@ public class ItemLootChestPlacer extends ItemBaseStructure {
 		}
 
 		BlockPos placePos = pos.offset(facing);
-		if (AWStructuresBlocks.advancedLootChest.canPlaceBlockAt(world, placePos)) {
-			world.setBlockState(placePos, AWStructuresBlocks.advancedLootChest.getDefaultState().withProperty(BlockChest.FACING, player.getHorizontalFacing().getOpposite()));
+		if (AWStructureBlocks.ADVANCED_LOOT_CHEST.canPlaceBlockAt(world, placePos)) {
+			world.setBlockState(placePos, AWStructureBlocks.ADVANCED_LOOT_CHEST.getDefaultState().withProperty(BlockChest.FACING, player.getHorizontalFacing().getOpposite()));
 			WorldTools.getTile(world, placePos, TileAdvancedLootChest.class)
 					.ifPresent(t -> {
 						t.setLootTable(lt.get().getFirst(), new Random(placePos.toLong()).nextLong());

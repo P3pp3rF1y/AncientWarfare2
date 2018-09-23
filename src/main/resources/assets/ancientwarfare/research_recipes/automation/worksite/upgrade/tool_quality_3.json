@@ -20,7 +20,7 @@
             "item": "#INGOTSTEEL"
         },
         "O": {
-            "item": "minecraft:obsidian"
+            "item": "#OBSIDIAN"
         }
     },
     "result": {

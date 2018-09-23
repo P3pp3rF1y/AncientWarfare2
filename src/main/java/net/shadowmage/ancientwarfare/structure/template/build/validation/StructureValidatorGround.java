@@ -7,7 +7,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
@@ -25,7 +25,7 @@ public class StructureValidatorGround extends StructureValidator {
 		Block block = state.getBlock();
 		if (!AWStructureStatics.isValidTargetBlock(state)) {
 			//noinspection ConstantConditions
-			AncientWarfareStructures.log.info("Rejecting due to target block mismatch of: " + block.getRegistryName().toString() + " at: " + x + "," + y + "," + z);
+			AncientWarfareStructure.LOG.debug("Rejecting due to target block mismatch of: " + block.getRegistryName().toString() + " at: " + x + "," + y + "," + z);
 			return false;
 		}
 		return true;
@@ -35,19 +35,24 @@ public class StructureValidatorGround extends StructureValidator {
 	public boolean validatePlacement(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
 		int minY = getMinY(template, bb);
 		int maxY = getMaxY(template, bb);
-		return validateBorderBlocks(world, template, bb, minY, maxY, false);
+		return validateBorderBlocks(world, bb, minY, maxY, false);
 	}
 
 	@Override
 	public void preGeneration(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureBB bb) {
 		prePlacementBorder(world, template, bb);
-		prePlacementUnderfill(world, template, bb);
+		prePlacementUnderfill(world, bb);
+		clearBB(world, bb);
+	}
+
+	private void clearBB(World world, StructureBB bb) {
+		BlockPos.getAllInBox(bb.min, bb.max).forEach(world::setBlockToAir);
 	}
 
 	@Override
 	public void postGeneration(World world, BlockPos origin, StructureBB bb) {
 		Biome biome = world.provider.getBiomeForCoords(origin);
-		if (biome != null && biome.getEnableSnow()) {
+		if (biome.getEnableSnow()) {
 			WorldStructureGenerator.sprinkleSnow(world, bb, getBorderSize());
 		}
 	}
@@ -60,16 +65,13 @@ public class StructureValidatorGround extends StructureValidator {
 		int topFilledY = WorldStructureGenerator.getTargetY(world, x, z, true);
 		int topNonAirBlock = world.getTopSolidOrLiquidBlock(new BlockPos(x, 1, z)).getY();
 		int step = WorldStructureGenerator.getStepNumber(x, z, bb.min.getX(), bb.max.getX(), bb.min.getZ(), bb.max.getZ());
-		int startY = Math.min(bb.min.getY() + template.yOffset + step, topFilledY + 1);
+		int startY = Math.min(bb.min.getY() + template.getOffset().getY() + step, topFilledY + 1);
 		for (int y = startY; y <= topNonAirBlock; y++) {
 			handleClearAction(world, new BlockPos(x, y, z), template, bb);
 		}
 		Biome biome = world.provider.getBiomeForCoords(new BlockPos(x, 1, z));
-		IBlockState fillBlock = Blocks.GRASS.getDefaultState();
-		if (biome != null && biome.topBlock != null) {
-			fillBlock = biome.topBlock;
-		}
-		int y = bb.min.getY() + template.yOffset + step - 1;
+		IBlockState fillBlock = biome.topBlock;
+		int y = bb.min.getY() + template.getOffset().getY() + step - 1;
 		BlockPos pos = new BlockPos(x, y, z);
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();

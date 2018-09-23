@@ -20,25 +20,25 @@ public class ItemWrapper {
 	public static ArrayList<ItemWrapper> buildList(String listName, String[] input) {
 		ArrayList<ItemWrapper> outputList = new ArrayList<>();
 
-		AncientWarfareCore.log.info("Building " + listName + "...");
+		AncientWarfareCore.LOG.info("Building " + listName + "...");
 
 		for (String itemName : input) {
 			itemName = itemName.trim();
 			if (!itemName.equals("")) {
 				String[] itemId = itemName.split(":");
 				if (Array.getLength(itemId) != 2 && Array.getLength(itemId) != 3) {
-					AncientWarfareCore.log.warn(" - Invalid item (bad length of " + Array.getLength(itemId) + "): " + itemId);
+					AncientWarfareCore.LOG.warn(" - Invalid item (bad length of " + Array.getLength(itemId) + "): " + itemId);
 					continue;
 				}
 				if (itemId[0] == null || itemId[1] == null) {
-					AncientWarfareCore.log.warn(" - Invalid block (parse/format error): " + itemId);
+					AncientWarfareCore.LOG.warn(" - Invalid block (parse/format error): " + itemId);
 					continue;
 				}
 
 				Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemId[0] + ":" + itemId[1]));
 
 				if (item == null) {
-					AncientWarfareCore.log.warn(" - Skipping missing item: " + itemName);
+					AncientWarfareCore.LOG.warn(" - Skipping missing item: " + itemName);
 					continue;
 				}
 				short damage = -1;
@@ -47,7 +47,7 @@ public class ItemWrapper {
 						damage = Short.parseShort(itemId[2]);
 					}
 					catch (NumberFormatException e) {
-						AncientWarfareCore.log.warn(" - Damage value invalid : '" + itemId[2] + "', must be a number between 0 and " + Short.MAX_VALUE);
+						AncientWarfareCore.LOG.warn(" - Damage value invalid : '" + itemId[2] + "', must be a number between 0 and " + Short.MAX_VALUE);
 						continue;
 					}
 				}
@@ -55,7 +55,7 @@ public class ItemWrapper {
 			}
 		}
 
-		AncientWarfareCore.log.info("...added " + outputList.size() + " items to " + listName);
+		AncientWarfareCore.LOG.info("...added " + outputList.size() + " items to " + listName);
 
 		return outputList;
 	}

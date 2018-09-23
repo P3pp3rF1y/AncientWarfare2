@@ -8,10 +8,10 @@
     ],
     "key": {
         "S": {
-            "item": "minecraft:string"
+            "item": "#STRING"
         },
         "F": {
-            "item": "minecraft:fence"
+            "item": "#FENCEWOOD"
         }
     },
     "result": {

@@ -11,7 +11,6 @@ import net.minecraft.scoreboard.Team;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
@@ -79,8 +78,6 @@ public abstract class NpcFaction extends NpcBase {
 
 	@Override
 	public boolean isHostileTowards(Entity e) {
-		if (NpcAI.isAlwaysHostileToNpcs(e))
-			return true;
 		if (e instanceof EntityPlayer) {
 			int standing = FactionTracker.INSTANCE.getStandingFor(world, e.getName(), getFaction());
 			if (getNpcFullType().endsWith("elite")) {
@@ -96,13 +93,10 @@ public abstract class NpcFaction extends NpcBase {
 			return standing < 0;
 		} else if (e instanceof NpcFaction) {
 			NpcFaction npc = (NpcFaction) e;
-			return FactionRegistry.getFaction(getFaction()).isHostileTowards(npc.getFaction());
+			return !npc.getFaction().equals(factionName) && FactionRegistry.getFaction(getFaction()).isHostileTowards(npc.getFaction());
 		} else {
-			if (!AWNPCStatics.autoTargetting) {
-				return NpcDefaultsRegistry.getFactionNpcDefault(this).isTarget(e);
-			}
+			return FactionRegistry.getFaction(factionName).isTarget(e);
 		}
-		return false;
 	}
 
 	@Override

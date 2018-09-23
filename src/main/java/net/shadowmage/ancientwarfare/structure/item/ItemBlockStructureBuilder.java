@@ -63,7 +63,7 @@ public class ItemBlockStructureBuilder extends ItemBlockBase implements IBoxRend
 		StructureTemplate t = StructureTemplateManager.INSTANCE.getTemplate(name);
 		if (t != null) {
 			EnumFacing face = player.getHorizontalFacing();
-			BlockPos p = pos.offset(face, t.zSize - 1 - t.zOffset + 1);
+			BlockPos p = pos.offset(face, t.getSize().getZ() - 1 - t.getOffset().getZ() + 1);
 			tb.setBuilder(new StructureBuilderTicked(world, t, face, p));
 		}
 	}
@@ -86,8 +86,8 @@ public class ItemBlockStructureBuilder extends ItemBlockBase implements IBoxRend
 		}
 		Util.renderBoundingBox(player, hit, hit, delta);
 		EnumFacing face = player.getHorizontalFacing();
-		BlockPos p2 = hit.offset(face, t.zSize - 1 - t.zOffset + 1);
-		StructureBB bb = new StructureBB(p2, face, t.xSize, t.ySize, t.zSize, t.xOffset, t.yOffset, t.zOffset);
+		BlockPos p2 = hit.offset(face, t.getSize().getZ() - 1 - t.getOffset().getZ() + 1);
+		StructureBB bb = new StructureBB(p2, face, t.getSize(), t.getOffset());
 		Util.renderBoundingBox(player, bb.min, bb.max, delta);
 	}
 }

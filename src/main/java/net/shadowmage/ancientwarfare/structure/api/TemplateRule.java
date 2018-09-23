@@ -1,44 +1,17 @@
-/*
- Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
- This software is distributed under the terms of the GNU General Public License.
- Please see COPYING for precise license information.
-
- This file is part of Ancient Warfare.
-
- Ancient Warfare is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- Ancient Warfare is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.structure.api;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.nbt.NBTException;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.util.Json;
-import net.shadowmage.ancientwarfare.core.util.JsonTagReader;
-import net.shadowmage.ancientwarfare.core.util.JsonTagWriter;
 import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException.TemplateRuleParsingException;
-import net.shadowmage.ancientwarfare.structure.template.build.StructureBuildingException;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 
 /*
  * base template-rule class.  Plugins should define their own rule classes.
@@ -50,19 +23,10 @@ import java.util.Locale;
  */
 public abstract class TemplateRule {
 
+	public static final String JSON_PREFIX = "JSON:";
 	public int ruleNumber = -1;
 
-	/*
-	 * all sub-classes must implement a no-param constructor for when loaded from file (at which point they should initialize from the parseRuleData method)
-	 */
-	public TemplateRule() {
-
-	}
-
-	/*
-	 * input params are the target position for placement of this rule and destination orientation
-	 */
-	public abstract void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) throws StructureBuildingException;
+	public abstract void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder);
 
 	public abstract void parseRuleData(NBTTagCompound tag);
 
@@ -73,10 +37,27 @@ public abstract class TemplateRule {
 	public abstract boolean shouldPlaceOnBuildPass(World world, int turns, BlockPos pos, int buildPass);
 
 	public void writeRule(BufferedWriter out) throws IOException {
+		out.write(getRuleType() + ":");
+		out.newLine();
+		out.write("plugin=" + getPluginName());
+		out.newLine();
+		out.write("number=" + ruleNumber);
+		out.newLine();
+		out.write("data:");
+		out.newLine();
 		NBTTagCompound tag = new NBTTagCompound();
 		writeRuleData(tag);
 		writeTag(out, tag);
+		out.write(":enddata");
+		out.newLine();
+		out.write(":end" + getRuleType());
+		out.newLine();
+		out.newLine();
 	}
+
+	protected abstract String getPluginName();
+
+	protected abstract String getRuleType();
 
 	public void parseRule(int ruleNumber, List<String> lines) throws TemplateRuleParsingException {
 		this.ruleNumber = ruleNumber;
@@ -84,48 +65,25 @@ public abstract class TemplateRule {
 		parseRuleData(tag);
 	}
 
-	public final void writeTag(BufferedWriter out, NBTTagCompound tag) throws IOException {
-		String line = Json.getJsonData(JsonTagWriter.getJsonForTag(tag));
+	private void writeTag(BufferedWriter out, NBTTagCompound tag) throws IOException {
+		String line = JSON_PREFIX + tag.toString();
 		out.write(line);
 		out.newLine();
 	}
 
-	public final NBTTagCompound readTag(List<String> ruleData) throws TemplateRuleParsingException {
-		for (String line : ruleData)//new json format
+	final NBTTagCompound readTag(List<String> ruleData) throws TemplateRuleParsingException {
+		for (String line : ruleData)
 		{
-			if (line.startsWith("JSON:{")) {
-				return JsonTagReader.parseTagCompound(line);
-			}
-		}
-		for (String line : ruleData)//old json format
-		{
-			if (line.toLowerCase(Locale.ENGLISH).startsWith("jsontag=")) {
+			if (line.startsWith(JSON_PREFIX)) {
 				try {
-					return JsonToNBT.getTagFromJson(line.split("=", -1)[1]);
+					return JsonToNBT.getTagFromJson(line.substring(JSON_PREFIX.length()));
 				}
-				catch (Exception e) {
-					e.printStackTrace();
-					throw new TemplateRuleParsingException("Caught exception while parsing json-nbt tag: " + line, e);
-				}
-			}
-		}
-		//old tag: format
-		List<String> tagLines = new ArrayList<>();
-		String line;
-		Iterator<String> it = ruleData.iterator();
-		while (it.hasNext() && (line = it.next()) != null) {
-			if (line.startsWith("tag:")) {
-				it.remove();
-				while (it.hasNext() && (line = it.next()) != null) {
-					it.remove();
-					if (line.startsWith(":endtag")) {
-						break;
-					}
-					tagLines.add(line);
+				catch (NBTException e) {
+					throw new TemplateRuleParsingException("Issue parsing NBTTagCompound from JSON: " + line, e);
 				}
 			}
 		}
-		return NBTTools.readNBTFrom(tagLines);
+		return new NBTTagCompound();
 	}
 
 	@Override

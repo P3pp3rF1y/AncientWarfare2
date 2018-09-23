@@ -13,6 +13,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeDesert;
@@ -28,6 +29,7 @@ import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -36,14 +38,13 @@ public class StructureBuilder implements IStructureBuilder {
 
 	protected StructureTemplate template;
 	protected World world;
-	protected BlockPos buildOrigin;
-	protected EnumFacing buildFace;
+	BlockPos buildOrigin;
+	EnumFacing buildFace;
 	protected int turns;
-	protected int maxPriority = 4;
-	protected int currentPriority;//current build priority...may not be needed anymore?
-	protected int currentX, currentY, currentZ;//coords in template
-	protected int destXSize, destYSize, destZSize;
-	protected BlockPos destination;
+	int maxPriority = 4;
+	int currentPriority;//current build priority...may not be needed anymore?
+	Vec3i curTempPos;
+	BlockPos destination;
 
 	protected StructureBB bb;
 
@@ -62,19 +63,10 @@ public class StructureBuilder implements IStructureBuilder {
 		this.bb = bb;
 		buildOrigin = buildKey;
 		destination = BlockPos.ORIGIN;
-		currentX = currentY = currentZ = 0;
-		destXSize = template.xSize;
-		destYSize = template.ySize;
-		destZSize = template.zSize;
+		curTempPos = Vec3i.NULL_VECTOR;
 		currentPriority = 0;
 
 		turns = ((face.getHorizontalIndex() + 2) % 4);
-		int swap;
-		for (int i = 0; i < turns; i++) {
-			swap = destXSize;
-			destXSize = destZSize;
-			destZSize = swap;
-		}
 		/*
 		 * initialize the first target destination so that the structure is ready to start building when called on to build
          */
@@ -95,33 +87,22 @@ public class StructureBuilder implements IStructureBuilder {
 	}
 
 	public void instantConstruction() {
-		try {
-			while (!this.isFinished()) {
-				TemplateRule rule = template.getRuleAt(currentX, currentY, currentZ);
-				placeCurrentPosition(rule);
-				increment();
+		while (!this.isFinished()) {
+			Optional<TemplateRule> rule = template.getRuleAt(curTempPos);
+			if (rule.isPresent()) {
+				placeCurrentPosition(rule.get());
+			} else if (currentPriority == 0) {
+				placeAir();
 			}
-		}
-		catch (Exception e) {
-			TemplateRule rule = template.getRuleAt(currentX, currentY, currentZ);
-			throw new RuntimeException("Caught exception while constructing template blocks: " + rule, e);
+			increment();
 		}
 		this.placeEntities();
 	}
 
-	protected void placeEntities() {
-		TemplateRuleEntity[] rules = template.getEntityRules();
-		for (TemplateRuleEntity rule : rules) {
-			if (rule == null) {
-				continue;
-			}
-			destination = BlockTools.rotateInArea(rule.getPosition(), template.xSize, template.zSize, turns).add(bb.min);
-			try {
-				rule.handlePlacement(world, turns, destination, this);
-			}
-			catch (StructureBuildingException e) {
-				e.printStackTrace();
-			}
+	private void placeEntities() {
+		for (TemplateRuleEntity rule : template.getEntityRules().values()) {
+			destination = BlockTools.rotateInArea(rule.getPosition(), template.getSize().getX(), template.getSize().getZ(), turns).add(bb.min);
+			rule.handlePlacement(world, turns, destination, this);
 		}
 	}
 
@@ -145,12 +126,8 @@ public class StructureBuilder implements IStructureBuilder {
 		world.setBlockState(pos, adjustedState, updateFlag);
 	}
 
-	protected void placeCurrentPosition(TemplateRule rule) {
-		if (rule == null) {
-			if (currentPriority == 0) {
-				placeAir();
-			}
-		} else if (rule.shouldPlaceOnBuildPass(world, turns, destination, currentPriority)) {
+	private void placeCurrentPosition(TemplateRule rule) {
+		if (rule.shouldPlaceOnBuildPass(world, turns, destination, currentPriority)) {
 			this.placeRule(rule);
 		}
 	}
@@ -167,41 +144,39 @@ public class StructureBuilder implements IStructureBuilder {
 		return !isFinished;
 	}
 
-	protected void placeAir() {
+	private void placeAir() {
 		if (!template.getValidationSettings().isPreserveBlocks()) {
-			template.getValidationSettings().handleClearAction(world, destination, template, bb);
+			world.setBlockToAir(destination);
 		}
 	}
 
-	protected void placeRule(TemplateRule rule) {
+	void placeRule(TemplateRule rule) {
 		if (destination.getY() <= 0) {
 			return;
 		}
-		try {
-			rule.handlePlacement(world, turns, destination, this);
-		}
-		catch (StructureBuildingException e) {
-			e.printStackTrace();
-		}
+		rule.handlePlacement(world, turns, destination, this);
 	}
 
-	protected void incrementDestination() {
-		destination = BlockTools.rotateInArea(new BlockPos(currentX, currentY, currentZ), template.xSize, template.zSize, turns).add(bb.min);
+	void incrementDestination() {
+		destination = BlockTools.rotateInArea(new BlockPos(curTempPos), template.getSize().getX(), template.getSize().getZ(), turns).add(bb.min);
 	}
 
 	/*
 	 * return true if could increment position
 	 * return false if template is finished
 	 */
-	protected boolean incrementPosition() {
+	private boolean incrementPosition() {
+		int currentX = curTempPos.getX();
+		int currentY = curTempPos.getY();
+		int currentZ = curTempPos.getZ();
 		currentX++;
-		if (currentX >= template.xSize) {
+		if (currentX >= template.getSize().getX()) {
 			currentX = 0;
 			currentZ++;
-			if (currentZ >= template.zSize) {
+			if (currentZ >= template.getSize().getZ()) {
 				currentZ = 0;
 				currentY++;
-				if (currentY >= template.ySize) {
+				if (currentY >= template.getSize().getY()) {
 					currentY = 0;
 					currentPriority++;
 					if (currentPriority > maxPriority) {
@@ -211,6 +186,7 @@ public class StructureBuilder implements IStructureBuilder {
 				}
 			}
 		}
+		curTempPos = new Vec3i(currentX, currentY, currentZ);
 		return true;
 	}
 
@@ -219,10 +195,10 @@ public class StructureBuilder implements IStructureBuilder {
 	}
 
 	public float getPercentDoneWithPass() {
-		float max = template.xSize * template.zSize * template.ySize;
-		float current = currentY * (template.xSize * template.zSize);//add layers done
-		current += currentZ * template.xSize;//add rows done
-		current += currentX;//add blocks done
+		float max = (float) template.getSize().getX() * template.getSize().getZ() * template.getSize().getY();
+		float current = (float) curTempPos.getY() * (template.getSize().getX() * template.getSize().getZ());//add layers done
+		current += curTempPos.getZ() * template.getSize().getX();//add rows done
+		current += curTempPos.getX();//add blocks done
 		return current / max;
 	}
 
@@ -300,7 +276,7 @@ public class StructureBuilder implements IStructureBuilder {
 		private final Predicate<Block> blockMatcher;
 		private final Function<IBlockState, IBlockState> doSwap;
 
-		public BlockSwapMapping(Predicate<Block> blockMatcher, Function<IBlockState, IBlockState> doSwap) {
+		private BlockSwapMapping(Predicate<Block> blockMatcher, Function<IBlockState, IBlockState> doSwap) {
 			this.blockMatcher = blockMatcher;
 			this.doSwap = doSwap;
 		}

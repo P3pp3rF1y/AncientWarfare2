@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.npc.ai.owned;
 
-import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
@@ -17,7 +16,7 @@ public class NpcAIPlayerOwnedAlarmResponse extends NpcAI<NpcPlayerOwned> {
 		if (!npc.getIsAIEnabled()) {
 			return false;
 		}
-		return npc.getUpkeepPoint() != null && npc.getUpkeepDimensionId() == npc.world.provider.getDimension() && npc.isAlarmed;
+		return npc.getUpkeepPoint().isPresent() && npc.getUpkeepDimensionId() == npc.world.provider.getDimension() && npc.isAlarmed;
 	}
 
 	@Override
@@ -25,7 +24,7 @@ public class NpcAIPlayerOwnedAlarmResponse extends NpcAI<NpcPlayerOwned> {
 		if (!npc.getIsAIEnabled()) {
 			return false;
 		}
-		return npc.getUpkeepPoint() != null && npc.getUpkeepDimensionId() == npc.world.provider.getDimension() && npc.isAlarmed;
+		return npc.getUpkeepPoint().isPresent() && npc.getUpkeepDimensionId() == npc.world.provider.getDimension() && npc.isAlarmed;
 	}
 
 	/*
@@ -41,17 +40,15 @@ public class NpcAIPlayerOwnedAlarmResponse extends NpcAI<NpcPlayerOwned> {
 	 */
 	@Override
 	public void updateTask() {
-		BlockPos pos = npc.getUpkeepPoint();
-		if (pos == null) {
-			return;
-		}
-		double dist = npc.getDistanceSq(pos.getX() + 0.5d, pos.getY(), pos.getZ() + 0.5d);
-		if (dist > AWNPCStatics.npcActionRange * AWNPCStatics.npcActionRange) {
-			npc.addAITask(TASK_MOVE);
-			moveToPosition(pos, dist);
-		} else {
-			npc.removeAITask(TASK_MOVE);
-		}
+		npc.getUpkeepPoint().ifPresent(pos -> {
+			double dist = npc.getDistanceSq(pos.getX() + 0.5d, pos.getY(), pos.getZ() + 0.5d);
+			if (dist > AWNPCStatics.npcActionRange * AWNPCStatics.npcActionRange) {
+				npc.addAITask(TASK_MOVE);
+				moveToPosition(pos, dist);
+			} else {
+				npc.removeAITask(TASK_MOVE);
+			}
+		});
 	}
 
 	/*

@@ -54,7 +54,7 @@ public class TileOwnerFixer implements IFixableData {
 			int x = compound.getInteger("x");
 			int y = compound.getInteger("y");
 			int z = compound.getInteger("z");
-			AncientWarfareCore.log.error("Tile {} at x:{} y:{} z:{} has invalid owner UUID and will need to be removed.", id, x, y, z);
+			AncientWarfareCore.LOG.error("Tile {} at x:{} y:{} z:{} has invalid owner UUID and will need to be removed.", id, x, y, z);
 		}
 		return compound;
 	}

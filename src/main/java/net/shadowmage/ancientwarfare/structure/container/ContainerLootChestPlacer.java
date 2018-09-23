@@ -8,6 +8,7 @@ import net.minecraft.util.Tuple;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
+import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.item.ItemLootChestPlacer;
 
 import java.util.List;
@@ -23,7 +24,8 @@ public class ContainerLootChestPlacer extends ContainerBase {
 	}
 
 	public List<String> getLootTableNames() {
-		return LootTableList.getAll().stream().map(ResourceLocation::toString).collect(Collectors.toList());
+		return LootTableList.getAll().stream().map(ResourceLocation::toString).filter(rl -> !AWStructureStatics.lootTableExclusions.contains(rl))
+				.collect(Collectors.toList());
 	}
 
 	@Override

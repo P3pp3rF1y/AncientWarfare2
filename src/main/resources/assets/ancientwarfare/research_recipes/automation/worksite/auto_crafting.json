@@ -8,10 +8,10 @@
     ],
     "key": {
         "C": {
-            "item": "minecraft:chest"
+            "item": "#CHEST"
         },
         "W": {
-            "item": "minecraft:crafting_table"
+            "item": "#WORKBENCH"
         },
         "G": {
             "item": "#GEARWOOD"

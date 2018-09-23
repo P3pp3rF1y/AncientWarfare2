@@ -1,0 +1,10 @@
+{
+    "mod": "twilightforest",
+    "saplings": [
+        {
+            "sapling": {
+                "name": "twilightforest:twilight_sapling"
+            }
+        }
+    ]
+}

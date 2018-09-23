@@ -34,7 +34,7 @@ import net.shadowmage.ancientwarfare.vehicle.entity.IVehicleType;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleMovementType;
 import net.shadowmage.ancientwarfare.vehicle.entity.materials.IVehicleMaterial;
-import net.shadowmage.ancientwarfare.vehicle.item.AWVehicleItems;
+import net.shadowmage.ancientwarfare.vehicle.init.AWVehicleItems;
 import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
 import net.shadowmage.ancientwarfare.vehicle.upgrades.IVehicleUpgradeType;
 
@@ -279,7 +279,7 @@ public abstract class VehicleType implements IVehicleType {
 
 	@Override
 	public ResourceLocation getTextureForMaterialLevel(int level) {
-		return new ResourceLocation(AncientWarfareVehicles.modID, "foo");
+		return new ResourceLocation(AncientWarfareVehicles.MOD_ID, "foo");
 	}
 
 	@Override
@@ -359,7 +359,7 @@ public abstract class VehicleType implements IVehicleType {
 
 	@Override
 	public ItemStack getStackForLevel(int level) {
-		ItemStack stack = new ItemStack(AWVehicleItems.spawner, 1, this.getGlobalVehicleType());
+		ItemStack stack = new ItemStack(AWVehicleItems.SPAWNER, 1, this.getGlobalVehicleType());
 		NBTTagCompound tag = new NBTTagCompound();
 		tag.setInteger("level", level);
 		stack.setTagInfo("spawnData", tag);
@@ -429,7 +429,7 @@ public abstract class VehicleType implements IVehicleType {
 				continue;
 			}
 			for (int i = 0; i < type.getMaterialType().getNumOfLevels(); i++) {
-				stack = new ItemStack(AWVehicleItems.spawner, 1, type.getGlobalVehicleType());
+				stack = new ItemStack(AWVehicleItems.SPAWNER, 1, type.getGlobalVehicleType());
 				NBTTagCompound tag = new NBTTagCompound();
 				tag.setInteger("level", i);
 				stack.setTagInfo("spawnData", tag);

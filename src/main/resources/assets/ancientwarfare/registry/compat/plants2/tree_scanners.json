@@ -1,0 +1,26 @@
+{
+    "mod": "plants2",
+    "tree_scanners": [
+        {
+            "type": "default",
+            "trunk": "plants2:nether_log",
+            "leaf": "plants2:nether_leaves",
+            "max_leaf_distance": 3,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": "plants2:log_0",
+            "leaf": "plants2:leaves_0",
+            "max_leaf_distance": 3,
+            "next_block_search": "all_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": "plants2:crystal_log",
+            "leaf": "plants2:crystal_leaves",
+            "max_leaf_distance": 3,
+            "next_block_search": "connected_up_or_level"
+        }
+    ]
+}

@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 12/22/2014 at: 17:41:35
+# Auto-generated structure template file. created on: 9/22/2018 at: 16:7:2
 # Lines beginning with # denote comments
 
 header:
-version=2.1
+version=2.6
 name=unique_barracks_pelirow
 size=18,9,14
 offset=8,1,13
@@ -182,7 +182,7 @@ rule:
 plugin=vanillaBlocks
 number=1
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:dirt","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"dirt",snowy:"false"}},buildPass:0}
 :enddata
 :endrule
 
@@ -190,7 +190,7 @@ rule:
 plugin=vanillaBlocks
 number=2
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:grass","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:grass",properties:{snowy:"false"}},buildPass:0}
 :enddata
 :endrule
 
@@ -198,7 +198,7 @@ rule:
 plugin=vanillaBlocks
 number=3
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stonebrick","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:stonebrick",properties:{variant:"chiseled_stonebrick"}},buildPass:0}
 :enddata
 :endrule
 
@@ -206,7 +206,7 @@ rule:
 plugin=vanillaBlocks
 number=4
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stonebrick","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:stonebrick",properties:{variant:"stonebrick"}},buildPass:0}
 :enddata
 :endrule
 
@@ -214,7 +214,7 @@ rule:
 plugin=vanillaBlocks
 number=5
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:redstone_block","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:redstone_block",properties:{}},buildPass:0}
 :enddata
 :endrule
 
@@ -222,7 +222,7 @@ rule:
 plugin=vanillaBlocks
 number=6
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:lit_redstone_lamp","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:lit_redstone_lamp",properties:{}},buildPass:2}
 :enddata
 :endrule
 
@@ -230,7 +230,7 @@ rule:
 plugin=vanillaBlocks
 number=7
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:iron_bars","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:iron_bars",properties:{east:"false",south:"false",north:"false",west:"false"}},buildPass:0}
 :enddata
 :endrule
 
@@ -238,7 +238,7 @@ rule:
 plugin=vanillaBlocks
 number=8
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stone_slab","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:stone_slab",properties:{half:"bottom",variant:"stone"}},buildPass:0}
 :enddata
 :endrule
 
@@ -246,7 +246,7 @@ rule:
 plugin=vanillaBlocks
 number=9
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:double_stone_slab","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:double_stone_slab",properties:{seamless:"false",variant:"stone"}},buildPass:0}
 :enddata
 :endrule
 
@@ -254,7 +254,7 @@ rule:
 plugin=vanillaBlocks
 number=10
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stone_slab","id":"ss"},"meta":{"val":"8","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:stone_slab",properties:{half:"top",variant:"stone"}},buildPass:0}
 :enddata
 :endrule
 
@@ -262,47 +262,47 @@ rule:
 plugin=vanillaBlocks
 number=11
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:wooden_slab","id":"ss"},"meta":{"val":"9","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:wooden_slab",properties:{half:"top",variant:"spruce"}},buildPass:0}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=12
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"id":{"val":"minecraft:cooked_beef","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"16","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"},{"val":{"id":{"val":"minecraft:speckled_melon","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"8","id":"pi"},"slot":{"val":"1","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-60","id":"pi"},"y":{"val":"84","id":"pi"},"x":{"val":"30","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{x:30,y:84,z:-60,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:cooked_beef",Count:16b,slot:0,Damage:0s},{id:"minecraft:speckled_melon",Count:8b,slot:1,Damage:0s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=13
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"id":{"val":"minecraft:iron_helmet","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-60","id":"pi"},"y":{"val":"84","id":"pi"},"x":{"val":"35","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{x:35,y:84,z:-60,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:iron_helmet",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=14
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"id":{"val":"ancientwarfarenpc:npc_spawner","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"2","id":"pi"},"slot":{"val":"0","id":"pi"},"tag":{"val":{"npcSubtype":{"val":"archer","id":"ss"},"npcType":{"val":"combat","id":"ss"}},"id":"ct"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-57","id":"pi"},"y":{"val":"84","id":"pi"},"x":{"val":"30","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{x:30,y:84,z:-57,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"ancientwarfarenpc:npc_spawner",Count:2b,tag:{npcSubtype:"archer",npcType:"combat"},slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=15
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"id":{"val":"minecraft:iron_chestplate","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-57","id":"pi"},"y":{"val":"84","id":"pi"},"x":{"val":"35","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{x:35,y:84,z:-57,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:iron_chestplate",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=16
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"id":{"val":"minecraft:splash_potion","id":"ss"},"Damage":{"val":"0","id":"pi"},"tag":{"val":{"Potion":{"val":"minecraft:long_strength","id":"ss"}},"id":"ct"},"Count":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"},{"val":{"id":{"val":"minecraft:potion","id":"ss"},"Damage":{"val":"0","id":"pi"},"tag":{"val":{"Potion":{"val":"minecraft:healing","id":"ss"}},"id":"ct"},"Count":{"val":"1","id":"pi"},"slot":{"val":"9","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-57","id":"pi"},"y":{"val":"84","id":"pi"},"x":{"val":"40","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{x:40,y:84,z:-57,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:splash_potion",Count:1b,tag:{Potion:"minecraft:long_strength"},slot:0,Damage:0s},{id:"minecraft:potion",Count:1b,tag:{Potion:"minecraft:healing"},slot:9,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -310,7 +310,7 @@ rule:
 plugin=vanillaBlocks
 number=17
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:torch","id":"ss"},"meta":{"val":"5","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"up"}},buildPass:2}
 :enddata
 :endrule
 
@@ -318,7 +318,7 @@ rule:
 plugin=vanillaBlocks
 number=18
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:carpet","id":"ss"},"meta":{"val":"6","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:carpet",properties:{color:"pink"}},buildPass:2}
 :enddata
 :endrule
 
@@ -326,7 +326,7 @@ rule:
 plugin=vanillaBlocks
 number=19
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:carpet","id":"ss"},"meta":{"val":"2","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:carpet",properties:{color:"magenta"}},buildPass:2}
 :enddata
 :endrule
 
@@ -334,7 +334,7 @@ rule:
 plugin=vanillaBlocks
 number=20
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:fence","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:fence",properties:{east:"false",south:"false",north:"false",west:"false"}},buildPass:0}
 :enddata
 :endrule
 
@@ -342,23 +342,23 @@ rule:
 plugin=vanillaBlocks
 number=21
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:heavy_weighted_pressure_plate","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:heavy_weighted_pressure_plate",properties:{power:"0"}},buildPass:2}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaDoors
+plugin=doors
 number=22
 data:
-JSON:{{"val":{"sideFlag":{"val":"8","id":"pb"},"blockName":{"val":"minecraft:iron_door","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:iron_door",properties:{hinge:"left",half:"lower",powered:"false",facing:"north",open:"false"}},buildPass:2}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaDoors
+plugin=doors
 number=23
 data:
-JSON:{{"val":{"sideFlag":{"val":"9","id":"pb"},"blockName":{"val":"minecraft:iron_door","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:iron_door",properties:{hinge:"left",half:"lower",powered:"false",facing:"north",open:"false"}},buildPass:2}
 :enddata
 :endrule
 
@@ -366,7 +366,7 @@ rule:
 plugin=vanillaBlocks
 number=24
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stone_button","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:stone_button",properties:{powered:"false",facing:"south"}},buildPass:2}
 :enddata
 :endrule
 
@@ -374,7 +374,7 @@ rule:
 plugin=vanillaBlocks
 number=25
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:carpet","id":"ss"},"meta":{"val":"14","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:carpet",properties:{color:"red"}},buildPass:2}
 :enddata
 :endrule
 
@@ -382,15 +382,15 @@ rule:
 plugin=vanillaBlocks
 number=26
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:stone_slab","id":"ss"},"meta":{"val":"7","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:stone_slab",properties:{half:"bottom",variant:"quartz"}},buildPass:0}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=27
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"id":{"val":"ancientwarfarenpc:npc_spawner","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"3","id":"pi"},"slot":{"val":"0","id":"pi"},"tag":{"val":{"npcSubtype":{"val":"","id":"ss"},"npcType":{"val":"combat","id":"ss"}},"id":"ct"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-60","id":"pi"},"y":{"val":"85","id":"pi"},"x":{"val":"40","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{x:40,y:85,z:-60,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"ancientwarfarenpc:npc_spawner",Count:3b,tag:{npcSubtype:"",npcType:"combat"},slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -398,7 +398,7 @@ rule:
 plugin=vanillaBlocks
 number=28
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:wooden_pressure_plate","id":"ss"},"meta":{"val":"0","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:wooden_pressure_plate",properties:{powered:"false"}},buildPass:2}
 :enddata
 :endrule
 
@@ -406,23 +406,23 @@ rule:
 plugin=vanillaBlocks
 number=29
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:torch","id":"ss"},"meta":{"val":"4","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"north"}},buildPass:2}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaDoors
+plugin=doors
 number=30
 data:
-JSON:{{"val":{"sideFlag":{"val":"0","id":"pb"},"blockName":{"val":"minecraft:iron_door","id":"ss"},"meta":{"val":"8","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:iron_door",properties:{hinge:"left",half:"upper",powered:"false",facing:"north",open:"false"}},buildPass:2}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaDoors
+plugin=doors
 number=31
 data:
-JSON:{{"val":{"sideFlag":{"val":"0","id":"pb"},"blockName":{"val":"minecraft:iron_door","id":"ss"},"meta":{"val":"9","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:iron_door",properties:{hinge:"right",half:"upper",powered:"false",facing:"north",open:"false"}},buildPass:2}
 :enddata
 :endrule
 
@@ -430,55 +430,55 @@ rule:
 plugin=vanillaBlocks
 number=32
 data:
-JSON:{{"val":{"blockName":{"val":"minecraft:torch","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"2","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"south"}},buildPass:2}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=33
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"id":{"val":"ancientwarfarenpc:iron_command_baton","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"},"tag":{"val":{"entityList":{"val":{"entryList":{"val":[],"id":"ls"}},"id":"ct"}},"id":"ct"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-60","id":"pi"},"y":{"val":"86","id":"pi"},"x":{"val":"30","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{x:30,y:86,z:-60,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"ancientwarfarenpc:iron_command_baton",Count:1b,tag:{entityList:{entryList:[]}},slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=34
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"id":{"val":"minecraft:cooked_beef","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"16","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"},{"val":{"id":{"val":"minecraft:speckled_melon","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"8","id":"pi"},"slot":{"val":"1","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-60","id":"pi"},"y":{"val":"86","id":"pi"},"x":{"val":"35","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{x:35,y:86,z:-60,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:cooked_beef",Count:16b,slot:0,Damage:0s},{id:"minecraft:speckled_melon",Count:8b,slot:1,Damage:0s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=35
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"id":{"val":"AncientWarfare:steel_ingot","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"6","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-60","id":"pi"},"y":{"val":"86","id":"pi"},"x":{"val":"40","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{x:40,y:86,z:-60,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"ancientwarfare:steel_ingot",Count:6b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=36
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"id":{"val":"minecraft:cooked_beef","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"16","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"},{"val":{"id":{"val":"minecraft:cake","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"1","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-57","id":"pi"},"y":{"val":"86","id":"pi"},"x":{"val":"30","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{x:30,y:86,z:-57,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:cooked_beef",Count:16b,slot:0,Damage:0s},{id:"minecraft:cake",Count:1b,slot:1,Damage:0s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=37
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"id":{"val":"AncientWarfareStructure:gate_spawner","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-57","id":"pi"},"y":{"val":"86","id":"pi"},"x":{"val":"35","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{x:35,y:86,z:-57,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"ancientwarfarestructure:gate_spawner",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaInventory
+plugin=inventory
 number=38
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"id":{"val":"minecraft:fishing_rod","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"},{"val":{"id":{"val":"ancientwarfarenpc:iron_shield","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"10","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-57","id":"pi"},"y":{"val":"86","id":"pi"},"x":{"val":"40","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{x:40,y:86,z:-57,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:fishing_rod",Count:1b,slot:0,Damage:0s},{id:"ancientwarfarenpc:iron_shield",Count:1b,slot:10,Damage:0s}]}}
 :enddata
 :endrule
 

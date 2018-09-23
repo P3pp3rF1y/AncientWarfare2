@@ -1,0 +1,21 @@
+{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        " S ",
+        "SSS",
+        "CCC"
+    ],
+    "key": {
+        "S": {
+            "item": "#STICKWOOD"
+        },
+        "C": {
+            "item": "#COBBLESTONE"
+        }
+    },
+    "result": {
+        "type": "minecraft:item_nbt",
+        "item": "ancientwarfarestructure:fire_pit",
+        "nbt": "{variant:\"default\",lit:0b}"
+    }
+}

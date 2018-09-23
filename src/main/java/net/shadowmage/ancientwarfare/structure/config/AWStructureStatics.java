@@ -1,24 +1,3 @@
-/*
- Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
- This software is distributed under the terms of the GNU General Public License.
- Please see COPYING for precise license information.
-
- This file is part of Ancient Warfare.
-
- Ancient Warfare is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- Ancient Warfare is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.structure.config;
 
 import net.minecraft.block.Block;
@@ -28,15 +7,18 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
-import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
 public class AWStructureStatics extends ModConfiguration {
+
+	public static Set<String> lootTableExclusions;
 
 	public AWStructureStatics(String mod) {
 		super(mod);
@@ -68,6 +50,8 @@ public class AWStructureStatics extends ModConfiguration {
 	private static final String worldGenBlocks = "d_world_gen_skippable_blocks";
 	private static final String targetBlocks = "e_world_gen_target_blocks";
 	private static final String scanSkippedBlocks = "f_scanner_skipped_blocks";
+	private static final String excludedLootTables = "g_excluded_loot_tables";
+
 
 	@Override
 	public void initializeCategories() {
@@ -76,7 +60,8 @@ public class AWStructureStatics extends ModConfiguration {
 		this.config.addCustomCategoryComment(excludedEntitiesCategory, "Entities that will not show up in the Mob Spawner Placer entity selection list.\nAdd any mobs here that will crash if spawned via the vanilla mob-spawner (usually complex NBT-defined entities).");
 		this.config.addCustomCategoryComment(worldGenBlocks, "Blocks that should be skipped/ignored during world gen -- should list all plant blocks/logs/foliage");
 		this.config.addCustomCategoryComment(targetBlocks, "List of target blocks that structures and towns can spawn on in addition to materials that are automatically whitelisted.");
-		this.config.addCustomCategoryComment(scanSkippedBlocks, "List of blocks that the structure scanner will completely ignore.\nWhenever these blocks are encountered the template will instead fill that block position with a hard-air rule.\nAdd any blocks to this list that may cause crashes when scanned or duplicated.\nVanilla blocks should not need to be added, but some mod-blocks may.\nBlock names must be specified by fully-qualified name (e.g. \"minecraft:stone\")");
+		this.config.addCustomCategoryComment(scanSkippedBlocks, "List of blocks that the structure scanner will completely ignore.\nWhenever these blocks are encountered the template will instead fill that block position with a hard-air rule.\nAdd any blocks to this list that may cause crashes when scanned or duplicated.\nVanilla blocks should not need to be added, but some mod-blocks may.\nBlock names must be specified by fully-qualified name (e.g. \"minecraft:chests/stronghold_corridor\")");
+		this.config.addCustomCategoryComment(excludedLootTables, "List of loot tables that should be excluded from loot chest placer GUI.\nLoot table names must be specified by fully-qualified name (e.g. \"minecraft:stone\")");
 	}
 
 	@Override
@@ -99,6 +84,165 @@ public class AWStructureStatics extends ModConfiguration {
 		initializeDefaultSkippedEntities();
 		initializeDefaultTargetBlocks();
 		initializeScannerSkippedBlocks();
+
+		lootTableExclusions = new HashSet<>(Arrays.asList(config.get(excludedLootTables, "excluded_loot_tables", new String[] {"primitivemobs:entities/chameleon",
+				"minecraft:entities/ocelot",
+				"minecraft:entities/silverfish",
+				"minecraft:entities/llama",
+				"twilightforest:entities/death_tome_hurt",
+				"twilightforest:entities/yeti",
+				"twilightforest:entities/mini_ghast",
+				"twilightforest:entities/snow_guardian",
+				"minecraft:entities/sheep/brown",
+				"minecraft:entities/vex",
+				"minecraft:entities/elder_guardian",
+				"minecolonies:entityarcherbarbariandrops",
+				"minecraft:entities/creeper",
+				"primitivemobs:entities/mimic",
+				"primitivemobs:entities/lily_lurker",
+				"minecraft:entities/sheep/red",
+				"twilightforest:entities/questing_ram_rewards",
+				"twilightforest:entities/fire_beetle",
+				"twilightforest:entities/redcap",
+				"minecraft:entities/horse",
+				"minecraft:entities/slime",
+				"twilightforest:entities/bunny",
+				"minecraft:entities/ghast",
+				"minecraft:entities/zombie",
+				"exoticbirds:birds/woodpecker",
+				"minecraft:entities/sheep/silver",
+				"twilightforest:entities/ice_crystal",
+				"minecraft:entities/mushroom_cow",
+				"minecolonies:entitychiefbarbariandrops",
+				"exoticbirds:birds/toucan",
+				"minecraft:entities/sheep/white",
+				"exoticbirds:birds/hummingbird",
+				"exoticbirds:birds/bluejay",
+				"exoticbirds:birds/roadrunner",
+				"minecraft:entities/sheep/cyan",
+				"minecraft:entities/zombie_pigman",
+				"minecraft:entities/cow",
+				"minecraft:entities/pig",
+				"exoticbirds:birds/heron",
+				"exoticbirds:birds/peahen",
+				"exoticbirds:birds/peacock",
+				"exoticbirds:birds/cardinal",
+				"exoticbirds:birds/duck",
+				"exoticbirds:birds/ostrich",
+				"minecraft:entities/stray",
+				"exoticbirds:birds/gouldianfinch",
+				"minecraft:entities/sheep/magenta",
+				"exoticbirds:birds/cassowary",
+				"primitivemobs:entities/blazing_juggernaut",
+				"minecraft:gameplay/fishing/fish",
+				"twilightforest:entities/winter_wolf",
+				"minecraft:gameplay/fishing/junk",
+				"minecraft:entities/donkey",
+				"twilightforest:entities/tower_termite",
+				"twilightforest:entities/goblin_knight",
+				"exoticbirds:birds/kiwi",
+				"ebwizardry:entities/evil_wizard",
+				"exoticbirds:dungeon_phoenix",
+				"minecraft:entities/villager",
+				"minecraft:entities/spider",
+				"twilightforest:entities/ice_exploder",
+				"exoticbirds:birds/seagull",
+				"minecraft:entities/zombie_horse",
+				"minecraft:entities/sheep/yellow",
+				"minecraft:entities/sheep/black",
+				"primitivemobs:chests/mimic_trap",
+				"twilightforest:entities/hydra",
+				"exoticbirds:birds/pigeon",
+				"twilightforest:entities/minoshroom",
+				"minecraft:entities/magma_cube",
+				"minecraft:entities/sheep/pink",
+				"twilightforest:entities/death_tome",
+				"minecraft:entities/mule",
+				"familiarfauna:entities/butterfly",
+				"twilightforest:entities/armored_giant",
+				"minecraft:entities/endermite",
+				"minecraft:entities/bat",
+				"minecraft:gameplay/fishing",
+				"familiarfauna:entities/turkey",
+				"silentgems:ender_slime",
+				"primitivemobs:entities/festive_creeper",
+				"exoticbirds:birds/kingfisher",
+				"minecraft:entities/evocation_illager",
+				"primitivemobs:entities/special/filch_lizard_steal",
+				"minecraft:entities/witch",
+				"minecraft:entities/skeleton_horse",
+				"minecraft:entities/zombie_villager",
+				"twilightforest:entities/ice_shooter",
+				"twilightforest:entities/block_goblin",
+				"exoticbirds:birds/kookaburra",
+				"minecraft:entities/guardian",
+				"primitivemobs:entities/special/haunted_tool",
+				"twilightforest:entities/wraith",
+				"familiarfauna:entities/snail",
+				"minecraft:entities/blaze",
+				"minecraft:entities/sheep",
+				"minecraft:entities/sheep/orange",
+				"exoticbirds:birds/owl",
+				"twilightforest:entities/snow_queen",
+				"twilightforest:entities/minotaur",
+				"twilightforest:entities/yeti_alpha",
+				"exoticbirds:birds/crane",
+				"minecraft:entities/sheep/lime",
+				"twilightforest:entities/naga",
+				"exoticbirds:birds/swan",
+				"minecraft:empty",
+				"exoticbirds:birds/parrot",
+				"exoticbirds:birds/flamingo",
+				"primitivemobs:entities/rocket_creeper",
+				"familiarfauna:entities/deer",
+				"twilightforest:entities/raven",
+				"minecraft:entities/chicken",
+				"twilightforest:entities/giant_miner",
+				"minecolonies:entitybarbariandrops",
+				"exoticbirds:birds/vulture",
+				"twilightforest:entities/skeleton_druid",
+				"exoticbirds:birds/penguin",
+				"familiarfauna:entities/pixie",
+				"minecraft:entities/sheep/light_blue",
+				"minecraft:entities/wolf",
+				"minecraft:entities/skeleton",
+				"primitivemobs:entities/support_creeper",
+				"minecraft:entities/enderman",
+				"primitivemobs:entities/dodo",
+				"minecraft:entities/squid",
+				"minecraft:entities/shulker",
+				"twilightforest:entities/deer",
+				"twilightforest:entities/troll",
+				"exoticbirds:birds/pelican",
+				"minecraft:entities/cave_spider",
+				"minecraft:entities/sheep/green",
+				"twilightforest:entities/tower_golem",
+				"minecraft:entities/wither_skeleton",
+				"minecraft:entities/snowman",
+				"minecraft:entities/sheep/blue",
+				"familiarfauna:entities/dragonfly",
+				"minecraft:entities/rabbit",
+				"twilightforest:entities/helmet_crab",
+				"twilightforest:entities/bird",
+				"twilightforest:entities/slime_beetle",
+				"twilightforest:entities/maze_slime",
+				"minecraft:entities/polar_bear",
+				"minecraft:entities/ender_dragon",
+				"twilightforest:entities/kobold",
+				"exoticbirds:birds/phoenix",
+				"minecraft:entities/parrot",
+				"minecraft:entities/sheep/gray",
+				"twilightforest:entities/lich",
+				"exoticbirds:birds/lyrebird",
+				"exoticbirds:birds/booby",
+				"minecraft:entities/vindication_illager",
+				"exoticbirds:birds/magpie",
+				"minecraft:entities/husk",
+				"minecraft:entities/sheep/purple",
+				"minecraft:entities/giant",
+				"primitivemobs:entities/special/filch_lizard_spawn",
+				"minecraft:entities/iron_golem"
+		}).getStringList()));
 	}
 
 	private void initializeScannerSkippedBlocks() {
@@ -547,7 +691,7 @@ public class AWStructureStatics extends ModConfiguration {
 
 	public static void logSkippableBlocksCoveredByMaterial() {
 		skippableWorldGenBlocks.stream().filter(b -> getBlock(b).isPresent() && isSkippableMaterial(getBlock(b).get().getDefaultState().getMaterial()))
-				.forEach(b -> AncientWarfareStructures.LOG.info("Block {} defined as skippable is redundant as its material is already skipped by default", b));
+				.forEach(b -> AncientWarfareStructure.LOG.info("Block {} defined as skippable is redundant as its material is already skipped by default", b));
 	}
 
 	private static Optional<Block> getBlock(String registryName) {
