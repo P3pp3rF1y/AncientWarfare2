@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.core.gui.manual.elements;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.gui.manual.GuiManual;
@@ -25,10 +26,12 @@ public class ItemElementWrapper extends BaseElementWrapper<ItemElement> {
 		super.render(mouseX, mouseY, partialTick);
 
 		RenderHelper.enableGUIStandardItemLighting();
+		GlStateManager.enableDepth();
 		ItemStack[] stacks = getElement().getItemStacks();
 		for (int i = 0; i < Math.min(stacks.length, 9); i++) {
 			Minecraft.getMinecraft().getRenderItem().renderItemAndEffectIntoGUI(stacks[i], renderX + i * (WIDTH + PADDING_BETWEEN), renderY);
 		}
+		GlStateManager.disableDepth();
 		RenderHelper.disableStandardItemLighting();
 	}
 
