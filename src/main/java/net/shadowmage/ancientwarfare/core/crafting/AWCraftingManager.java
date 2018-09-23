@@ -258,7 +258,18 @@ public class AWCraftingManager {
 	public static ICraftingRecipe findMatchingRecipe(World world, NonNullList<ItemStack> inputs, ItemStack result) {
 		InventoryCrafting inv = fillCraftingMatrixFromInventory(inputs);
 		List<ICraftingRecipe> recipes = findMatchingRecipesNoResearchCheck(inv, world);
-		return recipes.stream().filter(r -> recipeResultsEqual(result, r, inv)).findFirst().orElse(NoRecipeWrapper.INSTANCE);
+
+		if (recipes.isEmpty()) {
+			return NoRecipeWrapper.INSTANCE;
+		}
+
+		//if there's only one match just return
+		if (recipes.size() == 1) {
+			return recipes.get(0);
+		}
+
+		//if there's multiple, filter by result and return the first that matches by result, just in case none match by result return the first recipe in the list
+		return recipes.stream().filter(r -> recipeResultsEqual(result, r, inv)).findFirst().orElse(recipes.get(0));
 	}
 
 	private static boolean recipeResultsEqual(ItemStack result, ICraftingRecipe r, InventoryCrafting inv) {
