@@ -69,8 +69,8 @@ public class JsonHelper {
 		int count = JsonUtils.hasField(obj, "count") ? JsonUtils.getInt(obj, "count") : 1;
 
 		int meta = -1;
-		if (JsonUtils.hasField(obj, "meta")) {
-			meta = JsonUtils.getInt(obj, "meta");
+		if (JsonUtils.hasField(obj, "data")) {
+			meta = JsonUtils.getInt(obj, "data");
 		}
 		NBTTagCompound tagCompound = null;
 		if (JsonUtils.hasField(obj, "nbt")) {
