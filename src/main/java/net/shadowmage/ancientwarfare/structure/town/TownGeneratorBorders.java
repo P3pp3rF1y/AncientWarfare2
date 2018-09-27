@@ -86,7 +86,7 @@ public class TownGeneratorBorders {
 		int y = getTopFilledHeight(world.getChunkFromBlockCoords(new BlockPos(x, 1, z)), x, z, false);
 		int topSolidY = getTopFilledHeight(world.getChunkFromBlockCoords(new BlockPos(x, 1, z)), x, z, true);
 		if (y >= cutLevel) {
-			for (int py = Math.min(topSolidY, cutLevel) + 1; py <= y; py++) {
+			for (int py = y; py > Math.min(topSolidY, cutLevel); py--) {
 				BlockPos clearPos = new BlockPos(x, py, z);
 				handleClearing(world, clearPos);
 			}
