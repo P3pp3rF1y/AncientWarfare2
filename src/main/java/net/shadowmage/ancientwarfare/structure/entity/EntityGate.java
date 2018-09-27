@@ -201,8 +201,12 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 
 		boolean gateOwner = getOwner().isOwnerOrSameTeamOrFriend(player);
 		if (player.capabilities.isCreativeMode || getOwner() == Owner.EMPTY || gateOwner) {
-			if (gateOwner && player.isSneaking()) {
-				NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_GATE_CONTROL, getEntityId(), 0, 0);
+			if (player.isSneaking()) {
+				if (player.capabilities.isCreativeMode) {
+					NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_GATE_CONTROL_CREATIVE, getEntityId(), 0, 0);
+				} else if (gateOwner) {
+					NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_GATE_CONTROL, getEntityId(), 0, 0);
+				}
 			} else {
 				this.activateGate();
 			}

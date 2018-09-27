@@ -95,6 +95,7 @@ public class AncientWarfareStructure {
 		NetworkHandler.registerContainer(NetworkHandler.GUI_SPAWNER_ADVANCED_INVENTORY, ContainerSpawnerAdvancedInventoryItem.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_SPAWNER_ADVANCED_BLOCK_INVENTORY, ContainerSpawnerAdvancedInventoryBlock.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_GATE_CONTROL, ContainerGateControl.class);
+		NetworkHandler.registerContainer(NetworkHandler.GUI_GATE_CONTROL_CREATIVE, ContainerGateControl.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_DRAFTING_STATION, ContainerDraftingStation.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_SOUND_BLOCK, ContainerSoundBlock.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_LOOT_CHEST_PLACER, ContainerLootChestPlacer.class);

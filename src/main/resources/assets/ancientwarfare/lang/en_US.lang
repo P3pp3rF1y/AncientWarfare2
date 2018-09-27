@@ -338,6 +338,7 @@ guistrings.construction.set_pos_1=Set Pos 1
 guistrings.construction.set_pos_2=Set Pos 2
 guistrings.construction.clear_positions=Clear Pos1/Pos2
 guistrings.gate.repack=Repack Gate
+guistrings.gate.gate_owner=Gate Owner
 guistrings.inventory.player=Player Inventory
 guistrings.inventory.setsides=Sides
 guistrings.inventory.side.top=Top

@@ -18,6 +18,7 @@ import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.event.StructureBoundingBoxRenderer;
 import net.shadowmage.ancientwarfare.structure.gui.GuiGateControl;
+import net.shadowmage.ancientwarfare.structure.gui.GuiGateControlCreative;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
 import net.shadowmage.ancientwarfare.structure.render.DraftingStationRenderer;
 import net.shadowmage.ancientwarfare.structure.render.ParticleDummyModel;
@@ -34,6 +35,7 @@ public class ClientProxyStructure extends ClientProxyBase {
 		super.preInit();
 
 		NetworkHandler.registerGui(NetworkHandler.GUI_GATE_CONTROL, GuiGateControl.class);
+		NetworkHandler.registerGui(NetworkHandler.GUI_GATE_CONTROL_CREATIVE, GuiGateControlCreative.class);
 		MinecraftForge.EVENT_BUS.register(StructureBoundingBoxRenderer.INSTANCE);
 		MinecraftForge.EVENT_BUS.register(this);
 

@@ -7,8 +7,12 @@ import net.shadowmage.ancientwarfare.structure.container.ContainerGateControl;
 
 public class GuiGateControl extends GuiContainerBase<ContainerGateControl> {
 
-	public GuiGateControl(ContainerBase par1Container) {
-		super(par1Container, 55 + 8 + 8, 12 + 8 + 8);
+	public GuiGateControl(ContainerBase container) {
+		this(container, 55 + 8 + 8, 12 + 8 + 8);
+	}
+
+	public GuiGateControl(ContainerBase container, int xSize, int ySize) {
+		super(container, xSize, ySize);
 	}
 
 	@Override
