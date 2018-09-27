@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.gui;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
@@ -29,6 +30,16 @@ public class GuiNpcFactionTradeSetup extends GuiContainerBase<ContainerNpcFactio
 	public void initElements() {
 		area = new CompositeScrolled(this, 0, 0, xSize, ySize - 16 - 4 - 4 * 18);
 		addGuiElement(area);
+
+		Button templateButton = new Button(170, ySize - 85, xSize - 174, 12, "guistrings.select_trade_template") {
+			@Override
+			protected void onPressed() {
+				Minecraft.getMinecraft().displayGuiScreen(new GuiTradeTemplateSelect(GuiNpcFactionTradeSetup.this, getContainer().entity.getFaction()));
+				refreshGui();
+			}
+		};
+
+		addGuiElement(templateButton);
 	}
 
 	@Override

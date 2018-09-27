@@ -7,7 +7,7 @@ import net.shadowmage.ancientwarfare.npc.trade.FactionTradeList;
 
 public class ContainerNpcFactionTradeSetup extends ContainerNpcBase<NpcFactionTrader> {
 
-	public final FactionTradeList tradeList;
+	public FactionTradeList tradeList;
 	public boolean tradesChanged = false;
 
 	public ContainerNpcFactionTradeSetup(EntityPlayer player, int x, int y, int z) {
@@ -43,10 +43,18 @@ public class ContainerNpcFactionTradeSetup extends ContainerNpcBase<NpcFactionTr
 	public void onGuiClosed() {
 		if (player.world.isRemote && tradesChanged) {
 			tradeList.removeEmptyTrades();
-			NBTTagCompound packetTag = new NBTTagCompound();
-			packetTag.setTag("tradeData", tradeList.serializeNBT());
-			sendDataToServer(packetTag);
+			sendTradeListToServer();
 		}
 	}
 
+	private void sendTradeListToServer() {
+		NBTTagCompound packetTag = new NBTTagCompound();
+		packetTag.setTag("tradeData", tradeList.serializeNBT());
+		sendDataToServer(packetTag);
+	}
+
+	public void setTradeList(FactionTradeList tradeList) {
+		this.tradeList = tradeList;
+		sendTradeListToServer();
+	}
 }

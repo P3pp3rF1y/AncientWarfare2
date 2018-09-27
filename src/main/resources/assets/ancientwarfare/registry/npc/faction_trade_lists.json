@@ -1,0 +1,52 @@
+{
+    "defaults": [
+        {
+            "name": "first trade",
+            "trades": [
+                {
+                    "input": [
+                        {
+                            "name": "minecraft:iron_sword",
+                            "count": 2
+                        }
+                    ],
+                    "output": [
+                        {
+                            "name": "minecraft:diamond",
+                            "count": 4
+                        }
+                    ],
+                    "refill_frequency": 100,
+                    "max_trades": 2000
+                }
+            ]
+        }
+    ],
+    "faction_defaults": [
+        {
+            "buffloka": [
+                {
+                    "name": "buffloka first trade",
+                    "trades": [
+                        {
+                            "input": [
+                                {
+                                    "name": "minecraft:gold_ingot",
+                                    "count": 2
+                                }
+                            ],
+                            "output": [
+                                {
+                                    "name": "minecraft:wheat",
+                                    "count": 4
+                                }
+                            ],
+                            "refill_frequency": 100,
+                            "max_trades": 2000
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

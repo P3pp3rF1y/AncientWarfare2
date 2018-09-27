@@ -43,6 +43,7 @@ import net.shadowmage.ancientwarfare.npc.network.PacketFactionUpdate;
 import net.shadowmage.ancientwarfare.npc.network.PacketNpcCommand;
 import net.shadowmage.ancientwarfare.npc.proxy.NpcCommonProxy;
 import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
+import net.shadowmage.ancientwarfare.npc.registry.FactionTradeListRegistry;
 import net.shadowmage.ancientwarfare.npc.registry.NpcDefaultsRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -95,6 +96,7 @@ public class AncientWarfareNPC {
 		RegistryLoader.registerParser(new FactionRegistry.FactionParser());
 		RegistryLoader.registerParser(new NpcDefaultsRegistry.FactionNpcDefaultsParser());
 		RegistryLoader.registerParser(new NpcDefaultsRegistry.OwnedNpcDefaultsParser());
+		RegistryLoader.registerParser(new FactionTradeListRegistry.Parser());
 	}
 
 	@EventHandler

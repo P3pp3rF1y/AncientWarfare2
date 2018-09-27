@@ -214,6 +214,7 @@ guistrings.delete=Delete
 guistrings.max_trades=Max Trades
 guistrings.refill_frequency=Refill Freq
 guistrings.new_trade=Add New Trade
+guistrings.select_trade_template=Select Trade Template
 guistrings.keybinds=Keybinds
 guistrings.no_selection=No Selection
 guistrings.current_structure=Current Structure:

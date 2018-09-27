@@ -12,6 +12,7 @@ import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.JsonUtils;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.Tuple;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -19,6 +20,7 @@ import net.shadowmage.ancientwarfare.core.util.RegistryTools;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Function;
@@ -178,6 +180,14 @@ public class JsonHelper {
 			ret.put(parseKey.apply(pair), parseValue.apply(pair));
 		}
 
+		return ret;
+	}
+
+	public static List<ItemStack> getItemStacks(JsonArray stacks) {
+		List<ItemStack> ret = NonNullList.create();
+		for (JsonElement stackElement : stacks) {
+			ret.add(getItemStack(JsonUtils.getJsonObject(stackElement, "itemstack")));
+		}
 		return ret;
 	}
 
