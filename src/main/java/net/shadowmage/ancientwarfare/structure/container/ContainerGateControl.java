@@ -25,7 +25,8 @@ public class ContainerGateControl extends ContainerEntityBase<EntityGate> {
 		if (tag.hasKey("repack")) {
 			entity.repackEntity();
 		} else if (tag.hasKey(OWNER_TAG)) {
-			entity.setOwner(new Owner(entity.world, tag.getString(OWNER_TAG)));
+			String owner = tag.getString(OWNER_TAG);
+			entity.setOwner(owner.isEmpty() ? Owner.EMPTY : new Owner(entity.world, tag.getString(OWNER_TAG)));
 			refreshGui();
 		}
 	}
