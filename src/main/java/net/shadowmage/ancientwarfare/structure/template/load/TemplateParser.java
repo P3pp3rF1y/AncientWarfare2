@@ -1,7 +1,7 @@
 package net.shadowmage.ancientwarfare.structure.template.load;
 
 import net.minecraft.util.math.Vec3i;
-import net.minecraftforge.fml.common.Loader;
+import net.shadowmage.ancientwarfare.core.util.CompatUtils;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
@@ -80,7 +80,7 @@ public class TemplateParser {
 					}
 					if (line.startsWith("mods=")) {
 						modDependencies = StringTools.safeParseString("=", line).split(",");
-						if (!areModsLoaded(modDependencies)) {
+						if (!CompatUtils.areModsLoaded(modDependencies)) {
 							return Optional.empty();
 						}
 					}
@@ -196,15 +196,6 @@ public class TemplateParser {
 		}
 
 		return Optional.of(resultBuilder.build(constructTemplate(name, modDependencies, version, size, offset, templateData, parsedRules, parsedEntities, validation)));
-	}
-
-	private boolean areModsLoaded(String[] mods) {
-		for (String mod : mods) {
-			if (!Loader.isModLoaded(mod)) {
-				return false;
-			}
-		}
-		return true;
 	}
 
 	private StructureTemplate constructTemplate(String name, String[] modDependencies, Version version, Vec3i size, Vec3i offset, short[] templateData, Map<Integer, TemplateRule> rules, Map<Integer, TemplateRuleEntity> entityRules, StructureValidator validation) {

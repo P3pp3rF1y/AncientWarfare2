@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.structure.town;
 
 import net.minecraft.block.Block;
+import net.shadowmage.ancientwarfare.core.util.CompatUtils;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplate.TownStructureEntry;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplate.TownWallEntry;
@@ -53,6 +54,10 @@ public class TownTemplateParser {
 				break;
 			} else if (lower.startsWith("name")) {
 				template.setTownTypeName(StringTools.safeParseString("=", line));
+			} else if (line.startsWith("mods=")) {
+				if (!CompatUtils.areModsLoaded(StringTools.safeParseString("=", line).split(","))) {
+					return;
+				}
 			} else if (lower.startsWith("minsize")) {
 				template.setMinSize(StringTools.safeParseInt("=", line));
 			} else if (lower.startsWith("maxsize")) {
