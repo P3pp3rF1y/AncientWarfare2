@@ -21,14 +21,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
-public final class TemplateScanner {
+public class TemplateScanner {
+	private TemplateScanner() {}
 
     /*
 	 * @param turns # of turns for proper orientation
      */
 
-	public static StructureTemplate scan(World world, BlockPos min, BlockPos max, BlockPos key, int turns, String name) {
+	public static StructureTemplate scan(World world, Set<String> modDependencies, BlockPos min, BlockPos max, BlockPos key, int turns, String name) {
 		int xSize = max.getX() - min.getX() + 1;
 		int ySize = max.getY() - min.getY() + 1;
 		int zSize = max.getZ() - min.getZ() + 1;
@@ -50,7 +52,6 @@ public final class TemplateScanner {
 		Block scannedBlock;
 		List<TemplateRuleBlock> pluginBlockRules;
 		int index;
-		int meta;
 		int nextRuleID = 1;
 		BlockPos destination;
 		for (int scanY = min.getY(); scanY <= max.getY(); scanY++) {
@@ -107,7 +108,7 @@ public final class TemplateScanner {
 			}
 		}
 
-		StructureTemplate template = new StructureTemplate(name, new Vec3i(xOutSize, ySize, zOutSize), key);
+		StructureTemplate template = new StructureTemplate(name, modDependencies, new Vec3i(xOutSize, ySize, zOutSize), key);
 		template.setTemplateData(templateRuleData);
 		template.setBlockRules(blockRules);
 		template.setEntityRules(entityRules);

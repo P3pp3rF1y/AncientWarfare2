@@ -24,6 +24,7 @@ import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
 import net.shadowmage.ancientwarfare.structure.template.scan.TemplateScanner;
 
 import javax.annotation.Nonnull;
+import java.util.Collections;
 
 public class TileStructureScanner extends TileUpdatable implements IBlockBreakHandler {
 	private static final String SCANNER_INVENTORY_TAG = "scannerInventory";
@@ -144,10 +145,11 @@ public class TileStructureScanner extends TileUpdatable implements IBlockBreakHa
 		ItemStructureSettings settings = ItemStructureSettings.getSettingsFor(scanner);
 		if (ItemStructureScanner.readyToExport(scanner)) {
 			int turns = (6 - settings.face().getHorizontalIndex()) % 4;
-			StructureTemplate dummyTemplate = TemplateScanner.scan(world, settings.getMin(), settings.getMax(), settings.buildKey(), turns, "dummy");
+			StructureTemplate dummyTemplate = TemplateScanner.scan(world, Collections.emptySet(), settings.getMin(), settings.getMax(), settings.buildKey(), turns, "dummy");
 			if (isSameTemplateSizeAndOffset(template, dummyTemplate)) {
 				ItemStructureScanner.setStructureName(scanner, name);
 				ItemStructureScanner.setValidator(scanner, template.getValidationSettings());
+				ItemStructureScanner.setModDependencies(scanner, template.modDependencies);
 				//TODO fix incorrect y buildkey offset in structure builder and remove offesting buildkey up 1 block here
 				restoreTemplate(template, settings.getBoundingBox(), settings.buildKey().offset(EnumFacing.UP, 1), settings.face());
 				return;
@@ -166,6 +168,7 @@ public class TileStructureScanner extends TileUpdatable implements IBlockBreakHa
 		settings.setPos1(bb.min);
 		settings.setPos2(bb.max);
 		ItemStructureScanner.setStructureName(scanner, name);
+		ItemStructureScanner.setModDependencies(scanner, template.modDependencies);
 		ItemStructureScanner.setValidator(scanner, template.getValidationSettings());
 		ItemStructureSettings.setSettingsFor(scanner, settings);
 

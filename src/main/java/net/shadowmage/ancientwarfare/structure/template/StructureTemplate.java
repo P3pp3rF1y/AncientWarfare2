@@ -11,6 +11,7 @@ import net.shadowmage.ancientwarfare.structure.template.build.validation.Structu
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 public class StructureTemplate {
 	public static final Version CURRENT_VERSION = new Version(2, 6);
@@ -26,6 +27,7 @@ public class StructureTemplate {
 	/*
 	 * stored template data
 	 */
+	public final Set<String> modDependencies;
 	private Map<Integer, TemplateRule> blockRules;
 	private Map<Integer, TemplateRuleEntity> entityRules;
 	private short[] templateData;
@@ -36,14 +38,15 @@ public class StructureTemplate {
 	 */
 	private StructureValidator validator;
 
-	public StructureTemplate(String name, Vec3i size, Vec3i offset) {
-		this(name, CURRENT_VERSION, size, offset);
+	public StructureTemplate(String name, Set<String> modDependencies, Vec3i size, Vec3i offset) {
+		this(name, modDependencies, CURRENT_VERSION, size, offset);
 	}
 
-	public StructureTemplate(String name, Version version, Vec3i size, Vec3i offset) {
+	public StructureTemplate(String name, Set<String> modDependencies, Version version, Vec3i size, Vec3i offset) {
 		if (name == null) {
 			throw new IllegalArgumentException("cannot have null name for structure");
 		}
+		this.modDependencies = modDependencies;
 		this.version = version;
 		this.name = name;
 		this.size = size;

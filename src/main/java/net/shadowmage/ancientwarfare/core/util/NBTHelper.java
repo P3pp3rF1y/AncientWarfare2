@@ -4,12 +4,18 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.Tuple;
 import net.minecraftforge.common.util.Constants;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class NBTHelper {
 	private NBTHelper() {}
@@ -50,5 +56,19 @@ public class NBTHelper {
 	private static <T extends Comparable<T>> String serializeValue(IProperty<T> property, Comparable<?> valueString) {
 		//noinspection unchecked
 		return property.getName((T) valueString);
+	}
+
+	public static Set<String> getStringSet(NBTTagList tagList) {
+		Set<String> ret = new HashSet<>();
+		for (NBTBase tag : tagList) {
+			ret.add(((NBTTagString) tag).getString());
+		}
+		return ret;
+	}
+
+	public static NBTTagList getNBTStringList(Collection<String> modDependencies) {
+		NBTTagList ret = new NBTTagList();
+		modDependencies.forEach(mod -> ret.appendTag(new NBTTagString(mod)));
+		return ret;
 	}
 }

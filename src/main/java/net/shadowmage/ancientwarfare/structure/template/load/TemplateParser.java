@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.structure.template.load;
 
 import net.minecraft.util.math.Vec3i;
+import net.minecraftforge.fml.common.Loader;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
@@ -14,10 +15,13 @@ import net.shadowmage.ancientwarfare.structure.template.build.validation.Structu
 import net.shadowmage.ancientwarfare.structure.template.datafixes.FixResult;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class TemplateParser {
 
@@ -26,7 +30,7 @@ public class TemplateParser {
 	private TemplateParser() {
 	}
 
-	FixResult<StructureTemplate> parseTemplate(String fileName, List<String> templateLines) {
+	Optional<FixResult<StructureTemplate>> parseTemplate(String fileName, List<String> templateLines) {
 		try {
 			return parseTemplateLines(fileName, templateLines);
 		}
@@ -35,7 +39,7 @@ public class TemplateParser {
 		}
 	}
 
-	private FixResult<StructureTemplate> parseTemplateLines(String fileName, List<String> lines) throws TemplateParsingException {
+	private Optional<FixResult<StructureTemplate>> parseTemplateLines(String fileName, List<String> lines) throws TemplateParsingException {
 		Iterator<String> it = lines.iterator();
 		String line;
 
@@ -54,6 +58,7 @@ public class TemplateParser {
 		Map<Integer, TemplateRule> parsedRules = new HashMap<>();
 		Map<Integer, TemplateRuleEntity> parsedEntities = new HashMap<>();
 		FixResult.Builder<StructureTemplate> resultBuilder = new FixResult.Builder<>();
+		String[] modDependencies = new String[0];
 		while (it.hasNext()) {
 			line = it.next();
 			if (line.startsWith("#") || line.equals("")) {
@@ -72,6 +77,12 @@ public class TemplateParser {
 					if (line.startsWith("name=")) {
 						name = StringTools.safeParseString("=", line);
 						initData[1] = true;
+					}
+					if (line.startsWith("mods=")) {
+						modDependencies = StringTools.safeParseString("=", line).split(",");
+						if (!areModsLoaded(modDependencies)) {
+							return Optional.empty();
+						}
 					}
 					if (line.startsWith("size=")) {
 						int[] sizes = StringTools.safeParseIntArray("=", line);
@@ -184,11 +195,20 @@ public class TemplateParser {
 			}
 		}
 
-		return resultBuilder.build(constructTemplate(name, version, size, offset, templateData, parsedRules, parsedEntities, validation));
+		return Optional.of(resultBuilder.build(constructTemplate(name, modDependencies, version, size, offset, templateData, parsedRules, parsedEntities, validation)));
 	}
 
-	private StructureTemplate constructTemplate(String name, Version version, Vec3i size, Vec3i offset, short[] templateData, Map<Integer, TemplateRule> rules, Map<Integer, TemplateRuleEntity> entityRules, StructureValidator validation) {
-		StructureTemplate template = new StructureTemplate(name, version, size, offset);
+	private boolean areModsLoaded(String[] mods) {
+		for (String mod : mods) {
+			if (!Loader.isModLoaded(mod)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private StructureTemplate constructTemplate(String name, String[] modDependencies, Version version, Vec3i size, Vec3i offset, short[] templateData, Map<Integer, TemplateRule> rules, Map<Integer, TemplateRuleEntity> entityRules, StructureValidator validation) {
+		StructureTemplate template = new StructureTemplate(name, Arrays.stream(modDependencies).collect(Collectors.toSet()), version, size, offset);
 		template.setBlockRules(rules);
 		template.setEntityRules(entityRules);
 		template.setTemplateData(templateData);

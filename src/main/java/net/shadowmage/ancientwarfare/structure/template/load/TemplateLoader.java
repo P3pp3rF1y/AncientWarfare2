@@ -26,6 +26,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -140,7 +141,12 @@ public class TemplateLoader {
 	}
 
 	private int loadTemplate(Path fileName, List<String> lines, boolean saveFixedTemplate) {
-		FixResult<StructureTemplate> loadedTemplate = TemplateParser.INSTANCE.parseTemplate(fileName.toString(), lines);
+		Optional<FixResult<StructureTemplate>> result = TemplateParser.INSTANCE.parseTemplate(fileName.toString(), lines);
+		if (!result.isPresent()) {
+			return 0;
+		}
+
+		FixResult<StructureTemplate> loadedTemplate = result.get();
 		StructureTemplate template = loadedTemplate.getData();
 
 		if (loadedTemplate.isModified()) {

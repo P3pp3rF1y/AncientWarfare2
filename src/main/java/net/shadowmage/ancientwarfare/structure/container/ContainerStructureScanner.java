@@ -9,9 +9,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.SlotItemHandler;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
+import net.shadowmage.ancientwarfare.core.util.NBTHelper;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureItems;
 import net.shadowmage.ancientwarfare.structure.item.ItemStructureScanner;
@@ -20,6 +22,7 @@ import net.shadowmage.ancientwarfare.structure.template.build.validation.Structu
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureScanner;
 
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Consumer;
 
 public class ContainerStructureScanner extends ContainerBase {
@@ -88,6 +91,8 @@ public class ContainerStructureScanner extends ContainerBase {
 				setValidator(validator);
 			} else if (tag.hasKey(BOUNDS_ACTIVE_TAG)) {
 				setBoundsActive(tag.getBoolean(BOUNDS_ACTIVE_TAG));
+			} else if (tag.hasKey("mods")) {
+				updateModDependencies(NBTHelper.getStringSet(tag.getTagList("mods", Constants.NBT.TAG_STRING)));
 			}
 		}
 	}
@@ -123,6 +128,10 @@ public class ContainerStructureScanner extends ContainerBase {
 		//noinspection ConstantConditions
 		ItemStructureScanner.setStructureName(scanner, name);
 		saveScannerData(player);
+	}
+
+	public Set<String> getModDependencies() {
+		return ItemStructureScanner.getModDependencies(scanner);
 	}
 
 	public String getName() {
@@ -188,5 +197,14 @@ public class ContainerStructureScanner extends ContainerBase {
 		tag.setString("mode", "restore");
 		tag.setString("templateName", name);
 		sendDataToServer(tag);
+	}
+
+	public void updateModDependencies(Set<String> mods) {
+		if (player.world.isRemote) {
+			sendUpdateData("mods", NBTHelper.getNBTStringList(mods));
+		}
+		//noinspection ConstantConditions
+		ItemStructureScanner.setModDependencies(scanner, mods);
+		saveScannerData(player);
 	}
 }
