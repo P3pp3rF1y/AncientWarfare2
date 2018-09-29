@@ -1,17 +1,15 @@
 package net.shadowmage.ancientwarfare.structure.town;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.chunk.Chunk;
 import net.shadowmage.ancientwarfare.automation.registry.TreeFarmRegistry;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.ITree;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.ITreeScanner;
-import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.worldgen.WorldStructureGenerator;
 
@@ -83,8 +81,8 @@ public class TownGeneratorBorders {
 	}
 
 	private static void handleBorderBlock(World world, int x, int z, int fillLevel, int cutLevel, IBlockState fillBlock, IBlockState topBlock) {
-		int y = getTopFilledHeight(world.getChunkFromBlockCoords(new BlockPos(x, 1, z)), x, z, false);
-		int topSolidY = getTopFilledHeight(world.getChunkFromBlockCoords(new BlockPos(x, 1, z)), x, z, true);
+		int y = BlockTools.getTopFilledHeight(world.getChunkFromBlockCoords(new BlockPos(x, 1, z)), x, z, false);
+		int topSolidY = BlockTools.getTopFilledHeight(world.getChunkFromBlockCoords(new BlockPos(x, 1, z)), x, z, true);
 		if (y >= cutLevel) {
 			for (int py = y; py > Math.min(topSolidY, cutLevel); py--) {
 				BlockPos clearPos = new BlockPos(x, py, z);
@@ -114,20 +112,6 @@ public class TownGeneratorBorders {
 			tree.getLeafPositions().forEach(world::setBlockToAir);
 			tree.getTrunkPositions().forEach(world::setBlockToAir);
 		}
-	}
-
-	private static int getTopFilledHeight(Chunk chunk, int x, int z, boolean skippables) {
-		int maxY = chunk.getTopFilledSegment() + 16;
-		Block block;
-		for (int y = maxY; y > 0; y--) {
-			IBlockState state = chunk.getBlockState(new BlockPos(x, y, z));
-			block = state.getBlock();
-			if (block == Blocks.AIR || (skippables && AWStructureStatics.isSkippable(state))) {
-				continue;
-			}
-			return y;
-		}
-		return -1;
 	}
 
 	private static IBlockState getFillBlock(World world, int x, int z, boolean surface) {

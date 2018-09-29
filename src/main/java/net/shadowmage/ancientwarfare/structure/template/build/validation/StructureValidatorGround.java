@@ -7,6 +7,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
@@ -46,7 +47,7 @@ public class StructureValidatorGround extends StructureValidator {
 	}
 
 	private void clearBB(World world, StructureBB bb) {
-		BlockPos.getAllInBox(bb.min, bb.max).forEach(world::setBlockToAir);
+		BlockTools.getAllInBoxTopDown(bb.min, bb.max).forEach(world::setBlockToAir);
 	}
 
 	@Override
@@ -63,10 +64,10 @@ public class StructureValidatorGround extends StructureValidator {
 			return;
 		}
 		int topFilledY = WorldStructureGenerator.getTargetY(world, x, z, true);
-		int topNonAirBlock = world.getTopSolidOrLiquidBlock(new BlockPos(x, 1, z)).getY();
+		int topNonAirBlock = BlockTools.getTopFilledHeight(world.getChunkFromBlockCoords(new BlockPos(x, 1, z)), x, z, false);
 		int step = WorldStructureGenerator.getStepNumber(x, z, bb.min.getX(), bb.max.getX(), bb.min.getZ(), bb.max.getZ());
 		int startY = Math.min(bb.min.getY() + template.getOffset().getY() + step, topFilledY + 1);
-		for (int y = startY; y <= topNonAirBlock; y++) {
+		for (int y = topNonAirBlock; y >= startY; y--) {
 			handleClearAction(world, new BlockPos(x, y, z), template, bb);
 		}
 		Biome biome = world.provider.getBiomeForCoords(new BlockPos(x, 1, z));

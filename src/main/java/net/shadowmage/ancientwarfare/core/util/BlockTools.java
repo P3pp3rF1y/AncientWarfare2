@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.core.util;
 
+import com.google.common.collect.AbstractIterator;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -11,6 +12,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
@@ -23,13 +25,16 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.entity.AWFakePlayer;
 import net.shadowmage.ancientwarfare.core.util.parsing.PropertyState;
+import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 
 import javax.annotation.Nullable;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.MissingResourceException;
@@ -437,6 +442,20 @@ public class BlockTools {
 		return new PropertyState<>(property, (V) value.get());
 	}
 
+	public static int getTopFilledHeight(Chunk chunk, int x, int z, boolean skippables) {
+		int maxY = chunk.getTopFilledSegment() + 16;
+		Block block;
+		for (int y = maxY; y > 0; y--) {
+			IBlockState state = chunk.getBlockState(new BlockPos(x, y, z));
+			block = state.getBlock();
+			if (block == Blocks.AIR || (skippables && AWStructureStatics.isSkippable(state))) {
+				continue;
+			}
+			return y;
+		}
+		return -1;
+	}
+
 	private interface IRotator<T extends Comparable<T>> {
 
 		T rotateY(T facing, int turns);
@@ -444,5 +463,47 @@ public class BlockTools {
 
 	public interface AddPropertyFunction<T> {
 		T apply(T obj, IProperty<?> property, Comparable<?> value);
+	}
+
+	public static Iterable<BlockPos> getAllInBoxTopDown(BlockPos from, BlockPos to) {
+		return getAllInBoxTopDown(Math.min(from.getX(), to.getX()), Math.min(from.getY(), to.getY()), Math.min(from.getZ(), to.getZ()), Math.max(from.getX(), to.getX()), Math.max(from.getY(), to.getY()), Math.max(from.getZ(), to.getZ()));
+	}
+
+	public static Iterable<BlockPos> getAllInBoxTopDown(final int x1, final int y1, final int z1, final int x2, final int y2, final int z2) {
+		return new Iterable<BlockPos>() {
+			public Iterator<BlockPos> iterator() {
+				return new AbstractIterator<BlockPos>() {
+					private boolean first = true;
+					private int lastPosX;
+					private int lastPosY;
+					private int lastPosZ;
+
+					protected BlockPos computeNext() {
+						if (this.first) {
+							this.first = false;
+							this.lastPosX = x1;
+							this.lastPosY = y2;
+							this.lastPosZ = z1;
+							return new BlockPos(x1, y1, z1);
+						} else if (this.lastPosX == x2 && this.lastPosY == y2 && this.lastPosZ == z2) {
+							return this.endOfData();
+						} else {
+							if (this.lastPosX < x2) {
+								++this.lastPosX;
+							} else if (this.lastPosZ < z2) {
+								this.lastPosX = x1;
+								++this.lastPosZ;
+							} else if (this.lastPosY > y1) {
+								this.lastPosX = x1;
+								this.lastPosZ = z1;
+								--this.lastPosY;
+							}
+
+							return new BlockPos(this.lastPosX, this.lastPosY, this.lastPosZ);
+						}
+					}
+				};
+			}
+		};
 	}
 }
