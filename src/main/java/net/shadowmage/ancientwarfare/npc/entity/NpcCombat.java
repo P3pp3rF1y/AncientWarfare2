@@ -41,8 +41,7 @@ import javax.annotation.Nonnull;
 import java.util.Collection;
 
 public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
-
-	private EntityAIBase collideAI;
+	private NpcAIAttackMeleeLongRange meleeAI;
 	private EntityAIBase arrowAI;
 	private NpcAIPlayerOwnedPatrol patrolAI;
 
@@ -50,7 +49,7 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
 
 	public NpcCombat(World par1World) {
 		super(par1World);
-		collideAI = new NpcAIAttackMeleeLongRange(this);
+		meleeAI = new NpcAIAttackMeleeLongRange(this);
 		arrowAI = new NpcAIPlayerOwnedAttackRanged(this);
 
 		Predicate<Entity> selector = this::isHostileTowards;
@@ -102,12 +101,15 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
 		super.onWeaponInventoryChanged();
 		if (!world.isRemote) {
 			this.tasks.removeTask(arrowAI);
-			this.tasks.removeTask(collideAI);
+			this.tasks.removeTask(meleeAI);
 			@Nonnull ItemStack stack = getHeldItemMainhand();
 			if (isBow(stack.getItem())) {
 				this.tasks.addTask(7, arrowAI);
 			} else {
-				this.tasks.addTask(7, collideAI);
+				this.tasks.addTask(7, meleeAI);
+			}
+			if (meleeAI != null) {
+				meleeAI.setAttackReachFromWeapon(getHeldItemMainhand());
 			}
 		}
 	}

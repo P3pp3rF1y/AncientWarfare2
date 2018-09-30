@@ -163,6 +163,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
 		this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
+		this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_SPEED);
 	}
 
 	public ItemStack getShieldStack() {
