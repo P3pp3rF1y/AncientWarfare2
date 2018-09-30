@@ -12,6 +12,7 @@ import net.shadowmage.ancientwarfare.npc.item.ItemBardInstrument;
 import net.shadowmage.ancientwarfare.npc.item.ItemCoin;
 import net.shadowmage.ancientwarfare.npc.item.ItemCombatOrder;
 import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
+import net.shadowmage.ancientwarfare.npc.item.ItemExtendedReachWeapon;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 import net.shadowmage.ancientwarfare.npc.item.ItemRoutingOrder;
 import net.shadowmage.ancientwarfare.npc.item.ItemShield;
@@ -60,5 +61,17 @@ public class AWNPCItems {
 		registry.register(new ItemNpcSpawner());
 
 		registry.register(new ItemCoin());
+
+		registerExtendedReachWeapons(registry, "spear", 2, -3, 4.2F);
+		registerExtendedReachWeapons(registry, "halberd", 3, -3.2D, 4.5F);
+		registerExtendedReachWeapons(registry, "lance", 2.5D, -3.2D, 5.5F);
+	}
+
+	private static void registerExtendedReachWeapons(IForgeRegistry<Item> registry, String name, double attackOffset, double attackSpeed, float reach) {
+		registry.register(new ItemExtendedReachWeapon(Item.ToolMaterial.WOOD, "wooden_" + name, attackOffset, attackSpeed, reach));
+		registry.register(new ItemExtendedReachWeapon(Item.ToolMaterial.STONE, "stone_" + name, attackOffset, attackSpeed, reach));
+		registry.register(new ItemExtendedReachWeapon(Item.ToolMaterial.IRON, "iron_" + name, attackOffset, attackSpeed, reach));
+		registry.register(new ItemExtendedReachWeapon(Item.ToolMaterial.GOLD, "golden_" + name, attackOffset, attackSpeed, reach));
+		registry.register(new ItemExtendedReachWeapon(Item.ToolMaterial.DIAMOND, "diamond_" + name, attackOffset, attackSpeed, reach));
 	}
 }

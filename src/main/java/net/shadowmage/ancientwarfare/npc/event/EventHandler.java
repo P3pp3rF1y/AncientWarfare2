@@ -71,4 +71,5 @@ public class EventHandler {
 			e.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(e, NpcBase.class, 0, false, false, null));
 		}
 	}
+
 }
