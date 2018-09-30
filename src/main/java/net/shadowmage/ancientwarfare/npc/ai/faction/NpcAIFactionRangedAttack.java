@@ -1,27 +1,33 @@
 package net.shadowmage.ancientwarfare.npc.ai.faction;
 
 import net.minecraft.entity.IRangedAttackMob;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttack;
-import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionMountedArcher;
 
 public class NpcAIFactionRangedAttack extends NpcAIAttack<NpcBase> {
 
 	private final IRangedAttackMob rangedAttacker;
-	private double attackDistanceSq = AWNPCStatics.archerRange * AWNPCStatics.archerRange;
+
+	private int attackDistanceSq = -1;
 
 	public NpcAIFactionRangedAttack(NpcBase npc) {
 		super(npc);
 		this.rangedAttacker = (IRangedAttackMob) npc;//will classcastexception if improperly used..
 		this.moveSpeed = 1.d;
-		if (npc instanceof NpcFactionMountedArcher)
-			attackDistanceSq /= 2;
 	}
 
 	@Override
 	protected boolean shouldCloseOnTarget(double dist) {
-		return (dist > attackDistanceSq || !this.npc.getEntitySenses().canSee(this.getTarget()));
+		return (dist > getAttackDistanceSq() || !this.npc.getEntitySenses().canSee(this.getTarget()));
+	}
+
+	private double getAttackDistanceSq() {
+		if (attackDistanceSq == -1) {
+			double distance = npc.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getAttributeValue();
+			attackDistanceSq = (int) (distance * distance);
+		}
+		return attackDistanceSq;
 	}
 
 	@Override
@@ -35,13 +41,8 @@ public class NpcAIFactionRangedAttack extends NpcAIAttack<NpcBase> {
 			npc.getNavigator().clearPath();
 		}
 		if (this.getAttackDelay() <= 0) {
-			int val = 0;//AIHelper.doQuiverBowThing(npc, getTarget()); TODO quiver bow alternative integration?
-			if (val > 0) {
-				this.setAttackDelay(val);
-				return;
-			}
-			float pwr = (float) (attackDistanceSq / dist);
-			pwr = pwr < 0.1f ? 0.1f : pwr > 1.f ? 1.f : pwr;
+			float pwr = (float) (getAttackDistanceSq() / dist);
+			pwr = Math.min(Math.max(pwr, 0.1F), 1F);
 			this.rangedAttacker.attackEntityWithRangedAttack(getTarget(), pwr);
 			this.setAttackDelay(35);
 		}

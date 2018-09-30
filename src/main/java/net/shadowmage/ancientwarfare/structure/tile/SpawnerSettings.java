@@ -16,6 +16,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
@@ -631,6 +632,9 @@ public class SpawnerSettings {
 			}
 			if (customTag != null) {
 				NBTTagCompound temp = new NBTTagCompound();
+				if (e instanceof NpcFaction && customTag.hasKey(FACTION_NAME_TAG)) {
+					((NpcFaction) e).setFactionNameAndDefaults(customTag.getString(FACTION_NAME_TAG));
+				}
 				e.writeToNBT(temp);
 				Set<String> keys = customTag.getKeySet();
 				for (String key : keys) {

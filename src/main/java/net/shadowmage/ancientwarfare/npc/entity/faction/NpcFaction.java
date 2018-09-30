@@ -30,6 +30,10 @@ public abstract class NpcFaction extends NpcBase {
 
 	public NpcFaction(World world, String factionName) {
 		super(world);
+		setFactionNameAndDefaults(factionName);
+	}
+
+	public void setFactionNameAndDefaults(String factionName) {
 		this.factionName = factionName;
 		applyFactionNpcSettings();
 	}
