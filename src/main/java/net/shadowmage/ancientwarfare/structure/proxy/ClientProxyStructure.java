@@ -22,7 +22,7 @@ import net.shadowmage.ancientwarfare.structure.gui.GuiGateControlCreative;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
 import net.shadowmage.ancientwarfare.structure.render.DraftingStationRenderer;
 import net.shadowmage.ancientwarfare.structure.render.ParticleDummyModel;
-import net.shadowmage.ancientwarfare.structure.render.RenderGateHelper;
+import net.shadowmage.ancientwarfare.structure.render.RenderGateInvisible;
 import net.shadowmage.ancientwarfare.structure.sounds.SoundLoader;
 import net.shadowmage.ancientwarfare.structure.tile.TileSoundBlock;
 
@@ -39,7 +39,7 @@ public class ClientProxyStructure extends ClientProxyBase {
 		MinecraftForge.EVENT_BUS.register(StructureBoundingBoxRenderer.INSTANCE);
 		MinecraftForge.EVENT_BUS.register(this);
 
-		RenderingRegistry.registerEntityRenderingHandler(EntityGate.class, RenderGateHelper::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityGate.class, RenderGateInvisible::new);
 
 		ResourceUtils.registerReloadListener(ParticleDummyModel.INSTANCE);
 	}

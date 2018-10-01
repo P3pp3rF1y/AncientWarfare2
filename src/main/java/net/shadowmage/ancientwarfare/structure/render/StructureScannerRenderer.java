@@ -20,4 +20,9 @@ public class StructureScannerRenderer extends TileEntitySpecialRenderer<TileStru
 		}
 		mc.entityRenderer.enableLightmap();
 	}
+
+	@Override
+	public boolean isGlobalRenderer(TileStructureScanner te) {
+		return true;
+	}
 }

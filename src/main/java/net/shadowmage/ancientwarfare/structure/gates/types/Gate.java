@@ -188,6 +188,18 @@ public class Gate implements IGateType {
 		return basicWood;
 	}
 
+	public void updateRenderBoundingBox(EntityGate gate) {
+		if (gate.getRenderBoundingBox().getAverageEdgeLength() == 0) {
+			BlockPos min = BlockTools.getMin(gate.pos1, gate.pos2);
+			BlockPos max = BlockTools.getMax(gate.pos1, gate.pos2);
+			gate.setRenderBoundingBox(getRenderBoundingBox(gate, min, max));
+		}
+	}
+
+	protected AxisAlignedBB getRenderBoundingBox(EntityGate gate, BlockPos min, BlockPos max) {
+		return new AxisAlignedBB(min, max.add(1, 1, 1));
+	}
+
 	@Override
 	public void setCollisionBoundingBox(EntityGate gate) {
 		if (gate.pos1 == null || gate.pos2 == null) {
@@ -223,8 +235,8 @@ public class Gate implements IGateType {
 		float width = wideOnXAxis ? max.getX() - min.getX() + 1 : max.getZ() - min.getZ() + 1;
 		float xOffset = wideOnXAxis ? width * 0.5f : 0.5f;
 		float zOffset = wideOnXAxis ? 0.5f : width * 0.5f;
-		gate.pos1 = min;
-		gate.pos2 = max;
+		gate.setPositions(min, max);
+		gate.setRenderBoundingBox(getRenderBoundingBox(gate, min, max));
 		gate.edgeMax = (float) max.getY() - min.getY() + 1;
 		gate.setPosition(min.getX() + xOffset, min.getY(), min.getZ() + zOffset);
 	}
@@ -236,7 +248,7 @@ public class Gate implements IGateType {
 		}
 		BlockPos min = BlockTools.getMin(gate.pos1, gate.pos2);
 		BlockPos max = BlockTools.getMax(gate.pos1, gate.pos2);
-		removeBetween(gate.world, min, max);
+		openBetween(gate.world, min, max);
 	}
 
 	@Override
@@ -256,38 +268,49 @@ public class Gate implements IGateType {
 		}
 		BlockPos min = BlockTools.getMin(gate.pos1, gate.pos2);
 		BlockPos max = BlockTools.getMax(gate.pos1, gate.pos2);
-		placeBetween(gate, min, max);
+		closeBetween(gate, min, max);
 	}
 
-	public final void removeBetween(World world, BlockPos min, BlockPos max) {
+	public final void openBetween(World world, BlockPos min, BlockPos max) {
 		Block id;
 		for (int x = min.getX(); x <= max.getX(); x++) {
 			for (int y = min.getY(); y <= max.getY(); y++) {
 				for (int z = min.getZ(); z <= max.getZ(); z++) {
 					id = world.getBlockState(new BlockPos(x, y, z)).getBlock();
 					if (id == AWStructureBlocks.GATE_PROXY) {
-						world.setBlockToAir(new BlockPos(x, y, z));
+						WorldTools.getTile(world, new BlockPos(x, y, z), TEGateProxy.class).ifPresent(t -> t.setOpen(true));
 					}
 				}
 			}
 		}
 	}
 
-	public final void placeBetween(EntityGate gate, BlockPos min, BlockPos max) {
+	public final void closeBetween(EntityGate gate, BlockPos min, BlockPos max) {
 		for (int x = min.getX(); x <= max.getX(); x++) {
 			for (int y = min.getY(); y <= max.getY(); y++) {
 				for (int z = min.getZ(); z <= max.getZ(); z++) {
 					BlockPos pos = new BlockPos(x, y, z);
-					IBlockState state = gate.world.getBlockState(pos);
-					Block block = state.getBlock();
-					if (!gate.world.isAirBlock(pos)) {
-						block.dropBlockAsItem(gate.world, pos, state, 0);
-					}
-					if (gate.world.setBlockState(pos, AWStructureBlocks.GATE_PROXY.getDefaultState())) {
-						WorldTools.getTile(gate.world, pos, TEGateProxy.class).ifPresent(t -> t.setOwner(gate));
+					placeProxyIfNotPresent(gate, pos);
+					WorldTools.getTile(gate.world, pos, TEGateProxy.class).ifPresent(t -> t.setOwner(gate));
+					if (!gate.getRenderedTile().isPresent()) {
+						WorldTools.getTile(gate.world, pos, TEGateProxy.class).ifPresent(te -> {
+							te.setRender();
+							gate.setRenderedTile(te);
+						});
 					}
 				}
 			}
+		}
+	}
+
+	private void placeProxyIfNotPresent(EntityGate gate, BlockPos pos) {
+		IBlockState state = gate.world.getBlockState(pos);
+		Block block = state.getBlock();
+		if (block != AWStructureBlocks.GATE_PROXY) {
+			if (!gate.world.isAirBlock(pos)) {
+				block.dropBlockAsItem(gate.world, pos, state, 0);
+			}
+			gate.world.setBlockState(pos, AWStructureBlocks.GATE_PROXY.getDefaultState());
 		}
 	}
 
@@ -330,5 +353,4 @@ public class Gate implements IGateType {
 	public static ItemStack getItemToConstruct(int type) {
 		return getGateByID(type).getConstructingItem();
 	}
-
 }

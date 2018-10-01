@@ -17,12 +17,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.proxy.IClientRegister;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
+import net.shadowmage.ancientwarfare.structure.render.GateProxyRenderer;
 import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
 
 import javax.annotation.Nullable;
@@ -70,6 +72,11 @@ public final class BlockGateProxy extends BlockContainer implements IClientRegis
 	@Nullable
 	@Override
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return WorldTools.getTile(world, pos, TEGateProxy.class).map(TEGateProxy::isOpen).orElse(false) ? NULL_AABB :
+				getCorrectAxisAABB(world, pos);
+	}
+
+	private AxisAlignedBB getCorrectAxisAABB(IBlockAccess world, BlockPos pos) {
 		return (world.getBlockState(pos.offset(EnumFacing.WEST)).getBlock() == this || world.getBlockState(pos.offset(EnumFacing.EAST)).getBlock() == this)
 				? X_AXIS_AABB : Z_AXIS_AABB;
 	}
@@ -113,5 +120,7 @@ public final class BlockGateProxy extends BlockContainer implements IClientRegis
 			}
 		});
 		ModelRegistryHelper.register(modelLocation, new DummyBakedModel());
+
+		ClientRegistry.bindTileEntitySpecialRenderer(TEGateProxy.class, new GateProxyRenderer());
 	}
 }
