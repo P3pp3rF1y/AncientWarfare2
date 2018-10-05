@@ -10,21 +10,24 @@ import net.shadowmage.ancientwarfare.core.item.ItemBackpack;
 import javax.annotation.Nonnull;
 
 public class ItemHandlerBackpack implements IItemHandlerModifiable {
-	private ItemStack backpackStack;
+	private static final String BACKPACK_ITEMS_TAG = "backpackItems";
+	private final ItemStackHandler backpackInventory;
+	private final ItemStack backpackStack;
 
 	public ItemHandlerBackpack(ItemStack backpackStack) {
+		backpackInventory = getHandler(backpackStack);
 		this.backpackStack = backpackStack;
 	}
 
 	@Override
 	public int getSlots() {
-		return getHandler(backpackStack).getSlots();
+		return backpackInventory.getSlots();
 	}
 
 	@Nonnull
 	@Override
 	public ItemStack getStackInSlot(int slot) {
-		return getHandler(backpackStack).getStackInSlot(slot);
+		return backpackInventory.getStackInSlot(slot);
 	}
 
 	@Nonnull
@@ -32,9 +35,10 @@ public class ItemHandlerBackpack implements IItemHandlerModifiable {
 	public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
 		ItemStack ret = stack;
 		if (stack.getItem() != AWCoreItems.BACKPACK) {
-			ItemStackHandler handler = getHandler(backpackStack);
-			ret = handler.insertItem(slot, stack, simulate);
-			saveToStack(handler);
+			ret = backpackInventory.insertItem(slot, stack, simulate);
+			if (ret.getCount() < stack.getCount()) {
+				saveToStack(backpackInventory);
+			}
 		}
 		return ret;
 	}
@@ -42,38 +46,38 @@ public class ItemHandlerBackpack implements IItemHandlerModifiable {
 	@Nonnull
 	@Override
 	public ItemStack extractItem(int slot, int amount, boolean simulate) {
-		ItemStackHandler handler = getHandler(backpackStack);
-		ItemStack ret = handler.extractItem(slot, amount, simulate);
-		saveToStack(handler);
+		ItemStack ret = backpackInventory.extractItem(slot, amount, simulate);
+		if (!ret.isEmpty()) {
+			saveToStack(backpackInventory);
+		}
 		return ret;
 	}
 
 	@Override
 	public int getSlotLimit(int slot) {
-		return getHandler(backpackStack).getSlotLimit(slot);
+		return backpackInventory.getSlotLimit(slot);
 	}
 
 	@Override
 	public void setStackInSlot(int slot, @Nonnull ItemStack stack) {
-		ItemStackHandler handler = getHandler(backpackStack);
-		handler.setStackInSlot(slot, stack);
-		saveToStack(handler);
+		backpackInventory.setStackInSlot(slot, stack);
+		saveToStack(backpackInventory);
 	}
 
 	private ItemStackHandler getHandler(ItemStack stack) {
 		if (!stack.isEmpty() && stack.getItem() instanceof ItemBackpack) {
 			ItemStackHandler handler = new ItemStackHandler((stack.getItemDamage() + 1) * 9);
 			//noinspection ConstantConditions
-			if (stack.hasTagCompound() && stack.getTagCompound().hasKey("backpackItems")) {
-				handler.deserializeNBT(stack.getTagCompound().getCompoundTag("backpackItems"));
+			if (stack.hasTagCompound() && stack.getTagCompound().hasKey(BACKPACK_ITEMS_TAG)) {
+				handler.deserializeNBT(stack.getTagCompound().getCompoundTag(BACKPACK_ITEMS_TAG));
 			}
 			return handler;
 		}
-		return null;
+		return new ItemStackHandler();
 	}
 
 	private void saveToStack(ItemStackHandler handler) {
 		NBTTagCompound invTag = handler.serializeNBT();
-		backpackStack.setTagInfo("backpackItems", invTag);
+		backpackStack.setTagInfo(BACKPACK_ITEMS_TAG, invTag);
 	}
 }
