@@ -91,7 +91,7 @@ public class InventoryTools {
 	}
 
 	public static ItemStack insertItem(IItemHandler handler, ItemStack stack, boolean simulate) {
-		ItemStack remaining = stack.copy();
+		ItemStack remaining = stack;
 		for (int slot = 0; slot < handler.getSlots(); slot++) {
 			remaining = handler.insertItem(slot, remaining, simulate);
 			if (remaining.isEmpty()) {
@@ -128,7 +128,7 @@ public class InventoryTools {
 
 					int change = Math.min(maxSize - slotStack.getCount(), stack.getCount());
 
-					handler.insertItem(i, stack.copy(), false);
+					handler.insertItem(i, stack, false);
 					stack.shrink(change);
 				}
 			}
