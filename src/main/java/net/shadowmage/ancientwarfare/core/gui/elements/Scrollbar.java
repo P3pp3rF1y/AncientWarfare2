@@ -17,7 +17,7 @@ public class Scrollbar extends GuiElement {
 
 	int totalAreaSize;
 	int viewSize;
-	float viewPercent;
+	double viewPercent;
 
 	int handleTopMax;//the min that handleTop can move to
 	int handleTop;//the top of the handle, relative to renderY+borderSize
@@ -98,12 +98,16 @@ public class Scrollbar extends GuiElement {
 			@Override
 			public boolean onEvent(GuiElement widget, ActivationEvent evt) {
 				if (widget.isMouseOverElement(evt.mx, evt.my)) {
-					handleTop -= (evt.mw / 10);
-					updateHandlePosition();
+					handleMouseScroll(evt);
 				}
 				return true;
 			}
 		});
+	}
+
+	public void handleMouseScroll(ActivationEvent evt) {
+		handleTop -= (evt.mw / 10);
+		updateHandlePosition();
 	}
 
 	protected boolean isMouseOverHandle(int mouseX, int mouseY) {
@@ -118,7 +122,7 @@ public class Scrollbar extends GuiElement {
 	 */
 	public void setAreaSize(int size) {
 		this.totalAreaSize = size;
-		this.viewPercent = (float) ((float) viewSize / (float) totalAreaSize);
+		this.viewPercent = (double) viewSize / totalAreaSize;
 		if (this.viewPercent > 1.f) {
 			this.viewPercent = 1.f;
 		}
@@ -144,9 +148,13 @@ public class Scrollbar extends GuiElement {
 			this.handleTop = 0;
 		}
 		if (this.parent != null) {
-			topIndex = (int) ((float) handleTop * (1.f / viewPercent));
+			topIndex = (int) ((totalAreaSize - viewSize) * getPercentScrolled());
 			this.parent.onScrolled(topIndex);
 		}
+	}
+
+	private float getPercentScrolled() {
+		return (float) handleTop / handleTopMax;
 	}
 
 	public int getTopIndex() {

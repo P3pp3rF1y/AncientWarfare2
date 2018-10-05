@@ -90,8 +90,7 @@ public class CompositeScrolled extends Composite implements IScrollableCallback 
 							element.handleMouseInput(evt);
 						}
 						if (!overElement && !scrollbar.isMouseOverElement(evt.mx, evt.my) && evt.mw != 0) {
-							scrollbar.handleTop -= (evt.mw / 10);
-							scrollbar.updateHandlePosition();
+							scrollbar.handleMouseScroll(evt);
 						}
 					} else {
 						if (evt.type == Listener.MOUSE_UP) {

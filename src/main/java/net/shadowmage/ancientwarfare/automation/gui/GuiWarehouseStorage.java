@@ -106,9 +106,14 @@ public class GuiWarehouseStorage extends GuiContainerBase<ContainerWarehouseStor
 			displayStacks.add(stack);
 		}
 
-		int totalSize = 21;
+		int totalSize = 22;
 		for (ItemStack displayStack : displayStacks) {
-			slot = new ItemSlot(4 + x * 18, 3 + y * 18, displayStack, this) {
+			if (x >= 9) {
+				x = 0;
+				y++;
+				totalSize += 18;
+			}
+			slot = new ItemSlot(4 + x * 18, 4 + y * 18, displayStack, this) {
 				@Override
 				public void onSlotClicked(ItemStack stack, boolean rightClicked) {
 					@Nonnull ItemStack reqStack = getStack();
@@ -119,11 +124,6 @@ public class GuiWarehouseStorage extends GuiContainerBase<ContainerWarehouseStor
 			};
 			area2.addGuiElement(slot);
 			x++;
-			if (x >= 9) {
-				x = 0;
-				y++;
-				totalSize += 18;
-			}
 		}
 		area2.setAreaSize(totalSize);
 	}

@@ -133,10 +133,15 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
 		sortItems(displayStacks);
 
 		int x = 0, y = 0;
-		int totalSize = 21;
+		int totalSize = 22;
 		ItemSlot slot;
 		for (ItemStack displayStack : displayStacks) {
-			slot = new ItemSlot(4 + x * 18, 3 + y * 18, displayStack, this) {
+			if (x >= 9) {
+				x = 0;
+				y++;
+				totalSize += 18;
+			}
+			slot = new ItemSlot(4 + x * 18, 4 + y * 18, displayStack, this) {
 				@Override
 				public void onSlotClicked(ItemStack stack, boolean rightClicked) {
 					getContainer().handleClientRequestSpecific(getStack(), isShiftKeyDown(), rightClicked);
@@ -144,11 +149,6 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
 			};
 			area.addGuiElement(slot);
 			x++;
-			if (x >= 9) {
-				x = 0;
-				y++;
-				totalSize += 18;
-			}
 		}
 		area.setAreaSize(totalSize);
 	}
