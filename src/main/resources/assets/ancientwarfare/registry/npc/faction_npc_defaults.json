@@ -279,7 +279,21 @@
                                 "generic.maxHealth": 30
                             }
                         ],
+                        "equipment": [
+                            {
+                                "offhand": "ancientwarfarenpc:iron_shield"
+                            }
+                        ],
                         "experience_drop": 30
+                    }
+                },
+                {
+                    "soldier": {
+                        "equipment": [
+                            {
+                                "offhand": "ancientwarfarenpc:iron_shield"
+                            }
+                        ]
                     }
                 },
                 {
@@ -295,7 +309,21 @@
                                 "generic.attackDamage": 3
                             }
                         ],
+                        "equipment": [
+                            {
+                                "offhand": "ancientwarfarenpc:iron_shield"
+                            }
+                        ],
                         "experience_drop": 65
+                    }
+                },
+                {
+                    "leader": {
+                        "equipment": [
+                            {
+                                "offhand": "ancientwarfarenpc:iron_shield"
+                            }
+                        ]
                     }
                 }
             ]
@@ -319,7 +347,21 @@
                                 "generic.maxHealth": 50
                             }
                         ],
+                        "equipment": [
+                            {
+                                "offhand": "minecraft:iron_axe"
+                            }
+                        ],
                         "experience_drop": 50
+                    }
+                },
+                {
+                    "cavalry": {
+                        "equipment": [
+                            {
+                                "offhand": "ancientwarfarenpc:iron_shield"
+                            }
+                        ]
                     }
                 },
                 {
@@ -347,6 +389,24 @@
         {
             "sarkonid": [
                 {
+                    "soldier": {
+                        "equipment": [
+                            {
+                                "offhand": "ancientwarfarenpc:gold_shield"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "soldier.elite": {
+                        "equipment": [
+                            {
+                                "offhand": "minecraft:iron_sword"
+                            }
+                        ]
+                    }
+                },
+                {
                     "cavalry": {
                         "attributes": [
                             {
@@ -356,13 +416,45 @@
                                 "generic.movementSpeed": 0.3
                             }
                         ],
+                        "equipment": [
+                            {
+                                "offhand": "ancientwarfarenpc:gold_shield"
+                            }
+                        ],
                         "experience_drop": 50
+                    }
+                },
+                {
+                    "leader": {
+                        "equipment": [
+                            {
+                                "offhand": "ancientwarfarenpc:gold_shield"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "leader.elite": {
+                        "equipment": [
+                            {
+                                "offhand": "ancientwarfarenpc:gold_shield"
+                            }
+                        ]
                     }
                 }
             ]
         },
         {
             "xoltec": [
+                {
+                    "soldier": {
+                        "equipment": [
+                            {
+                                "offhand": "ancientwarfarenpc:gold_shield"
+                            }
+                        ]
+                    }
+                },
                 {
                     "soldier.elite": {
                         "attributes": [
@@ -390,6 +482,11 @@
                                 "generic.maxHealth": 60
                             }
                         ],
+                        "equipment": [
+                            {
+                                "offhand": "ancientwarfarenpc:gold_shield"
+                            }
+                        ],
                         "experience_drop": 60
                     }
                 },
@@ -412,6 +509,11 @@
                         "attributes": [
                             {
                                 "generic.maxHealth": 40
+                            }
+                        ],
+                        "equipment": [
+                            {
+                                "offhand": "ancientwarfarenpc:iron_shield"
                             }
                         ],
                         "experience_drop": 40
@@ -440,6 +542,11 @@
                                 "generic.attackDamage": 3
                             }
                         ],
+                        "equipment": [
+                            {
+                                "offhand": "ancientwarfarenpc:diamond_shield"
+                            }
+                        ],
                         "experience_drop": 60
                     }
                 },
@@ -448,6 +555,11 @@
                         "attributes": [
                             {
                                 "generic.maxHealth": 70
+                            }
+                        ],
+                        "equipment": [
+                            {
+                                "offhand": "ancientwarfarenpc:iron_shield"
                             }
                         ],
                         "experience_drop": 70
@@ -540,6 +652,11 @@
                                 "generic.attackDamage": 3
                             }
                         ],
+                        "equipment": [
+                            {
+                                "offhand": "ancientwarfarenpc:iron_shield"
+                            }
+                        ],
                         "experience_drop": 65
                     }
                 },
@@ -568,19 +685,14 @@
         {
             "buffloka": [
                 {
-                    "soldier.elite": {
-                        "attributes": [
+                    "soldier": {
+                        "equipment": [
                             {
-                                "generic.maxHealth": 30
+                                "offhand": "ancientwarfarenpc:wooden_shield"
                             }
-                        ],
-                        "experience_drop": 30
+                        ]
                     }
-                }
-            ]
-        },
-        {
-            "zimba": [
+                },
                 {
                     "soldier.elite": {
                         "attributes": [
@@ -589,6 +701,52 @@
                             }
                         ],
                         "experience_drop": 30
+                    }
+                },
+                {
+                    "cavalry": {
+                        "equipment": [
+                            {
+                                "offhand": "ancientwarfarenpc:wooden_shield"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "zimba": [
+                {
+                    "soldier": {
+                        "equipment": [
+                            {
+                                "offhand": "ancientwarfarenpc:wooden_shield"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "soldier.elite": {
+                        "attributes": [
+                            {
+                                "generic.maxHealth": 30
+                            }
+                        ],
+                        "equipment": [
+                            {
+                                "offhand": "ancientwarfarenpc:wooden_shield"
+                            }
+                        ],
+                        "experience_drop": 30
+                    }
+                },
+                {
+                    "cavalry": {
+                        "equipment": [
+                            {
+                                "offhand": "ancientwarfarenpc:wooden_shield"
+                            }
+                        ]
                     }
                 }
             ]
@@ -684,6 +842,11 @@
                         "attributes": [
                             {
                                 "generic.maxHealth": 15
+                            }
+                        ],
+                        "equipment": [
+                            {
+                                "offhand": "ancientwarfarenpc:wooden_shield"
                             }
                         ],
                         "experience_drop": 15
@@ -891,10 +1054,24 @@
         {
             "evil": [
                 {
+                    "soldier": {
+                        "equipment": [
+                            {
+                                "offhand": "ancientwarfarenpc:iron_shield"
+                            }
+                        ]
+                    }
+                },
+                {
                     "soldier.elite": {
                         "attributes": [
                             {
                                 "generic.maxHealth": 60
+                            }
+                        ],
+                        "equipment": [
+                            {
+                                "offhand": "minecraft:iron_axe"
                             }
                         ],
                         "experience_drop": 60
@@ -905,6 +1082,11 @@
                         "attributes": [
                             {
                                 "generic.movementSpeed": 0.3
+                            }
+                        ],
+                        "equipment": [
+                            {
+                                "offhand": "ancientwarfarenpc:iron_shield"
                             }
                         ]
                     }
@@ -990,6 +1172,11 @@
                         "attributes": [
                             {
                                 "generic.maxHealth": 60
+                            }
+                        ],
+                        "equipment": [
+                            {
+                                "offhand": "ancientwarfarenpc:diamond_shield"
                             }
                         ],
                         "experience_drop": 60
