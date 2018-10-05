@@ -144,8 +144,8 @@ public class CompositeItemSlots extends CompositeScrolled {
 		if (font == null) {
 			font = mc.fontRenderer;
 		}
+		itemRender.renderItemOverlayIntoGUI(font, stack, slot.renderX + 1, slot.renderY + 1, "");
 		if (slot.renderItemQuantity && slot.getStack().getCount() > 1) {
-			itemRender.renderItemOverlayIntoGUI(font, stack, slot.renderX + 1, slot.renderY + 1, "");
 			slot.renderStackSize(slot.renderX + 1, slot.renderY + 1, stack.getCount(), font);
 		}
 	}
