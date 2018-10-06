@@ -41,7 +41,7 @@ public class StructureBuilder implements IStructureBuilder {
 	BlockPos buildOrigin;
 	EnumFacing buildFace;
 	protected int turns;
-	int maxPriority = 4;
+	int maxPriority = 3;
 	int currentPriority;//current build priority...may not be needed anymore?
 	Vec3i curTempPos;
 	BlockPos destination;
