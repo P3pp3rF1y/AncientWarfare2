@@ -61,6 +61,7 @@ public class TEGateProxy extends TileUpdatable implements ITickable {
 		tag.setBoolean(RENDER_TAG, render);
 		tag.setInteger("owner", owner != null ? owner.getEntityId() : 0);
 		tag.setBoolean("open", open);
+		tag.setBoolean("render", render);
 	}
 
 	@Override
@@ -68,6 +69,7 @@ public class TEGateProxy extends TileUpdatable implements ITickable {
 		render = tag.getBoolean(RENDER_TAG);
 		clientEntityID = tag.getInteger("owner");
 		open = tag.getBoolean("open");
+		render = tag.getBoolean("render");
 	}
 
 	@Override
@@ -121,6 +123,7 @@ public class TEGateProxy extends TileUpdatable implements ITickable {
 
 	public void setRender() {
 		render = true;
+		BlockTools.notifyBlockUpdate(this);
 	}
 
 	public boolean doesRender() {
@@ -133,6 +136,7 @@ public class TEGateProxy extends TileUpdatable implements ITickable {
 
 	public void setOpen(boolean open) {
 		this.open = open;
+		BlockTools.notifyBlockUpdate(this);
 	}
 
 	public boolean isOpen() {

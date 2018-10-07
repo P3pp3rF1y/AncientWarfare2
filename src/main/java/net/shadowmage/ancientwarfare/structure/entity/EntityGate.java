@@ -249,6 +249,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 			this.hurtInvulTicks--;
 		}
 		this.checkForPowerUpdates();
+		gateType.setRenderedTileIfNotPresent(this);
 		if (this.hurtAnimationTicks > 0) {
 			this.hurtAnimationTicks--;
 		}

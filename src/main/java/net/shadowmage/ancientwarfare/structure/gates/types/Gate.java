@@ -24,6 +24,7 @@ import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 public class Gate implements IGateType {
 
@@ -290,20 +291,39 @@ public class Gate implements IGateType {
 			for (int y = min.getY(); y <= max.getY(); y++) {
 				for (int z = min.getZ(); z <= max.getZ(); z++) {
 					BlockPos pos = new BlockPos(x, y, z);
-					placeProxyIfNotPresent(gate, pos);
-					WorldTools.getTile(gate.world, pos, TEGateProxy.class).ifPresent(t -> t.setOwner(gate));
+					placeProxyIfNotPresent(gate, pos, false);
 					if (!gate.getRenderedTile().isPresent()) {
 						WorldTools.getTile(gate.world, pos, TEGateProxy.class).ifPresent(te -> {
 							te.setRender();
 							gate.setRenderedTile(te);
 						});
 					}
+
 				}
 			}
 		}
 	}
 
-	private void placeProxyIfNotPresent(EntityGate gate, BlockPos pos) {
+	public void setRenderedTileIfNotPresent(EntityGate gate) {
+		if (gate.getRenderedTile().isPresent()) {
+			return;
+		}
+		BlockPos min = BlockTools.getMin(gate.pos1, gate.pos2);
+		BlockPos max = BlockTools.getMax(gate.pos1, gate.pos2);
+		BlockPos.getAllInBox(min, max).forEach(pos -> placeProxyIfNotPresent(gate, pos, true));
+		Optional<TEGateProxy> renderedTe = StreamSupport.stream(BlockPos.getAllInBox(min, max).spliterator(), false)
+				.map(pos -> WorldTools.getTile(gate.world, pos, TEGateProxy.class)).filter(te -> te.isPresent() && te.get().doesRender()).map(Optional::get).findFirst();
+		if (renderedTe.isPresent()) {
+			gate.setRenderedTile(renderedTe.get());
+		} else {
+			WorldTools.getTile(gate.world, min, TEGateProxy.class).ifPresent(te -> {
+				te.setRender();
+				gate.setRenderedTile(te);
+			});
+		}
+	}
+
+	private boolean placeProxyIfNotPresent(EntityGate gate, BlockPos pos, boolean openDefault) {
 		IBlockState state = gate.world.getBlockState(pos);
 		Block block = state.getBlock();
 		if (block != AWStructureBlocks.GATE_PROXY) {
@@ -311,7 +331,13 @@ public class Gate implements IGateType {
 				block.dropBlockAsItem(gate.world, pos, state, 0);
 			}
 			gate.world.setBlockState(pos, AWStructureBlocks.GATE_PROXY.getDefaultState());
+			WorldTools.getTile(gate.world, pos, TEGateProxy.class).ifPresent(t -> {
+				t.setOwner(gate);
+				t.setOpen(openDefault);
+			});
+			return true;
 		}
+		return false;
 	}
 
 	/*

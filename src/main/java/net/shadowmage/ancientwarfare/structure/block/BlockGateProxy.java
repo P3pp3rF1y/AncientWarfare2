@@ -33,14 +33,14 @@ public final class BlockGateProxy extends BlockContainer implements IClientRegis
 	private static final AxisAlignedBB Z_AXIS_AABB = new AxisAlignedBB(8D / 16D, 0, 0, 8D / 16D, 1, 1);
 	private static final AxisAlignedBB X_AXIS_AABB = new AxisAlignedBB(0, 0, 8D / 16D, 1, 1, 8D / 16D);
 	private static final AxisAlignedBB ZERO_AABB = new AxisAlignedBB(0, 0, 0, 0, 0, 0);
+	private static final AxisAlignedBB NO_AABB = new AxisAlignedBB(0, 0, 0, 0, 0, 0);
 
 	public BlockGateProxy() {
 		super(Material.ROCK);
 		setCreativeTab(null);
 		setUnlocalizedName("gate_proxy");
 		setRegistryName(new ResourceLocation(AncientWarfareStructure.MOD_ID, "gate_proxy"));
-		setResistance(2000.f);
-		setHardness(5.f);
+		setBlockUnbreakable();
 		AncientWarfareStructure.proxy.addClientRegister(this);
 	}
 
@@ -122,5 +122,10 @@ public final class BlockGateProxy extends BlockContainer implements IClientRegis
 		ModelRegistryHelper.register(modelLocation, new DummyBakedModel());
 
 		ClientRegistry.bindTileEntitySpecialRenderer(TEGateProxy.class, new GateProxyRenderer());
+	}
+
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return WorldTools.getTile(source, pos, TEGateProxy.class).map(TEGateProxy::isOpen).orElse(false) ? NO_AABB : FULL_BLOCK_AABB;
 	}
 }
