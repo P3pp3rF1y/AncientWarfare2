@@ -1,13 +1,8 @@
 package net.shadowmage.ancientwarfare.structure.item;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.passive.EntityHorse;
-import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -27,18 +22,13 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
-import net.shadowmage.ancientwarfare.npc.entity.NpcTrader;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionTrader;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
+import net.shadowmage.ancientwarfare.structure.registry.EntitySpawnNBTRegistry;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
 
 import javax.annotation.Nullable;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class ItemSpawnerPlacer extends ItemBaseStructure {
 	private static final String SPAWNER_DATA_TAG = "spawnerData";
@@ -138,24 +128,6 @@ public class ItemSpawnerPlacer extends ItemBaseStructure {
 		NBTTagCompound entityTag = new NBTTagCompound();
 		entity.writeToNBT(entityTag);
 
-		NBTTagCompound ret = new NBTTagCompound();
-
-		for (Map.Entry<Class, Set<String>> entry : ENTITY_TAGS.entrySet()) {
-			if (entry.getKey().isInstance(entity)) {
-				for (String tag : entry.getValue()) {
-					ret.setTag(tag, entityTag.getTag(tag));
-				}
-			}
-		}
-		return ret;
+		return EntitySpawnNBTRegistry.getEntitySpawnNBT(entity, entityTag);
 	}
-
-	private static final Map<Class, Set<String>> ENTITY_TAGS = new ImmutableMap.Builder<Class, Set<String>>()
-			.put(NpcFaction.class, Collections.singleton("factionName"))
-			.put(NpcFactionTrader.class, Collections.singleton("tradeList"))
-			.put(NpcTrader.class, Collections.singleton("tradeAI"))
-			.put(EntityVillager.class, ImmutableSet.of("Offers", "Profession", "ProfessionName", "Career", "CareerLevel"))
-			.put(EntityHorse.class, Collections.singleton("Variant"))
-			.put(EntityLiving.class, ImmutableSet.of("HandItems", "HandDropChances", "ArmorItems", "ArmorDropChances"))
-			.build();
 }

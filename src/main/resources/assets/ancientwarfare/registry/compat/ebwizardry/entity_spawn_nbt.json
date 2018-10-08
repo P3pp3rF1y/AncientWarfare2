@@ -1,0 +1,16 @@
+{
+    "mod": "ebwizardry",
+    "entity_nbt": {
+        "electroblob.wizardry.entity.living.EntityWizard": [
+            "trades",
+            "element",
+            "skin",
+            "spells"
+        ],
+        "electroblob.wizardry.entity.living.EntityEvilWizard": [
+            "element",
+            "skin",
+            "spells"
+        ]
+    }
+}

@@ -20,9 +20,11 @@ import net.shadowmage.ancientwarfare.core.util.RegistryTools;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.StreamSupport;
@@ -157,6 +159,10 @@ public class JsonHelper {
 		return new PropertyStateMatcher(getPropertyState(state, parent, elementName));
 	}
 
+	public static <K, V> Map<K, V> mapFromJson(JsonObject json, Function<Entry<String, JsonElement>, K> parseKey, Function<Entry<String, JsonElement>, V> parseValue) {
+		return mapFromJsonArray(json, new HashMap<>(), parseKey, parseValue);
+	}
+
 	public static <K, V> Map<K, V> mapFromJson(JsonObject json, String propertyName, Function<Entry<String, JsonElement>, K> parseKey,
 			Function<Entry<String, JsonElement>, V> parseValue) {
 		return mapFromJsonArray(JsonUtils.getJsonArray(json, propertyName), new HashMap<>(), parseKey, parseValue);
@@ -183,11 +189,35 @@ public class JsonHelper {
 		return ret;
 	}
 
+	private static <K, V> Map<K, V> mapFromJsonArray(JsonObject jsonObject, Map<K, V> ret, Function<Entry<String, JsonElement>, K> parseKey,
+			Function<Entry<String, JsonElement>, V> parseValue) {
+
+		for (Map.Entry<String, JsonElement> pair : jsonObject.entrySet()) {
+			ret.put(parseKey.apply(pair), parseValue.apply(pair));
+		}
+
+		return ret;
+	}
+
 	public static List<ItemStack> getItemStacks(JsonArray stacks) {
 		List<ItemStack> ret = NonNullList.create();
 		for (JsonElement stackElement : stacks) {
 			ret.add(getItemStack(JsonUtils.getJsonObject(stackElement, "itemstack")));
 		}
+		return ret;
+	}
+
+	public static <V> Set<V> setFromJson(JsonElement element, Function<JsonElement, V> getElement) {
+		return setFromJson(JsonUtils.getJsonArray(element, ""), getElement);
+	}
+
+	private static <V> Set<V> setFromJson(JsonArray array, Function<JsonElement, V> getElement) {
+		Set<V> ret = new HashSet<>();
+
+		for (JsonElement element : array) {
+			ret.add(getElement.apply(element));
+		}
+
 		return ret;
 	}
 
