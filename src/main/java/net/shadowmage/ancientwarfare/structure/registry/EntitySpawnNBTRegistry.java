@@ -40,7 +40,7 @@ public class EntitySpawnNBTRegistry {
 
 		@Override
 		public void parse(JsonObject json) {
-			entityNBT.putAll(JsonHelper.mapFromJson(JsonUtils.getJsonObject(json, "entity_nbt"),
+			entityNBT.putAll(JsonHelper.mapFromJson(json, "entity_nbt",
 					entry -> getClass(entry.getKey()),
 					entry -> JsonHelper.setFromJson(entry.getValue(), element -> JsonUtils.getString(element, ""))));
 		}

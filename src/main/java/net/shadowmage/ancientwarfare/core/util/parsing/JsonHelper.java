@@ -159,34 +159,19 @@ public class JsonHelper {
 		return new PropertyStateMatcher(getPropertyState(state, parent, elementName));
 	}
 
-	public static <K, V> Map<K, V> mapFromJson(JsonObject json, Function<Entry<String, JsonElement>, K> parseKey, Function<Entry<String, JsonElement>, V> parseValue) {
-		return mapFromJsonArray(json, new HashMap<>(), parseKey, parseValue);
-	}
-
 	public static <K, V> Map<K, V> mapFromJson(JsonObject json, String propertyName, Function<Entry<String, JsonElement>, K> parseKey,
 			Function<Entry<String, JsonElement>, V> parseValue) {
-		return mapFromJsonArray(JsonUtils.getJsonArray(json, propertyName), new HashMap<>(), parseKey, parseValue);
+		return mapFromJsonArray(JsonUtils.getJsonObject(json, propertyName), new HashMap<>(), parseKey, parseValue);
 	}
 
 	public static <K, V> Map<K, V> mapFromJson(JsonElement json, Function<Entry<String, JsonElement>, K> parseKey,
 			Function<Entry<String, JsonElement>, V> parseValue) {
-		return mapFromJsonArray(JsonUtils.getJsonArray(json, ""), new HashMap<>(), parseKey, parseValue);
+		return mapFromJsonArray(JsonUtils.getJsonObject(json, ""), new HashMap<>(), parseKey, parseValue);
 	}
 
 	public static <K, V> void mapFromJson(JsonObject json, String propertyName, Map<K, V> ret, Function<Entry<String, JsonElement>, K> parseKey,
 			Function<Entry<String, JsonElement>, V> parseValue) {
-		mapFromJsonArray(JsonUtils.getJsonArray(json, propertyName), ret, parseKey, parseValue);
-	}
-
-	private static <K, V> Map<K, V> mapFromJsonArray(JsonArray arr, Map<K, V> ret, Function<Entry<String, JsonElement>, K> parseKey,
-			Function<Entry<String, JsonElement>, V> parseValue) {
-
-		for (JsonElement e : arr) {
-			Entry<String, JsonElement> pair = JsonUtils.getJsonObject(e, "").entrySet().iterator().next();
-			ret.put(parseKey.apply(pair), parseValue.apply(pair));
-		}
-
-		return ret;
+		mapFromJsonArray(JsonUtils.getJsonObject(json, propertyName), ret, parseKey, parseValue);
 	}
 
 	private static <K, V> Map<K, V> mapFromJsonArray(JsonObject jsonObject, Map<K, V> ret, Function<Entry<String, JsonElement>, K> parseKey,
