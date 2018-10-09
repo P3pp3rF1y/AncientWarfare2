@@ -17,14 +17,14 @@ public class GuiTradeTemplateSelect extends GuiContainerBase {
 	private CompositeScrolled area;
 
 	protected GuiTradeTemplateSelect(GuiContainerBase<ContainerNpcFactionTradeSetup> parent, String factionName) {
-		super(parent.getContainer());
+		super(parent.getContainer(), 320, 240);
 		this.parent = parent;
 		this.factionName = factionName;
 	}
 
 	@Override
 	public void initElements() {
-		area = new CompositeScrolled(this, 0, 0, 256, 200);
+		area = new CompositeScrolled(this, 0, 0, 320, 148);
 		addGuiElement(area);
 		int totalHeight = 8;
 		Button button;
@@ -32,7 +32,7 @@ public class GuiTradeTemplateSelect extends GuiContainerBase {
 		Map<String, FactionTradeListTemplate> tradeLists = new HashMap<>(FactionTradeListRegistry.getDefaults());
 		tradeLists.putAll(FactionTradeListRegistry.getFactionDefaults(factionName));
 		for (Map.Entry<String, FactionTradeListTemplate> tradeListTemplate : tradeLists.entrySet()) {
-			button = new Button(8, totalHeight, 256 - 8 - 16, 12, tradeListTemplate.getKey()) {
+			button = new Button(8, totalHeight, 320 - 8 - 16, 12, tradeListTemplate.getKey()) {
 				@Override
 				protected void onPressed() {
 					parent.getContainer().setTradeList(tradeListTemplate.getValue().toTradeList());
