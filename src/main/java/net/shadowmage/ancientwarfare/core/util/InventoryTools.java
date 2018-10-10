@@ -181,10 +181,10 @@ public class InventoryTools {
 			}
 
 			int toMove = Math.min(quantity - returnCount, slotStack.getCount());
-			returnCount += toMove;
 
-			handler.extractItem(index, toMove, simulate);
+			ItemStack extractedStack = handler.extractItem(index, toMove, simulate);
 
+			returnCount += extractedStack.getCount();
 			if (quantity - returnCount <= 0) {
 				break;
 			}

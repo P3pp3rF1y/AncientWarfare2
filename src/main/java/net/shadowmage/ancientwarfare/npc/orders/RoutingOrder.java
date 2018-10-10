@@ -173,10 +173,11 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
 				if (matchesFilter(stack)) {
 					continue;
 				}
-				ItemStack remaining = InventoryTools.insertItem(to, stack);
-				int moved = stack.getCount() - remaining.getCount();
-				movedStacks += ((float) moved) / ((float) stack.getMaxStackSize());
-				InventoryTools.removeItems(from, stack, moved);
+				ItemStack remaining = InventoryTools.insertItem(to, stack, true);
+				int toMove = stack.getCount() - remaining.getCount();
+				ItemStack removedStack = InventoryTools.removeItems(from, stack, toMove);
+				InventoryTools.insertItem(to, removedStack);
+				movedStacks += ((float) removedStack.getCount()) / ((float) stack.getMaxStackSize());
 			}
 			return (int) movedStacks;
 		}
