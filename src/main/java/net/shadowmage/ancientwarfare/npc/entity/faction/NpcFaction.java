@@ -38,6 +38,7 @@ public abstract class NpcFaction extends NpcBase {
 
 	public NpcFaction(World world) {
 		super(world);
+		addAI();
 	}
 
 	public NpcFaction(World world, String factionName) {
