@@ -326,11 +326,15 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 			return -10;
 		else if (stateBelow.getMaterial().isLiquid())//Don't try swimming too much
 			return 0;
-		float level = world.getLightBrightness(pos);//Prefer lit areas
+		float level = getLitBlockWeight(pos);//Prefer lit areas
 		if (level < 0)
 			return 0;
 		else
 			return level + (stateBelow.isSideSolid(world, pos.down(), EnumFacing.UP) ? 1 : 0);
+	}
+
+	protected float getLitBlockWeight(BlockPos pos) {
+		return world.getLightBrightness(pos);
 	}
 
 	@Override

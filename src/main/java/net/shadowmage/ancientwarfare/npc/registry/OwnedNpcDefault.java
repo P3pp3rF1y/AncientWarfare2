@@ -19,7 +19,7 @@ public class OwnedNpcDefault extends NpcDefault {
 		this.targetList = targetList;
 	}
 
-	public NpcDefault overrideTargets(Set<ResourceLocationMatcher> newTargetList) {
+	public OwnedNpcDefault overrideTargets(Set<ResourceLocationMatcher> newTargetList) {
 		return new OwnedNpcDefault(newTargetList, attributes, experienceDrop, canSwim, canBreakDoors, equipment);
 	}
 

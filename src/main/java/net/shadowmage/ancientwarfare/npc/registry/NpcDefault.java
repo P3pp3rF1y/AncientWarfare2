@@ -8,11 +8,10 @@ import net.minecraft.pathfinding.PathNavigateGround;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 import javax.annotation.concurrent.Immutable;
-import java.util.HashMap;
 import java.util.Map;
 
 @Immutable
-public class NpcDefault {
+public abstract class NpcDefault {
 	protected final Map<String, Double> attributes;
 	protected final int experienceDrop;
 	protected final boolean canSwim;
@@ -27,31 +26,15 @@ public class NpcDefault {
 		this.equipment = equipment;
 	}
 
-	public NpcDefault setExperienceDrop(int experienceDrop) {
-		return new NpcDefault(attributes, experienceDrop, canSwim, canBreakDoors, equipment);
-	}
+	public abstract NpcDefault setExperienceDrop(int experienceDrop);
 
-	public NpcDefault setCanSwim(boolean canSwim) {
-		return new NpcDefault(attributes, experienceDrop, canSwim, canBreakDoors, equipment);
-	}
+	public abstract NpcDefault setCanSwim(boolean canSwim);
 
-	public NpcDefault setCanBreakDoors(boolean canBreakDoors) {
-		return new NpcDefault(attributes, experienceDrop, canSwim, canBreakDoors, equipment);
-	}
+	public abstract NpcDefault setCanBreakDoors(boolean canBreakDoors);
 
-	public NpcDefault setAttributes(Map<String, Double> additionalAttributes) {
-		Map<String, Double> newAttributes = new HashMap<>();
-		newAttributes.putAll(this.attributes);
-		newAttributes.putAll(additionalAttributes);
-		return new NpcDefault(newAttributes, experienceDrop, canSwim, canBreakDoors, equipment);
-	}
+	public abstract NpcDefault setAttributes(Map<String, Double> additionalAttributes);
 
-	public NpcDefault setEquipment(Map<Integer, Item> additionalEquipment) {
-		Map<Integer, Item> newEquipment = new HashMap<>();
-		newEquipment.putAll(equipment);
-		newEquipment.putAll(additionalEquipment);
-		return new NpcDefault(attributes, experienceDrop, canSwim, canBreakDoors, newEquipment);
-	}
+	public abstract NpcDefault setEquipment(Map<Integer, Item> additionalEquipment);
 
 	public int getExperienceDrop() {
 		return experienceDrop;

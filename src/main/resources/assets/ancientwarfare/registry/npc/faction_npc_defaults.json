@@ -8,7 +8,11 @@
         },
         "experience_drop": 0,
         "can_swim": true,
-        "can_break_doors": true
+        "can_break_doors": true,
+        "additional_attributes": {
+            "burns_in_sun": false,
+            "horse_entity": "net.minecraft.entity.passive.EntityHorse"
+        }
     },
     "npc_subtypes": {
         "soldier": {
@@ -291,7 +295,15 @@
                     "mainhand": "ancientwarfarenpc:stone_spear",
                     "offhand": "ancientwarfarenpc:gold_shield"
                 },
-                "experience_drop": 60
+                "experience_drop": 60,
+                "additional_attributes": {
+                    "horse_entity": "net.minecraft.entity.passive.EntityLlama"
+                }
+            },
+            "mounted_archer": {
+                "additional_attributes": {
+                    "horse_entity": "net.minecraft.entity.passive.EntityLlama"
+                }
             },
             "leader": {
                 "equipment": {
@@ -820,9 +832,44 @@
             }
         },
         "undead": {
+            "soldier": {
+                "additional_attributes": {
+                    "burns_in_sun": true
+                }
+            },
             "soldier.elite": {
                 "equipment": {
                     "mainhand": "ancientwarfarenpc:iron_halberd"
+                },
+                "additional_attributes": {
+                    "burns_in_sun": true
+                }
+            },
+            "archer": {
+                "additional_attributes": {
+                    "burns_in_sun": true
+                }
+            },
+            "archer.elite": {
+                "additional_attributes": {
+                    "burns_in_sun": true
+                }
+            },
+            "cavalry": {
+                "additional_attributes": {
+                    "burns_in_sun": true,
+                    "horse_entity": "net.minecraft.entity.passive.EntitySkeletonHorse"
+                }
+            },
+            "mounted_archer": {
+                "additional_attributes": {
+                    "burns_in_sun": true,
+                    "horse_entity": "net.minecraft.entity.passive.EntitySkeletonHorse"
+                }
+            },
+            "leader": {
+                "additional_attributes": {
+                    "burns_in_sun": true
                 }
             },
             "leader.elite": {
@@ -831,16 +878,45 @@
                 },
                 "equipment": {
                     "mainhand": "ancientwarfarenpc:diamond_halberd"
+                },
+                "additional_attributes": {
+                    "burns_in_sun": true
+                }
+            },
+            "siege.engineer": {
+                "additional_attributes": {
+                    "burns_in_sun": true
                 }
             },
             "priest": {
                 "equipment": {
                     "mainhand": "minecraft:skull"
+                },
+                "additional_attributes": {
+                    "burns_in_sun": true
+                }
+            },
+            "bard": {
+                "additional_attributes": {
+                    "burns_in_sun": true
                 }
             },
             "trader": {
                 "equipment": {
                     "mainhand": "minecraft:bone"
+                },
+                "additional_attributes": {
+                    "burns_in_sun": true
+                }
+            },
+            "civilian.female": {
+                "additional_attributes": {
+                    "burns_in_sun": true
+                }
+            },
+            "civilian.male": {
+                "additional_attributes": {
+                    "burns_in_sun": true
                 }
             }
         },
