@@ -484,8 +484,8 @@ public class BlockTools {
 							this.lastPosX = x1;
 							this.lastPosY = y2;
 							this.lastPosZ = z1;
-							return new BlockPos(x1, y1, z1);
-						} else if (this.lastPosX == x2 && this.lastPosY == y2 && this.lastPosZ == z2) {
+							return new BlockPos(x1, y2, z1);
+						} else if (this.lastPosX == x2 && this.lastPosY == y1 && this.lastPosZ == z2) {
 							return this.endOfData();
 						} else {
 							if (this.lastPosX < x2) {

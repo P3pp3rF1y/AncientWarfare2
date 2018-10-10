@@ -94,7 +94,9 @@ public class ItemStructureBuilder extends ItemBaseStructure implements IItemKeyI
 				return;
 			}//no hit position, clicked on air
 			StructureBuilder builder = new StructureBuilder(player.world, template, player.getHorizontalFacing(), bpHit);
+			builder.getTemplate().getValidationSettings().preGeneration(player.world, bpHit, player.getHorizontalFacing(), builder.getTemplate(), builder.getBoundingBox());
 			builder.instantConstruction();
+			builder.getTemplate().getValidationSettings().postGeneration(player.world, bpHit, builder.getBoundingBox());
 			if (!player.capabilities.isCreativeMode) {
 				stack.shrink(1);
 			}
