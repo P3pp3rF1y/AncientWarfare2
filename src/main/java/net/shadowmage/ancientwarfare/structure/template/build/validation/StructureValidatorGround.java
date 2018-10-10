@@ -63,7 +63,7 @@ public class StructureValidatorGround extends StructureValidator {
 		if (getMaxLeveling() <= 0) {
 			return;
 		}
-		int topFilledY = WorldStructureGenerator.getTargetY(world, x, z, true);
+		int topFilledY = Math.max(world.getSeaLevel(), WorldStructureGenerator.getTargetY(world, x, z, true));
 		int topNonAirBlock = BlockTools.getTopFilledHeight(world.getChunkFromBlockCoords(new BlockPos(x, 1, z)), x, z, false);
 		int step = WorldStructureGenerator.getStepNumber(x, z, bb.min.getX(), bb.max.getX(), bb.min.getZ(), bb.max.getZ());
 		int startY = Math.min(bb.min.getY() + template.getOffset().getY() + step, topFilledY + 1);
