@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TileWarehouseInterface extends TileControlled implements IInteractableTile, IBlockBreakHandler {
-	private final ItemStackHandler inventory = new ItemStackHandler(27) {
+	private final ItemStackHandler inventory = new ItemStackHandler(9) {
 		@Override
 		protected void onContentsChanged(int slot) {
 			markDirty();
