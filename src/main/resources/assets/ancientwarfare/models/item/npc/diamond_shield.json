@@ -1,6 +1,6 @@
 {
-    "parent": "ancientwarfare:item/npc/shield",
+    "parent": "ancientwarfare:item/npc/wooden_shield",
     "textures": {
-        "layer0": "ancientwarfare:items/npc/diamond_shield"
+        "0": "ancientwarfare:items/npc/diamond_shield"
     }
 }
