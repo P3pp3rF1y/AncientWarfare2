@@ -4,7 +4,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreIngredient;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,11 +26,6 @@ public class IngredientOreCount extends OreIngredient implements IIngredientCoun
 			array = matchingStacks.toArray(new ItemStack[matchingStacks.size()]);
 		}
 		return array;
-	}
-
-	@Override
-	public boolean apply(@Nullable ItemStack input) {
-		return input.getCount() >= count && super.apply(input);
 	}
 
 	@Override

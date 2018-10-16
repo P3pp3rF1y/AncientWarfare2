@@ -186,6 +186,12 @@ tile.fire_pit.log.lit.name=Wood only Fire Pit Lit
 tile.fire_pit.log.unlit.name=Wood only Fire Pit Unlit
 tile.fire_pit.square.lit.name=Square Fire Pit Lit
 tile.fire_pit.square.unlit.name=Square Fire Pit Unlit
+tile.totem_part.name=Totem Part
+tile.totem_part.base.name=Totem Base
+tile.totem_part.top.name=Totem Top
+tile.totem_part.wings.name=Totem Wings
+tile.totem_part.mid.name=Totem Middle
+tile.totem_part.mid_alt.name=Totem Alternate Middle
 #npc
 tile.town_hall.name=Town Hall
 tile.recruiting_station.name=Recruiting Station

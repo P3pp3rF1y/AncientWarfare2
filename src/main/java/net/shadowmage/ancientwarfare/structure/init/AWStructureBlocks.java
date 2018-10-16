@@ -21,9 +21,11 @@ import net.shadowmage.ancientwarfare.structure.block.BlockGateProxy;
 import net.shadowmage.ancientwarfare.structure.block.BlockSoundBlock;
 import net.shadowmage.ancientwarfare.structure.block.BlockStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.block.BlockStructureScanner;
+import net.shadowmage.ancientwarfare.structure.block.BlockTotemPart;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockAdvancedSpawner;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockFirePit;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockStructureBuilder;
+import net.shadowmage.ancientwarfare.structure.item.ItemBlockTotemPart;
 import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedLootChest;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
@@ -31,6 +33,7 @@ import net.shadowmage.ancientwarfare.structure.tile.TileDraftingStation;
 import net.shadowmage.ancientwarfare.structure.tile.TileSoundBlock;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureScanner;
+import net.shadowmage.ancientwarfare.structure.tile.TileTotemPart;
 
 import static net.shadowmage.ancientwarfare.structure.AncientWarfareStructure.MOD_ID;
 
@@ -48,6 +51,7 @@ public class AWStructureBlocks {
 	public static final Block STRUCTURE_SCANNER_BLOCK = InjectionTools.nullValue();
 	public static final Block ADVANCED_LOOT_CHEST = InjectionTools.nullValue();
 	public static final Block FIRE_PIT = InjectionTools.nullValue();
+	public static final Block TOTEM_PART = InjectionTools.nullValue();
 
 	@SuppressWarnings("ConstantConditions")
 	@SubscribeEvent
@@ -62,6 +66,7 @@ public class AWStructureBlocks {
 		registry.register(new ItemBlock(AWStructureBlocks.STRUCTURE_SCANNER_BLOCK).setRegistryName(AWStructureBlocks.STRUCTURE_SCANNER_BLOCK.getRegistryName()));
 		registry.register(new ItemBlock(AWStructureBlocks.ADVANCED_LOOT_CHEST).setRegistryName(AWStructureBlocks.ADVANCED_LOOT_CHEST.getRegistryName()));
 		registry.register(new ItemBlockFirePit(FIRE_PIT));
+		registry.register(new ItemBlockTotemPart(TOTEM_PART));
 	}
 
 	@SubscribeEvent
@@ -88,6 +93,9 @@ public class AWStructureBlocks {
 
 		registry.register(new BlockAdvancedLootChest());
 		registerTile(TileAdvancedLootChest.class, "advanced_loot_chest_tile");
+
+		registry.register(new BlockTotemPart());
+		registerTile(TileTotemPart.class, "totem_part_tile");
 
 		registry.register(new BlockFirePit());
 	}

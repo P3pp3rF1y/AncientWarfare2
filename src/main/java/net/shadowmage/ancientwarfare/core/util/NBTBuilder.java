@@ -18,4 +18,9 @@ public class NBTBuilder {
 	public NBTTagCompound build() {
 		return tag;
 	}
+
+	public NBTBuilder setByte(String key, int value) {
+		tag.setByte(key, (byte) value);
+		return this;
+	}
 }
