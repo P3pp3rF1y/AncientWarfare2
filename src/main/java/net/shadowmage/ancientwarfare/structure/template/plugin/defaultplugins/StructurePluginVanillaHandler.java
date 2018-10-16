@@ -31,6 +31,7 @@ import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.bl
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleBlockSign;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleBlockTile;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleFlowerPot;
+import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleTotemPart;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleVanillaBlocks;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleVanillaSkull;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.entityrules.TemplateRuleEntityHanging;
@@ -104,6 +105,7 @@ public class StructurePluginVanillaHandler implements StructureContentPlugin {
 		manager.registerBlockHandler(TemplateRuleVanillaSkull.PLUGIN_NAME, Blocks.SKULL, TemplateRuleVanillaSkull::new, TemplateRuleVanillaSkull::new);
 
 		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, AWStructureBlocks.ADVANCED_SPAWNER, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
+		manager.registerBlockHandler(TemplateRuleTotemPart.PLUGIN_NAME, AWStructureBlocks.TOTEM_PART, TemplateRuleTotemPart::new, TemplateRuleTotemPart::new);
 		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, AWCoreBlocks.ENGINEERING_STATION, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
 		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, AWCoreBlocks.RESEARCH_STATION, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
 		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, AWStructureBlocks.DRAFTING_STATION, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
