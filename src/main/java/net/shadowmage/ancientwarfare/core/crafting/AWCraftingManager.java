@@ -51,7 +51,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
@@ -313,25 +316,85 @@ public class AWCraftingManager {
 			return ret;
 		}
 
-		List<Ingredient> ingredients = recipe.getIngredients();
+		Map<Integer, IngredientMatchData> ingredientsData = getIngredientData(recipe.getIngredients());
+		Map<Integer, Ingredient> remainingIngredients = getSlotIngredients(ingredientsData);
+		for (int slot = 0; slot < inventory.getSlots(); slot++) {
+			ItemStack resourceStack = inventory.getStackInSlot(slot);
+			if (resourceStack.isEmpty()) {
+				continue;
+			}
+			int currentStackCount = resourceStack.getCount();
 
-		IItemHandler clonedResourceInventory = InventoryTools.cloneItemHandler(inventory);
-		for (int i = 0; i < ingredients.size(); i++) {
-			Ingredient ingredient = ingredients.get(i);
+			Iterator<Map.Entry<Integer, Ingredient>> it = remainingIngredients.entrySet().iterator();
+			while (it.hasNext()) {
+				Map.Entry<Integer, Ingredient> entry = it.next();
+				Ingredient ingredient = entry.getValue();
+
+				if (ingredient.apply(resourceStack)) {
+					IngredientMatchData ingredientData = ingredientsData.get(entry.getKey());
+					int countToRemove = Math.min(ingredientData.remainingCount, currentStackCount);
+					currentStackCount -= countToRemove;
+					ingredientData.remainingCount -= countToRemove;
+					if (ingredientData.remainingCount < 1) {
+						it.remove();
+						ItemStack stackFound = resourceStack.copy();
+						stackFound.setCount(ingredientData.count);
+						ret = onMatch.apply(ret, ingredientData.slot, stackFound);
+					}
+				}
+
+				if (currentStackCount <= 0) {
+					break;
+				}
+			}
+
+			if (remainingIngredients.isEmpty()) {
+				break;
+			}
+		}
+
+		ret = processFailedIngredients(onFail, ret, remainingIngredients);
+
+		return ret;
+	}
+
+	private static Map<Integer, Ingredient> getSlotIngredients(Map<Integer, IngredientMatchData> ingredientsData) {
+		Map<Integer, Ingredient> ret = new HashMap<>();
+		ingredientsData.forEach((slot, ingredientData) -> ret.put(slot, ingredientData.ingredient));
+		return ret;
+	}
+
+	private static <T> T processFailedIngredients(BiFunction<T, Ingredient, T> onFail, T ret, Map<Integer, Ingredient> remainingIngredients) {
+		for (Ingredient ingredient : remainingIngredients.values()) {
+			ret = onFail.apply(ret, ingredient);
+		}
+		return ret;
+	}
+
+	private static class IngredientMatchData {
+		public Ingredient ingredient;
+		public int slot;
+		public int count;
+		public int remainingCount;
+
+		private IngredientMatchData(Ingredient ingredient, int slot, int count) {
+			this.ingredient = ingredient;
+			this.slot = slot;
+			this.count = count;
+			remainingCount = count;
+		}
+	}
+
+	private static Map<Integer, IngredientMatchData> getIngredientData(NonNullList<Ingredient> ingredients) {
+		Map<Integer, IngredientMatchData> ret = new HashMap<>();
+		for (int slot = 0; slot < ingredients.size(); slot++) {
+			Ingredient ingredient = ingredients.get(slot);
+
 			if (ingredient.apply(ItemStack.EMPTY)) { //skip empty ingredients
 				continue;
 			}
 
-			ItemStack stackFound = getIngredientInventoryMatch(clonedResourceInventory, ingredient);
-
-			if (stackFound.isEmpty()) {
-				ret = onFail.apply(ret, ingredient);
-				if (stopOnFail) {
-					return ret;
-				}
-			} else {
-				ret = onMatch.apply(ret, i, stackFound);
-			}
+			ret.put(slot, new IngredientMatchData(ingredient, slot, ingredient instanceof IIngredientCount ? ((IIngredientCount) ingredient).getCount() : 1));
 		}
 
 		return ret;
