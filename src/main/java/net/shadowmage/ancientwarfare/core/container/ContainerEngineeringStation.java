@@ -33,8 +33,8 @@ public class ContainerEngineeringStation extends ContainerTileBase<TileEngineeri
 			@Override
 			protected OnTakeResult handleOnTake(EntityPlayer player, ItemStack stack) {
 				ICraftingRecipe recipe = tileEntity.craftingRecipeMemory.getRecipe();
-				if (AWCraftingManager.canCraftFromInventory(recipe, tileEntity.extraSlots)) {
-					NonNullList<ItemStack> resources = AWCraftingManager.getRecipeInventoryMatch(recipe, tileEntity.extraSlots);
+				NonNullList<ItemStack> resources = AWCraftingManager.getRecipeInventoryMatch(recipe, containerCrafting.getCraftingStacks(), tileEntity.extraSlots);
+				if (!resources.isEmpty()) {
 					InventoryTools.removeItems(tileEntity.extraSlots, resources);
 
 					ForgeHooks.setCraftingPlayer(player);

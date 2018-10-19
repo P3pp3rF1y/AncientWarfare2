@@ -6,6 +6,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.items.SlotItemHandler;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
@@ -39,6 +40,12 @@ public class ContainerCraftingRecipeMemory {
 
 	public List<Slot> getCraftingMatrixSlots() {
 		return slots.subList(2, slots.size());
+	}
+
+	public List<ItemStack> getCraftingStacks() {
+		List<ItemStack> ret = NonNullList.create();
+		getCraftingMatrixSlots().forEach(slot -> ret.add(slot.getStack()));
+		return ret;
 	}
 
 	public List<Slot> slots = new ArrayList<>();

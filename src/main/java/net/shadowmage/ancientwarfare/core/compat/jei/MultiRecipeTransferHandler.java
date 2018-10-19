@@ -109,8 +109,8 @@ public class MultiRecipeTransferHandler<C extends Container & ICraftingContainer
 	}
 
 	private List<Integer> getMissingItems(NonNullList<ItemStack> inputs, ICraftingRecipe recipe, IItemHandlerModifiable allInventories) {
-		return AWCraftingManager.getRecipeInventoryMatch(recipe, allInventories, ArrayList::new, (a, i, s) -> {},
-				(a, in) -> addMissingItem(a, in, inputs), false);
+		return AWCraftingManager.getRecipeInventoryMatch(recipe, inputs, s -> InventoryTools.hasCountOrMore(allInventories, s), allInventories,
+				ArrayList::new, (a, i, s) -> {}, (a, in) -> addMissingItem(a, in, inputs));
 	}
 
 	private ItemStack getNonNullIngredientStack(List<ItemStack> allIngredients) {

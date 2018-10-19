@@ -71,7 +71,7 @@ public class InventoryTools {
 			@Nonnull
 			@Override
 			public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-				return canInsert(slot, stack) ? super.insertItem(slot, stack, simulate) : stack;
+				return canInsert(slot, stack) ? super.insertItem(slot, stack.copy(), simulate) : stack;
 			}
 
 			private boolean canInsert(int slot, @Nonnull ItemStack stack) {
@@ -281,6 +281,27 @@ public class InventoryTools {
 			}
 		}
 		return count;
+	}
+
+	public static boolean hasCountOrMore(IItemHandler handler, ItemStack filterStack) {
+		return hasCountOrMore(handler, s -> doItemStacksMatch(s, filterStack), filterStack.getCount());
+	}
+
+	private static boolean hasCountOrMore(IItemHandler handler, Predicate<ItemStack> filter, int minimumCount) {
+		if (handler.getSlots() <= 0) {
+			return false;
+		}
+		int count = 0;
+		for (int slot = 0; slot < handler.getSlots(); slot++) {
+			@Nonnull ItemStack stack = handler.getStackInSlot(slot);
+			if (filter.test(stack)) {
+				count += stack.getCount();
+				if (count >= minimumCount) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	/*

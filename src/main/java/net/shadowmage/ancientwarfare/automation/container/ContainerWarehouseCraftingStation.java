@@ -33,6 +33,7 @@ import static net.minecraft.util.EnumActionResult.SUCCESS;
 public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWarehouseCraftingStation> implements ICraftingContainer {
 	private static final int BOOK_SLOT = 1;
 	private static final String CHANGE_LIST_TAG = "changeList";
+	public static final int CRAFTING_SLOT = 0;
 	public ContainerCraftingRecipeMemory containerCrafting;
 
 	private ItemQuantityMap itemMap = new ItemQuantityMap();
@@ -53,8 +54,10 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 				IItemHandlerModifiable handler = tileEntity.getWarehouse().getItemHandler();
 				NonNullList<ItemStack> reusableStacks = AWCraftingManager.getReusableStacks(recipe, tileEntity.craftingRecipeMemory.craftMatrix);
 				CombinedInvWrapper combinedHandler = new CombinedInvWrapper(new ItemStackHandler(reusableStacks), handler);
-				if (AWCraftingManager.canCraftFromInventory(recipe, combinedHandler)) {
-					NonNullList<ItemStack> resources = InventoryTools.removeItems(AWCraftingManager.getRecipeInventoryMatch(recipe, combinedHandler), reusableStacks);
+				NonNullList<ItemStack> resources = AWCraftingManager.getRecipeInventoryMatch(recipe,
+						containerCrafting.getCraftingStacks(), s -> tileEntity.getWarehouse().getCountOf(s) >= s.getCount(), combinedHandler);
+				if (!resources.isEmpty()) {
+					resources = InventoryTools.removeItems(resources, reusableStacks);
 					InventoryTools.removeItems(handler, resources);
 
 					NonNullList<ItemStack> remainingItems = InventoryTools.removeItems(tileEntity.craftingRecipeMemory.getRemainingItems(
@@ -101,7 +104,7 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex) {
-		if (slotClickedIndex == 0 && !updateAndCheckCraftStackOrLessInTotal(tileEntity.craftingRecipeMemory.getRecipe())) {
+		if (slotClickedIndex == 0 && !updateAndCheckCraftStackOrLessInTotal()) {
 			return ItemStack.EMPTY;
 		}
 
@@ -133,9 +136,10 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 		return slotStackCopy;
 	}
 
-	private boolean updateAndCheckCraftStackOrLessInTotal(ICraftingRecipe recipe) {
-		currentCraftTotalSize += recipe.getRecipeOutput().getCount();
-		return currentCraftTotalSize <= recipe.getRecipeOutput().getMaxStackSize();
+	private boolean updateAndCheckCraftStackOrLessInTotal() {
+		ItemStack craftedStack = getSlot(CRAFTING_SLOT).getStack();
+		currentCraftTotalSize += craftedStack.getCount();
+		return currentCraftTotalSize <= craftedStack.getMaxStackSize();
 	}
 
 	@Override

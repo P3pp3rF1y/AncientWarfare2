@@ -36,7 +36,6 @@ public class TileAutoCrafting extends TileWorksiteBase {
 		}
 	};
 
-	private boolean canCraftLastCheck = false;
 	private boolean canHoldLastCheck = false;
 
 	@Override
@@ -47,20 +46,18 @@ public class TileAutoCrafting extends TileWorksiteBase {
 		super.onBlockBroken();
 	}
 
-	private boolean canCraft() {
-		return AWCraftingManager.canCraftFromInventory(craftingRecipeMemory.getRecipe(), resourceInventory);
-	}
-
 	public boolean tryCraftItem() {
-		if (canCraft() && canHold()) {
-			craftItem();
-			return true;
+		if (canHold()) {
+			NonNullList<ItemStack> resources = AWCraftingManager.getRecipeInventoryMatch(craftingRecipeMemory.getRecipe(), craftingRecipeMemory.getCraftingStacks(), resourceInventory);
+			if (!resources.isEmpty()) {
+				craftItem(resources);
+				return true;
+			}
 		}
 		return false;
 	}
 
-	private void craftItem() {
-		NonNullList<ItemStack> resources = AWCraftingManager.getRecipeInventoryMatch(craftingRecipeMemory.getRecipe(), resourceInventory);
+	private void craftItem(NonNullList<ItemStack> resources) {
 		InventoryCrafting invCrafting = AWCraftingManager.fillCraftingMatrixFromInventory(resources);
 		@Nonnull ItemStack result = craftingRecipeMemory.getCraftingResult(invCrafting);
 		useResources(resources);
@@ -141,7 +138,7 @@ public class TileAutoCrafting extends TileWorksiteBase {
 
 	@Override
 	protected Optional<IWorksiteAction> getNextAction() {
-		return canCraftLastCheck && canHoldLastCheck && !craftingRecipeMemory.getRecipe().getRecipeOutput().isEmpty() ? Optional.of(CRAFT_ACTION) : Optional.empty();
+		return canHoldLastCheck && !craftingRecipeMemory.getRecipe().getRecipeOutput().isEmpty() ? Optional.of(CRAFT_ACTION) : Optional.empty();
 	}
 
 	@Override
@@ -151,7 +148,6 @@ public class TileAutoCrafting extends TileWorksiteBase {
 
 	@Override
 	protected void updateWorksite() {
-		canCraftLastCheck = canCraft();
 		canHoldLastCheck = canHold();
 	}
 

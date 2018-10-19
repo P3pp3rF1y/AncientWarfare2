@@ -52,11 +52,16 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -289,26 +294,37 @@ public class AWCraftingManager {
 		return otherResult.isItemEqual(result);
 	}
 
-	public static boolean canCraftFromInventory(ICraftingRecipe recipe, IItemHandler inventory) {
-		return getRecipeInventoryMatch(recipe, inventory, () -> true, (b, i, s) -> b, (b, in) -> false, true);
-	}
-
 	public static NonNullList<ItemStack> getRecipeInventoryMatch(ICraftingRecipe recipe, IItemHandler inventory) {
-		return getRecipeInventoryMatch(recipe, inventory, () -> NonNullList.withSize(9, ItemStack.EMPTY), (TriConsumer<NonNullList<ItemStack>, Integer, ItemStack>) NonNullList::set, (a, in) -> a.clear(), true);
+		return getRecipeInventoryMatch(recipe, NonNullList.create(), inventory);
 	}
 
-	public static <T> T getRecipeInventoryMatch(ICraftingRecipe recipe, IItemHandler inventory, Supplier<T> initialize, TriConsumer<T, Integer, ItemStack> onMatch, BiConsumer<T, Ingredient> onFail, boolean stopOnFail) {
-		return getRecipeInventoryMatch(recipe, inventory, initialize, (t, i, s) -> {
+	public static NonNullList<ItemStack> getRecipeInventoryMatch(ICraftingRecipe recipe, List<ItemStack> exactStacks, IItemHandler inventory) {
+		return getRecipeInventoryMatch(recipe, exactStacks, s -> InventoryTools.hasCountOrMore(inventory, s), inventory);
+	}
+
+	public static NonNullList<ItemStack> getRecipeInventoryMatch(ICraftingRecipe recipe, List<ItemStack> exactStacks, Function<ItemStack, Boolean> hasCountOrMore, IItemHandler inventory) {
+		return getRecipeInventoryMatch(recipe, exactStacks, hasCountOrMore, inventory, () -> NonNullList.withSize(9, ItemStack.EMPTY), (list, slot, stack) -> {
+			list.set(slot, stack);
+			return list;
+		}, (a, in) -> NonNullList.create());
+	}
+
+	public static <T> T getRecipeInventoryMatch(ICraftingRecipe recipe, IItemHandler inventory, Supplier<T> initialize, TriConsumer<T, Integer, ItemStack> onMatch, BiConsumer<T, Ingredient> onFail) {
+		return getRecipeInventoryMatch(recipe, NonNullList.create(), s -> InventoryTools.hasCountOrMore(inventory, s), inventory, initialize, onMatch, onFail);
+	}
+
+	public static <T> T getRecipeInventoryMatch(ICraftingRecipe recipe, List<ItemStack> exactStacks, Function<ItemStack, Boolean> hasCountOrMore, IItemHandler inventory, Supplier<T> initialize, TriConsumer<T, Integer, ItemStack> onMatch, BiConsumer<T, Ingredient> onFail) {
+		return getRecipeInventoryMatch(recipe, exactStacks, hasCountOrMore, inventory, initialize, (t, i, s) -> {
 			onMatch.accept(t, i, s);
 			return t;
 		}, (t, in) -> {
 			onFail.accept(t, in);
 			return t;
-		}, stopOnFail);
+		});
 	}
 
 	@SuppressWarnings("squid:UnusedPrivateMethod")
-	private static <T> T getRecipeInventoryMatch(ICraftingRecipe recipe, IItemHandler inventory, Supplier<T> initialize, TriFunction<T, Integer, ItemStack, T> onMatch, BiFunction<T, Ingredient, T> onFail, boolean stopOnFail) {
+	private static <T> T getRecipeInventoryMatch(ICraftingRecipe recipe, List<ItemStack> exactStacks, Function<ItemStack, Boolean> hasCountOrMore, IItemHandler inventory, Supplier<T> initialize, TriFunction<T, Integer, ItemStack, T> onMatch, BiFunction<T, Ingredient, T> onFail) {
 		T ret = initialize.get();
 
 		if (!recipe.isValid()) {
@@ -318,44 +334,149 @@ public class AWCraftingManager {
 
 		Map<Integer, IngredientMatchData> ingredientsData = getIngredientData(recipe.getIngredients());
 		Map<Integer, Ingredient> remainingIngredients = getSlotIngredients(ingredientsData);
-		for (int slot = 0; slot < inventory.getSlots(); slot++) {
-			ItemStack resourceStack = inventory.getStackInSlot(slot);
-			if (resourceStack.isEmpty()) {
-				continue;
-			}
-			int currentStackCount = resourceStack.getCount();
 
-			Iterator<Map.Entry<Integer, Ingredient>> it = remainingIngredients.entrySet().iterator();
-			while (it.hasNext()) {
-				Map.Entry<Integer, Ingredient> entry = it.next();
-				Ingredient ingredient = entry.getValue();
+		ret = matchExactStacks(exactStacks, hasCountOrMore, onMatch, ret, ingredientsData, remainingIngredients);
 
-				if (ingredient.apply(resourceStack)) {
-					IngredientMatchData ingredientData = ingredientsData.get(entry.getKey());
-					int countToRemove = Math.min(ingredientData.remainingCount, currentStackCount);
-					currentStackCount -= countToRemove;
-					ingredientData.remainingCount -= countToRemove;
-					if (ingredientData.remainingCount < 1) {
-						it.remove();
-						ItemStack stackFound = resourceStack.copy();
-						stackFound.setCount(ingredientData.count);
-						ret = onMatch.apply(ret, ingredientData.slot, stackFound);
-					}
-				}
-
-				if (currentStackCount <= 0) {
-					break;
-				}
-			}
-
-			if (remainingIngredients.isEmpty()) {
-				break;
-			}
+		if (remainingIngredients.isEmpty()) {
+			return ret;
 		}
+
+		ret = matchUsingRecipeIngredients(inventory, onMatch, ret, ingredientsData, remainingIngredients);
 
 		ret = processFailedIngredients(onFail, ret, remainingIngredients);
 
 		return ret;
+	}
+
+	private static <T> T matchUsingRecipeIngredients(IItemHandler inventory, TriFunction<T, Integer, ItemStack, T> onMatch, T ret, Map<Integer, IngredientMatchData> ingredientsData, Map<Integer, Ingredient> remainingIngredients) {
+		for (int slot = 0; slot < inventory.getSlots() && !remainingIngredients.isEmpty(); slot++) {
+			ItemStack resourceStack = inventory.getStackInSlot(slot);
+			if (resourceStack.isEmpty()) {
+				continue;
+			}
+			ret = matchIngredientsToStack(onMatch, ret, ingredientsData, remainingIngredients, resourceStack);
+		}
+		return ret;
+	}
+
+	private static <T> T matchIngredientsToStack(TriFunction<T, Integer, ItemStack, T> onMatch, T ret, Map<Integer, IngredientMatchData> ingredientsData, Map<Integer, Ingredient> remainingIngredients, ItemStack resourceStack) {
+		int currentStackCount = resourceStack.getCount();
+
+		Iterator<Map.Entry<Integer, Ingredient>> it = remainingIngredients.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry<Integer, Ingredient> entry = it.next();
+			Ingredient ingredient = entry.getValue();
+
+			if (ingredient.apply(resourceStack)) {
+				IngredientMatchData ingredientData = ingredientsData.get(entry.getKey());
+				int countToRemove = Math.min(ingredientData.remainingCount, currentStackCount);
+				currentStackCount -= countToRemove;
+				ingredientData.remainingCount -= countToRemove;
+				if (ingredientData.remainingCount < 1) {
+					ret = addSuccessfulMatch(ret, onMatch, resourceStack, ingredientData.count, ingredientData.index);
+					it.remove();
+				}
+				if (currentStackCount <= 0) {
+					break;
+				}
+			}
+		}
+		return ret;
+	}
+
+	private static <T> T matchExactStacks(List<ItemStack> exactStacks, Function<ItemStack, Boolean> hasCountOrMore, TriFunction<T, Integer, ItemStack, T> onMatch, T ret, Map<Integer, IngredientMatchData> ingredientsData, Map<Integer, Ingredient> remainingIngredients) {
+		Map<ItemStack, Set<Integer>> consolidatedStacks = consolidateStacks(exactStacks, ingredientsData);
+		for (Map.Entry<ItemStack, Set<Integer>> consolidatedStack : consolidatedStacks.entrySet()) {
+			ItemStack stack = consolidatedStack.getKey();
+			if (hasCountOrMore.apply(stack)) {
+				for (Integer ingredientIndex : consolidatedStack.getValue()) {
+					remainingIngredients.remove(ingredientIndex);
+					if (ingredientsData.containsKey(ingredientIndex)) {
+						IngredientMatchData ingredientData = ingredientsData.get(ingredientIndex);
+						ret = addSuccessfulMatch(ret, onMatch, stack, ingredientData.count, ingredientData.index);
+					} else {
+						ret = addSuccessfulMatch(ret, onMatch, stack, 1, ingredientIndex);
+					}
+				}
+			} else {
+				for (int ingredientIndex : consolidatedStack.getValue()) {
+					if (!remainingIngredients.containsKey(ingredientIndex)) {
+						remainingIngredients.put(ingredientIndex, new IngredientCount(consolidatedStack.getKey()) {
+							@Override
+							public int getCount() {
+								return 1;
+							}
+						});
+					}
+				}
+			}
+		}
+		return ret;
+	}
+
+	private static <T> T addSuccessfulMatch(T ret, TriFunction<T, Integer, ItemStack, T> onMatch, ItemStack resourceStack, int count, int index) {
+		ItemStack stackFound = resourceStack.copy();
+		stackFound.setCount(count);
+		ret = onMatch.apply(ret, index, stackFound);
+		return ret;
+	}
+
+	private static Map<ItemStack, Set<Integer>> consolidateStacks(List<ItemStack> exactStacks, Map<Integer, IngredientMatchData> ingredientsData) {
+		Map<ItemStack, Set<Integer>> ret = new HashMap<>();
+		Set<Integer> matchedIngredientIndexes = new HashSet<>();
+		int slot = 0;
+		for (ItemStack stack : exactStacks) {
+			consolidateStack(ingredientsData, ret, matchedIngredientIndexes, stack, slot);
+			slot++;
+		}
+
+		return ret;
+	}
+
+	private static void consolidateStack(Map<Integer, IngredientMatchData> ingredientsData, Map<ItemStack, Set<Integer>> stackIngredientIndexes,
+			Set<Integer> matchedIngredientIndexes, ItemStack stack, int slot) {
+		if (stack.isEmpty()) {
+			return;
+		}
+		int index = getIngredientIndexForStack(ingredientsData, matchedIngredientIndexes, stack);
+		int count = 1;
+		if (index == -1) {
+			index = slot;
+		} else {
+			count = ingredientsData.get(index).count;
+		}
+		matchedIngredientIndexes.add(index);
+		Optional<Map.Entry<ItemStack, Set<Integer>>> matching = getMatchingStackEntry(stackIngredientIndexes, stack);
+		if (matching.isPresent()) {
+			Map.Entry<ItemStack, Set<Integer>> entry = matching.get();
+			entry.getKey().grow(count);
+			entry.getValue().add(index);
+		} else {
+			Set<Integer> indexes = new HashSet<>();
+			indexes.add(index);
+			ItemStack stackCopy = stack.copy();
+			stackCopy.setCount(count);
+			stackIngredientIndexes.put(stackCopy, indexes);
+		}
+	}
+
+	private static int getIngredientIndexForStack(Map<Integer, IngredientMatchData> ingredientsData, Set<Integer> matchedIngredientIndexes, ItemStack stack) {
+		for (Map.Entry<Integer, IngredientMatchData> ingredientData : ingredientsData.entrySet()) {
+			IngredientMatchData data = ingredientData.getValue();
+			if (!matchedIngredientIndexes.contains(data.index) && data.ingredient.apply(stack)) {
+				return data.index;
+			}
+		}
+		return -1;
+	}
+
+	private static Optional<Map.Entry<ItemStack, Set<Integer>>> getMatchingStackEntry(Map<ItemStack, Set<Integer>> stacks, ItemStack stackToFind) {
+		for (Map.Entry<ItemStack, Set<Integer>> entry : stacks.entrySet()) {
+			if (InventoryTools.doItemStacksMatch(entry.getKey(), stackToFind)) {
+				return Optional.of(entry);
+			}
+		}
+		return Optional.empty();
 	}
 
 	private static Map<Integer, Ingredient> getSlotIngredients(Map<Integer, IngredientMatchData> ingredientsData) {
@@ -373,20 +494,20 @@ public class AWCraftingManager {
 
 	private static class IngredientMatchData {
 		public Ingredient ingredient;
-		public int slot;
+		public int index;
 		public int count;
 		public int remainingCount;
 
-		private IngredientMatchData(Ingredient ingredient, int slot, int count) {
+		private IngredientMatchData(Ingredient ingredient, int index, int count) {
 			this.ingredient = ingredient;
-			this.slot = slot;
+			this.index = index;
 			this.count = count;
 			remainingCount = count;
 		}
 	}
 
 	private static Map<Integer, IngredientMatchData> getIngredientData(NonNullList<Ingredient> ingredients) {
-		Map<Integer, IngredientMatchData> ret = new HashMap<>();
+		Map<Integer, IngredientMatchData> ret = new LinkedHashMap<>();
 		for (int slot = 0; slot < ingredients.size(); slot++) {
 			Ingredient ingredient = ingredients.get(slot);
 

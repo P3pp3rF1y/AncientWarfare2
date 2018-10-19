@@ -18,6 +18,7 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class CraftingRecipeMemory {
 	private final TileEntity tileEntity;
@@ -55,6 +56,14 @@ public class CraftingRecipeMemory {
 			updateOutput(this);
 		}
 	};//the 3x3 recipe template/matrix
+
+	public List<ItemStack> getCraftingStacks() {
+		List<ItemStack> ret = NonNullList.create();
+		for (int slot = 0; slot < craftMatrix.getSizeInventory(); slot++) {
+			ret.add(craftMatrix.getStackInSlot(slot));
+		}
+		return ret;
+	}
 
 	public CraftingRecipeMemory(TileEntity tileEntity) {
 		this.tileEntity = tileEntity;
