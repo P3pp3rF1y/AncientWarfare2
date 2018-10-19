@@ -40,6 +40,7 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 	private final ItemQuantityMap cache = new ItemQuantityMap();
 	private boolean shouldUpdate = true;
 	private int currentCraftTotalSize = 0;
+	private IItemHandlerModifiable warehouseItemHandler = tileEntity.getWarehouse().getItemHandler();
 
 	public ContainerWarehouseCraftingStation(final EntityPlayer player, int x, int y, int z) {
 		super(player, x, y, z);
@@ -51,18 +52,17 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 					return new OnTakeResult(PASS, stack);
 				}
 				ICraftingRecipe recipe = tileEntity.craftingRecipeMemory.getRecipe();
-				IItemHandlerModifiable handler = tileEntity.getWarehouse().getItemHandler();
 				NonNullList<ItemStack> reusableStacks = AWCraftingManager.getReusableStacks(recipe, tileEntity.craftingRecipeMemory.craftMatrix);
-				CombinedInvWrapper combinedHandler = new CombinedInvWrapper(new ItemStackHandler(reusableStacks), handler);
+				CombinedInvWrapper combinedHandler = new CombinedInvWrapper(new ItemStackHandler(reusableStacks), warehouseItemHandler);
 				NonNullList<ItemStack> resources = AWCraftingManager.getRecipeInventoryMatch(recipe,
 						containerCrafting.getCraftingStacks(), s -> tileEntity.getWarehouse().getCountOf(s) >= s.getCount(), combinedHandler);
 				if (!resources.isEmpty()) {
 					resources = InventoryTools.removeItems(resources, reusableStacks);
-					InventoryTools.removeItems(handler, resources);
+					InventoryTools.removeItems(warehouseItemHandler, resources);
 
 					NonNullList<ItemStack> remainingItems = InventoryTools.removeItems(tileEntity.craftingRecipeMemory.getRemainingItems(
 							AWCraftingManager.fillCraftingMatrixFromInventory(resources)), reusableStacks);
-					InventoryTools.insertOrDropItems(handler, remainingItems, tileEntity.getWorld(), tileEntity.getPos());
+					InventoryTools.insertOrDropItems(warehouseItemHandler, remainingItems, tileEntity.getWorld(), tileEntity.getPos());
 
 					return new OnTakeResult(SUCCESS, stack);
 				}
@@ -88,6 +88,9 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 
 	@Override
 	public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player) {
+		if (slotId == CRAFTING_SLOT) {
+			warehouseItemHandler = tileEntity.getWarehouse().getItemHandler();
+		}
 		ItemStack result = super.slotClick(slotId, dragType, clickTypeIn, player);
 		currentCraftTotalSize = 0;
 		return result;
