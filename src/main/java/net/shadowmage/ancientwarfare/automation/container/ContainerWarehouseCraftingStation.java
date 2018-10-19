@@ -40,7 +40,7 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 	private final ItemQuantityMap cache = new ItemQuantityMap();
 	private boolean shouldUpdate = true;
 	private int currentCraftTotalSize = 0;
-	private IItemHandlerModifiable warehouseItemHandler = tileEntity.getWarehouse().getItemHandler();
+	private IItemHandlerModifiable warehouseItemHandler = tileEntity.getWarehouse() != null ? tileEntity.getWarehouse().getItemHandler() : null;
 
 	public ContainerWarehouseCraftingStation(final EntityPlayer player, int x, int y, int z) {
 		super(player, x, y, z);
@@ -48,7 +48,7 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 		containerCrafting = new ContainerCraftingRecipeMemory(tileEntity.craftingRecipeMemory, player) {
 			@Override
 			protected OnTakeResult handleOnTake(EntityPlayer player, ItemStack stack) {
-				if (tileEntity.getWarehouse() == null) {
+				if (warehouseItemHandler == null) {
 					return new OnTakeResult(PASS, stack);
 				}
 				ICraftingRecipe recipe = tileEntity.craftingRecipeMemory.getRecipe();
@@ -89,7 +89,7 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 	@Override
 	public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player) {
 		if (slotId == CRAFTING_SLOT) {
-			warehouseItemHandler = tileEntity.getWarehouse().getItemHandler();
+			warehouseItemHandler = tileEntity.getWarehouse() != null ? tileEntity.getWarehouse().getItemHandler() : null;
 		}
 		ItemStack result = super.slotClick(slotId, dragType, clickTypeIn, player);
 		currentCraftTotalSize = 0;
