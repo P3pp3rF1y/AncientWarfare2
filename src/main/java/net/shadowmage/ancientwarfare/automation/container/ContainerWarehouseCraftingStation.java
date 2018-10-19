@@ -40,7 +40,7 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 	private final ItemQuantityMap cache = new ItemQuantityMap();
 	private boolean shouldUpdate = true;
 	private int currentCraftTotalSize = 0;
-	private IItemHandlerModifiable warehouseItemHandler = tileEntity.getWarehouse() != null ? tileEntity.getWarehouse().getItemHandler() : null;
+	private IItemHandlerModifiable warehouseItemHandler = null;
 
 	public ContainerWarehouseCraftingStation(final EntityPlayer player, int x, int y, int z) {
 		super(player, x, y, z);
