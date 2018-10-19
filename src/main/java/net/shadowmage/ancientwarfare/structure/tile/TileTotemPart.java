@@ -9,6 +9,7 @@ import java.util.Optional;
 
 public class TileTotemPart extends TileUpdatable {
 	private static final String VARIANT_TAG = "variant";
+	public static final String MAIN_BLOCK_POS_TAG = "mainBlockPos";
 	private Variant variant = Variant.BASE;
 	private BlockPos mainBlockPos = null;
 
@@ -36,7 +37,9 @@ public class TileTotemPart extends TileUpdatable {
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
 		variant = Variant.fromId(compound.getByte(VARIANT_TAG));
-		mainBlockPos = BlockPos.fromLong(compound.getLong("mainBlockPos"));
+		if (compound.hasKey(MAIN_BLOCK_POS_TAG)) {
+			mainBlockPos = BlockPos.fromLong(compound.getLong(MAIN_BLOCK_POS_TAG));
+		}
 	}
 
 	@Override
@@ -44,7 +47,7 @@ public class TileTotemPart extends TileUpdatable {
 		compound = super.writeToNBT(compound);
 		compound.setByte(VARIANT_TAG, (byte) variant.getId());
 		if (mainBlockPos != null) {
-			compound.setLong("mainBlockPos", mainBlockPos.toLong());
+			compound.setLong(MAIN_BLOCK_POS_TAG, mainBlockPos.toLong());
 		}
 		return compound;
 	}
