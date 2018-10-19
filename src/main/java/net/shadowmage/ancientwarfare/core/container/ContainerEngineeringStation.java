@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.core.container;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -24,7 +25,9 @@ import static net.minecraft.util.EnumActionResult.SUCCESS;
 
 public class ContainerEngineeringStation extends ContainerTileBase<TileEngineeringStation> implements ICraftingContainer {
 	private static final int BOOK_SLOT = 1;
+	private static final int CRAFTING_SLOT = 0;
 	public ContainerCraftingRecipeMemory containerCrafting;
+	private int currentCraftTotalSize = 0;
 
 	public ContainerEngineeringStation(EntityPlayer player, int x, int y, int z) {
 		super(player, x, y, z);
@@ -79,7 +82,18 @@ public class ContainerEngineeringStation extends ContainerTileBase<TileEngineeri
 	}
 
 	@Override
+	public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player) {
+		ItemStack result = super.slotClick(slotId, dragType, clickTypeIn, player);
+		currentCraftTotalSize = 0;
+		return result;
+	}
+
+	@Override
 	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex) {
+		if (slotClickedIndex == CRAFTING_SLOT && !updateAndCheckCraftStackOrLessInTotal()) {
+			return ItemStack.EMPTY;
+		}
+
 		@Nonnull ItemStack slotStackCopy = ItemStack.EMPTY;
 		Slot theSlot = this.getSlot(slotClickedIndex);
 		if (theSlot != null && theSlot.getHasStack()) {
@@ -118,6 +132,13 @@ public class ContainerEngineeringStation extends ContainerTileBase<TileEngineeri
 		}
 		return slotStackCopy;
 	}
+
+	private boolean updateAndCheckCraftStackOrLessInTotal() {
+		ItemStack craftedStack = getSlot(CRAFTING_SLOT).getStack();
+		currentCraftTotalSize += craftedStack.getCount();
+		return currentCraftTotalSize <= craftedStack.getMaxStackSize();
+	}
+	
 
 	@Override
 	public ContainerCraftingRecipeMemory getCraftingMemoryContainer() {
