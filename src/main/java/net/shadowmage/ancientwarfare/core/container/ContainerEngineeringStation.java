@@ -9,6 +9,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import net.minecraftforge.items.wrapper.InvWrapper;
@@ -36,12 +37,16 @@ public class ContainerEngineeringStation extends ContainerTileBase<TileEngineeri
 			@Override
 			protected OnTakeResult handleOnTake(EntityPlayer player, ItemStack stack) {
 				ICraftingRecipe recipe = tileEntity.craftingRecipeMemory.getRecipe();
-				NonNullList<ItemStack> resources = AWCraftingManager.getRecipeInventoryMatch(recipe, containerCrafting.getCraftingStacks(), tileEntity.extraSlots);
+				NonNullList<ItemStack> reusableStacks = AWCraftingManager.getReusableStacks(recipe, containerCrafting.getCraftMatrix());
+				NonNullList<ItemStack> resources = InventoryTools.removeItems(AWCraftingManager.getRecipeInventoryMatch(recipe, getCraftingStacks(),
+						new CombinedInvWrapper(tileEntity.extraSlots, new ItemStackHandler(reusableStacks))), reusableStacks);
 				if (!resources.isEmpty()) {
 					InventoryTools.removeItems(tileEntity.extraSlots, resources);
 
 					ForgeHooks.setCraftingPlayer(player);
-					NonNullList<ItemStack> remainingItems = tileEntity.craftingRecipeMemory.getRemainingItems(AWCraftingManager.fillCraftingMatrixFromInventory(resources));
+					NonNullList<ItemStack> remainingItems = InventoryTools.removeItems(
+							tileEntity.craftingRecipeMemory.getRemainingItems(AWCraftingManager.fillCraftingMatrixFromInventory(resources)),
+							reusableStacks);
 					ForgeHooks.setCraftingPlayer(null);
 					InventoryTools.insertOrDropItems(tileEntity.extraSlots, remainingItems, tileEntity.getWorld(), tileEntity.getPos());
 

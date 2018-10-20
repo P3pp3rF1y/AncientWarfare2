@@ -10,6 +10,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -18,7 +19,6 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.List;
 import java.util.Optional;
 
 public class TileAutoCrafting extends TileWorksiteBase {
@@ -48,20 +48,22 @@ public class TileAutoCrafting extends TileWorksiteBase {
 
 	public boolean tryCraftItem() {
 		if (canHold()) {
-			NonNullList<ItemStack> resources = AWCraftingManager.getRecipeInventoryMatch(craftingRecipeMemory.getRecipe(), craftingRecipeMemory.getCraftingStacks(), resourceInventory);
+			NonNullList<ItemStack> reusableStacks = AWCraftingManager.getReusableStacks(craftingRecipeMemory.getRecipe(), craftingRecipeMemory.craftMatrix);
+			NonNullList<ItemStack> resources = InventoryTools.removeItems(AWCraftingManager.getRecipeInventoryMatch(craftingRecipeMemory.getRecipe(), craftingRecipeMemory.getCraftingStacks(),
+					new CombinedInvWrapper(resourceInventory, new ItemStackHandler(reusableStacks))), reusableStacks);
 			if (!resources.isEmpty()) {
-				craftItem(resources);
+				craftItem(resources, reusableStacks);
 				return true;
 			}
 		}
 		return false;
 	}
 
-	private void craftItem(NonNullList<ItemStack> resources) {
+	private void craftItem(NonNullList<ItemStack> resources, NonNullList<ItemStack> reusableStacks) {
 		InventoryCrafting invCrafting = AWCraftingManager.fillCraftingMatrixFromInventory(resources);
 		@Nonnull ItemStack result = craftingRecipeMemory.getCraftingResult(invCrafting);
-		useResources(resources);
-		NonNullList<ItemStack> remainingItems = craftingRecipeMemory.getRemainingItems(invCrafting);
+		InventoryTools.removeItems(resourceInventory, resources);
+		NonNullList<ItemStack> remainingItems = InventoryTools.removeItems(craftingRecipeMemory.getRemainingItems(invCrafting), reusableStacks);
 
 		for (ItemStack stack : remainingItems) {
 			if (stack.isEmpty()) {
@@ -76,12 +78,6 @@ public class TileAutoCrafting extends TileWorksiteBase {
 		}
 
 		InventoryTools.insertOrDropItem(outputInventory, result, world, pos);
-	}
-
-	private void useResources(List<ItemStack> resources) {
-		for (ItemStack stack : resources) {
-			InventoryTools.removeItems(resourceInventory, stack, stack.getCount());
-		}
 	}
 
 	@Override

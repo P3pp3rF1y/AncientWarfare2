@@ -48,6 +48,10 @@ public class ContainerCraftingRecipeMemory {
 		return ret;
 	}
 
+	public InventoryCrafting getCraftMatrix() {
+		return craftingRecipeMemory.craftMatrix;
+	}
+
 	public List<Slot> slots = new ArrayList<>();
 
 	private List<ICraftingRecipe> recipes = new ArrayList<>();
