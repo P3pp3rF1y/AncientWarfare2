@@ -229,8 +229,8 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
 		cachedItemMap.addAll(map);
 	}
 
-	private static final IWorksiteAction EMPTY_ACTION = WorksiteImplementation::getEnergyPerActivation;
-	private static final IWorksiteAction FILL_ACTION = WorksiteImplementation::getEnergyPerActivation;
+	private static final IWorksiteAction EMPTY_ACTION = e -> WorksiteImplementation.getEnergyPerActivation(e) / 4D;
+	private static final IWorksiteAction FILL_ACTION = e -> WorksiteImplementation.getEnergyPerActivation(e) / 4D;
 
 	@Override
 	protected Optional<IWorksiteAction> getNextAction() {
