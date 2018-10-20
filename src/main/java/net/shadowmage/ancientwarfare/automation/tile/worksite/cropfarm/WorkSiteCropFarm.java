@@ -110,10 +110,10 @@ public class WorkSiteCropFarm extends TileWorksiteFarm {
 		return (bonemealCount > 0 && !blocksToFertilize.isEmpty());
 	}
 
-	private static final IWorksiteAction PLANT_ACTION = WorksiteImplementation::getEnergyPerActivation;
-	private static final IWorksiteAction FERTILIZE_ACTION = WorksiteImplementation::getEnergyPerActivation;
-	private static final IWorksiteAction TILL_ACTION = WorksiteImplementation::getEnergyPerActivation;
-	private static final IWorksiteAction HARVEST_ACTION = WorksiteImplementation::getEnergyPerActivation;
+	private static final IWorksiteAction PLANT_ACTION = e -> WorksiteImplementation.getEnergyPerActivation(e) / 5D;
+	private static final IWorksiteAction FERTILIZE_ACTION = e -> WorksiteImplementation.getEnergyPerActivation(e) / 5D;
+	private static final IWorksiteAction TILL_ACTION = e -> WorksiteImplementation.getEnergyPerActivation(e) / 5D;
+	private static final IWorksiteAction HARVEST_ACTION = e -> WorksiteImplementation.getEnergyPerActivation(e) / 5D;
 
 	@Override
 	protected Optional<IWorksiteAction> getNextAction() {
