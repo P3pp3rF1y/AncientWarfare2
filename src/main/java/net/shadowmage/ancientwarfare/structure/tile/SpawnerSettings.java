@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.structure.tile;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -12,6 +13,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -46,6 +48,7 @@ public class SpawnerSettings {
 	private static final String DEBUG_MODE_TAG = "debugMode";
 	private static final String SPAWN_GROUPS_TAG = "spawnGroups";
 	private static final String INVENTORY_TAG = "inventory";
+	private static final String HOSTILE_TAG = "hostile";
 	private List<EntitySpawnGroup> spawnGroups = new ArrayList<>();
 
 	private ItemStackHandler inventory = new ItemStackHandler(9);
@@ -465,7 +468,9 @@ public class SpawnerSettings {
 			for (int i = 0; i < settingsList.tagCount(); i++) {
 				setting = new EntitySpawnSettings();
 				setting.readFromNBT(settingsList.getCompoundTagAt(i));
-				this.entitiesToSpawn.add(setting);
+				if (!setting.shouldRemove()) {
+					this.entitiesToSpawn.add(setting);
+				}
 			}
 		}
 	}
@@ -484,8 +489,10 @@ public class SpawnerSettings {
 		private int maxToSpawn = 4;
 		int remainingSpawnCount = -1;
 		private boolean forced;
+		private boolean hostile = true;
 
 		public final void writeToNBT(NBTTagCompound tag) {
+			tag.setBoolean(HOSTILE_TAG, hostile);
 			tag.setString(ENTITY_ID_TAG, entityId.toString());
 			if (customTag != null) {
 				tag.setTag(CUSTOM_TAG, customTag);
@@ -497,6 +504,8 @@ public class SpawnerSettings {
 		}
 
 		public final void readFromNBT(NBTTagCompound tag) {
+			hostile = !tag.hasKey(HOSTILE_TAG) || tag.getBoolean(HOSTILE_TAG);
+			remainingSpawnCount = tag.getInteger(REMAINING_SPAWN_COUNT_TAG);
 			setEntityToSpawn(new ResourceLocation(tag.getString(ENTITY_ID_TAG)));
 			if (tag.hasKey(CUSTOM_TAG)) {
 				customTag = tag.getCompoundTag(CUSTOM_TAG);
@@ -504,18 +513,31 @@ public class SpawnerSettings {
 			forced = tag.getBoolean(FORCED_TAG);
 			minToSpawn = tag.getInteger(MIN_TO_SPAWN_TAG);
 			maxToSpawn = tag.getInteger(MAX_TO_SPAWN_TAG);
-			remainingSpawnCount = tag.getInteger(REMAINING_SPAWN_COUNT_TAG);
 		}
 
+		@SuppressWarnings("ConstantConditions")
+		public final void setEntityToSpawn(Entity entity) {
+			hostile = !(entity instanceof EntityAgeable);
+			ResourceLocation registryName = EntityRegistry.getEntry(entity.getClass()).getRegistryName();
+			setEntityToSpawn(registryName);
+		}
 		public final void setEntityToSpawn(ResourceLocation entityId) {
 			this.entityId = entityId;
 			if (!ForgeRegistries.ENTITIES.containsKey(this.entityId)) {
-				AncientWarfareStructure.LOG.error(entityId + " is not a valid entityId.  Spawner default to Zombie.");
-				this.entityId = new ResourceLocation("zombie");
+				if (hostile) {
+					AncientWarfareStructure.LOG.error(entityId + " is not a valid entityId.  Spawner default to Zombie.");
+					this.entityId = new ResourceLocation("zombie");
+				} else {
+					remainingSpawnCount = 0;
+				}
 			}
 			if (AWStructureStatics.excludedSpawnerEntities.contains(this.entityId.toString())) {
-				AncientWarfareStructure.LOG.error(entityId + " has been set as an invalid entity for spawners!  Spawner default to Zombie.");
-				this.entityId = new ResourceLocation("zombie");
+				if (hostile) {
+					AncientWarfareStructure.LOG.error(entityId + " has been set as an invalid entity for spawners!  Spawner default to Zombie.");
+					this.entityId = new ResourceLocation("zombie");
+				} else {
+					remainingSpawnCount = 0;
+				}
 			}
 		}
 

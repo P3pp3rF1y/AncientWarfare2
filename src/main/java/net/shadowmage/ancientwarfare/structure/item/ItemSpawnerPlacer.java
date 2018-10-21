@@ -9,7 +9,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -17,7 +16,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
@@ -99,10 +97,9 @@ public class ItemSpawnerPlacer extends ItemBaseStructure {
 			Entity entity = event.getTarget();
 
 			//noinspection ConstantConditions
-			ResourceLocation registryName = EntityRegistry.getEntry(entity.getClass()).getRegistryName();
 			SpawnerSettings.EntitySpawnSettings spawnSettings = new SpawnerSettings.EntitySpawnSettings();
 			//noinspection ConstantConditions
-			spawnSettings.setEntityToSpawn(registryName);
+			spawnSettings.setEntityToSpawn(entity);
 			spawnSettings.setSpawnLimitTotal(1);
 			spawnSettings.setSpawnCountMin(1);
 			spawnSettings.setSpawnCountMax(1);
