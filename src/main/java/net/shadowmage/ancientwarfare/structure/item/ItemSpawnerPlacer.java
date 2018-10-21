@@ -113,6 +113,7 @@ public class ItemSpawnerPlacer extends ItemBaseStructure {
 			settings.setMaxDelay(0);
 			settings.setSpawnRange(0);
 			settings.setPlayerRange(16);
+			settings.toggleTransparent();
 
 			spawnerPlacer.setTagInfo(SPAWNER_DATA_TAG, settings.writeToNBT(new NBTTagCompound()));
 			entity.setDead();
