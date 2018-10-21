@@ -1,6 +1,8 @@
 package net.shadowmage.ancientwarfare.automation.gui;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
@@ -22,6 +24,7 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStac
 import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack.SortOrder;
 
 import javax.annotation.Nonnull;
+import java.util.Arrays;
 import java.util.Locale;
 
 public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseControl> {
@@ -160,12 +163,21 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
 		}
 
 		if (searchInput.startsWith("@")) {
-			String modName = searchInput.substring(1);
+			String[] searchStrings = searchInput.split(" ");
+			String modName = searchStrings[0].substring(1);
 			ResourceLocation registryName = stack.getItem().getRegistryName();
-			return registryName != null && registryName.getResourceDomain().contains(modName);
+			if (registryName == null || !registryName.getResourceDomain().contains(modName)) {
+				return false;
+			} else if (searchStrings.length <= 1) {
+				return true;
+			}
+			searchInput = String.join(" ", Arrays.copyOfRange(searchStrings, 1, searchStrings.length));
 		}
 
-		return stack.getDisplayName().toLowerCase().contains(searchInput);
+		String stackText = stack.getDisplayName().toLowerCase() + " ";
+		stackText += String.join(" ", stack.getTooltip(Minecraft.getMinecraft().player, ITooltipFlag.TooltipFlags.NORMAL)).toLowerCase();
+
+		return stackText.contains(searchInput);
 	}
 
 	private void sortItems(NonNullList<ItemStack> items) {
