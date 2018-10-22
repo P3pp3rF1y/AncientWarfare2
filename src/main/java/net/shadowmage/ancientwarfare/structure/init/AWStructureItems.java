@@ -26,6 +26,7 @@ public class AWStructureItems {
 
 	public static final ItemGateSpawner GATE_SPAWNER = InjectionTools.nullValue();
 	public static final Item STRUCTURE_SCANNER = InjectionTools.nullValue();
+	public static final Item TOTEM_PART = InjectionTools.nullValue();
 
 	@SubscribeEvent
 	public static void register(RegistryEvent.Register<Item> event) {

@@ -23,6 +23,7 @@ import net.shadowmage.ancientwarfare.core.crafting.ShapelessResearchRecipe;
 import net.shadowmage.ancientwarfare.core.init.AWCoreBlocks;
 import net.shadowmage.ancientwarfare.npc.init.AWNPCItems;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
+import net.shadowmage.ancientwarfare.structure.init.AWStructureItems;
 import net.shadowmage.ancientwarfare.vehicle.init.AWVehicleItems;
 
 import javax.annotation.Nonnull;
@@ -36,6 +37,7 @@ public class AWJEIPlugin implements IModPlugin {
 		subtypeRegistry.useNbtForSubtypes(AWNPCItems.NPC_SPAWNER);
 		subtypeRegistry.useNbtForSubtypes(Item.getItemFromBlock(AWStructureBlocks.FIRE_PIT));
 		subtypeRegistry.useNbtForSubtypes(AWNPCItems.COIN);
+		subtypeRegistry.useNbtForSubtypes(AWStructureItems.TOTEM_PART);
 		//noinspection ConstantConditions
 		subtypeRegistry.registerSubtypeInterpreter(AWVehicleItems.SPAWNER, itemStack -> Integer.toString(itemStack.getMetadata()) + ":" + (itemStack.hasTagCompound() ? itemStack.getTagCompound().toString() : ""));
 	}
