@@ -116,21 +116,12 @@ public class BlockTotemPart extends BlockBaseStructure {
 		//noinspection ConstantConditions
 		BlockPos mainPos = WorldTools.getTile(world, pos, TileTotemPart.class).filter(t -> t.getMainBlockPos().isPresent()).map(t -> t.getMainBlockPos().get()).orElse(pos);
 
-		EnumFacing facing = state.getValue(FACING);
 		if (!mainPos.equals(pos)) {
-			IBlockState mainState = world.getBlockState(mainPos);
-			facing = mainState.getBlock() == this ? mainState.getValue(FACING) : facing;
-		}
-
-		Variant variant = WorldTools.getTile(world, mainPos, TileTotemPart.class).map(TileTotemPart::getVariant).orElse(Variant.BASE);
-		for (BlockPos additionalPos : variant.getAdditionalPartPositions(mainPos, facing)) {
-			if (!additionalPos.equals(pos)) { //don't break the block that started this twice
-				world.setBlockState(additionalPos, Blocks.AIR.getDefaultState());
-			}
-		}
-
-		if (!mainPos.equals(pos)) {
-			world.setBlockState(mainPos, Blocks.AIR.getDefaultState());
+			world.setBlockToAir(mainPos);
+		} else {
+			EnumFacing facing = state.getValue(FACING);
+			WorldTools.getTile(world, mainPos, TileTotemPart.class).ifPresent(te -> te.getVariant()
+					.getAdditionalPartPositions(mainPos, facing).forEach(additionalPos -> world.setBlockState(additionalPos, Blocks.AIR.getDefaultState())));
 		}
 	}
 

@@ -27,7 +27,7 @@ public class ItemBlockTotemPart extends ItemBlockBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side, EntityPlayer player, ItemStack stack) {
-		return getVariant(stack).canPlace(world, pos.up(), player);
+		return getVariant(stack).canPlace(world, pos.offset(side), player);
 	}
 
 	@Override
