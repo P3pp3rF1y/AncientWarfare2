@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " ##",
+        "#S#",
+        " S "
+    ],
+    "key": {
+        "S": {
+            "item": "#STICKWOOD"
+        },
+        "#": {
+            "item": "#INGOTIRON"
+        }
+    },
+    "result": {
+        "item": "ancientwarfarenpc:iron_halberd"
+    }
+}

@@ -47,5 +47,19 @@
             "type": "forge:ore_dict",
             "ore": "cobblestone"
         }
+    },
+    {
+        "name": "STONE",
+        "ingredient": {
+            "type": "forge:ore_dict",
+            "ore": "stone"
+        }
+    },
+    {
+        "name": "GEMDIAMOND",
+        "ingredient": {
+            "type": "forge:ore_dict",
+            "ore": "gemDiamond"
+        }
     }
 ]
