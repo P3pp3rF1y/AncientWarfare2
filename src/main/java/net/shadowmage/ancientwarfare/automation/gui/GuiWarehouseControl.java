@@ -6,6 +6,7 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseControl;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
@@ -183,7 +184,12 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
 	private void sortItems(NonNullList<ItemStack> items) {
 		sorter.setSortType(getContainer().getSortType());
 		sorter.setSortOrder(getContainer().getSortOrder());
-		items.sort(sorter);
+		try {
+			items.sort(sorter);
+		}
+		catch (IllegalArgumentException ex) {
+			AncientWarfareAutomation.LOG.error("Error sorting warehouse items: " + ex.getMessage());
+		}
 	}
 
 }
