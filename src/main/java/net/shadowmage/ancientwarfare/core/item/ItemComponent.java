@@ -17,8 +17,6 @@ public class ItemComponent extends ItemMulti {
 	public static final int IRON_TORQUE_SHAFT = 7;
 	public static final int STEEL_TORQUE_SHAFT = 8;
 
-	public static final int NPC_FOOD_BUNDLE = 100;
-
 	public ItemComponent() {
 		super(AncientWarfareCore.MOD_ID, "component");
 		setCreativeTab(AncientWarfareCore.TAB);

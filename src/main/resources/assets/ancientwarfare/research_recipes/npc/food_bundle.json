@@ -31,7 +31,6 @@
         }
     },
     "result": {
-        "item": "ancientwarfare:component",
-        "data": 100
+        "item": "ancientwarfarenpc:food_bundle"
     }
 }

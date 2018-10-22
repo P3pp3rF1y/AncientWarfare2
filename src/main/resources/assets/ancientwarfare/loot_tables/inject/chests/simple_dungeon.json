@@ -36,13 +36,9 @@
                 },
                 {
                     "type": "item",
-                    "name": "ancientwarfare:component",
+                    "name": "ancientwarfarenpc:food_bundle",
                     "weight": 15,
                     "functions": [
-                        {
-                            "function": "minecraft:set_data",
-                            "data": 100
-                        },
                         {
                             "function": "set_count",
                             "count": {

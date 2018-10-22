@@ -19,6 +19,7 @@ import net.shadowmage.ancientwarfare.core.item.ItemQuill;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchNotes;
 import net.shadowmage.ancientwarfare.core.util.InjectionTools;
+import net.shadowmage.ancientwarfare.npc.item.ItemFoodBundle;
 
 @SuppressWarnings("WeakerAccess") //public static final is needed for ObjectHolders to work
 @ObjectHolder(AncientWarfareCore.MOD_ID)
@@ -76,7 +77,7 @@ public class AWCoreItems {
 		component.addSubItem(ItemComponent.WOODEN_TORQUE_SHAFT, "automation/component#variant=wooden_shaft", "shaftWood");
 		component.addSubItem(ItemComponent.IRON_TORQUE_SHAFT, "automation/component#variant=iron_shaft", "shaftIron");
 		component.addSubItem(ItemComponent.STEEL_TORQUE_SHAFT, "automation/component#variant=steel_shaft", "shaftSteel");
-		component.addSubItem(ItemComponent.NPC_FOOD_BUNDLE, "npc/component#variant=food_bundle", "foodBundle");
+		registry.register(new ItemFoodBundle());
 
 		registry.register(new ItemBaseCore("steel_ingot"));
 	}
