@@ -27,6 +27,7 @@ import net.shadowmage.ancientwarfare.npc.item.ItemFoodBundle;
 public class AWCoreItems {
 	public static final ItemInfoTool INFO_TOOL = InjectionTools.nullValue();
 	public static final Item IRON_HAMMER = InjectionTools.nullValue();
+	public static final Item MANUAL = InjectionTools.nullValue();
 
 	private AWCoreItems() {}
 
