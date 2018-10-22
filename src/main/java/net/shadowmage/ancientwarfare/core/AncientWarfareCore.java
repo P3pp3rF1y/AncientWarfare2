@@ -32,6 +32,7 @@ import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.datafixes.AWDataFixes;
 import net.shadowmage.ancientwarfare.core.entity.AWFakePlayer;
 import net.shadowmage.ancientwarfare.core.init.AWCoreItems;
+import net.shadowmage.ancientwarfare.core.init.AWCoreLoot;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
 import net.shadowmage.ancientwarfare.core.registry.RegistryLoader;
@@ -97,6 +98,8 @@ public class AncientWarfareCore {
 		CompatLoader.init();
 
 		AWDataFixes.registerDataFixes();
+
+		AWCoreLoot.init();
 	}
 
 	@EventHandler

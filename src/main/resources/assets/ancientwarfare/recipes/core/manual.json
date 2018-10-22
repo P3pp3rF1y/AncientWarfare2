@@ -1,0 +1,14 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "ancientwarfare:wooden_hammer"
+        },
+        {
+            "item": "minecraft:book"
+        }
+    ],
+    "result": {
+        "item": "ancientwarfare:manual"
+    }
+}
