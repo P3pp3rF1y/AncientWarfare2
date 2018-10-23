@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.NBTHelper;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
-import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
+import net.shadowmage.ancientwarfare.structure.registry.StructureBlockRegistry;
 
 import java.util.List;
 import java.util.MissingResourceException;
@@ -34,11 +34,19 @@ public abstract class TemplateRuleBlock extends TemplateRule {
 			return;
 		}
 
-		ItemStack stack = BlockDataManager.INSTANCE.getInventoryStackForBlock(state);
-		if (stack.isEmpty()) {
-			throw new IllegalArgumentException("Could not create item for block: " + NBTHelper.getBlockStateTag(state).toString());
+		ItemStack stack = getStack();
+		if (!stack.isEmpty()) {
+			resources.add(stack);
 		}
-		resources.add(stack);
+	}
+
+	protected ItemStack getStack() {
+		return StructureBlockRegistry.getItemStackFrom(state);
+	}
+
+	@Override
+	public boolean placeInSurvival() {
+		return state.getBlock() != Blocks.AIR && !getStack().isEmpty();
 	}
 
 	@Override

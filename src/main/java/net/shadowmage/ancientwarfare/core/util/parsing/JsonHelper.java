@@ -35,6 +35,10 @@ public class JsonHelper {
 		return getBlockState(parent, elementName, Block::getDefaultState, BlockTools::updateProperty);
 	}
 
+	public static BlockStateMatcher getBlockStateMatcher(JsonElement stateJson) {
+		return getBlockStateMatcher(JsonUtils.getJsonObject(stateJson, ""));
+	}
+
 	public static BlockStateMatcher getBlockStateMatcher(JsonObject stateJson) {
 		//noinspection ConstantConditions
 		return getBlockState(stateJson, BlockStateMatcher::new, BlockStateMatcher::addProperty);
@@ -161,20 +165,30 @@ public class JsonHelper {
 
 	public static <K, V> Map<K, V> mapFromJson(JsonObject json, String propertyName, Function<Entry<String, JsonElement>, K> parseKey,
 			Function<Entry<String, JsonElement>, V> parseValue) {
-		return mapFromJsonArray(JsonUtils.getJsonObject(json, propertyName), new HashMap<>(), parseKey, parseValue);
+		return mapFromObjectProperties(JsonUtils.getJsonObject(json, propertyName), new HashMap<>(), parseKey, parseValue);
 	}
 
 	public static <K, V> Map<K, V> mapFromJson(JsonElement json, Function<Entry<String, JsonElement>, K> parseKey,
 			Function<Entry<String, JsonElement>, V> parseValue) {
-		return mapFromJsonArray(JsonUtils.getJsonObject(json, ""), new HashMap<>(), parseKey, parseValue);
+		return mapFromObjectProperties(JsonUtils.getJsonObject(json, ""), new HashMap<>(), parseKey, parseValue);
 	}
 
 	public static <K, V> void mapFromJson(JsonObject json, String propertyName, Map<K, V> ret, Function<Entry<String, JsonElement>, K> parseKey,
 			Function<Entry<String, JsonElement>, V> parseValue) {
-		mapFromJsonArray(JsonUtils.getJsonObject(json, propertyName), ret, parseKey, parseValue);
+		mapFromObjectProperties(JsonUtils.getJsonObject(json, propertyName), ret, parseKey, parseValue);
 	}
 
-	private static <K, V> Map<K, V> mapFromJsonArray(JsonObject jsonObject, Map<K, V> ret, Function<Entry<String, JsonElement>, K> parseKey,
+	public static <K, V> Map<K, V> mapFromObjectArray(JsonArray jsonArray, String keyName, String valueName, Function<JsonElement, K> parseKey,
+			Function<JsonElement, V> parseValue) {
+		Map<K, V> ret = new HashMap<>();
+		for (JsonElement element : jsonArray) {
+			JsonObject entry = JsonUtils.getJsonObject(element, "");
+			ret.put(parseKey.apply(entry.get(keyName)), parseValue.apply(entry.get(valueName)));
+		}
+		return ret;
+	}
+
+	private static <K, V> Map<K, V> mapFromObjectProperties(JsonObject jsonObject, Map<K, V> ret, Function<Entry<String, JsonElement>, K> parseKey,
 			Function<Entry<String, JsonElement>, V> parseValue) {
 
 		for (Map.Entry<String, JsonElement> pair : jsonObject.entrySet()) {

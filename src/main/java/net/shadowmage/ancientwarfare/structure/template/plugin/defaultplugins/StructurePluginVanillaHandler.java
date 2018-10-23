@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.item.EntityItemFrame;
@@ -26,6 +25,7 @@ import net.shadowmage.ancientwarfare.structure.api.StructureContentPlugin;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
 import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
+import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleBed;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleBlockDoors;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleBlockInventory;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleBlockSign;
@@ -39,44 +39,9 @@ import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.en
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.entityrules.TemplateRuleGates;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.entityrules.TemplateRuleVanillaEntity;
 
-import java.util.HashSet;
-
 public class StructurePluginVanillaHandler implements StructureContentPlugin {
 	@Override
 	public void addHandledBlocks(StructurePluginManager manager) {
-		HashSet<Block> specialHandledBlocks = new HashSet<>();
-		specialHandledBlocks.add(Blocks.IRON_DOOR);
-		specialHandledBlocks.add(Blocks.SPRUCE_DOOR);
-		specialHandledBlocks.add(Blocks.OAK_DOOR);
-		specialHandledBlocks.add(Blocks.JUNGLE_DOOR);
-		specialHandledBlocks.add(Blocks.BIRCH_DOOR);
-		specialHandledBlocks.add(Blocks.ACACIA_DOOR);
-		specialHandledBlocks.add(Blocks.DARK_OAK_DOOR);
-		specialHandledBlocks.add(Blocks.STANDING_SIGN);
-		specialHandledBlocks.add(Blocks.WALL_SIGN);
-		specialHandledBlocks.add(Blocks.MOB_SPAWNER);
-		specialHandledBlocks.add(Blocks.COMMAND_BLOCK);
-		specialHandledBlocks.add(Blocks.CHAIN_COMMAND_BLOCK);
-		specialHandledBlocks.add(Blocks.REPEATING_COMMAND_BLOCK);
-		specialHandledBlocks.add(Blocks.BREWING_STAND);
-		specialHandledBlocks.add(Blocks.BEACON);
-		specialHandledBlocks.add(Blocks.DISPENSER);
-		specialHandledBlocks.add(Blocks.LIT_FURNACE);
-		specialHandledBlocks.add(Blocks.FURNACE);
-		specialHandledBlocks.add(Blocks.CHEST);
-		specialHandledBlocks.add(Blocks.DROPPER);
-		specialHandledBlocks.add(Blocks.HOPPER);
-		specialHandledBlocks.add(Blocks.TRAPPED_CHEST);
-		specialHandledBlocks.add(Blocks.FLOWER_POT);
-		specialHandledBlocks.add(Blocks.SKULL);
-
-		for (Block block : Block.REGISTRY) {
-			//noinspection ConstantConditions
-			if (block.getRegistryName().getResourceDomain().equals("minecraft") && !specialHandledBlocks.contains(block)) {
-				manager.registerBlockHandler(TemplateRuleVanillaBlocks.PLUGIN_NAME, block, TemplateRuleVanillaBlocks::new, TemplateRuleVanillaBlocks::new);
-			}
-		}
-
 		manager.registerBlockHandler(TemplateRuleBlockDoors.PLUGIN_NAME, Blocks.IRON_DOOR, TemplateRuleBlockDoors::new, TemplateRuleBlockDoors::new);
 		manager.registerBlockHandler(TemplateRuleBlockDoors.PLUGIN_NAME, Blocks.SPRUCE_DOOR, TemplateRuleBlockDoors::new, TemplateRuleBlockDoors::new);
 		manager.registerBlockHandler(TemplateRuleBlockDoors.PLUGIN_NAME, Blocks.OAK_DOOR, TemplateRuleBlockDoors::new, TemplateRuleBlockDoors::new);
@@ -102,6 +67,7 @@ public class StructurePluginVanillaHandler implements StructureContentPlugin {
 		manager.registerBlockHandler(TemplateRuleBlockInventory.PLUGIN_NAME, Blocks.HOPPER, TemplateRuleBlockInventory::new, TemplateRuleBlockInventory::new);
 		manager.registerBlockHandler(TemplateRuleBlockInventory.PLUGIN_NAME, Blocks.TRAPPED_CHEST, TemplateRuleBlockInventory::new, TemplateRuleBlockInventory::new);
 		manager.registerBlockHandler(TemplateRuleFlowerPot.PLUGIN_NAME, Blocks.FLOWER_POT, TemplateRuleFlowerPot::new, TemplateRuleFlowerPot::new);
+		manager.registerBlockHandler(TemplateRuleBed.PLUGIN_NAME, Blocks.BED, TemplateRuleBed::new, TemplateRuleBed::new);
 		manager.registerBlockHandler(TemplateRuleVanillaSkull.PLUGIN_NAME, Blocks.SKULL, TemplateRuleVanillaSkull::new, TemplateRuleVanillaSkull::new);
 
 		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, AWStructureBlocks.ADVANCED_SPAWNER, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
@@ -112,6 +78,10 @@ public class StructurePluginVanillaHandler implements StructureContentPlugin {
 		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, AWStructureBlocks.STRUCTURE_BUILDER_TICKED, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
 		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, AWStructureBlocks.SOUND_BLOCK, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
 		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, AWStructureBlocks.ADVANCED_LOOT_CHEST, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
+
+		//noinspection ConstantConditions
+		manager.registerBlockHandler(TemplateRuleVanillaBlocks.PLUGIN_NAME, state -> state.getBlock().getRegistryName().getResourceDomain().equals("minecraft"),
+				TemplateRuleVanillaBlocks::new, TemplateRuleVanillaBlocks::new);
 	}
 
 	@Override

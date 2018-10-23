@@ -2,14 +2,12 @@ package net.shadowmage.ancientwarfare.structure.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
-import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,12 +26,7 @@ import java.util.List;
  */
 public class BlockDataManager {
 
-	/*
-	 * Mapping of old 1.6 names to block instances, and vice-versa.  Used to enable loading of pre 1.7 templates.
-	 */
-	private HashMap<Block, String> blockToName = new HashMap<>();
 	private HashMap<String, Block> blockNameToBlock = new HashMap<>();
-	private HashMap<String, Block> blockUnlocalizedNameToBlock = new HashMap<>();
 
 	private HashMap<Block, BlockInfo> blockInfoMap = new HashMap<>();
 
@@ -47,71 +40,8 @@ public class BlockDataManager {
      */
 
 	public void load() {
-		loadBlockNamesAndIDs(StringTools.getResourceLines(AWCoreStatics.resourcePath + "block_name_id.csv"));
-		loadBlockRotations(StringTools.getResourceLines(AWCoreStatics.resourcePath + "block_rotations.csv"));
 		loadBlockPriorities(StringTools.getResourceLines(AWCoreStatics.resourcePath + "block_priorities.csv"));
 		loadBlockItems(StringTools.getResourceLines(AWCoreStatics.resourcePath + "block_items.csv"));
-
-		for (Block block : Block.REGISTRY) {
-			if (block == null) {
-				return;
-			}
-			blockUnlocalizedNameToBlock.put(block.getUnlocalizedName(), block);
-		}
-
-	}
-
-	/*
-	 * loads OLD (1.6) block names from file -- used to enable loading of older templates
-	 */
-	private void loadBlockNamesAndIDs(List<String> lines) { //TODO remove?
-		String[] bits;
-
-		Block block;
-		String name;
-		int id;
-
-		for (String line : lines) {
-			bits = line.split(",", -1);
-			name = bits[0];
-			id = StringTools.safeParseInt(bits[1]);
-			block = Block.getBlockFromName(name);
-			if (block == null) {
-				AncientWarfareStructure.LOG.error("ERROR parsing block name from name mapping: " + name + " id: " + id + " found: " + block);
-				continue;
-			}
-			blockNameToBlock.put(name, block);
-			blockToName.put(block, name);
-		}
-	}
-
-	private void loadBlockRotations(List<String> lines) {
-		String[] bits;
-		Block block;
-		String name;
-		byte[] rotations;
-		BlockInfo info;
-		String rot;
-		for (String line : lines) {
-			bits = line.split(",", -1);
-			name = bits[0];
-			block = blockNameToBlock.get(name);
-			rotations = new byte[16];
-			for (int i = 0; i < 16; i++) {
-				rot = bits[i + 1];
-				if (rot.equals("") || rot.isEmpty()) {
-					rotations[i] = (byte) i;
-				} else {
-					rotations[i] = StringTools.safeParseByte(bits[i + 1]);
-				}
-			}
-			info = blockInfoMap.get(block);
-			if (info == null) {
-				info = new BlockInfo();
-				blockInfoMap.put(block, info);
-			}
-			info.setRotations(rotations);
-		}
 	}
 
 	private void loadBlockItems(List<String> lines) {
@@ -216,22 +146,6 @@ public class BlockDataManager {
 	}
 
 	/*
-	 * get the Block for the 1.7 name
-	 */
-	public Block getBlockForName(String name) {
-		Block b = Block.getBlockFromName(name);
-		if (b == null) {
-			if (blockNameToBlock.containsKey(name)) {
-				return blockNameToBlock.get(name);
-			} else if (blockUnlocalizedNameToBlock.containsKey(name)) {
-				return blockUnlocalizedNameToBlock.get(name);
-			}
-			return Blocks.AIR;
-		}
-		return b;
-	}
-
-	/*
 	 * return a proper sized item-stack for the input block, null if no item mapping / forced null mapping<br>
 	 * Returns a _new_ stack for each call of the method.<br>
 	 * Use the returned stack to copy, alter stack-size, etc.<br>
@@ -250,19 +164,12 @@ public class BlockDataManager {
 	private class BlockInfo {
 
 		boolean singleItem = false;
-		boolean hasRotation = false;
 		/*
 		 * item-stack map, by block-meta.  if singleItem==true, will use index[0] instead of whatever is passed in
 		 */ NonNullList<ItemStack> metaStacks = NonNullList.withSize(16, ItemStack.EMPTY);
 		boolean[] noItemFlags = new boolean[16];//flag will be true for a meta if it should return no item
 
-		byte[] rotations = new byte[16];
 		byte buildPriority = 0;
-
-		public void setRotations(byte[] rotations) {
-			this.rotations = rotations;
-			this.hasRotation = true;
-		}
 
 		public ItemStack getStackFor(Block block, int meta) {
 			if (singleItem && !metaStacks.get(0).isEmpty()) {

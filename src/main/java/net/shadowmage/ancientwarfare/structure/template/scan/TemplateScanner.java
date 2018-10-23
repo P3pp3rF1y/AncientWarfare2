@@ -64,7 +64,7 @@ public class TemplateScanner {
 					scannedBlock = scannedState.getBlock();
 
 					if (!AWStructureStatics.shouldSkipScan(scannedBlock) && !world.isAirBlock(scannedPos)) {
-						Optional<String> pluginId = StructurePluginManager.INSTANCE.getPluginNameFor(scannedBlock);
+						Optional<String> pluginId = StructurePluginManager.INSTANCE.getPluginNameFor(scannedState);
 						if (pluginId.isPresent()) {
 							pluginBlockRules = pluginBlockRuleMap.computeIfAbsent(pluginId.get(), k -> new ArrayList<>());
 							Optional<TemplateRuleBlock> scannedBlockRule = Optional.empty();

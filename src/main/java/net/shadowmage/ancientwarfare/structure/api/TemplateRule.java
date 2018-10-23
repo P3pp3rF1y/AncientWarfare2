@@ -101,4 +101,8 @@ public abstract class TemplateRule {
 		tag.setInteger("z", pos.getZ());
 		return tag;
 	}
+
+	public boolean placeInSurvival() {
+		return false;
+	}
 }

@@ -103,7 +103,8 @@ public class StructureTemplate {
 	public NonNullList<ItemStack> getResourceList() {
 		if (resourceList == null) {
 			NonNullList<ItemStack> stacks = NonNullList.create();
-			MathUtils.getAllVecsInBox(Vec3i.NULL_VECTOR, size).forEach(pos -> getRuleAt(pos).ifPresent(r -> r.addResources(stacks)));
+			MathUtils.getAllVecsInBox(Vec3i.NULL_VECTOR, new Vec3i(size.getX() - 1, size.getY() - 1, size.getZ() - 1))
+					.forEach(pos -> getRuleAt(pos).ifPresent(r -> r.addResources(stacks)));
 			resourceList = InventoryTools.compactStackList(stacks);
 		}
 		return resourceList;

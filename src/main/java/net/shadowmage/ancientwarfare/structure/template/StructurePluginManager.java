@@ -1,7 +1,9 @@
 package net.shadowmage.ancientwarfare.structure.template;
 
+import com.google.common.base.Predicate;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.pattern.BlockMatcher;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -36,7 +38,7 @@ import java.util.Optional;
 public class StructurePluginManager implements IStructurePluginRegister {
 	private final List<StructureContentPlugin> loadedContentPlugins = new ArrayList<>();
 
-	private final List<RuleHandler<Block, IBlockRuleCreator, IRuleDeserializer<TemplateRuleBlock>>> blockRuleHandlers = new ArrayList<>();
+	private final List<RuleHandler<Predicate<IBlockState>, IBlockRuleCreator, IRuleDeserializer<TemplateRuleBlock>>> blockRuleHandlers = new ArrayList<>();
 	private final List<RuleHandler<Class<? extends Entity>, IEntityRuleCreator, IRuleDeserializer<TemplateRuleEntity>>> entityRuleHandlers = new ArrayList<>();
 
 	public static final StructurePluginManager INSTANCE = new StructurePluginManager();
@@ -92,25 +94,29 @@ public class StructurePluginManager implements IStructurePluginRegister {
 		loadedContentPlugins.add(plugin);
 	}
 
-	public Optional<String> getPluginNameFor(Block block) {
-		return blockRuleHandlers.stream().filter(h -> h.obj == block).map(h -> h.pluginName).findFirst();
+	public Optional<String> getPluginNameFor(IBlockState state) {
+		return getRuleHandler(state).map(h -> h.pluginName);
 	}
 
 	private Optional<? extends IRuleDeserializer> getDeserializerByName(String name) {
-		Optional<IRuleDeserializer<TemplateRuleBlock>> result = blockRuleHandlers.stream().filter(h -> h.pluginName.equals(name)).map(h -> h.deserializer).findFirst();
+		Optional<IRuleDeserializer<TemplateRuleBlock>> result = blockRuleHandlers.stream().filter(h -> h.pluginName.equals(name)).findFirst().map(h -> h.deserializer);
 		if (result.isPresent()) {
 			return result;
 		}
-		return entityRuleHandlers.stream().filter(h -> h.pluginName.equals(name)).map(h -> h.deserializer).findFirst();
+		return entityRuleHandlers.stream().filter(h -> h.pluginName.equals(name)).findFirst().map(h -> h.deserializer);
 	}
 
 	public Optional<TemplateRuleBlock> getRuleForBlock(World world, IBlockState state, int turns, BlockPos pos) {
-		Optional<IBlockRuleCreator> creator = blockRuleHandlers.stream().filter(h -> h.obj == state.getBlock()).map(h -> h.ruleCreator).findFirst();
+		Optional<IBlockRuleCreator> creator = getRuleHandler(state).map(h -> h.ruleCreator);
 		return creator.map(c -> c.create(world, pos, state, turns));
 	}
 
+	private Optional<RuleHandler<Predicate<IBlockState>, IBlockRuleCreator, IRuleDeserializer<TemplateRuleBlock>>> getRuleHandler(IBlockState state) {
+		return blockRuleHandlers.stream().filter(h -> h.obj.apply(state)).findFirst();
+	}
+
 	public Optional<TemplateRuleEntity> getRuleForEntity(World world, Entity entity, int turns, int x, int y, int z) {
-		return entityRuleHandlers.stream().filter(h -> h.obj.isAssignableFrom(entity.getClass())).map(h -> h.ruleCreator).findFirst()
+		return entityRuleHandlers.stream().filter(h -> h.obj.isAssignableFrom(entity.getClass())).findFirst().map(h -> h.ruleCreator)
 				.map(c -> c.create(world, entity, turns, x, y, z));
 	}
 
@@ -118,8 +124,12 @@ public class StructurePluginManager implements IStructurePluginRegister {
 		entityRuleHandlers.add(new RuleHandler<>(entityClass, pluginName, creator, deserializer));
 	}
 
+	public void registerBlockHandler(String pluginName, Predicate<IBlockState> blockMatcher, IBlockRuleCreator creator, IRuleDeserializer<TemplateRuleBlock> deserializer) {
+		blockRuleHandlers.add(new RuleHandler<>(blockMatcher, pluginName, creator, deserializer));
+	}
+
 	public void registerBlockHandler(String pluginName, Block block, IBlockRuleCreator creator, IRuleDeserializer<TemplateRuleBlock> deserializer) {
-		blockRuleHandlers.add(new RuleHandler<>(block, pluginName, creator, deserializer));
+		registerBlockHandler(pluginName, BlockMatcher.forBlock(block), creator, deserializer);
 	}
 
 	public void registerPlugin(StructureContentPlugin plugin) {

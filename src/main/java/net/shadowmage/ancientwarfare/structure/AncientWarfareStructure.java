@@ -39,6 +39,7 @@ import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructure;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructureRemove;
 import net.shadowmage.ancientwarfare.structure.registry.EntitySpawnNBTRegistry;
+import net.shadowmage.ancientwarfare.structure.registry.StructureBlockRegistry;
 import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 import net.shadowmage.ancientwarfare.structure.template.WorldGenStructureManager;
@@ -106,6 +107,7 @@ public class AncientWarfareStructure {
 		TemplateLoader.INSTANCE.initializeAndExportDefaults();
 
 		RegistryLoader.registerParser(new EntitySpawnNBTRegistry.Parser());
+		RegistryLoader.registerParser(new StructureBlockRegistry.Parser());
 	}
 
 	@EventHandler
