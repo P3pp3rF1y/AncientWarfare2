@@ -41,7 +41,7 @@ public class StructureBuilderTicked extends StructureBuilder {
 		} else if (!this.isFinished()) {
 			while (!this.isFinished()) {
 				Optional<TemplateRule> rule = template.getRuleAt(curTempPos);
-				if (rule.map(r -> !r.shouldPlaceOnBuildPass(world, turns, destination, currentPriority)).orElse(false)) {
+				if (!rule.isPresent() || !rule.get().shouldPlaceOnBuildPass(world, turns, destination, currentPriority)) {
 					increment();//skip that position, was either air/null rule, or could not be placed on current pass, auto-increment to next
 				} else//place it...
 				{
