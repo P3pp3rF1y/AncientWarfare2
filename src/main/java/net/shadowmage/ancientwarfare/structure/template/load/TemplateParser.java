@@ -81,6 +81,7 @@ public class TemplateParser {
 					if (line.startsWith("mods=")) {
 						modDependencies = StringTools.safeParseString("=", line).split(",");
 						if (!CompatUtils.areModsLoaded(modDependencies)) {
+							AncientWarfareStructure.LOG.info("Template {} not loaded because it depends on mod that isn't loaded.", fileName);
 							return Optional.empty();
 						}
 					}
