@@ -8,9 +8,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -34,19 +33,6 @@ public class ItemInfoTool extends ItemBaseCore {
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(getMode(stack).toString() + " mode");
-	}
-
-	@Override
-	public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
-		if (!world.isRemote) {
-			IBlockState state = world.getBlockState(pos);
-			if (getMode(player.getHeldItem(hand)) == Mode.INFO) {
-				printSimpleMessage(player, state);
-			} else {
-				printJSON(player, state);
-			}
-		}
-		return EnumActionResult.SUCCESS;
 	}
 
 	private void printSimpleMessage(EntityPlayer player, IBlockState state) {
@@ -99,6 +85,18 @@ public class ItemInfoTool extends ItemBaseCore {
 		if (world.isRemote) {
 			return super.onItemRightClick(world, player, hand);
 		}
+
+		RayTraceResult hit = rayTrace(world, player, true);
+		if (hit != null && hit.typeOfHit == RayTraceResult.Type.BLOCK) {
+			IBlockState state = world.getBlockState(hit.getBlockPos());
+			if (getMode(player.getHeldItem(hand)) == Mode.INFO) {
+				printSimpleMessage(player, state);
+			} else {
+				printJSON(player, state);
+			}
+			return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
+		}
+
 		if (player.isSneaking()) {
 			return new ActionResult<>(EnumActionResult.SUCCESS, cycleMode(player.getHeldItem(hand)));
 		} else {
