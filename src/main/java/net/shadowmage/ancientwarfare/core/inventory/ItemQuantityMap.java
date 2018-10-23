@@ -1,10 +1,14 @@
 package net.shadowmage.ancientwarfare.core.inventory;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 import javax.annotation.Nonnull;
@@ -184,6 +188,7 @@ public class ItemQuantityMap {
 	public static final class ItemHashEntry {
 		private final NBTTagCompound itemTag;
 		private ItemStack cacheStack = ItemStack.EMPTY;
+		private String cachedNameAndTooltip = "";
 
 		/*
 		 * @param item MUST NOT BE NULL
@@ -216,6 +221,18 @@ public class ItemQuantityMap {
 				cacheStack = new ItemStack(itemTag);
 			}
 			return cacheStack;
+		}
+
+		@SideOnly(Side.CLIENT)
+		public String getNameAndTooltip() {
+			if (cachedNameAndTooltip.isEmpty()) {
+				String stackText = cacheStack.getDisplayName().toLowerCase() + " ";
+				stackText += String.join(" ", cacheStack.getTooltip(Minecraft.getMinecraft().player, ITooltipFlag.TooltipFlags.NORMAL)).toLowerCase();
+
+				cachedNameAndTooltip = stackText;
+			}
+
+			return cachedNameAndTooltip;
 		}
 
 		private NBTTagCompound writeToNBT() {

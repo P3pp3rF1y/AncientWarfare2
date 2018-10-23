@@ -1,8 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.gui;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
@@ -128,7 +126,7 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
 		for (ItemHashEntry entry : getContainer().itemMap.keySet()) {
 			stack = entry.getItemStack();
 
-			if (matchesSearch(stack)) {
+			if (matchesSearch(stack, entry.getNameAndTooltip())) {
 				stack.setCount(getContainer().itemMap.getCount(entry));
 				displayStacks.add(stack);
 			}
@@ -157,7 +155,7 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
 		area.setAreaSize(totalSize);
 	}
 
-	private boolean matchesSearch(ItemStack stack) {
+	private boolean matchesSearch(ItemStack stack, String nameAndTooltip) {
 		String searchInput = input.getText().toLowerCase(Locale.ENGLISH);
 		if (searchInput.isEmpty()) {
 			return true;
@@ -175,10 +173,7 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
 			searchInput = String.join(" ", Arrays.copyOfRange(searchStrings, 1, searchStrings.length));
 		}
 
-		String stackText = stack.getDisplayName().toLowerCase() + " ";
-		stackText += String.join(" ", stack.getTooltip(Minecraft.getMinecraft().player, ITooltipFlag.TooltipFlags.NORMAL)).toLowerCase();
-
-		return stackText.contains(searchInput);
+		return nameAndTooltip.contains(searchInput);
 	}
 
 	private void sortItems(NonNullList<ItemStack> items) {
