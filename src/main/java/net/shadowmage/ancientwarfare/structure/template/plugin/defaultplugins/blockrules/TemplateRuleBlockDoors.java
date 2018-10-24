@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.b
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -32,16 +31,6 @@ public class TemplateRuleBlockDoors extends TemplateRuleVanillaBlocks {
 			builder.placeBlock(pos, rotatedState.withProperty(BlockDoor.HALF, BlockDoor.EnumDoorHalf.LOWER), 2);
 			builder.placeBlock(pos.up(), rotatedState.withProperty(BlockDoor.HALF, BlockDoor.EnumDoorHalf.UPPER), 2);
 		}
-	}
-
-	@Override
-	public void writeRuleData(NBTTagCompound tag) {
-		super.writeRuleData(tag);
-	}
-
-	@Override
-	public void parseRuleData(NBTTagCompound tag) {
-		super.parseRuleData(tag);
 	}
 
 	@Override
