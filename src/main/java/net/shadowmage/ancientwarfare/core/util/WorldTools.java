@@ -55,10 +55,13 @@ public class WorldTools {
 		return tile.getPos().getX() >= x1 && tile.getPos().getY() >= y1 && tile.getPos().getZ() >= z1 && tile.getPos().getX() <= x2 && tile.getPos().getY() <= y2 && tile.getPos().getZ() <= z2;
 	}
 
-	public static Optional<IItemHandler> getItemHandlerFromTile(IBlockAccess world, BlockPos pos, EnumFacing side) {
-		return getTile(world, pos, TileEntity.class)
-				.filter(t -> t.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side))
-				.map(t -> Optional.ofNullable(t.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side))).orElse(Optional.empty());
+	public static Optional<IItemHandler> getItemHandlerFromTile(IBlockAccess world, BlockPos pos, @Nullable EnumFacing side) {
+		return getTile(world, pos, TileEntity.class).map(t -> getItemHandlerFromTile(t, side)).orElse(Optional.empty());
+	}
+
+	public static Optional<IItemHandler> getItemHandlerFromTile(TileEntity t, @Nullable EnumFacing side) {
+		return t.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side) ?
+				Optional.ofNullable(t.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side)) : Optional.empty();
 	}
 
 	public static boolean sendClientEventToTile(IBlockAccess world, BlockPos pos, int id, int param) {

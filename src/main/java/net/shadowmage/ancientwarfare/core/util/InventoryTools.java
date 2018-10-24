@@ -544,12 +544,12 @@ public class InventoryTools {
 		return tileEntity.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 	}
 
-	public static void generateLootFor(World world, IInventory inventory, Random rng, int rolls) {
+	public static void generateLootFor(World world, IItemHandler inventory, Random rng, int rolls) {
 		generateLootFor(world, null, inventory, rng, LootTableList.CHESTS_SIMPLE_DUNGEON, rolls);
 	}
 
 	public static void generateLootFor(World world,
-			@Nullable EntityPlayer player, IInventory inventory, Random rng, ResourceLocation lootTableName, int rolls) {
+			@Nullable EntityPlayer player, IItemHandler inventory, Random rng, ResourceLocation lootTableName, int rolls) {
 		LootContext.Builder builder = new LootContext.Builder((WorldServer) world);
 		LootTable lootTable = world.getLootTableManager().getLootTableFromLocation(lootTableName);
 		if (player != null) {
@@ -570,11 +570,15 @@ public class InventoryTools {
 				return;
 			}
 
-			if (itemstack.isEmpty()) {
-				inventory.setInventorySlotContents(randomSlots.remove(randomSlots.size() - 1), ItemStack.EMPTY);
-			} else {
-				inventory.setInventorySlotContents(randomSlots.remove(randomSlots.size() - 1), itemstack);
+			if (!itemstack.isEmpty()) {
+				inventory.insertItem(randomSlots.remove(randomSlots.size() - 1), itemstack, false);
 			}
+		}
+	}
+
+	public static void emptyInventory(IItemHandler itemHandler) {
+		for (int slot = 0; slot < itemHandler.getSlots(); slot++) {
+			itemHandler.extractItem(slot, itemHandler.getStackInSlot(slot).getCount(), false);
 		}
 	}
 
@@ -686,10 +690,10 @@ public class InventoryTools {
 		}
 	}
 
-	public static List<Integer> getEmptySlotsRandomized(IInventory inventory, Random rand) {
+	public static List<Integer> getEmptySlotsRandomized(IItemHandler inventory, Random rand) {
 		List<Integer> list = Lists.newArrayList();
 
-		for (int i = 0; i < inventory.getSizeInventory(); ++i) {
+		for (int i = 0; i < inventory.getSlots(); ++i) {
 			if (inventory.getStackInSlot(i).isEmpty()) {
 				list.add(i);
 			}

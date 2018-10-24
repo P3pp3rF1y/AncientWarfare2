@@ -8,6 +8,7 @@ import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nullable;
@@ -22,7 +23,8 @@ public class TileAdvancedLootChest extends TileEntityChest {
 		if (lootTable != null) {
 			ResourceLocation lt = lootTable;
 			lootTable = null;
-			InventoryTools.generateLootFor(world, player, this, world.rand, lt, lootRolls);
+			//noinspection ConstantConditions
+			InventoryTools.generateLootFor(world, player, getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), world.rand, lt, lootRolls);
 		}
 	}
 

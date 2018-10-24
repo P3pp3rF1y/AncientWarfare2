@@ -20,6 +20,7 @@ import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.core.init.AWCoreBlocks;
 import net.shadowmage.ancientwarfare.structure.api.StructureContentPlugin;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
@@ -55,10 +56,6 @@ public class StructurePluginVanillaHandler implements StructureContentPlugin {
 		manager.registerBlockHandler(TemplateRuleBlockSign.PLUGIN_NAME, Blocks.STANDING_SIGN, TemplateRuleBlockSign::new, TemplateRuleBlockSign::new);
 		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, Blocks.MOB_SPAWNER, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
 		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, Blocks.COMMAND_BLOCK, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
-		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, Blocks.BREWING_STAND, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
-		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, Blocks.BEACON, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
-		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, Blocks.LIT_FURNACE, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
-		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, Blocks.FURNACE, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
 		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, Blocks.BEACON, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
 		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, Blocks.COMMAND_BLOCK, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
 		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, Blocks.CHAIN_COMMAND_BLOCK, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
@@ -68,6 +65,15 @@ public class StructurePluginVanillaHandler implements StructureContentPlugin {
 		manager.registerBlockHandler(TemplateRuleBlockInventory.PLUGIN_NAME, Blocks.DROPPER, TemplateRuleBlockInventory::new, TemplateRuleBlockInventory::new);
 		manager.registerBlockHandler(TemplateRuleBlockInventory.PLUGIN_NAME, Blocks.HOPPER, TemplateRuleBlockInventory::new, TemplateRuleBlockInventory::new);
 		manager.registerBlockHandler(TemplateRuleBlockInventory.PLUGIN_NAME, Blocks.TRAPPED_CHEST, TemplateRuleBlockInventory::new, TemplateRuleBlockInventory::new);
+		manager.registerBlockHandler(TemplateRuleBlockInventory.PLUGIN_NAME, Blocks.FURNACE,
+				(world, pos, state, turns) -> new TemplateRuleBlockInventory(world, pos, state, turns, new EnumFacing[] {null}, false),
+				TemplateRuleBlockInventory::new);
+		manager.registerBlockHandler(TemplateRuleBlockInventory.PLUGIN_NAME, Blocks.LIT_FURNACE,
+				(world, pos, state, turns) -> new TemplateRuleBlockInventory(world, pos, state, turns, new EnumFacing[] {null}, false),
+				TemplateRuleBlockInventory::new);
+		manager.registerBlockHandler(TemplateRuleBlockInventory.PLUGIN_NAME, Blocks.BREWING_STAND,
+				(world, pos, state, turns) -> new TemplateRuleBlockInventory(world, pos, state, turns, new EnumFacing[] {null}, false),
+				TemplateRuleBlockInventory::new);
 		manager.registerBlockHandler(TemplateRuleFlowerPot.PLUGIN_NAME, Blocks.FLOWER_POT, TemplateRuleFlowerPot::new, TemplateRuleFlowerPot::new);
 		manager.registerBlockHandler(TemplateRuleBed.PLUGIN_NAME, Blocks.BED, TemplateRuleBed::new, TemplateRuleBed::new);
 		manager.registerBlockHandler(TemplateRuleVanillaSkull.PLUGIN_NAME, Blocks.SKULL, TemplateRuleVanillaSkull::new, TemplateRuleVanillaSkull::new);
