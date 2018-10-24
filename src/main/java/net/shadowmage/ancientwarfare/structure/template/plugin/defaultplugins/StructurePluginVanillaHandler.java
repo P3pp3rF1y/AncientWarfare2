@@ -31,6 +31,7 @@ import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.bl
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleBlockSign;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleBlockTile;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleFlowerPot;
+import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleFluid;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleTotemPart;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleVanillaBlocks;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleVanillaSkull;
@@ -78,6 +79,8 @@ public class StructurePluginVanillaHandler implements StructureContentPlugin {
 		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, AWStructureBlocks.STRUCTURE_BUILDER_TICKED, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
 		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, AWStructureBlocks.SOUND_BLOCK, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
 		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, AWStructureBlocks.ADVANCED_LOOT_CHEST, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
+		manager.registerBlockHandler(TemplateRuleFluid.PLUGIN_NAME, Blocks.WATER, TemplateRuleFluid::new, TemplateRuleFluid::new);
+		manager.registerBlockHandler(TemplateRuleFluid.PLUGIN_NAME, Blocks.LAVA, TemplateRuleFluid::new, TemplateRuleFluid::new);
 
 		//noinspection ConstantConditions
 		manager.registerBlockHandler(TemplateRuleVanillaBlocks.PLUGIN_NAME, state -> state.getBlock().getRegistryName().getResourceDomain().equals("minecraft"),
