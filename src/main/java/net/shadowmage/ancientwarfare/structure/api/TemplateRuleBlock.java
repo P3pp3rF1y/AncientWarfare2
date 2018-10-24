@@ -17,6 +17,7 @@ import java.util.MissingResourceException;
 
 public abstract class TemplateRuleBlock extends TemplateRule {
 	protected IBlockState state;
+	private ItemStack cachedStack = null;
 
 	public TemplateRuleBlock(IBlockState state, int turns) {
 		this.state = BlockTools.rotateFacing(state, turns);
@@ -34,10 +35,17 @@ public abstract class TemplateRuleBlock extends TemplateRule {
 			return;
 		}
 
-		ItemStack stack = getStack();
+		ItemStack stack = getCachedStack();
 		if (!stack.isEmpty()) {
 			resources.add(stack);
 		}
+	}
+
+	private ItemStack getCachedStack() {
+		if (cachedStack == null) {
+			cachedStack = getStack();
+		}
+		return cachedStack;
 	}
 
 	protected ItemStack getStack() {
@@ -46,7 +54,7 @@ public abstract class TemplateRuleBlock extends TemplateRule {
 
 	@Override
 	public boolean placeInSurvival() {
-		return state.getBlock() != Blocks.AIR && !getStack().isEmpty();
+		return state.getBlock() != Blocks.AIR && !getCachedStack().isEmpty();
 	}
 
 	@Override

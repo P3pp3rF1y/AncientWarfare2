@@ -29,8 +29,8 @@ public class TemplateRuleBlockDoors extends TemplateRuleVanillaBlocks {
 	public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
 		IBlockState rotatedState = BlockTools.rotateFacing(state, turns);
 		if (state.getValue(BlockDoor.HALF) == BlockDoor.EnumDoorHalf.LOWER) {
-			world.setBlockState(pos, rotatedState.withProperty(BlockDoor.HALF, BlockDoor.EnumDoorHalf.LOWER), 2);
-			world.setBlockState(pos.up(), rotatedState.withProperty(BlockDoor.HALF, BlockDoor.EnumDoorHalf.UPPER), 2);
+			builder.placeBlock(pos, rotatedState.withProperty(BlockDoor.HALF, BlockDoor.EnumDoorHalf.LOWER), 2);
+			builder.placeBlock(pos.up(), rotatedState.withProperty(BlockDoor.HALF, BlockDoor.EnumDoorHalf.UPPER), 2);
 		}
 	}
 

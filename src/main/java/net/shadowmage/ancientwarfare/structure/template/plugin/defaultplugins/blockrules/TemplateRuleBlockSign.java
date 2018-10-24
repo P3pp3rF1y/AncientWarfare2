@@ -33,7 +33,7 @@ public class TemplateRuleBlockSign extends TemplateRuleVanillaBlocks {
 
 	@Override
 	public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
-		if (world.setBlockState(pos, BlockTools.rotateFacing(state, turns), 2)) {
+		if (builder.placeBlock(pos, BlockTools.rotateFacing(state, turns), 2)) {
 			WorldTools.getTile(world, pos, TileEntitySign.class)
 					.ifPresent(t -> System.arraycopy(this.signContents, 0, t.signText, 0, this.signContents.length));
 			BlockTools.notifyBlockUpdate(world, pos);

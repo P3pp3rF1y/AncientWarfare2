@@ -34,7 +34,7 @@ public class TemplateRuleBlockTile extends TemplateRuleVanillaBlocks {
 	@Override
 	public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
 		super.handlePlacement(world, turns, pos, builder);
-		world.setBlockState(pos, BlockTools.rotateFacing(state, turns), 3);
+		builder.placeBlock(pos, BlockTools.rotateFacing(state, turns), 3);
 		WorldTools.getTile(world, pos).ifPresent(t -> {
 			//TODO look into changing this so that the whole TE doesn't need reloading from custom NBT
 			tag.setString("id", state.getBlock().getRegistryName().toString());

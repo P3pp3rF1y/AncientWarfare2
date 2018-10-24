@@ -112,9 +112,9 @@ public class StructureBuilder implements IStructureBuilder {
 	 * with priority > 0
 	 */
 	@Override
-	public void placeBlock(BlockPos pos, IBlockState state, int priority) {
+	public boolean placeBlock(BlockPos pos, IBlockState state, int priority) {
 		if (pos.getY() <= 0 || pos.getY() >= world.getHeight()) {
-			return;
+			return false;
 		}
 
 		IBlockState adjustedState = state;
@@ -123,7 +123,7 @@ public class StructureBuilder implements IStructureBuilder {
 		}
 
 		int updateFlag = state.canProvidePower() ? 3 : 2;
-		world.setBlockState(pos, adjustedState, updateFlag);
+		return world.setBlockState(pos, adjustedState, updateFlag);
 	}
 
 	private void placeCurrentPosition(TemplateRule rule) {

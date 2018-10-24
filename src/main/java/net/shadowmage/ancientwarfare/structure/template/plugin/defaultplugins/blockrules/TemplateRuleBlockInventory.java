@@ -75,7 +75,7 @@ public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
 	@Override
 	public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
 		super.handlePlacement(world, turns, pos, builder);
-		world.setBlockState(pos, BlockTools.rotateFacing(state, turns), 3);
+		builder.placeBlock(pos, BlockTools.rotateFacing(state, turns), 3);
 		TileEntity te = world.getTileEntity(pos);
 		if (!(te instanceof IInventory)) {
 			return;
