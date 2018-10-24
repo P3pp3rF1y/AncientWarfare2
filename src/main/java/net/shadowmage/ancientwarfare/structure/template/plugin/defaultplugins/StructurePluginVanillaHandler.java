@@ -25,6 +25,7 @@ import net.shadowmage.ancientwarfare.structure.api.StructureContentPlugin;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
 import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
+import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleBanner;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleBed;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleBlockDoors;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleBlockInventory;
@@ -70,6 +71,10 @@ public class StructurePluginVanillaHandler implements StructureContentPlugin {
 		manager.registerBlockHandler(TemplateRuleFlowerPot.PLUGIN_NAME, Blocks.FLOWER_POT, TemplateRuleFlowerPot::new, TemplateRuleFlowerPot::new);
 		manager.registerBlockHandler(TemplateRuleBed.PLUGIN_NAME, Blocks.BED, TemplateRuleBed::new, TemplateRuleBed::new);
 		manager.registerBlockHandler(TemplateRuleVanillaSkull.PLUGIN_NAME, Blocks.SKULL, TemplateRuleVanillaSkull::new, TemplateRuleVanillaSkull::new);
+		manager.registerBlockHandler(TemplateRuleFluid.PLUGIN_NAME, Blocks.WATER, TemplateRuleFluid::new, TemplateRuleFluid::new);
+		manager.registerBlockHandler(TemplateRuleFluid.PLUGIN_NAME, Blocks.LAVA, TemplateRuleFluid::new, TemplateRuleFluid::new);
+		manager.registerBlockHandler(TemplateRuleBanner.PLUGIN_NAME, Blocks.STANDING_BANNER, TemplateRuleBanner::new, TemplateRuleBanner::new);
+		manager.registerBlockHandler(TemplateRuleBanner.PLUGIN_NAME, Blocks.WALL_BANNER, TemplateRuleBanner::new, TemplateRuleBanner::new);
 
 		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, AWStructureBlocks.ADVANCED_SPAWNER, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
 		manager.registerBlockHandler(TemplateRuleTotemPart.PLUGIN_NAME, AWStructureBlocks.TOTEM_PART, TemplateRuleTotemPart::new, TemplateRuleTotemPart::new);
@@ -79,8 +84,6 @@ public class StructurePluginVanillaHandler implements StructureContentPlugin {
 		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, AWStructureBlocks.STRUCTURE_BUILDER_TICKED, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
 		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, AWStructureBlocks.SOUND_BLOCK, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
 		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, AWStructureBlocks.ADVANCED_LOOT_CHEST, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
-		manager.registerBlockHandler(TemplateRuleFluid.PLUGIN_NAME, Blocks.WATER, TemplateRuleFluid::new, TemplateRuleFluid::new);
-		manager.registerBlockHandler(TemplateRuleFluid.PLUGIN_NAME, Blocks.LAVA, TemplateRuleFluid::new, TemplateRuleFluid::new);
 
 		//noinspection ConstantConditions
 		manager.registerBlockHandler(TemplateRuleVanillaBlocks.PLUGIN_NAME, state -> state.getBlock().getRegistryName().getResourceDomain().equals("minecraft"),

@@ -4,7 +4,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
@@ -34,10 +33,8 @@ public class TemplateRuleBlockTile extends TemplateRuleVanillaBlocks {
 	@Override
 	public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
 		super.handlePlacement(world, turns, pos, builder);
-		builder.placeBlock(pos, BlockTools.rotateFacing(state, turns), 3);
 		WorldTools.getTile(world, pos).ifPresent(t -> {
 			//TODO look into changing this so that the whole TE doesn't need reloading from custom NBT
-			tag.setString("id", state.getBlock().getRegistryName().toString());
 			tag.setInteger("x", pos.getX());
 			tag.setInteger("y", pos.getY());
 			tag.setInteger("z", pos.getZ());
