@@ -2,11 +2,13 @@
     "blockstate_to_item": [
         {
             "block": {"name": "minecraft:water", "properties": {"level": "0"}},
-            "item": {"name": "minecraft:water_bucket"}
+            "item": {"name": "minecraft:water_bucket"},
+            "remaining_item": {"name": "minecraft:bucket"}
         },
         {
             "block": {"name": "minecraft:lava", "properties": {"level": "0"}},
-            "item": {"name": "minecraft:lava_bucket"}
+            "item": {"name": "minecraft:lava_bucket"},
+            "remaining_item": {"name": "minecraft:bucket"}
         },
         {
             "block": {"name": "minecraft:farmland"},

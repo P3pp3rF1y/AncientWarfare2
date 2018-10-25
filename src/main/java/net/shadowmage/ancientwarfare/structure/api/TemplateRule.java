@@ -34,6 +34,8 @@ public abstract class TemplateRule {
 
 	public abstract void addResources(NonNullList<ItemStack> resources);
 
+	public abstract ItemStack getRemainingStack();
+
 	public abstract boolean shouldPlaceOnBuildPass(World world, int turns, BlockPos pos, int buildPass);
 
 	public void writeRule(BufferedWriter out) throws IOException {

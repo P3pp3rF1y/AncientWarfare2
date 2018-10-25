@@ -53,6 +53,11 @@ public abstract class TemplateRuleBlock extends TemplateRule {
 	}
 
 	@Override
+	public ItemStack getRemainingStack() {
+		return StructureBlockRegistry.getRemainingStackFrom(state);
+	}
+
+	@Override
 	public boolean placeInSurvival() {
 		return state.getBlock() != Blocks.AIR && !getCachedStack().isEmpty();
 	}

@@ -16,6 +16,7 @@ public class StructureBlockRegistry {
 	private StructureBlockRegistry() {}
 
 	private static final Map<BlockStateMatcher, ItemStack> STATE_TO_ITEM = new HashMap<>();
+	private static final Map<BlockStateMatcher, ItemStack> STATE_TO_REMAINING_ITEM = new HashMap<>();
 
 	public static ItemStack getItemStackFrom(IBlockState state) {
 		for (Map.Entry<BlockStateMatcher, ItemStack> stateItem : STATE_TO_ITEM.entrySet()) {
@@ -32,6 +33,15 @@ public class StructureBlockRegistry {
 		}
 	}
 
+	public static ItemStack getRemainingStackFrom(IBlockState state) {
+		for (Map.Entry<BlockStateMatcher, ItemStack> stateItem : STATE_TO_REMAINING_ITEM.entrySet()) {
+			if (stateItem.getKey().test(state)) {
+				return stateItem.getValue();
+			}
+		}
+		return ItemStack.EMPTY;
+	}
+
 	public static class Parser implements IRegistryDataParser {
 		@Override
 		public String getName() {
@@ -42,6 +52,8 @@ public class StructureBlockRegistry {
 		public void parse(JsonObject json) {
 			STATE_TO_ITEM.putAll(JsonHelper.mapFromObjectArray(JsonUtils.getJsonArray(json, "blockstate_to_item"),
 					"block", "item", JsonHelper::getBlockStateMatcher, JsonHelper::getItemStack));
+			STATE_TO_REMAINING_ITEM.putAll(JsonHelper.mapFromObjectArray(JsonUtils.getJsonArray(json, "blockstate_to_item"),
+					"block", "remaining_item", JsonHelper::getBlockStateMatcher, e -> e != null ? JsonHelper.getItemStack(e) : ItemStack.EMPTY));
 		}
 	}
 }

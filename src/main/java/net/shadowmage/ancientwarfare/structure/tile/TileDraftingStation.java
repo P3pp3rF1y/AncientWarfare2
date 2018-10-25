@@ -1,9 +1,7 @@
 package net.shadowmage.ancientwarfare.structure.tile;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
@@ -12,17 +10,20 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.core.tile.IBlockBreakHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import net.shadowmage.ancientwarfare.core.util.NBTHelper;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
 public class TileDraftingStation extends TileEntity implements ITickable, IBlockBreakHandler {
 
 	private String structureName;//structure pulled from live structure list anytime a ref is needed
 	private boolean isStarted;//has started compiling resources -- will need input to cancel
-	private NonNullList<ItemStack> neededResources = NonNullList.create();
+	private List<ItemStack> neededResources = NonNullList.create();
+	private List<ItemStack> returnResources = NonNullList.create();
 	private boolean isFinished;//is finished compiling resources, awaiting output-slot availability
 	private int remainingTime;//not really time, but raw item count
 	private int totalTime;//total raw-item count
@@ -110,6 +111,7 @@ public class TileDraftingStation extends TileEntity implements ITickable, IBlock
 			@Nonnull ItemStack item = new ItemStack(AWStructureBlocks.STRUCTURE_BUILDER_TICKED);
 			item.setTagInfo("structureName", new NBTTagString(structureName));
 			outputSlot.setStackInSlot(0, item);
+			InventoryTools.insertOrDropItems(inputSlots, returnResources, world, pos);
 			return true;
 		}
 		return false;
@@ -135,7 +137,7 @@ public class TileDraftingStation extends TileEntity implements ITickable, IBlock
 		return totalTime;
 	}
 
-	public NonNullList<ItemStack> getNeededResources() {
+	public List<ItemStack> getNeededResources() {
 		return neededResources;
 	}
 
@@ -160,6 +162,7 @@ public class TileDraftingStation extends TileEntity implements ITickable, IBlock
 		}
 		this.structureName = null;
 		this.neededResources.clear();
+		returnResources.clear();
 		this.remainingTime = 0;
 		StructureTemplate t = StructureTemplateManager.INSTANCE.getTemplate(templateName);
 		if (t != null) {
@@ -167,6 +170,9 @@ public class TileDraftingStation extends TileEntity implements ITickable, IBlock
 				this.structureName = templateName;
 			for (ItemStack item : t.getResourceList()) {
 				this.neededResources.add(item.copy());
+			}
+			for (ItemStack item : t.getRemainingStacks()) {
+				returnResources.add(item.copy());
 			}
 			calcTime();
 		}
@@ -195,10 +201,8 @@ public class TileDraftingStation extends TileEntity implements ITickable, IBlock
 		isFinished = tag.getBoolean("isFinished");
 		remainingTime = tag.getInteger("remainingTime");
 		totalTime = tag.getInteger("totalTime");
-		NBTTagList resources = tag.getTagList("neededResources", Constants.NBT.TAG_COMPOUND);
-		for (NBTBase resource : resources) {
-			neededResources.add(new ItemStack((NBTTagCompound) resource));
-		}
+		neededResources = NBTHelper.deserializeItemStackList(tag.getTagList("neededResources", Constants.NBT.TAG_COMPOUND));
+		returnResources = NBTHelper.deserializeItemStackList(tag.getTagList("returnResources", Constants.NBT.TAG_COMPOUND));
 	}
 
 	@Override
@@ -215,12 +219,8 @@ public class TileDraftingStation extends TileEntity implements ITickable, IBlock
 		tag.setBoolean("isFinished", isFinished);
 		tag.setInteger("remainingTime", remainingTime);
 		tag.setInteger("totalTime", totalTime);
-
-		NBTTagList resources = new NBTTagList();
-		for (ItemStack resource : neededResources) {
-			resources.appendTag(resource.writeToNBT(new NBTTagCompound()));
-		}
-		tag.setTag("neededResources", resources);
+		tag.setTag("neededResources", NBTHelper.serializeItemStackList(neededResources));
+		tag.setTag("returnResources", NBTHelper.serializeItemStackList(returnResources));
 
 		return tag;
 	}

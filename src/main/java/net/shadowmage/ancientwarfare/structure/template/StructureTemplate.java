@@ -9,6 +9,7 @@ import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -32,6 +33,7 @@ public class StructureTemplate {
 	private Map<Integer, TemplateRuleEntity> entityRules;
 	private short[] templateData;
 	private NonNullList<ItemStack> resourceList;
+	private List<ItemStack> remainingStacks;
 
 	/*
 	 * world generation placement validation settings
@@ -108,6 +110,21 @@ public class StructureTemplate {
 			resourceList = InventoryTools.compactStackList(stacks);
 		}
 		return resourceList;
+	}
+
+	public List<ItemStack> getRemainingStacks() {
+		if (remainingStacks == null) {
+			NonNullList<ItemStack> stacks = NonNullList.create();
+			MathUtils.getAllVecsInBox(Vec3i.NULL_VECTOR, new Vec3i(size.getX() - 1, size.getY() - 1, size.getZ() - 1))
+					.forEach(pos -> getRuleAt(pos).ifPresent(r -> {
+						ItemStack stack = r.getRemainingStack();
+						if (!stack.isEmpty()) {
+							stacks.add(stack);
+						}
+					}));
+			remainingStacks = InventoryTools.compactStackList(stacks);
+		}
+		return remainingStacks;
 	}
 
 	@Override

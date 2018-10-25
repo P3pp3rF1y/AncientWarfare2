@@ -4,10 +4,12 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.Tuple;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
@@ -15,6 +17,7 @@ import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -106,5 +109,21 @@ public class NBTHelper {
 		}
 
 		return new NBTTagList();
+	}
+
+	public static NBTTagList serializeItemStackList(List<ItemStack> stacks) {
+		NBTTagList nbtStacks = new NBTTagList();
+		for (ItemStack stack : stacks) {
+			nbtStacks.appendTag(stack.writeToNBT(new NBTTagCompound()));
+		}
+		return nbtStacks;
+	}
+
+	public static List<ItemStack> deserializeItemStackList(NBTTagList nbtStacks) {
+		List<ItemStack> stacks = NonNullList.create();
+		for (NBTBase nbtStack : nbtStacks) {
+			stacks.add(new ItemStack((NBTTagCompound) nbtStack));
+		}
+		return stacks;
 	}
 }
