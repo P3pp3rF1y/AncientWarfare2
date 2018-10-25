@@ -34,6 +34,7 @@ import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.bl
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleBlockTile;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleFlowerPot;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleFluid;
+import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleShulkerBox;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleTotemPart;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleVanillaSkull;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.entityrules.TemplateRuleEntityHanging;
@@ -81,6 +82,22 @@ public class StructurePluginVanillaHandler implements StructureContentPlugin {
 		manager.registerBlockHandler(TemplateRuleFluid.PLUGIN_NAME, Blocks.LAVA, TemplateRuleFluid::new, TemplateRuleFluid::new);
 		manager.registerBlockHandler(TemplateRuleBanner.PLUGIN_NAME, Blocks.STANDING_BANNER, TemplateRuleBanner::new, TemplateRuleBanner::new);
 		manager.registerBlockHandler(TemplateRuleBanner.PLUGIN_NAME, Blocks.WALL_BANNER, TemplateRuleBanner::new, TemplateRuleBanner::new);
+		manager.registerBlockHandler(TemplateRuleShulkerBox.PLUGIN_NAME, Blocks.BLACK_SHULKER_BOX, TemplateRuleShulkerBox::new, TemplateRuleShulkerBox::new);
+		manager.registerBlockHandler(TemplateRuleShulkerBox.PLUGIN_NAME, Blocks.BLUE_SHULKER_BOX, TemplateRuleShulkerBox::new, TemplateRuleShulkerBox::new);
+		manager.registerBlockHandler(TemplateRuleShulkerBox.PLUGIN_NAME, Blocks.BROWN_SHULKER_BOX, TemplateRuleShulkerBox::new, TemplateRuleShulkerBox::new);
+		manager.registerBlockHandler(TemplateRuleShulkerBox.PLUGIN_NAME, Blocks.SILVER_SHULKER_BOX, TemplateRuleShulkerBox::new, TemplateRuleShulkerBox::new);
+		manager.registerBlockHandler(TemplateRuleShulkerBox.PLUGIN_NAME, Blocks.CYAN_SHULKER_BOX, TemplateRuleShulkerBox::new, TemplateRuleShulkerBox::new);
+		manager.registerBlockHandler(TemplateRuleShulkerBox.PLUGIN_NAME, Blocks.GRAY_SHULKER_BOX, TemplateRuleShulkerBox::new, TemplateRuleShulkerBox::new);
+		manager.registerBlockHandler(TemplateRuleShulkerBox.PLUGIN_NAME, Blocks.GREEN_SHULKER_BOX, TemplateRuleShulkerBox::new, TemplateRuleShulkerBox::new);
+		manager.registerBlockHandler(TemplateRuleShulkerBox.PLUGIN_NAME, Blocks.LIGHT_BLUE_SHULKER_BOX, TemplateRuleShulkerBox::new, TemplateRuleShulkerBox::new);
+		manager.registerBlockHandler(TemplateRuleShulkerBox.PLUGIN_NAME, Blocks.LIME_SHULKER_BOX, TemplateRuleShulkerBox::new, TemplateRuleShulkerBox::new);
+		manager.registerBlockHandler(TemplateRuleShulkerBox.PLUGIN_NAME, Blocks.MAGENTA_SHULKER_BOX, TemplateRuleShulkerBox::new, TemplateRuleShulkerBox::new);
+		manager.registerBlockHandler(TemplateRuleShulkerBox.PLUGIN_NAME, Blocks.ORANGE_SHULKER_BOX, TemplateRuleShulkerBox::new, TemplateRuleShulkerBox::new);
+		manager.registerBlockHandler(TemplateRuleShulkerBox.PLUGIN_NAME, Blocks.PINK_SHULKER_BOX, TemplateRuleShulkerBox::new, TemplateRuleShulkerBox::new);
+		manager.registerBlockHandler(TemplateRuleShulkerBox.PLUGIN_NAME, Blocks.PURPLE_SHULKER_BOX, TemplateRuleShulkerBox::new, TemplateRuleShulkerBox::new);
+		manager.registerBlockHandler(TemplateRuleShulkerBox.PLUGIN_NAME, Blocks.RED_SHULKER_BOX, TemplateRuleShulkerBox::new, TemplateRuleShulkerBox::new);
+		manager.registerBlockHandler(TemplateRuleShulkerBox.PLUGIN_NAME, Blocks.WHITE_SHULKER_BOX, TemplateRuleShulkerBox::new, TemplateRuleShulkerBox::new);
+		manager.registerBlockHandler(TemplateRuleShulkerBox.PLUGIN_NAME, Blocks.YELLOW_SHULKER_BOX, TemplateRuleShulkerBox::new, TemplateRuleShulkerBox::new);
 
 		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, AWStructureBlocks.ADVANCED_SPAWNER, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
 		manager.registerBlockHandler(TemplateRuleTotemPart.PLUGIN_NAME, AWStructureBlocks.TOTEM_PART, TemplateRuleTotemPart::new, TemplateRuleTotemPart::new);

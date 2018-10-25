@@ -29,7 +29,7 @@ public class TemplateRuleBlockInventory extends TemplateRuleBlockTile {
 	private static final String INVENTORY_DATA_TAG = "inventoryData";
 	public static final String PLUGIN_NAME = "inventory";
 	private static final String SIDED_INVENTORIES_TAG = "sidedInventories";
-	public static final String LEGACY_FEATURES_TAG = "legacyFeatures";
+	private static final String LEGACY_FEATURES_TAG = "legacyFeatures";
 	private boolean legacyFeatures = false;
 	private int randomLootLevel;
 	private Map<EnumFacing, NonNullList<ItemStack>> inventoryStacks = new HashMap<>();
