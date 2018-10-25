@@ -11,9 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
-import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
 
-import java.util.List;
 import java.util.Optional;
 
 public class TemplateRuleEntityHanging extends TemplateRuleVanillaEntity {
@@ -31,8 +29,8 @@ public class TemplateRuleEntityHanging extends TemplateRuleVanillaEntity {
 		tag.removeTag("UUIDLeast");
 	}
 
-	public TemplateRuleEntityHanging(int ruleNumber, List<String> lines) throws TemplateParsingException.TemplateRuleParsingException {
-		super(ruleNumber, lines);
+	public TemplateRuleEntityHanging() {
+		super();
 	}
 
 	@Override
@@ -64,8 +62,8 @@ public class TemplateRuleEntityHanging extends TemplateRuleVanillaEntity {
 	}
 
 	@Override
-	public void parseRuleData(NBTTagCompound tag) {
-		super.parseRuleData(tag);
+	public void parseRule(NBTTagCompound tag) {
+		super.parseRule(tag);
 		this.tag = tag.getCompoundTag("entityData");
 		this.direction = EnumFacing.VALUES[tag.getByte("direction")];
 	}

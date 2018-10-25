@@ -16,10 +16,8 @@ import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
-import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 import java.util.Optional;
 
 public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
@@ -31,8 +29,8 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
 	private NonNullList<ItemStack> inventory;
 	private NonNullList<ItemStack> equipment;
 
-	public TemplateRuleEntityLogic(int ruleNumber, List<String> lines) throws TemplateParsingException.TemplateRuleParsingException {
-		super(ruleNumber, lines);
+	public TemplateRuleEntityLogic() {
+		super();
 	}
 
 	public TemplateRuleEntityLogic(World world, Entity entity, int turns, int x, int y, int z) {
@@ -141,8 +139,8 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
 	}
 
 	@Override
-	public void parseRuleData(NBTTagCompound tag) {
-		super.parseRuleData(tag);
+	public void parseRule(NBTTagCompound tag) {
+		super.parseRule(tag);
 		this.tag = tag.getCompoundTag("entityData");
 		if (tag.hasKey(INVENTORY_DATA_TAG)) {
 			NBTTagCompound inventoryTag = tag.getCompoundTag(INVENTORY_DATA_TAG);

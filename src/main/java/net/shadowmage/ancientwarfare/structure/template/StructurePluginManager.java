@@ -3,6 +3,9 @@ package net.shadowmage.ancientwarfare.structure.template;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.nbt.NBTException;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -36,12 +39,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 public class StructurePluginManager implements IStructurePluginRegister {
 	private final List<StructureContentPlugin> loadedContentPlugins = new ArrayList<>();
 
-	private final List<RuleHandler<IBlockDataMatcher, IBlockRuleCreator, IRuleDeserializer<TemplateRuleBlock>>> blockRuleHandlers = new ArrayList<>();
-	private final List<RuleHandler<Class<? extends Entity>, IEntityRuleCreator, IRuleDeserializer<TemplateRuleEntity>>> entityRuleHandlers = new ArrayList<>();
+	private final List<RuleHandler<IBlockDataMatcher, IBlockRuleCreator>> blockRuleHandlers = new ArrayList<>();
+	private final List<RuleHandler<Class<? extends Entity>, IEntityRuleCreator>> entityRuleHandlers = new ArrayList<>();
 
 	public static final StructurePluginManager INSTANCE = new StructurePluginManager();
 
@@ -73,9 +77,9 @@ public class StructurePluginManager implements IStructurePluginRegister {
 		}
 
 		//noinspection ConstantConditions
-		registerBlockHandler(TemplateRuleVanillaBlocks.PLUGIN_NAME, (world, pos, state) -> state.getBlock().hasTileEntity(state) && WorldTools.hasItemHandler(world, pos),
+		registerBlockHandler(TemplateRuleBlockInventory.PLUGIN_NAME, (world, pos, state) -> state.getBlock().hasTileEntity(state) && WorldTools.hasItemHandler(world, pos),
 				TemplateRuleBlockInventory::new, TemplateRuleBlockInventory::new);
-		registerBlockHandler(TemplateRuleVanillaBlocks.PLUGIN_NAME, (world, pos, state) -> state.getBlock().hasTileEntity(state) && !WorldTools.hasItemHandler(world, pos),
+		registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, (world, pos, state) -> state.getBlock().hasTileEntity(state) && !WorldTools.hasItemHandler(world, pos),
 				TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
 		registerBlockHandler(TemplateRuleVanillaBlocks.PLUGIN_NAME, (world, pos, state) -> !state.getBlock().hasTileEntity(state),
 				TemplateRuleVanillaBlocks::new, TemplateRuleVanillaBlocks::new);
@@ -108,12 +112,12 @@ public class StructurePluginManager implements IStructurePluginRegister {
 		return getRuleHandler(world, pos, state).map(h -> h.pluginName);
 	}
 
-	private Optional<? extends IRuleDeserializer> getDeserializerByName(String name) {
-		Optional<IRuleDeserializer<TemplateRuleBlock>> result = blockRuleHandlers.stream().filter(h -> h.pluginName.equals(name)).findFirst().map(h -> h.deserializer);
+	private Optional<TemplateRule> getParserByName(String name) {
+		Optional<TemplateRule> result = blockRuleHandlers.stream().filter(h -> h.pluginName.equals(name)).findFirst().map(h -> h.getRule.get());
 		if (result.isPresent()) {
 			return result;
 		}
-		return entityRuleHandlers.stream().filter(h -> h.pluginName.equals(name)).findFirst().map(h -> h.deserializer);
+		return entityRuleHandlers.stream().filter(h -> h.pluginName.equals(name)).findFirst().map(h -> h.getRule.get());
 	}
 
 	public Optional<TemplateRuleBlock> getRuleForBlock(World world, IBlockState state, int turns, BlockPos pos) {
@@ -121,7 +125,7 @@ public class StructurePluginManager implements IStructurePluginRegister {
 		return creator.map(c -> c.create(world, pos, state, turns));
 	}
 
-	private Optional<RuleHandler<IBlockDataMatcher, IBlockRuleCreator, IRuleDeserializer<TemplateRuleBlock>>> getRuleHandler(World world, BlockPos pos, IBlockState state) {
+	private Optional<RuleHandler<IBlockDataMatcher, IBlockRuleCreator>> getRuleHandler(World world, BlockPos pos, IBlockState state) {
 		return blockRuleHandlers.stream().filter(h -> h.obj.matches(world, pos, state)).findFirst();
 	}
 
@@ -130,16 +134,16 @@ public class StructurePluginManager implements IStructurePluginRegister {
 				.map(c -> c.create(world, entity, turns, x, y, z));
 	}
 
-	public void registerEntityHandler(String pluginName, Class<? extends Entity> entityClass, IEntityRuleCreator creator, IRuleDeserializer<TemplateRuleEntity> deserializer) {
-		entityRuleHandlers.add(new RuleHandler<>(entityClass, pluginName, creator, deserializer));
+	public void registerEntityHandler(String pluginName, Class<? extends Entity> entityClass, IEntityRuleCreator creator, Supplier<TemplateRule> getParser) {
+		entityRuleHandlers.add(new RuleHandler<>(entityClass, pluginName, creator, getParser));
 	}
 
-	public void registerBlockHandler(String pluginName, IBlockDataMatcher blockMatcher, IBlockRuleCreator creator, IRuleDeserializer<TemplateRuleBlock> deserializer) {
-		blockRuleHandlers.add(new RuleHandler<>(blockMatcher, pluginName, creator, deserializer));
+	public void registerBlockHandler(String pluginName, IBlockDataMatcher blockMatcher, IBlockRuleCreator creator, Supplier<TemplateRule> getParser) {
+		blockRuleHandlers.add(new RuleHandler<>(blockMatcher, pluginName, creator, getParser));
 	}
 
-	public void registerBlockHandler(String pluginName, Block block, IBlockRuleCreator creator, IRuleDeserializer<TemplateRuleBlock> deserializer) {
-		registerBlockHandler(pluginName, (world, pos, state) -> state.getBlock() == block, creator, deserializer);
+	public void registerBlockHandler(String pluginName, Block block, IBlockRuleCreator creator, Supplier<TemplateRule> getParser) {
+		registerBlockHandler(pluginName, (world, pos, state) -> state.getBlock() == block, creator, getParser);
 	}
 
 	public void registerPlugin(StructureContentPlugin plugin) {
@@ -184,8 +188,8 @@ public class StructurePluginManager implements IStructurePluginRegister {
 		FixResult.Builder<T> resultBuilder = new FixResult.Builder<>();
 
 		name = resultBuilder.updateAndGetData(DataFixManager.fixRuleName(version, name));
-		Optional<? extends IRuleDeserializer> deserializer = INSTANCE.getDeserializerByName(name);
-		if (!deserializer.isPresent()) {
+		Optional<TemplateRule> parser = INSTANCE.getParserByName(name);
+		if (!parser.isPresent()) {
 			throw new TemplateRuleParsingException("Not enough data to create template rule.\n" + "Missing plugin for name: " + name + "\n" + "name: " + name + "\n" + "number:" + ruleNumber + "\n" + "ruleDataPackage.size:" + ruleDataPackage.size() + "\n");
 		}
 
@@ -193,7 +197,9 @@ public class StructurePluginManager implements IStructurePluginRegister {
 			ruleDataPackage = resultBuilder.updateAndGetData(DataFixManager.fixRuleData(version, name, ruleDataPackage));
 		}
 
-		TemplateRule rule = deserializer.get().deserialize(ruleNumber, ruleDataPackage);
+		TemplateRule rule = parser.get();
+		rule.parseRule(readTag(ruleDataPackage));
+		rule.ruleNumber = ruleNumber;
 
 		T actualRule;
 		try {
@@ -207,17 +213,33 @@ public class StructurePluginManager implements IStructurePluginRegister {
 		return resultBuilder.build(actualRule);
 	}
 
-	private class RuleHandler<T, U extends IRuleCreator, V extends IRuleDeserializer> {
+	private static final String JSON_PREFIX = "JSON:";
+
+	private static NBTTagCompound readTag(List<String> ruleData) throws TemplateRuleParsingException {
+		for (String line : ruleData) {
+			if (line.startsWith(JSON_PREFIX)) {
+				try {
+					return JsonToNBT.getTagFromJson(line.substring(JSON_PREFIX.length()));
+				}
+				catch (NBTException e) {
+					throw new TemplateRuleParsingException("Issue parsing NBTTagCompound from JSON: " + line, e);
+				}
+			}
+		}
+		return new NBTTagCompound();
+	}
+
+	private class RuleHandler<T, U extends IRuleCreator> {
 		private final T obj;
 		private final String pluginName;
 		private U ruleCreator;
-		private V deserializer;
+		private Supplier<TemplateRule> getRule;
 
-		private RuleHandler(T obj, String pluginName, U creator, V deserializer) {
+		private RuleHandler(T obj, String pluginName, U creator, Supplier<TemplateRule> getRule) {
 			this.obj = obj;
 			this.pluginName = pluginName;
 			this.ruleCreator = creator;
-			this.deserializer = deserializer;
+			this.getRule = getRule;
 		}
 	}
 
@@ -231,8 +253,8 @@ public class StructurePluginManager implements IStructurePluginRegister {
 		TemplateRuleEntity create(World world, Entity entity, int turns, int x, int y, int z);
 	}
 
-	public interface IRuleDeserializer<T extends TemplateRule> {
-		T deserialize(int ruleNumber, List<String> lines) throws TemplateParsingException.TemplateRuleParsingException;
+	public interface IRuleParser {
+		void parseRule(NBTTagCompound tag) throws TemplateParsingException.TemplateRuleParsingException;
 	}
 
 	private interface IBlockDataMatcher {

@@ -6,8 +6,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.List;
-
 public abstract class TemplateRuleEntity extends TemplateRule {
 
 	private BlockPos pos;
@@ -28,9 +26,7 @@ public abstract class TemplateRuleEntity extends TemplateRule {
 	/*
 	 * Called by reflection
 	 */
-	public TemplateRuleEntity(int ruleNumber, List<String> lines) throws TemplateParsingException.TemplateRuleParsingException {
-		parseRule(ruleNumber, lines);
-	}
+	public TemplateRuleEntity() {}
 
 	@Override
 	public void writeRuleData(NBTTagCompound tag) {
@@ -38,7 +34,7 @@ public abstract class TemplateRuleEntity extends TemplateRule {
 	}
 
 	@Override
-	public void parseRuleData(NBTTagCompound tag) {
+	public void parseRule(NBTTagCompound tag) {
 		pos = BlockPos.fromLong(tag.getLong("position"));
 	}
 

@@ -8,9 +8,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
-import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
-
-import java.util.List;
 
 public class TemplateRuleBlockDoors extends TemplateRuleVanillaBlocks {
 
@@ -20,8 +17,8 @@ public class TemplateRuleBlockDoors extends TemplateRuleVanillaBlocks {
 		super(world, pos, state, turns);
 	}
 
-	public TemplateRuleBlockDoors(int ruleNumber, List<String> lines) throws TemplateParsingException.TemplateRuleParsingException {
-		super(ruleNumber, lines);
+	public TemplateRuleBlockDoors() {
+		super();
 	}
 
 	@Override

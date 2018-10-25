@@ -11,10 +11,7 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
-import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
-
-import java.util.List;
 
 public class TemplateRuleVanillaEntity extends TemplateRuleEntity {
 	public static final String PLUGIN_NAME = "vanillaEntities";
@@ -40,8 +37,8 @@ public class TemplateRuleVanillaEntity extends TemplateRuleEntity {
 		zOffset = BlockTools.rotateFloatZ(x1, z1, turns);
 	}
 
-	public TemplateRuleVanillaEntity(int ruleNumber, List<String> lines) throws TemplateParsingException.TemplateRuleParsingException {
-		super(ruleNumber, lines);
+	public TemplateRuleVanillaEntity() {
+		super();
 	}
 
 	@Override
@@ -69,8 +66,8 @@ public class TemplateRuleVanillaEntity extends TemplateRuleEntity {
 	}
 
 	@Override
-	public void parseRuleData(NBTTagCompound tag) {
-		super.parseRuleData(tag);
+	public void parseRule(NBTTagCompound tag) {
+		super.parseRule(tag);
 		registryName = new ResourceLocation(tag.getString("mobID"));
 		xOffset = tag.getFloat("xOffset");
 		zOffset = tag.getFloat("zOffset");

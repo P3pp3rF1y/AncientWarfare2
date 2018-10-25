@@ -13,9 +13,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
-import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
-
-import java.util.List;
 
 public class TemplateRuleBed extends TemplateRuleVanillaBlocks {
 	public static final String PLUGIN_NAME = "bed";
@@ -30,8 +27,8 @@ public class TemplateRuleBed extends TemplateRuleVanillaBlocks {
 		}
 	}
 
-	public TemplateRuleBed(int ruleNumber, List<String> lines) throws TemplateParsingException.TemplateRuleParsingException {
-		super(ruleNumber, lines);
+	public TemplateRuleBed() {
+		super();
 	}
 
 	@Override
@@ -64,8 +61,8 @@ public class TemplateRuleBed extends TemplateRuleVanillaBlocks {
 	}
 
 	@Override
-	public void parseRuleData(NBTTagCompound tag) {
-		super.parseRuleData(tag);
+	public void parseRule(NBTTagCompound tag) {
+		super.parseRule(tag);
 		color = EnumDyeColor.byMetadata(tag.getInteger("bedColor"));
 	}
 

@@ -11,10 +11,8 @@ import net.shadowmage.ancientwarfare.core.interfaces.IBoundedSite;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
-import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
 
-import java.util.List;
 import java.util.Optional;
 
 public class TemplateRuleRotatable extends TemplateRuleBlock {
@@ -46,8 +44,8 @@ public class TemplateRuleRotatable extends TemplateRuleBlock {
 		}
 	}
 
-	public TemplateRuleRotatable(int ruleNumber, List<String> lines) throws TemplateParsingException.TemplateRuleParsingException {
-		super(ruleNumber, lines);
+	public TemplateRuleRotatable() {
+		super();
 	}
 
 	@Override
@@ -61,8 +59,6 @@ public class TemplateRuleRotatable extends TemplateRuleBlock {
 			Optional<TileEntity> te = WorldTools.getTile(world, pos);
 			if (te.isPresent()) {
 				TileEntity worksite = te.get();
-				//TODO look into changing this so that the whole TE doesn't need reloading from custom NBT
-				tag.setString("id", state.getBlock().getRegistryName().toString());
 				tag.setInteger("x", pos.getX());
 				tag.setInteger("y", pos.getY());
 				tag.setInteger("z", pos.getZ());
@@ -85,8 +81,8 @@ public class TemplateRuleRotatable extends TemplateRuleBlock {
 	}
 
 	@Override
-	public void parseRuleData(NBTTagCompound tag) {
-		super.parseRuleData(tag);
+	public void parseRule(NBTTagCompound tag) {
+		super.parseRule(tag);
 		this.orientation = EnumFacing.values()[tag.getInteger("orientation")];
 		if (tag.hasKey(TE_DATA_TAG)) {
 			this.tag = tag.getCompoundTag(TE_DATA_TAG);

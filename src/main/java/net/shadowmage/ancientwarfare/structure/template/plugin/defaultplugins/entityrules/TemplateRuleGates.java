@@ -11,12 +11,10 @@ import net.shadowmage.ancientwarfare.core.owner.Owner;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
-import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.gates.types.Gate;
 
-import java.util.List;
 import java.util.Optional;
 
 public class TemplateRuleGates extends TemplateRuleEntity {
@@ -39,8 +37,8 @@ public class TemplateRuleGates extends TemplateRuleEntity {
 		this.owner = gate.getOwner().getName();
 	}
 
-	public TemplateRuleGates(int ruleNumber, List<String> lines) throws TemplateParsingException.TemplateRuleParsingException {
-		super(ruleNumber, lines);
+	public TemplateRuleGates() {
+		super();
 	}
 
 	@Override
@@ -68,8 +66,8 @@ public class TemplateRuleGates extends TemplateRuleEntity {
 	}
 
 	@Override
-	public void parseRuleData(NBTTagCompound tag) {
-		super.parseRuleData(tag);
+	public void parseRule(NBTTagCompound tag) {
+		super.parseRule(tag);
 		gateType = tag.getString("gateType");
 		orientation = EnumFacing.VALUES[tag.getByte("orientation")];
 		pos1 = getBlockPosFromNBT(tag.getCompoundTag("pos1"));

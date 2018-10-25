@@ -13,9 +13,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
-import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
-
-import java.util.List;
 
 public class TemplateRuleFlowerPot extends TemplateRuleVanillaBlocks {
 	public static final String PLUGIN_NAME = "vanillaFlowerPot";
@@ -26,17 +23,17 @@ public class TemplateRuleFlowerPot extends TemplateRuleVanillaBlocks {
 	public TemplateRuleFlowerPot(World world, BlockPos pos, IBlockState state, int turns) {
 		super(world, pos, state, turns);
 		WorldTools.getTile(world, pos, TileEntityFlowerPot.class).ifPresent(t -> {
-			Item item = t.getFlowerPotItem();
+			Item flowerItem = t.getFlowerPotItem();
 			itemMeta = t.getFlowerPotData();
-			if (item != null) {
+			if (flowerItem != null) {
 				//noinspection ConstantConditions - item must be registered to be in the flower pot
-				this.item = item;
+				this.item = flowerItem;
 			}
 		});
 	}
 
-	public TemplateRuleFlowerPot(int ruleNumber, List<String> lines) throws TemplateParsingException.TemplateRuleParsingException {
-		super(ruleNumber, lines);
+	public TemplateRuleFlowerPot() {
+		super();
 	}
 
 	@Override
@@ -76,8 +73,8 @@ public class TemplateRuleFlowerPot extends TemplateRuleVanillaBlocks {
 	}
 
 	@Override
-	public void parseRuleData(NBTTagCompound tag) {
-		super.parseRuleData(tag);
+	public void parseRule(NBTTagCompound tag) {
+		super.parseRule(tag);
 		if (tag.hasKey(ITEM_NAME_TAG)) {
 			ResourceLocation registryName = new ResourceLocation(tag.getString(ITEM_NAME_TAG));
 			if (ForgeRegistries.ITEMS.containsKey(registryName)) {

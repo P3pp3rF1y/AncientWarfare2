@@ -10,14 +10,11 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
-import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
-
-import java.util.List;
 
 public class TemplateRuleBlockSign extends TemplateRuleVanillaBlocks {
 
 	public static final String PLUGIN_NAME = "vanillaSign";
-	private ITextComponent signContents[];
+	private ITextComponent[] signContents;
 
 	public TemplateRuleBlockSign(World world, BlockPos pos, IBlockState state, int turns) {
 		super(world, pos, state, turns);
@@ -27,8 +24,8 @@ public class TemplateRuleBlockSign extends TemplateRuleVanillaBlocks {
 		});
 	}
 
-	public TemplateRuleBlockSign(int ruleNumber, List<String> lines) throws TemplateParsingException.TemplateRuleParsingException {
-		super(ruleNumber, lines);
+	public TemplateRuleBlockSign() {
+		super();
 	}
 
 	@Override
@@ -54,11 +51,10 @@ public class TemplateRuleBlockSign extends TemplateRuleVanillaBlocks {
 	}
 
 	@Override
-	public void parseRuleData(NBTTagCompound tag) {
-		super.parseRuleData(tag);
+	public void parseRule(NBTTagCompound tag) {
+		super.parseRule(tag);
 		this.signContents = new ITextComponent[4];
 		for (int i = 0; i < 4; i++) {
-			//TODO make sure that deserializing here works correctly. For some reason TileEntitySign does this through command instance
 			this.signContents[i] = new TextComponentString(tag.getString("signContents" + i));
 		}
 	}

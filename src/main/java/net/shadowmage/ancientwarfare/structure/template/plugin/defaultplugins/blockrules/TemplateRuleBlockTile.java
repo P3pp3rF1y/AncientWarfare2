@@ -6,9 +6,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
-import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
-
-import java.util.List;
 
 public class TemplateRuleBlockTile extends TemplateRuleVanillaBlocks {
 
@@ -26,8 +23,8 @@ public class TemplateRuleBlockTile extends TemplateRuleVanillaBlocks {
 		});
 	}
 
-	public TemplateRuleBlockTile(int ruleNumber, List<String> lines) throws TemplateParsingException.TemplateRuleParsingException {
-		super(ruleNumber, lines);
+	public TemplateRuleBlockTile() {
+		super();
 	}
 
 	@Override
@@ -54,8 +51,8 @@ public class TemplateRuleBlockTile extends TemplateRuleVanillaBlocks {
 	}
 
 	@Override
-	public void parseRuleData(NBTTagCompound tag) {
-		super.parseRuleData(tag);
+	public void parseRule(NBTTagCompound tag) {
+		super.parseRule(tag);
 		this.tag = tag.getCompoundTag("teData");
 	}
 

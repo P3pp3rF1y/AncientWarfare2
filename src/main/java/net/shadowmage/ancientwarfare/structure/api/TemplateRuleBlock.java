@@ -12,7 +12,6 @@ import net.shadowmage.ancientwarfare.core.util.NBTHelper;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.registry.StructureBlockRegistry;
 
-import java.util.List;
 import java.util.MissingResourceException;
 
 public abstract class TemplateRuleBlock extends TemplateRule {
@@ -23,8 +22,7 @@ public abstract class TemplateRuleBlock extends TemplateRule {
 		this.state = BlockTools.rotateFacing(state, turns);
 	}
 
-	public TemplateRuleBlock(int ruleNumber, List<String> lines) throws TemplateParsingException.TemplateRuleParsingException {
-		parseRule(ruleNumber, lines);
+	public TemplateRuleBlock() {
 	}
 
 	public abstract boolean shouldReuseRule(World world, IBlockState state, int turns, BlockPos pos);
@@ -68,7 +66,7 @@ public abstract class TemplateRuleBlock extends TemplateRule {
 	}
 
 	@Override
-	public void parseRuleData(NBTTagCompound tag) {
+	public void parseRule(NBTTagCompound tag) {
 		try {
 			state = NBTHelper.getBlockState(tag.getCompoundTag("blockState"));
 		}

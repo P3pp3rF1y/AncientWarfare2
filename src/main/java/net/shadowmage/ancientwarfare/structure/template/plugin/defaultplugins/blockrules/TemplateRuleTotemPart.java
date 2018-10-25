@@ -8,12 +8,10 @@ import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
-import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
 import net.shadowmage.ancientwarfare.structure.block.BlockTotemPart;
 import net.shadowmage.ancientwarfare.structure.tile.TileTotemPart;
 
-import java.util.List;
 import java.util.Optional;
 
 public class TemplateRuleTotemPart extends TemplateRuleBlock {
@@ -33,8 +31,8 @@ public class TemplateRuleTotemPart extends TemplateRuleBlock {
 		mainBlock = !totem.getMainBlockPos().isPresent();
 	}
 
-	public TemplateRuleTotemPart(int ruleNumber, List<String> lines) throws TemplateParsingException.TemplateRuleParsingException {
-		super(ruleNumber, lines);
+	public TemplateRuleTotemPart() {
+		super();
 	}
 
 	@Override
@@ -72,8 +70,8 @@ public class TemplateRuleTotemPart extends TemplateRuleBlock {
 	}
 
 	@Override
-	public void parseRuleData(NBTTagCompound tag) {
-		super.parseRuleData(tag);
+	public void parseRule(NBTTagCompound tag) {
+		super.parseRule(tag);
 		mainBlock = tag.getBoolean("mainBlock");
 		if (mainBlock) {
 			variant = BlockTotemPart.Variant.fromId(tag.getByte("variant"));

@@ -6,11 +6,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
-import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
-
-import java.util.List;
 
 public class TemplateRuleVanillaBlocks extends TemplateRuleBlock {
 
@@ -25,8 +22,8 @@ public class TemplateRuleVanillaBlocks extends TemplateRuleBlock {
 		this.buildPass = BlockDataManager.INSTANCE.getPriorityForBlock(state.getBlock());
 	}
 
-	public TemplateRuleVanillaBlocks(int ruleNumber, List<String> lines) throws TemplateParsingException.TemplateRuleParsingException {
-		super(ruleNumber, lines);
+	public TemplateRuleVanillaBlocks() {
+		super();
 	}
 
 	@Override
@@ -51,8 +48,8 @@ public class TemplateRuleVanillaBlocks extends TemplateRuleBlock {
 	}
 
 	@Override
-	public void parseRuleData(NBTTagCompound tag) {
-		super.parseRuleData(tag);
+	public void parseRule(NBTTagCompound tag) {
+		super.parseRule(tag);
 		this.buildPass = tag.getInteger("buildPass");
 	}
 

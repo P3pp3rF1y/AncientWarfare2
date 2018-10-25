@@ -5,9 +5,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
-
-import java.util.List;
 
 public class TemplateRuleShulkerBox extends TemplateRuleBlockInventory {
 	public static final String PLUGIN_NAME = "shulkerBox";
@@ -16,8 +13,8 @@ public class TemplateRuleShulkerBox extends TemplateRuleBlockInventory {
 		super(world, pos, state, turns);
 	}
 
-	public TemplateRuleShulkerBox(int ruleNumber, List<String> lines) throws TemplateParsingException.TemplateRuleParsingException {
-		super(ruleNumber, lines);
+	public TemplateRuleShulkerBox() {
+		super();
 	}
 
 	@Override

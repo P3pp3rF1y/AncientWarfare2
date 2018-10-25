@@ -12,9 +12,6 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
-import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
-
-import java.util.List;
 
 public class TemplateRuleBanner extends TemplateRuleBlockTile {
 	public static final String PLUGIN_NAME = "banner";
@@ -23,8 +20,8 @@ public class TemplateRuleBanner extends TemplateRuleBlockTile {
 		super(world, pos, state.getBlock() == Blocks.STANDING_BANNER ? BlockTools.rotateFacing(state.withRotation(Rotation.values()[turns % 4]), turns) : state, turns);
 	}
 
-	public TemplateRuleBanner(int ruleNumber, List<String> lines) throws TemplateParsingException.TemplateRuleParsingException {
-		super(ruleNumber, lines);
+	public TemplateRuleBanner() {
+		super();
 	}
 
 	@Override

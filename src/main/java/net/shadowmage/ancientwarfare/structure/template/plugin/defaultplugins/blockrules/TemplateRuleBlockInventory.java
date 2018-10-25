@@ -16,12 +16,10 @@ import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
-import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class TemplateRuleBlockInventory extends TemplateRuleBlockTile {
@@ -30,9 +28,13 @@ public class TemplateRuleBlockInventory extends TemplateRuleBlockTile {
 	public static final String PLUGIN_NAME = "inventory";
 	private static final String SIDED_INVENTORIES_TAG = "sidedInventories";
 	private static final String LEGACY_FEATURES_TAG = "legacyFeatures";
-	private boolean legacyFeatures = false;
+	private boolean legacyFeatures;
 	private int randomLootLevel;
-	private Map<EnumFacing, NonNullList<ItemStack>> inventoryStacks = new HashMap<>();
+	private Map<EnumFacing, NonNullList<ItemStack>> inventoryStacks;
+
+	public TemplateRuleBlockInventory() {
+		super();
+	}
 
 	public TemplateRuleBlockInventory(World world, BlockPos pos, IBlockState state, int turns) {
 		this(world, pos, state, turns, new EnumFacing[] {null}, false);
@@ -68,10 +70,6 @@ public class TemplateRuleBlockInventory extends TemplateRuleBlockTile {
 				this.randomLootLevel = 3;
 			}
 		}
-	}
-
-	public TemplateRuleBlockInventory(int ruleNumber, List<String> lines) throws TemplateParsingException.TemplateRuleParsingException {
-		super(ruleNumber, lines);
 	}
 
 	@Override
@@ -147,8 +145,8 @@ public class TemplateRuleBlockInventory extends TemplateRuleBlockTile {
 	}
 
 	@Override
-	public void parseRuleData(NBTTagCompound tag) {
-		super.parseRuleData(tag);
+	public void parseRule(NBTTagCompound tag) {
+		super.parseRule(tag);
 		if (tag.hasKey(INVENTORY_DATA_TAG)) {
 			parseInventoryForSide(tag, null);
 		}
