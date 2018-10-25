@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.EntityHanging;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -10,8 +9,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.shadowmage.ancientwarfare.structure.api.StructureContentPlugin;
 import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
-import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleBlockTile;
-import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleModBlocks;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.entityrules.TemplateRuleEntityHanging;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.entityrules.TemplateRuleEntityLogic;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.entityrules.TemplateRuleVanillaEntity;
@@ -28,16 +25,6 @@ public class StructurePluginModDefault implements StructureContentPlugin {
 
 	@Override
 	public void addHandledBlocks(StructurePluginManager manager) {
-		for (Block block : Block.REGISTRY) {
-			//noinspection ConstantConditions counting on all blocks being registered
-			if (block.getRegistryName().getResourceDomain().equals(mod)) {
-				if (block.hasTileEntity(block.getDefaultState())) {
-					manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, block, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
-				} else {
-					manager.registerBlockHandler(TemplateRuleModBlocks.PLUGIN_NAME, block, TemplateRuleModBlocks::new, TemplateRuleModBlocks::new);
-				}
-			}
-		}
 	}
 
 	@Override

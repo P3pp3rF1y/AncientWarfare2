@@ -99,4 +99,8 @@ public class WorldTools {
 	public static boolean isDaytimeInDimension(World world) {
 		return DIMENSION_DAY_TIMES.getOrDefault(world.provider.getDimension(), World::isDaytime).apply(world);
 	}
+
+	public static boolean hasItemHandler(World world, BlockPos pos) {
+		return getTile(world, pos, TileEntity.class).map(t -> t.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)).orElse(false);
+	}
 }

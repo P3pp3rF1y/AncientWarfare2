@@ -35,7 +35,6 @@ import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.bl
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleFlowerPot;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleFluid;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleTotemPart;
-import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleVanillaBlocks;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleVanillaSkull;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.entityrules.TemplateRuleEntityHanging;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.entityrules.TemplateRuleEntityLogic;
@@ -60,19 +59,20 @@ public class StructurePluginVanillaHandler implements StructureContentPlugin {
 		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, Blocks.COMMAND_BLOCK, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
 		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, Blocks.CHAIN_COMMAND_BLOCK, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
 		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, Blocks.REPEATING_COMMAND_BLOCK, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
-		manager.registerBlockHandler(TemplateRuleBlockInventory.PLUGIN_NAME, Blocks.DISPENSER, TemplateRuleBlockInventory::new, TemplateRuleBlockInventory::new);
-		manager.registerBlockHandler(TemplateRuleBlockInventory.PLUGIN_NAME, Blocks.CHEST, TemplateRuleBlockInventory::new, TemplateRuleBlockInventory::new);
-		manager.registerBlockHandler(TemplateRuleBlockInventory.PLUGIN_NAME, Blocks.DROPPER, TemplateRuleBlockInventory::new, TemplateRuleBlockInventory::new);
-		manager.registerBlockHandler(TemplateRuleBlockInventory.PLUGIN_NAME, Blocks.HOPPER, TemplateRuleBlockInventory::new, TemplateRuleBlockInventory::new);
-		manager.registerBlockHandler(TemplateRuleBlockInventory.PLUGIN_NAME, Blocks.TRAPPED_CHEST, TemplateRuleBlockInventory::new, TemplateRuleBlockInventory::new);
-		manager.registerBlockHandler(TemplateRuleBlockInventory.PLUGIN_NAME, Blocks.FURNACE,
-				(world, pos, state, turns) -> new TemplateRuleBlockInventory(world, pos, state, turns, new EnumFacing[] {null}, false),
+		manager.registerBlockHandler(TemplateRuleBlockInventory.PLUGIN_NAME, Blocks.DISPENSER,
+				(world, pos, state, turns) -> new TemplateRuleBlockInventory(world, pos, state, turns, new EnumFacing[] {null}, true),
 				TemplateRuleBlockInventory::new);
-		manager.registerBlockHandler(TemplateRuleBlockInventory.PLUGIN_NAME, Blocks.LIT_FURNACE,
-				(world, pos, state, turns) -> new TemplateRuleBlockInventory(world, pos, state, turns, new EnumFacing[] {null}, false),
+		manager.registerBlockHandler(TemplateRuleBlockInventory.PLUGIN_NAME, Blocks.CHEST,
+				(world, pos, state, turns) -> new TemplateRuleBlockInventory(world, pos, state, turns, new EnumFacing[] {null}, true),
 				TemplateRuleBlockInventory::new);
-		manager.registerBlockHandler(TemplateRuleBlockInventory.PLUGIN_NAME, Blocks.BREWING_STAND,
-				(world, pos, state, turns) -> new TemplateRuleBlockInventory(world, pos, state, turns, new EnumFacing[] {null}, false),
+		manager.registerBlockHandler(TemplateRuleBlockInventory.PLUGIN_NAME, Blocks.DROPPER,
+				(world, pos, state, turns) -> new TemplateRuleBlockInventory(world, pos, state, turns, new EnumFacing[] {null}, true),
+				TemplateRuleBlockInventory::new);
+		manager.registerBlockHandler(TemplateRuleBlockInventory.PLUGIN_NAME, Blocks.HOPPER,
+				(world, pos, state, turns) -> new TemplateRuleBlockInventory(world, pos, state, turns, new EnumFacing[] {null}, true),
+				TemplateRuleBlockInventory::new);
+		manager.registerBlockHandler(TemplateRuleBlockInventory.PLUGIN_NAME, Blocks.TRAPPED_CHEST,
+				(world, pos, state, turns) -> new TemplateRuleBlockInventory(world, pos, state, turns, new EnumFacing[] {null}, true),
 				TemplateRuleBlockInventory::new);
 		manager.registerBlockHandler(TemplateRuleFlowerPot.PLUGIN_NAME, Blocks.FLOWER_POT, TemplateRuleFlowerPot::new, TemplateRuleFlowerPot::new);
 		manager.registerBlockHandler(TemplateRuleBed.PLUGIN_NAME, Blocks.BED, TemplateRuleBed::new, TemplateRuleBed::new);
@@ -90,10 +90,6 @@ public class StructurePluginVanillaHandler implements StructureContentPlugin {
 		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, AWStructureBlocks.STRUCTURE_BUILDER_TICKED, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
 		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, AWStructureBlocks.SOUND_BLOCK, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
 		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, AWStructureBlocks.ADVANCED_LOOT_CHEST, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
-
-		//noinspection ConstantConditions
-		manager.registerBlockHandler(TemplateRuleVanillaBlocks.PLUGIN_NAME, state -> state.getBlock().getRegistryName().getResourceDomain().equals("minecraft"),
-				TemplateRuleVanillaBlocks::new, TemplateRuleVanillaBlocks::new);
 	}
 
 	@Override

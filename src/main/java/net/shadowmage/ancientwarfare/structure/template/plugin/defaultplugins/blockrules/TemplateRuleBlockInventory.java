@@ -32,10 +32,10 @@ public class TemplateRuleBlockInventory extends TemplateRuleBlockTile {
 	public static final String LEGACY_FEATURES_TAG = "legacyFeatures";
 	private boolean legacyFeatures = false;
 	private int randomLootLevel;
-	private Map<EnumFacing, NonNullList<ItemStack>> inventoryStacks;
+	private Map<EnumFacing, NonNullList<ItemStack>> inventoryStacks = new HashMap<>();
 
 	public TemplateRuleBlockInventory(World world, BlockPos pos, IBlockState state, int turns) {
-		this(world, pos, state, turns, new EnumFacing[] {null}, true);
+		this(world, pos, state, turns, new EnumFacing[] {null}, false);
 	}
 
 	public TemplateRuleBlockInventory(World world, BlockPos pos, IBlockState state, int turns, EnumFacing[] sides, boolean legacyFeatures) {
