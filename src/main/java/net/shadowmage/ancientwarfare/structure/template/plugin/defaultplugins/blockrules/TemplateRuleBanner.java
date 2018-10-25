@@ -20,7 +20,7 @@ public class TemplateRuleBanner extends TemplateRuleBlockTile {
 	public static final String PLUGIN_NAME = "banner";
 
 	public TemplateRuleBanner(World world, BlockPos pos, IBlockState state, int turns) {
-		super(world, pos, state, turns);
+		super(world, pos, state.getBlock() == Blocks.STANDING_BANNER ? BlockTools.rotateFacing(state.withRotation(Rotation.values()[turns % 4]), turns) : state, turns);
 	}
 
 	public TemplateRuleBanner(int ruleNumber, List<String> lines) throws TemplateParsingException.TemplateRuleParsingException {
