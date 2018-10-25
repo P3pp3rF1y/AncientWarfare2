@@ -7,6 +7,10 @@
         {
             "block": {"name": "minecraft:lava", "properties": {"level": "0"}},
             "item": {"name": "minecraft:lava_bucket"}
+        },
+        {
+            "block": {"name": "minecraft:farmland"},
+            "item": {"name": "minecraft:dirt", "data": 0}
         }
     ]
 }
