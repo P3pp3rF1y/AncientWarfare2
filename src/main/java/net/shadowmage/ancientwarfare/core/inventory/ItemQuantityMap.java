@@ -134,6 +134,10 @@ public class ItemQuantityMap {
 		return items;
 	}
 
+	public Map<ItemHashEntry, Integer> getItemCounts() {
+		return map;
+	}
+
 	public void readFromNBT(NBTTagCompound tag) {
 		NBTTagList entryList = tag.getTagList("entryList", Constants.NBT.TAG_COMPOUND);
 		for (int i = 0; i < entryList.tagCount(); i++) {

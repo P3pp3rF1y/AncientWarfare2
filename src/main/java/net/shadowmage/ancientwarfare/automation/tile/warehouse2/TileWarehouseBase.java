@@ -95,6 +95,8 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
 		cachedItemMap.clear();
 
 		scanForInitialTiles();
+
+		WarehouseDebugger.reinitializeItemCounts(world, pos);
 	}
 
 	@Override
@@ -116,6 +118,8 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
 			cachedItemMap.decreaseCount(filter, -change);
 		}
 		updateViewers();
+
+		WarehouseDebugger.changeItemQuantity(world, pos, filter, change);
 	}
 
 	private boolean tryEmptyInterfaces() {

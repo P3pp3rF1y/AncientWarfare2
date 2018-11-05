@@ -10,6 +10,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.storage.MapStorage;
+import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
@@ -102,5 +104,26 @@ public class WorldTools {
 
 	public static boolean hasItemHandler(World world, BlockPos pos) {
 		return getTile(world, pos, TileEntity.class).map(t -> t.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)).orElse(false);
+	}
+
+	public static <T extends WorldSavedData> Optional<T> getWorldSavedData(World world, Class<T> dataClazz, String name, boolean perWorldStorage) {
+		MapStorage storage = perWorldStorage ? world.getPerWorldStorage() : world.getMapStorage();
+		if (storage == null) {
+			return Optional.empty();
+		}
+
+		//noinspection unchecked
+		T data = (T) storage.getOrLoadData(dataClazz, name);
+		if (data == null) {
+			try {
+				data = dataClazz.getConstructor(String.class).newInstance(name);
+			}
+			catch (Exception e) {
+				throw new IllegalArgumentException("Error instantiating " + dataClazz.toString() + " probably doesn't have ctor with single String parameter");
+			}
+			storage.setData(name, data);
+		}
+
+		return Optional.of(data);
 	}
 }
