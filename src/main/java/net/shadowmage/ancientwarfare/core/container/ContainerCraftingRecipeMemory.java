@@ -19,13 +19,14 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketGui;
 import net.shadowmage.ancientwarfare.core.tile.CraftingRecipeMemory;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 public class ContainerCraftingRecipeMemory {
+	private static final String RECIPE_TAG = "recipe";
+	private static final String FORCE_SET_TAG = "forceSet";
 	private final SlotResearchCrafting craftingSlot;
 	private CraftingRecipeMemory craftingRecipeMemory;
 
@@ -33,6 +34,8 @@ public class ContainerCraftingRecipeMemory {
 	private int selectedRecipeIndex = -1;
 	private boolean recipeUpdateCooldown = false;
 	private long cooldownTime = 0;
+
+	private boolean isOpening = false;
 
 	public List<Slot> getSlots() {
 		return slots;
@@ -52,7 +55,7 @@ public class ContainerCraftingRecipeMemory {
 		return craftingRecipeMemory.craftMatrix;
 	}
 
-	public List<Slot> slots = new ArrayList<>();
+	private List<Slot> slots = new ArrayList<>();
 
 	private List<ICraftingRecipe> recipes = new ArrayList<>();
 	private final World world;
@@ -92,32 +95,29 @@ public class ContainerCraftingRecipeMemory {
 			}
 
 			@Override
-			public void putStack(@Nonnull ItemStack stack) {
-				super.putStack(stack);
-			}
-
-			@Override
 			public void onSlotChanged() {
 				super.onSlotChanged();
 
 				updateRecipes();
 				updateSelectedRecipe();
 			}
+
 		};
 		slots.add(slot);
 
-		int x2, y2, slotNum;
 		for (int y1 = 0; y1 < 3; y1++) {
-			y2 = y1 * 18 + 8;
+			int y2 = y1 * 18 + 8;
 			for (int x1 = 0; x1 < 3; x1++) {
-				x2 = x1 * 18 + 8 + 3 * 18;
-				slotNum = y1 * 3 + x1;
+				int x2 = x1 * 18 + 8 + 3 * 18;
+				int slotNum = y1 * 3 + x1;
 				slot = new Slot(inventory, slotNum, x2, y2) {
 					@Override
 					public void onSlotChanged() {
 						super.onSlotChanged();
-						updateRecipes();
-						updateSelectedRecipe();
+						if (!isOpening) {
+							updateRecipes();
+							updateSelectedRecipe();
+						}
 					}
 				};
 				slots.add(slot);
@@ -143,7 +143,7 @@ public class ContainerCraftingRecipeMemory {
 		if (recipes.stream().anyMatch(r -> r.getRegistryName().equals(craftingRecipeMemory.getRecipe().getRegistryName()))) {
 			setSelectedRecipeIndex(recipes.indexOf(recipes.stream().filter(r -> r.getRegistryName().equals(craftingRecipeMemory.getRecipe().getRegistryName())).findFirst().orElseGet(null)));
 		} else {
-			setSelectedRecipeIndex(recipes.size() == 0 ? -1 : 0);
+			setSelectedRecipeIndex(recipes.isEmpty() ? -1 : 0);
 		}
 	}
 
@@ -190,7 +190,7 @@ public class ContainerCraftingRecipeMemory {
 		if (isUpdatePending()) {
 			updatePending = false;
 			NBTTagCompound data = new NBTTagCompound();
-			data.setString("recipe", craftingRecipeMemory.getRecipe().getRegistryName().toString());
+			data.setString(RECIPE_TAG, craftingRecipeMemory.getRecipe().getRegistryName().toString());
 			NetworkHandler.sendToServer(new PacketGui(data));
 		}
 	}
@@ -218,17 +218,15 @@ public class ContainerCraftingRecipeMemory {
 	}
 
 	public void handleRecipeUpdate(NBTTagCompound tag) {
-		if (tag.hasKey("recipe")) {
-			setRecipe(AWCraftingManager.getRecipe(RecipeResourceLocation.deserialize(tag.getString("recipe"))), tag.getBoolean("forceSet"));
+		if (tag.hasKey(RECIPE_TAG)) {
+			setRecipe(AWCraftingManager.getRecipe(RecipeResourceLocation.deserialize(tag.getString(RECIPE_TAG))), tag.getBoolean(FORCE_SET_TAG));
 			updateSelectedIndex();
 
-			if (world.isRemote && tag.hasKey("forceSet")) {
+			if (world.isRemote && tag.hasKey(FORCE_SET_TAG)) {
 				recipeUpdateCooldown = true;
-				if (recipeUpdateCooldown) {
-					cooldownTime = world.getWorldTime() + 20;
-				}
+				cooldownTime = world.getWorldTime() + 20;
 			} else {
-				updateClients(tag.getString("recipe"));
+				updateClients(tag.getString(RECIPE_TAG));
 			}
 		}
 	}
@@ -240,9 +238,9 @@ public class ContainerCraftingRecipeMemory {
 	private void updateClients(String recipeRegistryName, boolean cooldown) {
 		if (!world.isRemote && isUpdatePending()) {
 			NBTTagCompound data = new NBTTagCompound();
-			data.setString("recipe", recipeRegistryName);
+			data.setString(RECIPE_TAG, recipeRegistryName);
 			if (cooldown) {
-				data.setBoolean("forceSet", true);
+				data.setBoolean(FORCE_SET_TAG, true);
 			}
 			NetworkHandler.sendToAllPlayers(new PacketGui(data));
 		}
@@ -254,6 +252,10 @@ public class ContainerCraftingRecipeMemory {
 
 	public void setUpdatePending() {
 		updatePending = true;
+	}
+
+	public void setOpening(boolean opening) {
+		isOpening = opening;
 	}
 
 	public class OnTakeResult {

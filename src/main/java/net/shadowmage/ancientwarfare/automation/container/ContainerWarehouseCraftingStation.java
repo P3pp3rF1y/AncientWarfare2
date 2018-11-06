@@ -8,6 +8,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
@@ -26,6 +28,7 @@ import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntr
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
 import static net.minecraft.util.EnumActionResult.PASS;
 import static net.minecraft.util.EnumActionResult.SUCCESS;
@@ -84,6 +87,21 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 		if (warehouse != null) {
 			warehouse.addCraftingViewer(this);
 		}
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void setAll(List<ItemStack> p_190896_1_) {
+		containerCrafting.setOpening(true);
+		super.setAll(p_190896_1_);
+		containerCrafting.setOpening(false);
+	}
+
+	@Override
+	public void putStackInSlot(int slotID, ItemStack stack) {
+		containerCrafting.setOpening(true);
+		super.putStackInSlot(slotID, stack);
+		containerCrafting.setOpening(false);
 	}
 
 	@Override
