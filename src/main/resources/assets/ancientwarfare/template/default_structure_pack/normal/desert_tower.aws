@@ -386,7 +386,7 @@ rule:
 plugin=inventory
 number=7
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:1,teData:{x:536,y:26,Items:[{Slot:0b,id:266s,Count:1b,Damage:0s}],z:-1298,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:1,teData:{x:536,y:26,z:-1298,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -394,7 +394,7 @@ rule:
 plugin=inventory
 number=8
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:2,teData:{x:537,y:26,Items:[{Slot:0b,id:264s,Count:1b,Damage:0s}],z:-1298,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:diamond",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:2,teData:{x:537,y:26,z:-1298,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:diamond",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -474,7 +474,7 @@ rule:
 plugin=inventory
 number=18
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:1,teData:{x:536,y:26,Items:[{Slot:0b,id:266s,Count:1b,Damage:0s}],z:-1288,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:1,teData:{x:536,y:26,z:-1288,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -482,7 +482,7 @@ rule:
 plugin=inventory
 number=19
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:1,teData:{x:537,y:26,Items:[{Slot:0b,id:266s,Count:1b,Damage:0s}],z:-1288,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:1,teData:{x:537,y:26,z:-1288,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 

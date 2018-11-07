@@ -306,7 +306,7 @@ rule:
 plugin=blockTile
 number=17
 data:
-JSON:{blockState:{blockName:"minecraft:furnace",properties:{facing:"west"}},buildPass:0,teData:{CookTime:0s,BurnTime:0s,x:53,y:84,Items:[{Slot:1b,id:263s,Count:16b,Damage:1s},{Slot:2b,id:364s,Count:16b,Damage:0s}],z:-75,id:"Furnace"}}
+JSON:{blockState:{blockName:"minecraft:furnace",properties:{facing:"west"}},buildPass:0,teData:{CookTime:0s,BurnTime:0s,x:53,y:84,z:-75,id:"Furnace"}}
 :enddata
 :endrule
 
@@ -466,7 +466,7 @@ rule:
 plugin=vanillaSign
 number=37
 data:
-JSON:{signContents0:"The §r�r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"Pumpkin§r�r",buildPass:2,signContents1:"Bloated§r�r",signContents3:""}
+JSON:{signContents0:"The §r�r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"Pumpkin§r�r",buildPass:2,signContents1:"Bloated§r�r",signContents3:""}
 :enddata
 :endrule
 
@@ -474,7 +474,7 @@ rule:
 plugin=vanillaSign
 number=38
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"east"}},signContents2:"Grill§r�r",buildPass:2,signContents1:"Bar &§r�r",signContents3:""}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"east"}},signContents2:"Grill§r�r",buildPass:2,signContents1:"Bar &§r�r",signContents3:""}
 :enddata
 :endrule
 
@@ -482,7 +482,7 @@ rule:
 plugin=vanillaSign
 number=39
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"Grill§r�r",buildPass:2,signContents1:"Bar &§r�r",signContents3:""}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"Grill§r�r",buildPass:2,signContents1:"Bar &§r�r",signContents3:""}
 :enddata
 :endrule
 
@@ -490,7 +490,7 @@ rule:
 plugin=vanillaSign
 number=40
 data:
-JSON:{signContents0:"The§r�r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"east"}},signContents2:"Pumpkin§r�r",buildPass:2,signContents1:"Bloated§r�r",signContents3:""}
+JSON:{signContents0:"The§r�r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"east"}},signContents2:"Pumpkin§r�r",buildPass:2,signContents1:"Bloated§r�r",signContents3:""}
 :enddata
 :endrule
 

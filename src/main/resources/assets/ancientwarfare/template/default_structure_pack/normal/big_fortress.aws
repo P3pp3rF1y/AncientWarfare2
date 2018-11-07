@@ -1720,7 +1720,7 @@ rule:
 plugin=inventory
 number=30
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:1,teData:{x:498,y:23,Items:[{Slot:0b,id:266s,Count:1b,Damage:0s}],z:-1336,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:1,teData:{x:498,y:23,z:-1336,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -1728,7 +1728,7 @@ rule:
 plugin=inventory
 number=31
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:1,teData:{x:499,y:23,Items:[{Slot:0b,id:266s,Count:1b,Damage:0s}],z:-1336,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:1,teData:{x:499,y:23,z:-1336,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -1736,7 +1736,7 @@ rule:
 plugin=inventory
 number=32
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:1,teData:{x:493,y:23,Items:[{Slot:0b,id:266s,Count:1b,Damage:0s}],z:-1335,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:1,teData:{x:493,y:23,z:-1335,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -1744,7 +1744,7 @@ rule:
 plugin=inventory
 number=33
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:2,teData:{x:500,y:23,Items:[{Slot:0b,id:264s,Count:1b,Damage:0s}],z:-1335,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:diamond",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:2,teData:{x:500,y:23,z:-1335,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:diamond",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -1752,7 +1752,7 @@ rule:
 plugin=inventory
 number=34
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:1,teData:{x:493,y:23,Items:[{Slot:0b,id:266s,Count:1b,Damage:0s}],z:-1334,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:1,teData:{x:493,y:23,z:-1334,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -1760,7 +1760,7 @@ rule:
 plugin=inventory
 number=35
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:2,teData:{x:500,y:23,Items:[{Slot:0b,id:264s,Count:1b,Damage:0s}],z:-1334,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:diamond",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:2,teData:{x:500,y:23,z:-1334,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:diamond",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -1768,7 +1768,7 @@ rule:
 plugin=inventory
 number=36
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:1,teData:{x:493,y:23,Items:[{Slot:0b,id:266s,Count:1b,Damage:0s}],z:-1331,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:1,teData:{x:493,y:23,z:-1331,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -1776,7 +1776,7 @@ rule:
 plugin=inventory
 number=37
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:2,teData:{x:500,y:23,Items:[{Slot:0b,id:264s,Count:1b,Damage:0s}],z:-1331,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:diamond",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:2,teData:{x:500,y:23,z:-1331,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:diamond",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -1784,7 +1784,7 @@ rule:
 plugin=inventory
 number=38
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:1,teData:{x:493,y:23,Items:[{Slot:0b,id:266s,Count:1b,Damage:0s}],z:-1330,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:1,teData:{x:493,y:23,z:-1330,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:gold_ingot",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -1792,7 +1792,7 @@ rule:
 plugin=inventory
 number=39
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:2,teData:{x:500,y:23,Items:[{Slot:0b,id:264s,Count:1b,Damage:0s}],z:-1330,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:diamond",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:2,teData:{x:500,y:23,z:-1330,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:diamond",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -1800,7 +1800,7 @@ rule:
 plugin=inventory
 number=40
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},buildPass:0,lootLevel:3,teData:{x:494,y:23,Items:[{Slot:0b,id:388s,Count:1b,Damage:0s}],z:-1329,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:emerald",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},buildPass:0,lootLevel:3,teData:{x:494,y:23,z:-1329,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:emerald",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -1808,7 +1808,7 @@ rule:
 plugin=inventory
 number=41
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},buildPass:0,lootLevel:3,teData:{x:495,y:23,Items:[{Slot:0b,id:388s,Count:1b,Damage:0s}],z:-1329,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:emerald",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},buildPass:0,lootLevel:3,teData:{x:495,y:23,z:-1329,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:emerald",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -1816,7 +1816,7 @@ rule:
 plugin=inventory
 number=42
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},buildPass:0,lootLevel:3,teData:{x:498,y:23,Items:[{Slot:0b,id:388s,Count:1b,Damage:0s}],z:-1329,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:emerald",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},buildPass:0,lootLevel:3,teData:{x:498,y:23,z:-1329,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:emerald",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -1824,7 +1824,7 @@ rule:
 plugin=inventory
 number=43
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},buildPass:0,lootLevel:3,teData:{x:499,y:23,Items:[{Slot:0b,id:388s,Count:1b,Damage:0s}],z:-1329,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:emerald",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},buildPass:0,lootLevel:3,teData:{x:499,y:23,z:-1329,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:emerald",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -1832,7 +1832,7 @@ rule:
 plugin=inventory
 number=44
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{x:512,y:23,Items:[{Slot:0b,id:297s,Count:10b,Damage:0s},{Slot:1b,id:364s,Count:10b,Damage:0s},{Slot:2b,id:366s,Count:10b,Damage:0s},{Slot:3b,id:350s,Count:10b,Damage:0s},{Slot:4b,id:260s,Count:10b,Damage:0s},{Slot:5b,id:320s,Count:10b,Damage:0s}],z:-1309,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:bread",Count:10b,slot:0,Damage:0s},{id:"minecraft:cooked_beef",Count:10b,slot:1,Damage:0s},{id:"minecraft:cooked_chicken",Count:10b,slot:2,Damage:0s},{id:"minecraft:cooked_fish",Count:10b,slot:3,Damage:0s},{id:"minecraft:apple",Count:10b,slot:4,Damage:0s},{id:"minecraft:cooked_porkchop",Count:10b,slot:5,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{x:512,y:23,z:-1309,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:bread",Count:10b,slot:0,Damage:0s},{id:"minecraft:cooked_beef",Count:10b,slot:1,Damage:0s},{id:"minecraft:cooked_chicken",Count:10b,slot:2,Damage:0s},{id:"minecraft:cooked_fish",Count:10b,slot:3,Damage:0s},{id:"minecraft:apple",Count:10b,slot:4,Damage:0s},{id:"minecraft:cooked_porkchop",Count:10b,slot:5,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -1848,7 +1848,7 @@ rule:
 plugin=inventory
 number=46
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{x:515,y:23,Items:[{Slot:0b,id:297s,Count:10b,Damage:0s},{Slot:1b,id:364s,Count:10b,Damage:0s},{Slot:2b,id:366s,Count:10b,Damage:0s},{Slot:3b,id:350s,Count:10b,Damage:0s},{Slot:4b,id:260s,Count:10b,Damage:0s},{Slot:5b,id:320s,Count:10b,Damage:0s}],z:-1309,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:bread",Count:10b,slot:0,Damage:0s},{id:"minecraft:cooked_beef",Count:10b,slot:1,Damage:0s},{id:"minecraft:cooked_chicken",Count:10b,slot:2,Damage:0s},{id:"minecraft:cooked_fish",Count:10b,slot:3,Damage:0s},{id:"minecraft:apple",Count:10b,slot:4,Damage:0s},{id:"minecraft:cooked_porkchop",Count:10b,slot:5,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{x:515,y:23,z:-1309,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:bread",Count:10b,slot:0,Damage:0s},{id:"minecraft:cooked_beef",Count:10b,slot:1,Damage:0s},{id:"minecraft:cooked_chicken",Count:10b,slot:2,Damage:0s},{id:"minecraft:cooked_fish",Count:10b,slot:3,Damage:0s},{id:"minecraft:apple",Count:10b,slot:4,Damage:0s},{id:"minecraft:cooked_porkchop",Count:10b,slot:5,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -1864,7 +1864,7 @@ rule:
 plugin=inventory
 number=48
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{x:518,y:23,Items:[{Slot:0b,id:297s,Count:10b,Damage:0s},{Slot:1b,id:364s,Count:10b,Damage:0s},{Slot:2b,id:366s,Count:10b,Damage:0s},{Slot:3b,id:350s,Count:10b,Damage:0s},{Slot:4b,id:320s,Count:10b,Damage:0s},{Slot:5b,id:260s,Count:10b,Damage:0s}],z:-1309,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:bread",Count:10b,slot:0,Damage:0s},{id:"minecraft:cooked_beef",Count:10b,slot:1,Damage:0s},{id:"minecraft:cooked_chicken",Count:10b,slot:2,Damage:0s},{id:"minecraft:cooked_fish",Count:10b,slot:3,Damage:0s},{id:"minecraft:cooked_porkchop",Count:10b,slot:4,Damage:0s},{id:"minecraft:apple",Count:10b,slot:5,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{x:518,y:23,z:-1309,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:bread",Count:10b,slot:0,Damage:0s},{id:"minecraft:cooked_beef",Count:10b,slot:1,Damage:0s},{id:"minecraft:cooked_chicken",Count:10b,slot:2,Damage:0s},{id:"minecraft:cooked_fish",Count:10b,slot:3,Damage:0s},{id:"minecraft:cooked_porkchop",Count:10b,slot:4,Damage:0s},{id:"minecraft:apple",Count:10b,slot:5,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -1880,7 +1880,7 @@ rule:
 plugin=inventory
 number=50
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:0,teData:{x:512,y:23,Items:[{Slot:0b,id:297s,Count:10b,Damage:0s},{Slot:1b,id:364s,Count:10b,Damage:0s},{Slot:2b,id:366s,Count:10b,Damage:0s},{Slot:3b,id:350s,Count:10b,Damage:0s},{Slot:4b,id:260s,Count:10b,Damage:0s},{Slot:5b,id:320s,Count:10b,Damage:0s}],z:-1307,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:bread",Count:10b,slot:0,Damage:0s},{id:"minecraft:cooked_beef",Count:10b,slot:1,Damage:0s},{id:"minecraft:cooked_chicken",Count:10b,slot:2,Damage:0s},{id:"minecraft:cooked_fish",Count:10b,slot:3,Damage:0s},{id:"minecraft:apple",Count:10b,slot:4,Damage:0s},{id:"minecraft:cooked_porkchop",Count:10b,slot:5,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:0,teData:{x:512,y:23,z:-1307,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:bread",Count:10b,slot:0,Damage:0s},{id:"minecraft:cooked_beef",Count:10b,slot:1,Damage:0s},{id:"minecraft:cooked_chicken",Count:10b,slot:2,Damage:0s},{id:"minecraft:cooked_fish",Count:10b,slot:3,Damage:0s},{id:"minecraft:apple",Count:10b,slot:4,Damage:0s},{id:"minecraft:cooked_porkchop",Count:10b,slot:5,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -1920,7 +1920,7 @@ rule:
 plugin=inventory
 number=55
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:0,teData:{x:512,y:23,Items:[{Slot:0b,id:297s,Count:10b,Damage:0s},{Slot:1b,id:364s,Count:10b,Damage:0s},{Slot:2b,id:366s,Count:10b,Damage:0s},{Slot:3b,id:350s,Count:10b,Damage:0s},{Slot:4b,id:260s,Count:10b,Damage:0s},{Slot:5b,id:320s,Count:10b,Damage:0s}],z:-1304,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:bread",Count:10b,slot:0,Damage:0s},{id:"minecraft:cooked_beef",Count:10b,slot:1,Damage:0s},{id:"minecraft:cooked_chicken",Count:10b,slot:2,Damage:0s},{id:"minecraft:cooked_fish",Count:10b,slot:3,Damage:0s},{id:"minecraft:apple",Count:10b,slot:4,Damage:0s},{id:"minecraft:cooked_porkchop",Count:10b,slot:5,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:0,teData:{x:512,y:23,z:-1304,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:bread",Count:10b,slot:0,Damage:0s},{id:"minecraft:cooked_beef",Count:10b,slot:1,Damage:0s},{id:"minecraft:cooked_chicken",Count:10b,slot:2,Damage:0s},{id:"minecraft:cooked_fish",Count:10b,slot:3,Damage:0s},{id:"minecraft:apple",Count:10b,slot:4,Damage:0s},{id:"minecraft:cooked_porkchop",Count:10b,slot:5,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -1928,7 +1928,7 @@ rule:
 plugin=inventory
 number=56
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},buildPass:0,lootLevel:0,teData:{x:513,y:23,Items:[{Slot:0b,id:297s,Count:10b,Damage:0s},{Slot:1b,id:364s,Count:10b,Damage:0s},{Slot:2b,id:350s,Count:10b,Damage:0s},{Slot:3b,id:366s,Count:10b,Damage:0s},{Slot:4b,id:260s,Count:10b,Damage:0s},{Slot:5b,id:320s,Count:10b,Damage:0s}],z:-1303,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:bread",Count:10b,slot:0,Damage:0s},{id:"minecraft:cooked_beef",Count:10b,slot:1,Damage:0s},{id:"minecraft:cooked_fish",Count:10b,slot:2,Damage:0s},{id:"minecraft:cooked_chicken",Count:10b,slot:3,Damage:0s},{id:"minecraft:apple",Count:10b,slot:4,Damage:0s},{id:"minecraft:cooked_porkchop",Count:10b,slot:5,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},buildPass:0,lootLevel:0,teData:{x:513,y:23,z:-1303,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:bread",Count:10b,slot:0,Damage:0s},{id:"minecraft:cooked_beef",Count:10b,slot:1,Damage:0s},{id:"minecraft:cooked_fish",Count:10b,slot:2,Damage:0s},{id:"minecraft:cooked_chicken",Count:10b,slot:3,Damage:0s},{id:"minecraft:apple",Count:10b,slot:4,Damage:0s},{id:"minecraft:cooked_porkchop",Count:10b,slot:5,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -2088,7 +2088,7 @@ rule:
 plugin=inventory
 number=76
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:0,teData:{x:475,y:27,Items:[{Slot:0b,id:301s,Count:1b,Damage:0s},{Slot:1b,id:298s,Count:1b,Damage:0s},{Slot:2b,id:289s,Count:2b,Damage:0s},{Slot:3b,id:325s,Count:1b,Damage:0s},{Slot:4b,id:297s,Count:1b,Damage:0s},{Slot:5b,id:265s,Count:4b,Damage:0s}],z:-1344,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_boots",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_helmet",Count:1b,slot:1,Damage:0s},{id:"minecraft:gunpowder",Count:2b,slot:2,Damage:0s},{id:"minecraft:bucket",Count:1b,slot:3,Damage:0s},{id:"minecraft:bread",Count:1b,slot:4,Damage:0s},{id:"minecraft:iron_ingot",Count:4b,slot:5,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:0,teData:{x:475,y:27,z:-1344,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_boots",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_helmet",Count:1b,slot:1,Damage:0s},{id:"minecraft:gunpowder",Count:2b,slot:2,Damage:0s},{id:"minecraft:bucket",Count:1b,slot:3,Damage:0s},{id:"minecraft:bread",Count:1b,slot:4,Damage:0s},{id:"minecraft:iron_ingot",Count:4b,slot:5,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -2096,7 +2096,7 @@ rule:
 plugin=inventory
 number=77
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{x:483,y:27,Items:[{Slot:0b,id:301s,Count:1b,Damage:0s},{Slot:1b,id:298s,Count:1b,Damage:0s},{Slot:2b,id:289s,Count:3b,Damage:0s},{Slot:3b,id:325s,Count:1b,Damage:0s},{Slot:4b,id:265s,Count:4b,Damage:0s},{Slot:5b,id:296s,Count:4b,Damage:0s}],z:-1344,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_boots",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_helmet",Count:1b,slot:1,Damage:0s},{id:"minecraft:gunpowder",Count:3b,slot:2,Damage:0s},{id:"minecraft:bucket",Count:1b,slot:3,Damage:0s},{id:"minecraft:iron_ingot",Count:4b,slot:4,Damage:0s},{id:"minecraft:wheat",Count:4b,slot:5,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{x:483,y:27,z:-1344,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_boots",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_helmet",Count:1b,slot:1,Damage:0s},{id:"minecraft:gunpowder",Count:3b,slot:2,Damage:0s},{id:"minecraft:bucket",Count:1b,slot:3,Damage:0s},{id:"minecraft:iron_ingot",Count:4b,slot:4,Damage:0s},{id:"minecraft:wheat",Count:4b,slot:5,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -2104,7 +2104,7 @@ rule:
 plugin=inventory
 number=78
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:0,teData:{x:511,y:27,Items:[{Slot:0b,id:301s,Count:1b,Damage:0s},{Slot:1b,id:299s,Count:1b,Damage:0s},{Slot:18b,id:265s,Count:1b,Damage:0s},{Slot:20b,id:297s,Count:2b,Damage:0s},{Slot:21b,id:287s,Count:3b,Damage:0s},{Slot:22b,id:296s,Count:1b,Damage:0s},{Slot:24b,id:296s,Count:1b,Damage:0s}],z:-1344,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_boots",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_chestplate",Count:1b,slot:1,Damage:0s},{id:"minecraft:iron_ingot",Count:1b,slot:18,Damage:0s},{id:"minecraft:bread",Count:2b,slot:20,Damage:0s},{id:"minecraft:string",Count:3b,slot:21,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:22,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:24,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:0,teData:{x:511,y:27,z:-1344,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_boots",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_chestplate",Count:1b,slot:1,Damage:0s},{id:"minecraft:iron_ingot",Count:1b,slot:18,Damage:0s},{id:"minecraft:bread",Count:2b,slot:20,Damage:0s},{id:"minecraft:string",Count:3b,slot:21,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:22,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:24,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -2112,7 +2112,7 @@ rule:
 plugin=inventory
 number=79
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{x:519,y:27,Items:[{Slot:0b,id:299s,Count:1b,Damage:0s},{Slot:1b,id:298s,Count:1b,Damage:0s},{Slot:11b,id:297s,Count:1b,Damage:0s},{Slot:12b,id:287s,Count:2b,Damage:0s},{Slot:21b,id:296s,Count:1b,Damage:0s},{Slot:23b,id:265s,Count:2b,Damage:0s}],z:-1344,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_chestplate",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_helmet",Count:1b,slot:1,Damage:0s},{id:"minecraft:bread",Count:1b,slot:11,Damage:0s},{id:"minecraft:string",Count:2b,slot:12,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:21,Damage:0s},{id:"minecraft:iron_ingot",Count:2b,slot:23,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{x:519,y:27,z:-1344,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_chestplate",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_helmet",Count:1b,slot:1,Damage:0s},{id:"minecraft:bread",Count:1b,slot:11,Damage:0s},{id:"minecraft:string",Count:2b,slot:12,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:21,Damage:0s},{id:"minecraft:iron_ingot",Count:2b,slot:23,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -2176,7 +2176,7 @@ rule:
 plugin=inventory
 number=87
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:0,teData:{x:475,y:27,Items:[{Slot:0b,id:300s,Count:1b,Damage:0s},{Slot:1b,id:299s,Count:1b,Damage:0s},{Slot:2b,id:289s,Count:3b,Damage:0s},{Slot:3b,id:325s,Count:1b,Damage:0s},{Slot:4b,id:265s,Count:4b,Damage:0s},{Slot:5b,id:297s,Count:1b,Damage:0s}],z:-1340,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_leggings",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_chestplate",Count:1b,slot:1,Damage:0s},{id:"minecraft:gunpowder",Count:3b,slot:2,Damage:0s},{id:"minecraft:bucket",Count:1b,slot:3,Damage:0s},{id:"minecraft:iron_ingot",Count:4b,slot:4,Damage:0s},{id:"minecraft:bread",Count:1b,slot:5,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:0,teData:{x:475,y:27,z:-1340,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_leggings",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_chestplate",Count:1b,slot:1,Damage:0s},{id:"minecraft:gunpowder",Count:3b,slot:2,Damage:0s},{id:"minecraft:bucket",Count:1b,slot:3,Damage:0s},{id:"minecraft:iron_ingot",Count:4b,slot:4,Damage:0s},{id:"minecraft:bread",Count:1b,slot:5,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -2192,7 +2192,7 @@ rule:
 plugin=inventory
 number=89
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:0,teData:{x:511,y:27,Items:[{Slot:0b,id:300s,Count:1b,Damage:0s},{Slot:1b,id:299s,Count:1b,Damage:0s},{Slot:13b,id:265s,Count:1b,Damage:0s},{Slot:19b,id:297s,Count:1b,Damage:0s},{Slot:20b,id:287s,Count:2b,Damage:0s},{Slot:23b,id:296s,Count:2b,Damage:0s}],z:-1340,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_leggings",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_chestplate",Count:1b,slot:1,Damage:0s},{id:"minecraft:iron_ingot",Count:1b,slot:13,Damage:0s},{id:"minecraft:bread",Count:1b,slot:19,Damage:0s},{id:"minecraft:string",Count:2b,slot:20,Damage:0s},{id:"minecraft:wheat",Count:2b,slot:23,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:0,teData:{x:511,y:27,z:-1340,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_leggings",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_chestplate",Count:1b,slot:1,Damage:0s},{id:"minecraft:iron_ingot",Count:1b,slot:13,Damage:0s},{id:"minecraft:bread",Count:1b,slot:19,Damage:0s},{id:"minecraft:string",Count:2b,slot:20,Damage:0s},{id:"minecraft:wheat",Count:2b,slot:23,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -2200,7 +2200,7 @@ rule:
 plugin=inventory
 number=90
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{x:519,y:27,Items:[{Slot:0b,id:301s,Count:1b,Damage:0s},{Slot:1b,id:298s,Count:1b,Damage:0s},{Slot:20b,id:287s,Count:2b,Damage:0s},{Slot:21b,id:296s,Count:1b,Damage:0s},{Slot:22b,id:289s,Count:3b,Damage:0s}],z:-1340,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_boots",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_helmet",Count:1b,slot:1,Damage:0s},{id:"minecraft:string",Count:2b,slot:20,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:21,Damage:0s},{id:"minecraft:gunpowder",Count:3b,slot:22,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{x:519,y:27,z:-1340,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_boots",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_helmet",Count:1b,slot:1,Damage:0s},{id:"minecraft:string",Count:2b,slot:20,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:21,Damage:0s},{id:"minecraft:gunpowder",Count:3b,slot:22,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -2216,7 +2216,7 @@ rule:
 plugin=inventory
 number=92
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},buildPass:0,lootLevel:0,teData:{x:477,y:27,Items:[{Slot:0b,id:301s,Count:1b,Damage:0s},{Slot:1b,id:299s,Count:1b,Damage:0s},{Slot:2b,id:289s,Count:2b,Damage:0s},{Slot:3b,id:325s,Count:1b,Damage:0s},{Slot:4b,id:287s,Count:3b,Damage:0s},{Slot:5b,id:297s,Count:1b,Damage:0s}],z:-1338,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_boots",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_chestplate",Count:1b,slot:1,Damage:0s},{id:"minecraft:gunpowder",Count:2b,slot:2,Damage:0s},{id:"minecraft:bucket",Count:1b,slot:3,Damage:0s},{id:"minecraft:string",Count:3b,slot:4,Damage:0s},{id:"minecraft:bread",Count:1b,slot:5,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},buildPass:0,lootLevel:0,teData:{x:477,y:27,z:-1338,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_boots",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_chestplate",Count:1b,slot:1,Damage:0s},{id:"minecraft:gunpowder",Count:2b,slot:2,Damage:0s},{id:"minecraft:bucket",Count:1b,slot:3,Damage:0s},{id:"minecraft:string",Count:3b,slot:4,Damage:0s},{id:"minecraft:bread",Count:1b,slot:5,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -2232,7 +2232,7 @@ rule:
 plugin=inventory
 number=94
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},buildPass:0,lootLevel:0,teData:{x:481,y:27,Items:[{Slot:0b,id:298s,Count:1b,Damage:0s},{Slot:1b,id:300s,Count:1b,Damage:0s},{Slot:2b,id:265s,Count:4b,Damage:0s},{Slot:3b,id:297s,Count:1b,Damage:0s},{Slot:4b,id:325s,Count:1b,Damage:0s},{Slot:5b,id:289s,Count:3b,Damage:0s}],z:-1338,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_helmet",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_leggings",Count:1b,slot:1,Damage:0s},{id:"minecraft:iron_ingot",Count:4b,slot:2,Damage:0s},{id:"minecraft:bread",Count:1b,slot:3,Damage:0s},{id:"minecraft:bucket",Count:1b,slot:4,Damage:0s},{id:"minecraft:gunpowder",Count:3b,slot:5,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},buildPass:0,lootLevel:0,teData:{x:481,y:27,z:-1338,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_helmet",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_leggings",Count:1b,slot:1,Damage:0s},{id:"minecraft:iron_ingot",Count:4b,slot:2,Damage:0s},{id:"minecraft:bread",Count:1b,slot:3,Damage:0s},{id:"minecraft:bucket",Count:1b,slot:4,Damage:0s},{id:"minecraft:gunpowder",Count:3b,slot:5,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -2248,7 +2248,7 @@ rule:
 plugin=inventory
 number=96
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},buildPass:0,lootLevel:0,teData:{x:517,y:27,Items:[{Slot:0b,id:300s,Count:1b,Damage:0s},{Slot:1b,id:301s,Count:1b,Damage:0s},{Slot:3b,id:296s,Count:2b,Damage:0s},{Slot:10b,id:265s,Count:1b,Damage:0s},{Slot:12b,id:296s,Count:1b,Damage:0s},{Slot:13b,id:297s,Count:2b,Damage:0s},{Slot:19b,id:289s,Count:1b,Damage:0s},{Slot:21b,id:265s,Count:1b,Damage:0s},{Slot:23b,id:287s,Count:1b,Damage:0s}],z:-1338,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_leggings",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_boots",Count:1b,slot:1,Damage:0s},{id:"minecraft:wheat",Count:2b,slot:3,Damage:0s},{id:"minecraft:iron_ingot",Count:1b,slot:10,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:12,Damage:0s},{id:"minecraft:bread",Count:2b,slot:13,Damage:0s},{id:"minecraft:gunpowder",Count:1b,slot:19,Damage:0s},{id:"minecraft:iron_ingot",Count:1b,slot:21,Damage:0s},{id:"minecraft:string",Count:1b,slot:23,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},buildPass:0,lootLevel:0,teData:{x:517,y:27,z:-1338,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_leggings",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_boots",Count:1b,slot:1,Damage:0s},{id:"minecraft:wheat",Count:2b,slot:3,Damage:0s},{id:"minecraft:iron_ingot",Count:1b,slot:10,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:12,Damage:0s},{id:"minecraft:bread",Count:2b,slot:13,Damage:0s},{id:"minecraft:gunpowder",Count:1b,slot:19,Damage:0s},{id:"minecraft:iron_ingot",Count:1b,slot:21,Damage:0s},{id:"minecraft:string",Count:1b,slot:23,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -2344,7 +2344,7 @@ rule:
 plugin=inventory
 number=108
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{x:514,y:27,Items:[{Slot:0b,id:263s,Count:32b,Damage:0s}],z:-1315,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:coal",Count:32b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{x:514,y:27,z:-1315,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:coal",Count:32b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -2360,7 +2360,7 @@ rule:
 plugin=inventory
 number=110
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{x:514,y:27,Items:[{Slot:0b,id:265s,Count:16b,Damage:0s},{Slot:10b,id:4107s,Count:1b,Damage:0s}],z:-1313,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:iron_ingot",Count:16b,slot:0,Damage:0s},{id:"ancientwarfare:iron_hammer",Count:1b,slot:10,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{x:514,y:27,z:-1313,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:iron_ingot",Count:16b,slot:0,Damage:0s},{id:"ancientwarfare:iron_hammer",Count:1b,slot:10,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -2368,7 +2368,7 @@ rule:
 plugin=inventory
 number=111
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{x:514,y:27,Items:[{Slot:0b,id:280s,Count:32b,Damage:0s},{Slot:10b,id:257s,Count:1b,Damage:0s}],z:-1312,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:stick",Count:32b,slot:0,Damage:0s},{id:"minecraft:iron_pickaxe",Count:1b,slot:10,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{x:514,y:27,z:-1312,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:stick",Count:32b,slot:0,Damage:0s},{id:"minecraft:iron_pickaxe",Count:1b,slot:10,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -2568,7 +2568,7 @@ rule:
 plugin=inventory
 number=136
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{x:483,y:32,Items:[{Slot:0b,id:299s,Count:1b,Damage:0s},{Slot:1b,id:300s,Count:1b,Damage:0s},{Slot:2b,id:287s,Count:3b,Damage:0s},{Slot:3b,id:296s,Count:7b,Damage:0s},{Slot:4b,id:325s,Count:1b,Damage:0s},{Slot:5b,id:289s,Count:3b,Damage:0s}],z:-1344,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_chestplate",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_leggings",Count:1b,slot:1,Damage:0s},{id:"minecraft:string",Count:3b,slot:2,Damage:0s},{id:"minecraft:wheat",Count:7b,slot:3,Damage:0s},{id:"minecraft:bucket",Count:1b,slot:4,Damage:0s},{id:"minecraft:gunpowder",Count:3b,slot:5,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{x:483,y:32,z:-1344,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_chestplate",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_leggings",Count:1b,slot:1,Damage:0s},{id:"minecraft:string",Count:3b,slot:2,Damage:0s},{id:"minecraft:wheat",Count:7b,slot:3,Damage:0s},{id:"minecraft:bucket",Count:1b,slot:4,Damage:0s},{id:"minecraft:gunpowder",Count:3b,slot:5,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -2576,7 +2576,7 @@ rule:
 plugin=inventory
 number=137
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:0,teData:{x:511,y:32,Items:[{Slot:0b,id:301s,Count:1b,Damage:0s},{Slot:1b,id:300s,Count:1b,Damage:0s},{Slot:18b,id:289s,Count:2b,Damage:0s},{Slot:20b,id:297s,Count:2b,Damage:0s},{Slot:21b,id:50s,Count:1b,Damage:0s},{Slot:22b,id:296s,Count:1b,Damage:0s},{Slot:23b,id:296s,Count:1b,Damage:0s},{Slot:24b,id:296s,Count:1b,Damage:0s}],z:-1344,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_boots",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_leggings",Count:1b,slot:1,Damage:0s},{id:"minecraft:gunpowder",Count:2b,slot:18,Damage:0s},{id:"minecraft:bread",Count:2b,slot:20,Damage:0s},{id:"minecraft:torch",Count:1b,slot:21,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:22,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:23,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:24,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:0,teData:{x:511,y:32,z:-1344,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_boots",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_leggings",Count:1b,slot:1,Damage:0s},{id:"minecraft:gunpowder",Count:2b,slot:18,Damage:0s},{id:"minecraft:bread",Count:2b,slot:20,Damage:0s},{id:"minecraft:torch",Count:1b,slot:21,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:22,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:23,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:24,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -2584,7 +2584,7 @@ rule:
 plugin=inventory
 number=138
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{x:483,y:32,Items:[{Slot:0b,id:300s,Count:1b,Damage:0s},{Slot:1b,id:298s,Count:1b,Damage:0s},{Slot:2b,id:265s,Count:8b,Damage:0s},{Slot:3b,id:296s,Count:7b,Damage:0s},{Slot:4b,id:289s,Count:3b,Damage:0s}],z:-1340,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_leggings",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_helmet",Count:1b,slot:1,Damage:0s},{id:"minecraft:iron_ingot",Count:8b,slot:2,Damage:0s},{id:"minecraft:wheat",Count:7b,slot:3,Damage:0s},{id:"minecraft:gunpowder",Count:3b,slot:4,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{x:483,y:32,z:-1340,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_leggings",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_helmet",Count:1b,slot:1,Damage:0s},{id:"minecraft:iron_ingot",Count:8b,slot:2,Damage:0s},{id:"minecraft:wheat",Count:7b,slot:3,Damage:0s},{id:"minecraft:gunpowder",Count:3b,slot:4,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -2592,7 +2592,7 @@ rule:
 plugin=inventory
 number=139
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:0,teData:{x:511,y:32,Items:[{Slot:0b,id:298s,Count:1b,Damage:0s},{Slot:1b,id:299s,Count:1b,Damage:0s},{Slot:9b,id:297s,Count:3b,Damage:0s},{Slot:20b,id:50s,Count:1b,Damage:0s},{Slot:21b,id:287s,Count:1b,Damage:0s},{Slot:23b,id:287s,Count:1b,Damage:0s}],z:-1340,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_helmet",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_chestplate",Count:1b,slot:1,Damage:0s},{id:"minecraft:bread",Count:3b,slot:9,Damage:0s},{id:"minecraft:torch",Count:1b,slot:20,Damage:0s},{id:"minecraft:string",Count:1b,slot:21,Damage:0s},{id:"minecraft:string",Count:1b,slot:23,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:0,teData:{x:511,y:32,z:-1340,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_helmet",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_chestplate",Count:1b,slot:1,Damage:0s},{id:"minecraft:bread",Count:3b,slot:9,Damage:0s},{id:"minecraft:torch",Count:1b,slot:20,Damage:0s},{id:"minecraft:string",Count:1b,slot:21,Damage:0s},{id:"minecraft:string",Count:1b,slot:23,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -2600,7 +2600,7 @@ rule:
 plugin=inventory
 number=140
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},buildPass:0,lootLevel:0,teData:{x:477,y:32,Items:[{Slot:0b,id:301s,Count:1b,Damage:0s},{Slot:1b,id:299s,Count:1b,Damage:0s},{Slot:2b,id:289s,Count:2b,Damage:0s},{Slot:3b,id:325s,Count:1b,Damage:0s},{Slot:4b,id:297s,Count:1b,Damage:0s},{Slot:5b,id:265s,Count:4b,Damage:0s},{Slot:6b,id:296s,Count:3b,Damage:0s}],z:-1338,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_boots",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_chestplate",Count:1b,slot:1,Damage:0s},{id:"minecraft:gunpowder",Count:2b,slot:2,Damage:0s},{id:"minecraft:bucket",Count:1b,slot:3,Damage:0s},{id:"minecraft:bread",Count:1b,slot:4,Damage:0s},{id:"minecraft:iron_ingot",Count:4b,slot:5,Damage:0s},{id:"minecraft:wheat",Count:3b,slot:6,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},buildPass:0,lootLevel:0,teData:{x:477,y:32,z:-1338,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_boots",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_chestplate",Count:1b,slot:1,Damage:0s},{id:"minecraft:gunpowder",Count:2b,slot:2,Damage:0s},{id:"minecraft:bucket",Count:1b,slot:3,Damage:0s},{id:"minecraft:bread",Count:1b,slot:4,Damage:0s},{id:"minecraft:iron_ingot",Count:4b,slot:5,Damage:0s},{id:"minecraft:wheat",Count:3b,slot:6,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -2608,7 +2608,7 @@ rule:
 plugin=inventory
 number=141
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},buildPass:0,lootLevel:0,teData:{x:517,y:32,Items:[{Slot:0b,id:300s,Count:1b,Damage:0s},{Slot:1b,id:298s,Count:1b,Damage:0s},{Slot:2b,id:265s,Count:1b,Damage:0s},{Slot:9b,id:50s,Count:1b,Damage:0s},{Slot:10b,id:297s,Count:3b,Damage:0s},{Slot:11b,id:265s,Count:1b,Damage:0s}],z:-1338,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_leggings",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_helmet",Count:1b,slot:1,Damage:0s},{id:"minecraft:iron_ingot",Count:1b,slot:2,Damage:0s},{id:"minecraft:torch",Count:1b,slot:9,Damage:0s},{id:"minecraft:bread",Count:3b,slot:10,Damage:0s},{id:"minecraft:iron_ingot",Count:1b,slot:11,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},buildPass:0,lootLevel:0,teData:{x:517,y:32,z:-1338,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:leather_leggings",Count:1b,slot:0,Damage:0s},{id:"minecraft:leather_helmet",Count:1b,slot:1,Damage:0s},{id:"minecraft:iron_ingot",Count:1b,slot:2,Damage:0s},{id:"minecraft:torch",Count:1b,slot:9,Damage:0s},{id:"minecraft:bread",Count:3b,slot:10,Damage:0s},{id:"minecraft:iron_ingot",Count:1b,slot:11,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -2640,7 +2640,7 @@ rule:
 plugin=inventory
 number=145
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},buildPass:0,lootLevel:2,teData:{x:494,y:32,Items:[{Slot:0b,id:264s,Count:1b,Damage:0s}],z:-1327,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:diamond",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},buildPass:0,lootLevel:2,teData:{x:494,y:32,z:-1327,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:diamond",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
@@ -2648,7 +2648,7 @@ rule:
 plugin=inventory
 number=146
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},buildPass:0,lootLevel:2,teData:{x:500,y:32,Items:[{Slot:0b,id:264s,Count:1b,Damage:0s}],z:-1327,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:diamond",Count:1b,slot:0,Damage:0s}]}}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},buildPass:0,lootLevel:2,teData:{x:500,y:32,z:-1327,id:"Chest"},inventoryData:{length:27,inventoryContents:[{id:"minecraft:diamond",Count:1b,slot:0,Damage:0s}]}}
 :enddata
 :endrule
 
