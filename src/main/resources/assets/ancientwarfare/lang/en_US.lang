@@ -47,7 +47,7 @@ item.component.5.name=Steel Bushing Set
 item.component.6.name=Wooden Torque Shaft
 item.component.7.name=Iron Torque Shaft
 item.component.8.name=Steel Torque Shaft
-item.component.100.name=Food Bundle
+item.food_bundle.name=Food Bundle
 #modeler
 item.editor_opener.name=Model Editor
 #structure
