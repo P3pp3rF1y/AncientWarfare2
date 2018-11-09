@@ -3,6 +3,10 @@ package net.shadowmage.ancientwarfare.structure.template;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityHanging;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
 import net.minecraft.nbt.NBTTagCompound;
@@ -10,15 +14,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.ModContainer;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.api.IStructurePluginRegister;
 import net.shadowmage.ancientwarfare.structure.api.StructureContentPlugin;
 import net.shadowmage.ancientwarfare.structure.api.StructurePluginRegistrationEvent;
-import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
 import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException.TemplateRuleParsingException;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
@@ -27,13 +28,15 @@ import net.shadowmage.ancientwarfare.structure.template.StructureTemplate.Versio
 import net.shadowmage.ancientwarfare.structure.template.datafixes.DataFixManager;
 import net.shadowmage.ancientwarfare.structure.template.datafixes.FixResult;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.StructurePluginAutomation;
-import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.StructurePluginModDefault;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.StructurePluginNpcs;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.StructurePluginVanillaHandler;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.StructurePluginVehicles;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleBlockInventory;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleBlockTile;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleVanillaBlocks;
+import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.entityrules.TemplateRuleEntityHanging;
+import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.entityrules.TemplateRuleEntityLogic;
+import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.entityrules.TemplateRuleVanillaEntity;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -45,7 +48,7 @@ public class StructurePluginManager implements IStructurePluginRegister {
 	private final List<StructureContentPlugin> loadedContentPlugins = new ArrayList<>();
 
 	private final List<RuleHandler<IBlockDataMatcher, IBlockRuleCreator>> blockRuleHandlers = new ArrayList<>();
-	private final List<RuleHandler<Class<? extends Entity>, IEntityRuleCreator>> entityRuleHandlers = new ArrayList<>();
+	private final List<RuleHandler<IEntityMatcher, IEntityRuleCreator>> entityRuleHandlers = new ArrayList<>();
 
 	public static final StructurePluginManager INSTANCE = new StructurePluginManager();
 
@@ -54,12 +57,6 @@ public class StructurePluginManager implements IStructurePluginRegister {
 
 	public void loadPlugins() {
 		addPlugin(new StructurePluginVanillaHandler());
-
-		for (ModContainer container : Loader.instance().getActiveModList()) {
-			if (!isDefaultMods(container.getModId()) && !MinecraftForge.EVENT_BUS.post(new StructurePluginRegistrationEvent(this, container.getModId()))) {
-				addPlugin(new StructurePluginModDefault(container.getModId()));
-			}
-		}
 
 		if (Loader.isModLoaded("ancientwarfarenpc")) {
 			loadNpcPlugin();
@@ -76,6 +73,8 @@ public class StructurePluginManager implements IStructurePluginRegister {
 			plugin.addHandledEntities(this);
 		}
 
+		MinecraftForge.EVENT_BUS.post(new StructurePluginRegistrationEvent(this));
+
 		//noinspection ConstantConditions
 		registerBlockHandler(TemplateRuleBlockInventory.PLUGIN_NAME, (world, pos, state) -> state.getBlock().hasTileEntity(state) && WorldTools.hasItemHandler(world, pos),
 				TemplateRuleBlockInventory::new, TemplateRuleBlockInventory::new);
@@ -83,10 +82,10 @@ public class StructurePluginManager implements IStructurePluginRegister {
 				TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
 		registerBlockHandler(TemplateRuleVanillaBlocks.PLUGIN_NAME, (world, pos, state) -> !state.getBlock().hasTileEntity(state),
 				TemplateRuleVanillaBlocks::new, TemplateRuleVanillaBlocks::new);
-	}
 
-	private boolean isDefaultMods(String modid) {
-		return modid.equals("minecraft") || modid.equals("mcp") || modid.equals("FML") || modid.equals("forge") || modid.startsWith(AncientWarfareCore.MOD_ID);
+		registerEntityHandler(TemplateRuleEntityHanging.PLUGIN_NAME, EntityHanging.class::isAssignableFrom, TemplateRuleVanillaEntity::new, TemplateRuleVanillaEntity::new);
+		registerEntityHandler(TemplateRuleVanillaEntity.PLUGIN_NAME, EntityAnimal.class::isAssignableFrom, TemplateRuleVanillaEntity::new, TemplateRuleVanillaEntity::new);
+		registerEntityHandler(TemplateRuleEntityLogic.PLUGIN_NAME, clazz -> EntityLiving.class.isAssignableFrom(clazz) || IInventory.class.isAssignableFrom(clazz), TemplateRuleVanillaEntity::new, TemplateRuleVanillaEntity::new);
 	}
 
 	private void loadNpcPlugin() {
@@ -130,15 +129,18 @@ public class StructurePluginManager implements IStructurePluginRegister {
 	}
 
 	public Optional<TemplateRuleEntity> getRuleForEntity(World world, Entity entity, int turns, int x, int y, int z) {
-		return entityRuleHandlers.stream().filter(h -> h.obj.isAssignableFrom(entity.getClass())).findFirst().map(h -> h.ruleCreator)
+		return entityRuleHandlers.stream().filter(h -> h.obj.matches(entity.getClass())).findFirst().map(h -> h.ruleCreator)
 				.map(c -> c.create(world, entity, turns, x, y, z));
 	}
 
+	private void registerEntityHandler(String pluginName, IEntityMatcher entityMatcher, IEntityRuleCreator creator, Supplier<TemplateRule> getParser) {
+		entityRuleHandlers.add(new RuleHandler<>(entityMatcher, pluginName, creator, getParser));
+	}
 	public void registerEntityHandler(String pluginName, Class<? extends Entity> entityClass, IEntityRuleCreator creator, Supplier<TemplateRule> getParser) {
-		entityRuleHandlers.add(new RuleHandler<>(entityClass, pluginName, creator, getParser));
+		entityRuleHandlers.add(new RuleHandler<>(entityClass::isAssignableFrom, pluginName, creator, getParser));
 	}
 
-	public void registerBlockHandler(String pluginName, IBlockDataMatcher blockMatcher, IBlockRuleCreator creator, Supplier<TemplateRule> getParser) {
+	private void registerBlockHandler(String pluginName, IBlockDataMatcher blockMatcher, IBlockRuleCreator creator, Supplier<TemplateRule> getParser) {
 		blockRuleHandlers.add(new RuleHandler<>(blockMatcher, pluginName, creator, getParser));
 	}
 
@@ -154,10 +156,9 @@ public class StructurePluginManager implements IStructurePluginRegister {
 		Iterator<String> it = ruleData.iterator();
 		String name = null;
 		int ruleNumber = -1;
-		String line;
 		List<String> ruleDataPackage = new ArrayList<>();
 		while (it.hasNext()) {
-			line = it.next();
+			String line = it.next();
 			if (line.startsWith(ruleType + ":")) {
 				continue;
 			}
@@ -171,13 +172,7 @@ public class StructurePluginManager implements IStructurePluginRegister {
 				ruleNumber = StringTools.safeParseInt("=", line);
 			}
 			if (line.startsWith("data:")) {
-				while (it.hasNext()) {
-					line = it.next();
-					if (line.startsWith(":enddata")) {
-						break;
-					}
-					ruleDataPackage.add(line);
-				}
+				addData(it, ruleDataPackage);
 			}
 		}
 
@@ -211,6 +206,17 @@ public class StructurePluginManager implements IStructurePluginRegister {
 		}
 
 		return resultBuilder.build(actualRule);
+	}
+
+	private static void addData(Iterator<String> it, List<String> ruleDataPackage) {
+		String line;
+		while (it.hasNext()) {
+			line = it.next();
+			if (line.startsWith(":enddata")) {
+				break;
+			}
+			ruleDataPackage.add(line);
+		}
 	}
 
 	private static final String JSON_PREFIX = "JSON:";
@@ -253,11 +259,11 @@ public class StructurePluginManager implements IStructurePluginRegister {
 		TemplateRuleEntity create(World world, Entity entity, int turns, int x, int y, int z);
 	}
 
-	public interface IRuleParser {
-		void parseRule(NBTTagCompound tag) throws TemplateParsingException.TemplateRuleParsingException;
-	}
-
 	private interface IBlockDataMatcher {
 		boolean matches(World world, BlockPos pos, IBlockState state);
+	}
+
+	private interface IEntityMatcher {
+		boolean matches(Class<? extends Entity> entityClass);
 	}
 }
