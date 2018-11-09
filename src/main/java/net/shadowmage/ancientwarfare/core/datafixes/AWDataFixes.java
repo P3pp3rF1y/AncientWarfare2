@@ -4,6 +4,10 @@ import net.minecraft.util.datafix.FixTypes;
 import net.minecraftforge.common.util.CompoundDataFixer;
 import net.minecraftforge.common.util.ModFixs;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.shadowmage.ancientwarfare.automation.datafixes.ItemMapDataWalker;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStorage;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStorageLarge;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStorageMedium;
 import net.shadowmage.ancientwarfare.npc.datafixes.FactionEntityFixer;
 import net.shadowmage.ancientwarfare.npc.datafixes.FactionExpansionEntityFixer;
 import net.shadowmage.ancientwarfare.npc.datafixes.FactionExpansionItemFixer;
@@ -35,5 +39,8 @@ public class AWDataFixes {
 		fixes.registerFix(FixTypes.ITEM_INSTANCE, new RoutingOrderFilterCountsFixer());
 		fixes.registerFix(FixTypes.ITEM_INSTANCE, new RoutingOrderFilterCountsFixer());
 		fixes.registerFix(FixTypes.ITEM_INSTANCE, new FoodBundleDataFixer());
+		dataFixer.registerWalker(FixTypes.BLOCK_ENTITY, new ItemMapDataWalker(
+				new Class<?>[] {TileWarehouseStorage.class, TileWarehouseStorageMedium.class, TileWarehouseStorageLarge.class},
+				"inventory/itemMap/entryList"));
 	}
 }
