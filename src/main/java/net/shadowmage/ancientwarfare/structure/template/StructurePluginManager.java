@@ -4,9 +4,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityHanging;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,7 +20,7 @@ import net.shadowmage.ancientwarfare.structure.api.StructurePluginRegistrationEv
 import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException.TemplateRuleParsingException;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
-import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
+import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntityBase;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate.Version;
 import net.shadowmage.ancientwarfare.structure.template.datafixes.DataFixManager;
 import net.shadowmage.ancientwarfare.structure.template.datafixes.FixResult;
@@ -34,9 +31,8 @@ import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.St
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleBlockInventory;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleBlockTile;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleVanillaBlocks;
+import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.entityrules.TemplateRuleEntity;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.entityrules.TemplateRuleEntityHanging;
-import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.entityrules.TemplateRuleEntityLogic;
-import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.entityrules.TemplateRuleVanillaEntity;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -83,10 +79,8 @@ public class StructurePluginManager implements IStructurePluginRegister {
 		registerBlockHandler(TemplateRuleVanillaBlocks.PLUGIN_NAME, (world, pos, state) -> !state.getBlock().hasTileEntity(state),
 				TemplateRuleVanillaBlocks::new, TemplateRuleVanillaBlocks::new);
 
-		registerEntityHandler(TemplateRuleEntityHanging.PLUGIN_NAME, EntityHanging.class::isAssignableFrom, TemplateRuleVanillaEntity::new, TemplateRuleVanillaEntity::new);
-		registerEntityHandler(TemplateRuleVanillaEntity.PLUGIN_NAME, EntityAnimal.class::isAssignableFrom, TemplateRuleVanillaEntity::new, TemplateRuleVanillaEntity::new);
-		registerEntityHandler(TemplateRuleEntityLogic.PLUGIN_NAME, clazz -> EntityLiving.class.isAssignableFrom(clazz) || IInventory.class.isAssignableFrom(clazz), TemplateRuleVanillaEntity::new, TemplateRuleVanillaEntity::new);
-		registerEntityHandler(TemplateRuleVanillaEntity.PLUGIN_NAME, Entity.class::isAssignableFrom, TemplateRuleVanillaEntity::new, TemplateRuleVanillaEntity::new);
+		registerEntityHandler(TemplateRuleEntityHanging.PLUGIN_NAME, EntityHanging.class::isAssignableFrom, TemplateRuleEntityHanging::new, TemplateRuleEntityHanging::new);
+		registerEntityHandler(TemplateRuleEntity.PLUGIN_NAME, Entity.class::isAssignableFrom, TemplateRuleEntity::new, TemplateRuleEntity::new);
 	}
 
 	private void loadNpcPlugin() {
@@ -129,7 +123,7 @@ public class StructurePluginManager implements IStructurePluginRegister {
 		return blockRuleHandlers.stream().filter(h -> h.obj.matches(world, pos, state)).findFirst();
 	}
 
-	public Optional<TemplateRuleEntity> getRuleForEntity(World world, Entity entity, int turns, int x, int y, int z) {
+	public Optional<TemplateRuleEntityBase> getRuleForEntity(World world, Entity entity, int turns, int x, int y, int z) {
 		return entityRuleHandlers.stream().filter(h -> h.obj.matches(entity.getClass())).findFirst().map(h -> h.ruleCreator)
 				.map(c -> c.create(world, entity, turns, x, y, z));
 	}
@@ -257,7 +251,7 @@ public class StructurePluginManager implements IStructurePluginRegister {
 	}
 
 	public interface IEntityRuleCreator extends IRuleCreator {
-		TemplateRuleEntity create(World world, Entity entity, int turns, int x, int y, int z);
+		TemplateRuleEntityBase create(World world, Entity entity, int turns, int x, int y, int z);
 	}
 
 	private interface IBlockDataMatcher {

@@ -25,7 +25,7 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
-import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
+import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntityBase;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 
 import java.util.Map;
@@ -100,7 +100,7 @@ public class StructureBuilder implements IStructureBuilder {
 	}
 
 	private void placeEntities() {
-		for (TemplateRuleEntity rule : template.getEntityRules().values()) {
+		for (TemplateRuleEntityBase rule : template.getEntityRules().values()) {
 			destination = BlockTools.rotateInArea(rule.getPosition(), template.getSize().getX(), template.getSize().getZ(), turns).add(bb.min);
 			rule.handlePlacement(world, turns, destination, this);
 		}

@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
-import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
+import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntityBase;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
@@ -91,14 +91,14 @@ public class TemplateScanner {
 			}//end scan z-level for
 		}//end scan y-level for
 
-		Map<Integer, TemplateRuleEntity> entityRules = new HashMap<>();
+		Map<Integer, TemplateRuleEntityBase> entityRules = new HashMap<>();
 		List<Entity> entitiesInAABB = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(min.getX(), min.getY(), min.getZ(), max.getX() + 1, max.getY() + 1, max.getZ() + 1));
 		nextRuleID = 0;
 		for (Entity e : entitiesInAABB) {
 			int ex = MathHelper.floor(e.posX);
 			int ey = MathHelper.floor(e.posY);
 			int ez = MathHelper.floor(e.posZ);
-			Optional<TemplateRuleEntity> scannedEntityRule = StructurePluginManager.INSTANCE.getRuleForEntity(world, e, turns, ex, ey, ez);
+			Optional<TemplateRuleEntityBase> scannedEntityRule = StructurePluginManager.INSTANCE.getRuleForEntity(world, e, turns, ex, ey, ez);
 			if (scannedEntityRule.isPresent()) {
 				destination = BlockTools.rotateInArea(new BlockPos(ex, ey, ez).subtract(min), xSize, zSize, turns);
 				scannedEntityRule.get().ruleNumber = nextRuleID;

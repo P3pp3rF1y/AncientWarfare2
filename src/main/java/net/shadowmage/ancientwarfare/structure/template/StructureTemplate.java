@@ -6,7 +6,7 @@ import net.minecraft.util.math.Vec3i;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.MathUtils;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
-import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
+import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntityBase;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
 
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.Set;
 
 public class StructureTemplate {
-	public static final Version CURRENT_VERSION = new Version(2, 6);
+	public static final Version CURRENT_VERSION = new Version(2, 7);
 
 	/*
 	 * base datas
@@ -30,7 +30,7 @@ public class StructureTemplate {
 	 */
 	public final Set<String> modDependencies;
 	private Map<Integer, TemplateRule> blockRules;
-	private Map<Integer, TemplateRuleEntity> entityRules;
+	private Map<Integer, TemplateRuleEntityBase> entityRules;
 	private short[] templateData;
 	private NonNullList<ItemStack> resourceList;
 	private List<ItemStack> remainingStacks;
@@ -55,7 +55,7 @@ public class StructureTemplate {
 		this.offset = offset;
 	}
 
-	public Map<Integer, TemplateRuleEntity> getEntityRules() {
+	public Map<Integer, TemplateRuleEntityBase> getEntityRules() {
 		return entityRules;
 	}
 
@@ -75,7 +75,7 @@ public class StructureTemplate {
 		this.blockRules = rules;
 	}
 
-	public void setEntityRules(Map<Integer, TemplateRuleEntity> rules) {
+	public void setEntityRules(Map<Integer, TemplateRuleEntityBase> rules) {
 		this.entityRules = rules;
 	}
 

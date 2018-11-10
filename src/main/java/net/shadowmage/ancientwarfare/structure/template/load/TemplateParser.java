@@ -7,7 +7,7 @@ import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
 import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException.TemplateRuleParsingException;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
-import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
+import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntityBase;
 import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate.Version;
@@ -56,7 +56,7 @@ public class TemplateParser {
 		boolean[] initData = new boolean[4];
 		int highestParsedRule = 0;
 		Map<Integer, TemplateRule> parsedRules = new HashMap<>();
-		Map<Integer, TemplateRuleEntity> parsedEntities = new HashMap<>();
+		Map<Integer, TemplateRuleEntityBase> parsedEntities = new HashMap<>();
 		FixResult.Builder<StructureTemplate> resultBuilder = new FixResult.Builder<>();
 		String[] modDependencies = new String[0];
 		while (it.hasNext()) {
@@ -163,7 +163,7 @@ public class TemplateParser {
 					}
 				}
 				try {
-					TemplateRuleEntity entityRule = resultBuilder.updateAndGetData(StructurePluginManager.getRule(version, groupedLines, "entity"));
+					TemplateRuleEntityBase entityRule = resultBuilder.updateAndGetData(StructurePluginManager.getRule(version, groupedLines, "entity"));
 					parsedEntities.put(entityRule.ruleNumber, entityRule);
 				}
 				catch (TemplateRuleParsingException e) {
@@ -199,7 +199,7 @@ public class TemplateParser {
 		return Optional.of(resultBuilder.build(constructTemplate(name, modDependencies, version, size, offset, templateData, parsedRules, parsedEntities, validation)));
 	}
 
-	private StructureTemplate constructTemplate(String name, String[] modDependencies, Version version, Vec3i size, Vec3i offset, short[] templateData, Map<Integer, TemplateRule> rules, Map<Integer, TemplateRuleEntity> entityRules, StructureValidator validation) {
+	private StructureTemplate constructTemplate(String name, String[] modDependencies, Version version, Vec3i size, Vec3i offset, short[] templateData, Map<Integer, TemplateRule> rules, Map<Integer, TemplateRuleEntityBase> entityRules, StructureValidator validation) {
 		StructureTemplate template = new StructureTemplate(name, Arrays.stream(modDependencies).collect(Collectors.toSet()), version, size, offset);
 		template.setBlockRules(rules);
 		template.setEntityRules(entityRules);

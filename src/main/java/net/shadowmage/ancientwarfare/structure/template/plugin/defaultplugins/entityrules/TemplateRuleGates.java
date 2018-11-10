@@ -11,13 +11,13 @@ import net.shadowmage.ancientwarfare.core.owner.Owner;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
-import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
+import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntityBase;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.gates.types.Gate;
 
 import java.util.Optional;
 
-public class TemplateRuleGates extends TemplateRuleEntity {
+public class TemplateRuleGates extends TemplateRuleEntityBase {
 
 	public static final String PLUGIN_NAME = "awGate";
 	private String owner;

@@ -1,17 +1,5 @@
 package net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins;
 
-import net.minecraft.entity.boss.EntityWither;
-import net.minecraft.entity.item.EntityItemFrame;
-import net.minecraft.entity.item.EntityMinecartChest;
-import net.minecraft.entity.item.EntityMinecartEmpty;
-import net.minecraft.entity.item.EntityMinecartFurnace;
-import net.minecraft.entity.item.EntityMinecartHopper;
-import net.minecraft.entity.item.EntityMinecartTNT;
-import net.minecraft.entity.item.EntityPainting;
-import net.minecraft.entity.monster.EntityIronGolem;
-import net.minecraft.entity.monster.EntitySnowman;
-import net.minecraft.entity.passive.EntityHorse;
-import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.core.init.AWCoreBlocks;
@@ -30,10 +18,7 @@ import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.bl
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleShulkerBox;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleTotemPart;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleVanillaSkull;
-import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.entityrules.TemplateRuleEntityHanging;
-import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.entityrules.TemplateRuleEntityLogic;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.entityrules.TemplateRuleGates;
-import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.entityrules.TemplateRuleVanillaEntity;
 
 public class StructurePluginVanillaHandler implements StructureContentPlugin {
 	@Override
@@ -104,21 +89,6 @@ public class StructurePluginVanillaHandler implements StructureContentPlugin {
 
 	@Override
 	public void addHandledEntities(StructurePluginManager manager) {
-		manager.registerEntityHandler(TemplateRuleVanillaEntity.PLUGIN_NAME, EntityIronGolem.class, TemplateRuleVanillaEntity::new, TemplateRuleVanillaEntity::new);
-		manager.registerEntityHandler(TemplateRuleVanillaEntity.PLUGIN_NAME, EntityWither.class, TemplateRuleVanillaEntity::new, TemplateRuleVanillaEntity::new);
-		manager.registerEntityHandler(TemplateRuleVanillaEntity.PLUGIN_NAME, EntitySnowman.class, TemplateRuleVanillaEntity::new, TemplateRuleVanillaEntity::new);
-
-		manager.registerEntityHandler(TemplateRuleEntityHanging.PLUGIN_NAME, EntityPainting.class, TemplateRuleEntityHanging::new, TemplateRuleEntityHanging::new);
-		manager.registerEntityHandler(TemplateRuleEntityHanging.PLUGIN_NAME, EntityItemFrame.class, TemplateRuleEntityHanging::new, TemplateRuleEntityHanging::new);
-
-		manager.registerEntityHandler(TemplateRuleEntityLogic.PLUGIN_NAME, EntityHorse.class, TemplateRuleEntityLogic::new, TemplateRuleEntityLogic::new);
-		manager.registerEntityHandler(TemplateRuleEntityLogic.PLUGIN_NAME, EntityVillager.class, TemplateRuleEntityLogic::new, TemplateRuleEntityLogic::new);
-		manager.registerEntityHandler(TemplateRuleEntityLogic.PLUGIN_NAME, EntityMinecartHopper.class, TemplateRuleEntityLogic::new, TemplateRuleEntityLogic::new);
-		manager.registerEntityHandler(TemplateRuleEntityLogic.PLUGIN_NAME, EntityMinecartChest.class, TemplateRuleEntityLogic::new, TemplateRuleEntityLogic::new);
-		manager.registerEntityHandler(TemplateRuleEntityLogic.PLUGIN_NAME, EntityMinecartEmpty.class, TemplateRuleEntityLogic::new, TemplateRuleEntityLogic::new);
-		manager.registerEntityHandler(TemplateRuleEntityLogic.PLUGIN_NAME, EntityMinecartFurnace.class, TemplateRuleEntityLogic::new, TemplateRuleEntityLogic::new);
-		manager.registerEntityHandler(TemplateRuleEntityLogic.PLUGIN_NAME, EntityMinecartTNT.class, TemplateRuleEntityLogic::new, TemplateRuleEntityLogic::new);
-
 		manager.registerEntityHandler(TemplateRuleGates.PLUGIN_NAME, EntityGate.class, TemplateRuleGates::new, TemplateRuleGates::new);
 	}
 }
