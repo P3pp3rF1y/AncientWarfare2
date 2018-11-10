@@ -86,6 +86,7 @@ public class StructurePluginManager implements IStructurePluginRegister {
 		registerEntityHandler(TemplateRuleEntityHanging.PLUGIN_NAME, EntityHanging.class::isAssignableFrom, TemplateRuleVanillaEntity::new, TemplateRuleVanillaEntity::new);
 		registerEntityHandler(TemplateRuleVanillaEntity.PLUGIN_NAME, EntityAnimal.class::isAssignableFrom, TemplateRuleVanillaEntity::new, TemplateRuleVanillaEntity::new);
 		registerEntityHandler(TemplateRuleEntityLogic.PLUGIN_NAME, clazz -> EntityLiving.class.isAssignableFrom(clazz) || IInventory.class.isAssignableFrom(clazz), TemplateRuleVanillaEntity::new, TemplateRuleVanillaEntity::new);
+		registerEntityHandler(TemplateRuleVanillaEntity.PLUGIN_NAME, Entity.class::isAssignableFrom, TemplateRuleVanillaEntity::new, TemplateRuleVanillaEntity::new);
 	}
 
 	private void loadNpcPlugin() {
@@ -133,7 +134,7 @@ public class StructurePluginManager implements IStructurePluginRegister {
 				.map(c -> c.create(world, entity, turns, x, y, z));
 	}
 
-	private void registerEntityHandler(String pluginName, IEntityMatcher entityMatcher, IEntityRuleCreator creator, Supplier<TemplateRule> getParser) {
+	public void registerEntityHandler(String pluginName, IEntityMatcher entityMatcher, IEntityRuleCreator creator, Supplier<TemplateRule> getParser) {
 		entityRuleHandlers.add(new RuleHandler<>(entityMatcher, pluginName, creator, getParser));
 	}
 	public void registerEntityHandler(String pluginName, Class<? extends Entity> entityClass, IEntityRuleCreator creator, Supplier<TemplateRule> getParser) {
@@ -263,7 +264,7 @@ public class StructurePluginManager implements IStructurePluginRegister {
 		boolean matches(World world, BlockPos pos, IBlockState state);
 	}
 
-	private interface IEntityMatcher {
+	public interface IEntityMatcher {
 		boolean matches(Class<? extends Entity> entityClass);
 	}
 }

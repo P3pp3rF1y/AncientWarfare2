@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins;
 import net.shadowmage.ancientwarfare.automation.init.AWAutomationBlocks;
 import net.shadowmage.ancientwarfare.structure.api.StructureContentPlugin;
 import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
-import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleBlockTile;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleRotatable;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleTorqueMultiblock;
 
@@ -28,15 +27,6 @@ public class StructurePluginAutomation implements StructureContentPlugin {
 
 		manager.registerBlockHandler(TemplateRuleTorqueMultiblock.PLUGIN_NAME, AWAutomationBlocks.FLYWHEEL_STORAGE, TemplateRuleTorqueMultiblock::new, TemplateRuleTorqueMultiblock::new);
 		manager.registerBlockHandler(TemplateRuleTorqueMultiblock.PLUGIN_NAME, AWAutomationBlocks.WINDMILL_BLADE, TemplateRuleTorqueMultiblock::new, TemplateRuleTorqueMultiblock::new);
-
-		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, AWAutomationBlocks.WAREHOUSE_CRAFTING, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
-		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, AWAutomationBlocks.WAREHOUSE_INTERFACE, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
-		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, AWAutomationBlocks.WAREHOUSE_STOCK_VIEWER, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
-		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, AWAutomationBlocks.WAREHOUSE_STORAGE, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
-		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, AWAutomationBlocks.CHUNK_LOADER_SIMPLE, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
-		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, AWAutomationBlocks.CHUNK_LOADER_DELUXE, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
-		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, AWAutomationBlocks.MAILBOX, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
-		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, AWAutomationBlocks.AUTO_CRAFTING, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
 	}
 
 	@Override

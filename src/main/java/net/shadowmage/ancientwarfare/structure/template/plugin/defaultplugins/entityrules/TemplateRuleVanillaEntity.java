@@ -18,15 +18,15 @@ public class TemplateRuleVanillaEntity extends TemplateRuleEntity {
 	public ResourceLocation registryName;
 	public float xOffset;
 	public float zOffset;
+	public float yOffset;
 	public float rotation;
 
 	public TemplateRuleVanillaEntity(World world, Entity entity, int turns, int x, int y, int z) {
 		super(world, entity, turns, x, y, z);
 		this.registryName = EntityList.getKey(entity);
 		rotation = (entity.rotationYaw + 90.f * turns) % 360.f;
-		float x1, z1;
-		x1 = (float) (entity.posX % 1.d);
-		z1 = (float) (entity.posZ % 1.d);
+		float x1 = (float) (entity.posX % 1.d);
+		float z1 = (float) (entity.posZ % 1.d);
 		if (x1 < 0) {
 			x1++;
 		}
@@ -35,6 +35,7 @@ public class TemplateRuleVanillaEntity extends TemplateRuleEntity {
 		}
 		xOffset = BlockTools.rotateFloatX(x1, z1, turns);
 		zOffset = BlockTools.rotateFloatZ(x1, z1, turns);
+		yOffset = (float) (entity.posY % 1d);
 	}
 
 	public TemplateRuleVanillaEntity() {
@@ -51,7 +52,7 @@ public class TemplateRuleVanillaEntity extends TemplateRuleEntity {
 		float x1 = BlockTools.rotateFloatX(xOffset, zOffset, turns);
 		float z1 = BlockTools.rotateFloatZ(xOffset, zOffset, turns);
 		float yaw = (rotation + 90.f * turns) % 360.f;
-		e.setPosition(pos.getX() + x1, pos.getY(), pos.getZ() + z1);
+		e.setPosition(pos.getX() + x1, pos.getY() + yOffset, pos.getZ() + z1);
 		e.rotationYaw = yaw;
 		world.spawnEntity(e);
 	}
@@ -61,6 +62,7 @@ public class TemplateRuleVanillaEntity extends TemplateRuleEntity {
 		super.writeRuleData(tag);
 		tag.setString("mobID", registryName.toString());
 		tag.setFloat("xOffset", xOffset);
+		tag.setFloat("yOffset", yOffset);
 		tag.setFloat("zOffset", zOffset);
 		tag.setFloat("rotation", rotation);
 	}
@@ -70,6 +72,7 @@ public class TemplateRuleVanillaEntity extends TemplateRuleEntity {
 		super.parseRule(tag);
 		registryName = new ResourceLocation(tag.getString("mobID"));
 		xOffset = tag.getFloat("xOffset");
+		yOffset = tag.getFloat("yOffset");
 		zOffset = tag.getFloat("zOffset");
 		rotation = tag.getFloat("rotation");
 	}

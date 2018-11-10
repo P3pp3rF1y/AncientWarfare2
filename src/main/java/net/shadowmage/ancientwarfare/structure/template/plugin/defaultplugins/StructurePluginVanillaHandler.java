@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins;
 
 import net.minecraft.entity.boss.EntityWither;
-import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.item.EntityItemFrame;
 import net.minecraft.entity.item.EntityMinecartChest;
 import net.minecraft.entity.item.EntityMinecartEmpty;
@@ -11,14 +10,8 @@ import net.minecraft.entity.item.EntityMinecartTNT;
 import net.minecraft.entity.item.EntityPainting;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.monster.EntitySnowman;
-import net.minecraft.entity.passive.EntityChicken;
-import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.passive.EntityHorse;
-import net.minecraft.entity.passive.EntityOcelot;
-import net.minecraft.entity.passive.EntityPig;
-import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.EntityVillager;
-import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.core.init.AWCoreBlocks;
@@ -111,14 +104,7 @@ public class StructurePluginVanillaHandler implements StructureContentPlugin {
 
 	@Override
 	public void addHandledEntities(StructurePluginManager manager) {
-		manager.registerEntityHandler(TemplateRuleVanillaEntity.PLUGIN_NAME, EntityPig.class, TemplateRuleVanillaEntity::new, TemplateRuleVanillaEntity::new);
-		manager.registerEntityHandler(TemplateRuleVanillaEntity.PLUGIN_NAME, EntitySheep.class, TemplateRuleVanillaEntity::new, TemplateRuleVanillaEntity::new);
-		manager.registerEntityHandler(TemplateRuleVanillaEntity.PLUGIN_NAME, EntityCow.class, TemplateRuleVanillaEntity::new, TemplateRuleVanillaEntity::new);
-		manager.registerEntityHandler(TemplateRuleVanillaEntity.PLUGIN_NAME, EntityChicken.class, TemplateRuleVanillaEntity::new, TemplateRuleVanillaEntity::new);
-		manager.registerEntityHandler(TemplateRuleVanillaEntity.PLUGIN_NAME, EntityBoat.class, TemplateRuleVanillaEntity::new, TemplateRuleVanillaEntity::new);
 		manager.registerEntityHandler(TemplateRuleVanillaEntity.PLUGIN_NAME, EntityIronGolem.class, TemplateRuleVanillaEntity::new, TemplateRuleVanillaEntity::new);
-		manager.registerEntityHandler(TemplateRuleVanillaEntity.PLUGIN_NAME, EntityWolf.class, TemplateRuleVanillaEntity::new, TemplateRuleVanillaEntity::new);
-		manager.registerEntityHandler(TemplateRuleVanillaEntity.PLUGIN_NAME, EntityOcelot.class, TemplateRuleVanillaEntity::new, TemplateRuleVanillaEntity::new);
 		manager.registerEntityHandler(TemplateRuleVanillaEntity.PLUGIN_NAME, EntityWither.class, TemplateRuleVanillaEntity::new, TemplateRuleVanillaEntity::new);
 		manager.registerEntityHandler(TemplateRuleVanillaEntity.PLUGIN_NAME, EntitySnowman.class, TemplateRuleVanillaEntity::new, TemplateRuleVanillaEntity::new);
 
