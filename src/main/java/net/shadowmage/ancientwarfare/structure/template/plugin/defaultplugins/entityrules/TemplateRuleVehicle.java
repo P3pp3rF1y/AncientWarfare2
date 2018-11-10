@@ -14,12 +14,14 @@ public class TemplateRuleVehicle extends TemplateRuleEntity {
 
 	public TemplateRuleVehicle(World world, Entity entity, int turns, int x, int y, int z) {
 		super(world, entity, turns, x, y, z);
+
+		rotation = (entity.rotationYaw - 90.f * turns) % 360.f;
 	}
 
 	@Override
 	protected void updateEntityOnPlacement(int turns, BlockPos pos, Entity e) {
 		e.setPositionAndRotation(pos.getX() + BlockTools.rotateFloatX(xOffset, zOffset, turns), pos.getY() + yOffset,
-				pos.getZ() + BlockTools.rotateFloatZ(xOffset, zOffset, turns), (rotation - (180f + 90f * turns)) % 360f, 0);
+				pos.getZ() + BlockTools.rotateFloatZ(xOffset, zOffset, turns), (rotation - 90f * turns) % 360f, 0);
 	}
 
 	@Override
