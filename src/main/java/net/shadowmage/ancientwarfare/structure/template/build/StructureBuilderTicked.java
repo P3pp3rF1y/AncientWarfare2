@@ -92,6 +92,7 @@ public class StructureBuilderTicked extends StructureBuilder {
 			this.buildFace = EnumFacing.VALUES[tag.getByte("buildFace")];
 			this.maxPriority = tag.getInteger("maxPriority");
 			this.currentPriority = tag.getInteger("currentPriority");
+			this.destination = BlockPos.fromLong(tag.getLong("destination"));
 
 			this.bb = new StructureBB(BlockPos.fromLong(tag.getLong("bbMin")), BlockPos.fromLong(tag.getLong("bbMax")));
 			this.buildOrigin = BlockPos.fromLong(tag.getLong("buildOrigin"));
@@ -110,6 +111,7 @@ public class StructureBuilderTicked extends StructureBuilder {
 		tag.setLong("pos", MathUtils.toLong(curTempPos));
 		tag.setLong("clearPos", clearPos.toLong());
 		tag.setBoolean("cleared", hasClearedArea);
+		tag.setLong("destination", destination.toLong());
 
 		tag.setLong("buildOrigin", buildOrigin.toLong());
 		tag.setLong("bbMin", bb.min.toLong());
@@ -121,4 +123,21 @@ public class StructureBuilderTicked extends StructureBuilder {
 		return template;
 	}
 
+	public NBTTagCompound serializeProgressData() {
+		NBTTagCompound tag = new NBTTagCompound();
+		tag.setInteger("currentPriority", currentPriority);
+		tag.setLong("pos", MathUtils.toLong(curTempPos));
+		tag.setLong("clearPos", clearPos.toLong());
+		tag.setBoolean("cleared", hasClearedArea);
+		tag.setLong("destination", destination.toLong());
+		return tag;
+	}
+
+	public void deserializeProgressData(NBTTagCompound tag) {
+		currentPriority = tag.getInteger("currentPriority");
+		curTempPos = MathUtils.fromLong(tag.getLong("pos"));
+		clearPos = BlockPos.fromLong(tag.getLong("clearPos"));
+		hasClearedArea = tag.getBoolean("cleared");
+		destination = BlockPos.fromLong(tag.getLong("destination"));
+	}
 }

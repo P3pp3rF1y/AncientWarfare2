@@ -30,4 +30,19 @@ public class NBTBuilder {
 		tag.setUniqueId(key, uniqueId);
 		return this;
 	}
+
+	public NBTBuilder setLong(String key, long value) {
+		tag.setLong(key, value);
+		return this;
+	}
+
+	public NBTBuilder setInteger(String key, int value) {
+		tag.setInteger(key, value);
+		return this;
+	}
+
+	public NBTBuilder setTag(String key, NBTTagCompound tagCompound) {
+		tag.setTag(key, tagCompound);
+		return this;
+	}
 }

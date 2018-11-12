@@ -14,7 +14,6 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
-import net.shadowmage.ancientwarfare.core.entity.AWFakePlayer;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.owner.IOwnable;
@@ -304,4 +303,5 @@ public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IO
 	public StructureBuilderTicked getBuilder() {
 		return builder;
 	}
+
 }

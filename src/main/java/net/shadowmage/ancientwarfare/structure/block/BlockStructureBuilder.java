@@ -17,6 +17,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.shadowmage.ancientwarfare.core.util.NBTBuilder;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.render.RenderStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
@@ -84,7 +85,10 @@ public class BlockStructureBuilder extends BlockBaseStructure {
 	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
 		ItemStack drop = new ItemStack(this);
 		WorldTools.getTile(world, pos, TileStructureBuilder.class)
-				.ifPresent(t -> drop.setTagInfo("structureName", new NBTTagString(t.getBuilder().getTemplate().name)));
+				.ifPresent(t -> drop.setTagCompound(new NBTBuilder()
+						.setString("structureName", t.getBuilder().getTemplate().name)
+						.setTag("progress", t.getBuilder().serializeProgressData())
+						.build()));
 		drops.add(drop);
 	}
 

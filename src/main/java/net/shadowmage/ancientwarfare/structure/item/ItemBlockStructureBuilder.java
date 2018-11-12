@@ -6,6 +6,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -57,11 +58,17 @@ public class ItemBlockStructureBuilder extends ItemBlockBase implements IBoxRend
 		return val;
 	}
 
+	@SuppressWarnings("ConstantConditions")
 	private void setupStructureBuilder(ItemStack stack, EntityPlayer player, World world, BlockPos pos, TileStructureBuilder tb) {
 		tb.setOwner(player);
-		String name = stack.getTagCompound().getString(STRUCTURE_NAME_TAG);
+		NBTTagCompound tag = stack.getTagCompound();
+		String name = tag.getString(STRUCTURE_NAME_TAG);
 		EnumFacing face = player.getHorizontalFacing();
 		setupStructureBuilder(world, pos, tb, name, face);
+		if (tag.hasKey("progress")) {
+			StructureBuilderTicked builder = tb.getBuilder();
+			builder.deserializeProgressData(tag.getCompoundTag("progress"));
+		}
 	}
 
 	public void setupStructureBuilder(World world, BlockPos pos, TileStructureBuilder tb, String name, EnumFacing face) {
