@@ -60,9 +60,13 @@ public class ItemBlockStructureBuilder extends ItemBlockBase implements IBoxRend
 	private void setupStructureBuilder(ItemStack stack, EntityPlayer player, World world, BlockPos pos, TileStructureBuilder tb) {
 		tb.setOwner(player);
 		String name = stack.getTagCompound().getString(STRUCTURE_NAME_TAG);
+		EnumFacing face = player.getHorizontalFacing();
+		setupStructureBuilder(world, pos, tb, name, face);
+	}
+
+	public void setupStructureBuilder(World world, BlockPos pos, TileStructureBuilder tb, String name, EnumFacing face) {
 		StructureTemplate t = StructureTemplateManager.INSTANCE.getTemplate(name);
 		if (t != null) {
-			EnumFacing face = player.getHorizontalFacing();
 			BlockPos p = pos.offset(face, t.getSize().getZ() - 1 - t.getOffset().getZ() + 1);
 			tb.setBuilder(new StructureBuilderTicked(world, t, face, p));
 		}

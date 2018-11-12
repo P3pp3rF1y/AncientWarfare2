@@ -39,7 +39,7 @@ public class StructureBuilder implements IStructureBuilder {
 	protected StructureTemplate template;
 	protected World world;
 	BlockPos buildOrigin;
-	EnumFacing buildFace;
+	protected EnumFacing buildFace;
 	protected int turns;
 	int maxPriority = 3;
 	int currentPriority;//current build priority...may not be needed anymore?
@@ -263,6 +263,10 @@ public class StructureBuilder implements IStructureBuilder {
 							.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Y)),
 					new BlockSwapMapping(b -> b == Blocks.OAK_FENCE, s -> Blocks.ACACIA_FENCE.getDefaultState()))
 	);
+
+	public EnumFacing getBuildFace() {
+		return buildFace;
+	}
 
 	// @formatter:on
 

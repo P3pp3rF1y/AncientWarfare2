@@ -103,7 +103,7 @@ public class StructureBuilderTicked extends StructureBuilder {
 
 	public void writeToNBT(NBTTagCompound tag) {
 		tag.setString("name", template.name);
-		tag.setByte("face", (byte) buildFace.ordinal());
+		tag.setByte("face", (byte) getBuildFace().ordinal());
 		tag.setInteger("turns", turns);
 		tag.setInteger("maxPriority", maxPriority);
 		tag.setInteger("currentPriority", currentPriority);

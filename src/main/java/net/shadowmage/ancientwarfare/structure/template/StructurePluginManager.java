@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityHanging;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
 import net.minecraft.nbt.NBTTagCompound;
@@ -80,7 +81,8 @@ public class StructurePluginManager implements IStructurePluginRegister {
 				TemplateRuleVanillaBlocks::new, TemplateRuleVanillaBlocks::new);
 
 		registerEntityHandler(TemplateRuleEntityHanging.PLUGIN_NAME, EntityHanging.class::isAssignableFrom, TemplateRuleEntityHanging::new, TemplateRuleEntityHanging::new);
-		registerEntityHandler(TemplateRuleEntity.PLUGIN_NAME, Entity.class::isAssignableFrom, TemplateRuleEntity::new, TemplateRuleEntity::new);
+		registerEntityHandler(TemplateRuleEntity.PLUGIN_NAME, clazz -> Entity.class.isAssignableFrom(clazz) && !EntityPlayer.class.isAssignableFrom(clazz),
+				TemplateRuleEntity::new, TemplateRuleEntity::new);
 	}
 
 	private void loadNpcPlugin() {

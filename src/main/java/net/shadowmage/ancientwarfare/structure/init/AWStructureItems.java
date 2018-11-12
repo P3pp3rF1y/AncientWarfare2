@@ -9,6 +9,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.shadowmage.ancientwarfare.core.util.InjectionTools;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockInfo;
+import net.shadowmage.ancientwarfare.structure.item.ItemBlockStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.item.ItemConstructionTool;
 import net.shadowmage.ancientwarfare.structure.item.ItemConstructionToolLakes;
 import net.shadowmage.ancientwarfare.structure.item.ItemGateSpawner;
@@ -27,6 +28,7 @@ public class AWStructureItems {
 	public static final ItemGateSpawner GATE_SPAWNER = InjectionTools.nullValue();
 	public static final Item STRUCTURE_SCANNER = InjectionTools.nullValue();
 	public static final Item TOTEM_PART = InjectionTools.nullValue();
+	public static final ItemBlockStructureBuilder STRUCTURE_BUILDER_TICKED = InjectionTools.nullValue();
 
 	@SubscribeEvent
 	public static void register(RegistryEvent.Register<Item> event) {
