@@ -53,12 +53,7 @@ public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IO
 	@Override
 	@SideOnly(Side.CLIENT)
 	public AxisAlignedBB getRenderBoundingBox() {
-		AxisAlignedBB bb = super.getRenderBoundingBox();
-		if (clientBB != null) {
-			bb.expand((double) clientBB.min.getX() - pos.getX(), (double) clientBB.min.getY() - pos.getY(), (double) clientBB.min.getZ() - pos.getZ());
-			bb.expand((double) clientBB.max.getX() - pos.getX(), (double) clientBB.max.getY() - pos.getY(), (double) clientBB.max.getZ() - pos.getZ());
-		}
-		return bb;
+		return clientBB != null ? new AxisAlignedBB(clientBB.min, clientBB.max) : super.getRenderBoundingBox();
 	}
 
 	@Override
@@ -303,5 +298,4 @@ public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IO
 	public StructureBuilderTicked getBuilder() {
 		return builder;
 	}
-
 }
