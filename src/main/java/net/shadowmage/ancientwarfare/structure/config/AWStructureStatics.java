@@ -35,8 +35,6 @@ public class AWStructureStatics extends ModConfiguration {
 	public static int maxClusterValue = 500;
 	public static float randomGenerationChance = 0.075f;
 	public static int spawnProtectionRange = 12;
-	public static int structureImageWidth = 512;
-	public static int structureImageHeight = 288;
 	public static int townClosestDistance = 40;
 	public static float townGenerationChance = 0.125f;
 	public static Set<String> excludedSpawnerEntities = new HashSet<>();

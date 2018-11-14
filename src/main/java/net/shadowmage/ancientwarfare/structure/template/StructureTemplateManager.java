@@ -8,7 +8,6 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructure;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructureRemove;
 
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -17,7 +16,6 @@ import java.util.stream.Collectors;
 
 public class StructureTemplateManager {
 	private static final String SINGLE_STRUCTURE_TAG = "singleStructure";
-	private HashMap<String, BufferedImage> templateImages = new HashMap<>();//server-side images
 	private HashMap<String, StructureTemplate> loadedTemplates = new HashMap<>();
 
 	private StructureTemplateManager() {
@@ -52,7 +50,6 @@ public class StructureTemplateManager {
 	public boolean removeTemplate(String name) {
 		if (loadedTemplates.containsKey(name)) {
 			loadedTemplates.remove(name);
-			templateImages.remove(name);
 			NetworkHandler.sendToAllPlayers(new PacketStructureRemove(name));
 			return true;
 		}
@@ -66,14 +63,6 @@ public class StructureTemplateManager {
 
 	public StructureTemplate getTemplate(String name) {
 		return this.loadedTemplates.get(name);
-	}
-
-	public void addTemplateImage(String imageName, BufferedImage image) {
-		this.templateImages.put(imageName, image);
-	}
-
-	public BufferedImage getTemplateImage(String imageName) {
-		return templateImages.get(imageName);
 	}
 
 	public Map<String, StructureTemplate> getSurvivalStructures() {
