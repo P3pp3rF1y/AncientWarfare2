@@ -1,5 +1,7 @@
 package net.shadowmage.ancientwarfare.structure.render;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -17,22 +19,20 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
-import net.shadowmage.ancientwarfare.core.util.InjectionTools;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nullable;
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 import static net.shadowmage.ancientwarfare.core.util.RenderTools.*;
 import static org.lwjgl.opengl.GL11.GL_QUADS;
@@ -41,7 +41,7 @@ import static org.lwjgl.opengl.GL11.GL_QUADS;
 public class PreviewRenderer {
 	@SuppressWarnings("NewExpressionSideOnly")
 	@SideOnly(Side.CLIENT)
-	private static Map<EnumHand, PreviewCache> handPreview = new EnumMap<>(EnumHand.class);
+	private static Cache<Integer, BufferBuilder.State> previewCache = CacheBuilder.newBuilder().expireAfterAccess(1, TimeUnit.MINUTES).build();
 
 	private PreviewRenderer() {}
 
@@ -57,12 +57,13 @@ public class PreviewRenderer {
 		BufferBuilder buffer = tessellator.getBuffer();
 		buffer.begin(GL_QUADS, DefaultVertexFormats.BLOCK);
 		EnumFacing facing = player.getHorizontalFacing();
-		Optional<BufferBuilder.State> state = handPreview.getOrDefault(hand, PreviewCache.EMPTY).getState(stack, bb.min, facing);
+		int cacheKey = getKey(stack, facing, hand, bb.min);
+		Optional<BufferBuilder.State> state = Optional.ofNullable(previewCache.getIfPresent(cacheKey));
 		if (state.isPresent()) {
 			buffer.setVertexState(state.get());
 		} else {
-			renderPreviewToBuffer(player, structure, bb, turns, buffer);
-			handPreview.put(hand, new PreviewCache(stack, bb.min, facing, buffer.getVertexState()));
+			renderPreviewToBuffer(structure, bb, turns, buffer);
+			previewCache.put(cacheKey, buffer.getVertexState());
 		}
 		tessellator.draw();
 		GlStateManager.disableBlend();
@@ -70,9 +71,17 @@ public class PreviewRenderer {
 		GlStateManager.popMatrix();
 	}
 
+	private static int getKey(ItemStack stack, EnumFacing facing, EnumHand hand, BlockPos min) {
+		int hash = stack.hashCode();
+		hash = hash * 31 + facing.hashCode();
+		hash = hash * 31 + hand.hashCode();
+		hash = hash * 31 + min.hashCode();
+		return hash;
+	}
+
 	@SideOnly(Side.CLIENT)
-	private static void renderPreviewToBuffer(EntityPlayer player, StructureTemplate structure, StructureBB bb, int turns, BufferBuilder buffer) {
-		TemplateBlockAccess blockAccess = new TemplateBlockAccess(player.world, structure, bb, turns);
+	private static void renderPreviewToBuffer(StructureTemplate structure, StructureBB bb, int turns, BufferBuilder buffer) {
+		TemplateBlockAccess blockAccess = new TemplateBlockAccess(structure, bb, turns);
 		for (int pass = 0; pass < 3; pass++) {
 			for (int y = 0; y < structure.getSize().getY(); y++) {
 				for (int x = 0; x < structure.getSize().getX(); x++) {
@@ -85,38 +94,16 @@ public class PreviewRenderer {
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
-	private static class PreviewCache {
-		private ItemStack stack;
-		private BlockPos bbMin;
-		private EnumFacing facing;
-		private BufferBuilder.State state;
-		public static final PreviewCache EMPTY = new PreviewCache(ItemStack.EMPTY, BlockPos.ORIGIN, EnumFacing.NORTH, InjectionTools.nullValue());
-
-		private PreviewCache(ItemStack stack, BlockPos bbMin, EnumFacing facing, BufferBuilder.State state) {
-			this.stack = stack;
-			this.bbMin = bbMin;
-			this.facing = facing;
-			this.state = state;
-		}
-
-		private Optional<BufferBuilder.State> getState(ItemStack stack, BlockPos bbMin, EnumFacing facing) {
-			return this.stack == stack && this.bbMin.equals(bbMin) && this.facing == facing ? Optional.of(state) : Optional.empty();
-		}
-	}
-
 	private static class TemplateBlockAccess implements IBlockAccess {
 		private final int templateXSize;
 		private final int templateZSize;
-		private World world;
 		private StructureTemplate template;
 		private StructureBB bb;
 		private int turns;
 
 		private Map<BlockPos, IBlockState> positionStates = new HashMap<>();
 
-		private TemplateBlockAccess(World world, StructureTemplate template, StructureBB bb, int turns) {
-			this.world = world;
+		private TemplateBlockAccess(StructureTemplate template, StructureBB bb, int turns) {
 			this.template = template;
 			this.bb = bb;
 			this.turns = turns;
@@ -140,14 +127,14 @@ public class PreviewRenderer {
 		@Override
 		@SideOnly(Side.CLIENT)
 		public int getCombinedLight(BlockPos pos, int lightValue) {
-			return !bb.contains(pos) ? world.getCombinedLight(pos, lightValue) : 0;
+			return 8;
 		}
 
 		@Override
 		public IBlockState getBlockState(BlockPos pos) {
 			if (!positionStates.containsKey(pos)) {
 				if (!bb.contains(pos)) {
-					positionStates.put(pos, world.getBlockState(pos));
+					positionStates.put(pos, Blocks.AIR.getDefaultState());
 				} else {
 					Vec3i tempPos = BlockTools.rotateInArea(pos.add(-bb.min.getX(), -bb.min.getY(), -bb.min.getZ()), templateXSize, templateZSize, -turns);
 					positionStates.put(pos, template.getBlockRuleAt(tempPos).map(templateRuleBlock -> templateRuleBlock.getState(turns)).orElse(Blocks.AIR.getDefaultState()));

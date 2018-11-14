@@ -148,7 +148,8 @@ public final class NetworkHandler implements IGuiHandler {
 	}
 
 	public static void sendToAllPlayers(PacketBase pkt) {
-		if (FMLCommonHandler.instance().getSide() == Side.SERVER) {
+		//noinspection ConstantConditions
+		if (FMLCommonHandler.instance().getSide() == Side.SERVER && FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList() != null) {
 			INSTANCE.channel.sendToAll(pkt.getFMLPacket());
 		}
 	}
