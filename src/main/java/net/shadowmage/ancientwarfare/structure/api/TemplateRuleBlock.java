@@ -1,12 +1,17 @@
 package net.shadowmage.ancientwarfare.structure.api;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.NBTHelper;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
@@ -79,5 +84,14 @@ public abstract class TemplateRuleBlock extends TemplateRule {
 	@Override
 	public void writeRuleData(NBTTagCompound tag) {
 		tag.setTag("blockState", NBTHelper.getBlockStateTag(state));
+	}
+
+	@SideOnly(Side.CLIENT)
+	public void renderRule(int turns, BlockPos pos, IBlockAccess blockAccess, BufferBuilder bufferBuilder) {
+		Minecraft.getMinecraft().getBlockRendererDispatcher().renderBlock(getState(turns), pos, blockAccess, bufferBuilder);
+	}
+
+	public IBlockState getState(int turns) {
+		return BlockTools.rotateFacing(state, turns);
 	}
 }

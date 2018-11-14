@@ -6,6 +6,7 @@ import net.minecraft.util.math.Vec3i;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.MathUtils;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
+import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntityBase;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
 
@@ -85,6 +86,11 @@ public class StructureTemplate {
 
 	public void setValidationSettings(StructureValidator settings) {
 		this.validator = settings;
+	}
+
+	public Optional<TemplateRuleBlock> getBlockRuleAt(Vec3i pos) {
+		Optional<TemplateRule> rule = getRuleAt(pos);
+		return !rule.isPresent() || !(rule.get() instanceof TemplateRuleBlock) ? Optional.empty() : Optional.of((TemplateRuleBlock) rule.get());
 	}
 
 	public Optional<TemplateRule> getRuleAt(Vec3i pos) {

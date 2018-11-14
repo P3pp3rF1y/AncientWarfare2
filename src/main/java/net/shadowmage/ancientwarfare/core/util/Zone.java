@@ -5,8 +5,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.INBTSerializable;
 
 public class Zone implements INBTSerializable<NBTTagCompound> {
-
-	public BlockPos min, max;
+	public BlockPos min;
+	public BlockPos max;
 
 	public Zone(BlockPos p1, BlockPos p2) {
 		min = BlockTools.getMin(p1, p2);
@@ -55,6 +55,12 @@ public class Zone implements INBTSerializable<NBTTagCompound> {
 	@Override
 	public String toString() {
 		return String.format("From %s to %s", min, max);
+	}
+
+	public boolean contains(BlockPos pos) {
+		return pos.getX() >= min.getX() && pos.getX() <= max.getX()
+				&& pos.getY() >= min.getY() && pos.getY() <= max.getY()
+				&& pos.getZ() >= min.getZ() && pos.getZ() <= max.getZ();
 	}
 
 	@Override

@@ -199,7 +199,8 @@ public class BlockTools {
 		}
 		int x1 = x;
 		int z1 = z;
-		for (int i = 0; i < turns; i++) {
+		int positiveTurns = turns > 0 ? turns : 4 + turns;
+		for (int i = 0; i < positiveTurns; i++) {
 			x = zSize - 1 - z1;
 			z = x1;
 			x1 = x;
