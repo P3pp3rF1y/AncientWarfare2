@@ -65,7 +65,7 @@ public class TemplateRuleStructureBuilder extends TemplateRuleBlock {
 	}
 
 	@Override
-	protected String getPluginName() {
+	public String getPluginName() {
 		return PLUGIN_NAME;
 	}
 

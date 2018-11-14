@@ -60,7 +60,7 @@ public class TemplateRuleTorqueMultiblock extends TemplateRuleBlock {
 	}
 
 	@Override
-	protected String getPluginName() {
+	public String getPluginName() {
 		return PLUGIN_NAME;
 	}
 }

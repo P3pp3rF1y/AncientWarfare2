@@ -2,23 +2,19 @@ package net.shadowmage.ancientwarfare.structure.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
-import net.shadowmage.ancientwarfare.core.gui.elements.TexturedRectangle;
 import net.shadowmage.ancientwarfare.structure.container.ContainerDraftingStation;
-import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManagerClient;
 
 public class GuiDraftingStation extends GuiContainerBase<ContainerDraftingStation> {
 
 	//right-side column @ X=176
 	//max X size == 352?
 	private CompositeScrolled resourceListArea;
-	private TexturedRectangle rect;
 	private Button stopButton;
 	private Button startButton;
 	private Label selectionLabel;
@@ -29,9 +25,6 @@ public class GuiDraftingStation extends GuiContainerBase<ContainerDraftingStatio
 
 	@Override
 	public void initElements() {
-		rect = new TexturedRectangle(227 - 8, 8, 170, 96, (ResourceLocation) null, 512, 288, 0, 0, 512, 288);
-		addGuiElement(rect);
-
 		resourceListArea = new CompositeScrolled(this, 176, 96 + 8, 400 - 176, 240 - 96 - 8);
 		addGuiElement(resourceListArea);
 
@@ -86,10 +79,8 @@ public class GuiDraftingStation extends GuiContainerBase<ContainerDraftingStatio
 
 		String name = getContainer().structureName;
 		if (name == null) {
-			rect.setTexture(null);
 			selectionLabel.setText("guistrings.structure.no_selection");
 		} else {
-			rect.setTexture(StructureTemplateManagerClient.instance().getImageFor(name));
 			selectionLabel.setText(name);
 		}
 		if (getContainer().isStarted) {

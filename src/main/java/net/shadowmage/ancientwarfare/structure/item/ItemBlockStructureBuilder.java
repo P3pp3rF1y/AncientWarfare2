@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -17,9 +18,7 @@ import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.event.IBoxRenderer;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
-import net.shadowmage.ancientwarfare.structure.template.StructureTemplateClient;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
-import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManagerClient;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilderTicked;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
@@ -81,13 +80,13 @@ public class ItemBlockStructureBuilder extends ItemBlockBase implements IBoxRend
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void renderBox(EntityPlayer player, ItemStack stack, float delta) {
+	public void renderBox(EntityPlayer player, EnumHand hand, ItemStack stack, float delta) {
 		//noinspection ConstantConditions
 		if (!stack.hasTagCompound() || !stack.getTagCompound().hasKey(STRUCTURE_NAME_TAG)) {
 			return;
 		}
 		String name = stack.getTagCompound().getString(STRUCTURE_NAME_TAG);
-		StructureTemplateClient t = StructureTemplateManagerClient.instance().getClientTemplate(name);
+		StructureTemplate t = StructureTemplateManager.INSTANCE.getTemplate(name);
 		if (t == null) {
 			return;
 		}

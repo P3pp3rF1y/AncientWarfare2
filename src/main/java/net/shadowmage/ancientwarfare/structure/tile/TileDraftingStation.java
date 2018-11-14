@@ -150,12 +150,6 @@ public class TileDraftingStation extends TileEntity implements ITickable, IBlock
 		markDirty();
 	}
 
-	/*
-	 * should be called client-side to TRY to set the
-	 * current template to the input name.
-	 * Will not change templates if production has already
-	 * started on the current template
-	 */
 	public void setTemplate(String templateName) {
 		if (isStarted) {
 			return;

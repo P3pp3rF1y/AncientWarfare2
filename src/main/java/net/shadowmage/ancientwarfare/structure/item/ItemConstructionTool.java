@@ -242,7 +242,7 @@ public class ItemConstructionTool extends ItemBaseStructure implements IItemKeyI
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void renderBox(EntityPlayer player, ItemStack stack, float delta) {
+	public void renderBox(EntityPlayer player, EnumHand hand, ItemStack stack, float delta) {
 		ConstructionSettings settings = getSettings(stack);
 		if (settings == null) {
 			return;

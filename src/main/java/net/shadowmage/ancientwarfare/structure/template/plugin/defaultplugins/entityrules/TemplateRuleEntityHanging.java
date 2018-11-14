@@ -52,7 +52,7 @@ public class TemplateRuleEntityHanging extends TemplateRuleEntity {
 	}
 
 	@Override
-	protected String getPluginName() {
+	public String getPluginName() {
 		return PLUGIN_NAME;
 	}
 }

@@ -192,7 +192,7 @@ public class ItemStructureScanner extends ItemBaseStructure implements IItemKeyI
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void renderBox(EntityPlayer player, ItemStack stack, float delta) {
+	public void renderBox(EntityPlayer player, EnumHand hand, ItemStack stack, float delta) {
 		ItemStructureSettings settings = ItemStructureSettings.getSettingsFor(stack);
 		BlockPos firstCorner;
 		BlockPos secondCorner;

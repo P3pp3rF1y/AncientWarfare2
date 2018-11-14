@@ -101,7 +101,7 @@ public class TemplateRuleEntity extends TemplateRuleEntityBase {
 	}
 
 	@Override
-	protected String getPluginName() {
+	public String getPluginName() {
 		return PLUGIN_NAME;
 	}
 

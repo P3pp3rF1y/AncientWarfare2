@@ -1,15 +1,23 @@
 package net.shadowmage.ancientwarfare.structure.template;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.Vec3i;
+import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.MathUtils;
+import net.shadowmage.ancientwarfare.core.util.NBTHelper;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntityBase;
+import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidationType;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -161,6 +169,69 @@ public class StructureTemplate {
 
 	public Vec3i getOffset() {
 		return offset;
+	}
+
+	public NBTTagCompound serializeNBT() {
+		NBTTagCompound tag = new NBTTagCompound();
+
+		tag.setString("name", name);
+		tag.setLong("size", MathUtils.toLong(size));
+		tag.setLong("offset", MathUtils.toLong(offset));
+		tag.setTag("blockRules", serializeRules(blockRules));
+		tag.setTag("entityRules", serializeRules(entityRules));
+		tag.setIntArray("templateData", MathUtils.toIntArray(templateData));
+		tag.setString("validationType", validator.validationType.getName());
+		if (validator != null) {
+			tag.setTag("validator", validator.serializeToNBT());
+		}
+
+		return tag;
+	}
+
+	public static StructureTemplate deserializeNBT(NBTTagCompound tag) {
+		String name = tag.getString("name");
+		Vec3i size = MathUtils.fromLong(tag.getLong("size"));
+		Vec3i offset = MathUtils.fromLong(tag.getLong("offset"));
+
+		StructureTemplate template = new StructureTemplate(name, Collections.emptySet(), size, offset);
+		template.setBlockRules(deserializeRules(tag.getTagList("blockRules", Constants.NBT.TAG_COMPOUND)));
+		template.setEntityRules(deserializeRules(tag.getTagList("entityRules", Constants.NBT.TAG_COMPOUND)));
+		template.setTemplateData(MathUtils.toShortArray(tag.getIntArray("templateData")));
+		StructureValidationType type = StructureValidationType.getTypeFromName(tag.getString("validationType"));
+		if (type != null) {
+			StructureValidator structureValidator = type.getValidator();
+			structureValidator.readFromNBT(tag.getCompoundTag("validator"));
+			template.setValidationSettings(structureValidator);
+		}
+		return template;
+	}
+
+	private static <T extends TemplateRule> Map<Integer, T> deserializeRules(NBTTagList blockRules) {
+		Map<Integer, T> ret = new HashMap<>();
+		for (NBTBase data : blockRules) {
+			NBTTagCompound ruleData = (NBTTagCompound) data;
+			StructurePluginManager.INSTANCE.getRuleByName(ruleData.getString("pluginName")).ifPresent(
+					rule -> {
+						rule.parseRule(ruleData);
+						//noinspection unchecked
+						ret.put(ruleData.getInteger("ruleNumber"), (T) rule);
+					}
+			);
+
+		}
+		return ret;
+	}
+
+	private NBTTagList serializeRules(Map<Integer, ? extends TemplateRule> templateRules) {
+		return templateRules.entrySet().stream().map(this::serializeRule).collect(NBTHelper.NBTLIST_COLLECTOR);
+	}
+
+	private NBTTagCompound serializeRule(Map.Entry<Integer, ? extends TemplateRule> blockRule) {
+		NBTTagCompound ruleData = new NBTTagCompound();
+		ruleData.setInteger("ruleNumber", blockRule.getKey());
+		ruleData.setString("pluginName", blockRule.getValue().getPluginName());
+		blockRule.getValue().writeRuleData(ruleData);
+		return ruleData;
 	}
 
 	public static class Version {

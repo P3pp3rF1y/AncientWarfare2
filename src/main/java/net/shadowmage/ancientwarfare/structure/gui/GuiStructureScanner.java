@@ -16,7 +16,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
 import net.shadowmage.ancientwarfare.structure.container.ContainerStructureScanner;
-import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManagerClient;
+import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 
 import java.io.File;
 
@@ -224,7 +224,7 @@ public class GuiStructureScanner extends GuiContainerBase<ContainerStructureScan
 
 	private void restore() {
 		String name = nameInput.getText();
-		if (StructureTemplateManagerClient.instance().templateExists(name)) {
+		if (StructureTemplateManager.INSTANCE.templateExists(name)) {
 			getContainer().restoreTemplate(name);
 		} else {
 			statusMessage.setText("Template Name doesn't exist");

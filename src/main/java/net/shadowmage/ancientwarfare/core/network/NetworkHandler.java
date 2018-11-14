@@ -6,11 +6,13 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.network.FMLEventChannel;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
+import net.minecraftforge.fml.relauncher.Side;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.compat.jei.PacketTransferRecipe;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
@@ -146,7 +148,9 @@ public final class NetworkHandler implements IGuiHandler {
 	}
 
 	public static void sendToAllPlayers(PacketBase pkt) {
-		INSTANCE.channel.sendToAll(pkt.getFMLPacket());
+		if (FMLCommonHandler.instance().getSide() == Side.SERVER) {
+			INSTANCE.channel.sendToAll(pkt.getFMLPacket());
+		}
 	}
 
 	public static void sendToAllTracking(Entity e, PacketBase pkt) {

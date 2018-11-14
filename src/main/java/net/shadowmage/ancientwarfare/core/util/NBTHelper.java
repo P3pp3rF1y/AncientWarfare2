@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collector;
 
 public class NBTHelper {
 	private NBTHelper() {}
@@ -126,4 +127,10 @@ public class NBTHelper {
 		}
 		return stacks;
 	}
+
+	public static final Collector<NBTBase, NBTTagList, NBTTagList> NBTLIST_COLLECTOR =
+			Collector.of(NBTTagList::new, NBTTagList::appendTag, (l1, l2) -> {
+				l2.forEach(l1::appendTag);
+				return l1;
+			});
 }

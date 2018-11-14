@@ -108,7 +108,7 @@ public class StructurePluginManager implements IStructurePluginRegister {
 		return getRuleHandler(world, pos, state).map(h -> h.pluginName);
 	}
 
-	private Optional<TemplateRule> getParserByName(String name) {
+	public Optional<TemplateRule> getRuleByName(String name) {
 		Optional<TemplateRule> result = blockRuleHandlers.stream().filter(h -> h.pluginName.equals(name)).findFirst().map(h -> h.getRule.get());
 		if (result.isPresent()) {
 			return result;
@@ -180,7 +180,7 @@ public class StructurePluginManager implements IStructurePluginRegister {
 		FixResult.Builder<T> resultBuilder = new FixResult.Builder<>();
 
 		name = resultBuilder.updateAndGetData(DataFixManager.fixRuleName(version, name));
-		Optional<TemplateRule> parser = INSTANCE.getParserByName(name);
+		Optional<TemplateRule> parser = INSTANCE.getRuleByName(name);
 		if (!parser.isPresent()) {
 			throw new TemplateRuleParsingException("Not enough data to create template rule.\n" + "Missing plugin for name: " + name + "\n" + "name: " + name + "\n" + "number:" + ruleNumber + "\n" + "ruleDataPackage.size:" + ruleDataPackage.size() + "\n");
 		}

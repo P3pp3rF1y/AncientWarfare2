@@ -54,7 +54,7 @@ public abstract class TemplateRule {
 		out.newLine();
 	}
 
-	protected abstract String getPluginName();
+	public abstract String getPluginName();
 
 	protected abstract String getRuleType();
 

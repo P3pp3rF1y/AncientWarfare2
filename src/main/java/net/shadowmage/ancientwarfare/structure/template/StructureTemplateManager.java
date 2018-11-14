@@ -1,44 +1,22 @@
-/*
- Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
- This software is distributed under the terms of the GNU General Public License.
- Please see COPYING for precise license information.
-
- This file is part of Ancient Warfare.
-
- Ancient Warfare is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- Ancient Warfare is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.structure.template;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructure;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructureRemove;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class StructureTemplateManager {
-	private HashMap<String, StructureTemplateClient> clientTemplates = new HashMap<>();//server-side client-templates
+	private static final String SINGLE_STRUCTURE_TAG = "singleStructure";
 	private HashMap<String, BufferedImage> templateImages = new HashMap<>();//server-side images
 	private HashMap<String, StructureTemplate> loadedTemplates = new HashMap<>();
 
@@ -55,27 +33,16 @@ public class StructureTemplateManager {
 			WorldGenStructureManager.INSTANCE.registerWorldGenStructure(template);
 		}
 		loadedTemplates.put(template.name, template);
-		StructureTemplateClient cl = new StructureTemplateClient(template);
-		clientTemplates.put(template.name, cl);
 
-		MinecraftServer server = FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER ? FMLCommonHandler.instance().getMinecraftServerInstance() : null;
-		if (server != null && server.isServerRunning() && server.getPlayerList() != null) {
-			NBTTagCompound tag = new NBTTagCompound();
-			cl.writeToNBT(tag);
-			PacketStructure pkt = new PacketStructure();
-			pkt.packetData.setTag("singleStructure", tag);
-			NetworkHandler.sendToAllPlayers(pkt);
-		} else if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
-			StructureTemplateManagerClient.instance().addTemplate(cl);
-		}
+		PacketStructure pkt = new PacketStructure();
+		pkt.packetData.setTag(SINGLE_STRUCTURE_TAG, template.serializeNBT());
+		NetworkHandler.sendToAllPlayers(pkt);
 	}
 
 	public void onPlayerConnect(EntityPlayerMP player) {
 		NBTTagList list = new NBTTagList();
-		for (StructureTemplateClient cl : clientTemplates.values()) {
-			NBTTagCompound tag = new NBTTagCompound();
-			cl.writeToNBT(tag);
-			list.appendTag(tag);
+		for (StructureTemplate template : loadedTemplates.values()) {
+			list.appendTag(template.serializeNBT());
 		}
 		PacketStructure pkt = new PacketStructure();
 		pkt.packetData.setTag("structureList", list);
@@ -83,10 +50,9 @@ public class StructureTemplateManager {
 	}
 
 	public boolean removeTemplate(String name) {
-		if (this.loadedTemplates.containsKey(name)) {
-			this.loadedTemplates.remove(name);
-			this.clientTemplates.remove(name);
-			this.templateImages.remove(name);
+		if (loadedTemplates.containsKey(name)) {
+			loadedTemplates.remove(name);
+			templateImages.remove(name);
 			NetworkHandler.sendToAllPlayers(new PacketStructureRemove(name));
 			return true;
 		}
@@ -112,5 +78,25 @@ public class StructureTemplateManager {
 
 	public Map<String, StructureTemplate> getSurvivalStructures() {
 		return loadedTemplates.entrySet().stream().filter(e -> e.getValue().getValidationSettings().isSurvival()).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+	}
+
+	public void onTemplateData(NBTTagCompound tag) {
+		if (tag.hasKey(SINGLE_STRUCTURE_TAG)) {
+			addTemplate(StructureTemplate.deserializeNBT(tag.getCompoundTag(SINGLE_STRUCTURE_TAG)));
+		} else {
+			loadedTemplates.clear();
+			NBTTagList list = tag.getTagList("structureList", Constants.NBT.TAG_COMPOUND);
+			for (int i = 0; i < list.tagCount(); i++) {
+				addTemplate(StructureTemplate.deserializeNBT(list.getCompoundTagAt(i)));
+			}
+		}
+	}
+
+	public Collection<StructureTemplate> getTemplates() {
+		return loadedTemplates.values();
+	}
+
+	public boolean templateExists(String name) {
+		return loadedTemplates.keySet().contains(name);
 	}
 }

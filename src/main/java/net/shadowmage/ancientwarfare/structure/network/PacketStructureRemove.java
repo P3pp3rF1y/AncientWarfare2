@@ -5,7 +5,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
-import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManagerClient;
+import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 
 public class PacketStructureRemove extends PacketBase {
 
@@ -32,6 +32,6 @@ public class PacketStructureRemove extends PacketBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	protected void execute() {
-		StructureTemplateManagerClient.instance().removeTemplate(structureName);
+		StructureTemplateManager.INSTANCE.removeTemplate(structureName);
 	}
 }

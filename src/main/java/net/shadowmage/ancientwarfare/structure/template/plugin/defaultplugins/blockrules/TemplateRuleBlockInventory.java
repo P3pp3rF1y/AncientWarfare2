@@ -191,7 +191,7 @@ public class TemplateRuleBlockInventory extends TemplateRuleBlockTile {
 	}
 
 	@Override
-	protected String getPluginName() {
+	public String getPluginName() {
 		return PLUGIN_NAME;
 	}
 }
