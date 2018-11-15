@@ -16,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.Tuple;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.IBlockAccess;
@@ -41,7 +42,7 @@ import static org.lwjgl.opengl.GL11.GL_QUADS;
 public class PreviewRenderer {
 	@SuppressWarnings("NewExpressionSideOnly")
 	@SideOnly(Side.CLIENT)
-	private static Cache<Integer, BufferBuilder.State> previewCache = CacheBuilder.newBuilder().expireAfterAccess(1, TimeUnit.MINUTES).build();
+	private static Cache<Integer, Tuple<BlockPos, BufferBuilder.State>> previewCache = CacheBuilder.newBuilder().expireAfterAccess(1, TimeUnit.MINUTES).build();
 
 	private PreviewRenderer() {}
 
@@ -49,33 +50,37 @@ public class PreviewRenderer {
 	public static void renderTemplatePreview(EntityPlayer player, EnumHand hand, ItemStack stack, float delta, StructureTemplate structure, StructureBB bb, int turns) {
 		Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		GlStateManager.pushMatrix();
-		GlStateManager.disableLighting();
-		GlStateManager.enableBlend();
-		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		GlStateManager.translate(-getRenderOffsetX(player, delta), -getRenderOffsetY(player, delta), -getRenderOffsetZ(player, delta));
+		if (Minecraft.isAmbientOcclusionEnabled()) {
+			GlStateManager.shadeModel(GL11.GL_SMOOTH);
+		} else {
+			GlStateManager.shadeModel(GL11.GL_FLAT);
+		}
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder buffer = tessellator.getBuffer();
 		buffer.begin(GL_QUADS, DefaultVertexFormats.BLOCK);
-		EnumFacing facing = player.getHorizontalFacing();
-		int cacheKey = getKey(stack, facing, hand, bb.min);
-		Optional<BufferBuilder.State> state = Optional.ofNullable(previewCache.getIfPresent(cacheKey));
+		int cacheKey = getKey(stack, turns, hand);
+		Optional<Tuple<BlockPos, BufferBuilder.State>> state = Optional.ofNullable(previewCache.getIfPresent(cacheKey));
+		Vec3i offset = Vec3i.NULL_VECTOR;
 		if (state.isPresent()) {
-			buffer.setVertexState(state.get());
+			buffer.setVertexState(state.get().getSecond());
+			BlockPos bbMin = state.get().getFirst();
+			if (!bbMin.equals(bb.min)) {
+				offset = bb.min.add(-bbMin.getX(), -bbMin.getY(), -bbMin.getZ());
+			}
 		} else {
 			renderPreviewToBuffer(structure, bb, turns, buffer);
-			previewCache.put(cacheKey, buffer.getVertexState());
+			previewCache.put(cacheKey, new Tuple<>(bb.min, buffer.getVertexState()));
 		}
+		GlStateManager.translate(-getRenderOffsetX(player, delta) + 0.005F + offset.getX(), -getRenderOffsetY(player, delta) + 0.005F + offset.getY(),
+				-getRenderOffsetZ(player, delta) + 0.005F + offset.getZ());
 		tessellator.draw();
-		GlStateManager.disableBlend();
-		GlStateManager.enableLighting();
 		GlStateManager.popMatrix();
 	}
 
-	private static int getKey(ItemStack stack, EnumFacing facing, EnumHand hand, BlockPos min) {
+	private static int getKey(ItemStack stack, int turns, EnumHand hand) {
 		int hash = stack.hashCode();
-		hash = hash * 31 + facing.hashCode();
+		hash = hash * 31 + turns;
 		hash = hash * 31 + hand.hashCode();
-		hash = hash * 31 + min.hashCode();
 		return hash;
 	}
 
