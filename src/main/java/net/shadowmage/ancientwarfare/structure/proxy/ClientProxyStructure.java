@@ -1,10 +1,12 @@
 package net.shadowmage.ancientwarfare.structure.proxy;
 
 import codechicken.lib.util.ResourceUtils;
+import com.google.common.collect.Sets;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -13,7 +15,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.proxy.ClientProxyBase;
+import net.shadowmage.ancientwarfare.core.proxy.IClientRegister;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.event.StructureBoundingBoxRenderer;
@@ -22,13 +24,33 @@ import net.shadowmage.ancientwarfare.structure.gui.GuiGateControlCreative;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
 import net.shadowmage.ancientwarfare.structure.render.DraftingStationRenderer;
 import net.shadowmage.ancientwarfare.structure.render.ParticleDummyModel;
+import net.shadowmage.ancientwarfare.structure.render.PreviewRenderer;
 import net.shadowmage.ancientwarfare.structure.render.RenderGateInvisible;
 import net.shadowmage.ancientwarfare.structure.sounds.SoundLoader;
 import net.shadowmage.ancientwarfare.structure.tile.TileSoundBlock;
 
+import java.util.Set;
+
 @SuppressWarnings("unused")
 @SideOnly(Side.CLIENT)
-public class ClientProxyStructure extends ClientProxyBase {
+public class ClientProxyStructure extends CommonProxyStructure {
+	private Set<IClientRegister> clientRegisters = Sets.newHashSet();
+
+	public ClientProxyStructure() {
+		MinecraftForge.EVENT_BUS.register(this);
+	}
+
+	@SubscribeEvent
+	public void registerModels(ModelRegistryEvent event) {
+		for (IClientRegister register : clientRegisters) {
+			register.registerClient();
+		}
+	}
+
+	@Override
+	public void addClientRegister(IClientRegister register) {
+		clientRegisters.add(register);
+	}
 
 	@Override
 	public void preInit() {
@@ -59,5 +81,10 @@ public class ClientProxyStructure extends ClientProxyBase {
 	@SubscribeEvent
 	public void onPreTextureStitch(TextureStitchEvent.Pre evt) {
 		DraftingStationRenderer.INSTANCE.setSprite(evt.getMap().registerSprite(new ResourceLocation(AncientWarfareCore.MOD_ID + ":model/structure/tile_drafting_station")));
+	}
+
+	@Override
+	public void clearTemplatePreviewCache() {
+		PreviewRenderer.clearCache();
 	}
 }

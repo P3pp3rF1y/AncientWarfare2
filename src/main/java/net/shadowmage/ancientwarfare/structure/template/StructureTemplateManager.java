@@ -5,6 +5,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructure;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructureRemove;
 
@@ -29,6 +30,9 @@ public class StructureTemplateManager {
 		}
 		if (template.getValidationSettings().isWorldGenEnabled()) {
 			WorldGenStructureManager.INSTANCE.registerWorldGenStructure(template);
+		}
+		if (loadedTemplates.keySet().contains(template.name)) {
+			AncientWarfareStructure.proxy.clearTemplatePreviewCache();
 		}
 		loadedTemplates.put(template.name, template);
 

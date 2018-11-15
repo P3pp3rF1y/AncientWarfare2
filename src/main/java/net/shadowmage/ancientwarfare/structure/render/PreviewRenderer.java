@@ -46,6 +46,10 @@ public class PreviewRenderer {
 
 	private PreviewRenderer() {}
 
+	public static void clearCache() {
+		previewCache.cleanUp();
+	}
+
 	@SideOnly(Side.CLIENT)
 	public static void renderTemplatePreview(EntityPlayer player, EnumHand hand, ItemStack stack, float delta, StructureTemplate structure, StructureBB bb, int turns) {
 		Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);

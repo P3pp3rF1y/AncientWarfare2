@@ -19,7 +19,6 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
-import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
 import net.shadowmage.ancientwarfare.core.registry.RegistryLoader;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.command.CommandStructure;
@@ -38,6 +37,7 @@ import net.shadowmage.ancientwarfare.structure.container.ContainerTownSelection;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructure;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructureRemove;
+import net.shadowmage.ancientwarfare.structure.proxy.CommonProxyStructure;
 import net.shadowmage.ancientwarfare.structure.registry.EntitySpawnNBTRegistry;
 import net.shadowmage.ancientwarfare.structure.registry.StructureBlockRegistry;
 import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
@@ -69,9 +69,9 @@ public class AncientWarfareStructure {
 
 	public static final Logger LOG = LogManager.getLogger(MOD_ID);
 
-	@SidedProxy(clientSide = "net.shadowmage.ancientwarfare.structure.proxy.ClientProxyStructure", serverSide = "net.shadowmage.ancientwarfare.core.proxy.CommonProxy")
+	@SidedProxy(clientSide = "net.shadowmage.ancientwarfare.structure.proxy.ClientProxyStructure", serverSide = "net.shadowmage.ancientwarfare.structure.proxy.CommonProxyStructure")
 	@SuppressWarnings("squid:S1444")
-	public static CommonProxyBase proxy;
+	public static CommonProxyStructure proxy;
 
 	private AWStructureStatics statics;
 
