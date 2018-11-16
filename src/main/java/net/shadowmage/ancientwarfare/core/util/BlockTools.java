@@ -406,7 +406,7 @@ public class BlockTools {
 			.put(BlockLog.EnumAxis.class, new IRotator<BlockLog.EnumAxis>() {
 				@Override
 				public BlockLog.EnumAxis rotateY(BlockLog.EnumAxis facing, int turns) {
-					if (facing == BlockLog.EnumAxis.Y || turns % 2 == 0) {
+					if (facing == BlockLog.EnumAxis.Y || facing == BlockLog.EnumAxis.NONE || turns % 2 == 0) {
 						return facing;
 					}
 					return facing == BlockLog.EnumAxis.X ? BlockLog.EnumAxis.Z : BlockLog.EnumAxis.X;
