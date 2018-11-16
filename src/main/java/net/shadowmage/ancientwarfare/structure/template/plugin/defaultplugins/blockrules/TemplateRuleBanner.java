@@ -35,7 +35,7 @@ public class TemplateRuleBanner extends TemplateRuleBlockTile {
 	@Override
 	public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
 		if (state.getBlock() == Blocks.STANDING_BANNER) {
-			builder.placeBlock(pos, BlockTools.rotateFacing(state.withRotation(Rotation.values()[turns % 4]), turns), buildPass);
+			builder.placeBlock(pos, getState(turns), buildPass);
 			WorldTools.getTile(world, pos).ifPresent(t -> {
 				//TODO look into changing this so that the whole TE doesn't need reloading from custom NBT
 				tag.setInteger("x", pos.getX());
@@ -51,5 +51,10 @@ public class TemplateRuleBanner extends TemplateRuleBlockTile {
 	@Override
 	public String getPluginName() {
 		return PLUGIN_NAME;
+	}
+
+	@Override
+	public IBlockState getState(int turns) {
+		return super.getState(turns).withRotation(Rotation.values()[turns % 4]);
 	}
 }

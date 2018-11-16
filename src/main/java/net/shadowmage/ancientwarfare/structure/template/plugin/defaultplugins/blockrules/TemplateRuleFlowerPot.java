@@ -5,6 +5,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFlowerPot;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
@@ -14,11 +15,14 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 
+import javax.annotation.Nullable;
+
 public class TemplateRuleFlowerPot extends TemplateRuleVanillaBlocks {
 	public static final String PLUGIN_NAME = "vanillaFlowerPot";
 	private static final String ITEM_NAME_TAG = "itemName";
 	private Item item = Items.AIR;
 	private int itemMeta = 0;
+	private TileEntityFlowerPot tileCache;
 
 	public TemplateRuleFlowerPot(World world, BlockPos pos, IBlockState state, int turns) {
 		super(world, pos, state, turns);
@@ -87,5 +91,16 @@ public class TemplateRuleFlowerPot extends TemplateRuleVanillaBlocks {
 	@Override
 	public String getPluginName() {
 		return PLUGIN_NAME;
+	}
+
+	@Nullable
+	@Override
+	public TileEntity getTileEntity(int turns) {
+		if (tileCache == null) {
+			tileCache = new TileEntityFlowerPot();
+			tileCache.setItemStack(new ItemStack(item, 1, itemMeta));
+			tileCache.setWorld(new RuleWorld(getState(turns)));
+		}
+		return tileCache;
 	}
 }

@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -14,9 +15,11 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.NBTHelper;
+import net.shadowmage.ancientwarfare.core.util.RenderTools;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.registry.StructureBlockRegistry;
 
+import javax.annotation.Nullable;
 import java.util.MissingResourceException;
 
 public abstract class TemplateRuleBlock extends TemplateRule {
@@ -93,5 +96,20 @@ public abstract class TemplateRuleBlock extends TemplateRule {
 
 	public IBlockState getState(int turns) {
 		return BlockTools.rotateFacing(state, turns);
+	}
+
+	@Nullable
+	public TileEntity getTileEntity(int turns) {
+		return null;
+	}
+
+	@SuppressWarnings("squid:S1172")
+	public boolean isDynamicallyRendered(int turns) {
+		return false;
+	}
+
+	@SideOnly(Side.CLIENT)
+	public void renderRuleDynamic(int turns, BlockPos pos) {
+		RenderTools.renderTESR(getTileEntity(turns), pos);
 	}
 }

@@ -9,14 +9,18 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityBed;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.Tuple;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 
+import javax.annotation.Nullable;
+
 public class TemplateRuleBed extends TemplateRuleVanillaBlocks {
 	public static final String PLUGIN_NAME = "bed";
 	private EnumDyeColor color = EnumDyeColor.RED;
+	private Tuple<Integer, TileEntityBed> tileCache = null;
 
 	public TemplateRuleBed(World world, BlockPos pos, IBlockState state, int turns) {
 		super(world, pos, state, turns);
@@ -55,6 +59,12 @@ public class TemplateRuleBed extends TemplateRuleVanillaBlocks {
 	}
 
 	@Override
+	public boolean shouldReuseRule(World world, IBlockState state, int turns, BlockPos pos) {
+		EnumDyeColor blockColor = WorldTools.getTile(world, pos, TileEntityBed.class).map(TileEntityBed::getColor).orElse(EnumDyeColor.RED);
+		return color == blockColor && super.shouldReuseRule(world, state, turns, pos);
+	}
+
+	@Override
 	public void writeRuleData(NBTTagCompound tag) {
 		super.writeRuleData(tag);
 		tag.setInteger("bedColor", color.getMetadata());
@@ -69,5 +79,22 @@ public class TemplateRuleBed extends TemplateRuleVanillaBlocks {
 	@Override
 	public String getPluginName() {
 		return PLUGIN_NAME;
+	}
+
+	@Nullable
+	@Override
+	public TileEntity getTileEntity(int turns) {
+		if (tileCache == null || tileCache.getFirst() != turns) {
+			TileEntityBed te = new TileEntityBed();
+			te.setColor(color);
+			te.setWorld(new RuleWorld(getState(turns)));
+			tileCache = new Tuple<>(turns, te);
+		}
+		return tileCache.getSecond();
+	}
+
+	@Override
+	public boolean isDynamicallyRendered(int turns) {
+		return true;
 	}
 }

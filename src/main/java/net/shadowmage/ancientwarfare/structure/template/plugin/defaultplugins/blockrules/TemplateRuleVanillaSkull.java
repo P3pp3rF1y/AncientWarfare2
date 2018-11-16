@@ -4,16 +4,21 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntitySkull;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.Tuple;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 
+import javax.annotation.Nullable;
+
 public class TemplateRuleVanillaSkull extends TemplateRuleBlockTile {
 	public static final String PLUGIN_NAME = "vanillaSkull";
 	private int skullRotation;
+	private Tuple<Integer, TileEntitySkull> tileCache;
 
 	public TemplateRuleVanillaSkull(World world, BlockPos pos, IBlockState state, int turns) {
 		super(world, pos, state, turns);
@@ -27,7 +32,12 @@ public class TemplateRuleVanillaSkull extends TemplateRuleBlockTile {
 	@Override
 	public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
 		super.handlePlacement(world, turns, pos, builder);
-		WorldTools.getTile(world, pos, TileEntitySkull.class).ifPresent(te -> te.setSkullRotation(Rotation.values()[turns % 4].rotate(skullRotation, 16)));
+		WorldTools.getTile(world, pos, TileEntitySkull.class).ifPresent(te -> setTileProperties(turns, te));
+	}
+
+	private TileEntitySkull setTileProperties(int turns, TileEntitySkull te) {
+		te.setSkullRotation(Rotation.values()[turns % 4].rotate(skullRotation, 16));
+		return te;
 	}
 
 	@Override
@@ -50,5 +60,18 @@ public class TemplateRuleVanillaSkull extends TemplateRuleBlockTile {
 	@Override
 	public String getPluginName() {
 		return PLUGIN_NAME;
+	}
+
+	@Nullable
+	@Override
+	public TileEntity getTileEntity(int turns) {
+		if (tileCache == null || tileCache.getFirst() != turns) {
+			//noinspection ConstantConditions
+			TileEntitySkull te = setTileProperties(turns, (TileEntitySkull) super.getTileEntity(turns));
+			te.setWorld(new RuleWorld(getState(turns)));
+			tileCache = new Tuple<>(turns, te);
+		}
+
+		return tileCache.getSecond();
 	}
 }
