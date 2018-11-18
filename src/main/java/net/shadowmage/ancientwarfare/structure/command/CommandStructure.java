@@ -16,6 +16,7 @@ import net.shadowmage.ancientwarfare.structure.item.ItemStructureScanner;
 import net.shadowmage.ancientwarfare.structure.item.ItemStructureSettings;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
+import net.shadowmage.ancientwarfare.structure.template.WorldGenStructureManager;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
 import net.shadowmage.ancientwarfare.structure.template.load.TemplateLoader;
 
@@ -54,6 +55,7 @@ public class CommandStructure extends CommandBase {
 				save(sender, var2);
 				break;
 			case "reload":
+				WorldGenStructureManager.INSTANCE.loadBiomeList(); //reset biome to template cache
 				TemplateLoader.INSTANCE.reloadAll();
 				sender.sendMessage(new TextComponentTranslation("command.aw.structure.reloaded"));
 		}

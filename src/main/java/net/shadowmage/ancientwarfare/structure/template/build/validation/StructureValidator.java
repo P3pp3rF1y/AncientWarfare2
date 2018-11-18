@@ -140,6 +140,10 @@ public abstract class StructureValidator {
 	 */
 	@SuppressWarnings("squid:S1172")
 	public void handleClearAction(World world, BlockPos pos, StructureTemplate template, StructureBB bb) {
+		if (isPreserveBlocks()) {
+			return;
+		}
+
 		IBlockState state = world.getBlockState(pos);
 		if (state.getMaterial() != Material.AIR) {
 			ITreeScanner treeScanner = TreeFarmRegistry.getTreeScanner(state);
