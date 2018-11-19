@@ -139,8 +139,8 @@ public class PreviewRenderer {
 		private StructureBB bb;
 		private int turns;
 
-		private Map<BlockPos, IBlockState> positionStates = new HashMap<>();
-		private Map<BlockPos, TileEntity> positionTiles = new HashMap<>();
+		private Map<Long, IBlockState> positionStates = new HashMap<>();
+		private Map<Long, TileEntity> positionTiles = new HashMap<>();
 
 		private TemplateBlockAccess(StructureTemplate template, StructureBB bb, int turns) {
 			this.template = template;
@@ -160,14 +160,15 @@ public class PreviewRenderer {
 		@Nullable
 		@Override
 		public TileEntity getTileEntity(BlockPos pos) {
-			if (!positionTiles.containsKey(pos)) {
+			long posSerialized = pos.toLong();
+			if (!positionTiles.containsKey(posSerialized)) {
 				if (!bb.contains(pos)) {
-					positionTiles.put(pos, null);
+					positionTiles.put(posSerialized, null);
 				} else {
-					getBlockRuleAt(pos).ifPresent(templateRuleBlock -> positionTiles.put(pos, templateRuleBlock.getTileEntity(turns)));
+					getBlockRuleAt(pos).ifPresent(templateRuleBlock -> positionTiles.put(posSerialized, templateRuleBlock.getTileEntity(turns)));
 				}
 			}
-			return positionTiles.get(pos);
+			return positionTiles.get(posSerialized);
 		}
 
 		@Override
@@ -178,14 +179,18 @@ public class PreviewRenderer {
 
 		@Override
 		public IBlockState getBlockState(BlockPos pos) {
-			if (!positionStates.containsKey(pos)) {
+			long posSerialized = pos.toLong();
+			IBlockState state = positionStates.get(posSerialized);
+
+			if (state == null) {
 				if (!bb.contains(pos)) {
-					positionStates.put(pos, Blocks.AIR.getDefaultState());
+					positionStates.put(posSerialized, Blocks.AIR.getDefaultState());
 				} else {
-					positionStates.put(pos, getBlockRuleAt(pos).map(templateRuleBlock -> templateRuleBlock.getState(turns)).orElse(Blocks.AIR.getDefaultState()));
+					positionStates.put(posSerialized, getBlockRuleAt(pos).map(templateRuleBlock -> templateRuleBlock.getState(turns)).orElse(Blocks.AIR.getDefaultState()));
 				}
+				state = positionStates.get(posSerialized);
 			}
-			return positionStates.get(pos);
+			return state;
 		}
 
 		private Optional<TemplateRuleBlock> getBlockRuleAt(BlockPos pos) {
