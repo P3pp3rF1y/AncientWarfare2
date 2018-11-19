@@ -84,11 +84,11 @@ public class ContainerStructureScanner extends ContainerBase {
 				setIncludeImmediately(tag.getBoolean(INCLUDE_TAG));
 			} else if (tag.hasKey(VALIDATOR_TAG)) {
 				NBTTagCompound validatorNBT = tag.getCompoundTag(VALIDATOR_TAG);
-				StructureValidationType type = StructureValidationType.getTypeFromName(validatorNBT.getString("validationType"));
-				//noinspection ConstantConditions
-				StructureValidator validator = type.getValidator();
-				validator.readFromNBT(validatorNBT);
-				setValidator(validator);
+				StructureValidationType.getTypeFromName(validatorNBT.getString("validationType")).ifPresent(type -> {
+					StructureValidator validator = type.getValidator();
+					validator.readFromNBT(validatorNBT);
+					setValidator(validator);
+				});
 			} else if (tag.hasKey(BOUNDS_ACTIVE_TAG)) {
 				setBoundsActive(tag.getBoolean(BOUNDS_ACTIVE_TAG));
 			} else if (tag.hasKey("mods")) {

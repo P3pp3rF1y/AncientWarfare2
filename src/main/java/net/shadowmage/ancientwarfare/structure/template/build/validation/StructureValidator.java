@@ -238,14 +238,11 @@ public abstract class StructureValidator {
 			dimensions = new int[] {0};
 		}
 
-		StructureValidationType validatorType = StructureValidationType.getTypeFromName(type);
-		StructureValidator validator;
-		if (validatorType == null) {
-			validator = StructureValidationType.GROUND.getValidator();
-		} else {
-			validator = validatorType.getValidator();
-			validator.readFromLines(tagLines);
-		}
+		StructureValidator validator = StructureValidationType.getTypeFromName(type).map(validationType -> {
+			StructureValidator val = validationType.getValidator();
+			val.readFromLines(tagLines);
+			return val;
+		}).orElse(StructureValidationType.GROUND.getValidator());
 
 		validator.setProperty(PROP_DIMENSION_WHITE_LIST, dimension);
 		validator.setProperty(PROP_DIMENSION_LIST, dimensions);

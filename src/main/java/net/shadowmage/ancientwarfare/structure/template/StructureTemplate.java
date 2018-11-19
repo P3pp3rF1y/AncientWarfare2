@@ -47,16 +47,13 @@ public class StructureTemplate {
 	/*
 	 * world generation placement validation settings
 	 */
-	private StructureValidator validator;
+	private StructureValidator validator = StructureValidationType.GROUND.getValidator();
 
 	public StructureTemplate(String name, Set<String> modDependencies, Vec3i size, Vec3i offset) {
 		this(name, modDependencies, CURRENT_VERSION, size, offset);
 	}
 
 	public StructureTemplate(String name, Set<String> modDependencies, Version version, Vec3i size, Vec3i offset) {
-		if (name == null) {
-			throw new IllegalArgumentException("cannot have null name for structure");
-		}
 		this.modDependencies = modDependencies;
 		this.version = version;
 		this.name = name;
@@ -181,9 +178,7 @@ public class StructureTemplate {
 		tag.setTag("entityRules", serializeRules(entityRules));
 		tag.setIntArray("templateData", MathUtils.toIntArray(templateData));
 		tag.setString("validationType", validator.validationType.getName());
-		if (validator != null) {
-			tag.setTag("validator", validator.serializeToNBT());
-		}
+		tag.setTag("validator", validator.serializeToNBT());
 
 		return tag;
 	}
@@ -197,12 +192,11 @@ public class StructureTemplate {
 		template.setBlockRules(deserializeRules(tag.getTagList("blockRules", Constants.NBT.TAG_COMPOUND)));
 		template.setEntityRules(deserializeRules(tag.getTagList("entityRules", Constants.NBT.TAG_COMPOUND)));
 		template.setTemplateData(MathUtils.toShortArray(tag.getIntArray("templateData")));
-		StructureValidationType type = StructureValidationType.getTypeFromName(tag.getString("validationType"));
-		if (type != null) {
+		StructureValidationType.getTypeFromName(tag.getString("validationType")).ifPresent(type -> {
 			StructureValidator structureValidator = type.getValidator();
 			structureValidator.readFromNBT(tag.getCompoundTag("validator"));
 			template.setValidationSettings(structureValidator);
-		}
+		});
 		return template;
 	}
 

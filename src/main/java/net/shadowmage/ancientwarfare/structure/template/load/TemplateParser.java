@@ -48,7 +48,7 @@ public class TemplateParser {
 
 		int parsedLayers = 0;
 
-		String name = null;
+		String name = "";
 		Version version = Version.NONE;
 		Vec3i size = new Vec3i(0, 0, 0);
 		Vec3i offset = new Vec3i(0, 0, 0);

@@ -36,6 +36,7 @@ import java.awt.*;
 import java.io.File;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static java.awt.Color.GREEN;
@@ -124,12 +125,12 @@ public class ItemStructureScanner extends ItemBaseStructure implements IItemKeyI
 
 		NBTTagCompound validatorTag = stack.getTagCompound().getCompoundTag(VALIDATOR_TAG);
 
-		StructureValidationType type = StructureValidationType.getTypeFromName(validatorTag.getString("validationType"));
-		if (type == null) {
+		Optional<StructureValidationType> type = StructureValidationType.getTypeFromName(validatorTag.getString("validationType"));
+		if (!type.isPresent()) {
 			return StructureValidationType.GROUND.getValidator();
 		}
 
-		StructureValidator validator = type.getValidator();
+		StructureValidator validator = type.get().getValidator();
 		validator.readFromNBT(validatorTag);
 		return validator;
 	}

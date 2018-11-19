@@ -1,40 +1,41 @@
 package net.shadowmage.ancientwarfare.structure.template.build.validation;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
+import java.util.function.Supplier;
 
 import static net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidatorIsland.PROP_MAX_WATER_DEPTH;
 import static net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidatorIsland.PROP_MIN_WATER_DEPTH;
 
 public enum StructureValidationType {
-	GROUND(StructureValidatorGround.class),
-	UNDERGROUND(StructureValidatorUnderground.class,
+	GROUND(StructureValidatorGround::new),
+	UNDERGROUND(StructureValidatorUnderground::new,
 			new StructureValidationProperty("minGenDepth", 0),
 			new StructureValidationProperty("maxGenDepth", 0),
 			new StructureValidationProperty("minOverfill", 0)),
-	SKY(StructureValidatorSky.class,
+	SKY(StructureValidatorSky::new,
 			new StructureValidationProperty("minGenHeight", 0),
 			new StructureValidationProperty("maxGenHeight", 0),
 			new StructureValidationProperty("minFlyingHeight", 0)),
-	WATER(StructureValidatorWater.class),
-	UNDERWATER(StructureValidatorUnderwater.class,
+	WATER(StructureValidatorWater::new),
+	UNDERWATER(StructureValidatorUnderwater::new,
 			new StructureValidationProperty("minWaterDepth", 0),
 			new StructureValidationProperty("maxWaterDepth", 0)),
-	HARBOR(StructureValidatorHarbor.class),
-	ISLAND(StructureValidatorIsland.class,
+	HARBOR(StructureValidatorHarbor::new),
+	ISLAND(StructureValidatorIsland::new,
 			new StructureValidationProperty(PROP_MIN_WATER_DEPTH, 0),
 			new StructureValidationProperty(PROP_MAX_WATER_DEPTH, 0));
 
-	private Class<? extends StructureValidator> validatorClass;
+	private final Supplier<? extends StructureValidator> createValidator;
 
 	private List<StructureValidationProperty> properties = new ArrayList<>();
 
-	StructureValidationType(Class<? extends StructureValidator> validatorClass, StructureValidationProperty... props) {
-		this.validatorClass = validatorClass;
+	StructureValidationType(Supplier<? extends StructureValidator> createValidator, StructureValidationProperty... props) {
+		this.createValidator = createValidator;
 
 		properties.add(new StructureValidationProperty(StructureValidator.PROP_SURVIVAL, false));
 		properties.add(new StructureValidationProperty(StructureValidator.PROP_WORLD_GEN, false));
@@ -69,67 +70,15 @@ public enum StructureValidationType {
 	}
 
 	public StructureValidator getValidator() {
-		try {
-			return validatorClass.newInstance();
-		}
-		catch (InstantiationException e) {
-			e.printStackTrace();
-		}
-		catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
-		return null;
+		return createValidator.get();
 	}
 
-	@Nullable
-	public static StructureValidationType getTypeFromName(String name) {
+	public static Optional<StructureValidationType> getTypeFromName(String name) {
 		try {
-			return StructureValidationType.valueOf(name.toUpperCase(Locale.ENGLISH));
+			return Optional.of(StructureValidationType.valueOf(name.toUpperCase(Locale.ENGLISH)));
 		}
 		catch (IllegalArgumentException illegal) {
-			return null;
+			return Optional.empty();
 		}
 	}
-
-    /*
-	 * validation types:
-     * ground:
-     * validate border edge blocks for depth and leveling
-     * validate border target blocks
-     * <p/>
-     * underground:
-     * validate min/max overfill height is met
-     * validate border target blocks
-     * <p/>
-     * water:
-     * validate water depth along edges
-     * <p/>
-     * underwater:
-     * validate min/max water depth at placement x/z
-     * validate border edge blocks for depth and leveling
-     * <p/>
-     * sky:
-     * validate min flying height along edges
-     * <p/>
-     * harbor:
-     * validate edges--front all land, sides land/water, back all water. validate edge-depth and leveling *
-     * <p/>
-     * island:
-     * validate min/max water depth at placement x/z
-     * validate border edge blocks for depth and leveling
-     */
-
-	public static class ValidationProperty {
-		public String displayName;
-		public String propertyName;
-
-		public Class clz;//property class -- boolean or int for most
-
-		public ValidationProperty(String reg, String display, Class clz) {
-			this.propertyName = reg;
-			this.displayName = display;
-			this.clz = clz;
-		}
-	}
-
 }
