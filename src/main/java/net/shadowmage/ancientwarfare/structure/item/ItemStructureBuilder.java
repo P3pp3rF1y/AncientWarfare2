@@ -161,6 +161,7 @@ public class ItemStructureBuilder extends ItemBaseStructure implements IItemKeyI
 		StructureBB bb = new StructureBB(hit, facing, structure.getSize(), structure.getOffset());
 		int turns = (facing.getHorizontalIndex() + 2) % 4;
 		Util.renderBoundingBox(player, bb.min, bb.max, delta);
+		Util.renderBoundingBox(player, hit, hit, delta);
 		PreviewRenderer.renderTemplatePreview(player, hand, stack, delta, structure, bb, turns);
 	}
 
