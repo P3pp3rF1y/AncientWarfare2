@@ -72,14 +72,18 @@ public class ItemStructureBuilder extends ItemBaseStructure implements IItemKeyI
 				player.sendMessage(new TextComponentTranslation("guistrings.template.not_found"));
 				return;
 			}
-			BlockPos bpHit = BlockTools.getBlockClickedOn(player, player.world, true);
-			if (bpHit == null) {
+			Optional<Tuple<BlockPos, EnumFacing>> buildPos = getBuildPosFromStackOrPlayer(player, stack);
+			if (!buildPos.isPresent()) {
 				return;
-			}//no hit position, clicked on air
-			StructureBuilder builder = new StructureBuilder(player.world, template, player.getHorizontalFacing(), bpHit);
-			builder.getTemplate().getValidationSettings().preGeneration(player.world, bpHit, player.getHorizontalFacing(), builder.getTemplate(), builder.getBoundingBox());
+			}
+			BlockPos hit = buildPos.get().getFirst();
+			EnumFacing facing = buildPos.get().getSecond();
+
+			StructureBuilder builder = new StructureBuilder(player.world, template, facing, hit);
+			builder.getTemplate().getValidationSettings().preGeneration(player.world, hit, facing, builder.getTemplate(), builder.getBoundingBox());
 			builder.instantConstruction();
-			builder.getTemplate().getValidationSettings().postGeneration(player.world, bpHit, builder.getBoundingBox());
+			builder.getTemplate().getValidationSettings().postGeneration(player.world, hit, builder.getBoundingBox());
+			removeLockPosition(stack);
 			if (!player.capabilities.isCreativeMode) {
 				stack.shrink(1);
 			}
@@ -144,25 +148,33 @@ public class ItemStructureBuilder extends ItemBaseStructure implements IItemKeyI
 		if (structure == null) {
 			return;
 		}
-		Optional<Tuple<BlockPos, EnumFacing>> lockPosition = getLockPosition(stack);
-		BlockPos hit;
-		EnumFacing facing;
-		if (lockPosition.isPresent()) {
-			hit = lockPosition.get().getFirst();
-			facing = lockPosition.get().getSecond();
-		} else {
-			hit = BlockTools.getBlockClickedOn(player, player.world, true);
-			if (hit == null) {
-				return;
-			}
-			facing = player.getHorizontalFacing();
-		}
+		Optional<Tuple<BlockPos, EnumFacing>> buildPos = getBuildPosFromStackOrPlayer(player, stack);
+		if (!buildPos.isPresent())
+			return;
+
+		BlockPos hit = buildPos.get().getFirst();
+		EnumFacing facing = buildPos.get().getSecond();
 
 		StructureBB bb = new StructureBB(hit, facing, structure.getSize(), structure.getOffset());
 		int turns = (facing.getHorizontalIndex() + 2) % 4;
 		Util.renderBoundingBox(player, bb.min, bb.max, delta);
 		Util.renderBoundingBox(player, hit, hit, delta);
 		PreviewRenderer.renderTemplatePreview(player, hand, stack, delta, structure, bb, turns);
+	}
+
+	private Optional<Tuple<BlockPos, EnumFacing>> getBuildPosFromStackOrPlayer(EntityPlayer player, ItemStack stack) {
+		Optional<Tuple<BlockPos, EnumFacing>> lockPosition = getLockPosition(stack);
+		Optional<Tuple<BlockPos, EnumFacing>> buildPos;
+		if (lockPosition.isPresent()) {
+			buildPos = lockPosition;
+		} else {
+			BlockPos hit = BlockTools.getBlockClickedOn(player, player.world, true);
+			if (hit == null) {
+				return Optional.empty();
+			}
+			buildPos = Optional.of(new Tuple<>(hit, player.getHorizontalFacing()));
+		}
+		return buildPos;
 	}
 
 	@Override
