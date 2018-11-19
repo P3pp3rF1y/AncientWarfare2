@@ -536,7 +536,7 @@ public class InventoryTools {
 		return stackToReturn;
 	}
 
-	private static NonNullList<ItemStack> copyStacks(NonNullList<ItemStack> stacks) {
+	public static List<ItemStack> copyStacks(List<ItemStack> stacks) {
 		return stacks.stream().map(ItemStack::copy).collect(Collectors.toCollection(NonNullList::create));
 	}
 
