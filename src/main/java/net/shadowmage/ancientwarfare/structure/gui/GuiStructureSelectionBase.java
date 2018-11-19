@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.gui;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
@@ -113,12 +112,12 @@ public class GuiStructureSelectionBase extends GuiContainerBase<ContainerStructu
 		this.setSelectionName(template == null ? "guistrings.none" : template.name);
 
 		if (template != null) {
-			NonNullList<ItemStack> resources = template.getResourceList();
-			ItemSlot item;
-			for (ItemStack stack : resources) {
-				item = new ItemSlot(8, totalHeight, stack, this);
-				resourceArea.addGuiElement(item);
-				totalHeight += 18;
+			if (template.getValidationSettings().isSurvival()) {
+				for (ItemStack stack : template.getResourceList()) {
+					ItemSlot item = new ItemSlot(8, totalHeight, stack, this);
+					resourceArea.addGuiElement(item);
+					totalHeight += 18;
+				}
 			}
 		}
 		resourceArea.setAreaSize(totalHeight + 8);
