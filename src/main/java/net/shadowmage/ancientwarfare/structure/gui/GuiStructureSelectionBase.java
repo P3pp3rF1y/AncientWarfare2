@@ -58,7 +58,7 @@ public class GuiStructureSelectionBase extends GuiContainerBase<ContainerStructu
 		};
 		addGuiElement(filterInput);
 
-		selectionArea = new CompositeScrolled(this, 0, 138, 256, 240 - 138);
+		selectionArea = new CompositeScrolled(this, 0, 50, 256, 240 - 50);
 		addGuiElement(selectionArea);
 
 		resourceArea = new CompositeScrolled(this, 256, 40, 144, 200);
