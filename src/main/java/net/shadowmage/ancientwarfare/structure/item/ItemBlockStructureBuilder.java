@@ -17,6 +17,7 @@ import net.shadowmage.ancientwarfare.core.item.ItemBlockBase;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.event.IBoxRenderer;
+import net.shadowmage.ancientwarfare.structure.render.PreviewRenderer;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
@@ -99,5 +100,6 @@ public class ItemBlockStructureBuilder extends ItemBlockBase implements IBoxRend
 		BlockPos p2 = hit.offset(face, t.getSize().getZ() - 1 - t.getOffset().getZ() + 1);
 		StructureBB bb = new StructureBB(p2, face, t.getSize(), t.getOffset());
 		Util.renderBoundingBox(player, bb.min, bb.max, delta);
+		PreviewRenderer.renderTemplatePreview(player, hand, stack, delta, t, bb, (face.getHorizontalIndex() + 2) % 4);
 	}
 }
