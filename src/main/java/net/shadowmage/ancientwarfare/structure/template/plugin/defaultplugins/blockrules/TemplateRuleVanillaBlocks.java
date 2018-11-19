@@ -33,7 +33,7 @@ public class TemplateRuleVanillaBlocks extends TemplateRuleBlock {
 
 	@Override
 	public boolean shouldReuseRule(World world, IBlockState state, int turns, BlockPos pos) {
-		return state.getBlock() == this.state.getBlock() && state.getProperties().equals(BlockTools.rotateFacing(this.state, turns).getProperties());
+		return state.getBlock() == this.state.getBlock() && BlockTools.rotateFacing(state, turns).getProperties().equals(this.state.getProperties());
 	}
 
 	@Override
