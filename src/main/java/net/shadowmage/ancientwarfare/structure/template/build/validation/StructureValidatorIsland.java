@@ -15,9 +15,8 @@ import java.io.IOException;
 import java.util.List;
 
 public class StructureValidatorIsland extends StructureValidator {
-
-	private int minWaterDepth;
-	private int maxWaterDepth;
+	static final String PROP_MIN_WATER_DEPTH = "minWaterDepth";
+	static final String PROP_MAX_WATER_DEPTH = "maxWaterDepth";
 
 	public StructureValidatorIsland() {
 		super(StructureValidationType.ISLAND);
@@ -27,25 +26,41 @@ public class StructureValidatorIsland extends StructureValidator {
 	protected void readFromLines(List<String> lines) {
 		for (String line : lines) {
 			if (startLow(line, "minwaterdepth=")) {
-				minWaterDepth = StringTools.safeParseInt("=", line);
+				setMinWaterDepth(StringTools.safeParseInt("=", line));
 			} else if (startLow(line, "maxwaterdepth=")) {
-				maxWaterDepth = StringTools.safeParseInt("=", line);
+				setMaxWaterDepth(StringTools.safeParseInt("=", line));
 			}
 		}
 	}
 
+	private int getMinWaterDepth() {
+		return getPropertyValueInt(PROP_MIN_WATER_DEPTH);
+	}
+
+	private int getMaxWaterDepth() {
+		return getPropertyValueInt(PROP_MAX_WATER_DEPTH);
+	}
+
+	private void setMinWaterDepth(int depth) {
+		setProperty(PROP_MIN_WATER_DEPTH, depth);
+	}
+
+	private void setMaxWaterDepth(int depth) {
+		setProperty(PROP_MAX_WATER_DEPTH, depth);
+	}
+
 	@Override
 	protected void write(BufferedWriter out) throws IOException {
-		out.write("minWaterDepth=" + minWaterDepth);
+		out.write("minWaterDepth=" + getMinWaterDepth());
 		out.newLine();
-		out.write("minWaterDepth=" + maxWaterDepth);
+		out.write("maxwaterdepth=" + getMaxWaterDepth());
 		out.newLine();
 	}
 
 	@Override
 	protected void setDefaultSettings(StructureTemplate template) {
-		maxWaterDepth = template.getOffset().getY();
-		minWaterDepth = maxWaterDepth / 2;
+		setMaxWaterDepth(template.getOffset().getY());
+		setMinWaterDepth(getMaxWaterDepth() / 2);
 	}
 
 	@Override
@@ -53,13 +68,13 @@ public class StructureValidatorIsland extends StructureValidator {
 		int startY = y - 1;
 		y = WorldStructureGenerator.getTargetY(world, x, z, true) + 1;
 		int water = startY - y + 1;
-		return !(water < minWaterDepth || water > maxWaterDepth);
+		return !(water < getMinWaterDepth() || water > getMaxWaterDepth());
 	}
 
 	@Override
 	public boolean validatePlacement(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
-		int minY = y - maxWaterDepth;
-		int maxY = y - minWaterDepth;
+		int minY = y - getMaxWaterDepth();
+		int maxY = y - getMinWaterDepth();
 		return validateBorderBlocks(world, bb, minY, maxY, true);
 	}
 

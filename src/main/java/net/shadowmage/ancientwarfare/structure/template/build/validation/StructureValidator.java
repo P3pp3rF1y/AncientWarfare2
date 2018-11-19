@@ -311,12 +311,16 @@ public abstract class StructureValidator {
 		return this;
 	}
 
-	private void setProperty(String name, Object value) {
+	protected void setProperty(String name, Object value) {
 		if (properties.containsKey(name)) {
 			properties.get(name).setValue(value);
 		} else {
 			throw new IllegalArgumentException("Validation properties does not contain key for: " + name);
 		}
+	}
+
+	protected int getPropertyValueInt(String propertyName) {
+		return properties.get(propertyName).getDataInt();
 	}
 
 	public final void setBiomeWhiteList(boolean val) {

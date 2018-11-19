@@ -1,24 +1,3 @@
-/*
- Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
- This software is distributed under the terms of the GNU General Public License.
- Please see COPYING for precise license information.
-
- This file is part of Ancient Warfare.
-
- Ancient Warfare is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- Ancient Warfare is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.structure.template.build.validation;
 
 import javax.annotation.Nullable;
@@ -28,8 +7,27 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 
+import static net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidatorIsland.PROP_MAX_WATER_DEPTH;
+import static net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidatorIsland.PROP_MIN_WATER_DEPTH;
+
 public enum StructureValidationType {
-	GROUND(StructureValidatorGround.class), UNDERGROUND(StructureValidatorUnderground.class, new StructureValidationProperty("minGenDepth", 0), new StructureValidationProperty("maxGenDepth", 0), new StructureValidationProperty("minOverfill", 0)), SKY(StructureValidatorSky.class, new StructureValidationProperty("minGenHeight", 0), new StructureValidationProperty("maxGenHeight", 0), new StructureValidationProperty("minFlyingHeight", 0)), WATER(StructureValidatorWater.class), UNDERWATER(StructureValidatorUnderwater.class, new StructureValidationProperty("minWaterDepth", 0), new StructureValidationProperty("maxWaterDepth", 0)), HARBOR(StructureValidatorHarbor.class), ISLAND(StructureValidatorIsland.class, new StructureValidationProperty("minWaterDepth", 0), new StructureValidationProperty("maxWaterDepth", 0));
+	GROUND(StructureValidatorGround.class),
+	UNDERGROUND(StructureValidatorUnderground.class,
+			new StructureValidationProperty("minGenDepth", 0),
+			new StructureValidationProperty("maxGenDepth", 0),
+			new StructureValidationProperty("minOverfill", 0)),
+	SKY(StructureValidatorSky.class,
+			new StructureValidationProperty("minGenHeight", 0),
+			new StructureValidationProperty("maxGenHeight", 0),
+			new StructureValidationProperty("minFlyingHeight", 0)),
+	WATER(StructureValidatorWater.class),
+	UNDERWATER(StructureValidatorUnderwater.class,
+			new StructureValidationProperty("minWaterDepth", 0),
+			new StructureValidationProperty("maxWaterDepth", 0)),
+	HARBOR(StructureValidatorHarbor.class),
+	ISLAND(StructureValidatorIsland.class,
+			new StructureValidationProperty(PROP_MIN_WATER_DEPTH, 0),
+			new StructureValidationProperty(PROP_MAX_WATER_DEPTH, 0));
 
 	private Class<? extends StructureValidator> validatorClass;
 
