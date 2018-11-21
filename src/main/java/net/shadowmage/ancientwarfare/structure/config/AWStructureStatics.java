@@ -8,7 +8,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
-import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -964,7 +963,8 @@ public class AWStructureStatics extends ModConfiguration {
 	}
 
 	public static boolean isValidTargetBlock(IBlockState state) {
-		return isValidTargetMaterial(state.getMaterial()) || worldGenTargetBlocks.contains(BlockDataManager.INSTANCE.getNameForBlock(state.getBlock()));
+		//noinspection ConstantConditions
+		return isValidTargetMaterial(state.getMaterial()) || worldGenTargetBlocks.contains(state.getBlock().getRegistryName().toString());
 	}
 
 	private static boolean isValidTargetMaterial(Material material) {
@@ -973,7 +973,8 @@ public class AWStructureStatics extends ModConfiguration {
 	}
 
 	public static boolean isSkippable(IBlockState state) {
-		return isSkippableMaterial(state.getMaterial()) || skippableWorldGenBlocks.contains(BlockDataManager.INSTANCE.getNameForBlock(state.getBlock()));
+		//noinspection ConstantConditions
+		return isSkippableMaterial(state.getMaterial()) || skippableWorldGenBlocks.contains(state.getBlock().getRegistryName().toString());
 	}
 
 	private static boolean isSkippableMaterial(Material material) {

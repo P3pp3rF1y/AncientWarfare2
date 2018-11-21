@@ -7,19 +7,19 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
-import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
+import net.shadowmage.ancientwarfare.structure.registry.StructureBlockRegistry;
 
 public class TemplateRuleVanillaBlocks extends TemplateRuleBlock {
 
 	public static final String PLUGIN_NAME = "vanillaBlocks";
-	public int buildPass;
+	protected int buildPass;
 
 	/*
 	 * constructor for dynamic construction.  passed world and coords so that the rule can handle its own logic internally
 	 */
 	public TemplateRuleVanillaBlocks(World world, BlockPos pos, IBlockState state, int turns) {
 		super(state, turns);
-		this.buildPass = BlockDataManager.INSTANCE.getPriorityForBlock(state.getBlock());
+		this.buildPass = StructureBlockRegistry.getBuildPass(state);
 	}
 
 	public TemplateRuleVanillaBlocks() {

@@ -12,7 +12,6 @@ import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
-import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
 import net.shadowmage.ancientwarfare.structure.gamedata.TownMap;
@@ -23,25 +22,9 @@ import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilderWo
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Random;
-import java.util.Set;
 
 public class WorldStructureGenerator implements IWorldGenerator {
-
-	public static final Set<String> defaultTargetBlocks = new HashSet<>();
-
-	static {
-		defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.DIRT));
-		defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.GRASS));
-		defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.STONE));
-		defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.SAND));
-		defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.GRAVEL));
-		defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.SANDSTONE));
-		defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.CLAY));
-		defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.IRON_ORE));
-		defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.COAL_ORE));
-	}
 
 	public static final WorldStructureGenerator INSTANCE = new WorldStructureGenerator();
 

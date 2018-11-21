@@ -36,7 +36,7 @@ public class JsonHelper {
 	}
 
 	public static BlockStateMatcher getBlockStateMatcher(JsonElement stateJson) {
-		return getBlockStateMatcher(JsonUtils.getJsonObject(stateJson, ""));
+		return BlockTools.getBlockState(getBlockNameAndProperties(stateJson), BlockStateMatcher::new, BlockStateMatcher::addProperty);
 	}
 
 	public static BlockStateMatcher getBlockStateMatcher(JsonObject stateJson) {
@@ -123,16 +123,18 @@ public class JsonHelper {
 		return new Tuple<>(JsonUtils.getString(stateJson, "name"), properties);
 	}
 
+	private static Tuple<String, Map<String, String>> getBlockNameAndProperties(JsonElement stateElement) {
+		if (stateElement.isJsonPrimitive()) {
+			return new Tuple<>(JsonUtils.getString(stateElement, ""), new HashMap<>());
+		}
+
+		return getBlockNameAndProperties(JsonUtils.getJsonObject(stateElement, ""));
+	}
 	private static Tuple<String, Map<String, String>> getBlockNameAndProperties(JsonObject parent, String elementName) {
 		if (!JsonUtils.hasField(parent, elementName)) {
 			throw new JsonParseException("Expected " + elementName + " member in " + parent.toString());
 		}
-
-		if (JsonUtils.isJsonPrimitive(parent, elementName)) {
-			return new Tuple<>(JsonUtils.getString(parent, elementName), new HashMap<>());
-		}
-
-		return getBlockNameAndProperties(JsonUtils.getJsonObject(parent, elementName));
+		return getBlockNameAndProperties(parent.get(elementName));
 	}
 
 	public static Predicate<IBlockState> getBlockStateMatcher(JsonObject json, String arrayElement, String individualElement) {

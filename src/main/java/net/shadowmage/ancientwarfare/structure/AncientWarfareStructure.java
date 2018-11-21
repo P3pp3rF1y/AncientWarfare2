@@ -20,7 +20,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
 import net.shadowmage.ancientwarfare.core.registry.RegistryLoader;
-import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.command.CommandStructure;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.container.ContainerDraftingStation;
@@ -114,8 +113,6 @@ public class AncientWarfareStructure {
 	@EventHandler
 	public void init(FMLInitializationEvent evt) {
 		proxy.init();
-
-		BlockDataManager.INSTANCE.load();
 
 		DataFixManager.registerRuleFixer(new FactionExpansionFixer());
 		DataFixManager.registerRuleFixer(new JsonSimplificationFixer());

@@ -17,6 +17,7 @@ public class StructureBlockRegistry {
 
 	private static final Map<BlockStateMatcher, ItemStack> STATE_TO_ITEM = new HashMap<>();
 	private static final Map<BlockStateMatcher, ItemStack> STATE_TO_REMAINING_ITEM = new HashMap<>();
+	private static final Map<BlockStateMatcher, Integer> STATE_PASS = new HashMap<>();
 
 	public static ItemStack getItemStackFrom(IBlockState state) {
 		for (Map.Entry<BlockStateMatcher, ItemStack> stateItem : STATE_TO_ITEM.entrySet()) {
@@ -42,7 +43,19 @@ public class StructureBlockRegistry {
 		return ItemStack.EMPTY;
 	}
 
+	public static int getBuildPass(IBlockState state) {
+		for (Map.Entry<BlockStateMatcher, Integer> statePass : STATE_PASS.entrySet()) {
+			if (statePass.getKey().test(state)) {
+				return statePass.getValue();
+			}
+		}
+		return 0;
+	}
+
 	public static class Parser implements IRegistryDataParser {
+
+		public static final String BLOCK_PROPERTY = "block";
+
 		@Override
 		public String getName() {
 			return "structure_blocks";
@@ -51,9 +64,11 @@ public class StructureBlockRegistry {
 		@Override
 		public void parse(JsonObject json) {
 			STATE_TO_ITEM.putAll(JsonHelper.mapFromObjectArray(JsonUtils.getJsonArray(json, "blockstate_to_item"),
-					"block", "item", JsonHelper::getBlockStateMatcher, JsonHelper::getItemStack));
+					BLOCK_PROPERTY, "item", JsonHelper::getBlockStateMatcher, JsonHelper::getItemStack));
 			STATE_TO_REMAINING_ITEM.putAll(JsonHelper.mapFromObjectArray(JsonUtils.getJsonArray(json, "blockstate_to_item"),
-					"block", "remaining_item", JsonHelper::getBlockStateMatcher, e -> e != null ? JsonHelper.getItemStack(e) : ItemStack.EMPTY));
+					BLOCK_PROPERTY, "remaining_item", JsonHelper::getBlockStateMatcher, e -> e != null ? JsonHelper.getItemStack(e) : ItemStack.EMPTY));
+			STATE_PASS.putAll(JsonHelper.mapFromObjectArray(JsonUtils.getJsonArray(json, "block_passes"),
+					BLOCK_PROPERTY, "build_pass", JsonHelper::getBlockStateMatcher, e -> Integer.parseInt(JsonUtils.getString(e, "build_pass"))));
 		}
 	}
 }
