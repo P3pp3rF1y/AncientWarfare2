@@ -2,25 +2,16 @@ package net.shadowmage.ancientwarfare.core.util;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.math.BlockPos;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 
 public class StringTools {
+	private StringTools() {}
 
 	public static String getCSVStringForArray(int[] values) {
 		return StringUtils.join(ArrayUtils.toObject(values), ",");
@@ -99,17 +90,6 @@ public class StringTools {
 		return "";
 	}
 
-	//TODO change all uses of these to NumberUtils
-	public static int safeParseInt(String num) {
-		try {
-			return Integer.parseInt(num.trim());
-		}
-		catch (NumberFormatException e) {
-
-		}
-		return 0;
-	}
-
 	/*
 	 * returns a value after a split at regex, or zero (0)
 	 */
@@ -119,46 +99,6 @@ public class StringTools {
 			return Integer.parseInt(split[1].trim());
 		}
 		return 0;
-	}
-
-	/*
-	 * Return a list of strings for the input fileName -- used to parse configuration data
-	 * from in-jar resource files.
-	 *
-	 * @param path to file, incl. filename + extension, running-dir relative
-	 */
-	public static List<String> getResourceLines(String path) {
-		InputStream is = null;
-		File overrideFile = new File("resources" + path);
-		if (overrideFile.exists())
-			try {
-				is = new FileInputStream(overrideFile);
-			}
-			catch (FileNotFoundException e) {
-			} // shouldn't happen
-		else
-			is = AncientWarfareCore.class.getResourceAsStream(path);
-		ArrayList<String> lines = new ArrayList<>();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-		String line;
-		try {
-			while ((line = reader.readLine()) != null) {
-				if (line.startsWith("#")) {
-					continue;
-				}
-				lines.add(line);
-			}
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-		try {
-			is.close();
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-		return lines;
 	}
 
 	public static void writeString(ByteBuf out, String string) {
