@@ -108,13 +108,12 @@ public class TemplateParser {
 			 * parse out validation data
              */
 			if (line.startsWith("validation:")) {
-				groupedLines.add(line);
 				while (it.hasNext()) {
 					line = it.next();
-					groupedLines.add(line);
 					if (line.startsWith(":endvalidation")) {
 						break;
 					}
+					groupedLines.add(line);
 				}
 				validation = StructureValidator.parseValidator(groupedLines);
 				groupedLines.clear();

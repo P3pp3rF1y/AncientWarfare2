@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.gui;
 
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
@@ -12,13 +13,17 @@ import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
 import net.shadowmage.ancientwarfare.core.interfaces.IWidgetSelection;
-import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidationProperty;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidationType;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
+import net.shadowmage.ancientwarfare.structure.template.build.validation.properties.IStructureValidationProperty;
+import net.shadowmage.ancientwarfare.structure.template.build.validation.properties.StructureValidationPropertyBool;
+import net.shadowmage.ancientwarfare.structure.template.build.validation.properties.StructureValidationPropertyInteger;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+
+import static net.shadowmage.ancientwarfare.structure.template.build.validation.properties.StructureValidationProperties.*;
 
 public class GuiStructureValidationSettings extends GuiContainerBase {
 
@@ -117,6 +122,9 @@ public class GuiStructureValidationSettings extends GuiContainerBase {
 		this.refreshGui();
 	}
 
+	private static final Set<IStructureValidationProperty> EXCLUDED_PROPERTIES =
+			ImmutableSet.of(BIOME_LIST, BIOME_WHITE_LIST, DIMENSION_LIST, DIMENSION_WHITE_LIST, BLOCK_LIST);
+
 	@Override
 	public void setupElements() {
 		typeLabel.setText(I18n.format("guistrings.validation_type") + ": " + parent.getContainer().getValidationTypeName());
@@ -128,30 +136,23 @@ public class GuiStructureValidationSettings extends GuiContainerBase {
 		}
 		totalHeight += 16 * 3 + 4 + 8;//type buttons height+buffer
 
-		Label label = null;
-		String propName;
+		Label label;
 		Checkbox box;
 		NumberInput input;
 		validator = parent.getContainer().getValidator();
-		for (StructureValidationProperty property : validator.getProperties()) {
-			propName = property.getRegName();
-			if (propName.equals(StructureValidator.PROP_BIOME_LIST) || propName.equals(StructureValidator.PROP_BIOME_WHITE_LIST) || propName.equals(StructureValidator.PROP_DIMENSION_LIST) || propName.equals(StructureValidator.PROP_DIMENSION_WHITE_LIST) || propName.equals(StructureValidator.PROP_BLOCK_LIST)) {
+		for (IStructureValidationProperty property : validator.validationType.getValidationProperties()) {
+			if (EXCLUDED_PROPERTIES.contains(property)) {
 				continue;//skip the properties handled by blocks, biome, or dimensions setup guis
 			}
-			label = new Label(8, totalHeight, "structure.validation." + property.getRegName());
+			label = new Label(8, totalHeight, "structure.validation." + property.getName());
 			area.addGuiElement(label);
 
-			switch (property.getDataType()) {
-				case StructureValidationProperty.DATA_TYPE_INT: {
-					input = new PropertyNumberInputInteger(200, totalHeight - 1, 32, property, this);
-					area.addGuiElement(input);
-				}
-				break;
-				case StructureValidationProperty.DATA_TYPE_BOOLEAN: {
-					box = new PropertyCheckbox(200, totalHeight - 3, 16, 16, property);
-					area.addGuiElement(box);
-				}
-				break;
+			if (StructureValidationPropertyInteger.class.isAssignableFrom(property.getClass())) {
+				input = new PropertyNumberInputInteger(200, totalHeight - 1, 32, (StructureValidationPropertyInteger) property, this);
+				area.addGuiElement(input);
+			} else if (StructureValidationPropertyBool.class.isAssignableFrom(property.getClass())) {
+				box = new PropertyCheckbox(200, totalHeight - 3, 16, 16, (StructureValidationPropertyBool) property);
+				area.addGuiElement(box);
 			}
 
 			totalHeight += 16;
@@ -168,33 +169,33 @@ public class GuiStructureValidationSettings extends GuiContainerBase {
 
 	private class PropertyCheckbox extends Checkbox {
 
-		final StructureValidationProperty prop;
+		private final StructureValidationPropertyBool prop;
 
-		public PropertyCheckbox(int topLeftX, int topLeftY, int width, int height, StructureValidationProperty property) {
+		private PropertyCheckbox(int topLeftX, int topLeftY, int width, int height, StructureValidationPropertyBool property) {
 			super(topLeftX, topLeftY, width, height, "");
 			this.prop = property;
-			setChecked(prop.getDataBoolean());
+			setChecked(validator.getPropertyValue(prop));
 		}
 
 		@Override
 		public void onToggled() {
-			prop.setValue(checked());
+			validator.setPropertyValue(prop, checked());
 		}
 	}
 
 	private class PropertyNumberInputInteger extends NumberInput {
 
-		final StructureValidationProperty prop;
+		private final StructureValidationPropertyInteger prop;
 
-		public PropertyNumberInputInteger(int topLeftX, int topLeftY, int width, StructureValidationProperty property, IWidgetSelection selector) {
-			super(topLeftX, topLeftY, width, property.getDataInt(), selector);
+		private PropertyNumberInputInteger(int topLeftX, int topLeftY, int width, StructureValidationPropertyInteger property, IWidgetSelection selector) {
+			super(topLeftX, topLeftY, width, validator.getPropertyValue(property), selector);
 			this.prop = property;
 			this.setIntegerValue();
 		}
 
 		@Override
 		public void onValueUpdated(float value) {
-			prop.setValue((int) value);
+			validator.setPropertyValue(prop, (int) value);
 		}
 	}
 

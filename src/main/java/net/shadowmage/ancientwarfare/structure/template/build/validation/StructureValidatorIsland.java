@@ -4,57 +4,33 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.worldgen.WorldStructureGenerator;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.util.List;
+import static net.shadowmage.ancientwarfare.structure.template.build.validation.properties.StructureValidationProperties.MAX_WATER_DEPTH;
+import static net.shadowmage.ancientwarfare.structure.template.build.validation.properties.StructureValidationProperties.MIN_WATER_DEPTH;
 
 public class StructureValidatorIsland extends StructureValidator {
-	static final String PROP_MIN_WATER_DEPTH = "minWaterDepth";
-	static final String PROP_MAX_WATER_DEPTH = "maxWaterDepth";
-
 	public StructureValidatorIsland() {
 		super(StructureValidationType.ISLAND);
 	}
 
-	@Override
-	protected void readFromLines(List<String> lines) {
-		for (String line : lines) {
-			if (startLow(line, "minwaterdepth=")) {
-				setMinWaterDepth(StringTools.safeParseInt("=", line));
-			} else if (startLow(line, "maxwaterdepth=")) {
-				setMaxWaterDepth(StringTools.safeParseInt("=", line));
-			}
-		}
-	}
-
 	private int getMinWaterDepth() {
-		return getPropertyValueInt(PROP_MIN_WATER_DEPTH);
+		return getPropertyValue(MIN_WATER_DEPTH);
 	}
 
 	private int getMaxWaterDepth() {
-		return getPropertyValueInt(PROP_MAX_WATER_DEPTH);
+		return getPropertyValue(MAX_WATER_DEPTH);
 	}
 
 	private void setMinWaterDepth(int depth) {
-		setProperty(PROP_MIN_WATER_DEPTH, depth);
+		setPropertyValue(MIN_WATER_DEPTH, depth);
 	}
 
 	private void setMaxWaterDepth(int depth) {
-		setProperty(PROP_MAX_WATER_DEPTH, depth);
-	}
-
-	@Override
-	protected void write(BufferedWriter out) throws IOException {
-		out.write("minWaterDepth=" + getMinWaterDepth());
-		out.newLine();
-		out.write("maxwaterdepth=" + getMaxWaterDepth());
-		out.newLine();
+		setPropertyValue(MAX_WATER_DEPTH, depth);
 	}
 
 	@Override

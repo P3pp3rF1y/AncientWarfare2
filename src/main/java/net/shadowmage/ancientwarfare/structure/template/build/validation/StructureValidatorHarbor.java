@@ -16,7 +16,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class StructureValidatorHarbor extends StructureValidator {
-
+	//TODO get rid of the weird way these get values assigned through seemingly unrelated calls
 	private BlockPos testMin = BlockPos.ORIGIN;
 	private BlockPos testMax = BlockPos.ORIGIN;
 

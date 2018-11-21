@@ -13,52 +13,36 @@ import net.minecraftforge.common.BiomeDictionary;
 import net.shadowmage.ancientwarfare.automation.registry.TreeFarmRegistry;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.ITree;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.ITreeScanner;
-import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
-import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
+import net.shadowmage.ancientwarfare.structure.template.build.validation.properties.IStructureValidationProperty;
 import net.shadowmage.ancientwarfare.structure.worldgen.WorldStructureGenerator;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.BiConsumer;
 import java.util.function.Predicate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static net.shadowmage.ancientwarfare.structure.template.build.validation.properties.StructureValidationProperties.*;
 
 public abstract class StructureValidator {
-	static final String PROP_WORLD_GEN = "enableWorldGen";
-	static final String PROP_UNIQUE = "unique";
-	static final String PROP_SURVIVAL = "survival";
-	static final String PROP_PRESERVE_BLOCKS = "preserveBlocks";
-	static final String PROP_SELECTION_WEIGHT = "selectionWeight";
-	static final String PROP_CLUSTER_VALUE = "clusterValue";
-	static final String PROP_MIN_DUPLICATE_DISTANCE = "minDuplicateDistance";
-	static final String PROP_BORDER_SIZE = "borderSize";
-	static final String PROP_MAX_LEVELING = "maxLeveling";
-	static final String PROP_MAX_FILL = "maxFill";
-	public static final String PROP_BIOME_WHITE_LIST = "biomeWhiteList";
-	public static final String PROP_DIMENSION_WHITE_LIST = "dimensionWhiteList";
-	public static final String PROP_BIOME_LIST = "biomeList";
-	public static final String PROP_DIMENSION_LIST = "dimensionList";
-	public static final String PROP_BLOCK_LIST = "blockList";
-	static final String PROP_BLOCK_SWAP = "blockSwap";
-
 	public final StructureValidationType validationType;
 
-	private HashMap<String, StructureValidationProperty> properties = new HashMap<>();
+	private HashMap<IStructureValidationProperty<?>, Object> properties = new HashMap<>();
 
 	protected StructureValidator(StructureValidationType validationType) {
 		this.validationType = validationType;
-		for (StructureValidationProperty property : validationType.getValidationProperties()) {
-			this.properties.put(property.regName, property.copy());
+		for (IStructureValidationProperty property : validationType.getValidationProperties()) {
+			properties.put(property, property.getDefaultValue());
 		}
 	}
 
@@ -68,19 +52,11 @@ public abstract class StructureValidator {
 	 * This method should be called on the NEW StructureValidator.
 	 */
 	public void inheritPropertiesFrom(StructureValidator validator) {
-		StructureValidationProperty prop;
-		for (String name : this.properties.keySet()) {
-			if (validator.properties.containsKey(name)) {
-				prop = validator.properties.get(name);
-				this.properties.put(name, prop.copy());
+		for (IStructureValidationProperty<?> property : this.properties.keySet()) {
+			if (validator.properties.containsKey(property)) {
+				properties.put(property, validator.properties.get(property));
 			}
 		}
-	}
-
-	protected void readFromLines(List<String> lines) {
-	}
-
-	protected void write(BufferedWriter writer) throws IOException {
 	}
 
 	/*
@@ -88,18 +64,22 @@ public abstract class StructureValidator {
 	 * child-classes that have additional validation data set through gui
 	 */
 	public final void readFromNBT(NBTTagCompound tag) {
-		for (StructureValidationProperty prop : this.properties.values()) {
-			prop.readFromNBT(tag);
+		for (Map.Entry<IStructureValidationProperty<?>, Object> entry : this.properties.entrySet()) {
+			entry.setValue(entry.getKey().deserializeNBT(tag));
 		}
 	}
 
 	public final NBTTagCompound serializeToNBT() {
 		NBTTagCompound tag = new NBTTagCompound();
 		tag.setString("validationType", this.validationType.getName());
-		for (StructureValidationProperty prop : this.properties.values()) {
-			prop.writeToNBT(tag);
+		for (Map.Entry<IStructureValidationProperty<?>, Object> entry : this.properties.entrySet()) {
+			serializePropertyNBT(tag, entry.getKey(), entry.getValue());
 		}
 		return tag;
+	}
+
+	private <T> void serializePropertyNBT(NBTTagCompound tag, IStructureValidationProperty<T> property, Object value) {
+		property.serializeNBT(tag, property.getValueClass().cast(value));
 	}
 
 	protected void setDefaultSettings(StructureTemplate template) {
@@ -157,150 +137,85 @@ public abstract class StructureValidator {
 		}
 	}
 
-	static boolean startLow(String text, String test) {
-		return text.toLowerCase(Locale.ENGLISH).startsWith(test);
+	public static StructureValidator parseValidator(List<String> lines) {
+		StructureValidationType type = StructureValidationType.GROUND;
+
+		Iterator<String> it = lines.iterator();
+		if (it.hasNext()) {
+			type = parseType(it.next());
+		}
+
+		StructureValidator validator = type.getValidator();
+
+		while (it.hasNext()) {
+			parseLine(it.next(), validator::parsePropertyValue);
+		}
+
+		//defaulting templates to whitelist overworld dimension if no dimension list provided and set to blacklist
+		if (!validator.isDimensionWhiteList() && validator.getAcceptedDimensions().length == 0) {
+			validator.setPropertyValue(DIMENSION_WHITE_LIST, true);
+			validator.setPropertyValue(DIMENSION_LIST, new int[] {0});
+		}
+
+		return validator;
 	}
 
-	public static StructureValidator parseValidator(List<String> lines) {
-		String type = null;
-		List<String> tagLines = new ArrayList<>();
-		Iterator<String> it = lines.iterator();
-		String line;
-		boolean unique = false;
-		boolean worldGen = false;
-		boolean biome = false;
-		boolean dimension = false;
-		boolean blocks = false;
-		boolean survival = false;
-		boolean swap = false;
-		int selectionWeight = 1;
-		int clusterValue = 1;
-		int duplicate = 1;
-		int maxLeveling = 0;
-		int maxFill = 0;
-		int borderSize = 0;
-		int[] dimensions = null;
-		Set<String> biomes = new HashSet<>();
-		Set<String> validTargetBlocks = new HashSet<>();
-
-		while (it.hasNext() && (line = it.next()) != null) {
-			if (startLow(line, "type=")) {
-				type = StringTools.safeParseString("=", line);
-			} else if (startLow(line, "unique=")) {
-				unique = StringTools.safeParseBoolean("=", line);
-			} else if (startLow(line, "survival=")) {
-				survival = StringTools.safeParseBoolean("=", line);
-			} else if (startLow(line, "worldgenenabled=")) {
-				worldGen = StringTools.safeParseBoolean("=", line);
-			} else if (startLow(line, "biomewhitelist=")) {
-				biome = StringTools.safeParseBoolean("=", line);
-			} else if (startLow(line, "dimensionwhitelist=")) {
-				dimension = StringTools.safeParseBoolean("=", line);
-				if (dimensions == null) {
-					dimensions = new int[] {};
-				}
-			} else if (startLow(line, "preserveblocks=")) {
-				blocks = StringTools.safeParseBoolean("=", line);
-			} else if (startLow(line, "dimensionlist=")) {
-				dimensions = StringTools.safeParseIntArray("=", line);
-			} else if (startLow(line, "biomelist=")) {
-				StringTools.safeParseStringsToSet(biomes, "=", line, true);
-			} else if (startLow(line, "selectionweight=")) {
-				selectionWeight = StringTools.safeParseInt("=", line);
-			} else if (startLow(line, "clustervalue=")) {
-				clusterValue = StringTools.safeParseInt("=", line);
-			} else if (startLow(line, "minduplicatedistance=")) {
-				duplicate = StringTools.safeParseInt("=", line);
-			} else if (startLow(line, "leveling=")) {
-				maxLeveling = StringTools.safeParseInt("=", line);
-			} else if (startLow(line, "fill=")) {
-				maxFill = StringTools.safeParseInt("=", line);
-			} else if (startLow(line, "border=")) {
-				borderSize = StringTools.safeParseInt("=", line);
-			} else if (startLow(line, "validtargetblocks=")) {
-				StringTools.safeParseStringsToSet(validTargetBlocks, "=", line, false);
-			} else if (startLow(line, "blockswap=")) {
-				swap = StringTools.safeParseBoolean("=", line);
-			} else if (startLow(line, "data:")) {
-				tagLines.add(line);
-				while (it.hasNext() && (line = it.next()) != null) {
-					tagLines.add(line);
-					if (startLow(line, ":enddata")) {
-						break;
-					}
-				}
+	private void parsePropertyValue(String name, String value) {
+		for (IStructureValidationProperty<?> property : properties.keySet()) {
+			if (property.getName().equalsIgnoreCase(name)) {
+				parsePropertyValue(property, value);
 			}
 		}
+	}
 
-		//defaulting templates to overworld dimension if no dimension list provided
-		if (dimensions == null) {
-			dimension = true;
-			dimensions = new int[] {0};
+	private <T> void parsePropertyValue(IStructureValidationProperty<T> property, String stringValue) {
+		T value = property.parseValue(stringValue);
+		setPropertyValue(property, value);
+	}
+
+	private static final Pattern NAME_VALUE_MATCHER = Pattern.compile("([^=]*)=([^=]*)");
+
+	private static void parseLine(String line, BiConsumer<String, String> parseNameValue) {
+		Matcher matcher = NAME_VALUE_MATCHER.matcher(line);
+		if (matcher.matches()) {
+			parseNameValue.accept(matcher.group(1), matcher.group(2));
 		}
+	}
 
-		StructureValidator validator = StructureValidationType.getTypeFromName(type).map(validationType -> {
-			StructureValidator val = validationType.getValidator();
-			val.readFromLines(tagLines);
-			return val;
-		}).orElse(StructureValidationType.GROUND.getValidator());
+	private static StructureValidationType parseType(String line) {
+		Matcher matcher = NAME_VALUE_MATCHER.matcher(line);
+		if (matcher.matches() && matcher.group(1).equalsIgnoreCase("type")) {
+			return StructureValidationType.getTypeFromName(matcher.group(2)).orElse(StructureValidationType.GROUND);
+		}
+		return StructureValidationType.GROUND;
+	}
 
-		validator.setProperty(PROP_DIMENSION_WHITE_LIST, dimension);
-		validator.setProperty(PROP_DIMENSION_LIST, dimensions);
-		validator.setProperty(PROP_BIOME_WHITE_LIST, biome);
-		validator.setProperty(PROP_BIOME_LIST, biomes);
-		validator.setProperty(PROP_WORLD_GEN, worldGen);
-		validator.setProperty(PROP_SURVIVAL, survival);
-		validator.setProperty(PROP_UNIQUE, unique);
-		validator.setProperty(PROP_PRESERVE_BLOCKS, blocks);
-		validator.setProperty(PROP_CLUSTER_VALUE, clusterValue);
-		validator.setProperty(PROP_SELECTION_WEIGHT, selectionWeight);
-		validator.setProperty(PROP_MIN_DUPLICATE_DISTANCE, duplicate);
-		validator.setProperty(PROP_MAX_FILL, maxFill);
-		validator.setProperty(PROP_MAX_LEVELING, maxLeveling);
-		validator.setProperty(PROP_BORDER_SIZE, borderSize);
-		validator.setProperty(PROP_BLOCK_LIST, validTargetBlocks);
-		validator.setProperty(PROP_BLOCK_SWAP, swap);
-		return validator;
+	private static <T> String getStringValue(StructureValidator validator, IStructureValidationProperty<T> property) {
+		T value = validator.getPropertyValue(property);
+		return property.getStringValue(value);
 	}
 
 	public static void writeValidator(BufferedWriter out, StructureValidator validator) throws IOException {
 		out.write("type=" + validator.validationType.getName());
 		out.newLine();
-		out.write("survival=" + validator.isSurvival());
-		out.newLine();
-		out.write("worldGenEnabled=" + validator.isWorldGenEnabled());
-		out.newLine();
-		out.write("unique=" + validator.isUnique());
-		out.newLine();
-		out.write("preserveBlocks=" + validator.isPreserveBlocks());
-		out.newLine();
-		out.write("selectionWeight=" + validator.getSelectionWeight());
-		out.newLine();
-		out.write("clusterValue=" + validator.getClusterValue());
-		out.newLine();
-		out.write("minDuplicateDistance=" + validator.getMinDuplicateDistance());
-		out.newLine();
-		out.write("dimensionWhiteList=" + validator.isDimensionWhiteList());
-		out.newLine();
-		out.write("dimensionList=" + StringTools.getCSVStringForArray(validator.getAcceptedDimensions()));
-		out.newLine();
-		out.write("biomeWhiteList=" + validator.isBiomeWhiteList());
-		out.newLine();
-		out.write("biomeList=" + StringTools.getCSVValueFor(validator.getBiomeList().toArray(new String[0])));
-		out.newLine();
-		out.write("leveling=" + validator.getMaxLeveling());
-		out.newLine();
-		out.write("fill=" + validator.getMaxFill());
-		out.newLine();
-		out.write("border=" + validator.getBorderSize());
-		out.newLine();
-		out.write(StructureValidator.PROP_BLOCK_SWAP + "=" + validator.isBlockSwap());
-		out.newLine();
-		out.write("data:");
-		out.newLine();
-		validator.write(out);
-		out.write(":enddata");
-		out.newLine();
+		for (IStructureValidationProperty<?> property : validator.properties.keySet()) {
+			out.write(property.getName() + "=" + getStringValue(validator, property));
+			out.newLine();
+		}
+	}
+
+	public <T> void setPropertyValue(IStructureValidationProperty<T> property, T value) {
+		if (!properties.containsKey(property)) {
+			throw new IllegalArgumentException("Unable to update property - validator doesn't have property: " + property.getName());
+		}
+		properties.put(property, value);
+	}
+
+	public <T> T getPropertyValue(IStructureValidationProperty<T> property) {
+		if (!properties.containsKey(property)) {
+			throw new IllegalArgumentException("Unable to get property value - validator doesn't have property: " + property.getName());
+		}
+		return property.getValueClass().cast(properties.get(property));
 	}
 
 	public final StructureValidator setDefaults(StructureTemplate template) {
@@ -308,60 +223,48 @@ public abstract class StructureValidator {
 		return this;
 	}
 
-	protected void setProperty(String name, Object value) {
-		if (properties.containsKey(name)) {
-			properties.get(name).setValue(value);
-		} else {
-			throw new IllegalArgumentException("Validation properties does not contain key for: " + name);
-		}
-	}
-
-	protected int getPropertyValueInt(String propertyName) {
-		return properties.get(propertyName).getDataInt();
-	}
-
 	public final void setBiomeWhiteList(boolean val) {
-		properties.get(PROP_BIOME_WHITE_LIST).setValue(val);
+		setPropertyValue(BIOME_WHITE_LIST, val);
 	}
 
 	public final void setDimensionWhiteList(boolean val) {
-		properties.get(PROP_DIMENSION_WHITE_LIST).setValue(val);
+		setPropertyValue(DIMENSION_WHITE_LIST, val);
 	}
 
 	public final boolean isBlockSwap() {
-		return properties.get(PROP_BLOCK_SWAP).getDataBoolean();
+		return getPropertyValue(BLOCK_SWAP);
 	}
 
 	public final int getSelectionWeight() {
-		return properties.get(PROP_SELECTION_WEIGHT).getDataInt();
+		return getPropertyValue(SELECTION_WEIGHT);
 	}
 
 	public final int getClusterValue() {
-		return properties.get(PROP_CLUSTER_VALUE).getDataInt();
+		return getPropertyValue(CLUSTER_VALUE);
 	}
 
 	public final boolean isWorldGenEnabled() {
-		return properties.get(PROP_WORLD_GEN).getDataBoolean();
+		return getPropertyValue(WORLD_GEN);
 	}
 
 	public final boolean isPreserveBlocks() {
-		return properties.get(PROP_PRESERVE_BLOCKS).getDataBoolean();
+		return getPropertyValue(PRESERVE_BLOCKS);
 	}
 
 	public final boolean isBiomeWhiteList() {
-		return properties.get(PROP_BIOME_WHITE_LIST).getDataBoolean();
+		return getPropertyValue(BIOME_WHITE_LIST);
 	}
 
 	public final boolean isUnique() {
-		return properties.get(PROP_UNIQUE).getDataBoolean();
+		return getPropertyValue(UNIQUE);
 	}
 
 	public final boolean isDimensionWhiteList() {
-		return properties.get(PROP_DIMENSION_WHITE_LIST).getDataBoolean();
+		return getPropertyValue(DIMENSION_WHITE_LIST);
 	}
 
 	public final int[] getAcceptedDimensions() {
-		return properties.get(PROP_DIMENSION_LIST).getDataIntArray();
+		return getPropertyValue(DIMENSION_LIST);
 	}
 
 	public final void setValidDimension(Set<Integer> dims) {
@@ -371,31 +274,32 @@ public abstract class StructureValidator {
 			dimsa[index] = dim;
 			index++;
 		}
-		properties.get(PROP_DIMENSION_LIST).setValue(dimsa);
+		setPropertyValue(DIMENSION_LIST, dimsa);
 	}
 
 	public final int getMinDuplicateDistance() {
-		return properties.get(PROP_MIN_DUPLICATE_DISTANCE).getDataInt();
+		return getPropertyValue(MIN_DUPLICATE_DISTANCE);
 	}
 
-	public final void setBiomeList(Collection<String> biomes) {
-		properties.get(PROP_BIOME_LIST).setValue(new HashSet<>(biomes));
+	public final void setBiomeList(Set<String> biomes) {
+		setPropertyValue(BIOME_LIST, biomes);
 	}
 
 	public Set<String> getBiomeList() {
-		return properties.get(PROP_BIOME_LIST).getDataStringSet();
+		//noinspection unchecked
+		return getPropertyValue(BIOME_LIST);
 	}
 
 	int getMaxFill() {
-		return properties.get(PROP_MAX_FILL).getDataInt();
+		return getPropertyValue(MAX_FILL);
 	}
 
 	int getMaxLeveling() {
-		return properties.get(PROP_MAX_LEVELING).getDataInt();
+		return getPropertyValue(MAX_LEVELING);
 	}
 
 	int getBorderSize() {
-		return properties.get(PROP_BORDER_SIZE).getDataInt();
+		return getPropertyValue(BORDER_SIZE);
 	}
 
 	//*********************************************** UTILITY METHODS *************************************************//
@@ -455,7 +359,7 @@ public abstract class StructureValidator {
 	private int validateBlockHeight(World world, int x, int z, int minimumAcceptableY, int maximumAcceptableY, boolean skipWater) {
 		int topFilledY = WorldStructureGenerator.getTargetY(world, x, z, skipWater);
 		if (topFilledY < minimumAcceptableY || topFilledY > maximumAcceptableY) {
-			AncientWarfareStructure.LOG.debug("rejected for leveling or depth test. foundY: " + topFilledY + " min: " + minimumAcceptableY + " max:" + maximumAcceptableY + " at: " + x + "," + topFilledY + "," + z);
+			AncientWarfareStructure.LOG.debug("rejected for leveling or depth test. foundY: {} min: {} max: {} at: {},{},{}", topFilledY, minimumAcceptableY, maximumAcceptableY, x, topFilledY, z);
 			return -1;
 		}
 		return topFilledY;
@@ -471,11 +375,11 @@ public abstract class StructureValidator {
 		IBlockState state = world.getBlockState(new BlockPos(x, y, z));
 		Block block = state.getBlock();
 		if (block == Blocks.AIR) {
-			AncientWarfareStructure.LOG.debug("rejected for non-matching block: air" + " at: " + x + "," + y + "," + z);
+			AncientWarfareStructure.LOG.debug("rejected for non-matching block: air at: {},{},{} ", x, y, z);
 			return false;
 		}
 		if (!isValidState.test(state)) {
-			AncientWarfareStructure.LOG.debug("Rejected for non-matching block: " + BlockDataManager.INSTANCE.getNameForBlock(block) + " at: " + x + "," + y + "," + z);
+			AncientWarfareStructure.LOG.debug("Rejected for non-matching block: {} at: {},{},{} ", block.getRegistryName(), x, y, z);
 			return false;
 		}
 		return true;
@@ -595,12 +499,8 @@ public abstract class StructureValidator {
 		}
 	}
 
-	public Collection<StructureValidationProperty> getProperties() {
-		return properties.values();
-	}
-
 	public boolean isSurvival() {
-		return properties.get(PROP_SURVIVAL).getDataBoolean();
+		return getPropertyValue(SURVIVAL);
 	}
 
 }

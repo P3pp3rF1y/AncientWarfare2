@@ -1,67 +1,43 @@
 package net.shadowmage.ancientwarfare.structure.template.build.validation;
 
+import net.shadowmage.ancientwarfare.structure.template.build.validation.properties.IStructureValidationProperty;
+
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-import static net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidatorIsland.PROP_MAX_WATER_DEPTH;
-import static net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidatorIsland.PROP_MIN_WATER_DEPTH;
+import static net.shadowmage.ancientwarfare.structure.template.build.validation.properties.StructureValidationProperties.*;
 
 public enum StructureValidationType {
+
 	GROUND(StructureValidatorGround::new),
-	UNDERGROUND(StructureValidatorUnderground::new,
-			new StructureValidationProperty("minGenDepth", 0),
-			new StructureValidationProperty("maxGenDepth", 0),
-			new StructureValidationProperty("minOverfill", 0)),
-	SKY(StructureValidatorSky::new,
-			new StructureValidationProperty("minGenHeight", 0),
-			new StructureValidationProperty("maxGenHeight", 0),
-			new StructureValidationProperty("minFlyingHeight", 0)),
+	UNDERGROUND(StructureValidatorUnderground::new, MIN_GENERATION_DEPTH, MAX_GENERATION_DEPTH, MIN_OVERFILL),
+	SKY(StructureValidatorSky::new, MIN_GENERATION_HEIGHT, MAX_GENERATION_HEIGHT, MIN_FLYING_HEIGHT),
 	WATER(StructureValidatorWater::new),
-	UNDERWATER(StructureValidatorUnderwater::new,
-			new StructureValidationProperty("minWaterDepth", 0),
-			new StructureValidationProperty("maxWaterDepth", 0)),
+	UNDERWATER(StructureValidatorUnderwater::new, MIN_WATER_DEPTH, MAX_WATER_DEPTH),
 	HARBOR(StructureValidatorHarbor::new),
-	ISLAND(StructureValidatorIsland::new,
-			new StructureValidationProperty(PROP_MIN_WATER_DEPTH, 0),
-			new StructureValidationProperty(PROP_MAX_WATER_DEPTH, 0));
+	ISLAND(StructureValidatorIsland::new, MIN_WATER_DEPTH, MAX_WATER_DEPTH);
 
 	private final Supplier<? extends StructureValidator> createValidator;
 
-	private List<StructureValidationProperty> properties = new ArrayList<>();
+	private List<IStructureValidationProperty> properties = new ArrayList<>();
 
-	StructureValidationType(Supplier<? extends StructureValidator> createValidator, StructureValidationProperty... props) {
+	StructureValidationType(Supplier<? extends StructureValidator> createValidator, IStructureValidationProperty... props) {
 		this.createValidator = createValidator;
 
-		properties.add(new StructureValidationProperty(StructureValidator.PROP_SURVIVAL, false));
-		properties.add(new StructureValidationProperty(StructureValidator.PROP_WORLD_GEN, false));
-		properties.add(new StructureValidationProperty(StructureValidator.PROP_UNIQUE, false));
-		properties.add(new StructureValidationProperty(StructureValidator.PROP_PRESERVE_BLOCKS, false));
-
-		properties.add(new StructureValidationProperty(StructureValidator.PROP_SELECTION_WEIGHT, 0));
-		properties.add(new StructureValidationProperty(StructureValidator.PROP_CLUSTER_VALUE, 0));
-		properties.add(new StructureValidationProperty(StructureValidator.PROP_MIN_DUPLICATE_DISTANCE, 0));
-		properties.add(new StructureValidationProperty(StructureValidator.PROP_BORDER_SIZE, 0));
-		properties.add(new StructureValidationProperty(StructureValidator.PROP_MAX_LEVELING, 0));
-		properties.add(new StructureValidationProperty(StructureValidator.PROP_MAX_FILL, 0));
-
-		properties.add(new StructureValidationProperty(StructureValidator.PROP_BIOME_WHITE_LIST, false));
-		properties.add(new StructureValidationProperty(StructureValidator.PROP_DIMENSION_WHITE_LIST, false));
-
-		properties.add(new StructureValidationProperty(StructureValidator.PROP_BIOME_LIST, new HashSet<>()));
-		properties.add(new StructureValidationProperty(StructureValidator.PROP_BLOCK_LIST, new HashSet<>()));
-		properties.add(new StructureValidationProperty(StructureValidator.PROP_DIMENSION_LIST, new int[] {}));
-
-		properties.add(new StructureValidationProperty(StructureValidator.PROP_BLOCK_SWAP, false));
-
+		Collections.addAll(properties,
+				SURVIVAL, WORLD_GEN, UNIQUE, PRESERVE_BLOCKS,
+				SELECTION_WEIGHT, CLUSTER_VALUE, MIN_DUPLICATE_DISTANCE,
+				BORDER_SIZE, MAX_LEVELING, MAX_FILL,
+				BIOME_WHITE_LIST, DIMENSION_WHITE_LIST, BIOME_LIST, BLOCK_LIST, DIMENSION_LIST,
+				BLOCK_SWAP);
 		Collections.addAll(properties, props);
 	}
 
-	public List<StructureValidationProperty> getValidationProperties() {
+	public List<IStructureValidationProperty> getValidationProperties() {
 		return this.properties;
 	}
 
