@@ -1,0 +1,11 @@
+{
+    "mod": "tconstruct",
+    "soils": [
+        {
+            "name": "tconstruct:slime_grass"
+        },
+        {
+            "name": "tconstruct:slime_dirt"
+        }
+    ]
+}
