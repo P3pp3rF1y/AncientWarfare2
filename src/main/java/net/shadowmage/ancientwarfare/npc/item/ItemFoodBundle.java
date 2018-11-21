@@ -4,7 +4,6 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.OreDictionary;
 import net.shadowmage.ancientwarfare.core.proxy.IClientRegister;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
@@ -17,8 +16,6 @@ public class ItemFoodBundle extends ItemFood implements IClientRegister {
 		setRegistryName(new ResourceLocation(AncientWarfareNPC.MOD_ID, "food_bundle"));
 		setCreativeTab(AncientWarfareNPC.TAB);
 		AncientWarfareNPC.proxy.addClientRegister(this);
-
-		OreDictionary.registerOre("foodBundle", this);
 	}
 
 	@Override
