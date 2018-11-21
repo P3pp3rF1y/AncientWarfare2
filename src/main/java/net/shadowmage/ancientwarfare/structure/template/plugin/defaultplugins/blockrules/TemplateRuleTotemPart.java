@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.b
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
@@ -12,6 +13,7 @@ import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
 import net.shadowmage.ancientwarfare.structure.block.BlockTotemPart;
 import net.shadowmage.ancientwarfare.structure.tile.TileTotemPart;
 
+import javax.annotation.Nullable;
 import java.util.Optional;
 
 public class TemplateRuleTotemPart extends TemplateRuleBlock {
@@ -76,5 +78,13 @@ public class TemplateRuleTotemPart extends TemplateRuleBlock {
 		if (mainBlock) {
 			variant = BlockTotemPart.Variant.fromId(tag.getByte("variant"));
 		}
+	}
+
+	@Nullable
+	@Override
+	public TileEntity getTileEntity(int turns) {
+		TileTotemPart te = new TileTotemPart();
+		te.setVariant(variant != null ? variant : BlockTotemPart.Variant.WINGS);
+		return te;
 	}
 }
