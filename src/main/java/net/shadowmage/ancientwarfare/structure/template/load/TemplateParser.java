@@ -171,8 +171,7 @@ public class TemplateParser {
 						data.append(line1).append("\n");
 					}
 					TemplateRuleParsingException e1 = new TemplateRuleParsingException(data.toString(), e);
-					AncientWarfareStructure.LOG.error("Caught exception parsing template rule for structure: " + name);
-					AncientWarfareStructure.LOG.error(e1.getMessage());
+					AncientWarfareStructure.LOG.error("Caught exception parsing template rule for structure: " + name, e1.getMessage());
 				}
 				groupedLines.clear();
 			}

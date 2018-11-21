@@ -27,6 +27,7 @@ public class RuleNameConsolidationFixer implements IRuleNameFixer {
 			.put("vanillaInventory", "inventory")
 			.put("vanillaLogic", "blockTile")
 			.put("awWorksite", "rotatable")
+			.put("modBlockDefault", "vanillaBlocks")
 			.build();
 
 	@Override
