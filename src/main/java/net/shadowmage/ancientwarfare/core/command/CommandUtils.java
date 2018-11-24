@@ -19,6 +19,7 @@ import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketManualReload;
+import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -177,7 +178,7 @@ public class CommandUtils extends CommandBase {
 
 		@Override
 		protected String getHeader() {
-			return "Registry Name,Block Name";
+			return "Registry Name,Block Name,Skippable,Skippable Material,Target,Target Material";
 		}
 
 		@Override
@@ -189,8 +190,12 @@ public class CommandUtils extends CommandBase {
 		protected List<String> getLines() {
 			//noinspection ConstantConditions
 			return ForgeRegistries.BLOCKS.getValuesCollection().stream()
-					.map(b -> String.join(",", b.getRegistryName().toString(), b.getLocalizedName()))
-					.sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+					.map(b -> String.join(",", b.getRegistryName().toString(), b.getLocalizedName(),
+							AWStructureStatics.isSkippable(b.getDefaultState()) ? "Y" : "N",
+							AWStructureStatics.isSkippableMaterial(b.getDefaultState().getMaterial()) ? "Y" : "N",
+							AWStructureStatics.isValidTargetBlock(b.getDefaultState()) ? "Y" : "N",
+							AWStructureStatics.isValidTargetMaterial(b.getDefaultState().getMaterial()) ? "Y" : "N"
+					)).sorted(Comparator.naturalOrder()).collect(Collectors.toList());
 		}
 
 	}

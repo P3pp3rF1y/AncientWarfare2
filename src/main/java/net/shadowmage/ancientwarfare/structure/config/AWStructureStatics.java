@@ -967,7 +967,7 @@ public class AWStructureStatics extends ModConfiguration {
 		return isValidTargetMaterial(state.getMaterial()) || worldGenTargetBlocks.contains(state.getBlock().getRegistryName().toString());
 	}
 
-	private static boolean isValidTargetMaterial(Material material) {
+	public static boolean isValidTargetMaterial(Material material) {
 		return material == Material.GRASS || material == Material.GROUND || material == Material.ROCK || material == Material.SNOW || material == Material.ICE
 				|| material == Material.PACKED_ICE || material == Material.SAND || material == Material.WATER;
 	}
@@ -977,7 +977,7 @@ public class AWStructureStatics extends ModConfiguration {
 		return isSkippableMaterial(state.getMaterial()) || skippableWorldGenBlocks.contains(state.getBlock().getRegistryName().toString());
 	}
 
-	private static boolean isSkippableMaterial(Material material) {
+	public static boolean isSkippableMaterial(Material material) {
 		return material == Material.AIR || material == Material.PLANTS || material == Material.VINE || material == Material.LEAVES || material == Material.WOOD
 				|| material == Material.GOURD || material == Material.CACTUS;
 	}
