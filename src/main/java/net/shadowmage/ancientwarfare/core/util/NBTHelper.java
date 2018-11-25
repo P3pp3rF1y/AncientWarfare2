@@ -45,7 +45,9 @@ public class NBTHelper {
 		NBTTagCompound ret = new NBTTagCompound();
 		//noinspection ConstantConditions
 		ret.setString("blockName", state.getBlock().getRegistryName().toString());
-		ret.setTag("properties", getStatePropertiesTag(state.getProperties()));
+		if (!state.getProperties().isEmpty()) {
+			ret.setTag("properties", getStatePropertiesTag(state.getProperties()));
+		}
 		return ret;
 	}
 
