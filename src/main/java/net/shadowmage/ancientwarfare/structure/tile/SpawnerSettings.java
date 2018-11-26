@@ -652,6 +652,7 @@ public class SpawnerSettings {
 				((EntityLiving) e).onInitialSpawn(world.getDifficultyForLocation(e.getPosition()), null);
 				((EntityLiving) e).spawnExplosionParticle();
 			}
+			world.spawnEntity(e);
 			if (customTag != null) {
 				NBTTagCompound temp = new NBTTagCompound();
 				if (e instanceof NpcFaction && customTag.hasKey(FACTION_NAME_TAG)) {
@@ -664,7 +665,6 @@ public class SpawnerSettings {
 				}
 				e.readFromNBT(temp);
 			}
-			world.spawnEntity(e);
 		}
 	}
 }

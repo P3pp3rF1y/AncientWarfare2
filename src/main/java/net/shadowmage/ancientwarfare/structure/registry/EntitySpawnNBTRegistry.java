@@ -1,12 +1,17 @@
 package net.shadowmage.ancientwarfare.structure.registry;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.gson.JsonObject;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.passive.EntityHorse;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.JsonUtils;
 import net.shadowmage.ancientwarfare.core.registry.IRegistryDataParser;
 import net.shadowmage.ancientwarfare.core.util.parsing.JsonHelper;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.MissingResourceException;
@@ -16,6 +21,13 @@ public class EntitySpawnNBTRegistry {
 	private EntitySpawnNBTRegistry() {}
 
 	private static final Map<Class, Set<String>> entityNBT = new HashMap<>();
+
+	static {
+		entityNBT.put(EntityVillager.class, ImmutableSet.of("Offers", "Profession", "ProfessionName", "Career", "CareerLevel"));
+		entityNBT.put(EntityHorse.class, Collections.singleton("Variant"));
+		entityNBT.put(EntityLiving.class, ImmutableSet.of("HandItems", "HandDropChances", "ArmorItems", "ArmorDropChances"));
+
+	}
 
 	public static NBTTagCompound getEntitySpawnNBT(Entity entity, NBTTagCompound entityTag) {
 		NBTTagCompound ret = new NBTTagCompound();
