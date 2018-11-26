@@ -37,7 +37,6 @@ public class TemplateRuleBanner extends TemplateRuleBlockTile {
 		if (state.getBlock() == Blocks.STANDING_BANNER) {
 			builder.placeBlock(pos, getState(turns), buildPass);
 			WorldTools.getTile(world, pos).ifPresent(t -> {
-				//TODO look into changing this so that the whole TE doesn't need reloading from custom NBT
 				tag.setInteger("x", pos.getX());
 				tag.setInteger("y", pos.getY());
 				tag.setInteger("z", pos.getZ());
