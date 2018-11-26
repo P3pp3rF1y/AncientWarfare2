@@ -14,7 +14,6 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcCombat;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -26,7 +25,7 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
 	private static final int HEIGHT_CHECK = 7;
 	private static final int PURSUE_RANGE = 16 * 16;
 	private final Predicate<EntityLiving> hostileOrFriendlyCombatNpcSelector;
-	private final Comparator sorter;
+	private final Comparator<Entity> sorter;
 	private double distanceFromEntity = 16;
 	private Vec3d fleeVector;
 	private int stayOutOfSightTimer = 0;
@@ -35,19 +34,19 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
 	private LinkedHashSet<NpcCombat> nearbySoldiers = new LinkedHashSet<NpcCombat>();
 
 	private int ticker = 0;
-	private int tickerMax = 5; // scan for hostiles every 5 ticks
+	private static final int TICKER_MAX = 5; // scan for hostiles every 5 ticks
 
 	public NpcAIFleeHostiles(final NpcPlayerOwned npc) {
 		super(npc);
 		hostileOrFriendlyCombatNpcSelector = selectedEntity -> {
-			if (selectedEntity.isEntityAlive()) {
+			if (selectedEntity != null && selectedEntity.isEntityAlive()) {
 				if (selectedEntity instanceof NpcBase) {
-					if (((NpcBase) selectedEntity).getNpcSubType().equals("soldier"))
-						if (((NpcBase) selectedEntity).hasCommandPermissions(npc.getOwner()))
-							return true; // is a friendly soldier
-					return ((NpcBase) selectedEntity).isHostileTowards(NpcAIFleeHostiles.this.npc);
-				} else
-					return NpcAI.isAlwaysHostileToNpcs(selectedEntity);
+					// is a friendly soldier
+					return ((NpcBase) selectedEntity).getNpcSubType().equals("soldier") && ((NpcBase) selectedEntity).hasCommandPermissions(npc.getOwner())
+							|| ((NpcBase) selectedEntity).isHostileTowards(NpcAIFleeHostiles.this.npc);
+				} else {
+					return NpcAIFleeHostiles.this.npc.isHostileTowards(selectedEntity);
+				}
 			}
 			return false;
 		};
@@ -65,7 +64,7 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
 			fearLevel--;
 
 		ticker++;
-		if (ticker != tickerMax)
+		if (ticker != TICKER_MAX)
 			return false;
 		ticker = 0;
 
@@ -92,19 +91,21 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
 	private void findNearbyRelevantEntities() {
 		npc.nearbyHostiles.clear();
 		nearbySoldiers.clear();
-		List nearbyHostilesOrFriendlySoldiers = this.npc.world.getEntitiesWithinAABB(EntityLiving.class, this.npc.getEntityBoundingBox().expand(this.distanceFromEntity, 3.0D, this.distanceFromEntity), this.hostileOrFriendlyCombatNpcSelector);
+		List<EntityLiving> nearbyHostilesOrFriendlySoldiers = this.npc.world.getEntitiesWithinAABB(EntityLiving.class,
+				npc.getEntityBoundingBox().expand(this.distanceFromEntity, 3.0D, this.distanceFromEntity), this.hostileOrFriendlyCombatNpcSelector);
 		if (nearbyHostilesOrFriendlySoldiers.isEmpty())
 			return;
 
-		Collections.sort(nearbyHostilesOrFriendlySoldiers, sorter);
+		nearbyHostilesOrFriendlySoldiers.sort(sorter);
 		for (Object entity : nearbyHostilesOrFriendlySoldiers) {
 			if (npc.canEntityBeSeen((Entity) entity)) {
 				if (entity instanceof NpcBase) {
-					if (((NpcBase) entity).getNpcSubType().equals("soldier"))
-						if (((NpcBase) entity).hasCommandPermissions(npc.getOwner()))
-							nearbySoldiers.add((NpcCombat) entity);
-				} else
+					if (((NpcBase) entity).getNpcSubType().equals("soldier") && ((NpcBase) entity).hasCommandPermissions(npc.getOwner())) {
+						nearbySoldiers.add((NpcCombat) entity);
+					}
+				} else {
 					npc.nearbyHostiles.add((Entity) entity);
+				}
 			}
 		}
 	}
@@ -131,12 +132,11 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
 			shouldPanic = false;
 		}
 
-		if (!shouldPanic)
-			if (!npc.nearbyHostiles.isEmpty()) {
-				stayOutOfSightTimer = MAX_STAY_AWAY + fearLevel;
-				shouldPanic = true;
-				announceDistress();
-			}
+		if (!shouldPanic && !npc.nearbyHostiles.isEmpty()) {
+			stayOutOfSightTimer = MAX_STAY_AWAY + fearLevel;
+			shouldPanic = true;
+			announceDistress();
+		}
 
 		return shouldPanic;
 	}
@@ -154,12 +154,9 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
 		if (npc.hasHome()) {
 			distSq = npc.getDistanceSqFromHome();
 			pos = npc.getHomePosition();
-			if (distSq < MIN_RANGE) {
-				// NPC is home, check for visible hostiles
-				if (!npc.nearbyHostiles.isEmpty()) {
-					homeCompromised = true;
-					npc.addAITask(TASK_ALARM);
-				}
+			if (distSq < MIN_RANGE && !npc.nearbyHostiles.isEmpty()) {
+				homeCompromised = true;
+				npc.addAITask(TASK_ALARM);
 			}
 		}
 
@@ -178,10 +175,13 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
 			else {
 				if (npc.getDistanceSq(npc.getAttackTarget()) < PURSUE_RANGE) {//entity still chasing, find a new flee vector
 					fleeVector = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.npc, MAX_FLEE_RANGE, HEIGHT_CHECK, new Vec3d(npc.getAttackTarget().posX, npc.getAttackTarget().posY, npc.getAttackTarget().posZ));
-					if (fleeVector == null)
+					if (fleeVector == null) {
 						npc.setAttackTarget(null);//retry next tick..perhaps...
+					}
 				} else // entity too far to care, stop running
+				{
 					npc.setAttackTarget(null);
+				}
 			}
 		}
 

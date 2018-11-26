@@ -15,7 +15,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedRideHorse;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
@@ -99,7 +98,7 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 		return getTownHallPosition().flatMap(p -> WorldTools.getTile(world, p, TileTownHall.class));
 	}
 
-	public void handleTownHallBroadcast(TileTownHall tile, BlockPos position) {
+	public void handleTownHallBroadcast(BlockPos position) {
 		validateTownHallPosition();
 		Optional<BlockPos> townHallPos = getTownHallPosition();
 		if (townHallPos.isPresent()) {
@@ -174,18 +173,12 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 
 	@Override
 	public boolean isHostileTowards(Entity entityTarget) {
-		if (NpcAI.isAlwaysHostileToNpcs(entityTarget))
-			return true;
-		else if ((entityTarget instanceof NpcPlayerOwned) || (entityTarget instanceof EntityPlayer)) {
+		if ((entityTarget instanceof NpcPlayerOwned) || (entityTarget instanceof EntityPlayer)) {
 			return !getOwner().isOwnerOrSameTeamOrFriend(entityTarget);
 		} else if (entityTarget instanceof NpcFaction) {
 			return ((NpcFaction) entityTarget).isHostileTowards(this); // hostility is based on faction standing
-		} else {
-			if (!AWNPCStatics.autoTargetting) {
-				return NpcDefaultsRegistry.getOwnedNpcDefault(this).isTarget(entityTarget);
-			}
 		}
-		return false;
+		return NpcDefaultsRegistry.getOwnedNpcDefault(this).isTarget(entityTarget);
 	}
 
 	@Override

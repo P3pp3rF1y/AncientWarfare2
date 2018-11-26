@@ -78,7 +78,10 @@ public class NpcDefaultsRegistry {
 			npcSubtypeDefault = getCanSwim(data).map(npcSubtypeDefault::setCanSwim).orElse(npcSubtypeDefault);
 			npcSubtypeDefault = getCanBreakDoors(data).map(npcSubtypeDefault::setCanBreakDoors).orElse(npcSubtypeDefault);
 			npcSubtypeDefault = npcSubtypeDefault.setEquipment(getEquipment(data));
-			npcSubtypeDefault = npcSubtypeDefault.overrideTargets(getTargetList(data));
+			Set<ResourceLocationMatcher> overrideTargetList = getTargetList(data);
+			if (!overrideTargetList.isEmpty()) {
+				npcSubtypeDefault = npcSubtypeDefault.overrideTargets(overrideTargetList);
+			}
 			return npcSubtypeDefault;
 		}
 

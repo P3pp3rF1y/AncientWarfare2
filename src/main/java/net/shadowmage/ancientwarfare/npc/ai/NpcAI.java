@@ -10,8 +10,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
-import java.util.HashSet;
-
 /*
  * AI template class with utility methods and member access for a non-specific NPC type
  *
@@ -47,8 +45,6 @@ public abstract class NpcAI<T extends NpcBase> extends EntityAIBase {
 	public static final int HUNGRY = 8;
 
 	public static final int MIN_RANGE = 9;
-
-	private static HashSet<Integer> HOSTILE_ENTITIES = new HashSet<>();
 
 	protected int moveRetryDelay;
 	protected double moveSpeed = 1.d;
@@ -159,18 +155,5 @@ public abstract class NpcAI<T extends NpcBase> extends EntityAIBase {
 			}
 		}
 		return path;
-	}
-
-	/*
-	 * Returns true if the given entity targets/attacks NPC's
-	 */
-	public static boolean isAlwaysHostileToNpcs(Entity entity) {
-		if (HOSTILE_ENTITIES.contains(entity.getEntityId()))
-			return true;
-		return false;
-	}
-
-	public static void addHostileEntity(Entity entity) {
-		HOSTILE_ENTITIES.add(entity.getEntityId());
 	}
 }
