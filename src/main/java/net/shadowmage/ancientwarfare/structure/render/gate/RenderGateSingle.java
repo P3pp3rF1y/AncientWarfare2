@@ -44,7 +44,7 @@ public final class RenderGateSingle extends RenderGateBasic {
 
 	@Override
 	protected void postRender(EntityGate gate, int x, float width, int y, float height, boolean wideOnXAxis, float axisRotation, float frame) {
-		boolean opensReverse = gate.pos1.getX() > gate.pos2.getX() || gate.pos1.getZ() > gate.pos2.getZ();
+		boolean opensReverse = gate.pos1.getX() > gate.pos2.getX() || gate.pos1.getZ() < gate.pos2.getZ();
 		float wallTx = wideOnXAxis ? gate.edgePosition + gate.openingSpeed * (1 - frame) : 0;
 		float wallTz = wideOnXAxis ? 0 : gate.edgePosition + gate.openingSpeed * (1 - frame);
 		boolean render = false;

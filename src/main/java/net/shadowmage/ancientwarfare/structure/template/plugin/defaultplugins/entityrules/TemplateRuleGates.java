@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.entityrules;
 
+import com.google.common.primitives.Ints;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -32,7 +33,7 @@ public class TemplateRuleGates extends TemplateRuleEntityBase {
 
 		this.pos1 = BlockTools.rotateAroundOrigin(gate.pos1.add(-x, -y, -z), turns);
 		this.pos2 = BlockTools.rotateAroundOrigin(gate.pos2.add(-x, -y, -z), turns);
-		this.orientation = EnumFacing.HORIZONTALS[(gate.gateOrientation.ordinal() + turns) % 4];
+		this.orientation = EnumFacing.HORIZONTALS[(gate.gateOrientation.getHorizontalIndex() + turns) % 4];
 		this.gateType = Gate.getGateNameFor(gate);
 		this.owner = gate.getOwner().getName();
 	}
@@ -56,7 +57,8 @@ public class TemplateRuleGates extends TemplateRuleEntityBase {
 			}
 		}
 
-		Optional<EntityGate> gate = Gate.constructGate(world, p1, p2, Gate.getGateByName(gateType), EnumFacing.HORIZONTALS[((orientation.ordinal() + turns) % 4)],
+		Optional<EntityGate> gate = Gate.constructGate(world, p1, p2, Gate.getGateByName(gateType),
+				EnumFacing.HORIZONTALS[Ints.constrainToRange((orientation.getHorizontalIndex() + turns) % 4, 0, 4)],
 				owner.isEmpty() ? Owner.EMPTY : new Owner(world, owner));
 		if (!gate.isPresent()) {
 			AncientWarfareStructure.LOG.warn("Could not create gate for type: " + gateType);
