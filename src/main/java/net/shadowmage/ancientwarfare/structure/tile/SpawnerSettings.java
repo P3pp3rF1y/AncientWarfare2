@@ -652,7 +652,12 @@ public class SpawnerSettings {
 				((EntityLiving) e).onInitialSpawn(world.getDifficultyForLocation(e.getPosition()), null);
 				((EntityLiving) e).spawnExplosionParticle();
 			}
+			setDataFromTag(e); //some data needs to be set before spawning entity in the world (like factionName)
 			world.spawnEntity(e);
+			setDataFromTag(e); //and some data needs to be set after onInitialSpawn fires for entity
+		}
+
+		private void setDataFromTag(Entity e) {
 			if (customTag != null) {
 				NBTTagCompound temp = new NBTTagCompound();
 				if (e instanceof NpcFaction && customTag.hasKey(FACTION_NAME_TAG)) {
