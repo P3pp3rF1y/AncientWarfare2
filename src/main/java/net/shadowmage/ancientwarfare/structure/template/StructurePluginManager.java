@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.Tuple;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -40,6 +41,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
+
+import static net.shadowmage.ancientwarfare.structure.api.TemplateRule.JSON_PREFIX;
 
 public class StructurePluginManager implements IStructurePluginRegister {
 	private final List<StructureContentPlugin> loadedContentPlugins = new ArrayList<>();
@@ -179,14 +182,15 @@ public class StructurePluginManager implements IStructurePluginRegister {
 
 		FixResult.Builder<T> resultBuilder = new FixResult.Builder<>();
 
-		name = resultBuilder.updateAndGetData(DataFixManager.fixRuleName(version, name));
+		if (StructureTemplate.CURRENT_VERSION.isGreaterThan(version)) {
+			Tuple<String, List<String>> fixResult = resultBuilder.updateAndGetData(DataFixManager.fixRuleData(version, name, ruleDataPackage));
+			name = fixResult.getFirst();
+			ruleDataPackage = fixResult.getSecond();
+		}
+
 		Optional<TemplateRule> parser = INSTANCE.getRuleByName(name);
 		if (!parser.isPresent()) {
 			throw new TemplateRuleParsingException("Not enough data to create template rule.\n" + "Missing plugin for name: " + name + "\n" + "name: " + name + "\n" + "number:" + ruleNumber + "\n" + "ruleDataPackage.size:" + ruleDataPackage.size() + "\n");
-		}
-
-		if (StructureTemplate.CURRENT_VERSION.isGreaterThan(version)) {
-			ruleDataPackage = resultBuilder.updateAndGetData(DataFixManager.fixRuleData(version, name, ruleDataPackage));
 		}
 
 		TemplateRule rule = parser.get();
@@ -215,8 +219,6 @@ public class StructurePluginManager implements IStructurePluginRegister {
 			ruleDataPackage.add(line);
 		}
 	}
-
-	private static final String JSON_PREFIX = "JSON:";
 
 	private static NBTTagCompound readTag(List<String> ruleData) throws TemplateRuleParsingException {
 		for (String line : ruleData) {

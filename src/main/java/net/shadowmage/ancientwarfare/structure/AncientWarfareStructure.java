@@ -44,6 +44,7 @@ import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager
 import net.shadowmage.ancientwarfare.structure.template.WorldGenStructureManager;
 import net.shadowmage.ancientwarfare.structure.template.datafixes.DataFixManager;
 import net.shadowmage.ancientwarfare.structure.template.datafixes.fixers.BlockMetaToBlockStateFixer;
+import net.shadowmage.ancientwarfare.structure.template.datafixes.fixers.EntityEquipmentFixer;
 import net.shadowmage.ancientwarfare.structure.template.datafixes.fixers.EntityPositionToNBTFixer;
 import net.shadowmage.ancientwarfare.structure.template.datafixes.fixers.EntityRuleNameFixer;
 import net.shadowmage.ancientwarfare.structure.template.datafixes.fixers.FactionExpansionFixer;
@@ -118,8 +119,9 @@ public class AncientWarfareStructure {
 		DataFixManager.registerRuleFixer(new JsonSimplificationFixer());
 		DataFixManager.registerRuleFixer(new BlockMetaToBlockStateFixer());
 		DataFixManager.registerRuleFixer(new EntityPositionToNBTFixer());
-		DataFixManager.registerRuleNameFixer(new RuleNameConsolidationFixer());
-		DataFixManager.registerRuleNameFixer(new EntityRuleNameFixer());
+		DataFixManager.registerRuleFixer(new RuleNameConsolidationFixer());
+		DataFixManager.registerRuleFixer(new EntityRuleNameFixer());
+		DataFixManager.registerRuleFixer(new EntityEquipmentFixer());
 	}
 
 	@EventHandler

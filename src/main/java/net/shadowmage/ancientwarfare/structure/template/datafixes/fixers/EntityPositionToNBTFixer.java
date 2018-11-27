@@ -8,13 +8,12 @@ import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate.Version;
 import net.shadowmage.ancientwarfare.structure.template.datafixes.FixResult;
-import net.shadowmage.ancientwarfare.structure.template.datafixes.IDataFixer;
 
 import java.util.Set;
 
 import static net.shadowmage.ancientwarfare.structure.api.TemplateRule.JSON_PREFIX;
 
-public class EntityPositionToNBTFixer implements IDataFixer {
+public class EntityPositionToNBTFixer extends RuleDataFixerBase {
 	private static final Version VERSION = new Version(2, 6);
 
 	private static final Set<String> APPLICABLE_TO_RULES = ImmutableSet.of(
@@ -48,7 +47,7 @@ public class EntityPositionToNBTFixer implements IDataFixer {
 	}
 
 	@Override
-	public FixResult<String> fix(String ruleName, String data) {
+	public FixResult<String> fixData(String ruleName, String data) {
 		if (data.contains("position=")) {
 			int[] posParts = safeParseIntArray(data);
 			position = new BlockPos(posParts[0], posParts[1], posParts[2]);

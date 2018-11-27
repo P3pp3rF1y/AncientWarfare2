@@ -24,7 +24,7 @@ import java.util.Optional;
 import java.util.Set;
 
 public class StructureTemplate {
-	public static final Version CURRENT_VERSION = new Version(2, 7);
+	public static final Version CURRENT_VERSION = new Version(2, 8);
 
 	/*
 	 * base datas

@@ -3,13 +3,12 @@ package net.shadowmage.ancientwarfare.structure.template.datafixes.fixers;
 import com.google.common.collect.ImmutableMap;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.datafixes.FixResult;
-import net.shadowmage.ancientwarfare.structure.template.datafixes.IRuleNameFixer;
 
 import java.util.Map;
 
 @SuppressWarnings("squid:S1192")
 //need to specifically spell out the names here and the constant would live just in this place that's supposed to not be edited in the future again
-public class RuleNameConsolidationFixer implements IRuleNameFixer {
+public class RuleNameConsolidationFixer extends RuleNameFixerBase {
 	private static final StructureTemplate.Version VERSION = new StructureTemplate.Version(2, 4);
 
 	private static final Map<String, String> nameMapping = new ImmutableMap.Builder<String, String>()
@@ -31,15 +30,6 @@ public class RuleNameConsolidationFixer implements IRuleNameFixer {
 			.build();
 
 	@Override
-	public FixResult<String> fix(String data) {
-		if (nameMapping.containsKey(data)) {
-			return new FixResult.Modified<>(nameMapping.get(data), "RuleNameConsolidationFixer");
-		}
-
-		return new FixResult.NotModified<>(data);
-	}
-
-	@Override
 	public StructureTemplate.Version getVersion() {
 		return VERSION;
 	}
@@ -47,5 +37,14 @@ public class RuleNameConsolidationFixer implements IRuleNameFixer {
 	@Override
 	public boolean isForRule(String ruleName) {
 		return nameMapping.containsKey(ruleName);
+	}
+
+	@Override
+	protected FixResult<String> fixName(String ruleName) {
+		if (nameMapping.containsKey(ruleName)) {
+			return new FixResult.Modified<>(nameMapping.get(ruleName), "RuleNameConsolidationFixer");
+		}
+
+		return new FixResult.NotModified<>(ruleName);
 	}
 }

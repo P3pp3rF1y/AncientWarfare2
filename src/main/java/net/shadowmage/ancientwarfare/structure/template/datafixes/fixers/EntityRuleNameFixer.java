@@ -3,26 +3,16 @@ package net.shadowmage.ancientwarfare.structure.template.datafixes.fixers;
 import com.google.common.collect.ImmutableMap;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate.Version;
 import net.shadowmage.ancientwarfare.structure.template.datafixes.FixResult;
-import net.shadowmage.ancientwarfare.structure.template.datafixes.IRuleNameFixer;
 
 import java.util.Map;
 
-public class EntityRuleNameFixer implements IRuleNameFixer {
+public class EntityRuleNameFixer extends RuleNameFixerBase {
 	private static final Version VERSION = new Version(2, 7);
 
 	private static final Map<String, String> nameMapping = new ImmutableMap.Builder<String, String>()
 			.put("vanillaLogicEntity", "entity")
 			.put("vanillaEntities", "entity")
 			.build();
-
-	@Override
-	public FixResult<String> fix(String data) {
-		if (nameMapping.containsKey(data)) {
-			return new FixResult.Modified<>(nameMapping.get(data), "EntityRuleNameFixer");
-		}
-
-		return new FixResult.NotModified<>(data);
-	}
 
 	@Override
 	public Version getVersion() {
@@ -32,5 +22,14 @@ public class EntityRuleNameFixer implements IRuleNameFixer {
 	@Override
 	public boolean isForRule(String ruleName) {
 		return nameMapping.containsKey(ruleName);
+	}
+
+	@Override
+	protected FixResult<String> fixName(String ruleName) {
+		if (nameMapping.containsKey(ruleName)) {
+			return new FixResult.Modified<>(nameMapping.get(ruleName), "EntityRuleNameFixer");
+		}
+
+		return new FixResult.NotModified<>(ruleName);
 	}
 }

@@ -3,21 +3,21 @@ package net.shadowmage.ancientwarfare.structure.template.datafixes.fixers;
 import net.shadowmage.ancientwarfare.npc.datafixes.FactionExpansionEntityFixer;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate.Version;
 import net.shadowmage.ancientwarfare.structure.template.datafixes.FixResult;
-import net.shadowmage.ancientwarfare.structure.template.datafixes.IDataFixer;
 import net.shadowmage.ancientwarfare.structure.template.datafixes.fixers.json.Json;
 import net.shadowmage.ancientwarfare.structure.template.datafixes.fixers.json.Json.JsonObject;
 
 import java.util.Optional;
 
-public class FactionExpansionFixer implements IDataFixer {
+public class FactionExpansionFixer extends RuleDataFixerBase {
 	private static final Version VERSION = new Version(2, 2);
 
+	@SuppressWarnings("ConstantConditions")
 	@Override
-	public FixResult<String> fix(String ruleName, String line) {
-		Optional<JsonObject> parsedJson = Json.parseJson(line);
+	protected FixResult<String> fixData(String ruleName, String data) {
+		Optional<JsonObject> parsedJson = Json.parseJson(data);
 
 		if (!parsedJson.isPresent()) {
-			return new FixResult.NotModified<>(line);
+			return new FixResult.NotModified<>(data);
 		}
 
 		JsonObject json = parsedJson.get();
