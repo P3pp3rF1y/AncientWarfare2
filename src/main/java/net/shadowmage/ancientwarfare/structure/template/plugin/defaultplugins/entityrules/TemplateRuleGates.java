@@ -10,6 +10,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.owner.Owner;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.core.util.NBTHelper;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntityBase;
@@ -72,8 +73,8 @@ public class TemplateRuleGates extends TemplateRuleEntityBase {
 		super.parseRule(tag);
 		gateType = tag.getString("gateType");
 		orientation = EnumFacing.VALUES[tag.getByte("orientation")];
-		pos1 = getBlockPosFromNBT(tag.getCompoundTag("pos1"));
-		pos2 = getBlockPosFromNBT(tag.getCompoundTag("pos2"));
+		pos1 = NBTHelper.readBlockPosFromNBT(tag.getCompoundTag("pos1"));
+		pos2 = NBTHelper.readBlockPosFromNBT(tag.getCompoundTag("pos2"));
 		owner = tag.getString("owner");
 	}
 
@@ -82,8 +83,8 @@ public class TemplateRuleGates extends TemplateRuleEntityBase {
 		super.writeRuleData(tag);
 		tag.setString("gateType", gateType);
 		tag.setByte("orientation", (byte) orientation.ordinal());
-		tag.setTag("pos1", writeBlockPosToNBT(new NBTTagCompound(), pos1));
-		tag.setTag("pos2", writeBlockPosToNBT(new NBTTagCompound(), pos2));
+		tag.setTag("pos1", NBTHelper.writeBlockPosToNBT(new NBTTagCompound(), pos1));
+		tag.setTag("pos2", NBTHelper.writeBlockPosToNBT(new NBTTagCompound(), pos2));
 		tag.setString("owner", owner);
 	}
 

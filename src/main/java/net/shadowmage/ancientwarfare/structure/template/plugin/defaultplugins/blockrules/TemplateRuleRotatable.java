@@ -9,6 +9,7 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IBoundedSite;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.core.util.NBTHelper;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
@@ -88,10 +89,10 @@ public class TemplateRuleRotatable extends TemplateRuleBlock {
 			this.tag = tag.getCompoundTag(TE_DATA_TAG);
 		}
 		if (tag.hasKey("pos1")) {
-			this.p1 = getBlockPosFromNBT(tag.getCompoundTag("pos1"));
+			this.p1 = NBTHelper.readBlockPosFromNBT(tag.getCompoundTag("pos1"));
 		}
 		if (tag.hasKey("pos2")) {
-			this.p2 = getBlockPosFromNBT(tag.getCompoundTag("pos2"));
+			this.p2 = NBTHelper.readBlockPosFromNBT(tag.getCompoundTag("pos2"));
 		}
 	}
 
@@ -100,10 +101,10 @@ public class TemplateRuleRotatable extends TemplateRuleBlock {
 		super.writeRuleData(tag);
 		tag.setInteger("orientation", orientation.ordinal());
 		if (p1 != null) {
-			tag.setTag("pos1", writeBlockPosToNBT(new NBTTagCompound(), p1));
+			tag.setTag("pos1", NBTHelper.writeBlockPosToNBT(new NBTTagCompound(), p1));
 		}
 		if (p2 != null) {
-			tag.setTag("pos2", writeBlockPosToNBT(new NBTTagCompound(), p2));
+			tag.setTag("pos2", NBTHelper.writeBlockPosToNBT(new NBTTagCompound(), p2));
 		}
 		if (this.tag != null) {
 			tag.setTag(TE_DATA_TAG, this.tag);

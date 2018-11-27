@@ -11,6 +11,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.Tuple;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
@@ -135,4 +136,15 @@ public class NBTHelper {
 				l2.forEach(l1::appendTag);
 				return l1;
 			});
+
+	public static NBTTagCompound writeBlockPosToNBT(NBTTagCompound tag, BlockPos pos) {
+		tag.setInteger("x", pos.getX());
+		tag.setInteger("y", pos.getY());
+		tag.setInteger("z", pos.getZ());
+		return tag;
+	}
+
+	public static BlockPos readBlockPosFromNBT(NBTTagCompound tag) {
+		return new BlockPos(tag.getInteger("x"), tag.getInteger("y"), tag.getInteger("z"));
+	}
 }

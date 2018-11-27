@@ -69,17 +69,6 @@ public abstract class TemplateRule {
 		return "Template rule: " + ruleNumber + " type: " + getClass().getSimpleName();
 	}
 
-	protected BlockPos getBlockPosFromNBT(NBTTagCompound tag) {
-		return new BlockPos(tag.getInteger("x"), tag.getInteger("y"), tag.getInteger("z"));
-	}
-
-	protected NBTTagCompound writeBlockPosToNBT(NBTTagCompound tag, BlockPos pos) {
-		tag.setInteger("x", pos.getX());
-		tag.setInteger("y", pos.getY());
-		tag.setInteger("z", pos.getZ());
-		return tag;
-	}
-
 	public boolean placeInSurvival() {
 		return false;
 	}
