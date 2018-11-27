@@ -54,7 +54,6 @@ public class TemplateParser {
 		Vec3i offset = new Vec3i(0, 0, 0);
 		short[] templateData = null;
 		boolean[] initData = new boolean[4];
-		int highestParsedRule = 0;
 		Map<Integer, TemplateRule> parsedRules = new HashMap<>();
 		Map<Integer, TemplateRuleEntityBase> parsedEntities = new HashMap<>();
 		FixResult.Builder<StructureTemplate> resultBuilder = new FixResult.Builder<>();
@@ -134,9 +133,6 @@ public class TemplateParser {
 				try {
 					TemplateRule parsedRule = resultBuilder.updateAndGetData(StructurePluginManager.getRule(version, groupedLines, "rule"));
 					parsedRules.put(parsedRule.ruleNumber, parsedRule);
-					if (parsedRule.ruleNumber > highestParsedRule) {
-						highestParsedRule = parsedRule.ruleNumber;
-					}
 				}
 				catch (TemplateRuleParsingException e) {
 					StringBuilder data = new StringBuilder(e.getMessage() + "\n");
