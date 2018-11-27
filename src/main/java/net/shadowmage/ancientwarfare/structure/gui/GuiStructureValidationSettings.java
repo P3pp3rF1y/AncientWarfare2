@@ -123,7 +123,7 @@ public class GuiStructureValidationSettings extends GuiContainerBase {
 	}
 
 	private static final Set<IStructureValidationProperty> EXCLUDED_PROPERTIES =
-			ImmutableSet.of(BIOME_LIST, BIOME_WHITE_LIST, DIMENSION_LIST, DIMENSION_WHITE_LIST, BLOCK_LIST);
+			ImmutableSet.of(BIOME_LIST, BIOME_WHITE_LIST, DIMENSION_LIST, DIMENSION_WHITE_LIST);
 
 	@Override
 	public void setupElements() {

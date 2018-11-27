@@ -32,9 +32,6 @@ public class StructureValidationProperties {
 	public static final StructureValidationPropertyStringSet BIOME_LIST = new StructureValidationPropertyStringSet("biomeList",
 			new HashSet<>());
 
-	public static final StructureValidationPropertyStringSet BLOCK_LIST = new StructureValidationPropertyStringSet("blockList",
-			new HashSet<>());
-
 	public static final StructureValidationPropertyIntArray DIMENSION_LIST = new StructureValidationPropertyIntArray("dimensionList", new int[0]);
 
 	public static final StructureValidationPropertyBool BLOCK_SWAP = new StructureValidationPropertyBool("blockSwap", false);

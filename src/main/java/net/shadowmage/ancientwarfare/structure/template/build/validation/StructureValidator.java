@@ -24,6 +24,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -37,7 +38,7 @@ import static net.shadowmage.ancientwarfare.structure.template.build.validation.
 public abstract class StructureValidator {
 	public final StructureValidationType validationType;
 
-	private HashMap<IStructureValidationProperty<?>, Object> properties = new HashMap<>();
+	private HashMap<IStructureValidationProperty<?>, Object> properties = new LinkedHashMap<>();
 
 	protected StructureValidator(StructureValidationType validationType) {
 		this.validationType = validationType;
