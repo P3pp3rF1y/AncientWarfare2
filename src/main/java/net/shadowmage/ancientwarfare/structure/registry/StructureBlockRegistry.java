@@ -1,6 +1,8 @@
 package net.shadowmage.ancientwarfare.structure.registry;
 
 import com.google.gson.JsonObject;
+import net.minecraft.block.BlockSlab;
+import net.minecraft.block.BlockSnow;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -19,6 +21,7 @@ public class StructureBlockRegistry {
 	private static final Map<BlockStateMatcher, ItemStack> STATE_TO_REMAINING_ITEM = new HashMap<>();
 	private static final Map<BlockStateMatcher, Integer> STATE_PASS = new HashMap<>();
 
+	@SuppressWarnings({"squid:CallToDeprecatedMethod", "squid:S4449"}) //null passed in intentionally and any exceptions caused by that are caught upstream
 	public static ItemStack getItemStackFrom(IBlockState state) {
 		for (Map.Entry<BlockStateMatcher, ItemStack> stateItem : STATE_TO_ITEM.entrySet()) {
 			if (stateItem.getKey().test(state)) {
@@ -27,10 +30,21 @@ public class StructureBlockRegistry {
 		}
 
 		try {
-			return state.getBlock().getItem(null, null, state);
+			//noinspection deprecation - using this for a different purpose than the pickblock is meant to, also can't raytrace and don't have player variable
+			ItemStack stack = state.getBlock().getItem(null, null, state);
+			updateCountForSpecialBlocks(state, stack);
+			return stack;
 		}
 		catch (NullPointerException ex) {
 			return new ItemStack(Items.AIR);
+		}
+	}
+
+	private static void updateCountForSpecialBlocks(IBlockState state, ItemStack stack) {
+		if (state.getBlock() instanceof BlockSlab) {
+			stack.setCount(2);
+		} else if (state.getBlock() instanceof BlockSnow) {
+			stack.setCount(state.getValue(BlockSnow.LAYERS));
 		}
 	}
 
@@ -54,7 +68,7 @@ public class StructureBlockRegistry {
 
 	public static class Parser implements IRegistryDataParser {
 
-		public static final String BLOCK_PROPERTY = "block";
+		private static final String BLOCK_PROPERTY = "block";
 
 		@Override
 		public String getName() {
