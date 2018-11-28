@@ -13,7 +13,8 @@ import java.util.List;
  * Created by Olivier on 15/06/2015.
  */
 public class NpcAISing extends NpcAI<NpcBase> {
-	private static int PLAYER_DELAY = 10, PLAYER_RANGE = 20;
+	private static final int PLAYER_DELAY = 10;
+	private static final int PLAYER_RANGE = 20;
 	private boolean playing = false;//if currently playing a tune.
 	private int currentDelay;//the current cooldown delay.  if not playing, this delay will be incremented before attempting to start next song
 	private int tuneIndex = -1;//will be incremented to 0 before first song selected
@@ -80,7 +81,7 @@ public class NpcAISing extends NpcAI<NpcBase> {
 		SongPlayData.SongEntry entry = data.get(tuneIndex);
 		maxPlayTime = (int) (entry.length() * 20.f);//convert minutes into ticks
 		float volume = (float) entry.volume() * 0.03f;
-		npc.world.playSound(null, npc.posX, npc.posY, npc.posZ, entry.getSound(), SoundCategory.NEUTRAL, volume, 1.f);
+		entry.getSound().ifPresent(s -> npc.world.playSound(null, npc.posX, npc.posY, npc.posZ, s, SoundCategory.NEUTRAL, volume, 1.f));
 		playing = true;
 		playTime = 0;
 	}

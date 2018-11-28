@@ -4,8 +4,12 @@ import codechicken.lib.util.ResourceUtils;
 import com.google.common.collect.Sets;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.ISound;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -29,12 +33,15 @@ import net.shadowmage.ancientwarfare.structure.render.RenderGateInvisible;
 import net.shadowmage.ancientwarfare.structure.sounds.SoundLoader;
 import net.shadowmage.ancientwarfare.structure.tile.TileSoundBlock;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 @SuppressWarnings("unused")
 @SideOnly(Side.CLIENT)
 public class ClientProxyStructure extends CommonProxyStructure {
 	private Set<IClientRegister> clientRegisters = Sets.newHashSet();
+	private Map<BlockPos, PositionedSoundRecord> currentSounds = new HashMap<>();
 
 	public ClientProxyStructure() {
 		MinecraftForge.EVENT_BUS.register(this);
@@ -86,5 +93,48 @@ public class ClientProxyStructure extends CommonProxyStructure {
 	@Override
 	public void clearTemplatePreviewCache() {
 		PreviewRenderer.clearCache();
+	}
+
+	@Override
+	public void resetSoundAt(BlockPos pos) {
+		currentSounds.remove(pos);
+	}
+
+	@Override
+	public void setSoundAt(BlockPos pos, SoundEvent currentTune) {
+		currentSounds.put(pos, PositionedSoundRecord.getRecordSoundRecord(currentTune, (float) pos.getX(), (float) pos.getY(), (float) pos.getZ()));
+	}
+
+	@Override
+	public void stopSoundAt(BlockPos pos) {
+		if (currentSounds.containsKey(pos)) {
+			Minecraft.getMinecraft().getSoundHandler().stopSound(currentSounds.get(pos));
+		}
+	}
+
+	@Override
+	public boolean hasSoundAt(BlockPos pos) {
+		return currentSounds.containsKey(pos);
+	}
+
+	@Override
+	public boolean isSoundPlayingAt(BlockPos pos) {
+		if (!hasSoundAt(pos)) {
+			return false;
+		}
+		ISound positionedsoundrecord = currentSounds.get(pos);
+		return Minecraft.getMinecraft().getSoundHandler().isSoundPlaying(positionedsoundrecord);
+	}
+
+	@Override
+	public void playSoundAt(BlockPos pos) {
+		if (hasSoundAt(pos)) {
+			Minecraft.getMinecraft().getSoundHandler().playSound(currentSounds.get(pos));
+		}
+	}
+
+	@Override
+	public double getClientPlayerDistanceTo(BlockPos pos) {
+		return Minecraft.getMinecraft().player.getDistance(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
 	}
 }
