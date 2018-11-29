@@ -525,7 +525,7 @@ public class SpawnerSettings {
 			this.entityId = entityId;
 			if (!ForgeRegistries.ENTITIES.containsKey(this.entityId)) {
 				if (hostile) {
-					AncientWarfareStructure.LOG.error(entityId + " is not a valid entityId.  Spawner default to Zombie.");
+					AncientWarfareStructure.LOG.debug(entityId + " is not a valid entityId.  Spawner default to Zombie.");
 					this.entityId = new ResourceLocation("zombie");
 				} else {
 					remainingSpawnCount = 0;
@@ -533,7 +533,7 @@ public class SpawnerSettings {
 			}
 			if (AWStructureStatics.excludedSpawnerEntities.contains(this.entityId.toString())) {
 				if (hostile) {
-					AncientWarfareStructure.LOG.error(entityId + " has been set as an invalid entity for spawners!  Spawner default to Zombie.");
+					AncientWarfareStructure.LOG.warn(entityId + " has been set as an invalid entity for spawners!  Spawner default to Zombie.");
 					this.entityId = new ResourceLocation("zombie");
 				} else {
 					remainingSpawnCount = 0;
