@@ -42,15 +42,9 @@ public class TemplateRuleVanillaBlocks extends TemplateRuleBlock {
 	}
 
 	@Override
-	public void writeRuleData(NBTTagCompound tag) {
-		super.writeRuleData(tag);
-		tag.setInteger("buildPass", buildPass);
-	}
-
-	@Override
 	public void parseRule(NBTTagCompound tag) {
 		super.parseRule(tag);
-		this.buildPass = tag.getInteger("buildPass");
+		this.buildPass = StructureBlockRegistry.getBuildPass(state);
 	}
 
 	@Override
