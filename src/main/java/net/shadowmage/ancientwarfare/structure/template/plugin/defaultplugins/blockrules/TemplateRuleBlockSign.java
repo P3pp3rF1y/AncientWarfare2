@@ -27,9 +27,12 @@ public class TemplateRuleBlockSign extends TemplateRuleVanillaBlocks {
 	public TemplateRuleBlockSign(World world, BlockPos pos, IBlockState state, int turns) {
 		super(world, pos, state, turns);
 		WorldTools.getTile(world, pos, TileEntitySign.class).ifPresent(t -> {
-			signContents = new ITextComponent[t.signText.length];
-			System.arraycopy(t.signText, 0, signContents, 0, signContents.length);
+			signContents = new ITextComponent[4];
+			for (int i = 0; i < 4; i++) {
+				signContents[i] = t.signText[i] == null ? new TextComponentString("") : t.signText[i];
+			}
 		});
+
 		if (state.getBlock() == Blocks.STANDING_SIGN) {
 			rotation = (state.getValue(BlockStandingSign.ROTATION) + turns * 4) % 16;
 		}
