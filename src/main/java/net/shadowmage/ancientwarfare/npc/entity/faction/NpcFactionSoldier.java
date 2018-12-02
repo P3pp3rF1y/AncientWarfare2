@@ -34,8 +34,8 @@ public class NpcFactionSoldier extends NpcFaction {
 		tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
 		tasks.addTask(0, new NpcAIDoor(this, true));
 		tasks.addTask(1, new NpcAIFollowPlayer(this));
-		tasks.addTask(2, new NpcAIMoveHome(this, 50F, 5F, 30F, 5F));
-		tasks.addTask(3, meleeAI);
+		tasks.addTask(2, meleeAI);
+		tasks.addTask(3, new NpcAIMoveHome(this, 50F, 5F, 30F, 5F));
 
 		tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
 		tasks.addTask(102, new NpcAIWander(this));

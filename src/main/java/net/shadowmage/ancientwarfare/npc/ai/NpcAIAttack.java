@@ -12,12 +12,12 @@ public abstract class NpcAIAttack<T extends NpcBase> extends NpcAI<T> {
 	}
 
 	@Override
-	public final boolean shouldExecute() {
+	public boolean shouldExecute() {
 		return npc.getIsAIEnabled() && npc.getAttackTarget() != null && npc.getAttackTarget().isEntityAlive();
 	}
 
 	@Override
-	public final boolean shouldContinueExecuting() {
+	public boolean shouldContinueExecuting() {
 		return npc.getIsAIEnabled() && target != null && target.isEntityAlive() && target.equals(npc.getAttackTarget());
 	}
 
