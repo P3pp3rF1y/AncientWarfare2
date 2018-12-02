@@ -126,14 +126,14 @@ public class ItemStructureBuilder extends ItemBaseStructure implements IItemKeyI
 
 	private void lockPosition(ItemStack stack, BlockPos pos, EntityPlayer player) {
 		NBTTagCompound tag = stack.getTagCompound();
+		//noinspection ConstantConditions
 		tag.setLong(LOCK_POS_TAG, pos.toLong());
 		tag.setByte("lockFacing", (byte) player.getHorizontalFacing().getHorizontalIndex());
 	}
 
 	private Optional<Tuple<BlockPos, EnumFacing>> getLockPosition(ItemStack stack) {
 		NBTTagCompound tag = stack.getTagCompound();
-		//noinspection ConstantConditions
-		return tag.hasKey(LOCK_POS_TAG) ? Optional.of(new Tuple<>(BlockPos.fromLong(tag.getLong(LOCK_POS_TAG)), EnumFacing.HORIZONTALS[tag.getByte("lockFacing")])) : Optional.empty();
+		return tag != null && tag.hasKey(LOCK_POS_TAG) ? Optional.of(new Tuple<>(BlockPos.fromLong(tag.getLong(LOCK_POS_TAG)), EnumFacing.HORIZONTALS[tag.getByte("lockFacing")])) : Optional.empty();
 	}
 
 	@Override
