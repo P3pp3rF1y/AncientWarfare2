@@ -633,18 +633,20 @@ public class InventoryTools {
 			}
 
 			public int compare(ItemStack o1, ItemStack o2) {
+				//noinspection ConstantConditions
 				int itemComparison = o1.getItem().getRegistryName().toString().compareTo(o2.getItem().getRegistryName().toString());
 				if (itemComparison != 0) {
 					return itemComparison;
 				}
 
 				if (o1.getItemDamage() != o2.getItemDamage()) {
-					return o1.getItemDamage() - o2.getItemDamage();
+					return Integer.compare(o1.getItemDamage(), o2.getItemDamage());
 				}
 
 				if (o1.hasTagCompound()) {
 					if (o2.hasTagCompound())
-						return o1.getTagCompound().hashCode() - o2.getTagCompound().hashCode();
+						//noinspection ConstantConditions
+						return Integer.compare(o1.getTagCompound().hashCode(), o2.getTagCompound().hashCode());
 					else
 						return 1;
 				} else if (o2.hasTagCompound()) {
@@ -686,7 +688,11 @@ public class InventoryTools {
 
 		@Override
 		public int compare(ItemStack o1, ItemStack o2) {
-			return sortType.compare(o1, o2) * sortOrder.mult;
+			int result = sortType.compare(o1, o2);
+			if (result == 0) {
+				return 0;
+			}
+			return (result > 0 ? 1 : -1) * sortOrder.mult;
 		}
 	}
 
