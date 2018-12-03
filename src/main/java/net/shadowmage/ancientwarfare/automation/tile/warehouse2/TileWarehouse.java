@@ -82,7 +82,9 @@ public class TileWarehouse extends TileWarehouseBase {
 	private void tryGetItem(EntityPlayer player, ItemStack filter, boolean shiftClick, boolean rightClick) {
 		int stackSize = 0;
 		if (!player.inventory.getItemStack().isEmpty()) {
-			stackSize = player.inventory.getItemStack().getCount();
+			if (shiftClick && rightClick) {
+				stackSize = player.inventory.getItemStack().getCount();
+			}
 			ItemStack comparableStack = player.inventory.getItemStack().copy();
 			comparableStack.setCount(filter.getCount());
 			if (!ItemStack.areItemStacksEqual(filter, comparableStack))
