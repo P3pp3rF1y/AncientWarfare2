@@ -370,7 +370,7 @@ public abstract class StructureValidator {
 	 * validates the target block at x,y,z is one of the input valid blocks
 	 */
 	private boolean validateBlockType(World world, int x, int y, int z, Predicate<IBlockState> isValidState) {
-		if (y < 0 || y >= world.getHeight()) {
+		if (y <= 0 || y >= world.getHeight()) {
 			return false;
 		}
 		IBlockState state = world.getBlockState(new BlockPos(x, y, z));
