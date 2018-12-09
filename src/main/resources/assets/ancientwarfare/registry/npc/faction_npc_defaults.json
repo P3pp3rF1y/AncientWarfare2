@@ -268,7 +268,7 @@
         "xoltec": {
             "soldier": {
                 "equipment": {
-                    "mainhand": "minecraft:stone_sword",
+                    "mainhand": "ancientwarfarenpc:stone_spear",
                     "offhand": "ancientwarfarenpc:gold_shield"
                 }
             },
