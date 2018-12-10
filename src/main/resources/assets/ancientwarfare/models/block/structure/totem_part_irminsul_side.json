@@ -1,0 +1,101 @@
+{
+    "credit": "Made by Silentine, with Blockbench",
+    "textures": {
+        "0": "ancientwarfare:blocks/structure/totem_part_irminsul_top",
+        "particle": "ancientwarfare:blocks/structure/totem_part_irminsul_top"
+    },
+    "elements": [
+        {
+            "name": "leftend01",
+            "from": [13, 7.5, 5],
+            "to": [16, 13.5, 11],
+            "faces": {
+                "north": {"uv": [10, 4.5, 10.75, 6], "texture": "#0"},
+                "east": {"uv": [10.75, 1.5, 12.25, 3], "texture": "#0"},
+                "south": {"uv": [10, 4.5, 10.75, 6], "texture": "#0"},
+                "west": {"uv": [10.75, 1.5, 12.25, 3], "texture": "#0"},
+                "up": {"uv": [10.75, 0, 11.5, 1.5], "texture": "#0"},
+                "down": {"uv": [10, 0, 10.75, 1.5], "texture": "#0"}
+            }
+        },
+        {
+            "name": "leftend02",
+            "from": [1, 9.5, 5.5],
+            "to": [13, 13.5, 10.5],
+            "rotation": {"angle": 22.5, "axis": "z", "origin": [13, 13.5, 8]},
+            "faces": {
+                "north": {"uv": [12.75, 7.25, 9.75, 8.25], "texture": "#0"},
+                "east": {"uv": [12.75, 7.25, 14, 8.25], "texture": "#0"},
+                "south": {"uv": [9.75, 7.25, 12.75, 8.25], "texture": "#0"},
+                "west": {"uv": [8.5, 7.25, 9.75, 8.25], "texture": "#0"},
+                "up": {"uv": [9.75, 6, 12.75, 7.25], "texture": "#0"},
+                "down": {"uv": [12.75, 6, 15.75, 7.25], "texture": "#0"}
+            }
+        },
+        {
+            "name": "leftend03",
+            "from": [1, 8, 6],
+            "to": [13, 10, 10],
+            "rotation": {"angle": 22.5, "axis": "z", "origin": [13, 13.5, 8]},
+            "faces": {
+                "north": {"uv": [9.5, 9.5, 12.5, 10], "texture": "#0"},
+                "east": {"uv": [12.5, 9.5, 13.5, 10], "texture": "#0"},
+                "south": {"uv": [9.5, 9.5, 12.5, 10], "texture": "#0"},
+                "west": {"uv": [8.5, 9.5, 9.5, 10], "texture": "#0"},
+                "up": {"uv": [9.5, 8.5, 12.5, 9.5], "texture": "#0"},
+                "down": {"uv": [12.5, 8.5, 15.5, 9.5], "texture": "#0"}
+            }
+        },
+        {
+            "name": "leftendtip",
+            "from": [0.94418, 6.24781, 4],
+            "to": [5.94418, 11.24781, 12],
+            "rotation": {"angle": 45, "axis": "z", "origin": [3.44418, 8.74781, 8]},
+            "faces": {
+                "north": {"uv": [2, 10.5, 3.25, 11.75], "rotation": 270, "texture": "#0"},
+                "east": {"uv": [2, 8.5, 3.25, 10.5], "rotation": 90, "texture": "#0"},
+                "south": {"uv": [3.25, 10.5, 2, 11.75], "rotation": 90, "texture": "#0"},
+                "west": {"uv": [3.25, 8.5, 4.5, 10.5], "rotation": 90, "texture": "#0"},
+                "up": {"uv": [3.25, 10.5, 5.25, 11.75], "rotation": 270, "texture": "#0"},
+                "down": {"uv": [0, 10.5, 2, 11.75], "rotation": 90, "texture": "#0"}
+            }
+        }
+    ],
+    "display": {
+        "thirdperson_righthand": {
+            "scale": [0.375, 0.375, 0.375],
+            "rotation": [75, 45, 0],
+            "translation": [0, 2.5, 0]
+        },
+        "fixed": {
+            "scale": [0.5, 0.5, 0.5],
+            "rotation": [0, 0, 0],
+            "translation": [0, 0, 0]
+        },
+        "gui": {
+            "scale": [0.625, 0.625, 0.625],
+            "rotation": [30, 225, 0],
+            "translation": [0, 0, 0]
+        },
+        "ground": {
+            "scale": [0.25, 0.25, 0.25],
+            "rotation": [0, 0, 0],
+            "translation": [0, 3, 0]
+        },
+        "firstperson_lefthand": {
+            "scale": [0.4, 0.4, 0.4],
+            "rotation": [0, 225, 0],
+            "translation": [0, 0, 0]
+        },
+        "firstperson_righthand": {
+            "scale": [0.4, 0.4, 0.4],
+            "rotation": [0, 45, 0],
+            "translation": [0, 0, 0]
+        },
+        "thirdperson_lefthand": {
+            "scale": [0.375, 0.375, 0.375],
+            "rotation": [75, 45, 0],
+            "translation": [0, 2.5, 0]
+        }
+    }
+}

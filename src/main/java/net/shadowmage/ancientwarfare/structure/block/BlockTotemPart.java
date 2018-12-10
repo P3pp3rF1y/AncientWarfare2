@@ -224,6 +224,49 @@ public class BlockTotemPart extends BlockBaseStructure {
 			public AxisAlignedBB getBoundingBox(EnumFacing facing) {
 				return facing.getAxis() == EnumFacing.Axis.X ? WING_AABB_X : WING_AABB_Z;
 			}
+		},
+		IRMINSUL_BASE(5) {
+			@Override
+			public AxisAlignedBB getBoundingBox(EnumFacing facing) {
+				return facing.getAxis() == EnumFacing.Axis.X ? IRMINSUL_AABB_X : IRMINSUL_AABB_Z;
+			}
+		},
+		IRMINSUL_MID(6) {
+			@Override
+			public AxisAlignedBB getBoundingBox(EnumFacing facing) {
+				return facing.getAxis() == EnumFacing.Axis.X ? IRMINSUL_AABB_X : IRMINSUL_AABB_Z;
+			}
+		},
+		IRMINSUL_TOP(7) {
+			@Override
+			public AxisAlignedBB getBoundingBox(EnumFacing facing) {
+				return facing.getAxis() == EnumFacing.Axis.X ? IRMINSUL_TOP_AABB_X : IRMINSUL_TOP_AABB_Z;
+			}
+
+			@Override
+			protected Set<BlockPos> getAdditionalPartPositions(BlockPos pos, EnumFacing facing) {
+				return ImmutableSet.of(pos.offset(facing.rotateY()), pos.offset(facing.rotateYCCW()));
+			}
+
+			@Override
+			public void placeAdditionalParts(World world, BlockPos pos, EnumFacing facing) {
+				placeSideBlock(world, pos, pos.offset(facing.rotateY()), facing.getOpposite());
+				placeSideBlock(world, pos, pos.offset(facing.rotateYCCW()), facing);
+			}
+
+			private void placeSideBlock(World world, BlockPos mainPos, BlockPos wingPos, EnumFacing wingFacing) {
+				world.setBlockState(wingPos, AWStructureBlocks.TOTEM_PART.getDefaultState().withProperty(FACING, wingFacing));
+				WorldTools.getTile(world, wingPos, TileTotemPart.class).ifPresent(t -> {
+					t.setVariant(Variant.IRMINSUL_SIDE);
+					t.setMainBlockPos(mainPos);
+				});
+			}
+		},
+		IRMINSUL_SIDE(8) {
+			@Override
+			public AxisAlignedBB getBoundingBox(EnumFacing facing) {
+				return facing.getAxis() == EnumFacing.Axis.X ? IRMINSUL_SIDE_AABB_X : IRMINSUL_SIDE_AABB_Z;
+			}
 		};
 
 		private int id;
@@ -235,6 +278,14 @@ public class BlockTotemPart extends BlockBaseStructure {
 		protected static final AxisAlignedBB DEFAULT_AABB = new AxisAlignedBB(3D / 16D, 0D, 3D / 16D, (16D - 3D) / 16D, 1D, (16D - 3D) / 16D);
 		protected static final AxisAlignedBB WING_AABB_X = new AxisAlignedBB(6D / 16D, 4D / 16D, 0D, (16D - 6D) / 16D, (16D - 1D) / 16D, 1D);
 		protected static final AxisAlignedBB WING_AABB_Z = new AxisAlignedBB(0D, 4D / 16D, 6D / 16D, 1D, (16D - 1D) / 16D, (16D - 6D) / 16D);
+		protected static final AxisAlignedBB IRMINSUL_AABB_X = new AxisAlignedBB(4D / 16D, 0D, 3D / 16D, (16D - 4D) / 16D, 1D, (16D - 3D) / 16D);
+		protected static final AxisAlignedBB IRMINSUL_AABB_Z = new AxisAlignedBB(3D / 16D, 0D, 4D / 16D, (16D - 3D) / 16D, 1D, (16D - 4D) / 16D);
+		protected static final AxisAlignedBB IRMINSUL_TOP_AABB_X = new AxisAlignedBB(4D / 16D, 0D, 0D, (16D - 4D) / 16D, (16D - 2D) / 16D, 1D);
+		protected static final AxisAlignedBB IRMINSUL_TOP_AABB_Z = new AxisAlignedBB(0D, 0D, 4D / 16D, 1D, (16D - 2D) / 16D, (16D - 4D) / 16D);
+		protected static final AxisAlignedBB IRMINSUL_SIDE_AABB_X = new AxisAlignedBB(4D / 16D, 3D / 16D, 0D, (16D - 4D) / 16D, (16D - 2D) / 16D, 1D);
+		protected static final AxisAlignedBB IRMINSUL_SIDE_AABB_Z = new AxisAlignedBB(0D, 3D / 16D, 4D / 16D, 1D, (16D - 2D) / 16D, (16D - 4D) / 16D);
+
+
 
 		public int getId() {
 			return id;

@@ -19,6 +19,18 @@
             },
             "wings": {
                 "model": "ancientwarfare:structure/totem_part_wings"
+            },
+            "irminsul_base": {
+                "model": "ancientwarfare:structure/totem_part_irminsul_base"
+            },
+            "irminsul_mid": {
+                "model": "ancientwarfare:structure/totem_part_irminsul_mid"
+            },
+            "irminsul_top": {
+                "model": "ancientwarfare:structure/totem_part_irminsul_top"
+            },
+            "irminsul_side": {
+                "model": "ancientwarfare:structure/totem_part_irminsul_side"
             }
         },
         "visible": {
