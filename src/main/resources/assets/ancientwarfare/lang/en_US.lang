@@ -192,6 +192,12 @@ tile.totem_part.top.name=Totem Top
 tile.totem_part.wings.name=Totem Wings
 tile.totem_part.mid.name=Totem Middle
 tile.totem_part.mid_alt.name=Totem Alternate Middle
+tile.totem_part.irminsul_base.name=Irminsul Base
+tile.totem_part.irminsul_mid.name=Irminsul Middle
+tile.totem_part.irminsul_top.name=Irminsul Top
+tile.totem_part.irminsul_side.name=Irminsul Side
+
+
 #npc
 tile.town_hall.name=Town Hall
 tile.recruiting_station.name=Recruiting Station
