@@ -6,6 +6,7 @@
             "generic.followRange": 16,
             "generic.attackDamage": 1
         },
+        "enabled": true,
         "experience_drop": 0,
         "can_swim": true,
         "can_break_doors": true,
@@ -992,6 +993,52 @@
                 "attributes": {
                     "generic.maxHealth": 20
                 }
+            }
+        },
+        "barbarian": {
+            "soldier": {
+                "equipment": {
+                    "mainhand": "minecraft:stone_axe"
+                }
+            },
+            "soldier.elite": {
+                "enabled": false
+            },
+            "archer.elite": {
+                "enabled": false
+            },
+            "cavalry": {
+                "enabled": false
+            },
+            "mounted_archer": {
+                "enabled": false
+            },
+            "leader": {
+                "equipment": {
+                    "mainhand": "minecraft:iron_axe",
+                    "offhand": "ancientwarfarenpc:wooden_shield"
+                }
+            },
+            "leader.elite": {
+                "enabled": false
+            },
+            "siege.engineer": {
+                "enabled": false
+            },
+            "priest": {
+                "enabled": false
+            },
+            "bard": {
+                "enabled": false
+            },
+            "trader": {
+                "enabled": false
+            },
+            "civilian.female": {
+                "enabled": false
+            },
+            "civilian.male": {
+                "enabled": false
             }
         }
     }

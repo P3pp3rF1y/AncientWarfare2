@@ -35,6 +35,10 @@ public class NpcDefaultsRegistry {
 	private static Map<String, Map<String, FactionNpcDefault>> factionNpcDefaults = new HashMap<>();
 	private static Map<String, OwnedNpcDefault> ownedNpcDefaults = new HashMap<>();
 
+	public static FactionNpcDefault getFactionNpcDefault(String faction, String npcType) {
+		return factionNpcDefaults.get(faction).get(npcType);
+	}
+
 	public static FactionNpcDefault getFactionNpcDefault(NpcFaction npc) {
 		return factionNpcDefaults.get(npc.getFaction()).get(npc.getNpcType());
 	}
@@ -166,7 +170,8 @@ public class NpcDefaultsRegistry {
 		private FactionNpcDefault parseDefaults(JsonObject json) {
 			JsonObject defaults = JsonUtils.getJsonObject(json, "defaults");
 			return new FactionNpcDefault(getAttributes(defaults), getExperienceDrop(defaults).orElse(0),
-					getCanSwim(defaults).orElse(true), getCanBreakDoors(defaults).orElse(true), getEquipment(defaults), getAdditionalAttributes(defaults));
+					getCanSwim(defaults).orElse(true), getCanBreakDoors(defaults).orElse(true), getEquipment(defaults),
+					getAdditionalAttributes(defaults), getEnabled(defaults).orElse(true));
 		}
 
 		private Map<IAdditionalAttribute<?>, Object> getAdditionalAttributes(JsonObject json) {
@@ -196,7 +201,12 @@ public class NpcDefaultsRegistry {
 			npcSubtypeDefault = getCanBreakDoors(data).map(npcSubtypeDefault::setCanBreakDoors).orElse(npcSubtypeDefault);
 			npcSubtypeDefault = npcSubtypeDefault.setEquipment(getEquipment(data));
 			npcSubtypeDefault = npcSubtypeDefault.setAdditionalAttributes(getAdditionalAttributes(data));
+			npcSubtypeDefault = getEnabled(data).map(npcSubtypeDefault::setEnabled).orElse(npcSubtypeDefault);
 			return npcSubtypeDefault;
+		}
+
+		private Optional<Boolean> getEnabled(JsonObject data) {
+			return data.has("enabled") ? Optional.of(JsonUtils.getBoolean(data, "enabled")) : Optional.empty();
 		}
 
 		private Map<String, FactionNpcDefault> parseSubtypes(JsonObject json, FactionNpcDefault overallDefault) {
