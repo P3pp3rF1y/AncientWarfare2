@@ -163,13 +163,14 @@
                     "generic.maxHealth": 30
                 },
                 "equipment": {
+                    "mainhand": "ancientwarfarenpc:iron_halberd",
                     "offhand": "ancientwarfarenpc:iron_shield"
                 },
                 "experience_drop": 30
             },
             "soldier": {
                 "equipment": {
-                    "mainhand": "ancientwarfarenpc:iron_halberd",
+                    "mainhand": "ancientwarfarenpc:iron_spear",
                     "offhand": "ancientwarfarenpc:iron_shield"
                 }
             },
