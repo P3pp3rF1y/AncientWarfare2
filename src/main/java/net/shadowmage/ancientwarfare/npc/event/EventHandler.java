@@ -57,8 +57,8 @@ public class EventHandler {
 		int targetTaskPriority = getHostileAIPriority(entity);
 		if (targetTaskPriority != -1) {
 			entity.targetTasks.addTask(targetTaskPriority, new EntityAINearestAttackableTarget<>(entity, NpcBase.class, 0, true, false,
-					e -> e != null && !e.isPassive()
-							&& (!(e instanceof NpcFaction) || FactionRegistry.getFaction(((NpcFaction) e).getFaction()).isTarget(entity))
+					e -> e != null
+							&& (!(e instanceof NpcFaction) || (!e.isPassive() && FactionRegistry.getFaction(((NpcFaction) e).getFaction()).isTarget(entity)))
 							&& (!(e instanceof NpcPlayerOwned) || NpcDefaultsRegistry.getOwnedNpcDefault((NpcPlayerOwned) e).isTarget(entity))
 			));
 		}
