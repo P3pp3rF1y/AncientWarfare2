@@ -823,7 +823,7 @@ entity.ancientwarfarenpc.faction.bard.name=Faction Bard
 entity.ancientwarfarenpc.faction.siege_engineer.name=Faction Siege Engineer
 
 #commands
-command.aw.structure.usage=/awstructure save [templateName] OR /awstructure delete <templateName> [true to remove the config file] OR /awstructure build <templateName> <x> <y> <z> [north:east:south:west] OR /awstructure reload
+command.aw.structure.usage=/awstructure save [templateName] OR /awstructure delete <templateName> [true to remove the config file] OR /awstructure build <templateName> <x> <y> <z> [north:east:south:west] OR /awstructure reload OR /awstructure scannersReloadMainSettings OR /awstructure scannersReexport
 command.aw.structure.not_found=Template could not be located: %s
 command.aw.structure.file_not_found=File could not be located: %s
 command.aw.structure.template_removed=Template was removed: %s

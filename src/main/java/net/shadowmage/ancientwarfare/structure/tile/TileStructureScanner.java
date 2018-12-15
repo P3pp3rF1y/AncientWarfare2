@@ -5,6 +5,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
@@ -25,8 +26,9 @@ import net.shadowmage.ancientwarfare.structure.template.scan.TemplateScanner;
 
 import javax.annotation.Nonnull;
 import java.util.Collections;
+import java.util.Optional;
 
-public class TileStructureScanner extends TileUpdatable implements IBlockBreakHandler {
+public class TileStructureScanner extends TileUpdatable implements IBlockBreakHandler, ITickable {
 	private static final String SCANNER_INVENTORY_TAG = "scannerInventory";
 	private static final String BOUNDS_ACTIVE_TAG = "boundsActive";
 	private static final String FACING_TAG = "facing";
@@ -127,7 +129,7 @@ public class TileStructureScanner extends TileUpdatable implements IBlockBreakHa
 			return super.getRenderBoundingBox();
 		}
 
-		return settings.getBoundingBox().grow(1, 0 , 1);
+		return settings.getBoundingBox().grow(1, 0, 1);
 	}
 
 	public EnumFacing getRenderFacing() {
@@ -147,9 +149,7 @@ public class TileStructureScanner extends TileUpdatable implements IBlockBreakHa
 			int turns = (6 - settings.face().getHorizontalIndex()) % 4;
 			StructureTemplate dummyTemplate = TemplateScanner.scan(world, Collections.emptySet(), settings.getMin(), settings.getMax(), settings.buildKey(), turns, "dummy");
 			if (isSameTemplateSizeAndOffset(template, dummyTemplate)) {
-				ItemStructureScanner.setStructureName(scanner, name);
-				ItemStructureScanner.setValidator(scanner, template.getValidationSettings());
-				ItemStructureScanner.setModDependencies(scanner, template.modDependencies);
+				setMainTemplateSettings(name, scanner, template);
 				//TODO fix incorrect y buildkey offset in structure builder and remove offesting buildkey up 1 block here
 				restoreTemplate(template, settings.getBoundingBox(), settings.buildKey().offset(EnumFacing.UP, 1), settings.face());
 				return;
@@ -157,6 +157,12 @@ public class TileStructureScanner extends TileUpdatable implements IBlockBreakHa
 		}
 
 		saveToScannerItemAndRestoreTemplate(name, scanner, template, settings);
+	}
+
+	private void setMainTemplateSettings(String name, ItemStack scanner, StructureTemplate template) {
+		ItemStructureScanner.setStructureName(scanner, name);
+		ItemStructureScanner.setValidator(scanner, template.getValidationSettings());
+		ItemStructureScanner.setModDependencies(scanner, template.modDependencies);
 	}
 
 	private void saveToScannerItemAndRestoreTemplate(String name, ItemStack scanner, StructureTemplate template, ItemStructureSettings settings) {
@@ -167,9 +173,7 @@ public class TileStructureScanner extends TileUpdatable implements IBlockBreakHa
 		settings.setName(name);
 		settings.setPos1(bb.min);
 		settings.setPos2(bb.max);
-		ItemStructureScanner.setStructureName(scanner, name);
-		ItemStructureScanner.setModDependencies(scanner, template.modDependencies);
-		ItemStructureScanner.setValidator(scanner, template.getValidationSettings());
+		setMainTemplateSettings(name, scanner, template);
 		ItemStructureSettings.setSettingsFor(scanner, settings);
 
 		//TODO fix incorrect y buildkey offset in structure builder remove this offset up 1
@@ -221,5 +225,40 @@ public class TileStructureScanner extends TileUpdatable implements IBlockBreakHa
 	@Override
 	public void onBlockBroken() {
 		InventoryTools.dropItemsInWorld(world, scannerInventory, pos);
+	}
+
+	@Override
+	public void update() {
+		ScannerCommandTracker.getAndRemoveNextCommand(pos).ifPresent(cmd -> {
+					switch (cmd) {
+						case RELOAD_MAIN_SETTINGS:
+							reloadMainSettings();
+							break;
+						case REEXPORT:
+							getScanner().ifPresent(scanner -> ItemStructureScanner.scanStructure(world, scanner));
+					}
+				}
+
+		);
+	}
+
+	private void reloadMainSettings() {
+		getScanner().ifPresent(scanner -> {
+					String name = ItemStructureScanner.getStructureName(scanner);
+					StructureTemplate template = StructureTemplateManager.INSTANCE.getTemplate(name);
+					if (template != null) {
+						setMainTemplateSettings(name, scanner, template);
+					}
+				}
+		);
+	}
+
+	private Optional<ItemStack> getScanner() {
+		ItemStack scanner = scannerInventory.getStackInSlot(0);
+
+		if (scanner.getItem() != AWStructureItems.STRUCTURE_SCANNER) {
+			return Optional.empty();
+		}
+		return Optional.of(scanner);
 	}
 }
