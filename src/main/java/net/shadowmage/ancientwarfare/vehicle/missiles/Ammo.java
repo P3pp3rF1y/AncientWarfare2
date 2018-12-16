@@ -8,6 +8,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.owner.Owner;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.vehicle.AncientWarfareVehicles;
@@ -16,7 +17,6 @@ import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 
 import javax.annotation.Nonnull;
 import java.util.Random;
-import java.util.UUID;
 
 public abstract class Ammo implements IAmmo {
 
@@ -208,16 +208,12 @@ public abstract class Ammo implements IAmmo {
 	public static boolean shouldEffectEntity(World world, Entity entity, MissileBase missile) {
 		if (!AWVehicleStatics.allowFriendlyFire && missile.shooterLiving instanceof NpcBase) {
 			@Nonnull NpcBase npc = ((NpcBase) missile.shooterLiving);
-			UUID otherId = null;
-			String otherName = "";
 			if (entity instanceof NpcBase) {
-				otherId = ((NpcBase) entity).getOwner().getUUID();
-				otherName = ((NpcBase) entity).getOwner().getName();
+				Owner targetNpcOwner = ((NpcBase) entity).getOwner();
+				return !npc.getOwner().isOwnerOrSameTeamOrFriend(world, targetNpcOwner.getUUID(), targetNpcOwner.getName());
 			} else if (entity instanceof EntityPlayer) {
-				otherId = entity.getUniqueID();
-				otherName = entity.getName();
+				return !npc.getOwner().isOwnerOrSameTeamOrFriend(world, entity.getUniqueID(), entity.getName());
 			}
-			return !npc.getOwner().isOwnerOrSameTeamOrFriend(world, otherId, otherName);
 		}
 		return true;
 	}

@@ -412,13 +412,13 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 		if (vehicle.canAimPitch()) {
 			Tuple<Float, Float> angles = Trig.getLaunchAngleToHit(tx, ty, tz, vehicle.localLaunchPower);
 			if (angles.getFirst().isNaN() || angles.getSecond().isNaN()) {
-			} else if (angles.getSecond() >= vehicle.currentTurretPitchMin && angles.getSecond() <= vehicle.currentTurretPitchMax) {
+			} else if (Trig.isAngleBetween(angles.getSecond(), vehicle.currentTurretPitchMin, vehicle.currentTurretPitchMax)) {
 				if (!MathUtils.epsilonEquals(this.clientTurretPitch, angles.getSecond())) {
 					this.clientTurretPitch = angles.getSecond();
 					updated = true;
 					updatePitch = true;
 				}
-			} else if (angles.getFirst() >= vehicle.currentTurretPitchMin && angles.getFirst() <= vehicle.currentTurretPitchMax) {
+			} else if (Trig.isAngleBetween(angles.getFirst(), vehicle.currentTurretPitchMin, vehicle.currentTurretPitchMax)) {
 				if (!MathUtils.epsilonEquals(clientTurretPitch, angles.getFirst())) {
 					this.clientTurretPitch = angles.getFirst();
 					updated = true;
@@ -486,13 +486,13 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 		if (vehicle.canAimPitch()) {
 			Tuple<Float, Float> angles = Trig.getLaunchAngleToHit(tx, ty, tz, vehicle.localLaunchPower);
 			if (angles.getFirst().isNaN() || angles.getSecond().isNaN()) {
-			} else if (angles.getSecond() >= vehicle.currentTurretPitchMin && angles.getSecond() <= vehicle.currentTurretPitchMax) {
+			} else if (Trig.isAngleBetween(angles.getSecond(), vehicle.currentTurretPitchMin, vehicle.currentTurretPitchMax)) {
 				if (!MathUtils.epsilonEquals(vehicle.localTurretDestPitch, angles.getSecond())) {
 					vehicle.localTurretDestPitch = angles.getSecond();
 					updated = true;
 					updatePitch = true;
 				}
-			} else if (angles.getFirst() >= vehicle.currentTurretPitchMin && angles.getFirst() <= vehicle.currentTurretPitchMax) {
+			} else if (Trig.isAngleBetween(angles.getFirst(), vehicle.currentTurretPitchMin, vehicle.currentTurretPitchMax)) {
 				if (!MathUtils.epsilonEquals(vehicle.localTurretDestPitch, angles.getFirst())) {
 					vehicle.localTurretDestPitch = angles.getFirst();
 					updated = true;

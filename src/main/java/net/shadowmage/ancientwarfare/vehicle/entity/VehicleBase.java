@@ -34,6 +34,7 @@ import net.shadowmage.ancientwarfare.core.util.MathUtils;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionSiegeEngineer;
 import net.shadowmage.ancientwarfare.vehicle.AncientWarfareVehicles;
 import net.shadowmage.ancientwarfare.vehicle.VehicleVarHelpers.DummyVehicleHelper;
 import net.shadowmage.ancientwarfare.vehicle.armors.IVehicleArmor;
@@ -227,10 +228,10 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		this.updateBaseStats();
 		this.resetCurrentStats();
 
-		if (this.localTurretPitch < this.currentTurretPitchMin) {
-			this.localTurretPitch = this.currentTurretPitchMin;
-		} else if (this.localTurretPitch > this.currentTurretPitchMax) {
-			this.localTurretPitch = this.currentTurretPitchMax;
+		if (this.localTurretPitch < currentTurretPitchMin) {
+			this.localTurretPitch = currentTurretPitchMin;
+		} else if (this.localTurretPitch > currentTurretPitchMax) {
+			this.localTurretPitch = currentTurretPitchMax;
 		}
 		this.localLaunchPower = this.firingHelper.getAdjustedMaxMissileVelocity();
 		if (!this.canAimRotate()) {
@@ -596,30 +597,43 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 
 	private void updateTurretPitch() {
 		float prevPitch = this.localTurretPitch;
-		if (localTurretPitch < currentTurretPitchMin) {
+		if (!Trig.isAngleBetween(localTurretPitch, currentTurretPitchMin, currentTurretPitchMax)) {
 			localTurretPitch = currentTurretPitchMin;
-		} else if (localTurretPitch > currentTurretPitchMax) {
-			localTurretPitch = currentTurretPitchMax;
 		}
-		if (localTurretDestPitch < currentTurretPitchMin) {
+
+		if (!Trig.isAngleBetween(localTurretDestPitch, currentTurretPitchMin, currentTurretPitchMax)) {
 			localTurretDestPitch = currentTurretPitchMin;
-		} else if (localTurretDestPitch > currentTurretPitchMax) {
-			localTurretDestPitch = currentTurretPitchMax;
 		}
+
 		if (!canAimPitch()) {
 			localTurretDestPitch = localTurretPitch;
 		}
-		if (localTurretPitch != localTurretDestPitch) {
-			if (Math.abs(localTurretDestPitch - localTurretPitch) < localTurretPitchInc) {
+
+		if (!Trig.anglesEqual(localTurretPitch, localTurretDestPitch)) {
+			if (Math.abs(Trig.getAngleDiffSigned(localTurretDestPitch, localTurretPitch)) < localTurretPitchInc) {
 				localTurretPitch = localTurretDestPitch;
-			}
-			if (localTurretPitch > localTurretDestPitch) {
-				localTurretPitch -= localTurretPitchInc;
-			} else if (localTurretPitch < localTurretDestPitch) {
-				localTurretPitch += localTurretPitchInc;
+			} else {
+				localTurretPitch += Trig.getAngleDiffSigned(localTurretPitch, localTurretDestPitch) > 0 ? localTurretPitchInc : -localTurretPitchInc;
 			}
 		}
 		this.currentTurretPitchSpeed = prevPitch - this.localTurretPitch;
+	}
+
+	@Override
+	protected void addPassenger(Entity passenger) {
+		super.addPassenger(passenger);
+		if (passenger instanceof NpcFactionSiegeEngineer) {
+			currentTurretPitchMin = vehicleType.getBasePitchMin() - 4 * 3;
+			currentTurretPitchMax = vehicleType.getBasePitchMax() + 4 * 3;
+		}
+	}
+
+	@Override
+	protected void removePassenger(Entity passenger) {
+		super.removePassenger(passenger);
+		if (passenger instanceof NpcFactionSiegeEngineer) {
+			upgradeHelper.updateUpgradeStats();
+		}
 	}
 
 	private void updateTurretRotation() {
