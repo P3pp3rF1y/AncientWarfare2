@@ -1,24 +1,3 @@
-/**
- * Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
- * This software is distributed under the terms of the GNU General Public License.
- * Please see COPYING for precise license information.
- * <p>
- * This file is part of Ancient Warfare.
- * <p>
- * Ancient Warfare is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * <p>
- * Ancient Warfare is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.vehicle.registry;
 
 import net.minecraft.item.Item;
@@ -55,6 +34,7 @@ import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class AmmoRegistry {
 
@@ -201,7 +181,7 @@ public class AmmoRegistry {
 		ammoTorpedo45 = registerAmmoType(new AmmoTorpedo(45), registry);
 	}
 
-	public static IAmmo registerAmmoType(IAmmo ammo, IForgeRegistry<Item> registry) {
+	private static IAmmo registerAmmoType(IAmmo ammo, IForgeRegistry<Item> registry) {
 		ammoInstances.put(ammo.getRegistryName(), ammo);
 		ItemAmmo item = new ItemAmmo(ammo.getRegistryName());
 		ammoItemInstances.put(ammo.getRegistryName(), item);
@@ -209,8 +189,8 @@ public class AmmoRegistry {
 		return ammo;
 	}
 
-	public static IAmmo getAmmoForStack(ItemStack stack) {
-		return ammoInstances.get(stack.getItem().getRegistryName());
+	public static Optional<IAmmo> getAmmoForStack(ItemStack stack) {
+		return Optional.ofNullable(ammoInstances.get(stack.getItem().getRegistryName()));
 	}
 
 	public static IAmmo getAmmo(ResourceLocation registryName) {

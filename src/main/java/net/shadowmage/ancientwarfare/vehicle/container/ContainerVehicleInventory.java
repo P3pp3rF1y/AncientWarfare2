@@ -1,24 +1,3 @@
-/**
- * Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
- * This software is distributed under the terms of the GNU General Public License.
- * Please see COPYING for precise license information.
- * <p>
- * This file is part of Ancient Warfare.
- * <p>
- * Ancient Warfare is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * <p>
- * Ancient Warfare is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.vehicle.container;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -34,7 +13,7 @@ import javax.annotation.Nonnull;
 
 public class ContainerVehicleInventory extends ContainerVehicle {
 
-	public Slot[] storageSlots;
+	private Slot[] storageSlots;
 
 	public int storageY;
 
@@ -111,7 +90,7 @@ public class ContainerVehicleInventory extends ContainerVehicle {
 		}
 	}
 
-	int currentTopStorageRow = 0;
+	private int currentTopStorageRow = 0;
 
 	public void nextRow() {
 		this.setCurrentTopStorageRow(currentTopStorageRow + 1);
@@ -121,7 +100,7 @@ public class ContainerVehicleInventory extends ContainerVehicle {
 		this.setCurrentTopStorageRow(currentTopStorageRow - 1);
 	}
 
-	public void setCurrentTopStorageRow(int row) {
+	private void setCurrentTopStorageRow(int row) {
 		if (row < 0 || row >= storageSlots.length / 9) {
 			return;
 		}
@@ -191,14 +170,13 @@ public class ContainerVehicleInventory extends ContainerVehicle {
 						return ItemStack.EMPTY;
 					}
 				}
-			} else if (slotClickedIndex >= 36 && slotClickedIndex < 36 + ammoSlots + upgradeSlots + armorSlots + storageSlots)//vehicle slots, merge to player inventory
-			{
-				if (!this.mergeItemStack(slotStack, 0, 36, true))//merge into player inventory
-				{
-					return ItemStack.EMPTY;
-				}
+			} else if (slotClickedIndex >= 36 && slotClickedIndex < 36 + ammoSlots + upgradeSlots + armorSlots + storageSlots
+					&& !this.mergeItemStack(slotStack, 0, 36, true)) {
+				return ItemStack.EMPTY;
 			}
 			theSlot.onSlotChanged();
+			vehicle.ammoHelper.updateAmmoCounts();
+			vehicle.upgradeHelper.updateUpgrades();
 
 			if (slotStack.getCount() == slotStackCopy.getCount()) {
 				return ItemStack.EMPTY;
@@ -213,8 +191,8 @@ public class ContainerVehicleInventory extends ContainerVehicle {
 	}
 
 	@Override
-	public boolean canInteractWith(EntityPlayer var1) {
-		return super.canInteractWith(var1) && var1 != null && var1.getDistance(vehicle) < 8.d;
+	public boolean canInteractWith(EntityPlayer player) {
+		return super.canInteractWith(player) && player != null && player.getDistance(vehicle) < 8.d;
 	}
 
 }
