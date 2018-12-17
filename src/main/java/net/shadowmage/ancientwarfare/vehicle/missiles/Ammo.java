@@ -6,7 +6,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.owner.Owner;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -16,11 +15,9 @@ import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 
 import javax.annotation.Nonnull;
-import java.util.Random;
+import javax.annotation.Nullable;
 
 public abstract class Ammo implements IAmmo {
-
-	private static Random rng = new Random();
 	int entityDamage;
 	int vehicleDamage;
 	private static final float GRAVITY_FACTOR = 9.81f * 0.05f * 0.05f;
@@ -30,7 +27,6 @@ public abstract class Ammo implements IAmmo {
 	boolean isArrow = false;
 	boolean isPersistent = false;
 	boolean isFlaming = false;
-	private boolean isPenetrating = false;
 	boolean isProximityAmmo = false;
 	boolean isCraftable = true;
 	boolean isEnabled = true;
@@ -153,7 +149,7 @@ public abstract class Ammo implements IAmmo {
 
 	@Override
 	public boolean isPenetrating() {
-		return isPenetrating;
+		return false;
 	}
 
 	@Override
@@ -186,7 +182,7 @@ public abstract class Ammo implements IAmmo {
 		return groundProximity;
 	}
 
-	protected void breakBlockAndDrop(World world, BlockPos pos) {
+	private void breakBlockAndDrop(World world, BlockPos pos) {
 		if (!AWVehicleStatics.blockDestruction) {
 			return;
 		}
@@ -233,36 +229,31 @@ public abstract class Ammo implements IAmmo {
 		}
 	}
 
-	protected void createExplosion(World world, MissileBase missile, float x, float y, float z, float power) {
+	protected void createExplosion(World world, @Nullable MissileBase missile, float x, float y, float z, float power) {
 		boolean destroyBlocks = AWVehicleStatics.blockDestruction;
 		boolean fires = AWVehicleStatics.blockFires;
 
-		Explosion explosion = new Explosion(world, missile, x, y, z, power, fires, destroyBlocks);
-
-		explosion.doExplosionA();
-
-		explosion.doExplosionB(true);
+		world.newExplosion(missile, x, y, z, power, fires, destroyBlocks);
 	}
 
 	protected void spawnGroundBurst(World world, float x, float y, float z, float maxVelocity, IAmmo type, int count, float minPitch, EnumFacing sideHit, Entity shooter) {
 		if (!world.isRemote) {
 			world.newExplosion(null, x, y, z, 0.25f, false, true);
 			createExplosion(world, null, x, y, z, 1.f);
-			MissileBase missile;
 			float randRange = 90 - minPitch;
-			float randVelocity = 0;
-			float pitch = 0;
-			float yaw = 0;
-			float velocity = 0;
 			if (type.hasSecondaryAmmo()) {
 				count = type.getSecondaryAmmoTypeCount();
 				type = type.getSecondaryAmmoType();
 			}
 			for (int i = 0; i < count; i++) {
+				float yaw;
+				float pitch;
+				float randVelocity;
+				float velocity;
 				if (sideHit.getAxis().isVertical()) {
-					pitch = 90 - (rng.nextFloat() * randRange);
-					yaw = rng.nextFloat() * 360.f;
-					randVelocity = rng.nextFloat();
+					pitch = 90 - (world.rand.nextFloat() * randRange);
+					yaw = world.rand.nextFloat() * 360.f;
+					randVelocity = world.rand.nextFloat();
 					randVelocity = randVelocity < 0.5f ? 0.5f : randVelocity;
 					velocity = maxVelocity * randVelocity;
 				} else {
@@ -274,16 +265,14 @@ public abstract class Ammo implements IAmmo {
 						minYaw = tmp;
 					}
 					float yawRange = maxYaw - minYaw;
-					pitch = 90 - (rng.nextFloat() * randRange);
-					yaw = minYaw + (rng.nextFloat() * yawRange);
-					randVelocity = rng.nextFloat();
+					pitch = 90 - (world.rand.nextFloat() * randRange);
+					yaw = minYaw + (world.rand.nextFloat() * yawRange);
+					randVelocity = world.rand.nextFloat();
 					randVelocity = randVelocity < 0.5f ? 0.5f : randVelocity;
 					velocity = maxVelocity * randVelocity;
 				}
-				missile = getMissileByType(type, world, x, y, z, yaw, pitch, velocity, shooter);
-				if (missile != null) {
-					world.spawnEntity(missile);
-				}
+				MissileBase missile = getMissileByType(type, world, x, y, z, yaw, pitch, velocity, shooter);
+				world.spawnEntity(missile);
 			}
 		}
 	}
