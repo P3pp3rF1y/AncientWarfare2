@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.vehicle.missiles;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
@@ -24,25 +25,13 @@ public class AmmoStoneShot extends Ammo {
 
 	@Override
 	public void onImpactWorld(World world, float x, float y, float z, MissileBase missile, RayTraceResult hit) {
-		if (ammoWeight >= 15 && !world.isRemote) {
-			int bx = (int) x;
-			int by = (int) y;
-			int bz = (int) z;
-			this.breakBlockAndDrop(world, bx, by, bz);
-			if (ammoWeight >= 30) {
-				this.breakBlockAndDrop(world, bx, by - 1, bz);
-				this.breakBlockAndDrop(world, bx - 1, by, bz);
-				this.breakBlockAndDrop(world, bx + 1, by, bz);
-				this.breakBlockAndDrop(world, bx, by, bz - 1);
-				this.breakBlockAndDrop(world, bx, by, bz + 1);
-			}
-			if (ammoWeight >= 45) {
-				this.breakBlockAndDrop(world, bx - 1, by, bz - 1);
-				this.breakBlockAndDrop(world, bx + 1, by, bz - 1);
-				this.breakBlockAndDrop(world, bx - 1, by, bz + 1);
-				this.breakBlockAndDrop(world, bx + 1, by, bz + 1);
-			}
-		}
+		BlockPos origin = new BlockPos(x, y, z);
+
+		float maxHardness = 5 + (ammoWeight * 0.2f + ammoWeight * 0.8f * world.rand.nextFloat()) * 0.6f;
+
+		breakAroundOnLevel(world, origin, origin, maxHardness);
+		breakAroundOnLevel(world, origin, origin.up(), maxHardness);
+		breakAroundOnLevel(world, origin, origin.down(), maxHardness);
 	}
 
 	@Override

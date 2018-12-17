@@ -186,11 +186,11 @@ public abstract class Ammo implements IAmmo {
 		return groundProximity;
 	}
 
-	protected void breakBlockAndDrop(World world, int x, int y, int z) {
+	protected void breakBlockAndDrop(World world, BlockPos pos) {
 		if (!AWVehicleStatics.blockDestruction) {
 			return;
 		}
-		BlockTools.breakBlockAndDrop(world, new BlockPos(x, y, z));
+		BlockTools.breakBlockAndDrop(world, pos);
 	}
 
 	protected void igniteBlock(World world, int x, int y, int z, int maxSearch) {
@@ -320,6 +320,25 @@ public abstract class Ammo implements IAmmo {
 
 	protected void spawnAirBurst(World world, float x, float y, float z, float maxVelocity, IAmmo type, int count, Entity shooter) {
 		spawnGroundBurst(world, x, y, z, maxVelocity, type, count, -90, EnumFacing.DOWN, shooter);
+	}
+
+	protected void breakAroundOnLevel(World world, BlockPos origin, BlockPos center, float maxHardness) {
+		affectBlock(world, origin, center, maxHardness);
+		affectBlock(world, origin, center.north(), maxHardness);
+		affectBlock(world, origin, center.east(), maxHardness);
+		affectBlock(world, origin, center.west(), maxHardness);
+		affectBlock(world, origin, center.south(), maxHardness);
+		affectBlock(world, origin, center.north().east(), maxHardness);
+		affectBlock(world, origin, center.east().south(), maxHardness);
+		affectBlock(world, origin, center.south().west(), maxHardness);
+		affectBlock(world, origin, center.west().north(), maxHardness);
+	}
+
+	private void affectBlock(World world, BlockPos origin, BlockPos pos, float maxHardness) {
+		double distanceAdjustedHardness = maxHardness - origin.getDistance(pos.getX(), pos.getY(), pos.getZ()) * 15;
+		if (distanceAdjustedHardness > 0 && distanceAdjustedHardness > world.getBlockState(pos).getBlockHardness(world, pos)) {
+			breakBlockAndDrop(world, pos);
+		}
 	}
 
 	private MissileBase getMissileByType(IAmmo type, World world, float x, float y, float z, float yaw, float pitch, float velocity, Entity shooter) {
