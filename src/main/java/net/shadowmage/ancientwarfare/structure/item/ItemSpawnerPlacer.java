@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -27,6 +28,7 @@ import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Optional;
 
 public class ItemSpawnerPlacer extends ItemBaseStructure {
 	private static final String SPAWNER_DATA_TAG = "spawnerData";
@@ -59,12 +61,11 @@ public class ItemSpawnerPlacer extends ItemBaseStructure {
 		if (stack.isEmpty()) {
 			return new ActionResult<>(EnumActionResult.PASS, stack);
 		}
-		RayTraceResult traceResult = rayTrace(player.world, player, false);
-		//noinspection ConstantConditions
-		if (traceResult != null && traceResult.typeOfHit == RayTraceResult.Type.BLOCK) {
+		Optional<BlockPos> placementPosition = getPlacementPosition(world, player);
+		if (placementPosition.isPresent()) {
 			//noinspection ConstantConditions
 			if (stack.hasTagCompound() && stack.getTagCompound().hasKey(SPAWNER_DATA_TAG)) {
-				BlockPos placePos = traceResult.getBlockPos().offset(traceResult.sideHit);
+				BlockPos placePos = placementPosition.get();
 				if (player.world.setBlockState(placePos, AWStructureBlocks.ADVANCED_SPAWNER.getDefaultState())) {
 					WorldTools.getTile(player.world, placePos, TileAdvancedSpawner.class)
 							.ifPresent(t -> {
@@ -80,6 +81,30 @@ public class ItemSpawnerPlacer extends ItemBaseStructure {
 			player.sendMessage(new TextComponentTranslation("guistrings.spawner.noblock"));
 		}
 		return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+	}
+
+	private Optional<BlockPos> getPlacementPosition(World world, EntityPlayer player) {
+		RayTraceResult traceResult = rayTrace(player.world, player, false);
+
+		//noinspection ConstantConditions
+		if (traceResult == null || traceResult.typeOfHit != RayTraceResult.Type.BLOCK) {
+			return Optional.empty();
+		}
+
+		BlockPos placementPos = traceResult.getBlockPos().offset(traceResult.sideHit);
+		if (!world.isAirBlock(placementPos)) {
+			EnumFacing offset;
+			if (traceResult.sideHit.getAxis().isHorizontal()) {
+				offset = player.rotationPitch < 0 ? EnumFacing.DOWN : EnumFacing.UP;
+			} else {
+				offset = player.getHorizontalFacing().getOpposite();
+			}
+			placementPos = placementPos.offset(offset);
+			if (!world.isAirBlock(placementPos)) {
+				return Optional.empty();
+			}
+		}
+		return Optional.of(placementPos);
 	}
 
 	@SubscribeEvent
