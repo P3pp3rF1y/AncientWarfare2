@@ -1,24 +1,3 @@
-/**
- * Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
- * This software is distributed under the terms of the GNU General Public License.
- * Please see COPYING for precise license information.
- * <p>
- * This file is part of Ancient Warfare.
- * <p>
- * Ancient Warfare is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * <p>
- * Ancient Warfare is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.vehicle.item;
 
 import codechicken.lib.model.ModelRegistryHelper;
@@ -28,11 +7,13 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -59,45 +40,73 @@ public class ItemSpawner extends ItemBaseVehicle {
 	}
 
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		ItemStack stack = player.getHeldItem(hand);
 
+		if (world.isRemote) {
+			return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+		}
+
 		if (stack.isEmpty()) {
-			return EnumActionResult.FAIL;
-		} else if (world.isRemote) {
-			return EnumActionResult.SUCCESS;
+			return new ActionResult<>(EnumActionResult.FAIL, stack);
 		}
 
 		//noinspection ConstantConditions
 		if (stack.hasTagCompound() && stack.getTagCompound().hasKey(SPAWN_DATA_TAG)) {
-			NBTTagCompound tag = stack.getTagCompound().getCompoundTag(SPAWN_DATA_TAG);
-			int level = tag.getInteger(LEVEL_TAG);
-			BlockPos offsetPos = pos.offset(facing);
-			Optional<VehicleBase> v = VehicleType.getVehicleForType(world, stack.getItemDamage(), level);
-			if (!v.isPresent()) {
-				return EnumActionResult.FAIL;
-			}
-			VehicleBase vehicle = v.get();
-			if (tag.hasKey(HEALTH_TAG)) {
-				vehicle.setHealth(tag.getFloat(HEALTH_TAG));
-			}
-			vehicle.setPosition(offsetPos.getX() + 0.5d, offsetPos.getY(), offsetPos.getZ() + 0.5d);
-			vehicle.prevRotationYaw = vehicle.rotationYaw = -player.rotationYaw + 180;
-			vehicle.localTurretDestRot = vehicle.localTurretRotation = vehicle.localTurretRotationHome = vehicle.rotationYaw;
-			if (AWVehicleStatics.useVehicleSetupTime) {
-				vehicle.setSetupState(true, 100);
-			}
-			world.spawnEntity(vehicle);
-			if (!player.capabilities.isCreativeMode) {
-				stack.shrink(1);
-				if (stack.getCount() <= 0) {
-					player.setHeldItem(hand, ItemStack.EMPTY);
-				}
-			}
-			return EnumActionResult.SUCCESS;
+			if (rayTraceAndSpawnVehicle(world, player, hand, stack))
+				return new ActionResult<>(EnumActionResult.FAIL, stack);
+			return new ActionResult<>(EnumActionResult.SUCCESS, stack);
 		}
 		AncientWarfareVehicles.LOG.error("Vehicle spawner item was missing NBT data, something may have corrupted this item");
-		return EnumActionResult.FAIL;
+		return new ActionResult<>(EnumActionResult.FAIL, stack);
+	}
+
+	private boolean rayTraceAndSpawnVehicle(World world, EntityPlayer player, EnumHand hand, ItemStack stack) {
+		//noinspection ConstantConditions
+		NBTTagCompound tag = stack.getTagCompound().getCompoundTag(SPAWN_DATA_TAG);
+		int level = tag.getInteger(LEVEL_TAG);
+		Optional<VehicleBase> v = VehicleType.getVehicleForType(world, stack.getItemDamage(), level);
+		if (!v.isPresent()) {
+			return true;
+		}
+		VehicleBase vehicle = v.get();
+		if (tag.hasKey(HEALTH_TAG)) {
+			vehicle.setHealth(tag.getFloat(HEALTH_TAG));
+		}
+		RayTraceResult rayTrace = rayTrace(world, player, false);
+		//noinspection ConstantConditions
+		if (rayTrace == null || rayTrace.typeOfHit != RayTraceResult.Type.BLOCK) {
+			return true;
+		}
+		spawnVehicle(world, player, vehicle, rayTrace);
+		updateSpawnerStackCount(player, hand, stack);
+		return false;
+	}
+
+	private void updateSpawnerStackCount(EntityPlayer player, EnumHand hand, ItemStack stack) {
+		if (!player.capabilities.isCreativeMode) {
+			stack.shrink(1);
+			if (stack.getCount() <= 0) {
+				player.setHeldItem(hand, ItemStack.EMPTY);
+			}
+		}
+	}
+
+	private void spawnVehicle(World world, EntityPlayer player, VehicleBase vehicle, RayTraceResult rayTrace) {
+		Vec3d hitVec = rayTrace.hitVec;
+		if (rayTrace.sideHit.getAxis().isHorizontal()) {
+			Vec3i dirVec = rayTrace.sideHit.getDirectionVec();
+			float halfWidth = vehicle.width / 2f;
+			hitVec = hitVec.addVector(dirVec.getX() * halfWidth, 0, dirVec.getZ() * halfWidth);
+		}
+
+		vehicle.setPosition(hitVec.x, hitVec.y, hitVec.z);
+		vehicle.prevRotationYaw = vehicle.rotationYaw = -player.rotationYaw + 180;
+		vehicle.localTurretDestRot = vehicle.localTurretRotation = vehicle.localTurretRotationHome = vehicle.rotationYaw;
+		if (AWVehicleStatics.useVehicleSetupTime) {
+			vehicle.setSetupState(true, 100);
+		}
+		world.spawnEntity(vehicle);
 	}
 
 	@Override
