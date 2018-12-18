@@ -6,6 +6,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.owner.Owner;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -236,44 +239,48 @@ public abstract class Ammo implements IAmmo {
 		world.newExplosion(missile, x, y, z, power, fires, destroyBlocks);
 	}
 
-	protected void spawnGroundBurst(World world, float x, float y, float z, float maxVelocity, IAmmo type, int count, float minPitch, EnumFacing sideHit, Entity shooter) {
-		if (!world.isRemote) {
-			world.newExplosion(null, x, y, z, 0.25f, false, true);
-			createExplosion(world, null, x, y, z, 1.f);
-			float randRange = 90 - minPitch;
-			if (type.hasSecondaryAmmo()) {
-				count = type.getSecondaryAmmoTypeCount();
-				type = type.getSecondaryAmmoType();
-			}
-			for (int i = 0; i < count; i++) {
-				float yaw;
-				float pitch;
-				float randVelocity;
-				float velocity;
-				if (sideHit.getAxis().isVertical()) {
-					pitch = 90 - (world.rand.nextFloat() * randRange);
-					yaw = world.rand.nextFloat() * 360.f;
-					randVelocity = world.rand.nextFloat();
-					randVelocity = randVelocity < 0.5f ? 0.5f : randVelocity;
-					velocity = maxVelocity * randVelocity;
-				} else {
-					float minYaw = getMinYaw(sideHit);
-					float maxYaw = getMaxYaw(sideHit);
-					if (minYaw > maxYaw) {
-						float tmp = maxYaw;
-						maxYaw = minYaw;
-						minYaw = tmp;
-					}
-					float yawRange = maxYaw - minYaw;
-					pitch = 90 - (world.rand.nextFloat() * randRange);
-					yaw = minYaw + (world.rand.nextFloat() * yawRange);
-					randVelocity = world.rand.nextFloat();
-					randVelocity = randVelocity < 0.5f ? 0.5f : randVelocity;
-					velocity = maxVelocity * randVelocity;
+	protected void spawnGroundBurst(World world, RayTraceResult hit, float maxVelocity, IAmmo type, int count, float minPitch, Entity shooter) {
+		Vec3i dirVec = hit.sideHit.getDirectionVec();
+		Vec3d hitVec = hit.hitVec.addVector(dirVec.getX() * 0.2f, dirVec.getY() * 0.2f, dirVec.getZ() * 0.2f);
+		spawnBurst(world, maxVelocity, type, count, minPitch, shooter, hit.sideHit, (float) hitVec.x, (float) hitVec.y, (float) hitVec.z);
+	}
+
+	private void spawnBurst(World world, float maxVelocity, IAmmo type, int count, float minPitch, Entity shooter, EnumFacing sideHit, float x, float y, float z) {
+		world.newExplosion(null, x, y, z, 0.25f, false, true);
+		createExplosion(world, null, x, y, z, 1.f);
+		float randRange = 90 - minPitch;
+		if (type.hasSecondaryAmmo()) {
+			count = type.getSecondaryAmmoTypeCount();
+			type = type.getSecondaryAmmoType();
+		}
+		for (int i = 0; i < count; i++) {
+			float yaw;
+			float pitch;
+			float randVelocity;
+			float velocity;
+			if (sideHit.getAxis().isVertical()) {
+				pitch = 90 - (world.rand.nextFloat() * randRange);
+				yaw = world.rand.nextFloat() * 360.f;
+				randVelocity = world.rand.nextFloat();
+				randVelocity = randVelocity < 0.5f ? 0.5f : randVelocity;
+				velocity = maxVelocity * randVelocity;
+			} else {
+				float minYaw = getMinYaw(sideHit);
+				float maxYaw = getMaxYaw(sideHit);
+				if (minYaw > maxYaw) {
+					float tmp = maxYaw;
+					maxYaw = minYaw;
+					minYaw = tmp;
 				}
-				MissileBase missile = getMissileByType(type, world, x, y, z, yaw, pitch, velocity, shooter);
-				world.spawnEntity(missile);
+				float yawRange = maxYaw - minYaw;
+				pitch = 90 - (world.rand.nextFloat() * randRange);
+				yaw = minYaw + (world.rand.nextFloat() * yawRange);
+				randVelocity = world.rand.nextFloat();
+				randVelocity = randVelocity < 0.5f ? 0.5f : randVelocity;
+				velocity = maxVelocity * randVelocity;
 			}
+			MissileBase missile = getMissileByType(type, world, x, y, z, yaw, pitch, velocity, shooter);
+			world.spawnEntity(missile);
 		}
 	}
 
@@ -308,7 +315,7 @@ public abstract class Ammo implements IAmmo {
 	}
 
 	protected void spawnAirBurst(World world, float x, float y, float z, float maxVelocity, IAmmo type, int count, Entity shooter) {
-		spawnGroundBurst(world, x, y, z, maxVelocity, type, count, -90, EnumFacing.DOWN, shooter);
+		spawnBurst(world, maxVelocity, type, count, -90, shooter, EnumFacing.DOWN, x, y, z);
 	}
 
 	protected void breakAroundOnLevel(World world, BlockPos origin, BlockPos center, float maxHardness) {

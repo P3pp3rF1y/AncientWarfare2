@@ -26,7 +26,7 @@ public class AWVehicleStatics extends ModConfiguration {
 	public static boolean oversizeAmmoEnabled = true;
 
 	public static boolean soldiersUseAmmo = false;
-	public static boolean adjustMissilesForAccuracy = false;
+	public static boolean adjustMissilesForAccuracy = true;
 	public static boolean vehiclesTearUpGrass = true;
 	public static boolean blockDestruction = true;
 	public static boolean blockFires = true;

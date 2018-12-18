@@ -12,8 +12,8 @@ public class AmmoBallistaBoltIron extends Ammo {
 		super("ammo_ballista_bolt_iron");
 		this.ammoWeight = 2.f;
 		this.renderScale = 0.3f;
-		this.vehicleDamage = 25;
-		this.entityDamage = 25;
+		this.vehicleDamage = 30;
+		this.entityDamage = 30;
 		this.isArrow = true;
 		this.isRocket = false;
 		this.isPersistent = true;
@@ -30,7 +30,6 @@ public class AmmoBallistaBoltIron extends Ammo {
 	public void onImpactEntity(World world, Entity ent, float x, float y, float z, MissileBase missile) {
 		if (!world.isRemote) {
 			ent.attackEntityFrom(DamageType.causeEntityMissileDamage(missile.shooterLiving, false, false), this.getEntityDamage());
-			ent.setFire(4);
 		}
 	}
 
