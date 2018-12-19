@@ -249,6 +249,7 @@ public class TileStructureScanner extends TileUpdatable implements IBlockBreakHa
 					if (template != null) {
 						setMainTemplateSettings(name, scanner, template);
 					}
+			markDirty();
 				}
 		);
 	}
