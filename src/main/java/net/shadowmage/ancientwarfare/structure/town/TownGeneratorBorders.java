@@ -13,6 +13,8 @@ import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.worldgen.WorldStructureGenerator;
 
+import java.util.Optional;
+
 public class TownGeneratorBorders {
 	private TownGeneratorBorders() {}
 
@@ -103,12 +105,12 @@ public class TownGeneratorBorders {
 	private static void handleClearing(World world, BlockPos clearPos) {
 		IBlockState state = world.getBlockState(clearPos);
 		if (state.getMaterial() != Material.AIR) {
-			ITreeScanner treeScanner = TreeFarmRegistry.getTreeScanner(state);
-			if (!treeScanner.matches(state)) {
+			Optional<ITreeScanner> treeScanner = TreeFarmRegistry.getRegisteredTreeScanner(state);
+			if (!treeScanner.isPresent()) {
 				world.setBlockToAir(clearPos);
 				return;
 			}
-			ITree tree = treeScanner.scanTree(world, clearPos);
+			ITree tree = treeScanner.get().scanTree(world, clearPos);
 			tree.getLeafPositions().forEach(world::setBlockToAir);
 			tree.getTrunkPositions().forEach(world::setBlockToAir);
 		}

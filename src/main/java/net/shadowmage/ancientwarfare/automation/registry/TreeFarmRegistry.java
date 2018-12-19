@@ -35,7 +35,7 @@ import java.util.function.Predicate;
 public class TreeFarmRegistry {
 	private TreeFarmRegistry() {}
 
-	public static final ITreeScanner DEFAULT_TREE_SCANNER =
+	private static final ITreeScanner DEFAULT_TREE_SCANNER =
 			new DefaultTreeScanner(st -> st.getMaterial() == Material.WOOD && st.getBlock() != AWAutomationBlocks.TREE_FARM
 					, sl -> sl.getMaterial() == Material.LEAVES);
 
@@ -56,12 +56,15 @@ public class TreeFarmRegistry {
 	}
 
 	static {
-		registerTreeScanner(DEFAULT_TREE_SCANNER);
 		registerTreeScanner(new ChorusScanner());
 	}
 
 	public static ITreeScanner getTreeScanner(IBlockState state) {
-		return treeScanners.stream().filter(ts -> ts.matches(state)).findFirst().orElse(DEFAULT_TREE_SCANNER);
+		return getRegisteredTreeScanner(state).orElse(DEFAULT_TREE_SCANNER);
+	}
+
+	public static Optional<ITreeScanner> getRegisteredTreeScanner(IBlockState state) {
+		return treeScanners.stream().filter(ts -> ts.matches(state)).findFirst();
 	}
 
 	public static Optional<ISapling> getSapling(ItemStack stack) {

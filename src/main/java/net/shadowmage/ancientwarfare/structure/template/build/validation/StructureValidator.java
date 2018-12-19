@@ -27,6 +27,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
@@ -127,12 +128,12 @@ public abstract class StructureValidator {
 
 		IBlockState state = world.getBlockState(pos);
 		if (state.getMaterial() != Material.AIR) {
-			ITreeScanner treeScanner = TreeFarmRegistry.getTreeScanner(state);
-			if (!treeScanner.matches(state)) {
+			Optional<ITreeScanner> treeScanner = TreeFarmRegistry.getRegisteredTreeScanner(state);
+			if (!treeScanner.isPresent()) {
 				world.setBlockToAir(pos);
 				return;
 			}
-			ITree tree = treeScanner.scanTree(world, pos);
+			ITree tree = treeScanner.get().scanTree(world, pos);
 			tree.getLeafPositions().forEach(world::setBlockToAir);
 			tree.getTrunkPositions().forEach(world::setBlockToAir);
 		}
