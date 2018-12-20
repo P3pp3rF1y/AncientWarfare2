@@ -15,6 +15,8 @@ import net.shadowmage.ancientwarfare.core.tile.IBlockBreakHandler;
 import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
+import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureItems;
 import net.shadowmage.ancientwarfare.structure.item.ItemStructureScanner;
 import net.shadowmage.ancientwarfare.structure.item.ItemStructureSettings;
@@ -32,6 +34,8 @@ public class TileStructureScanner extends TileUpdatable implements IBlockBreakHa
 	private static final String SCANNER_INVENTORY_TAG = "scannerInventory";
 	private static final String BOUNDS_ACTIVE_TAG = "boundsActive";
 	private static final String FACING_TAG = "facing";
+	private static final int MAX_COMMAND_EXECUTION_ERRORS = 5;
+
 	private ItemStackHandler scannerInventory = new ItemStackHandler(1) {
 		@Nonnull
 		@Override
@@ -52,6 +56,7 @@ public class TileStructureScanner extends TileUpdatable implements IBlockBreakHa
 	private boolean boundsActive = true;
 	private EnumFacing facing = EnumFacing.NORTH;
 	private EnumFacing renderFacing = EnumFacing.NORTH;
+	private int commandExecutionErrorCount = 0;
 
 	public ItemStackHandler getScannerInventory() {
 		return scannerInventory;
@@ -229,17 +234,26 @@ public class TileStructureScanner extends TileUpdatable implements IBlockBreakHa
 
 	@Override
 	public void update() {
-		ScannerCommandTracker.getAndRemoveNextCommand(pos).ifPresent(cmd -> {
-					switch (cmd) {
-						case RELOAD_MAIN_SETTINGS:
-							reloadMainSettings();
-							break;
-						case REEXPORT:
-							getScanner().ifPresent(scanner -> ItemStructureScanner.scanStructure(world, scanner));
-					}
-				}
+		if (AWStructureStatics.processScannerCommands || commandExecutionErrorCount > MAX_COMMAND_EXECUTION_ERRORS) {
+			BlockPos logPos = pos.toImmutable();
+			try {
+				ScannerCommandTracker.getAndRemoveNextCommand(pos).ifPresent(cmd -> {
+							switch (cmd) {
+								case RELOAD_MAIN_SETTINGS:
+									reloadMainSettings();
+									break;
+								case REEXPORT:
+									getScanner().ifPresent(scanner -> ItemStructureScanner.scanStructure(world, scanner));
+							}
+						}
 
-		);
+				);
+			}
+			catch (Exception e) {
+				AncientWarfareStructure.LOG.error("Error processing command for scanner at {}, position before processing {}", pos.toString(), logPos.toString(), e);
+				commandExecutionErrorCount++;
+			}
+		}
 	}
 
 	private void reloadMainSettings() {

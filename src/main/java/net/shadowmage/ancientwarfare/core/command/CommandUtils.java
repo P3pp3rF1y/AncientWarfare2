@@ -1,9 +1,7 @@
 package net.shadowmage.ancientwarfare.core.command;
 
-import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -27,21 +25,17 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
-public class CommandUtils extends CommandBase {
-
-	private final Map<String, ISubCommand> subCommands = new HashMap<>();
-
+public class CommandUtils extends ParentCommand {
 	public CommandUtils() {
-		subCommands.put("exportentities", new EntityListCommand());
-		subCommands.put("exportbiomes", new BiomeListCommand());
-		subCommands.put("exportblocks", new BlockListCommand());
-		subCommands.put("reloadmanual", new ReloadManualCommand());
-		subCommands.put("exportloottables", new LootTableListCommand());
+		registerSubCommand(new EntityListCommand());
+		registerSubCommand(new EntityListCommand());
+		registerSubCommand(new BiomeListCommand());
+		registerSubCommand(new BlockListCommand());
+		registerSubCommand(new ReloadManualCommand());
+		registerSubCommand(new LootTableListCommand());
 	}
 
 	@Override
@@ -52,21 +46,6 @@ public class CommandUtils extends CommandBase {
 	@Override
 	public String getUsage(ICommandSender sender) {
 		return "command.aw.utils.usage";
-	}
-
-	@Override
-	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-		if (args.length > 2 || args.length == 0 || !subCommands.containsKey(args[0])) {
-			throw new WrongUsageException(getUsage(sender));
-		}
-
-		String[] subArgs = new String[args.length - 1];
-		System.arraycopy(args, 1, subArgs, 0, args.length - 1);
-		subCommands.get(args[0]).execute(server, sender, subArgs);
-	}
-
-	private interface ISubCommand {
-		void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException;
 	}
 
 	private abstract static class ExportCommand implements ISubCommand {
@@ -117,6 +96,11 @@ public class CommandUtils extends CommandBase {
 		private static void notifyPlayer(ICommandSender sender, File exportFile) {
 			sender.sendMessage(new TextComponentString("File exported to " + exportFile.getAbsoluteFile()));
 		}
+
+		@Override
+		public int getMaxArgs() {
+			return 1;
+		}
 	}
 
 	private static class EntityListCommand extends ExportCommand {
@@ -136,6 +120,11 @@ public class CommandUtils extends CommandBase {
 			return ForgeRegistries.ENTITIES.getValuesCollection().stream()
 					.map(e -> String.join(",", e.getRegistryName().toString(), e.getName(), e.getEntityClass().toString()))
 					.sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+		}
+
+		@Override
+		public String getName() {
+			return "exportentities";
 		}
 	}
 
@@ -172,6 +161,11 @@ public class CommandUtils extends CommandBase {
 			}
 			return "";
 		}
+
+		@Override
+		public String getName() {
+			return "exportbiomes";
+		}
 	}
 
 	private class BlockListCommand extends ExportCommand {
@@ -198,15 +192,29 @@ public class CommandUtils extends CommandBase {
 					)).sorted(Comparator.naturalOrder()).collect(Collectors.toList());
 		}
 
+		@Override
+		public String getName() {
+			return "exportblocks";
+		}
 	}
 
 	private class ReloadManualCommand implements ISubCommand {
+		@Override
+		public String getName() {
+			return "reloadmanual";
+		}
+
 		@Override
 		public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 			Entity senderEntity = sender.getCommandSenderEntity();
 			if (senderEntity instanceof EntityPlayer) {
 				NetworkHandler.sendToPlayer((EntityPlayerMP) senderEntity, new PacketManualReload());
 			}
+		}
+
+		@Override
+		public int getMaxArgs() {
+			return 1;
 		}
 	}
 
@@ -224,6 +232,11 @@ public class CommandUtils extends CommandBase {
 		@Override
 		protected List<String> getLines() {
 			return LootTableList.getAll().stream().map(ResourceLocation::toString).collect(Collectors.toList());
+		}
+
+		@Override
+		public String getName() {
+			return "exportloottables";
 		}
 	}
 }
