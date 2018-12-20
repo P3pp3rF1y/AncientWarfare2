@@ -84,7 +84,7 @@ public class ItemSpawnerPlacer extends ItemBaseStructure {
 	}
 
 	private Optional<BlockPos> getPlacementPosition(World world, EntityPlayer player) {
-		RayTraceResult traceResult = rayTrace(player.world, player, false);
+		RayTraceResult traceResult = rayTrace(player.world, player, !player.isSneaking());
 
 		//noinspection ConstantConditions
 		if (traceResult == null || traceResult.typeOfHit != RayTraceResult.Type.BLOCK) {
@@ -92,7 +92,7 @@ public class ItemSpawnerPlacer extends ItemBaseStructure {
 		}
 
 		BlockPos placementPos = traceResult.getBlockPos().offset(traceResult.sideHit);
-		if (!world.isAirBlock(placementPos)) {
+		if (!world.getBlockState(placementPos).getBlock().isReplaceable(world, placementPos)) {
 			EnumFacing offset;
 			if (traceResult.sideHit.getAxis().isHorizontal()) {
 				offset = player.rotationPitch < 0 ? EnumFacing.DOWN : EnumFacing.UP;
@@ -100,7 +100,7 @@ public class ItemSpawnerPlacer extends ItemBaseStructure {
 				offset = player.getHorizontalFacing().getOpposite();
 			}
 			placementPos = placementPos.offset(offset);
-			if (!world.isAirBlock(placementPos)) {
+			if (!world.getBlockState(placementPos).getBlock().isReplaceable(world, placementPos)) {
 				return Optional.empty();
 			}
 		}
