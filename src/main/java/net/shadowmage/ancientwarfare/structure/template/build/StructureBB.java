@@ -212,4 +212,10 @@ public class StructureBB extends Zone {
 	public StructureBB copy() {
 		return new StructureBB(min, max);
 	}
+
+	public double getDistanceTo(StructureBB bb) {
+		int xDistance = Math.abs(getCenterX() - bb.getCenterX());
+		int zDistance = Math.abs(getCenterZ() - bb.getCenterZ());
+		return Math.sqrt(xDistance * xDistance + zDistance * zDistance);
+	}
 }

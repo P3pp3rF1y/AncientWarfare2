@@ -28,6 +28,8 @@ public class WorldStructureGenerator implements IWorldGenerator {
 
 	public static final WorldStructureGenerator INSTANCE = new WorldStructureGenerator();
 
+	private static final int MAX_DISTANCE_WITHIN_CLUSTER = 150;
+
 	private final Random rng;
 
 	private WorldStructureGenerator() {
@@ -139,12 +141,8 @@ public class WorldStructureGenerator implements IWorldGenerator {
 		int zs = bb.getZSize();
 		int size = ((xs > zs ? xs : zs) / 16) + 3;
 		if (map != null) {
-			Collection<StructureEntry> bbCheckList = map.getEntriesNear(world, pos.getX(), pos.getZ(), size, true, new ArrayList<>());
-			for (StructureEntry entry : bbCheckList) {
-				if (bb.crossWith(entry.getBB())) {
-					return false;
-				}
-			}
+			if (!checkOtherStructureCrossAndCloseness(world, pos, map, bb, size))
+				return true;
 		}
 
 		TownMap townMap = AWGameData.INSTANCE.getPerWorldData(world, TownMap.class);
@@ -158,6 +156,24 @@ public class WorldStructureGenerator implements IWorldGenerator {
 			return true;
 		}
 		return false;
+	}
+
+	private boolean checkOtherStructureCrossAndCloseness(World world, BlockPos pos, StructureMap map, StructureBB bb, int size) {
+		Collection<StructureEntry> bbCheckList = map.getEntriesNear(world, pos.getX(), pos.getZ(), size, true, new ArrayList<>());
+		double maxDistance = 0;
+		for (StructureEntry entry : bbCheckList) {
+			if (bb.crossWith(entry.getBB())) {
+				return false;
+			}
+			double distance = bb.getDistanceTo(entry.getBB());
+			if (distance < MAX_DISTANCE_WITHIN_CLUSTER && distance > maxDistance) {
+				maxDistance = distance;
+			}
+		}
+		if (maxDistance > 30 && world.rand.nextFloat() * (MAX_DISTANCE_WITHIN_CLUSTER - maxDistance) > 30) {
+			return false;
+		}
+		return true;
 	}
 
 	private void generateStructureAt(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureMap map) {
