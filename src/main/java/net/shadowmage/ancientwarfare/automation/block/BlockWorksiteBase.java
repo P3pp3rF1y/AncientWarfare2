@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,6 +11,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteBase;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
@@ -24,6 +26,8 @@ import java.util.function.Supplier;
 import static net.shadowmage.ancientwarfare.core.render.property.CoreProperties.FACING;
 
 public class BlockWorksiteBase extends BlockBaseAutomation implements IRotatableBlock {
+	private static final PropertyBool ACTIVE = PropertyBool.create("active");
+
 	private Supplier<TileEntity> tileFactory;
 
 	public BlockWorksiteBase(String regName) {
@@ -33,7 +37,7 @@ public class BlockWorksiteBase extends BlockBaseAutomation implements IRotatable
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, FACING);
+		return new BlockStateContainer(this, FACING, ACTIVE);
 	}
 
 	@Override
@@ -43,7 +47,8 @@ public class BlockWorksiteBase extends BlockBaseAutomation implements IRotatable
 
 	@Override
 	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
-		return WorldTools.getTile(world, pos, IRotatableTile.class).map(t -> state.withProperty(FACING, t.getPrimaryFacing())).orElse(state);
+		return WorldTools.getTile(world, pos, IRotatableTile.class).map(t -> state.withProperty(FACING, t.getPrimaryFacing())
+				.withProperty(ACTIVE, t instanceof TileWorksiteBase && ((TileWorksiteBase) t).isActive())).orElse(state);
 	}
 
 	public BlockWorksiteBase setTileFactory(Supplier<TileEntity> renderFactory) {

@@ -39,6 +39,7 @@ public abstract class TileWorksiteBase extends TileUpdatable
 		implements ITickable, IWorkSite, IInteractableTile, IOwnable, IRotatableTile, IEnergyProvider, IEnergyReceiver {
 	private static final String UPGRADES_TAG = "upgrades";
 	private static final String ORIENTATION_TAG = "orientation";
+	private static final String ACTIVE_TAG = "active";
 
 	private Owner owner = Owner.EMPTY;
 
@@ -51,6 +52,9 @@ public abstract class TileWorksiteBase extends TileUpdatable
 	private final TorqueCell torqueCell;
 
 	private int workRetryDelay = 20;
+
+	private boolean active = false;
+	private int timeSinceLastActiveCheck = 0;
 
 	public TileWorksiteBase() {
 		torqueCell = new TorqueCell(32, 0, AWCoreStatics.energyPerWorkUnit * 3, 1);
@@ -93,6 +97,10 @@ public abstract class TileWorksiteBase extends TileUpdatable
 		return (int) (AWAutomationStatics.torqueToRf * addTorque(from, (double) maxReceive * AWAutomationStatics.rfToTorque));
 	}
 	//************************************** UPGRADE HANDLING METHODS ***************************************//
+
+	public boolean isActive() {
+		return active;
+	}
 
 	@Override
 	public final Set<WorksiteUpgrade> getUpgrades() {
@@ -156,6 +164,15 @@ public abstract class TileWorksiteBase extends TileUpdatable
 			world.profiler.startSection("Check For Work");
 			Optional<IWorksiteAction> nextAction = getNextAction();
 			boolean hasWork = nextAction.isPresent() && nextAction.get().getEnergyConsumed(efficiencyBonusFactor) <= getTorqueStored(null);
+			if (timeSinceLastActiveCheck < 0) {
+				if (active != checkIfActive()) {
+					active = checkIfActive();
+					BlockTools.notifyBlockUpdate(this);
+				}
+				timeSinceLastActiveCheck = 60;
+			} else {
+				timeSinceLastActiveCheck--;
+			}
 			if (hasWork) {
 				world.profiler.endStartSection("Process Work");
 				IWorksiteAction action = nextAction.get();
@@ -171,6 +188,10 @@ public abstract class TileWorksiteBase extends TileUpdatable
 		world.profiler.startSection("WorksiteBaseUpdate");
 		updateWorksite();
 		world.profiler.endSection();
+	}
+
+	private boolean checkIfActive() {
+		return getTorqueStored(null) > 0;
 	}
 
 	private void updateEfficiency() {
@@ -357,6 +378,7 @@ public abstract class TileWorksiteBase extends TileUpdatable
 		}
 		tag.setIntArray(UPGRADES_TAG, ugs);
 		tag.setInteger(ORIENTATION_TAG, orientation.ordinal());
+		tag.setBoolean(ACTIVE_TAG, active);
 		owner.serializeToNBT(tag);
 	}
 
@@ -372,7 +394,8 @@ public abstract class TileWorksiteBase extends TileUpdatable
 		}
 		updateEfficiency();
 		orientation = EnumFacing.values()[tag.getInteger(ORIENTATION_TAG)];
+		active = tag.getBoolean(ACTIVE_TAG);
 		owner = Owner.deserializeFromNBT(tag);
-		markDirty();
+		BlockTools.notifyBlockUpdate(this);
 	}
 }

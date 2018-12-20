@@ -28,6 +28,14 @@
             "east": {
                 "y": 90
             }
+        },
+        "active": {
+            "true": {},
+            "false": {
+                "textures": {
+                    "south": "ancientwarfare:blocks/automation/fruit_farm_rear_inactive"
+                }
+            }
         }
     }
 }
