@@ -1,0 +1,152 @@
+# Ancient Warfare Structure Template File
+# Auto-generated structure template file. created on: 11/16/2018 at: 6:25:45
+# Lines beginning with # denote comments
+
+header:
+version=2.7
+name=BrigandHighwayMan
+mods=
+size=4,15,4
+offset=1,5,3
+:endheader
+
+#### VALIDATION ####
+validation:
+type=ground
+survival=false
+worldGenEnabled=true
+unique=false
+preserveBlocks=false
+selectionWeight=30
+clusterValue=5
+minDuplicateDistance=500
+dimensionWhiteList=false
+dimensionList=
+biomeWhiteList=true
+biomeList=biomesoplenty:meadow,biomesoplenty:shrubland,biomesoplenty:dead_forest,minecraft:extreme_hills,traverse:badlands,traverse:thicket,biomesoplenty:highland,biomesoplenty:moor,traverse:meadow,minecraft:plains,biomesoplenty:lavender_fields,biomesoplenty:orchard
+leveling=3
+fill=12
+border=0
+blockSwap=true
+data:
+:enddata
+:endvalidation
+
+#### LAYERS ####
+layer: 0
+1,1,1,1
+1,1,1,1
+1,1,1,1
+1,1,1,1
+:endlayer
+layer: 1
+1,1,1,1
+1,1,1,1
+1,1,1,1
+1,1,1,1
+:endlayer
+layer: 2
+1,1,1,1
+1,1,1,1
+1,1,1,1
+1,1,1,1
+:endlayer
+layer: 3
+1,1,1,1
+1,1,1,1
+1,1,1,1
+1,1,1,1
+:endlayer
+layer: 4
+2,2,2,2
+2,2,2,2
+2,2,2,2
+2,2,2,2
+:endlayer
+layer: 5
+0,0,0,0
+0,3,0,0
+0,0,0,0
+0,0,0,0
+:endlayer
+layer: 6
+0,0,0,0
+0,0,0,0
+0,0,0,0
+0,0,0,0
+:endlayer
+layer: 7
+0,0,0,0
+0,0,0,0
+0,0,0,0
+0,0,0,0
+:endlayer
+layer: 8
+0,0,0,0
+0,0,0,0
+0,0,0,0
+0,0,0,0
+:endlayer
+layer: 9
+0,0,0,0
+0,0,0,0
+0,0,0,0
+0,0,0,0
+:endlayer
+layer: 10
+0,0,0,0
+0,0,0,0
+0,0,0,0
+0,0,0,0
+:endlayer
+layer: 11
+0,0,0,0
+0,0,0,0
+0,0,0,0
+0,0,0,0
+:endlayer
+layer: 12
+0,0,0,0
+0,0,0,0
+0,0,0,0
+0,0,0,0
+:endlayer
+layer: 13
+0,0,0,0
+0,0,0,0
+0,0,0,0
+0,0,0,0
+:endlayer
+layer: 14
+0,0,0,0
+0,0,0,0
+0,0,0,0
+0,0,0,0
+:endlayer
+
+#### RULES ####
+rule:
+plugin=vanillaBlocks
+number=1
+data:
+JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"dirt",snowy:"false"}},buildPass:0}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=2
+data:
+JSON:{blockState:{blockName:"minecraft:grass",properties:{snowy:"false"}},buildPass:0}
+:enddata
+:endrule
+
+rule:
+plugin=blockTile
+number=3
+data:
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"brigand"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.mounted_archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+:enddata
+:endrule
+
+#### ENTITIES ####
