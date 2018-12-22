@@ -34,6 +34,10 @@ public class StructureValidatorGround extends StructureValidator {
 
 	@Override
 	public boolean validatePlacement(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
+		if (y - template.offset.getY() <= 0) {
+			AncientWarfareStructure.LOG.debug("Ground isn't deep enough for the structure- required: {}, found: {}", Math.abs(bb.min.getY()), y);
+			return false;
+		}
 		int minY = getMinY(template, bb);
 		int maxY = getMaxY(template, bb);
 		return validateBorderBlocks(world, bb, minY, maxY, false);
