@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.core.command;
 
+import com.google.common.collect.AbstractIterator;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
@@ -8,16 +9,18 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.common.ForgeChunkManager;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
-import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -30,6 +33,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -247,6 +251,12 @@ public class CommandUtils extends ParentCommand {
 	}
 
 	private class ChunkLoadCommand implements ISubCommand {
+		private PlayerMover playerMover = new PlayerMover();
+
+		private ChunkLoadCommand() {
+			MinecraftForge.EVENT_BUS.register(playerMover);
+		}
+
 		@Override
 		public String getName() {
 			return "loadChunks";
@@ -257,20 +267,99 @@ public class CommandUtils extends ParentCommand {
 			if (args.length < 1) {
 				throw new WrongUsageException(getUsage(sender));
 			}
-			ForgeChunkManager.Ticket chunkTicket = ForgeChunkManager.requestTicket(AncientWarfareAutomation.instance, sender.getEntityWorld(), ForgeChunkManager.Type.NORMAL);
-			int range = Integer.parseInt(args[0]);
-			World world = sender.getEntityWorld();
-			ChunkPos senderChunkPos = world.getChunkFromBlockCoords(sender.getPosition()).getPos();
-			for (int x = senderChunkPos.x - range; x <= senderChunkPos.x + range; x++) {
-				for (int z = senderChunkPos.z - range; z <= senderChunkPos.z + range; z++) {
-					ForgeChunkManager.forceChunk(chunkTicket, new ChunkPos(x, z));
-				}
+			if (!(sender instanceof EntityPlayerMP)) {
+				return;
 			}
+			int chunkLoadRadius = server.getPlayerList().getViewDistance();
+			int range = Integer.parseInt(args[0]);
+
+			playerMover.startMoving((EntityPlayerMP) sender, sender.getEntityWorld(), chunkLoadRadius, range);
 		}
 
 		@Override
 		public int getMaxArgs() {
 			return 1;
+		}
+
+		//this is not made for multiple players using it on server as there's likely no need for that
+		private class PlayerMover {
+			private EntityPlayerMP player;
+			private int chunkLoadRadius;
+			private int range;
+			private BlockPos originalPosition;
+			private ChunkPos originalChunkPos;
+			private boolean finishedMoving = true;
+			private Iterator<ChunkPos> iterator;
+			private int timeout = 0;
+
+			@SubscribeEvent
+			public void serverTick(TickEvent.ServerTickEvent evt) {
+				if (evt.phase == TickEvent.Phase.END) {
+					if (timeout <= 0) {
+						movePlayer();
+						timeout = 60;
+					} else {
+						timeout--;
+					}
+				}
+			}
+
+			private void startMoving(EntityPlayerMP player, World world, int chunkLoadRadius, int range) {
+				this.player = player;
+				originalPosition = player.getPosition();
+				originalChunkPos = world.getChunkFromBlockCoords(originalPosition).getPos();
+				this.chunkLoadRadius = chunkLoadRadius;
+				this.range = range;
+				finishedMoving = false;
+				iterator = getAllChunkPosStops();
+			}
+
+			private Iterator<ChunkPos> getAllChunkPosStops() {
+				return new AbstractIterator<ChunkPos>() {
+					private boolean first = true;
+					private int currentX;
+					private int currentZ;
+
+					@Override
+					protected ChunkPos computeNext() {
+						if (first) {
+							currentX = getInitialX();
+							currentZ = getInitialZ();
+							first = false;
+						} else if (currentX + chunkLoadRadius > originalChunkPos.x + range && currentZ + chunkLoadRadius > originalChunkPos.z + range) {
+							return this.endOfData();
+						} else {
+							if (currentX + chunkLoadRadius < originalChunkPos.x + range) {
+								currentX += 2 * chunkLoadRadius;
+							} else if (currentZ + chunkLoadRadius < originalChunkPos.z + range) {
+								currentX = getInitialX();
+								currentZ += 2 * chunkLoadRadius;
+							}
+						}
+						return new ChunkPos(currentX, currentZ);
+					}
+
+					private int getInitialZ() {
+						return originalChunkPos.z - range + chunkLoadRadius;
+					}
+
+					private int getInitialX() {
+						return originalChunkPos.x - range + chunkLoadRadius;
+					}
+				};
+			}
+
+			private void movePlayer() {
+				if (!finishedMoving) {
+					if (!iterator.hasNext()) {
+						player.connection.setPlayerLocation(originalPosition.getX(), originalPosition.getY(), originalPosition.getZ(), player.rotationYaw, player.rotationPitch);
+						finishedMoving = true;
+						return;
+					}
+					ChunkPos chunkPos = iterator.next();
+					player.connection.setPlayerLocation(chunkPos.getXStart() + 8d, 255, chunkPos.getZStart() + 8d, player.rotationYaw, player.rotationPitch);
+				}
+			}
 		}
 	}
 }
