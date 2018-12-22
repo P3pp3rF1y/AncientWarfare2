@@ -24,9 +24,9 @@ dimensionWhiteList=false
 dimensionList=
 biomeWhiteList=true
 biomeList=biomesoplenty:woodland,minecraft:roofed_forest,biomesoplenty:bayou,biomesoplenty:dead_forest,traverse:woodlands,minecraft:forest,traverse:badlands,biomesoplenty:moor,minecraft:taiga_cold,biomesoplenty:dead_swamp,traverse:rocky_plains,minecraft:ice_flats,biomesoplenty:steppe
-leveling=5
+leveling=24
 fill=4
-border=8
+border=12
 blockSwap=false
 data:
 :enddata

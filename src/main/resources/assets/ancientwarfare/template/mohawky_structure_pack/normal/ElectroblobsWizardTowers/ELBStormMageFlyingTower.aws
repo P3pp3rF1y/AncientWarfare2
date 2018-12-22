@@ -1,11 +1,11 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 12/6/2018 at: 11:38:7
+# Auto-generated structure template file. created on: 12/22/2018 at: 8:42:1
 # Lines beginning with # denote comments
 
 header:
 version=2.8
 name=ELBStormMageFlyingTower
-mods=ebwizardry
+mods=
 size=17,115,16
 offset=7,0,15
 :endheader
@@ -2395,7 +2395,7 @@ rule:
 plugin=blockTile
 number=37
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:8,spawnDelay:14,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"primitivemobs:bewitched_tome",minToSpawn:1}],groupWeight:1}],playerRange:12,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:3,transparent:0b,maxDelay:800,xpToDrop:40,mobRange:12,debugMode:0b,maxNearbyMonsters:12}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:8,spawnDelay:94,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"primitivemobs:bewitched_tome",minToSpawn:1}],groupWeight:1}],playerRange:12,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:3,transparent:0b,maxDelay:800,xpToDrop:40,mobRange:12,debugMode:0b,maxNearbyMonsters:12}}}
 :enddata
 :endrule
 
@@ -2464,3 +2464,19 @@ JSON:{blockState:{blockName:"ancientwarfarestructure:fire_pit",properties:{lit:"
 :endrule
 
 #### ENTITIES ####
+entity:
+plugin=entity
+number=0
+data:
+JSON:{yOffset:0.52659655f,xOffset:0.70756006f,rotation:-40.48729f,mobID:"familiarfauna:familiarfauna.butterfly",zOffset:0.33808753f,position:2474102489092L,entityData:{HurtByTimestamp:0,ForgeData:{},Attributes:[{Base:1.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.699999988079071d,Name:"generic.movementSpeed"},{Base:0.0d,Name:"generic.armor"},{Base:0.0d,Name:"generic.armorToughness"},{Base:1.0d,Name:"forge.swimSpeed"},{Base:16.0d,Modifiers:[{UUIDMost:1263055161229854285L,UUIDLeast:-7665869165604590448L,Amount:-0.00790520088780213d,Operation:1,Name:"Random spawn bonus"}],Name:"generic.followRange"}],Invulnerable:0b,FallFlying:0b,PortalCooldown:0,AbsorptionAmount:0.0f,FallDistance:0.0f,ButterflyType:4,DeathTime:0s,ForgeCaps:{"dsurround:emojidata":{as:0,es:0,et:0},"llibrary:extendedentitydatacapability":{"mm:living":{frozenYaw:0.0f,freezeProgress:0.0f,frozenPitch:0.0f,frozenYawHead:0.0f,frozenEntityID:-1,frozenLimbSwingAmount:0.0f,frozenRenderYawOffset:0.0f,frozenSwingProgress:0.0f}}},HandDropChances:[0.085f,0.085f],PersistenceRequired:0b,Motion:[0.2366731954456054d,0.025519346309631038d,-0.18072787599437126d],Leashed:0b,Health:1.0f,LeftHanded:0b,Air:300s,OnGround:0b,Dimension:0,Rotation:[-130.48729f,0.0f],UpdateBlocked:0b,HandItems:[{},{}],ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],Pos:[935.3380875248089d,76.52659652902916d,438.29243995530777d],Fire:-1s,ArmorItems:[{},{},{},{}],CanPickUpLoot:0b,HurtTime:0s}}
+:enddata
+:endentity
+
+entity:
+plugin=entity
+number=1
+data:
+JSON:{yOffset:0.31647927f,xOffset:0.31409723f,rotation:114.656876f,mobID:"familiarfauna:familiarfauna.butterfly",zOffset:0.22844598f,position:550024249345L,entityData:{HurtByTimestamp:0,ForgeData:{},Attributes:[{Base:1.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.699999988079071d,Name:"generic.movementSpeed"},{Base:0.0d,Name:"generic.armor"},{Base:0.0d,Name:"generic.armorToughness"},{Base:1.0d,Name:"forge.swimSpeed"},{Base:16.0d,Modifiers:[{UUIDMost:6089505249025805119L,UUIDLeast:-7908038533534819858L,Amount:0.0148018067570837d,Operation:1,Name:"Random spawn bonus"}],Name:"generic.followRange"}],Invulnerable:0b,FallFlying:0b,PortalCooldown:0,AbsorptionAmount:0.0f,FallDistance:0.0f,ButterflyType:4,DeathTime:0s,ForgeCaps:{"dsurround:emojidata":{as:0,es:0,et:0},"llibrary:extendedentitydatacapability":{"mm:living":{frozenYaw:0.0f,freezeProgress:0.0f,frozenPitch:0.0f,frozenYawHead:0.0f,frozenEntityID:-1,frozenLimbSwingAmount:0.0f,frozenRenderYawOffset:0.0f,frozenSwingProgress:0.0f}}},HandDropChances:[0.085f,0.085f],PersistenceRequired:0b,Motion:[-0.11116404041715186d,-0.08041561669500166d,0.10330088671969284d],Leashed:0b,Health:1.0f,LeftHanded:0b,Air:300s,OnGround:0b,Dimension:0,Rotation:[24.656874f,0.0f],UpdateBlocked:0b,HandItems:[{},{}],ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],Pos:[932.2284459836509d,77.31647927709042d,445.6859027721086d],Fire:-1s,ArmorItems:[{},{},{},{}],CanPickUpLoot:0b,HurtTime:0s}}
+:enddata
+:endentity
+

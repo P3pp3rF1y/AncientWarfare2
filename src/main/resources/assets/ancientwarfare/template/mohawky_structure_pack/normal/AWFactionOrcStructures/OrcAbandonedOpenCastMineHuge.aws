@@ -24,8 +24,8 @@ dimensionWhiteList=false
 dimensionList=
 biomeWhiteList=true
 biomeList=minecraft:forest,traverse:rocky_plains,minecraft:extreme_hills,traverse:badlands,minecraft:ice_flats,biomesoplenty:steppe,minecraft:plains
-leveling=15
-fill=15
+leveling=25
+fill=12
 border=10
 blockSwap=true
 data:

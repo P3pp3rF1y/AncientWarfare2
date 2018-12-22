@@ -24,9 +24,9 @@ dimensionWhiteList=false
 dimensionList=
 biomeWhiteList=true
 biomeList=minecraft:jungle
-leveling=6
-fill=2
-border=6
+leveling=20
+fill=6
+border=10
 blockSwap=false
 data:
 :enddata

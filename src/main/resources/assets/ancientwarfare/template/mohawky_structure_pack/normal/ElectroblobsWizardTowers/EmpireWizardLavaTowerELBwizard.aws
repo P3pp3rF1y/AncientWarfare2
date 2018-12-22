@@ -27,7 +27,7 @@ biomeList=biomesoplenty:meadow,minecraft:birch_forest,traverse:meadow
 leveling=12
 fill=12
 border=6
-blockSwap=false
+blockSwap=true
 :endvalidation
 
 #### LAYERS ####
