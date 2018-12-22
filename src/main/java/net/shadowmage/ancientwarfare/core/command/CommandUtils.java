@@ -2,17 +2,22 @@ package net.shadowmage.ancientwarfare.core.command;
 
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -36,6 +41,7 @@ public class CommandUtils extends ParentCommand {
 		registerSubCommand(new BlockListCommand());
 		registerSubCommand(new ReloadManualCommand());
 		registerSubCommand(new LootTableListCommand());
+		registerSubCommand(new ChunkLoadCommand());
 	}
 
 	@Override
@@ -237,6 +243,34 @@ public class CommandUtils extends ParentCommand {
 		@Override
 		public String getName() {
 			return "exportloottables";
+		}
+	}
+
+	private class ChunkLoadCommand implements ISubCommand {
+		@Override
+		public String getName() {
+			return "loadChunks";
+		}
+
+		@Override
+		public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+			if (args.length < 1) {
+				throw new WrongUsageException(getUsage(sender));
+			}
+			ForgeChunkManager.Ticket chunkTicket = ForgeChunkManager.requestTicket(AncientWarfareAutomation.instance, sender.getEntityWorld(), ForgeChunkManager.Type.NORMAL);
+			int range = Integer.parseInt(args[0]);
+			World world = sender.getEntityWorld();
+			ChunkPos senderChunkPos = world.getChunkFromBlockCoords(sender.getPosition()).getPos();
+			for (int x = senderChunkPos.x - range; x <= senderChunkPos.x + range; x++) {
+				for (int z = senderChunkPos.z - range; z <= senderChunkPos.z + range; z++) {
+					ForgeChunkManager.forceChunk(chunkTicket, new ChunkPos(x, z));
+				}
+			}
+		}
+
+		@Override
+		public int getMaxArgs() {
+			return 1;
 		}
 	}
 }
