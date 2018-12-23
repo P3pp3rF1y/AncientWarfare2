@@ -326,7 +326,7 @@ public class CommandUtils extends ParentCommand {
 							currentX = getInitialX();
 							currentZ = getInitialZ();
 							first = false;
-						} else if (currentX + chunkLoadRadius > originalChunkPos.x + range && currentZ + chunkLoadRadius > originalChunkPos.z + range) {
+						} else if (currentX + chunkLoadRadius >= originalChunkPos.x + range && currentZ + chunkLoadRadius >= originalChunkPos.z + range) {
 							return this.endOfData();
 						} else {
 							if (currentX + chunkLoadRadius < originalChunkPos.x + range) {
