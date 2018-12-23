@@ -12,12 +12,12 @@ public abstract class NpcAIAttack<T extends NpcBase> extends NpcAI<T> {
 	}
 
 	@Override
-	public final boolean shouldExecute() {
+	public boolean shouldExecute() {
 		return npc.getIsAIEnabled() && npc.getAttackTarget() != null && npc.getAttackTarget().isEntityAlive();
 	}
 
 	@Override
-	public final boolean shouldContinueExecuting() {
+	public boolean shouldContinueExecuting() {
 		return npc.getIsAIEnabled() && target != null && target.isEntityAlive() && target.equals(npc.getAttackTarget());
 	}
 
@@ -25,7 +25,6 @@ public abstract class NpcAIAttack<T extends NpcBase> extends NpcAI<T> {
 	public final void startExecuting() {
 		target = npc.getAttackTarget();
 		moveRetryDelay = 0;
-		attackDelay = 0;
 		npc.addAITask(TASK_ATTACK);
 		npc.setSwingingArms(true);
 	}
@@ -34,7 +33,6 @@ public abstract class NpcAIAttack<T extends NpcBase> extends NpcAI<T> {
 	public final void resetTask() {
 		target = null;
 		moveRetryDelay = 0;
-		attackDelay = 0;
 		npc.removeAITask(TASK_MOVE + TASK_ATTACK);
 		npc.setSwingingArms(false);
 	}

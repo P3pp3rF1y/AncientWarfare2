@@ -78,12 +78,15 @@ public class WarehouseStockViewerRenderer extends TileEntitySpecialRenderer<Tile
 			filter = filters.get(i);
 			filterItem = filter.getFilterItem();
 			if (!filterItem.isEmpty()) {
-				Minecraft.getMinecraft().getRenderItem().renderItemAndEffectIntoGUI(filter.getFilterItem(), 0 + 12, i * 18 + 10);
+				Minecraft.getMinecraft().getRenderItem().renderItemAndEffectIntoGUI(filter.getFilterItem(), 0 + 24, i * 18 + 14);
 			}
 			name = filterItem.isEmpty() ? "Empty Filter" : filterItem.getDisplayName();
-			fr.drawString(name, 20 + 12, i * 18 + 4 + 10, 0xffffffff);
+			if (name.length() > 20) {
+				name = name.substring(0, 20);
+			}
+			fr.drawString(name, 20 + 12 + 12, i * 18 + 4 + 14, 0xffffffff);
 			name = String.valueOf(filter.getQuantity());
-			fr.drawString(name, 200 - 13 - fr.getStringWidth(name), i * 18 + 4 + 10, 0xffffffff);
+			fr.drawString(name, 200 - 25 - fr.getStringWidth(name), i * 18 + 4 + 14, 0xffffffff);
 		}
 		GlStateManager.enableLighting();
 		GlStateManager.popMatrix();

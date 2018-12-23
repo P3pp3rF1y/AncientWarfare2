@@ -1,19 +1,30 @@
 package net.shadowmage.ancientwarfare.structure.template;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.Vec3i;
+import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.MathUtils;
+import net.shadowmage.ancientwarfare.core.util.NBTHelper;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
-import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
+import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
+import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntityBase;
+import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidationType;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 public class StructureTemplate {
-	public static final Version CURRENT_VERSION = new Version(2, 6);
+	public static final Version CURRENT_VERSION = new Version(2, 8);
 
 	/*
 	 * base datas
@@ -26,31 +37,31 @@ public class StructureTemplate {
 	/*
 	 * stored template data
 	 */
+	public final Set<String> modDependencies;
 	private Map<Integer, TemplateRule> blockRules;
-	private Map<Integer, TemplateRuleEntity> entityRules;
+	private Map<Integer, TemplateRuleEntityBase> entityRules;
 	private short[] templateData;
 	private NonNullList<ItemStack> resourceList;
+	private List<ItemStack> remainingStacks;
 
 	/*
 	 * world generation placement validation settings
 	 */
-	private StructureValidator validator;
+	private StructureValidator validator = StructureValidationType.GROUND.getValidator();
 
-	public StructureTemplate(String name, Vec3i size, Vec3i offset) {
-		this(name, CURRENT_VERSION, size, offset);
+	public StructureTemplate(String name, Set<String> modDependencies, Vec3i size, Vec3i offset) {
+		this(name, modDependencies, CURRENT_VERSION, size, offset);
 	}
 
-	public StructureTemplate(String name, Version version, Vec3i size, Vec3i offset) {
-		if (name == null) {
-			throw new IllegalArgumentException("cannot have null name for structure");
-		}
+	public StructureTemplate(String name, Set<String> modDependencies, Version version, Vec3i size, Vec3i offset) {
+		this.modDependencies = modDependencies;
 		this.version = version;
 		this.name = name;
 		this.size = size;
 		this.offset = offset;
 	}
 
-	public Map<Integer, TemplateRuleEntity> getEntityRules() {
+	public Map<Integer, TemplateRuleEntityBase> getEntityRules() {
 		return entityRules;
 	}
 
@@ -70,7 +81,7 @@ public class StructureTemplate {
 		this.blockRules = rules;
 	}
 
-	public void setEntityRules(Map<Integer, TemplateRuleEntity> rules) {
+	public void setEntityRules(Map<Integer, TemplateRuleEntityBase> rules) {
 		this.entityRules = rules;
 	}
 
@@ -80,6 +91,11 @@ public class StructureTemplate {
 
 	public void setValidationSettings(StructureValidator settings) {
 		this.validator = settings;
+	}
+
+	public Optional<TemplateRuleBlock> getBlockRuleAt(Vec3i pos) {
+		Optional<TemplateRule> rule = getRuleAt(pos);
+		return !rule.isPresent() || !(rule.get() instanceof TemplateRuleBlock) ? Optional.empty() : Optional.of((TemplateRuleBlock) rule.get());
 	}
 
 	public Optional<TemplateRule> getRuleAt(Vec3i pos) {
@@ -100,10 +116,26 @@ public class StructureTemplate {
 	public NonNullList<ItemStack> getResourceList() {
 		if (resourceList == null) {
 			NonNullList<ItemStack> stacks = NonNullList.create();
-			MathUtils.getAllVecsInBox(Vec3i.NULL_VECTOR, size).forEach(pos -> getRuleAt(pos).ifPresent(r -> r.addResources(stacks)));
+			MathUtils.getAllVecsInBox(Vec3i.NULL_VECTOR, new Vec3i(size.getX() - 1, size.getY() - 1, size.getZ() - 1))
+					.forEach(pos -> getRuleAt(pos).ifPresent(r -> r.addResources(stacks)));
 			resourceList = InventoryTools.compactStackList(stacks);
 		}
 		return resourceList;
+	}
+
+	public List<ItemStack> getRemainingStacks() {
+		if (remainingStacks == null) {
+			NonNullList<ItemStack> stacks = NonNullList.create();
+			MathUtils.getAllVecsInBox(Vec3i.NULL_VECTOR, new Vec3i(size.getX() - 1, size.getY() - 1, size.getZ() - 1))
+					.forEach(pos -> getRuleAt(pos).ifPresent(r -> {
+						ItemStack stack = r.getRemainingStack();
+						if (!stack.isEmpty()) {
+							stacks.add(stack);
+						}
+					}));
+			remainingStacks = InventoryTools.compactStackList(stacks);
+		}
+		return remainingStacks;
 	}
 
 	@Override
@@ -134,6 +166,66 @@ public class StructureTemplate {
 
 	public Vec3i getOffset() {
 		return offset;
+	}
+
+	public NBTTagCompound serializeNBT() {
+		NBTTagCompound tag = new NBTTagCompound();
+
+		tag.setString("name", name);
+		tag.setLong("size", MathUtils.toLong(size));
+		tag.setLong("offset", MathUtils.toLong(offset));
+		tag.setTag("blockRules", serializeRules(blockRules));
+		tag.setTag("entityRules", serializeRules(entityRules));
+		tag.setIntArray("templateData", MathUtils.toIntArray(templateData));
+		tag.setString("validationType", validator.validationType.getName());
+		tag.setTag("validator", validator.serializeToNBT());
+
+		return tag;
+	}
+
+	public static StructureTemplate deserializeNBT(NBTTagCompound tag) {
+		String name = tag.getString("name");
+		Vec3i size = MathUtils.fromLong(tag.getLong("size"));
+		Vec3i offset = MathUtils.fromLong(tag.getLong("offset"));
+
+		StructureTemplate template = new StructureTemplate(name, Collections.emptySet(), size, offset);
+		template.setBlockRules(deserializeRules(tag.getTagList("blockRules", Constants.NBT.TAG_COMPOUND)));
+		template.setEntityRules(deserializeRules(tag.getTagList("entityRules", Constants.NBT.TAG_COMPOUND)));
+		template.setTemplateData(MathUtils.toShortArray(tag.getIntArray("templateData")));
+		StructureValidationType.getTypeFromName(tag.getString("validationType")).ifPresent(type -> {
+			StructureValidator structureValidator = type.getValidator();
+			structureValidator.readFromNBT(tag.getCompoundTag("validator"));
+			template.setValidationSettings(structureValidator);
+		});
+		return template;
+	}
+
+	private static <T extends TemplateRule> Map<Integer, T> deserializeRules(NBTTagList blockRules) {
+		Map<Integer, T> ret = new HashMap<>();
+		for (NBTBase data : blockRules) {
+			NBTTagCompound ruleData = (NBTTagCompound) data;
+			StructurePluginManager.INSTANCE.getRuleByName(ruleData.getString("pluginName")).ifPresent(
+					rule -> {
+						rule.parseRule(ruleData);
+						//noinspection unchecked
+						ret.put(ruleData.getInteger("ruleNumber"), (T) rule);
+					}
+			);
+
+		}
+		return ret;
+	}
+
+	private NBTTagList serializeRules(Map<Integer, ? extends TemplateRule> templateRules) {
+		return templateRules.entrySet().stream().map(this::serializeRule).collect(NBTHelper.NBTLIST_COLLECTOR);
+	}
+
+	private NBTTagCompound serializeRule(Map.Entry<Integer, ? extends TemplateRule> blockRule) {
+		NBTTagCompound ruleData = new NBTTagCompound();
+		ruleData.setInteger("ruleNumber", blockRule.getKey());
+		ruleData.setString("pluginName", blockRule.getValue().getPluginName());
+		blockRule.getValue().writeRuleData(ruleData);
+		return ruleData;
 	}
 
 	public static class Version {

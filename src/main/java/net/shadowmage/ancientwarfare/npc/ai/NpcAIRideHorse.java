@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.npc.ai;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.passive.AbstractHorse;
 import net.minecraft.entity.passive.EntityHorse;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
@@ -13,7 +14,7 @@ public class NpcAIRideHorse<T extends NpcBase> extends NpcAI<T> {
 	private final AttributeModifier followRangeModifier;
 	private final AttributeModifier moveSpeedModifier;
 
-	protected EntityHorse horse;
+	protected AbstractHorse horse;
 	private List<EntityAITasks.EntityAITaskEntry> horseAI = new ArrayList<>();
 
 	public NpcAIRideHorse(T npc, double speedFactor) {

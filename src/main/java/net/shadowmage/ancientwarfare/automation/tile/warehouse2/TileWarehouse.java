@@ -75,14 +75,16 @@ public class TileWarehouse extends TileWarehouseBase {
 		}
 
 		ItemStack result = stack.copy();
-		result.shrink(addedTotal);
+		result.shrink(count - addedTotal);
 		return result;
 	}
 
 	private void tryGetItem(EntityPlayer player, ItemStack filter, boolean shiftClick, boolean rightClick) {
 		int stackSize = 0;
 		if (!player.inventory.getItemStack().isEmpty()) {
-			stackSize = player.inventory.getItemStack().getCount();
+			if (shiftClick && rightClick) {
+				stackSize = player.inventory.getItemStack().getCount();
+			}
 			ItemStack comparableStack = player.inventory.getItemStack().copy();
 			comparableStack.setCount(filter.getCount());
 			if (!ItemStack.areItemStacksEqual(filter, comparableStack))
@@ -252,7 +254,14 @@ public class TileWarehouse extends TileWarehouseBase {
 					int maxToAdd = Math.min(stack.getMaxStackSize() - cachedStack.getCount(), stack.getCount());
 					if (!simulate) {
 						cachedStack.setCount(cachedStack.getCount() + maxToAdd);
-						return tryAddItem(stack, maxToAdd);
+						ItemStack result = tryAddItem(stack, maxToAdd);
+						if (maxToAdd == stack.getCount()) {
+							return result;
+						} else {
+							ItemStack ret = stack.copy();
+							ret.setCount(stack.getCount() - maxToAdd + result.getCount());
+							return ret;
+						}
 					}
 					ItemStack ret = ItemStack.EMPTY;
 					if (maxToAdd < stack.getCount()) {

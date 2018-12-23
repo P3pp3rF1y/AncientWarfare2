@@ -4,41 +4,17 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.worldgen.WorldStructureGenerator;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.util.List;
+import static net.shadowmage.ancientwarfare.structure.template.build.validation.properties.StructureValidationProperties.MAX_WATER_DEPTH;
+import static net.shadowmage.ancientwarfare.structure.template.build.validation.properties.StructureValidationProperties.MIN_WATER_DEPTH;
 
 public class StructureValidatorUnderwater extends StructureValidator {
 
-	private int minWaterDepth;
-	private int maxWaterDepth;
-
 	public StructureValidatorUnderwater() {
 		super(StructureValidationType.UNDERWATER);
-	}
-
-	@Override
-	protected void readFromLines(List<String> lines) {
-		for (String line : lines) {
-			if (startLow(line, "minwaterdepth=")) {
-				minWaterDepth = StringTools.safeParseInt("=", line);
-			} else if (startLow(line, "maxwaterdepth=")) {
-				maxWaterDepth = StringTools.safeParseInt("=", line);
-			}
-		}
-	}
-
-	@Override
-	protected void write(BufferedWriter out) throws IOException {
-		out.write("minWaterDepth=" + minWaterDepth);
-		out.newLine();
-		out.write("maxWaterDepth=" + maxWaterDepth);
-		out.newLine();
 	}
 
 	@Override
@@ -46,7 +22,7 @@ public class StructureValidatorUnderwater extends StructureValidator {
 		int startY = y;
 		y = WorldStructureGenerator.getTargetY(world, x, z, true) + 1;
 		int water = startY - y;
-		return !(water < minWaterDepth || water > maxWaterDepth);
+		return !(water < getPropertyValue(MIN_WATER_DEPTH) || water > getPropertyValue(MAX_WATER_DEPTH));
 	}
 
 	@Override

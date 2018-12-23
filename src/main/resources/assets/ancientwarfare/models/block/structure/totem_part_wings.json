@@ -1,0 +1,523 @@
+{
+    "credit": "Made with Blockbench",
+    "textures": {
+        "1": "ancientwarfare:blocks/structure/totem_part_wings",
+        "particle": "ancientwarfare:blocks/structure/totem_part_wings"
+    },
+    "elements": [
+        {
+            "name": "wingBase",
+            "from": [
+                8,
+                4,
+                6.5
+            ],
+            "to": [
+                16,
+                12,
+                9.5
+            ],
+            "faces": {
+                "north": {
+                    "uv": [
+                        1.5,
+                        1.5,
+                        5.5,
+                        5.5
+                    ],
+                    "texture": "#1"
+                },
+                "east": {
+                    "uv": [
+                        5.5,
+                        1.5,
+                        7,
+                        5.5
+                    ],
+                    "texture": "#1"
+                },
+                "south": {
+                    "uv": [
+                        1.5,
+                        1.5,
+                        5.5,
+                        5.5
+                    ],
+                    "texture": "#1"
+                },
+                "west": {
+                    "uv": [
+                        1.5,
+                        1.5,
+                        3,
+                        5.5
+                    ],
+                    "texture": "#1"
+                },
+                "up": {
+                    "uv": [
+                        2,
+                        0,
+                        6,
+                        1.5
+                    ],
+                    "texture": "#1"
+                },
+                "down": {
+                    "uv": [
+                        6,
+                        0,
+                        10,
+                        1.5
+                    ],
+                    "texture": "#1"
+                }
+            }
+        },
+        {
+            "name": "wingBody1",
+            "from": [
+                7.9395,
+                4,
+                6.75
+            ],
+            "to": [
+                11.0605,
+                13,
+                9.25
+            ],
+            "rotation": {
+                "angle": -22.5,
+                "axis": "z",
+                "origin": [
+                    9.5,
+                    13,
+                    9
+                ]
+            },
+            "faces": {
+                "north": {
+                    "uv": [
+                        1.5,
+                        1.5,
+                        3,
+                        5.5
+                    ],
+                    "texture": "#1"
+                },
+                "east": {
+                    "uv": [
+                        1.5,
+                        1.5,
+                        3,
+                        5.5
+                    ],
+                    "texture": "#1"
+                },
+                "south": {
+                    "uv": [
+                        1.5,
+                        1.5,
+                        3,
+                        5.5
+                    ],
+                    "texture": "#1"
+                },
+                "west": {
+                    "uv": [
+                        1.5,
+                        1.5,
+                        2,
+                        5.5
+                    ],
+                    "texture": "#1"
+                },
+                "up": {
+                    "uv": [
+                        2,
+                        0,
+                        3.5605,
+                        1.25
+                    ],
+                    "texture": "#1"
+                },
+                "down": {
+                    "uv": [
+                        0,
+                        0,
+                        1,
+                        1
+                    ],
+                    "texture": "#1"
+                }
+            }
+        },
+        {
+            "name": "wingBody2",
+            "from": [
+                7.9395,
+                4,
+                7
+            ],
+            "to": [
+                11.0605,
+                13,
+                9
+            ],
+            "rotation": {
+                "angle": -45,
+                "axis": "z",
+                "origin": [
+                    9.5,
+                    13,
+                    9
+                ]
+            },
+            "faces": {
+                "north": {
+                    "uv": [
+                        1.5,
+                        1,
+                        3,
+                        5.5
+                    ],
+                    "texture": "#1"
+                },
+                "east": {
+                    "uv": [
+                        1.5,
+                        1.5,
+                        2,
+                        5.5
+                    ],
+                    "texture": "#1"
+                },
+                "south": {
+                    "uv": [
+                        1.5,
+                        1.5,
+                        3,
+                        5.5
+                    ],
+                    "texture": "#1"
+                },
+                "west": {
+                    "uv": [
+                        1.5,
+                        1.5,
+                        2,
+                        5.5
+                    ],
+                    "texture": "#1"
+                },
+                "up": {
+                    "uv": [
+                        2,
+                        0,
+                        3.5605,
+                        1
+                    ],
+                    "texture": "#1"
+                },
+                "down": {
+                    "uv": [
+                        0,
+                        0,
+                        1,
+                        1
+                    ],
+                    "texture": "#1"
+                }
+            }
+        },
+        {
+            "name": "wingBody3",
+            "from": [
+                0.5,
+                11.4395,
+                7.25
+            ],
+            "to": [
+                9.5,
+                14.5605,
+                8.75
+            ],
+            "rotation": {
+                "angle": 22.5,
+                "axis": "z",
+                "origin": [
+                    9.5,
+                    13,
+                    9
+                ]
+            },
+            "faces": {
+                "north": {
+                    "uv": [
+                        1.5,
+                        1.5,
+                        3,
+                        5.5
+                    ],
+                    "texture": "#1",
+                    "rotation": 270
+                },
+                "east": {
+                    "uv": [
+                        2,
+                        0,
+                        3.5605,
+                        0.75
+                    ],
+                    "texture": "#1",
+                    "rotation": 90
+                },
+                "south": {
+                    "uv": [
+                        1.5,
+                        1,
+                        3,
+                        5.5
+                    ],
+                    "texture": "#1",
+                    "rotation": 90
+                },
+                "west": {
+                    "uv": [
+                        0,
+                        0,
+                        1,
+                        1
+                    ],
+                    "texture": "#1",
+                    "rotation": 90
+                },
+                "up": {
+                    "uv": [
+                        1.5,
+                        1.5,
+                        2,
+                        5.5
+                    ],
+                    "texture": "#1",
+                    "rotation": 90
+                },
+                "down": {
+                    "uv": [
+                        1.5,
+                        1.5,
+                        2,
+                        5.5
+                    ],
+                    "texture": "#1",
+                    "rotation": 90
+                }
+            }
+        },
+        {
+            "name": "wingBody4",
+            "from": [
+                0.5,
+                11.4395,
+                7.5
+            ],
+            "to": [
+                9.5,
+                14.5605,
+                8.5
+            ],
+            "rotation": {
+                "angle": 0,
+                "axis": "z",
+                "origin": [
+                    9.5,
+                    13,
+                    9
+                ]
+            },
+            "faces": {
+                "north": {
+                    "uv": [
+                        1.5,
+                        1.5,
+                        3,
+                        5.5
+                    ],
+                    "texture": "#1",
+                    "rotation": 270
+                },
+                "east": {
+                    "uv": [
+                        2,
+                        0,
+                        3.5605,
+                        0.5
+                    ],
+                    "texture": "#1",
+                    "rotation": 90
+                },
+                "south": {
+                    "uv": [
+                        1.5,
+                        1.5,
+                        3,
+                        5.5
+                    ],
+                    "texture": "#1",
+                    "rotation": 90
+                },
+                "west": {
+                    "uv": [
+                        0,
+                        0,
+                        1,
+                        1
+                    ],
+                    "texture": "#1",
+                    "rotation": 90
+                },
+                "up": {
+                    "uv": [
+                        1.5,
+                        1.5,
+                        2,
+                        5.5
+                    ],
+                    "texture": "#1",
+                    "rotation": 90
+                },
+                "down": {
+                    "uv": [
+                        1.5,
+                        1.5,
+                        2,
+                        5.5
+                    ],
+                    "texture": "#1",
+                    "rotation": 90
+                }
+            }
+        }
+    ],
+    "display": {
+        "gui": {
+            "rotation": [
+                30,
+                -45,
+                0
+            ],
+            "translation": [
+                0,
+                0,
+                0
+            ],
+            "scale": [
+                0.625,
+                0.625,
+                0.625
+            ]
+        },
+        "ground": {
+            "rotation": [
+                0,
+                0,
+                0
+            ],
+            "translation": [
+                0,
+                3,
+                0
+            ],
+            "scale": [
+                0.25,
+                0.25,
+                0.25
+            ]
+        },
+        "fixed": {
+            "rotation": [
+                0,
+                -180,
+                0
+            ],
+            "translation": [
+                0,
+                0,
+                0
+            ],
+            "scale": [
+                0.5,
+                0.5,
+                0.5
+            ]
+        },
+        "thirdperson_righthand": {
+            "rotation": [
+                75,
+                -135,
+                0
+            ],
+            "translation": [
+                0,
+                2.5,
+                0
+            ],
+            "scale": [
+                0.375,
+                0.375,
+                0.375
+            ]
+        },
+        "firstperson_righthand": {
+            "rotation": [
+                0,
+                -135,
+                0
+            ],
+            "translation": [
+                0,
+                0,
+                0
+            ],
+            "scale": [
+                0.4,
+                0.4,
+                0.4
+            ]
+        },
+        "firstperson_lefthand": {
+            "rotation": [
+                0,
+                45,
+                0
+            ],
+            "translation": [
+                0,
+                0,
+                0
+            ],
+            "scale": [
+                0.4,
+                0.4,
+                0.4
+            ]
+        },
+        "thirdperson_lefthand": {
+            "scale": [
+                0.375,
+                0.375,
+                0.375
+            ],
+            "rotation": [
+                75,
+                44,
+                0
+            ],
+            "translation": [
+                0,
+                2.5,
+                0
+            ]
+        }
+    }
+}

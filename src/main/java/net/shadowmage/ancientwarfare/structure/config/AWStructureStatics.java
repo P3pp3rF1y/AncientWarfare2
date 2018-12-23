@@ -8,7 +8,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
-import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -24,6 +23,7 @@ public class AWStructureStatics extends ModConfiguration {
 		super(mod);
 	}
 
+	public static boolean processScannerCommands = false;
 	public static String templateExtension = "aws";
 	public static String townTemplateExtension = "awt";
 	public static boolean enableWorldGen = true;
@@ -35,8 +35,6 @@ public class AWStructureStatics extends ModConfiguration {
 	public static int maxClusterValue = 500;
 	public static float randomGenerationChance = 0.075f;
 	public static int spawnProtectionRange = 12;
-	public static int structureImageWidth = 512;
-	public static int structureImageHeight = 288;
 	public static int townClosestDistance = 40;
 	public static float townGenerationChance = 0.125f;
 	public static Set<String> excludedSpawnerEntities = new HashSet<>();
@@ -966,19 +964,21 @@ public class AWStructureStatics extends ModConfiguration {
 	}
 
 	public static boolean isValidTargetBlock(IBlockState state) {
-		return isValidTargetMaterial(state.getMaterial()) || worldGenTargetBlocks.contains(BlockDataManager.INSTANCE.getNameForBlock(state.getBlock()));
+		//noinspection ConstantConditions
+		return isValidTargetMaterial(state.getMaterial()) || worldGenTargetBlocks.contains(state.getBlock().getRegistryName().toString());
 	}
 
-	private static boolean isValidTargetMaterial(Material material) {
+	public static boolean isValidTargetMaterial(Material material) {
 		return material == Material.GRASS || material == Material.GROUND || material == Material.ROCK || material == Material.SNOW || material == Material.ICE
 				|| material == Material.PACKED_ICE || material == Material.SAND || material == Material.WATER;
 	}
 
 	public static boolean isSkippable(IBlockState state) {
-		return isSkippableMaterial(state.getMaterial()) || skippableWorldGenBlocks.contains(BlockDataManager.INSTANCE.getNameForBlock(state.getBlock()));
+		//noinspection ConstantConditions
+		return isSkippableMaterial(state.getMaterial()) || skippableWorldGenBlocks.contains(state.getBlock().getRegistryName().toString());
 	}
 
-	private static boolean isSkippableMaterial(Material material) {
+	public static boolean isSkippableMaterial(Material material) {
 		return material == Material.AIR || material == Material.PLANTS || material == Material.VINE || material == Material.LEAVES || material == Material.WOOD
 				|| material == Material.GOURD || material == Material.CACTUS;
 	}

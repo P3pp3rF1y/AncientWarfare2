@@ -69,7 +69,7 @@ public final class WorldGenTickHandler {
 	}
 
 	private void genChunks() {
-		if (!chunksToGen.isEmpty()) {
+		while (!chunksToGen.isEmpty()) {
 			ChunkGenerationTicket tk = chunksToGen.remove(0);
 			World world = tk.getWorld();
 			if (world != null) {

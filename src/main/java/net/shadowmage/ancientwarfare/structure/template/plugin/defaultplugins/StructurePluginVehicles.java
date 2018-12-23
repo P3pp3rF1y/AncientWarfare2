@@ -2,21 +2,17 @@ package net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins;
 
 import net.shadowmage.ancientwarfare.structure.api.StructureContentPlugin;
 import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
+import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.entityrules.TemplateRuleVehicle;
+import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 
 public class StructurePluginVehicles implements StructureContentPlugin {
-
-	public StructurePluginVehicles() {
-
-	}
-
 	@Override
 	public void addHandledBlocks(StructurePluginManager manager) {
-
+		//noop
 	}
 
 	@Override
 	public void addHandledEntities(StructurePluginManager manager) {
-		//TODO add when vehicles are tuned
-		//manager.registerEntityHandler("ancientWarfareVehicle", EntityVehicle.class, TemplateRuleEntityLogic.class);
+		manager.registerEntityHandler(TemplateRuleVehicle.PLUGIN_NAME, VehicleBase.class, TemplateRuleVehicle::new, TemplateRuleVehicle::new);
 	}
 }

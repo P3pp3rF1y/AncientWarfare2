@@ -13,7 +13,7 @@ public class StructureBuilderWorldGen extends StructureBuilder {
 
 	@Override
 	public void instantConstruction() {
-		template.getValidationSettings().preGeneration(world, buildOrigin, buildFace, template, bb);
+		template.getValidationSettings().preGeneration(world, buildOrigin, getBuildFace(), template, bb);
 		super.instantConstruction();
 		template.getValidationSettings().postGeneration(world, buildOrigin, bb);
 	}

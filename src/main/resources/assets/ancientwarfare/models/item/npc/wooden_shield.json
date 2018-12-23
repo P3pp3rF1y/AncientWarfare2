@@ -1,6 +1,581 @@
 {
-    "parent": "ancientwarfare:item/npc/shield",
+    "credit": "Made with Blockbench",
     "textures": {
-        "layer0": "ancientwarfare:items/npc/wooden_shield"
+        "0": "ancientwarfare:items/npc/wooden_shield",
+        "1": "ancientwarfare:items/npc/shield_handle"
+    },
+    "elements": [
+        {
+            "name": "border1",
+            "from": [
+                2,
+                13,
+                7
+            ],
+            "to": [
+                14,
+                14,
+                8
+            ],
+            "rotation": {
+                "angle": 0,
+                "axis": "y",
+                "origin": [
+                    8.4855,
+                    8,
+                    7
+                ]
+            },
+            "faces": {
+                "north": {
+                    "uv": [
+                        0.5,
+                        1,
+                        6.5,
+                        0.5
+                    ],
+                    "texture": "#0"
+                },
+                "south": {
+                    "uv": [
+                        0.5,
+                        1,
+                        6.5,
+                        0.5
+                    ],
+                    "texture": "#0"
+                },
+                "up": {
+                    "uv": [
+                        0.5,
+                        0.5,
+                        6.5,
+                        0
+                    ],
+                    "texture": "#0",
+                    "rotation": 180
+                },
+                "down": {
+                    "uv": [
+                        0.5,
+                        1,
+                        6.5,
+                        0.5
+                    ],
+                    "texture": "#0",
+                    "rotation": 180
+                }
+            }
+        },
+        {
+            "name": "border3",
+            "from": [
+                1.99387,
+                5.5145,
+                7.00614
+            ],
+            "to": [
+                3,
+                13.99999,
+                8
+            ],
+            "rotation": {
+                "angle": 0,
+                "axis": "x",
+                "origin": [
+                    8,
+                    8,
+                    7
+                ]
+            },
+            "faces": {
+                "north": {
+                    "uv": [
+                        0.5,
+                        1,
+                        6.5,
+                        0.5
+                    ],
+                    "texture": "#0",
+                    "rotation": 90
+                },
+                "east": {
+                    "uv": [
+                        0.5,
+                        1,
+                        6.5,
+                        0.5
+                    ],
+                    "texture": "#0",
+                    "rotation": 90
+                },
+                "south": {
+                    "uv": [
+                        0.5,
+                        1,
+                        6.5,
+                        0.5
+                    ],
+                    "texture": "#0",
+                    "rotation": 270
+                },
+                "west": {
+                    "uv": [
+                        0.5,
+                        0.5,
+                        6.5,
+                        0
+                    ],
+                    "texture": "#0",
+                    "rotation": 90
+                }
+            }
+        },
+        {
+            "name": "border4",
+            "from": [
+                5.5145,
+                2,
+                7
+            ],
+            "to": [
+                10.4855,
+                3,
+                8
+            ],
+            "rotation": {
+                "angle": -45,
+                "axis": "z",
+                "origin": [
+                    8,
+                    8,
+                    8
+                ]
+            },
+            "faces": {
+                "north": {
+                    "uv": [
+                        0.5,
+                        0.5,
+                        6.5,
+                        1
+                    ],
+                    "texture": "#0"
+                },
+                "south": {
+                    "uv": [
+                        0.5,
+                        0.5,
+                        6.5,
+                        1
+                    ],
+                    "texture": "#0"
+                },
+                "up": {
+                    "uv": [
+                        0.5,
+                        0.5,
+                        6.5,
+                        1
+                    ],
+                    "texture": "#0"
+                },
+                "down": {
+                    "uv": [
+                        0.5,
+                        0.5,
+                        6.5,
+                        1
+                    ],
+                    "texture": "#0"
+                }
+            }
+        },
+        {
+            "name": "border5",
+            "from": [
+                5.5145,
+                2,
+                7
+            ],
+            "to": [
+                10.4855,
+                3,
+                8
+            ],
+            "rotation": {
+                "angle": 0,
+                "axis": "y",
+                "origin": [
+                    8,
+                    8,
+                    8
+                ]
+            },
+            "faces": {
+                "north": {
+                    "uv": [
+                        0.5,
+                        0.5,
+                        6.5,
+                        1
+                    ],
+                    "texture": "#0"
+                },
+                "south": {
+                    "uv": [
+                        0.5,
+                        0.5,
+                        6.5,
+                        1
+                    ],
+                    "texture": "#0"
+                },
+                "up": {
+                    "uv": [
+                        0.5,
+                        0.5,
+                        6.5,
+                        1
+                    ],
+                    "texture": "#0"
+                },
+                "down": {
+                    "uv": [
+                        0.5,
+                        0,
+                        6.5,
+                        0.5
+                    ],
+                    "texture": "#0"
+                }
+            }
+        },
+        {
+            "name": "border6",
+            "from": [
+                5.5145,
+                2,
+                7
+            ],
+            "to": [
+                10.4855,
+                3,
+                8
+            ],
+            "rotation": {
+                "angle": 45,
+                "axis": "z",
+                "origin": [
+                    8,
+                    8,
+                    8
+                ]
+            },
+            "faces": {
+                "north": {
+                    "uv": [
+                        0.5,
+                        0.5,
+                        6.5,
+                        1
+                    ],
+                    "texture": "#0"
+                },
+                "south": {
+                    "uv": [
+                        0.5,
+                        0.5,
+                        6.5,
+                        1
+                    ],
+                    "texture": "#0"
+                },
+                "up": {
+                    "uv": [
+                        0.5,
+                        0.5,
+                        6.5,
+                        1
+                    ],
+                    "texture": "#0"
+                },
+                "down": {
+                    "uv": [
+                        0.5,
+                        0.5,
+                        6.5,
+                        1
+                    ],
+                    "texture": "#0"
+                }
+            }
+        },
+        {
+            "name": "border7",
+            "from": [
+                13,
+                5.5145,
+                7.00265
+            ],
+            "to": [
+                13.99736,
+                14,
+                8
+            ],
+            "rotation": {
+                "angle": 0,
+                "axis": "x",
+                "origin": [
+                    8,
+                    8,
+                    8
+                ]
+            },
+            "faces": {
+                "north": {
+                    "uv": [
+                        0.5,
+                        0.5,
+                        6.5,
+                        1
+                    ],
+                    "texture": "#0",
+                    "rotation": 90
+                },
+                "east": {
+                    "uv": [
+                        0.5,
+                        0,
+                        6.5,
+                        0.5
+                    ],
+                    "texture": "#0",
+                    "rotation": 270
+                },
+                "south": {
+                    "uv": [
+                        0.5,
+                        0.5,
+                        6.5,
+                        1
+                    ],
+                    "texture": "#0",
+                    "rotation": 270
+                },
+                "west": {
+                    "uv": [
+                        0.5,
+                        0.5,
+                        6.5,
+                        1
+                    ],
+                    "texture": "#0",
+                    "rotation": 270
+                }
+            }
+        },
+        {
+            "name": "shieldHandle",
+            "from": [
+                7,
+                5,
+                8
+            ],
+            "to": [
+                9,
+                11,
+                14
+            ],
+            "rotation": {
+                "angle": 0,
+                "axis": "y",
+                "origin": [
+                    10,
+                    6,
+                    8
+                ]
+            },
+            "faces": {
+                "north": {
+                    "uv": [
+                        3,
+                        3,
+                        4,
+                        6
+                    ],
+                    "texture": "#1"
+                },
+                "east": {
+                    "uv": [
+                        0,
+                        3,
+                        3,
+                        6
+                    ],
+                    "texture": "#1",
+                    "rotation": 90
+                },
+                "south": {
+                    "uv": [
+                        7,
+                        3,
+                        8,
+                        6
+                    ],
+                    "texture": "#1"
+                },
+                "west": {
+                    "uv": [
+                        4,
+                        3,
+                        7,
+                        6
+                    ],
+                    "texture": "#1",
+                    "rotation": 90
+                },
+                "up": {
+                    "uv": [
+                        3,
+                        0,
+                        4,
+                        3
+                    ],
+                    "texture": "#1"
+                },
+                "down": {
+                    "uv": [
+                        4,
+                        0,
+                        5,
+                        3
+                    ],
+                    "texture": "#1"
+                }
+            }
+        },
+        {
+            "name": "shieldBodyFront",
+            "from": [
+                3,
+                3,
+                7.25
+            ],
+            "to": [
+                13,
+                13,
+                7.75
+            ],
+            "faces": {
+                "north": {
+                    "uv": [
+                        1,
+                        1,
+                        6,
+                        6
+                    ],
+                    "texture": "#0"
+                }
+            }
+        },
+        {
+            "name": "shieldBodyBack",
+            "from": [
+                2,
+                2,
+                7.5
+            ],
+            "to": [
+                14,
+                14,
+                8
+            ],
+            "faces": {
+                "south": {
+                    "uv": [
+                        7.5,
+                        1,
+                        12.5,
+                        6
+                    ],
+                    "texture": "#0"
+                }
+            }
+        }
+    ],
+    "display": {
+        "thirdperson_righthand": {
+            "rotation": [
+                -90,
+                -90,
+                -90
+            ],
+            "translation": [
+                3,
+                -2,
+                2
+            ]
+        },
+        "thirdperson_lefthand": {
+            "rotation": [
+                -90,
+                -90,
+                -90
+            ],
+            "translation": [
+                3,
+                -2,
+                2
+            ]
+        },
+        "firstperson_righthand": {
+            "rotation": [
+                0,
+                0,
+                10
+            ],
+            "translation": [
+                0,
+                -2,
+                0
+            ]
+        },
+        "gui": {
+            "rotation": [
+                0,
+                180,
+                0
+            ]
+        },
+        "firstperson_lefthand": {
+            "translation": [
+                0,
+                -2,
+                0
+            ],
+            "rotation": [
+                0,
+                0,
+                10
+            ]
+        },
+        "ground": {
+            "scale": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "rotation": [
+                0,
+                0,
+                0
+            ],
+            "translation": [
+                0,
+                2,
+                0
+            ]
+        }
     }
 }

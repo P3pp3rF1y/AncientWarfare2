@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.structure.command;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.command.NumberInvalidException;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -11,13 +10,18 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.shadowmage.ancientwarfare.core.command.ISubCommand;
+import net.shadowmage.ancientwarfare.core.command.ParentCommand;
+import net.shadowmage.ancientwarfare.core.command.SimpleSubCommand;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.item.ItemStructureScanner;
 import net.shadowmage.ancientwarfare.structure.item.ItemStructureSettings;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
+import net.shadowmage.ancientwarfare.structure.template.WorldGenStructureManager;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
 import net.shadowmage.ancientwarfare.structure.template.load.TemplateLoader;
+import net.shadowmage.ancientwarfare.structure.tile.ScannerCommandTracker;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -25,7 +29,28 @@ import java.io.File;
 import java.util.Collections;
 import java.util.List;
 
-public class CommandStructure extends CommandBase {
+import static net.shadowmage.ancientwarfare.structure.tile.ScannerCommandTracker.CommandType.REEXPORT;
+import static net.shadowmage.ancientwarfare.structure.tile.ScannerCommandTracker.CommandType.RELOAD_MAIN_SETTINGS;
+
+public class CommandStructure extends ParentCommand {
+
+	public CommandStructure() {
+		registerSubCommand(new DeleteCommand());
+		registerSubCommand(new BuildCommand());
+		registerSubCommand(new SaveCommand());
+		registerSubCommand(new SimpleSubCommand("scannersReloadMainSettings",
+				(server, sender, args) -> ScannerCommandTracker.issueGlobalCommand(RELOAD_MAIN_SETTINGS)));
+		registerSubCommand(new SimpleSubCommand("scannersReexport",
+				(server, sender, args) -> ScannerCommandTracker.issueGlobalCommand(REEXPORT)));
+		registerSubCommand(new SimpleSubCommand("reload",
+				(server, sender, args) -> {
+					WorldGenStructureManager.INSTANCE.loadBiomeList(); //reset biome to template cache
+					TemplateLoader.INSTANCE.reloadAll();
+					sender.sendMessage(new TextComponentTranslation("command.aw.structure.reloaded"));
+				}));
+		registerSubCommand(new SimpleSubCommand("scannersStartProcessingCommands", (server, sender, args) -> AWStructureStatics.processScannerCommands = true));
+		registerSubCommand(new SimpleSubCommand("scannersStopProcessingCommands", (server, sender, args) -> AWStructureStatics.processScannerCommands = false));
+	}
 
 	@Override
 	public String getName() {
@@ -37,105 +62,122 @@ public class CommandStructure extends CommandBase {
 		return "command.aw.structure.usage";
 	}
 
-	@Override
-	public void execute(MinecraftServer server, ICommandSender sender, String[] var2) throws CommandException {
-		if (var2.length == 0) {
-			throw new WrongUsageException(getUsage(sender));
-		}
-		String cmd = var2[0].toLowerCase();
-		switch (cmd) {
-			case "delete":
-				delete(sender, var2);
-				break;
-			case "build":
-				build(sender, var2);
-				break;
-			case "save":
-				save(sender, var2);
-				break;
-			case "reload":
-				TemplateLoader.INSTANCE.reloadAll();
-				sender.sendMessage(new TextComponentTranslation("command.aw.structure.reloaded"));
-		}
-	}
-
-	private void save(ICommandSender sender, String[] var2) {
-		if (sender instanceof EntityLivingBase) {
-			@Nonnull ItemStack stack = ((EntityLivingBase) sender).getHeldItemMainhand();
-			if (!stack.isEmpty()) {
-				ItemStructureSettings settings = ItemStructureSettings.getSettingsFor(stack);
-				if (settings.hasPos1() && settings.hasPos2() && settings.hasBuildKey() && (settings.hasName() || var2.length > 1)) {
-					String name = settings.hasName() ? settings.name() : var2[1];
-					ItemStructureScanner.setStructureName(stack, name);
-					if (ItemStructureScanner.scanStructure(sender.getEntityWorld(), stack)) {
-						sender.sendMessage(new TextComponentTranslation("command.aw.structure.exported", var2[1]));
-					}
-				} else {
-					sender.sendMessage(new TextComponentTranslation("command.aw.structure.incomplete_data"));
-				}
-			}
-		}
-	}
-
-	private void build(ICommandSender sender, String[] var2) throws WrongUsageException, NumberInvalidException {
-		if (var2.length < 5) {
-			throw new WrongUsageException(getUsage(sender));
+	private class SaveCommand implements ISubCommand {
+		@Override
+		public String getName() {
+			return "save";
 		}
 
-		int x = CommandBase.parseInt(var2[2]);
-		int y = CommandBase.parseInt(var2[3]);
-		int z = CommandBase.parseInt(var2[4]);
-		EnumFacing face = EnumFacing.SOUTH;
-		if (var2.length > 5) {
-			face = EnumFacing.byName(var2[5]);
-		}
-		StructureTemplate template = StructureTemplateManager.INSTANCE.getTemplate(var2[1]);
-		TextComponentTranslation txt;
-		if (template == null) {
-			txt = new TextComponentTranslation("command.aw.structure.not_found", var2[1]);
-		} else {
-			StructureBuilder builder = new StructureBuilder(sender.getEntityWorld(), template, face, new BlockPos(x, y, z));
-			builder.instantConstruction();
-			txt = new TextComponentTranslation("command.aw.structure.built", var2[1], x, y, z);
-		}
-		sender.sendMessage(txt);
-	}
-
-	private void delete(ICommandSender sender, String[] var2) throws WrongUsageException {
-		if (var2.length < 2) {
-			throw new WrongUsageException(getUsage(sender));
-		}
-		String name = var2[1];
-		boolean flag = StructureTemplateManager.INSTANCE.removeTemplate(name);
-		if (flag)//check if var2.len>=3, pull string of end...if string==true, try delete template file for name
-		{
-			TextComponentTranslation txt = new TextComponentTranslation("command.aw.structure.template_removed", name);
-			sender.sendMessage(txt);
-			if (var2.length >= 3) {
-				boolean shouldDelete = var2[2].equalsIgnoreCase("true");
-				if (shouldDelete) {
-					if (deleteTemplateFile(name)) {
-						txt = new TextComponentTranslation("command.aw.structure.file_deleted", name);
+		@Override
+		public void execute(MinecraftServer server, ICommandSender sender, String[] subArgs) throws CommandException {
+			if (sender instanceof EntityLivingBase) {
+				@Nonnull ItemStack stack = ((EntityLivingBase) sender).getHeldItemMainhand();
+				if (!stack.isEmpty()) {
+					ItemStructureSettings settings = ItemStructureSettings.getSettingsFor(stack);
+					if (settings.hasPos1() && settings.hasPos2() && settings.hasBuildKey() && (settings.hasName() || subArgs.length > 0)) {
+						String name = settings.hasName() ? settings.name() : subArgs[0];
+						ItemStructureScanner.setStructureName(stack, name);
+						if (ItemStructureScanner.scanStructure(sender.getEntityWorld(), stack)) {
+							sender.sendMessage(new TextComponentTranslation("command.aw.structure.exported", subArgs[0]));
+						}
 					} else {
-						txt = new TextComponentTranslation("command.aw.structure.file_not_found", name);
+						sender.sendMessage(new TextComponentTranslation("command.aw.structure.incomplete_data"));
 					}
-					sender.sendMessage(txt);
 				}
 			}
-		} else//send template not found message
-		{
-			sender.sendMessage(new TextComponentTranslation("command.aw.structure.not_found", name));
+		}
+
+		@Override
+		public int getMaxArgs() {
+			return 1;
 		}
 	}
 
-	private boolean deleteTemplateFile(String name) {
-		String path = TemplateLoader.INCLUDE_DIRECTORY + name + "." + AWStructureStatics.templateExtension;
-		File file = new File(path);
-		if (file.exists()) {
-			file.delete();
-			return true;
+	private class BuildCommand implements ISubCommand {
+		@Override
+		public String getName() {
+			return "build";
 		}
-		return false;
+
+		@Override
+		public void execute(MinecraftServer server, ICommandSender sender, String[] subArgs) throws CommandException {
+			if (subArgs.length < 4) {
+				throw new WrongUsageException(getUsage(sender));
+			}
+
+			int x = CommandBase.parseInt(subArgs[1]);
+			int y = CommandBase.parseInt(subArgs[2]);
+			int z = CommandBase.parseInt(subArgs[3]);
+			EnumFacing face = EnumFacing.SOUTH;
+			if (subArgs.length > 4) {
+				face = EnumFacing.byName(subArgs[4]);
+			}
+			StructureTemplate template = StructureTemplateManager.INSTANCE.getTemplate(subArgs[0]);
+			TextComponentTranslation txt;
+			if (template == null) {
+				txt = new TextComponentTranslation("command.aw.structure.not_found", subArgs[0]);
+			} else {
+				StructureBuilder builder = new StructureBuilder(sender.getEntityWorld(), template, face, new BlockPos(x, y, z));
+				builder.instantConstruction();
+				txt = new TextComponentTranslation("command.aw.structure.built", subArgs[0], x, y, z);
+			}
+			sender.sendMessage(txt);
+		}
+
+		@Override
+		public int getMaxArgs() {
+			return 5;
+		}
+	}
+
+	private class DeleteCommand implements ISubCommand {
+		@Override
+		public String getName() {
+			return "delete";
+		}
+
+		@Override
+		public void execute(MinecraftServer server, ICommandSender sender, String[] subArgs) throws CommandException {
+			if (subArgs.length < 1) {
+				throw new WrongUsageException(getUsage(sender));
+			}
+			String name = subArgs[0];
+			boolean flag = StructureTemplateManager.INSTANCE.removeTemplate(name);
+			if (flag)//check if var2.len>=3, pull string of end...if string==true, try delete template file for name
+			{
+				TextComponentTranslation txt = new TextComponentTranslation("command.aw.structure.template_removed", name);
+				sender.sendMessage(txt);
+				if (subArgs.length > 1) {
+					boolean shouldDelete = subArgs[1].equalsIgnoreCase("true");
+					if (shouldDelete) {
+						if (deleteTemplateFile(name)) {
+							txt = new TextComponentTranslation("command.aw.structure.file_deleted", name);
+						} else {
+							txt = new TextComponentTranslation("command.aw.structure.file_not_found", name);
+						}
+						sender.sendMessage(txt);
+					}
+				}
+			} else//send template not found message
+			{
+				sender.sendMessage(new TextComponentTranslation("command.aw.structure.not_found", name));
+			}
+		}
+
+		private boolean deleteTemplateFile(String name) {
+			String path = TemplateLoader.INCLUDE_DIRECTORY + name + "." + AWStructureStatics.templateExtension;
+			File file = new File(path);
+			if (file.exists()) {
+				file.delete();
+				return true;
+			}
+			return false;
+		}
+
+		@Override
+		public int getMaxArgs() {
+			return 2;
+		}
 	}
 
 	@Override
@@ -146,7 +188,7 @@ public class CommandStructure extends CommandBase {
 	@Override
 	public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
 		if (args.length == 1) {
-			return CommandBase.getListOfStringsMatchingLastWord(args, "build", "delete", "save");
+			return super.getTabCompletions(server, sender, args, targetPos);
 		} else if (args.length > 5 && args[0].equalsIgnoreCase("build")) {
 			return CommandBase.getListOfStringsMatchingLastWord(args, "north", "east", "south", "west");
 		}

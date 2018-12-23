@@ -12,6 +12,7 @@ import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.JsonUtils;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.Tuple;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -19,8 +20,11 @@ import net.shadowmage.ancientwarfare.core.util.RegistryTools;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.StreamSupport;
@@ -29,6 +33,10 @@ public class JsonHelper {
 
 	public static IBlockState getBlockState(JsonObject parent, String elementName) {
 		return getBlockState(parent, elementName, Block::getDefaultState, BlockTools::updateProperty);
+	}
+
+	public static BlockStateMatcher getBlockStateMatcher(JsonElement stateJson) {
+		return BlockTools.getBlockState(getBlockNameAndProperties(stateJson), BlockStateMatcher::new, BlockStateMatcher::addProperty);
 	}
 
 	public static BlockStateMatcher getBlockStateMatcher(JsonObject stateJson) {
@@ -115,16 +123,18 @@ public class JsonHelper {
 		return new Tuple<>(JsonUtils.getString(stateJson, "name"), properties);
 	}
 
+	private static Tuple<String, Map<String, String>> getBlockNameAndProperties(JsonElement stateElement) {
+		if (stateElement.isJsonPrimitive()) {
+			return new Tuple<>(JsonUtils.getString(stateElement, ""), new HashMap<>());
+		}
+
+		return getBlockNameAndProperties(JsonUtils.getJsonObject(stateElement, ""));
+	}
 	private static Tuple<String, Map<String, String>> getBlockNameAndProperties(JsonObject parent, String elementName) {
 		if (!JsonUtils.hasField(parent, elementName)) {
 			throw new JsonParseException("Expected " + elementName + " member in " + parent.toString());
 		}
-
-		if (JsonUtils.isJsonPrimitive(parent, elementName)) {
-			return new Tuple<>(JsonUtils.getString(parent, elementName), new HashMap<>());
-		}
-
-		return getBlockNameAndProperties(JsonUtils.getJsonObject(parent, elementName));
+		return getBlockNameAndProperties(parent.get(elementName));
 	}
 
 	public static Predicate<IBlockState> getBlockStateMatcher(JsonObject json, String arrayElement, String individualElement) {
@@ -157,25 +167,56 @@ public class JsonHelper {
 
 	public static <K, V> Map<K, V> mapFromJson(JsonObject json, String propertyName, Function<Entry<String, JsonElement>, K> parseKey,
 			Function<Entry<String, JsonElement>, V> parseValue) {
-		return mapFromJsonArray(JsonUtils.getJsonArray(json, propertyName), new HashMap<>(), parseKey, parseValue);
+		return mapFromObjectProperties(JsonUtils.getJsonObject(json, propertyName), new HashMap<>(), parseKey, parseValue);
 	}
 
 	public static <K, V> Map<K, V> mapFromJson(JsonElement json, Function<Entry<String, JsonElement>, K> parseKey,
 			Function<Entry<String, JsonElement>, V> parseValue) {
-		return mapFromJsonArray(JsonUtils.getJsonArray(json, ""), new HashMap<>(), parseKey, parseValue);
+		return mapFromObjectProperties(JsonUtils.getJsonObject(json, ""), new HashMap<>(), parseKey, parseValue);
 	}
 
 	public static <K, V> void mapFromJson(JsonObject json, String propertyName, Map<K, V> ret, Function<Entry<String, JsonElement>, K> parseKey,
 			Function<Entry<String, JsonElement>, V> parseValue) {
-		mapFromJsonArray(JsonUtils.getJsonArray(json, propertyName), ret, parseKey, parseValue);
+		mapFromObjectProperties(JsonUtils.getJsonObject(json, propertyName), ret, parseKey, parseValue);
 	}
 
-	private static <K, V> Map<K, V> mapFromJsonArray(JsonArray arr, Map<K, V> ret, Function<Entry<String, JsonElement>, K> parseKey,
+	public static <K, V> Map<K, V> mapFromObjectArray(JsonArray jsonArray, String keyName, String valueName, Function<JsonElement, K> parseKey,
+			Function<JsonElement, V> parseValue) {
+		Map<K, V> ret = new HashMap<>();
+		for (JsonElement element : jsonArray) {
+			JsonObject entry = JsonUtils.getJsonObject(element, "");
+			ret.put(parseKey.apply(entry.get(keyName)), parseValue.apply(entry.get(valueName)));
+		}
+		return ret;
+	}
+
+	private static <K, V> Map<K, V> mapFromObjectProperties(JsonObject jsonObject, Map<K, V> ret, Function<Entry<String, JsonElement>, K> parseKey,
 			Function<Entry<String, JsonElement>, V> parseValue) {
 
-		for (JsonElement e : arr) {
-			Entry<String, JsonElement> pair = JsonUtils.getJsonObject(e, "").entrySet().iterator().next();
+		for (Map.Entry<String, JsonElement> pair : jsonObject.entrySet()) {
 			ret.put(parseKey.apply(pair), parseValue.apply(pair));
+		}
+
+		return ret;
+	}
+
+	public static List<ItemStack> getItemStacks(JsonArray stacks) {
+		List<ItemStack> ret = NonNullList.create();
+		for (JsonElement stackElement : stacks) {
+			ret.add(getItemStack(JsonUtils.getJsonObject(stackElement, "itemstack")));
+		}
+		return ret;
+	}
+
+	public static <V> Set<V> setFromJson(JsonElement element, Function<JsonElement, V> getElement) {
+		return setFromJson(JsonUtils.getJsonArray(element, ""), getElement);
+	}
+
+	private static <V> Set<V> setFromJson(JsonArray array, Function<JsonElement, V> getElement) {
+		Set<V> ret = new HashSet<>();
+
+		for (JsonElement element : array) {
+			ret.add(getElement.apply(element));
 		}
 
 		return ret;

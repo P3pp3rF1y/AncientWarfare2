@@ -17,6 +17,8 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIWatchClosest;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionCommander;
 
 public class NpcFactionLeader extends NpcFaction {
+	private NpcAIAttackMeleeLongRange meleeAI;
+
 	public NpcFactionLeader(World world) {
 		super(world);
 		addAI();
@@ -28,13 +30,14 @@ public class NpcFactionLeader extends NpcFaction {
 	}
 
 	private void addAI() {
+		meleeAI = new NpcAIAttackMeleeLongRange(this);
 		tasks.addTask(0, new EntityAISwimming(this));
 		tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
 		tasks.addTask(0, new NpcAIDoor(this, true));
 		tasks.addTask(1, new NpcAIFactionCommander(this));
 		tasks.addTask(1, new NpcAIFollowPlayer(this));
-		tasks.addTask(2, new NpcAIMoveHome(this, 50F, 5F, 30F, 5F));
-		tasks.addTask(3, new NpcAIAttackMeleeLongRange(this));
+		tasks.addTask(2, meleeAI);
+		tasks.addTask(3, new NpcAIMoveHome(this, 50F, 5F, 30F, 5F));
 
 		tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
 		tasks.addTask(102, new NpcAIWander(this));
@@ -62,5 +65,14 @@ public class NpcFactionLeader extends NpcFaction {
 	@Override
 	public boolean shouldSleep() {
 		return false;
+	}
+
+	@Override
+	public void onWeaponInventoryChanged() {
+		super.onWeaponInventoryChanged();
+
+		if (meleeAI != null) {
+			meleeAI.setAttackReachFromWeapon(getHeldItemMainhand());
+		}
 	}
 }

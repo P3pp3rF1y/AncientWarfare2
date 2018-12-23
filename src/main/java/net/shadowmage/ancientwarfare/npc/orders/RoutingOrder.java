@@ -155,16 +155,15 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
 		}
 
 		private int depositAllItems(IItemHandler from, IItemHandler to) {
-			int movedStacks = 0;
-			int movedSize = 0;
+			float movedStacks = 0;
 			for (ItemStack filter : filters) {
 				if (filter.isEmpty()) {
 					continue;
 				}
-				movedSize += InventoryTools.transferItems(from, to, filter, Integer.MAX_VALUE, ignoreDamage, ignoreTag);
-				movedStacks += movedSize / filter.getMaxStackSize();
+				int movedSize = InventoryTools.transferItems(from, to, filter, Integer.MAX_VALUE, ignoreDamage, ignoreTag);
+				movedStacks += (float) movedSize / filter.getMaxStackSize();
 			}
-			return movedStacks;
+			return (int) Math.ceil(movedStacks);
 		}
 
 		private int depositAllItemsExcept(IItemHandler from, IItemHandler to) {
@@ -173,12 +172,13 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
 				if (matchesFilter(stack)) {
 					continue;
 				}
-				ItemStack remaining = InventoryTools.insertItem(to, stack);
-				int moved = stack.getCount() - remaining.getCount();
-				movedStacks += ((float) moved) / ((float) stack.getMaxStackSize());
-				InventoryTools.removeItems(from, stack, moved);
+				ItemStack remaining = InventoryTools.insertItem(to, stack, true);
+				int toMove = stack.getCount() - remaining.getCount();
+				ItemStack removedStack = InventoryTools.removeItems(from, stack, toMove);
+				InventoryTools.insertItem(to, removedStack);
+				movedStacks += ((float) removedStack.getCount()) / ((float) stack.getMaxStackSize());
 			}
-			return (int) movedStacks;
+			return (int) Math.ceil(movedStacks);
 		}
 
 		private boolean matchesFilter(ItemStack stack) {
@@ -186,7 +186,7 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
 		}
 
 		private int fillTo(IItemHandler from, IItemHandler to) {
-			int moved = 0;
+			float moved = 0;
 			for (ItemStack filter : filters) {
 				if (filter.isEmpty()) {
 					continue;
@@ -198,29 +198,28 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
 				}
 				toMove -= foundCount;
 				int m1 = InventoryTools.transferItems(from, to, filter, toMove, ignoreDamage, ignoreTag);
-				moved += m1 / filter.getMaxStackSize();
+				moved += (float) m1 / filter.getMaxStackSize();
 			}
-			return moved;
+			return (int) Math.ceil(moved);
 		}
 
-		private int depositRatio(IItemHandler from, IItemHandler to, boolean reversed) {
-			int movedTotal = 0;
-			int toMove = 0;
+		private int depositRatio(IItemHandler from, IItemHandler to) {
+			float movedTotal = 0;
 			for (ItemStack filter : filters) {
 				if (filter.isEmpty()) {
 					continue;
 				}
 				int foundCount = InventoryTools.getCountOf(from, filter);
-				toMove = (int) (foundCount * (1f / (float) filter.getCount()));
-				InventoryTools.transferItems(from, to, filter, toMove, ignoreDamage, ignoreTag);
-				movedTotal++;
+				int toMove = (int) (foundCount * (1f / (float) filter.getCount()));
+				int moved = InventoryTools.transferItems(from, to, filter, toMove, ignoreDamage, ignoreTag);
+				movedTotal += (float) moved / filter.getMaxStackSize();
 			}
 
-			return movedTotal;
+			return (int) Math.ceil(movedTotal);
 		}
 
 		private int depositExact(IItemHandler from, IItemHandler to) {
-			int movedTotal = 0;
+			float movedTotal = 0;
 			for (ItemStack filter : filters) {
 				if (filter.isEmpty()) {
 					continue;
@@ -233,13 +232,13 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
 				if (!InventoryTools.canInventoryHold(to, filter))
 					continue;
 				int moved = InventoryTools.transferItems(from, to, filter, toMove, ignoreDamage, ignoreTag);
-				movedTotal += moved / filter.getMaxStackSize();
+				movedTotal += (float) moved / filter.getMaxStackSize();
 			}
-			return movedTotal;
+			return (int) Math.ceil(movedTotal);
 		}
 
 		private int fillAtLeast(IItemHandler from, IItemHandler to) {
-			int movedTotal = 0;
+			float movedTotal = 0;
 			for (ItemStack filter : filters) {
 				if (filter.isEmpty()) {
 					continue;
@@ -258,9 +257,9 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
 				if (!InventoryTools.canInventoryHold(to, filterAdjusted))
 					continue;
 				int moved = InventoryTools.transferItems(from, to, filterAdjusted, foundCount, ignoreDamage, ignoreTag);
-				movedTotal += moved / filter.getMaxStackSize();
+				movedTotal += (float) moved / filter.getMaxStackSize();
 			}
-			return movedTotal;
+			return (int) Math.ceil(movedTotal);
 		}
 
 		private void readFromNBT(NBTTagCompound tag) {
@@ -436,10 +435,10 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
 				return p.depositAllItems(target, npc);
 
 			case DEPOSIT_RATIO:
-				return p.depositRatio(npc, target, false);
+				return p.depositRatio(npc, target);
 
 			case WITHDRAW_RATIO:
-				return p.depositRatio(target, npc, true);
+				return p.depositRatio(target, npc);
 
 			case DEPOSIT_EXACT:
 				return p.depositExact(npc, target);

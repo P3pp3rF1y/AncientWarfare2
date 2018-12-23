@@ -4,13 +4,19 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
+import javax.annotation.Nullable;
 import java.awt.*;
 
 @SideOnly(Side.CLIENT)
@@ -299,4 +305,18 @@ public class RenderTools {
 		return player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partialTick;
 	}
 
+	@SuppressWarnings("squid:S2259")
+	@SideOnly(Side.CLIENT)
+	public static void renderTESR(@Nullable TileEntity te, BlockPos pos) {
+		TileEntitySpecialRenderer<TileEntity> renderer = TileEntityRendererDispatcher.instance.getRenderer(te);
+		if (renderer != null) {
+			World dispatcherWorld = TileEntityRendererDispatcher.instance.world;
+			//noinspection ConstantConditions
+			TileEntityRendererDispatcher.instance.setWorld(te.getWorld());
+
+			//noinspection ConstantConditions
+			renderer.render(te, pos.getX(), pos.getY(), pos.getZ(), 0, -1, 1);
+			TileEntityRendererDispatcher.instance.setWorld(dispatcherWorld);
+		}
+	}
 }

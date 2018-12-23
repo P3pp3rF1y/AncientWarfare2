@@ -1,9 +1,11 @@
 package net.shadowmage.ancientwarfare.structure.town;
 
 import net.minecraft.block.Block;
+import net.shadowmage.ancientwarfare.core.util.CompatUtils;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplate.TownStructureEntry;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplate.TownWallEntry;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,6 +55,10 @@ public class TownTemplateParser {
 				break;
 			} else if (lower.startsWith("name")) {
 				template.setTownTypeName(StringTools.safeParseString("=", line));
+			} else if (line.startsWith("mods=")) {
+				if (!CompatUtils.areModsLoaded(StringTools.safeParseString("=", line).split(","))) {
+					return;
+				}
 			} else if (lower.startsWith("minsize")) {
 				template.setMinSize(StringTools.safeParseInt("=", line));
 			} else if (lower.startsWith("maxsize")) {
@@ -188,7 +194,7 @@ public class TownTemplateParser {
 				break;
 			} else {
 				String[] bits = line.split(":", -1);
-				int size = StringTools.safeParseInt(bits[0]);
+				int size = NumberUtils.toInt(bits[0]);
 				int[] pattern = parseWallPattern(bits[1]);
 				template.addWallPattern(size, pattern);
 			}
@@ -214,7 +220,7 @@ public class TownTemplateParser {
 		}
 		List<Integer> dims = new ArrayList<>();
 		for (String bit : bits) {
-			dims.add(StringTools.safeParseInt(bit.toLowerCase(Locale.ENGLISH)));
+			dims.add(NumberUtils.toInt(bit.toLowerCase(Locale.ENGLISH)));
 		}
 		return dims;
 	}
@@ -226,19 +232,19 @@ public class TownTemplateParser {
 
 	private static TownStructureEntry parseStructureWeight(String line) {
 		String[] bits = line.split(":", -1);
-		return new TownStructureEntry(bits[0], StringTools.safeParseInt(bits[1]));
+		return new TownStructureEntry(bits[0], NumberUtils.toInt(bits[1]));
 	}
 
 	private static TownWallEntry parseWall(String line) {
 		String[] bits = line.split(":", -1);
-		return new TownWallEntry(bits[0], bits[1], StringTools.safeParseInt(bits[2]), StringTools.safeParseInt(bits[3]));
+		return new TownWallEntry(bits[0], bits[1], NumberUtils.toInt(bits[2]), NumberUtils.toInt(bits[3]));
 	}
 
 	private static int[] parseWallPattern(String line) {
 		String[] bits = line.split("-", -1);
 		int[] pattern = new int[bits.length];
 		for (int i = 0; i < bits.length; i++) {
-			pattern[i] = StringTools.safeParseInt(bits[i]);
+			pattern[i] = NumberUtils.toInt(bits[i]);
 		}
 		return pattern;
 	}

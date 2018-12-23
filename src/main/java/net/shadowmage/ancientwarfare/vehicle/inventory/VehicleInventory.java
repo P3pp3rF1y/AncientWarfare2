@@ -1,24 +1,3 @@
-/**
- * Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
- * This software is distributed under the terms of the GNU General Public License.
- * Please see COPYING for precise license information.
- * <p>
- * This file is part of Ancient Warfare.
- * <p>
- * Ancient Warfare is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * <p>
- * Ancient Warfare is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.vehicle.inventory;
 
 import net.minecraft.item.ItemStack;
@@ -26,7 +5,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.vehicle.armors.IVehicleArmor;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
-import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
 import net.shadowmage.ancientwarfare.vehicle.registry.AmmoRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.ArmorRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.UpgradeRegistry;
@@ -37,13 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VehicleInventory {
-
+	private static final String INVENTORY_TAG = "inventory";
 	private VehicleBase vehicle;
 
 	/**
 	 * individual inventories
 	 */
-	//TODO custom filters for the different inventory types
 	public ItemStackHandler upgradeInventory;
 	public ItemStackHandler ammoInventory;
 	public ItemStackHandler armorInventory;
@@ -61,11 +38,6 @@ public class VehicleInventory {
 		this.upgradeInventory = new UpgradeStackHandler(vehicle, upgrade);
 	}
 
-	/**
-	 * if inventory is valid, write this entire inventory to the passed tag
-	 *
-	 * @param commonTag
-	 */
 	public void writeToNBT(NBTTagCompound commonTag) {
 		NBTTagCompound tag = new NBTTagCompound();
 		if (this.upgradeInventory != null) {
@@ -80,21 +52,14 @@ public class VehicleInventory {
 		if (this.armorInventory != null) {
 			tag.setTag("armorInventory", this.armorInventory.serializeNBT());
 		}
-		commonTag.setTag("inventory", tag);
+		commonTag.setTag(INVENTORY_TAG, tag);
 	}
 
-	/**
-	 * blind read method, inv tag need not even be present
-	 * if present, will read the entire inventory from tag,
-	 * including setting initial inventory sizes
-	 *
-	 * @param commonTag
-	 */
 	public void readFromNBT(NBTTagCompound commonTag) {
-		if (!commonTag.hasKey("inventory")) {
+		if (!commonTag.hasKey(INVENTORY_TAG)) {
 			return;
 		}
-		NBTTagCompound tag = commonTag.getCompoundTag("inventory");
+		NBTTagCompound tag = commonTag.getCompoundTag(INVENTORY_TAG);
 		if (this.upgradeInventory != null) {
 			this.upgradeInventory.deserializeNBT(tag.getCompoundTag("upgradeInventory"));
 		}
@@ -113,22 +78,16 @@ public class VehicleInventory {
 		ArrayList<IVehicleArmor> armors = new ArrayList<IVehicleArmor>();
 		for (int i = 0; i < this.armorInventory.getSlots(); i++) {
 			ItemStack stack = this.armorInventory.getStackInSlot(i);
-			IVehicleArmor armor = ArmorRegistry.getArmorForStack(stack);
-			if (armor != null) {
-				armors.add(armor);
-			}
+			ArmorRegistry.getArmorForStack(stack).ifPresent(armors::add);
 		}
 		return armors;
 	}
 
 	public List<IVehicleUpgradeType> getInventoryUpgrades() {
-		ArrayList<IVehicleUpgradeType> upgrades = new ArrayList<IVehicleUpgradeType>();
+		ArrayList<IVehicleUpgradeType> upgrades = new ArrayList<>();
 		for (int i = 0; i < this.upgradeInventory.getSlots(); i++) {
 			ItemStack stack = this.upgradeInventory.getStackInSlot(i);
-			IVehicleUpgradeType upgrade = UpgradeRegistry.instance().getUpgrade(stack);
-			if (upgrade != null) {
-				upgrades.add(upgrade);
-			}
+			UpgradeRegistry.getUpgrade(stack).ifPresent(upgrades::add);
 		}
 		return upgrades;
 	}
@@ -137,8 +96,7 @@ public class VehicleInventory {
 		ArrayList<VehicleAmmoEntry> counts = new ArrayList<VehicleAmmoEntry>();
 		for (int i = 0; i < this.ammoInventory.getSlots(); i++) {
 			ItemStack stack = this.ammoInventory.getStackInSlot(i);
-			IAmmo ammo = AmmoRegistry.getAmmoForStack(stack);
-			if (ammo != null) {
+			AmmoRegistry.getAmmoForStack(stack).ifPresent(ammo -> {
 				boolean found = false;
 				for (VehicleAmmoEntry ent : counts) {
 					if (ent.baseAmmoType == ammo) {
@@ -151,24 +109,8 @@ public class VehicleInventory {
 					counts.add(new VehicleAmmoEntry(ammo));
 					counts.get(counts.size() - 1).ammoCount += stack.getCount();
 				}
-			}
+			});
 		}
 		return counts;
 	}
-
-	public boolean isAmmoValid(ItemStack stack) {
-		IAmmo type = AmmoRegistry.getAmmoForStack(stack);
-		return type != null && vehicle.vehicleType.isAmmoValidForInventory(type);
-	}
-
-	public boolean isArmorValid(ItemStack stack) {
-		IVehicleArmor armor = ArmorRegistry.getArmorForStack(stack);
-		return armor != null && vehicle.vehicleType.isArmorValid(armor);
-	}
-
-	public boolean isUpgradeValid(ItemStack stack) {
-		IVehicleUpgradeType upgrade = UpgradeRegistry.instance().getUpgrade(stack);
-		return upgrade != null && vehicle.vehicleType.isUpgradeValid(upgrade);
-	}
-
 }

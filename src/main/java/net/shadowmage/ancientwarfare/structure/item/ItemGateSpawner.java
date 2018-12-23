@@ -189,7 +189,7 @@ public class ItemGateSpawner extends ItemBaseStructure implements IItemKeyInterf
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void renderBox(EntityPlayer player, ItemStack stack, float delta) {
+	public void renderBox(EntityPlayer player, EnumHand hand, ItemStack stack, float delta) {
 		NBTTagCompound tag = stack.getTagCompound();
 		BlockPos p1;
 		BlockPos p2;

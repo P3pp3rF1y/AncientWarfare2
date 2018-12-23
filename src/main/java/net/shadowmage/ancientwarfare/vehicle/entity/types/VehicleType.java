@@ -1,24 +1,3 @@
-/**
- * Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
- * This software is distributed under the terms of the GNU General Public License.
- * Please see COPYING for precise license information.
- * <p>
- * This file is part of Ancient Warfare.
- * <p>
- * Ancient Warfare is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * <p>
- * Ancient Warfare is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.vehicle.entity.types;
 
 import net.minecraft.client.resources.I18n;
@@ -38,9 +17,9 @@ import net.shadowmage.ancientwarfare.vehicle.init.AWVehicleItems;
 import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
 import net.shadowmage.ancientwarfare.vehicle.upgrades.IVehicleUpgradeType;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -116,8 +95,6 @@ public abstract class VehicleType implements IVehicleType {
 	public List<IVehicleUpgradeType> validUpgrades = new ArrayList<>();
 	public List<IVehicleArmor> validArmors = new ArrayList<>();
 	public Map<Integer, IAmmo> ammoBySoldierRank = new HashMap<>();
-
-	public Map<Integer, HashSet<Integer>> neededResearch = new HashMap<>();
 
 	int storageBaySize = 0;
 	int ammoBaySize = 6;
@@ -405,8 +382,8 @@ public abstract class VehicleType implements IVehicleType {
 		return null;
 	}
 
-	public static Optional<VehicleBase> getVehicleForType(World world, int type, int level) {
-		if (type >= 0 && type < vehicleTypes.length && vehicleTypes[type] != null && vehicleTypes[type].isEnabled()) {
+	public static Optional<VehicleBase> getVehicleForType(@Nullable World world, int type, int level) {
+		if (world != null && type >= 0 && type < vehicleTypes.length && vehicleTypes[type] != null && vehicleTypes[type].isEnabled()) {
 			IVehicleType vehType = getVehicleType(type);
 			VehicleBase vehicle = new VehicleBase(world);
 			vehicle.setVehicleType(vehType, level);

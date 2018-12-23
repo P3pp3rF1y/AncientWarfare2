@@ -2,9 +2,10 @@ package net.shadowmage.ancientwarfare.vehicle.inventory;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
-import net.shadowmage.ancientwarfare.vehicle.armors.IVehicleArmor;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.registry.ArmorRegistry;
+
+import javax.annotation.Nonnull;
 
 public class ArmorStackHandler extends ItemStackHandler {
 	private VehicleBase vehicle;
@@ -14,12 +15,14 @@ public class ArmorStackHandler extends ItemStackHandler {
 		this.vehicle = vehicle;
 	}
 
+	@Nonnull
+	@Override
+	public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+		return isItemValid(stack) ? super.insertItem(slot, stack, simulate) : stack;
+	}
+
 	public boolean isItemValid(ItemStack par1ItemStack) {
-		IVehicleArmor armor = ArmorRegistry.getArmorForStack(par1ItemStack);
-		if (armor != null) {
-			return vehicle.vehicleType.isArmorValid(armor);
-		}
-		return false;
+		return ArmorRegistry.getArmorForStack(par1ItemStack).map(armor -> vehicle.vehicleType.isArmorValid(armor)).orElse(false);
 	}
 
 	@Override

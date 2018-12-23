@@ -30,7 +30,7 @@ import java.util.function.Predicate;
 public class RegistryLoader {
 	private RegistryLoader() {}
 
-	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+	public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
 	private static final Map<String, IRegistryDataParser> parsers = new HashMap<>();
 

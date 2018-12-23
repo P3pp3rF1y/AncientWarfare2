@@ -160,11 +160,6 @@ public class BlockFirePit extends BlockBaseStructure {
 	}
 
 	@Override
-	public boolean isBurning(IBlockAccess world, BlockPos pos) {
-		return world.getBlockState(pos).getValue(LIT);
-	}
-
-	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		ItemStack stack = player.getHeldItem(hand);
 		if (!state.getValue(LIT) && isFireStarter(stack)) {

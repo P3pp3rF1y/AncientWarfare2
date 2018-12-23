@@ -14,18 +14,16 @@ import net.shadowmage.ancientwarfare.structure.town.TownTemplateManager;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplateParser;
 import org.apache.commons.io.FilenameUtils;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -78,26 +76,6 @@ public class TemplateLoader {
 		loadTemplates();
 	}
 
-	private void loadStructureImage(String imageName, InputStream is) {
-		String img = FilenameUtils.getName(imageName);
-		try {
-			BufferedImage image = ImageIO.read(is);
-			if (image != null && image.getWidth() == AWStructureStatics.structureImageWidth && image.getHeight() == AWStructureStatics.structureImageHeight) {
-				StructureTemplateManager.INSTANCE.addTemplateImage(img, image);
-				AncientWarfareStructure.LOG.debug("loaded structure image of: " + img);
-			} else {
-				if (image == null) {
-					AncientWarfareStructure.LOG.error("Error loading image {}", img);
-				} else {
-					AncientWarfareStructure.LOG.error("Attempted to load improper sized template image: " + img + " with dimensions of: " + image.getWidth() + "x" + image.getHeight() + ".  Specified width/height is: " + AWStructureStatics.structureImageWidth + "x" + AWStructureStatics.structureImageHeight);
-				}
-			}
-		}
-		catch (IOException e) {
-			AncientWarfareStructure.LOG.error("Error loading image {}", img);
-		}
-	}
-
 	private int loadTemplatesFromSource(File source, String base, boolean saveFixedTemplate) {
 		AtomicInteger loaded = new AtomicInteger(0);
 		FileUtils.findFiles(source, base, (root, file) -> {
@@ -107,9 +85,7 @@ public class TemplateLoader {
 
 			String extension = FilenameUtils.getExtension(file.toString());
 
-			if (extension.equals("png") || extension.equals("jpg")) {
-				loadImageFromPath(file, name);
-			} else if (extension.equals(AWStructureStatics.townTemplateExtension) || extension.equals(AWStructureStatics.templateExtension)) {
+			if (extension.equals(AWStructureStatics.townTemplateExtension) || extension.equals(AWStructureStatics.templateExtension)) {
 				List<String> lines;
 				try (BufferedReader reader = Files.newBufferedReader(file, StandardCharsets.ISO_8859_1)) {
 					lines = reader.lines().filter(l -> !l.startsWith("#")).collect(Collectors.toList());
@@ -130,17 +106,13 @@ public class TemplateLoader {
 		return loaded.get();
 	}
 
-	private void loadImageFromPath(Path file, String name) {
-		try (InputStream stream = Files.newInputStream(file)) {
-			loadStructureImage(name, stream);
-		}
-		catch (IOException e) {
-			AncientWarfareStructure.LOG.error("Couldn't read image data {} from {}", name, file, e);
-		}
-	}
-
 	private int loadTemplate(Path fileName, List<String> lines, boolean saveFixedTemplate) {
-		FixResult<StructureTemplate> loadedTemplate = TemplateParser.INSTANCE.parseTemplate(fileName.toString(), lines);
+		Optional<FixResult<StructureTemplate>> result = TemplateParser.INSTANCE.parseTemplate(fileName.toString(), lines);
+		if (!result.isPresent()) {
+			return 0;
+		}
+
+		FixResult<StructureTemplate> loadedTemplate = result.get();
 		StructureTemplate template = loadedTemplate.getData();
 
 		if (loadedTemplate.isModified()) {

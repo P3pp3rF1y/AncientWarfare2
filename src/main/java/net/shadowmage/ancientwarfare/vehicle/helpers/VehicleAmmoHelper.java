@@ -124,9 +124,7 @@ public class VehicleAmmoHelper implements INBTSerializable<NBTTagCompound> {
 	}
 
 	public void handleClientAmmoSelection(ResourceLocation ammoRegistryName) {
-		if (!ammoRegistryName.equals(currentAmmoType)) {
-			NetworkHandler.sendToServer(new PacketAmmoSelect(vehicle, ammoRegistryName.toString()));
-		}
+		NetworkHandler.sendToServer(new PacketAmmoSelect(vehicle, ammoRegistryName.toString()));
 	}
 
 	public void updateSelectedAmmo(String ammoRegistryName) {

@@ -9,6 +9,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.SlotItemHandler;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.tile.TileDraftingStation;
 
@@ -38,7 +39,7 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
 		}
 		tile = te.get();
 		structureName = tile.getCurrentTemplateName();
-		neededResources.addAll(tile.getNeededResources());
+		neededResources.addAll(InventoryTools.copyStacks(tile.getNeededResources()));
 		isStarted = tile.isStarted();
 		isFinished = tile.isFinished();
 		remainingTime = tile.getRemainingTime();
@@ -244,7 +245,7 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
 				tag = new NBTTagCompound();
 			}
 			neededResources.clear();
-			neededResources.addAll(tile.getNeededResources());
+			neededResources.addAll(InventoryTools.copyStacks(tile.getNeededResources()));
 			NBTTagList list = getResourceListTag(neededResources);
 			tag.setTag(RESOURCE_LIST_TAG, list);
 		}

@@ -34,6 +34,7 @@ import net.shadowmage.ancientwarfare.core.util.MathUtils;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionSiegeEngineer;
 import net.shadowmage.ancientwarfare.vehicle.AncientWarfareVehicles;
 import net.shadowmage.ancientwarfare.vehicle.VehicleVarHelpers.DummyVehicleHelper;
 import net.shadowmage.ancientwarfare.vehicle.armors.IVehicleArmor;
@@ -56,9 +57,8 @@ import net.shadowmage.ancientwarfare.vehicle.upgrades.IVehicleUpgradeType;
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.List;
-import java.util.Random;
 
-public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, IMissileHitCallback, IEntityContainerSynch, IPathableEntity, IOwnable {
+public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, IMissileHitCallback, IPathableEntity, IOwnable {
 
 	private static final DataParameter<Float> VEHICLE_HEALTH = EntityDataManager.createKey(VehicleBase.class, DataSerializers.FLOAT);
 	private static final DataParameter<Byte> FORWARD_INPUT = EntityDataManager.createKey(VehicleBase.class, DataSerializers.BYTE);
@@ -88,7 +88,6 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	 * upgrades/armor
 	 */
 	public float currentForwardSpeedMax = 0.42f;
-	public float currentPitchSpeedMax = 2.f;
 	public float currentStrafeSpeedMax = 2.0f;
 
 	/**
@@ -138,11 +137,6 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	 */
 	public int hitAnimationTicks = 0;
 
-	/**
-	 * how many ticks until next move packet should be sent? Used when Client-side movement is enabled.
-	 */
-	public int moveUpdateTicks = 0;
-
 	private NpcBase assignedRider = null;
 
 	/**
@@ -150,7 +144,6 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	 */
 	public VehicleAmmoHelper ammoHelper;
 	public VehicleUpgradeHelper upgradeHelper;
-	//public VehicleMovementHelper moveHelper;
 	public VehicleMoveHelper moveHelper;
 	public VehicleFiringHelper firingHelper;
 	public VehicleFiringVarsHelper firingVarsHelper;
@@ -175,10 +168,6 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		this.stepHeight = 1.12f;
 		this.entityCollisionReduction = 0.9f;
 		this.onGround = false;
-	}
-
-	public Random getRNG() {
-		return this.rand;
 	}
 
 	@Override
@@ -216,22 +205,6 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		return dataManager.get(VEHICLE_HEALTH);
 	}
 
-	public byte getForwardInput() {
-		return dataManager.get(FORWARD_INPUT);
-	}
-
-	public byte getStrafeInput() {
-		return dataManager.get(STRAFE_INPUT);
-	}
-
-	public void setForwardInput(byte in) {
-		dataManager.set(FORWARD_INPUT, in);
-	}
-
-	public void setStrafeInput(byte in) {
-		dataManager.set(STRAFE_INPUT, in);
-	}
-
 	public void setVehicleType(IVehicleType vehicle, int materialLevel) {
 		this.vehicleType = vehicle;
 		this.vehicleMaterialLevel = materialLevel;
@@ -255,10 +228,10 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		this.updateBaseStats();
 		this.resetCurrentStats();
 
-		if (this.localTurretPitch < this.currentTurretPitchMin) {
-			this.localTurretPitch = this.currentTurretPitchMin;
-		} else if (this.localTurretPitch > this.currentTurretPitchMax) {
-			this.localTurretPitch = this.currentTurretPitchMax;
+		if (this.localTurretPitch < currentTurretPitchMin) {
+			this.localTurretPitch = currentTurretPitchMin;
+		} else if (this.localTurretPitch > currentTurretPitchMax) {
+			this.localTurretPitch = currentTurretPitchMax;
 		}
 		this.localLaunchPower = this.firingHelper.getAdjustedMaxMissileVelocity();
 		if (!this.canAimRotate()) {
@@ -323,16 +296,6 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		ItemStack stack = this.vehicleType.getStackForLevel(vehicleMaterialLevel);
 		stack.getTagCompound().getCompoundTag("spawnData").setFloat("health", getHealth());
 		return stack;
-	}
-
-	/**
-	 * used by soldiers to determine if they should try and 'drive' the engine anywhere
-	 * (so that they won't try and turn stand-fixed varieties of vehicles)
-	 *
-	 * @return
-	 */
-	public boolean isMoveable() {
-		return !this.isSettingUp && this.isDrivable() && this.currentForwardSpeedMax > 0;
 	}
 
 	private float getHorizontalMissileOffset() {
@@ -634,30 +597,43 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 
 	private void updateTurretPitch() {
 		float prevPitch = this.localTurretPitch;
-		if (localTurretPitch < currentTurretPitchMin) {
+		if (!Trig.isAngleBetween(localTurretPitch, currentTurretPitchMin, currentTurretPitchMax)) {
 			localTurretPitch = currentTurretPitchMin;
-		} else if (localTurretPitch > currentTurretPitchMax) {
-			localTurretPitch = currentTurretPitchMax;
 		}
-		if (localTurretDestPitch < currentTurretPitchMin) {
+
+		if (!Trig.isAngleBetween(localTurretDestPitch, currentTurretPitchMin, currentTurretPitchMax)) {
 			localTurretDestPitch = currentTurretPitchMin;
-		} else if (localTurretDestPitch > currentTurretPitchMax) {
-			localTurretDestPitch = currentTurretPitchMax;
 		}
+
 		if (!canAimPitch()) {
 			localTurretDestPitch = localTurretPitch;
 		}
-		if (localTurretPitch != localTurretDestPitch) {
-			if (Math.abs(localTurretDestPitch - localTurretPitch) < localTurretPitchInc) {
+
+		if (!Trig.anglesEqual(localTurretPitch, localTurretDestPitch)) {
+			if (Math.abs(Trig.getAngleDiffSigned(localTurretDestPitch, localTurretPitch)) < localTurretPitchInc) {
 				localTurretPitch = localTurretDestPitch;
-			}
-			if (localTurretPitch > localTurretDestPitch) {
-				localTurretPitch -= localTurretPitchInc;
-			} else if (localTurretPitch < localTurretDestPitch) {
-				localTurretPitch += localTurretPitchInc;
+			} else {
+				localTurretPitch += Trig.getAngleDiffSigned(localTurretPitch, localTurretDestPitch) > 0 ? localTurretPitchInc : -localTurretPitchInc;
 			}
 		}
 		this.currentTurretPitchSpeed = prevPitch - this.localTurretPitch;
+	}
+
+	@Override
+	protected void addPassenger(Entity passenger) {
+		super.addPassenger(passenger);
+		if (passenger instanceof NpcFactionSiegeEngineer) {
+			currentTurretPitchMin = vehicleType.getBasePitchMin() - 4 * 3;
+			currentTurretPitchMax = vehicleType.getBasePitchMax() + 4 * 3;
+		}
+	}
+
+	@Override
+	protected void removePassenger(Entity passenger) {
+		super.removePassenger(passenger);
+		if (passenger instanceof NpcFactionSiegeEngineer) {
+			upgradeHelper.updateUpgradeStats();
+		}
 	}
 
 	private void updateTurretRotation() {
@@ -973,29 +949,6 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		if (getRidingEntity() instanceof IMissileHitCallback) {
 			((IMissileHitCallback) getRidingEntity()).onMissileImpactEntity(world, entity);
 		}
-	}
-
-	/**
-	 * container sych methods
-	 */
-	@Override
-	public void handleClientInput(NBTTagCompound tag) {
-
-	}
-
-	@Override
-	public void addPlayer(EntityPlayer player) {
-
-	}
-
-	@Override
-	public void removePlayer(EntityPlayer player) {
-
-	}
-
-	@Override
-	public boolean canInteract(EntityPlayer player) {
-		return true;
 	}
 
 	@Override

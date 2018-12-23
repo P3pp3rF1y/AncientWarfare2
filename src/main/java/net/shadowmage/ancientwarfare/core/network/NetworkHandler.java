@@ -6,11 +6,13 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.network.FMLEventChannel;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
+import net.minecraftforge.fml.relauncher.Side;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.compat.jei.PacketTransferRecipe;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
@@ -53,6 +55,8 @@ public final class NetworkHandler implements IGuiHandler {
 	private static final int PACKET_JEI_TRANSFER_RECIPE = 25;
 
 	private static final int PACKET_MANUAL_RELOAD = 26;
+
+	public static final int PACKET_EXTENDED_REACH_ATTACK = 27;
 
 	public static final int GUI_CRAFTING = 0;
 	public static final int GUI_SCANNER = 1;
@@ -110,6 +114,8 @@ public final class NetworkHandler implements IGuiHandler {
 	public static final int GUI_MANUAL = 56;
 	public static final int GUI_INFO_TOOL = 57;
 
+	public static final int GUI_GATE_CONTROL_CREATIVE = 58;
+
 	private FMLEventChannel channel;
 
 	private HashMap<Integer, Class<? extends ContainerBase>> containerClasses = new HashMap<>();
@@ -142,7 +148,10 @@ public final class NetworkHandler implements IGuiHandler {
 	}
 
 	public static void sendToAllPlayers(PacketBase pkt) {
-		INSTANCE.channel.sendToAll(pkt.getFMLPacket());
+		//noinspection ConstantConditions
+		if (FMLCommonHandler.instance().getSide() == Side.SERVER && FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList() != null) {
+			INSTANCE.channel.sendToAll(pkt.getFMLPacket());
+		}
 	}
 
 	public static void sendToAllTracking(Entity e, PacketBase pkt) {

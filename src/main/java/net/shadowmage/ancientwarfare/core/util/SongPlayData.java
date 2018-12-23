@@ -4,10 +4,7 @@ import net.minecraft.item.ItemRecord;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
@@ -16,6 +13,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class SongPlayData {
 	private boolean random = false;
@@ -124,11 +122,11 @@ public class SongPlayData {
 
 	public static final class SongEntry {
 		@Nullable
-		SoundEvent sound;
-		float length;//length in seconds, used to determine when count down for next tune should start
-		int volume;// percentage, as integer 0 = 0%, 100=100%, 150=150%
+		private SoundEvent sound;
+		private float length;//length in seconds, used to determine when count down for next tune should start
+		private int volume;// percentage, as integer 0 = 0%, 100=100%, 150=150%
 
-		public SongEntry() {
+		private SongEntry() {
 			sound = null;
 			length = 5;
 			volume = 100;
@@ -161,8 +159,8 @@ public class SongPlayData {
 			return sound != null ? sound.getSoundName().toString() : "";
 		}
 
-		public SoundEvent getSound() {
-			return sound;
+		public Optional<SoundEvent> getSound() {
+			return Optional.ofNullable(sound);
 		}
 
 		public float length() {
@@ -179,18 +177,12 @@ public class SongPlayData {
 
 		public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 			if (sound != null) {
+				//noinspection ConstantConditions
 				tag.setString("name", sound.getRegistryName().toString());
 			}
 			tag.setFloat("length", length);
 			tag.setInteger("volume", volume);
 			return tag;
 		}
-
-		public int play(World world, BlockPos pos) {
-			world.playRecord(pos, sound);
-			world.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, sound, SoundCategory.BLOCKS, volume * 0.03F, 1);
-			return (int) (length * 20);//seconds(decimal) to ticks conversion
-		}
 	}
-
 }

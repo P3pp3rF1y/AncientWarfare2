@@ -26,6 +26,7 @@ import net.shadowmage.ancientwarfare.core.util.InjectionTools;
 public class AWCoreItems {
 	public static final ItemInfoTool INFO_TOOL = InjectionTools.nullValue();
 	public static final Item IRON_HAMMER = InjectionTools.nullValue();
+	public static final Item MANUAL = InjectionTools.nullValue();
 
 	private AWCoreItems() {}
 
@@ -76,7 +77,6 @@ public class AWCoreItems {
 		component.addSubItem(ItemComponent.WOODEN_TORQUE_SHAFT, "automation/component#variant=wooden_shaft", "shaftWood");
 		component.addSubItem(ItemComponent.IRON_TORQUE_SHAFT, "automation/component#variant=iron_shaft", "shaftIron");
 		component.addSubItem(ItemComponent.STEEL_TORQUE_SHAFT, "automation/component#variant=steel_shaft", "shaftSteel");
-		component.addSubItem(ItemComponent.NPC_FOOD_BUNDLE, "npc/component#variant=food_bundle", "foodBundle");
 
 		registry.register(new ItemBaseCore("steel_ingot"));
 	}

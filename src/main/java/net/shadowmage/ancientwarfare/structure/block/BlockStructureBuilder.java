@@ -14,19 +14,17 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.shadowmage.ancientwarfare.core.util.NBTBuilder;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.render.RenderStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
-import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManagerClient;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class BlockStructureBuilder extends BlockBaseStructure {
 
@@ -42,13 +40,7 @@ public class BlockStructureBuilder extends BlockBaseStructure {
 		if (displayCache == null || displayCache.isEmpty()) {
 			displayCache = NonNullList.create();
 
-			//TODO rework structure template manager so that it keeps only one central repository that either is already filled on server or gets updated on client.
-			Set<String> templateNames;
-			if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) {
-				templateNames = StructureTemplateManager.INSTANCE.getSurvivalStructures().keySet();
-			} else {
-				templateNames = StructureTemplateManagerClient.instance().getSurvivalStructures().stream().map(t -> t.name).collect(Collectors.toSet());
-			}
+			Set<String> templateNames = StructureTemplateManager.INSTANCE.getSurvivalStructures().keySet();
 			@Nonnull ItemStack item;
 			for (String templateName : templateNames) {
 				item = new ItemStack(this);
@@ -84,7 +76,10 @@ public class BlockStructureBuilder extends BlockBaseStructure {
 	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
 		ItemStack drop = new ItemStack(this);
 		WorldTools.getTile(world, pos, TileStructureBuilder.class)
-				.ifPresent(t -> drop.setTagInfo("structureName", new NBTTagString(t.getBuilder().getTemplate().name)));
+				.ifPresent(t -> drop.setTagCompound(new NBTBuilder()
+						.setString("structureName", t.getBuilder().getTemplate().name)
+						.setTag("progress", t.getBuilder().serializeProgressData())
+						.build()));
 		drops.add(drop);
 	}
 

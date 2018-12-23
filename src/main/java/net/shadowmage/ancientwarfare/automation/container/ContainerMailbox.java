@@ -16,7 +16,7 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
-import net.shadowmage.ancientwarfare.core.util.StringTools;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
@@ -232,7 +232,7 @@ public class ContainerMailbox extends ContainerTileBase<TileMailbox> {
 			tag.setIntArray("receivedSides", receivedSides.stream().mapToInt(Enum::ordinal).toArray());
 		}
 		String name = tileEntity.getMailboxName();
-		if (!StringTools.doStringsMatch(name, mailboxName)) {
+		if (!StringUtils.equals(name, mailboxName)) {
 			if (tag == null) {
 				tag = new NBTTagCompound();
 			}
@@ -244,7 +244,7 @@ public class ContainerMailbox extends ContainerTileBase<TileMailbox> {
 			}
 		}
 		name = tileEntity.getTargetName();
-		if (!StringTools.doStringsMatch(name, targetName)) {
+		if (!StringUtils.equals(name, targetName)) {
 			if (tag == null) {
 				tag = new NBTTagCompound();
 			}

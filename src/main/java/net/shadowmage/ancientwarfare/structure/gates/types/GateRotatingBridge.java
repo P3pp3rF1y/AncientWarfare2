@@ -1,24 +1,3 @@
-/*
- Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
- This software is distributed under the terms of the GNU General Public License.
- Please see COPYING for precise license information.
-
- This file is part of Ancient Warfare.
-
- Ancient Warfare is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- Ancient Warfare is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.structure.gates.types;
 
 import net.minecraft.block.Block;
@@ -51,6 +30,7 @@ public class GateRotatingBridge extends Gate {
 		}
 		BlockPos min = BlockTools.getMin(gate.pos1, gate.pos2);
 		BlockPos max = BlockTools.getMax(gate.pos1, gate.pos2);
+		updateRenderBoundingBox(gate);
 		if (gate.edgePosition == 0) {
 			gate.setEntityBoundingBox(new AxisAlignedBB(min.getX(), min.getY(), min.getZ(), max.getX() + 1, max.getY() + 1, max.getZ() + 1));
 		} else if (gate.edgePosition < gate.edgeMax) {
@@ -59,7 +39,7 @@ public class GateRotatingBridge extends Gate {
 					ObfuscationReflectionHelper.setPrivateValue(Entity.class, gate, new RotateBoundingBox(gate.gateOrientation, min, max.add(1, 1, 1)), "boundingBox", "field_70121_D");
 				}
 				catch (Exception ignored) {
-					ignored.printStackTrace();
+					//noop
 				}
 			}
 			if (gate.getEntityBoundingBox() instanceof RotateBoundingBox) {
@@ -111,10 +91,20 @@ public class GateRotatingBridge extends Gate {
 		float width = wideOnXAxis ? max.getX() - min.getX() + 1 : max.getZ() - min.getZ() + 1;
 		float xOffset = wideOnXAxis ? width * 0.5f : 0.5f;
 		float zOffset = wideOnXAxis ? 0.5f : width * 0.5f;
-		gate.pos1 = min;
-		gate.pos2 = max;
+		gate.setPositions(min, max);
+		gate.setRenderBoundingBox(getRenderBoundingBox(gate, min, max));
 		gate.edgeMax = 90.f;
 		gate.setPosition(min.getX() + xOffset, min.getY(), min.getZ() + zOffset);
+
+	}
+
+	@Override
+	protected AxisAlignedBB getRenderBoundingBox(EntityGate gate, BlockPos min, BlockPos max) {
+		int heightAdj = max.getY() - min.getY();
+		BlockPos pos3 = max.up(-heightAdj).offset(gate.gateOrientation, heightAdj);
+		max = BlockTools.getMax(max, pos3).add(1, 1, 1);
+		min = BlockTools.getMin(min, pos3);
+		return new AxisAlignedBB(min, max);
 	}
 
 	@Override
@@ -124,7 +114,7 @@ public class GateRotatingBridge extends Gate {
 		}
 		BlockPos min = BlockTools.getMin(gate.pos1, gate.pos2).add(0, 1, 0);
 		BlockPos max = BlockTools.getMax(gate.pos1, gate.pos2);
-		removeBetween(gate.world, min, max);
+		openBetween(gate.world, min, max);
 	}
 
 	@Override
@@ -135,7 +125,7 @@ public class GateRotatingBridge extends Gate {
 		BlockPos pos3 = max.up(-heightAdj).offset(gate.gateOrientation, heightAdj);
 		max = BlockTools.getMax(min, pos3);
 		min = BlockTools.getMin(min, pos3);
-		placeBetween(gate, min, max);
+		closeBetween(gate, min, max);
 	}
 
 	@Override
@@ -162,10 +152,4 @@ public class GateRotatingBridge extends Gate {
 			}
 		}
 	}
-
-	@Override
-	public void onGateFinishClose(EntityGate gate) {
-		super.onGateFinishClose(gate);
-	}
-
 }

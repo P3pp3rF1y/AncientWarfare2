@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.entityrules;
 
+import com.google.common.primitives.Ints;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -9,17 +10,16 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.owner.Owner;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.core.util.NBTHelper;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
-import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
-import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
+import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntityBase;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.gates.types.Gate;
 
-import java.util.List;
 import java.util.Optional;
 
-public class TemplateRuleGates extends TemplateRuleEntity {
+public class TemplateRuleGates extends TemplateRuleEntityBase {
 
 	public static final String PLUGIN_NAME = "awGate";
 	private String owner;
@@ -34,13 +34,13 @@ public class TemplateRuleGates extends TemplateRuleEntity {
 
 		this.pos1 = BlockTools.rotateAroundOrigin(gate.pos1.add(-x, -y, -z), turns);
 		this.pos2 = BlockTools.rotateAroundOrigin(gate.pos2.add(-x, -y, -z), turns);
-		this.orientation = EnumFacing.HORIZONTALS[(gate.gateOrientation.ordinal() + turns) % 4];
+		this.orientation = EnumFacing.HORIZONTALS[(gate.gateOrientation.getHorizontalIndex() + turns) % 4];
 		this.gateType = Gate.getGateNameFor(gate);
 		this.owner = gate.getOwner().getName();
 	}
 
-	public TemplateRuleGates(int ruleNumber, List<String> lines) throws TemplateParsingException.TemplateRuleParsingException {
-		super(ruleNumber, lines);
+	public TemplateRuleGates() {
+		super();
 	}
 
 	@Override
@@ -58,7 +58,8 @@ public class TemplateRuleGates extends TemplateRuleEntity {
 			}
 		}
 
-		Optional<EntityGate> gate = Gate.constructGate(world, p1, p2, Gate.getGateByName(gateType), EnumFacing.HORIZONTALS[((orientation.ordinal() + turns) % 4)],
+		Optional<EntityGate> gate = Gate.constructGate(world, p1, p2, Gate.getGateByName(gateType),
+				EnumFacing.HORIZONTALS[Ints.constrainToRange((orientation.getHorizontalIndex() + turns) % 4, 0, 4)],
 				owner.isEmpty() ? Owner.EMPTY : new Owner(world, owner));
 		if (!gate.isPresent()) {
 			AncientWarfareStructure.LOG.warn("Could not create gate for type: " + gateType);
@@ -68,12 +69,12 @@ public class TemplateRuleGates extends TemplateRuleEntity {
 	}
 
 	@Override
-	public void parseRuleData(NBTTagCompound tag) {
-		super.parseRuleData(tag);
+	public void parseRule(NBTTagCompound tag) {
+		super.parseRule(tag);
 		gateType = tag.getString("gateType");
 		orientation = EnumFacing.VALUES[tag.getByte("orientation")];
-		pos1 = getBlockPosFromNBT(tag.getCompoundTag("pos1"));
-		pos2 = getBlockPosFromNBT(tag.getCompoundTag("pos2"));
+		pos1 = NBTHelper.readBlockPosFromNBT(tag.getCompoundTag("pos1"));
+		pos2 = NBTHelper.readBlockPosFromNBT(tag.getCompoundTag("pos2"));
 		owner = tag.getString("owner");
 	}
 
@@ -82,8 +83,8 @@ public class TemplateRuleGates extends TemplateRuleEntity {
 		super.writeRuleData(tag);
 		tag.setString("gateType", gateType);
 		tag.setByte("orientation", (byte) orientation.ordinal());
-		tag.setTag("pos1", writeBlockPosToNBT(new NBTTagCompound(), pos1));
-		tag.setTag("pos2", writeBlockPosToNBT(new NBTTagCompound(), pos2));
+		tag.setTag("pos1", NBTHelper.writeBlockPosToNBT(new NBTTagCompound(), pos1));
+		tag.setTag("pos2", NBTHelper.writeBlockPosToNBT(new NBTTagCompound(), pos2));
 		tag.setString("owner", owner);
 	}
 
@@ -98,7 +99,7 @@ public class TemplateRuleGates extends TemplateRuleEntity {
 	}
 
 	@Override
-	protected String getPluginName() {
+	public String getPluginName() {
 		return PLUGIN_NAME;
 	}
 }

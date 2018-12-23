@@ -5,5 +5,5 @@ import net.minecraft.util.math.BlockPos;
 
 public interface IStructureBuilder {
 
-	void placeBlock(BlockPos pos, IBlockState state, int priority);
+	boolean placeBlock(BlockPos pos, IBlockState state, int priority);
 }

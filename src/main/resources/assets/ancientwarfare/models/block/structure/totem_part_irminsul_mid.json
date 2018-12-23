@@ -1,0 +1,91 @@
+{
+    "credit": "Made by Silentine, with Blockbench",
+    "textures": {
+        "0": "ancientwarfare:blocks/structure/totem_part_irminsul_mid",
+        "particle": "ancientwarfare:blocks/structure/totem_part_irminsul_mid"
+    },
+    "elements": [
+        {
+            "name": "tip",
+            "from": [3, -1, 4.5],
+            "to": [13, 9, 11.5],
+            "rotation": {"angle": -45, "axis": "z", "origin": [8, 4, 8]},
+            "faces": {
+                "north": {"uv": [4.25, 7.25, 1.75, 9.75], "texture": "#0"},
+                "east": {"uv": [1.75, 7.25, 0, 9.75], "texture": "#0"},
+                "south": {"uv": [1.75, 7.25, 4.25, 9.75], "texture": "#0"},
+                "west": {"uv": [6, 7.25, 4.25, 9.75], "texture": "#0"},
+                "up": {"uv": [1.75, 5.5, 4.25, 7.25], "texture": "#0"},
+                "down": {"uv": [4.25, 5.5, 6.75, 7.25], "texture": "#0"}
+            }
+        },
+        {
+            "name": "tiprightunder",
+            "from": [8, 4, 4.5],
+            "to": [13, 9, 11.5],
+            "rotation": {"angle": -45, "axis": "z", "origin": [8, 4, 8]},
+            "faces": {
+                "down": {"uv": [0, 9.75, 1.75, 11], "texture": "#0"}
+            }
+        },
+        {
+            "name": "tipleftunder",
+            "from": [3, -1, 4.5],
+            "to": [8, 4, 11.5],
+            "rotation": {"angle": -45, "axis": "z", "origin": [8, 4, 8]},
+            "faces": {
+                "east": {"uv": [0, 9.75, 1.75, 11], "texture": "#0"}
+            }
+        },
+        {
+            "name": "body",
+            "from": [4.5, 0, 5],
+            "to": [11.5, 16, 11],
+            "faces": {
+                "north": {"uv": [4.75, 1.5, 6.5, 5.5], "texture": "#0"},
+                "east": {"uv": [3.5, 1.5, 5, 5.5], "texture": "#0"},
+                "south": {"uv": [1.5, 1.5, 3.25, 5.5], "texture": "#0"},
+                "west": {"uv": [0, 1.5, 1.5, 5.5], "texture": "#0"},
+                "up": {"uv": [1.5, 0, 3.25, 1.5], "texture": "#0"},
+                "down": {"uv": [3.25, 0, 5, 1.5], "texture": "#0"}
+            }
+        }
+    ],
+    "display": {
+        "thirdperson_righthand": {
+            "scale": [0.375, 0.375, 0.375],
+            "rotation": [75, 45, 0],
+            "translation": [0, 2.5, 0]
+        },
+        "fixed": {
+            "scale": [0.5, 0.5, 0.5],
+            "rotation": [0, 0, 0],
+            "translation": [0, 0, 0]
+        },
+        "gui": {
+            "scale": [0.625, 0.625, 0.625],
+            "rotation": [30, 225, 0],
+            "translation": [0, 0, 0]
+        },
+        "ground": {
+            "scale": [0.25, 0.25, 0.25],
+            "rotation": [0, 0, 0],
+            "translation": [0, 3, 0]
+        },
+        "firstperson_lefthand": {
+            "scale": [0.4, 0.4, 0.4],
+            "rotation": [0, 225, 0],
+            "translation": [0, 0, 0]
+        },
+        "firstperson_righthand": {
+            "scale": [0.4, 0.4, 0.4],
+            "rotation": [0, 45, 0],
+            "translation": [0, 0, 0]
+        },
+        "thirdperson_lefthand": {
+            "scale": [0.375, 0.375, 0.375],
+            "rotation": [75, 45, 0],
+            "translation": [0, 2.5, 0]
+        }
+    }
+}

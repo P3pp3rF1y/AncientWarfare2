@@ -10,6 +10,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.storage.MapStorage;
+import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
@@ -55,10 +57,13 @@ public class WorldTools {
 		return tile.getPos().getX() >= x1 && tile.getPos().getY() >= y1 && tile.getPos().getZ() >= z1 && tile.getPos().getX() <= x2 && tile.getPos().getY() <= y2 && tile.getPos().getZ() <= z2;
 	}
 
-	public static Optional<IItemHandler> getItemHandlerFromTile(IBlockAccess world, BlockPos pos, EnumFacing side) {
-		return getTile(world, pos, TileEntity.class)
-				.filter(t -> t.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side))
-				.map(t -> Optional.ofNullable(t.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side))).orElse(Optional.empty());
+	public static Optional<IItemHandler> getItemHandlerFromTile(IBlockAccess world, BlockPos pos, @Nullable EnumFacing side) {
+		return getTile(world, pos, TileEntity.class).map(t -> getItemHandlerFromTile(t, side)).orElse(Optional.empty());
+	}
+
+	public static Optional<IItemHandler> getItemHandlerFromTile(TileEntity t, @Nullable EnumFacing side) {
+		return t.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side) ?
+				Optional.ofNullable(t.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side)) : Optional.empty();
 	}
 
 	public static boolean sendClientEventToTile(IBlockAccess world, BlockPos pos, int id, int param) {
@@ -95,5 +100,30 @@ public class WorldTools {
 
 	public static boolean isDaytimeInDimension(World world) {
 		return DIMENSION_DAY_TIMES.getOrDefault(world.provider.getDimension(), World::isDaytime).apply(world);
+	}
+
+	public static boolean hasItemHandler(World world, BlockPos pos) {
+		return getTile(world, pos, TileEntity.class).map(t -> t.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)).orElse(false);
+	}
+
+	public static <T extends WorldSavedData> Optional<T> getWorldSavedData(World world, Class<T> dataClazz, String name, boolean perWorldStorage) {
+		MapStorage storage = perWorldStorage ? world.getPerWorldStorage() : world.getMapStorage();
+		if (storage == null) {
+			return Optional.empty();
+		}
+
+		//noinspection unchecked
+		T data = (T) storage.getOrLoadData(dataClazz, name);
+		if (data == null) {
+			try {
+				data = dataClazz.getConstructor(String.class).newInstance(name);
+			}
+			catch (Exception e) {
+				throw new IllegalArgumentException("Error instantiating " + dataClazz.toString() + " probably doesn't have ctor with single String parameter");
+			}
+			storage.setData(name, data);
+		}
+
+		return Optional.of(data);
 	}
 }

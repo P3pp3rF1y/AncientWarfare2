@@ -14,7 +14,6 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
-import net.shadowmage.ancientwarfare.core.entity.AWFakePlayer;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.owner.IOwnable;
@@ -54,12 +53,7 @@ public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IO
 	@Override
 	@SideOnly(Side.CLIENT)
 	public AxisAlignedBB getRenderBoundingBox() {
-		AxisAlignedBB bb = super.getRenderBoundingBox();
-		if (clientBB != null) {
-			bb.expand((double) clientBB.min.getX() - pos.getX(), (double) clientBB.min.getY() - pos.getY(), (double) clientBB.min.getZ() - pos.getZ());
-			bb.expand((double) clientBB.max.getX() - pos.getX(), (double) clientBB.max.getY() - pos.getY(), (double) clientBB.max.getZ() - pos.getZ());
-		}
-		return bb;
+		return clientBB != null ? new AxisAlignedBB(clientBB.min, clientBB.max) : super.getRenderBoundingBox();
 	}
 
 	@Override

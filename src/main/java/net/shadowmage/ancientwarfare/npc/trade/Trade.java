@@ -130,4 +130,8 @@ public abstract class Trade {
 			output.set(itemTag.getInteger("slot"), new ItemStack(itemTag));
 		}
 	}
+
+	public boolean isValid() {
+		return input.stream().anyMatch(s -> !s.isEmpty()) && output.stream().anyMatch(s -> !s.isEmpty());
+	}
 }

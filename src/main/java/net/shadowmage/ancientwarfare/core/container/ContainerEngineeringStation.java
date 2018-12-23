@@ -1,13 +1,17 @@
 package net.shadowmage.ancientwarfare.core.container;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import net.minecraftforge.items.wrapper.InvWrapper;
@@ -18,13 +22,16 @@ import net.shadowmage.ancientwarfare.core.tile.TileEngineeringStation;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
 import static net.minecraft.util.EnumActionResult.PASS;
 import static net.minecraft.util.EnumActionResult.SUCCESS;
 
 public class ContainerEngineeringStation extends ContainerTileBase<TileEngineeringStation> implements ICraftingContainer {
 	private static final int BOOK_SLOT = 1;
+	private static final int CRAFTING_SLOT = 0;
 	public ContainerCraftingRecipeMemory containerCrafting;
+	private int currentCraftTotalSize = 0;
 
 	public ContainerEngineeringStation(EntityPlayer player, int x, int y, int z) {
 		super(player, x, y, z);
@@ -33,12 +40,16 @@ public class ContainerEngineeringStation extends ContainerTileBase<TileEngineeri
 			@Override
 			protected OnTakeResult handleOnTake(EntityPlayer player, ItemStack stack) {
 				ICraftingRecipe recipe = tileEntity.craftingRecipeMemory.getRecipe();
-				if (AWCraftingManager.canCraftFromInventory(recipe, tileEntity.extraSlots)) {
-					NonNullList<ItemStack> resources = AWCraftingManager.getRecipeInventoryMatch(recipe, tileEntity.extraSlots);
+				NonNullList<ItemStack> reusableStacks = AWCraftingManager.getReusableStacks(recipe, containerCrafting.getCraftMatrix());
+				NonNullList<ItemStack> resources = InventoryTools.removeItems(AWCraftingManager.getRecipeInventoryMatch(recipe, getCraftingStacks(),
+						new CombinedInvWrapper(tileEntity.extraSlots, new ItemStackHandler(reusableStacks))), reusableStacks);
+				if (!resources.isEmpty()) {
 					InventoryTools.removeItems(tileEntity.extraSlots, resources);
 
 					ForgeHooks.setCraftingPlayer(player);
-					NonNullList<ItemStack> remainingItems = tileEntity.craftingRecipeMemory.getRemainingItems(AWCraftingManager.fillCraftingMatrixFromInventory(resources));
+					NonNullList<ItemStack> remainingItems = InventoryTools.removeItems(
+							tileEntity.craftingRecipeMemory.getRemainingItems(AWCraftingManager.fillCraftingMatrixFromInventory(resources)),
+							reusableStacks);
 					ForgeHooks.setCraftingPlayer(null);
 					InventoryTools.insertOrDropItems(tileEntity.extraSlots, remainingItems, tileEntity.getWorld(), tileEntity.getPos());
 
@@ -79,7 +90,33 @@ public class ContainerEngineeringStation extends ContainerTileBase<TileEngineeri
 	}
 
 	@Override
+	public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player) {
+		ItemStack result = super.slotClick(slotId, dragType, clickTypeIn, player);
+		currentCraftTotalSize = 0;
+		return result;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void setAll(List<ItemStack> p_190896_1_) {
+		containerCrafting.setOpening(true);
+		super.setAll(p_190896_1_);
+		containerCrafting.setOpening(false);
+	}
+
+	@Override
+	public void putStackInSlot(int slotID, ItemStack stack) {
+		containerCrafting.setOpening(true);
+		super.putStackInSlot(slotID, stack);
+		containerCrafting.setOpening(false);
+	}
+
+	@Override
 	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex) {
+		if (slotClickedIndex == CRAFTING_SLOT && !updateAndCheckCraftStackOrLessInTotal()) {
+			return ItemStack.EMPTY;
+		}
+
 		@Nonnull ItemStack slotStackCopy = ItemStack.EMPTY;
 		Slot theSlot = this.getSlot(slotClickedIndex);
 		if (theSlot != null && theSlot.getHasStack()) {
@@ -118,6 +155,13 @@ public class ContainerEngineeringStation extends ContainerTileBase<TileEngineeri
 		}
 		return slotStackCopy;
 	}
+
+	private boolean updateAndCheckCraftStackOrLessInTotal() {
+		ItemStack craftedStack = getSlot(CRAFTING_SLOT).getStack();
+		currentCraftTotalSize += craftedStack.getCount();
+		return currentCraftTotalSize <= craftedStack.getMaxStackSize();
+	}
+	
 
 	@Override
 	public ContainerCraftingRecipeMemory getCraftingMemoryContainer() {

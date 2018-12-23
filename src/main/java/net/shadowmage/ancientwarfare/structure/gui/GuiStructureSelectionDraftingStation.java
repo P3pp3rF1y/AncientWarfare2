@@ -1,17 +1,14 @@
 package net.shadowmage.ancientwarfare.structure.gui;
 
 import net.minecraft.client.Minecraft;
-import net.shadowmage.ancientwarfare.structure.template.StructureTemplateClient;
+import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
+import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
 
 public class GuiStructureSelectionDraftingStation extends GuiStructureSelectionBase {
 
 	private final GuiDraftingStation parent;
-	private final List<StructureTemplateClient> templateList = new ArrayList<>();
 
 	public GuiStructureSelectionDraftingStation(GuiDraftingStation parent) {
 		super(parent.getContainer());
@@ -19,17 +16,8 @@ public class GuiStructureSelectionDraftingStation extends GuiStructureSelectionB
 	}
 
 	@Override
-	protected Collection<StructureTemplateClient> getTemplatesForDisplay() {
-		templateList.clear();
-		templateList.addAll(super.getTemplatesForDisplay());
-		Iterator<StructureTemplateClient> it = templateList.iterator();
-		StructureTemplateClient ct;
-		while (it.hasNext() && (ct = it.next()) != null) {
-			if (!ct.survival) {
-				it.remove();
-			}
-		}
-		return templateList;
+	protected Collection<StructureTemplate> getTemplatesForDisplay() {
+		return StructureTemplateManager.INSTANCE.getSurvivalStructures().values();
 	}
 
 	@Override

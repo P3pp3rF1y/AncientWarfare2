@@ -24,7 +24,7 @@ public class GuiManual extends GuiContainerBase<ContainerManual> {
 
 	private static final int BOOK_WIDTH = 412;
 	private static final int PAGE_WIDTH = BOOK_WIDTH / 2;
-	private static final int BOOK_HEIGHT = 200;
+	private static final int BOOK_HEIGHT = 254;
 	public static final int FOOTER_HEIGHT = 14;
 	private static final ResourceLocation MANUAL_TEXTURE = new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/gui/manual.png");
 	private static final int HORIZONTAL_PAGE_PADDING = 8;

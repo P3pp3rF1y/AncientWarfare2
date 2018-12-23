@@ -1,20 +1,15 @@
 package net.shadowmage.ancientwarfare.structure.item;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.passive.EntityHorse;
-import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -22,23 +17,18 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
-import net.shadowmage.ancientwarfare.npc.entity.NpcTrader;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionTrader;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
+import net.shadowmage.ancientwarfare.structure.registry.EntitySpawnNBTRegistry;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
 
 import javax.annotation.Nullable;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.Optional;
 
 public class ItemSpawnerPlacer extends ItemBaseStructure {
 	private static final String SPAWNER_DATA_TAG = "spawnerData";
@@ -71,12 +61,11 @@ public class ItemSpawnerPlacer extends ItemBaseStructure {
 		if (stack.isEmpty()) {
 			return new ActionResult<>(EnumActionResult.PASS, stack);
 		}
-		RayTraceResult traceResult = rayTrace(player.world, player, false);
-		//noinspection ConstantConditions
-		if (traceResult != null && traceResult.typeOfHit == RayTraceResult.Type.BLOCK) {
+		Optional<BlockPos> placementPosition = getPlacementPosition(world, player);
+		if (placementPosition.isPresent()) {
 			//noinspection ConstantConditions
 			if (stack.hasTagCompound() && stack.getTagCompound().hasKey(SPAWNER_DATA_TAG)) {
-				BlockPos placePos = traceResult.getBlockPos().offset(traceResult.sideHit);
+				BlockPos placePos = placementPosition.get();
 				if (player.world.setBlockState(placePos, AWStructureBlocks.ADVANCED_SPAWNER.getDefaultState())) {
 					WorldTools.getTile(player.world, placePos, TileAdvancedSpawner.class)
 							.ifPresent(t -> {
@@ -94,6 +83,30 @@ public class ItemSpawnerPlacer extends ItemBaseStructure {
 		return new ActionResult<>(EnumActionResult.SUCCESS, stack);
 	}
 
+	private Optional<BlockPos> getPlacementPosition(World world, EntityPlayer player) {
+		RayTraceResult traceResult = rayTrace(player.world, player, !player.isSneaking());
+
+		//noinspection ConstantConditions
+		if (traceResult == null || traceResult.typeOfHit != RayTraceResult.Type.BLOCK) {
+			return Optional.empty();
+		}
+
+		BlockPos placementPos = traceResult.getBlockPos().offset(traceResult.sideHit);
+		if (!world.getBlockState(placementPos).getBlock().isReplaceable(world, placementPos)) {
+			EnumFacing offset;
+			if (traceResult.sideHit.getAxis().isHorizontal()) {
+				offset = player.rotationPitch < 0 ? EnumFacing.DOWN : EnumFacing.UP;
+			} else {
+				offset = player.getHorizontalFacing().getOpposite();
+			}
+			placementPos = placementPos.offset(offset);
+			if (!world.getBlockState(placementPos).getBlock().isReplaceable(world, placementPos)) {
+				return Optional.empty();
+			}
+		}
+		return Optional.of(placementPos);
+	}
+
 	@SubscribeEvent
 	public void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
 		EntityPlayer player = event.getEntityPlayer();
@@ -109,10 +122,9 @@ public class ItemSpawnerPlacer extends ItemBaseStructure {
 			Entity entity = event.getTarget();
 
 			//noinspection ConstantConditions
-			ResourceLocation registryName = EntityRegistry.getEntry(entity.getClass()).getRegistryName();
 			SpawnerSettings.EntitySpawnSettings spawnSettings = new SpawnerSettings.EntitySpawnSettings();
 			//noinspection ConstantConditions
-			spawnSettings.setEntityToSpawn(registryName);
+			spawnSettings.setEntityToSpawn(entity);
 			spawnSettings.setSpawnLimitTotal(1);
 			spawnSettings.setSpawnCountMin(1);
 			spawnSettings.setSpawnCountMax(1);
@@ -126,6 +138,7 @@ public class ItemSpawnerPlacer extends ItemBaseStructure {
 			settings.setMaxDelay(0);
 			settings.setSpawnRange(0);
 			settings.setPlayerRange(16);
+			settings.toggleTransparent();
 
 			spawnerPlacer.setTagInfo(SPAWNER_DATA_TAG, settings.writeToNBT(new NBTTagCompound()));
 			entity.setDead();
@@ -138,24 +151,6 @@ public class ItemSpawnerPlacer extends ItemBaseStructure {
 		NBTTagCompound entityTag = new NBTTagCompound();
 		entity.writeToNBT(entityTag);
 
-		NBTTagCompound ret = new NBTTagCompound();
-
-		for (Map.Entry<Class, Set<String>> entry : ENTITY_TAGS.entrySet()) {
-			if (entry.getKey().isInstance(entity)) {
-				for (String tag : entry.getValue()) {
-					ret.setTag(tag, entityTag.getTag(tag));
-				}
-			}
-		}
-		return ret;
+		return EntitySpawnNBTRegistry.getEntitySpawnNBT(entity, entityTag);
 	}
-
-	private static final Map<Class, Set<String>> ENTITY_TAGS = new ImmutableMap.Builder<Class, Set<String>>()
-			.put(NpcFaction.class, Collections.singleton("factionName"))
-			.put(NpcFactionTrader.class, Collections.singleton("tradeList"))
-			.put(NpcTrader.class, Collections.singleton("tradeAI"))
-			.put(EntityVillager.class, ImmutableSet.of("Offers", "Profession", "ProfessionName", "Career", "CareerLevel"))
-			.put(EntityHorse.class, Collections.singleton("Variant"))
-			.put(EntityLiving.class, ImmutableSet.of("HandItems", "HandDropChances", "ArmorItems", "ArmorDropChances"))
-			.build();
 }

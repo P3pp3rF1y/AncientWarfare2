@@ -10,8 +10,10 @@ import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.shadowmage.ancientwarfare.automation.chunkloader.AWChunkLoader;
+import net.shadowmage.ancientwarfare.automation.command.CommandWarehouse;
 import net.shadowmage.ancientwarfare.automation.compat.agricraft.AgricraftCompat;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.container.ContainerChunkLoaderDeluxe;
@@ -37,6 +39,7 @@ import net.shadowmage.ancientwarfare.automation.proxy.RFProxy;
 import net.shadowmage.ancientwarfare.automation.registry.CropFarmRegistry;
 import net.shadowmage.ancientwarfare.automation.registry.FruitFarmRegistry;
 import net.shadowmage.ancientwarfare.automation.registry.TreeFarmRegistry;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse2.WarehouseDebugger;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.compat.CompatLoader;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -90,6 +93,7 @@ public class AncientWarfareAutomation {
 		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_BOUNDS, ContainerWorksiteBoundsAdjust.class);
 
 		MinecraftForge.EVENT_BUS.register(this);
+		MinecraftForge.EVENT_BUS.register(new WarehouseDebugger());
 
 		ForgeChunkManager.setForcedChunkLoadingCallback(this, AWChunkLoader.INSTANCE);
 
@@ -109,6 +113,11 @@ public class AncientWarfareAutomation {
 		proxy.init();
 
 		statics.save();
+	}
+
+	@EventHandler
+	public void serverStart(FMLServerStartingEvent evt) {
+		evt.registerServerCommand(new CommandWarehouse());
 	}
 
 	@SubscribeEvent

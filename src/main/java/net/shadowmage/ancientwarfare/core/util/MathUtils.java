@@ -70,4 +70,20 @@ public class MathUtils {
 	public static long toLong(Vec3i vector) {
 		return ((long) vector.getX() & X_MASK) << X_SHIFT | ((long) vector.getY() & Y_MASK) << Y_SHIFT | ((long) vector.getZ() & Z_MASK);
 	}
+
+	public static int[] toIntArray(short[] array) {
+		int[] ret = new int[array.length];
+		for (int i = 0; i < array.length; i++) {
+			ret[i] = array[i];
+		}
+		return ret;
+	}
+
+	public static short[] toShortArray(int[] array) {
+		short[] ret = new short[array.length];
+		for (int i = 0; i < array.length; i++) {
+			ret[i] = (short) array[i];
+		}
+		return ret;
+	}
 }

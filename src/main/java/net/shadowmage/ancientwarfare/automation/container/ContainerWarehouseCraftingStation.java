@@ -8,6 +8,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
@@ -26,6 +28,7 @@ import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntr
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
 import static net.minecraft.util.EnumActionResult.PASS;
 import static net.minecraft.util.EnumActionResult.SUCCESS;
@@ -33,12 +36,14 @@ import static net.minecraft.util.EnumActionResult.SUCCESS;
 public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWarehouseCraftingStation> implements ICraftingContainer {
 	private static final int BOOK_SLOT = 1;
 	private static final String CHANGE_LIST_TAG = "changeList";
+	public static final int CRAFTING_SLOT = 0;
 	public ContainerCraftingRecipeMemory containerCrafting;
 
 	private ItemQuantityMap itemMap = new ItemQuantityMap();
 	private final ItemQuantityMap cache = new ItemQuantityMap();
 	private boolean shouldUpdate = true;
 	private int currentCraftTotalSize = 0;
+	private IItemHandlerModifiable warehouseItemHandler = null;
 
 	public ContainerWarehouseCraftingStation(final EntityPlayer player, int x, int y, int z) {
 		super(player, x, y, z);
@@ -46,20 +51,21 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 		containerCrafting = new ContainerCraftingRecipeMemory(tileEntity.craftingRecipeMemory, player) {
 			@Override
 			protected OnTakeResult handleOnTake(EntityPlayer player, ItemStack stack) {
-				if (tileEntity.getWarehouse() == null) {
+				if (warehouseItemHandler == null) {
 					return new OnTakeResult(PASS, stack);
 				}
 				ICraftingRecipe recipe = tileEntity.craftingRecipeMemory.getRecipe();
-				IItemHandlerModifiable handler = tileEntity.getWarehouse().getItemHandler();
 				NonNullList<ItemStack> reusableStacks = AWCraftingManager.getReusableStacks(recipe, tileEntity.craftingRecipeMemory.craftMatrix);
-				CombinedInvWrapper combinedHandler = new CombinedInvWrapper(new ItemStackHandler(reusableStacks), handler);
-				if (AWCraftingManager.canCraftFromInventory(recipe, combinedHandler)) {
-					NonNullList<ItemStack> resources = InventoryTools.removeItems(AWCraftingManager.getRecipeInventoryMatch(recipe, combinedHandler), reusableStacks);
-					InventoryTools.removeItems(handler, resources);
+				CombinedInvWrapper combinedHandler = new CombinedInvWrapper(new ItemStackHandler(reusableStacks), warehouseItemHandler);
+				NonNullList<ItemStack> resources = AWCraftingManager.getRecipeInventoryMatch(recipe,
+						containerCrafting.getCraftingStacks(), s -> tileEntity.getWarehouse().getCountOf(s) >= s.getCount(), combinedHandler);
+				if (!resources.isEmpty()) {
+					resources = InventoryTools.removeItems(resources, reusableStacks);
+					InventoryTools.removeItems(warehouseItemHandler, resources);
 
 					NonNullList<ItemStack> remainingItems = InventoryTools.removeItems(tileEntity.craftingRecipeMemory.getRemainingItems(
 							AWCraftingManager.fillCraftingMatrixFromInventory(resources)), reusableStacks);
-					InventoryTools.insertOrDropItems(handler, remainingItems, tileEntity.getWorld(), tileEntity.getPos());
+					InventoryTools.insertOrDropItems(warehouseItemHandler, remainingItems, tileEntity.getWorld(), tileEntity.getPos());
 
 					return new OnTakeResult(SUCCESS, stack);
 				}
@@ -84,7 +90,25 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
+	public void setAll(List<ItemStack> p_190896_1_) {
+		containerCrafting.setOpening(true);
+		super.setAll(p_190896_1_);
+		containerCrafting.setOpening(false);
+	}
+
+	@Override
+	public void putStackInSlot(int slotID, ItemStack stack) {
+		containerCrafting.setOpening(true);
+		super.putStackInSlot(slotID, stack);
+		containerCrafting.setOpening(false);
+	}
+
+	@Override
 	public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player) {
+		if (slotId == CRAFTING_SLOT) {
+			warehouseItemHandler = tileEntity.getWarehouse() != null ? tileEntity.getWarehouse().getItemHandler() : null;
+		}
 		ItemStack result = super.slotClick(slotId, dragType, clickTypeIn, player);
 		currentCraftTotalSize = 0;
 		return result;
@@ -101,7 +125,7 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex) {
-		if (slotClickedIndex == 0 && !updateAndCheckCraftStackOrLessInTotal(tileEntity.craftingRecipeMemory.getRecipe())) {
+		if (slotClickedIndex == 0 && !updateAndCheckCraftStackOrLessInTotal()) {
 			return ItemStack.EMPTY;
 		}
 
@@ -133,9 +157,10 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 		return slotStackCopy;
 	}
 
-	private boolean updateAndCheckCraftStackOrLessInTotal(ICraftingRecipe recipe) {
-		currentCraftTotalSize += recipe.getRecipeOutput().getCount();
-		return currentCraftTotalSize <= recipe.getRecipeOutput().getMaxStackSize();
+	private boolean updateAndCheckCraftStackOrLessInTotal() {
+		ItemStack craftedStack = getSlot(CRAFTING_SLOT).getStack();
+		currentCraftTotalSize += craftedStack.getCount();
+		return currentCraftTotalSize <= craftedStack.getMaxStackSize();
 	}
 
 	@Override

@@ -1,0 +1,12 @@
+{
+    "mod": "tconstruct",
+    "tree_scanners": [
+        {
+            "type": "default",
+            "trunk": "tconstruct:slime_congealed",
+            "leaf": "tconstruct:slime_leaves",
+            "max_leaf_distance": 5,
+            "next_block_search": "connected_up_or_level"
+        }
+    ]
+}

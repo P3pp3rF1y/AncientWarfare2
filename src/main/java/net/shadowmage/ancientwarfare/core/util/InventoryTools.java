@@ -71,7 +71,7 @@ public class InventoryTools {
 			@Nonnull
 			@Override
 			public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-				return canInsert(slot, stack) ? super.insertItem(slot, stack, simulate) : stack;
+				return canInsert(slot, stack) ? super.insertItem(slot, stack.copy(), simulate) : stack;
 			}
 
 			private boolean canInsert(int slot, @Nonnull ItemStack stack) {
@@ -91,7 +91,7 @@ public class InventoryTools {
 	}
 
 	public static ItemStack insertItem(IItemHandler handler, ItemStack stack, boolean simulate) {
-		ItemStack remaining = stack.copy();
+		ItemStack remaining = stack;
 		for (int slot = 0; slot < handler.getSlots(); slot++) {
 			remaining = handler.insertItem(slot, remaining, simulate);
 			if (remaining.isEmpty()) {
@@ -128,7 +128,7 @@ public class InventoryTools {
 
 					int change = Math.min(maxSize - slotStack.getCount(), stack.getCount());
 
-					handler.insertItem(i, stack.copy(), false);
+					handler.insertItem(i, stack, false);
 					stack.shrink(change);
 				}
 			}
@@ -181,10 +181,10 @@ public class InventoryTools {
 			}
 
 			int toMove = Math.min(quantity - returnCount, slotStack.getCount());
-			returnCount += toMove;
 
-			handler.extractItem(index, toMove, simulate);
+			ItemStack extractedStack = handler.extractItem(index, toMove, simulate);
 
+			returnCount += extractedStack.getCount();
 			if (quantity - returnCount <= 0) {
 				break;
 			}
@@ -281,6 +281,27 @@ public class InventoryTools {
 			}
 		}
 		return count;
+	}
+
+	public static boolean hasCountOrMore(IItemHandler handler, ItemStack filterStack) {
+		return hasCountOrMore(handler, s -> doItemStacksMatch(s, filterStack), filterStack.getCount());
+	}
+
+	private static boolean hasCountOrMore(IItemHandler handler, Predicate<ItemStack> filter, int minimumCount) {
+		if (handler.getSlots() <= 0) {
+			return false;
+		}
+		int count = 0;
+		for (int slot = 0; slot < handler.getSlots(); slot++) {
+			@Nonnull ItemStack stack = handler.getStackInSlot(slot);
+			if (filter.test(stack)) {
+				count += stack.getCount();
+				if (count >= minimumCount) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	/*
@@ -515,7 +536,7 @@ public class InventoryTools {
 		return stackToReturn;
 	}
 
-	private static NonNullList<ItemStack> copyStacks(NonNullList<ItemStack> stacks) {
+	public static List<ItemStack> copyStacks(List<ItemStack> stacks) {
 		return stacks.stream().map(ItemStack::copy).collect(Collectors.toCollection(NonNullList::create));
 	}
 
@@ -523,12 +544,12 @@ public class InventoryTools {
 		return tileEntity.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 	}
 
-	public static void generateLootFor(World world, IInventory inventory, Random rng, int rolls) {
+	public static void generateLootFor(World world, IItemHandler inventory, Random rng, int rolls) {
 		generateLootFor(world, null, inventory, rng, LootTableList.CHESTS_SIMPLE_DUNGEON, rolls);
 	}
 
 	public static void generateLootFor(World world,
-			@Nullable EntityPlayer player, IInventory inventory, Random rng, ResourceLocation lootTableName, int rolls) {
+			@Nullable EntityPlayer player, IItemHandler inventory, Random rng, ResourceLocation lootTableName, int rolls) {
 		LootContext.Builder builder = new LootContext.Builder((WorldServer) world);
 		LootTable lootTable = world.getLootTableManager().getLootTableFromLocation(lootTableName);
 		if (player != null) {
@@ -549,11 +570,15 @@ public class InventoryTools {
 				return;
 			}
 
-			if (itemstack.isEmpty()) {
-				inventory.setInventorySlotContents(randomSlots.remove(randomSlots.size() - 1), ItemStack.EMPTY);
-			} else {
-				inventory.setInventorySlotContents(randomSlots.remove(randomSlots.size() - 1), itemstack);
+			if (!itemstack.isEmpty()) {
+				inventory.insertItem(randomSlots.remove(randomSlots.size() - 1), itemstack, false);
 			}
+		}
+	}
+
+	public static void emptyInventory(IItemHandler itemHandler) {
+		for (int slot = 0; slot < itemHandler.getSlots(); slot++) {
+			itemHandler.extractItem(slot, itemHandler.getStackInSlot(slot).getCount(), false);
 		}
 	}
 
@@ -608,18 +633,26 @@ public class InventoryTools {
 			}
 
 			public int compare(ItemStack o1, ItemStack o2) {
-				if (o1.getItemDamage() != o2.getItemDamage()) {
-					return o1.getItemDamage() - o2.getItemDamage();
-				} else {
-					if (o1.hasTagCompound()) {
-						if (o2.hasTagCompound())
-							return o1.getTagCompound().hashCode() - o2.getTagCompound().hashCode();
-						else
-							return 1;
-					} else if (o2.hasTagCompound()) {
-						return -1;
-					}
+				//noinspection ConstantConditions
+				int itemComparison = o1.getItem().getRegistryName().toString().compareTo(o2.getItem().getRegistryName().toString());
+				if (itemComparison != 0) {
+					return itemComparison;
 				}
+
+				if (o1.getItemDamage() != o2.getItemDamage()) {
+					return Integer.compare(o1.getItemDamage(), o2.getItemDamage());
+				}
+
+				if (o1.hasTagCompound()) {
+					if (o2.hasTagCompound())
+						//noinspection ConstantConditions
+						return Integer.compare(o1.getTagCompound().hashCode(), o2.getTagCompound().hashCode());
+					else
+						return 1;
+				} else if (o2.hasTagCompound()) {
+					return -1;
+				}
+
 				return 0;
 			}
 		}
@@ -655,14 +688,18 @@ public class InventoryTools {
 
 		@Override
 		public int compare(ItemStack o1, ItemStack o2) {
-			return sortType.compare(o1, o2) * sortOrder.mult;
+			int result = sortType.compare(o1, o2);
+			if (result == 0) {
+				return 0;
+			}
+			return (result > 0 ? 1 : -1) * sortOrder.mult;
 		}
 	}
 
-	public static List<Integer> getEmptySlotsRandomized(IInventory inventory, Random rand) {
+	public static List<Integer> getEmptySlotsRandomized(IItemHandler inventory, Random rand) {
 		List<Integer> list = Lists.newArrayList();
 
-		for (int i = 0; i < inventory.getSizeInventory(); ++i) {
+		for (int i = 0; i < inventory.getSlots(); ++i) {
 			if (inventory.getStackInSlot(i).isEmpty()) {
 				list.add(i);
 			}

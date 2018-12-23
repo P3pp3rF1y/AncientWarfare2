@@ -1,56 +1,39 @@
 package net.shadowmage.ancientwarfare.structure.template.datafixes;
 
+import net.minecraft.util.Tuple;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate.Version;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 public class DataFixManager {
 
 	private DataFixManager() {}
 
-	private static List<IRuleNameFixer> ruleNameFixes = new ArrayList<>();
-	private static List<IDataFixer> ruleFixes = new ArrayList<>();
+	private static List<IRuleFixer> fixes = new ArrayList<>();
 
-	public static void registerRuleFixer(IDataFixer fixer) {
-		ruleFixes.add(fixer);
+	public static void registerRuleFixer(IRuleFixer fixer) {
+		fixes.add(fixer);
 	}
 
-	public static void registerRuleNameFixer(IRuleNameFixer fixer) {
-		ruleNameFixes.add(fixer);
-	}
+	public static FixResult<Tuple<String, List<String>>> fixRuleData(Version templateVersion, String ruleName, List<String> data) {
+		FixResult.Builder<Tuple<String, List<String>>> resultBuilder = new FixResult.Builder<>();
 
-	public static FixResult<List<String>> fixRuleData(Version templateVersion, String ruleName, List<String> data) {
-		FixResult.Builder<List<String>> resultBuilder = new FixResult.Builder<>();
-
-		List<String> modifiedData = new ArrayList<>();
-		for (String line : data) {
-			modifiedData.add(fixData(ruleFixes, templateVersion, ruleName, resultBuilder, line, (f, d) -> ((IDataFixer) f).fix(ruleName, d)));
-		}
-
-		return resultBuilder.build(modifiedData);
-	}
-
-	private static <T> String fixData(List<? extends IFixer> fixes, Version templateVersion, String ruleName, FixResult.Builder<T> resultBuilder, String data,
-			BiFunction<IFixer, String, FixResult<String>> doFix) {
-		String ret = data;
-		for (IFixer fixer : fixes.stream().filter(f -> f.isForRule(ruleName)).sorted(VERSION_ASCENDING).collect(Collectors.toList())) {
-			if (fixer.getVersion().isGreaterThan(templateVersion)) {
-				ret = resultBuilder.updateAndGetData(doFix.apply(fixer, ret));
+		List<String> modifiedData = data;
+		String modifiedRuleName = ruleName;
+		for (IRuleFixer fixer : fixes.stream().filter(f -> f.getVersion().isGreaterThan(templateVersion)).sorted(VERSION_ASCENDING).collect(Collectors.toList())) {
+			if (fixer.isForRule(modifiedRuleName)) {
+				Tuple<String, List<String>> fixed = resultBuilder.updateAndGetData(fixer.fix(modifiedRuleName, modifiedData));
+				modifiedRuleName = fixed.getFirst();
+				modifiedData = fixed.getSecond();
 			}
 		}
-		return ret;
+		return resultBuilder.build(new Tuple<>(modifiedRuleName, modifiedData));
 	}
 
-	public static FixResult<String> fixRuleName(Version templateVersion, String ruleName) {
-		FixResult.Builder<String> ret = new FixResult.Builder<>();
-		return ret.build(fixData(ruleNameFixes, templateVersion, ruleName, ret, ruleName, (f, n) -> ((IRuleNameFixer) f).fix(n)));
-	}
-
-	private static final Comparator<IFixer> VERSION_ASCENDING = (o1, o2) -> {
+	private static final Comparator<IRuleFixer> VERSION_ASCENDING = (o1, o2) -> {
 		if (o1.getVersion().isGreaterThan(o2.getVersion())) {
 			return 1;
 		} else if (o2.getVersion().isGreaterThan(o1.getVersion())) {

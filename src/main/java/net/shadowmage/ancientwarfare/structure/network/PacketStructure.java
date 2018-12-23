@@ -8,7 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
-import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManagerClient;
+import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 
 import java.io.IOException;
 
@@ -58,6 +58,6 @@ public class PacketStructure extends PacketBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	protected void execute() {
-		StructureTemplateManagerClient.instance().onTemplateData(packetData);
+		StructureTemplateManager.INSTANCE.onTemplateData(packetData);
 	}
 }

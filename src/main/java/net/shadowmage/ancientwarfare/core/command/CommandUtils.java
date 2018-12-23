@@ -1,6 +1,6 @@
 package net.shadowmage.ancientwarfare.core.command;
 
-import net.minecraft.command.CommandBase;
+import com.google.common.collect.AbstractIterator;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
@@ -9,16 +9,23 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketManualReload;
+import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -26,21 +33,19 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Comparator;
-import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
-public class CommandUtils extends CommandBase {
-
-	private final Map<String, ISubCommand> subCommands = new HashMap<>();
-
+public class CommandUtils extends ParentCommand {
 	public CommandUtils() {
-		subCommands.put("exportentities", new EntityListCommand());
-		subCommands.put("exportbiomes", new BiomeListCommand());
-		subCommands.put("exportblocks", new BlockListCommand());
-		subCommands.put("reloadmanual", new ReloadManualCommand());
-		subCommands.put("exportloottables", new LootTableListCommand());
+		registerSubCommand(new EntityListCommand());
+		registerSubCommand(new EntityListCommand());
+		registerSubCommand(new BiomeListCommand());
+		registerSubCommand(new BlockListCommand());
+		registerSubCommand(new ReloadManualCommand());
+		registerSubCommand(new LootTableListCommand());
+		registerSubCommand(new ChunkLoadCommand());
 	}
 
 	@Override
@@ -51,21 +56,6 @@ public class CommandUtils extends CommandBase {
 	@Override
 	public String getUsage(ICommandSender sender) {
 		return "command.aw.utils.usage";
-	}
-
-	@Override
-	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-		if (args.length > 2 || args.length == 0 || !subCommands.containsKey(args[0])) {
-			throw new WrongUsageException(getUsage(sender));
-		}
-
-		String[] subArgs = new String[args.length - 1];
-		System.arraycopy(args, 1, subArgs, 0, args.length - 1);
-		subCommands.get(args[0]).execute(server, sender, subArgs);
-	}
-
-	private interface ISubCommand {
-		void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException;
 	}
 
 	private abstract static class ExportCommand implements ISubCommand {
@@ -116,6 +106,11 @@ public class CommandUtils extends CommandBase {
 		private static void notifyPlayer(ICommandSender sender, File exportFile) {
 			sender.sendMessage(new TextComponentString("File exported to " + exportFile.getAbsoluteFile()));
 		}
+
+		@Override
+		public int getMaxArgs() {
+			return 1;
+		}
 	}
 
 	private static class EntityListCommand extends ExportCommand {
@@ -135,6 +130,11 @@ public class CommandUtils extends CommandBase {
 			return ForgeRegistries.ENTITIES.getValuesCollection().stream()
 					.map(e -> String.join(",", e.getRegistryName().toString(), e.getName(), e.getEntityClass().toString()))
 					.sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+		}
+
+		@Override
+		public String getName() {
+			return "exportentities";
 		}
 	}
 
@@ -171,13 +171,18 @@ public class CommandUtils extends CommandBase {
 			}
 			return "";
 		}
+
+		@Override
+		public String getName() {
+			return "exportbiomes";
+		}
 	}
 
 	private class BlockListCommand extends ExportCommand {
 
 		@Override
 		protected String getHeader() {
-			return "Registry Name,Block Name";
+			return "Registry Name,Block Name,Skippable,Skippable Material,Target,Target Material";
 		}
 
 		@Override
@@ -189,19 +194,37 @@ public class CommandUtils extends CommandBase {
 		protected List<String> getLines() {
 			//noinspection ConstantConditions
 			return ForgeRegistries.BLOCKS.getValuesCollection().stream()
-					.map(b -> String.join(",", b.getRegistryName().toString(), b.getLocalizedName()))
-					.sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+					.map(b -> String.join(",", b.getRegistryName().toString(), b.getLocalizedName(),
+							AWStructureStatics.isSkippable(b.getDefaultState()) ? "Y" : "N",
+							AWStructureStatics.isSkippableMaterial(b.getDefaultState().getMaterial()) ? "Y" : "N",
+							AWStructureStatics.isValidTargetBlock(b.getDefaultState()) ? "Y" : "N",
+							AWStructureStatics.isValidTargetMaterial(b.getDefaultState().getMaterial()) ? "Y" : "N"
+					)).sorted(Comparator.naturalOrder()).collect(Collectors.toList());
 		}
 
+		@Override
+		public String getName() {
+			return "exportblocks";
+		}
 	}
 
 	private class ReloadManualCommand implements ISubCommand {
+		@Override
+		public String getName() {
+			return "reloadmanual";
+		}
+
 		@Override
 		public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 			Entity senderEntity = sender.getCommandSenderEntity();
 			if (senderEntity instanceof EntityPlayer) {
 				NetworkHandler.sendToPlayer((EntityPlayerMP) senderEntity, new PacketManualReload());
 			}
+		}
+
+		@Override
+		public int getMaxArgs() {
+			return 1;
 		}
 	}
 
@@ -219,6 +242,124 @@ public class CommandUtils extends CommandBase {
 		@Override
 		protected List<String> getLines() {
 			return LootTableList.getAll().stream().map(ResourceLocation::toString).collect(Collectors.toList());
+		}
+
+		@Override
+		public String getName() {
+			return "exportloottables";
+		}
+	}
+
+	private class ChunkLoadCommand implements ISubCommand {
+		private PlayerMover playerMover = new PlayerMover();
+
+		private ChunkLoadCommand() {
+			MinecraftForge.EVENT_BUS.register(playerMover);
+		}
+
+		@Override
+		public String getName() {
+			return "loadChunks";
+		}
+
+		@Override
+		public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+			if (args.length < 1) {
+				throw new WrongUsageException(getUsage(sender));
+			}
+			if (!(sender instanceof EntityPlayerMP)) {
+				return;
+			}
+			int chunkLoadRadius = server.getPlayerList().getViewDistance();
+			int range = Integer.parseInt(args[0]);
+
+			playerMover.startMoving((EntityPlayerMP) sender, sender.getEntityWorld(), chunkLoadRadius, range);
+		}
+
+		@Override
+		public int getMaxArgs() {
+			return 1;
+		}
+
+		//this is not made for multiple players using it on server as there's likely no need for that
+		private class PlayerMover {
+			private EntityPlayerMP player;
+			private int chunkLoadRadius;
+			private int range;
+			private BlockPos originalPosition;
+			private ChunkPos originalChunkPos;
+			private boolean finishedMoving = true;
+			private Iterator<ChunkPos> iterator;
+			private int timeout = 0;
+
+			@SubscribeEvent
+			public void serverTick(TickEvent.ServerTickEvent evt) {
+				if (evt.phase == TickEvent.Phase.END) {
+					if (timeout <= 0) {
+						movePlayer();
+						timeout = 60;
+					} else {
+						timeout--;
+					}
+				}
+			}
+
+			private void startMoving(EntityPlayerMP player, World world, int chunkLoadRadius, int range) {
+				this.player = player;
+				originalPosition = player.getPosition();
+				originalChunkPos = world.getChunkFromBlockCoords(originalPosition).getPos();
+				this.chunkLoadRadius = chunkLoadRadius;
+				this.range = range;
+				finishedMoving = false;
+				iterator = getAllChunkPosStops();
+			}
+
+			private Iterator<ChunkPos> getAllChunkPosStops() {
+				return new AbstractIterator<ChunkPos>() {
+					private boolean first = true;
+					private int currentX;
+					private int currentZ;
+
+					@Override
+					protected ChunkPos computeNext() {
+						if (first) {
+							currentX = getInitialX();
+							currentZ = getInitialZ();
+							first = false;
+						} else if (currentX + chunkLoadRadius > originalChunkPos.x + range && currentZ + chunkLoadRadius > originalChunkPos.z + range) {
+							return this.endOfData();
+						} else {
+							if (currentX + chunkLoadRadius < originalChunkPos.x + range) {
+								currentX += 2 * chunkLoadRadius;
+							} else if (currentZ + chunkLoadRadius < originalChunkPos.z + range) {
+								currentX = getInitialX();
+								currentZ += 2 * chunkLoadRadius;
+							}
+						}
+						return new ChunkPos(currentX, currentZ);
+					}
+
+					private int getInitialZ() {
+						return originalChunkPos.z - range + chunkLoadRadius;
+					}
+
+					private int getInitialX() {
+						return originalChunkPos.x - range + chunkLoadRadius;
+					}
+				};
+			}
+
+			private void movePlayer() {
+				if (!finishedMoving) {
+					if (!iterator.hasNext()) {
+						player.connection.setPlayerLocation(originalPosition.getX(), originalPosition.getY(), originalPosition.getZ(), player.rotationYaw, player.rotationPitch);
+						finishedMoving = true;
+						return;
+					}
+					ChunkPos chunkPos = iterator.next();
+					player.connection.setPlayerLocation(chunkPos.getXStart() + 8d, 255, chunkPos.getZStart() + 8d, player.rotationYaw, player.rotationPitch);
+				}
+			}
 		}
 	}
 }

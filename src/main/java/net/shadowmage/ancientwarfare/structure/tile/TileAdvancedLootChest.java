@@ -8,6 +8,8 @@ import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nullable;
@@ -22,7 +24,10 @@ public class TileAdvancedLootChest extends TileEntityChest {
 		if (lootTable != null) {
 			ResourceLocation lt = lootTable;
 			lootTable = null;
-			InventoryTools.generateLootFor(world, player, this, world.rand, lt, lootRolls);
+			//noinspection ConstantConditions
+			InventoryTools.generateLootFor(world, player, getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), world.rand, lt, lootRolls);
+			lootRolls = 0;
+			BlockTools.notifyBlockUpdate(this);
 		}
 	}
 
@@ -58,6 +63,7 @@ public class TileAdvancedLootChest extends TileEntityChest {
 		return new SPacketUpdateTileEntity(pos, 0, tag);
 	}
 
+	@SuppressWarnings("squid:S4449")
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
@@ -65,6 +71,10 @@ public class TileAdvancedLootChest extends TileEntityChest {
 		if (tag.hasKey(LOOT_TABLE_TAG)) {
 			setLootTable(new ResourceLocation(tag.getString(LOOT_TABLE_TAG)), 0);
 			setLootRolls(tag.getByte(LOOT_ROLLS_TAG));
+		} else {
+			//noinspection ConstantConditions
+			setLootTable(null, 0);
+			setLootRolls(0);
 		}
 	}
 
@@ -79,16 +89,21 @@ public class TileAdvancedLootChest extends TileEntityChest {
 	}
 
 	@Override
+	@SuppressWarnings("squid:S4449")
 	public void handleUpdateTag(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 		if (tag.hasKey(LOOT_TABLE_TAG)) {
 			setLootTable(new ResourceLocation(tag.getString(LOOT_TABLE_TAG)), 0);
 			setLootRolls(tag.getByte(LOOT_ROLLS_TAG));
+		} else {
+			//noinspection ConstantConditions
+			setLootTable(null, 0);
+			setLootRolls(0);
 		}
 	}
 
 	@Override
 	public String getName() {
-		return lootRolls + " x " + (lootTable != null ? lootTable : "");
+		return lootTable != null ? lootRolls + " x " + lootTable : "";
 	}
 }

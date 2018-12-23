@@ -90,7 +90,7 @@ public class TileTownHall extends TileOwned implements IInteractableTile, ITicka
 		if (entities.size() > 0) {
 			for (Entity entity : entities) {
 				if (((NpcPlayerOwned) entity).hasCommandPermissions(getOwner())) {
-					((NpcPlayerOwned) entity).handleTownHallBroadcast(this, pos);
+					((NpcPlayerOwned) entity).handleTownHallBroadcast(pos);
 				}
 			}
 		}

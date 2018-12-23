@@ -36,6 +36,7 @@ import net.shadowmage.ancientwarfare.npc.gui.GuiTownHallInventory;
 import net.shadowmage.ancientwarfare.npc.gui.GuiTradeOrder;
 import net.shadowmage.ancientwarfare.npc.gui.GuiUpkeepOrder;
 import net.shadowmage.ancientwarfare.npc.gui.GuiWorkOrder;
+import net.shadowmage.ancientwarfare.npc.item.IExtendedReachWeapon;
 import net.shadowmage.ancientwarfare.npc.render.RenderCommandOverlay;
 import net.shadowmage.ancientwarfare.npc.render.RenderNpcBase;
 import net.shadowmage.ancientwarfare.npc.render.RenderWorkLines;
@@ -92,9 +93,9 @@ public class NpcClientProxy extends NpcCommonProxy {
 
 		RenderingRegistry.registerEntityRenderingHandler(NpcBase.class, RenderNpcBase::new);
 
-		MinecraftForge.EVENT_BUS.register(RenderWorkLines.INSTANCE);//register render for orders items routes/block highlights
-		MinecraftForge.EVENT_BUS.register(RenderCommandOverlay.INSTANCE);//register overlay renderer
-		MinecraftForge.EVENT_BUS.register(RenderCommandOverlay.INSTANCE);//register block/entity highlight renderer
+		MinecraftForge.EVENT_BUS.register(RenderWorkLines.INSTANCE);
+		MinecraftForge.EVENT_BUS.register(RenderCommandOverlay.INSTANCE);
+		MinecraftForge.EVENT_BUS.register(new IExtendedReachWeapon.MouseClickHandler());
 
 		registerClientOptions();
 	}

@@ -1,13 +1,10 @@
 package net.shadowmage.ancientwarfare.core.gui.manual;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.TextureData;
 import net.shadowmage.ancientwarfare.core.gui.elements.Composite;
 import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.manual.elements.BaseElementWrapper;
-import net.shadowmage.ancientwarfare.core.util.RenderTools;
 
 import java.util.List;
 
@@ -51,11 +48,6 @@ public class Page extends Composite {
 
 	@Override
 	public void render(int mouseX, int mouseY, float partialTick) {
-		GlStateManager.color(1, 1, 1, 1);
-		Minecraft.getMinecraft().renderEngine.bindTexture(textureData.getTexture());
-		RenderTools.renderQuarteredTexture(textureData.getTextureWidth(), textureData.getTextureHeight(), textureData.getTextureU(), textureData.getTextureV(),
-				textureData.getPartWidth(), textureData.getPartHeight(), renderX - PADDING, renderY - PADDING, width, height);
-
 		for (GuiElement element : this.elements) {
 			element.render(mouseX, mouseY, partialTick);
 		}

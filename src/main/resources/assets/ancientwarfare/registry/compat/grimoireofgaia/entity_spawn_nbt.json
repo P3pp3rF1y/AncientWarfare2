@@ -1,0 +1,11 @@
+{
+    "mod": "grimoireofgaia",
+    "entity_nbt": {
+        "gaia.entity.EntityMobHostileBase": [
+            "MobType"
+        ],
+        "gaia.entity.EntityMobPassiveDay": [
+            "MobType"
+        ]
+    }
+}

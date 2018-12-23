@@ -41,4 +41,9 @@ public class RenderStructureBuilder extends TileEntitySpecialRenderer<TileStruct
 		RenderTools.drawOutlinedBoundingBox2(bb, 1.f, 1.f, 1.f, 0.0625f);
 		GlStateManager.enableLighting();
 	}
+
+	@Override
+	public boolean isGlobalRenderer(TileStructureBuilder te) {
+		return true;
+	}
 }

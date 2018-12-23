@@ -26,8 +26,10 @@ import net.shadowmage.ancientwarfare.core.owner.Owner;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.gates.types.Gate;
 import net.shadowmage.ancientwarfare.structure.gates.types.GateRotatingBridge;
+import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
 
 import javax.annotation.Nonnull;
+import java.util.Optional;
 
 /*
  * an class to represent ALL gate types
@@ -35,8 +37,7 @@ import javax.annotation.Nonnull;
  * @author Shadowmage
  */
 public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IEntityPacketHandler {
-
-	public static final String HEALTH_TAG = "health";
+	private static final String HEALTH_TAG = "health";
 	public BlockPos pos1;
 	public BlockPos pos2;
 
@@ -57,6 +58,9 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 	private boolean hasSetWorldEntityRadius = false;
 	private boolean wasPoweredA = false;
 	private boolean wasPoweredB = false;
+	private AxisAlignedBB renderBoundingBox = new AxisAlignedBB(0, 0, 0, 0, 0, 0);
+
+	private TEGateProxy renderedTile = null;
 
 	public EntityGate(World par1World) {
 		super(par1World);
@@ -70,6 +74,11 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 
 	public void setOwner(EntityPlayer player) {
 		owner = new Owner(player);
+	}
+
+	public void setPositions(BlockPos pos1, BlockPos pos2) {
+		this.pos1 = pos1;
+		this.pos2 = pos2;
 	}
 
 	@Override
@@ -201,8 +210,12 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 
 		boolean gateOwner = getOwner().isOwnerOrSameTeamOrFriend(player);
 		if (player.capabilities.isCreativeMode || getOwner() == Owner.EMPTY || gateOwner) {
-			if (gateOwner && player.isSneaking()) {
-				NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_GATE_CONTROL, getEntityId(), 0, 0);
+			if (player.isSneaking()) {
+				if (player.capabilities.isCreativeMode) {
+					NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_GATE_CONTROL_CREATIVE, getEntityId(), 0, 0);
+				} else if (gateOwner) {
+					NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_GATE_CONTROL, getEntityId(), 0, 0);
+				}
 			} else {
 				this.activateGate();
 			}
@@ -236,6 +249,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 			this.hurtInvulTicks--;
 		}
 		this.checkForPowerUpdates();
+		gateType.setRenderedTileIfNotPresent(this);
 		if (this.hurtAnimationTicks > 0) {
 			this.hurtAnimationTicks--;
 		}
@@ -270,6 +284,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 				World.MAX_ENTITY_RADIUS = largest;
 			}
 		}
+
 	}
 
 	private void checkForPowerUpdates() {
@@ -389,8 +404,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 	//Data
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound tag) {
-		this.pos1 = BlockPos.fromLong(tag.getLong("pos1"));
-		this.pos2 = BlockPos.fromLong(tag.getLong("pos2"));
+		setPositions(BlockPos.fromLong(tag.getLong("pos1")), BlockPos.fromLong(tag.getLong("pos2")));
 		this.setGateType(Gate.getGateByID(tag.getInteger("type")));
 		owner = Owner.deserializeFromNBT(tag);
 		this.edgePosition = tag.getFloat("edge");
@@ -400,6 +414,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 		this.gateOrientation = EnumFacing.VALUES[tag.getByte("orient")];
 		this.wasPoweredA = tag.getBoolean("power");
 		this.wasPoweredB = tag.getBoolean("power2");
+		gateType.updateRenderBoundingBox(this);
 	}
 
 	@Override
@@ -431,14 +446,14 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 
 	@Override
 	public void readSpawnData(ByteBuf data) {
-		this.pos1 = BlockPos.fromLong(data.readLong());
-		this.pos2 = BlockPos.fromLong(data.readLong());
+		setPositions(BlockPos.fromLong(data.readLong()), BlockPos.fromLong(data.readLong()));
 		this.gateType = Gate.getGateByID(data.readInt());
 		this.edgePosition = data.readFloat();
 		this.edgeMax = data.readFloat();
 		this.gateStatus = data.readByte();
 		this.gateOrientation = EnumFacing.VALUES[data.readByte()];
 		this.health = data.readInt();
+		gateType.updateRenderBoundingBox(this);
 	}
 
 	@Override
@@ -451,5 +466,22 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 
 	public Owner getOwner() {
 		return owner;
+	}
+
+	@Override
+	public AxisAlignedBB getRenderBoundingBox() {
+		return renderBoundingBox;
+	}
+
+	public void setRenderBoundingBox(AxisAlignedBB renderBoundingBox) {
+		this.renderBoundingBox = renderBoundingBox;
+	}
+
+	public Optional<TEGateProxy> getRenderedTile() {
+		return Optional.ofNullable(renderedTile);
+	}
+
+	public void setRenderedTile(TEGateProxy te) {
+		renderedTile = te;
 	}
 }

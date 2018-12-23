@@ -1,0 +1,6 @@
+{
+    "parent": "ancientwarfare:item/npc/wooden_lance",
+    "textures": {
+        "0": "ancientwarfare:items/npc/iron_lance"
+    }
+}

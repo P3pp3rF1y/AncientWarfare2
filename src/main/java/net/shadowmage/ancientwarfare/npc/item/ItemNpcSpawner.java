@@ -27,6 +27,7 @@ import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 import net.shadowmage.ancientwarfare.npc.init.AWNPCEntities;
 import net.shadowmage.ancientwarfare.npc.init.AWNPCItems;
 import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
+import net.shadowmage.ancientwarfare.npc.registry.NpcDefaultsRegistry;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -145,8 +146,11 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 		for (AWNPCEntities.NpcDeclaration dec : AWNPCEntities.getNpcMap().values()) {
 			if (dec.canSpawnBaseEntity()) {
 				if (dec.getNpcType().startsWith("faction.")) {
-					for (String factionName : FactionRegistry.getFactionNames())
-						factionOwned.add(getStackForNpcType(dec.getNpcType(), "", factionName));
+					for (String factionName : FactionRegistry.getFactionNames()) {
+						if (NpcDefaultsRegistry.getFactionNpcDefault(factionName, getShortNpcType(dec)).isEnabled()) {
+							factionOwned.add(getStackForNpcType(dec.getNpcType(), "", factionName));
+						}
+					}
 				} else {
 					playerOwned.add(getStackForNpcType(dec.getNpcType(), "", ""));
 				}
@@ -158,6 +162,11 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 
 		list.addAll(playerOwned);
 		list.addAll(factionOwned);
+	}
+
+	private static String getShortNpcType(AWNPCEntities.NpcDeclaration dec) {
+		String shortType = dec.getNpcType().substring("faction.".length());
+		return shortType.equals("siege_engineer") ? "siege.engineer" : shortType;
 	}
 
 	private static ItemStack getStackForNpcType(String type, String npcSubtype) {

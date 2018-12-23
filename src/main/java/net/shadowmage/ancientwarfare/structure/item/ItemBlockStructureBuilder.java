@@ -6,7 +6,9 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -15,10 +17,9 @@ import net.shadowmage.ancientwarfare.core.item.ItemBlockBase;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.event.IBoxRenderer;
+import net.shadowmage.ancientwarfare.structure.render.PreviewRenderer;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
-import net.shadowmage.ancientwarfare.structure.template.StructureTemplateClient;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
-import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManagerClient;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilderTicked;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
@@ -57,12 +58,22 @@ public class ItemBlockStructureBuilder extends ItemBlockBase implements IBoxRend
 		return val;
 	}
 
+	@SuppressWarnings("ConstantConditions")
 	private void setupStructureBuilder(ItemStack stack, EntityPlayer player, World world, BlockPos pos, TileStructureBuilder tb) {
 		tb.setOwner(player);
-		String name = stack.getTagCompound().getString(STRUCTURE_NAME_TAG);
+		NBTTagCompound tag = stack.getTagCompound();
+		String name = tag.getString(STRUCTURE_NAME_TAG);
+		EnumFacing face = player.getHorizontalFacing();
+		setupStructureBuilder(world, pos, tb, name, face);
+		if (tag.hasKey("progress")) {
+			StructureBuilderTicked builder = tb.getBuilder();
+			builder.deserializeProgressData(tag.getCompoundTag("progress"));
+		}
+	}
+
+	public void setupStructureBuilder(World world, BlockPos pos, TileStructureBuilder tb, String name, EnumFacing face) {
 		StructureTemplate t = StructureTemplateManager.INSTANCE.getTemplate(name);
 		if (t != null) {
-			EnumFacing face = player.getHorizontalFacing();
 			BlockPos p = pos.offset(face, t.getSize().getZ() - 1 - t.getOffset().getZ() + 1);
 			tb.setBuilder(new StructureBuilderTicked(world, t, face, p));
 		}
@@ -70,13 +81,13 @@ public class ItemBlockStructureBuilder extends ItemBlockBase implements IBoxRend
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void renderBox(EntityPlayer player, ItemStack stack, float delta) {
+	public void renderBox(EntityPlayer player, EnumHand hand, ItemStack stack, float delta) {
 		//noinspection ConstantConditions
 		if (!stack.hasTagCompound() || !stack.getTagCompound().hasKey(STRUCTURE_NAME_TAG)) {
 			return;
 		}
 		String name = stack.getTagCompound().getString(STRUCTURE_NAME_TAG);
-		StructureTemplateClient t = StructureTemplateManagerClient.instance().getClientTemplate(name);
+		StructureTemplate t = StructureTemplateManager.INSTANCE.getTemplate(name);
 		if (t == null) {
 			return;
 		}
@@ -89,5 +100,6 @@ public class ItemBlockStructureBuilder extends ItemBlockBase implements IBoxRend
 		BlockPos p2 = hit.offset(face, t.getSize().getZ() - 1 - t.getOffset().getZ() + 1);
 		StructureBB bb = new StructureBB(p2, face, t.getSize(), t.getOffset());
 		Util.renderBoundingBox(player, bb.min, bb.max, delta);
+		PreviewRenderer.renderTemplatePreview(player, hand, stack, delta, t, bb, (face.getHorizontalIndex() + 2) % 4);
 	}
 }

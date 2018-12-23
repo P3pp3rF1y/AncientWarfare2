@@ -19,8 +19,7 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
-import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
-import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
+import net.shadowmage.ancientwarfare.core.registry.RegistryLoader;
 import net.shadowmage.ancientwarfare.structure.command.CommandStructure;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.container.ContainerDraftingStation;
@@ -37,12 +36,17 @@ import net.shadowmage.ancientwarfare.structure.container.ContainerTownSelection;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructure;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructureRemove;
+import net.shadowmage.ancientwarfare.structure.proxy.CommonProxyStructure;
+import net.shadowmage.ancientwarfare.structure.registry.EntitySpawnNBTRegistry;
+import net.shadowmage.ancientwarfare.structure.registry.StructureBlockRegistry;
 import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 import net.shadowmage.ancientwarfare.structure.template.WorldGenStructureManager;
 import net.shadowmage.ancientwarfare.structure.template.datafixes.DataFixManager;
 import net.shadowmage.ancientwarfare.structure.template.datafixes.fixers.BlockMetaToBlockStateFixer;
+import net.shadowmage.ancientwarfare.structure.template.datafixes.fixers.EntityEquipmentFixer;
 import net.shadowmage.ancientwarfare.structure.template.datafixes.fixers.EntityPositionToNBTFixer;
+import net.shadowmage.ancientwarfare.structure.template.datafixes.fixers.EntityRuleNameFixer;
 import net.shadowmage.ancientwarfare.structure.template.datafixes.fixers.FactionExpansionFixer;
 import net.shadowmage.ancientwarfare.structure.template.datafixes.fixers.RuleNameConsolidationFixer;
 import net.shadowmage.ancientwarfare.structure.template.datafixes.fixers.json.JsonSimplificationFixer;
@@ -65,9 +69,9 @@ public class AncientWarfareStructure {
 
 	public static final Logger LOG = LogManager.getLogger(MOD_ID);
 
-	@SidedProxy(clientSide = "net.shadowmage.ancientwarfare.structure.proxy.ClientProxyStructure", serverSide = "net.shadowmage.ancientwarfare.core.proxy.CommonProxy")
+	@SidedProxy(clientSide = "net.shadowmage.ancientwarfare.structure.proxy.ClientProxyStructure", serverSide = "net.shadowmage.ancientwarfare.structure.proxy.CommonProxyStructure")
 	@SuppressWarnings("squid:S1444")
-	public static CommonProxyBase proxy;
+	public static CommonProxyStructure proxy;
 
 	private AWStructureStatics statics;
 
@@ -95,25 +99,29 @@ public class AncientWarfareStructure {
 		NetworkHandler.registerContainer(NetworkHandler.GUI_SPAWNER_ADVANCED_INVENTORY, ContainerSpawnerAdvancedInventoryItem.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_SPAWNER_ADVANCED_BLOCK_INVENTORY, ContainerSpawnerAdvancedInventoryBlock.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_GATE_CONTROL, ContainerGateControl.class);
+		NetworkHandler.registerContainer(NetworkHandler.GUI_GATE_CONTROL_CREATIVE, ContainerGateControl.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_DRAFTING_STATION, ContainerDraftingStation.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_SOUND_BLOCK, ContainerSoundBlock.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_LOOT_CHEST_PLACER, ContainerLootChestPlacer.class);
 		proxy.preInit();
 
 		TemplateLoader.INSTANCE.initializeAndExportDefaults();
+
+		RegistryLoader.registerParser(new EntitySpawnNBTRegistry.Parser());
+		RegistryLoader.registerParser(new StructureBlockRegistry.Parser());
 	}
 
 	@EventHandler
 	public void init(FMLInitializationEvent evt) {
 		proxy.init();
 
-		BlockDataManager.INSTANCE.load();
-
 		DataFixManager.registerRuleFixer(new FactionExpansionFixer());
 		DataFixManager.registerRuleFixer(new JsonSimplificationFixer());
 		DataFixManager.registerRuleFixer(new BlockMetaToBlockStateFixer());
 		DataFixManager.registerRuleFixer(new EntityPositionToNBTFixer());
-		DataFixManager.registerRuleNameFixer(new RuleNameConsolidationFixer());
+		DataFixManager.registerRuleFixer(new RuleNameConsolidationFixer());
+		DataFixManager.registerRuleFixer(new EntityRuleNameFixer());
+		DataFixManager.registerRuleFixer(new EntityEquipmentFixer());
 	}
 
 	@EventHandler

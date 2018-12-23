@@ -13,12 +13,14 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.core.util.NBTHelper;
 import net.shadowmage.ancientwarfare.structure.event.IBoxRenderer;
 import net.shadowmage.ancientwarfare.structure.gui.GuiStructureScanner;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
@@ -32,7 +34,10 @@ import net.shadowmage.ancientwarfare.structure.template.scan.TemplateScanner;
 import javax.annotation.Nullable;
 import java.awt.*;
 import java.io.File;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import static java.awt.Color.GREEN;
 
@@ -40,6 +45,7 @@ public class ItemStructureScanner extends ItemBaseStructure implements IItemKeyI
 	private static final String VALIDATOR_TAG = "validator";
 	private static final String STRUCTURE_NAME_TAG = "structureName";
 	private static final String INCLUDE_TAG = "include";
+	private static final String MOD_DEPENDENCIES_TAG = "mods";
 
 	public ItemStructureScanner(String name) {
 		super(name);
@@ -119,12 +125,12 @@ public class ItemStructureScanner extends ItemBaseStructure implements IItemKeyI
 
 		NBTTagCompound validatorTag = stack.getTagCompound().getCompoundTag(VALIDATOR_TAG);
 
-		StructureValidationType type = StructureValidationType.getTypeFromName(validatorTag.getString("validationType"));
-		if (type == null) {
+		Optional<StructureValidationType> type = StructureValidationType.getTypeFromName(validatorTag.getString("validationType"));
+		if (!type.isPresent()) {
 			return StructureValidationType.GROUND.getValidator();
 		}
 
-		StructureValidator validator = type.getValidator();
+		StructureValidator validator = type.get().getValidator();
 		validator.readFromNBT(validatorTag);
 		return validator;
 	}
@@ -142,7 +148,7 @@ public class ItemStructureScanner extends ItemBaseStructure implements IItemKeyI
 		ItemStructureSettings settings = ItemStructureSettings.getSettingsFor(scanner);
 
 		int turns = (6 - settings.buildFace.getHorizontalIndex()) % 4;
-		StructureTemplate template = TemplateScanner.scan(world, settings.getMin(), settings.getMax(), settings.key, turns, getStructureName(scanner));
+		StructureTemplate template = TemplateScanner.scan(world, getModDependencies(scanner), settings.getMin(), settings.getMax(), settings.key, turns, getStructureName(scanner));
 
 		StructureValidator validator = getValidator(scanner);
 		template.setValidationSettings(validator);
@@ -151,6 +157,11 @@ public class ItemStructureScanner extends ItemBaseStructure implements IItemKeyI
 			StructureTemplateManager.INSTANCE.addTemplate(template);
 		}
 		return TemplateExporter.exportTo(template, new File(include ? TemplateLoader.INCLUDE_DIRECTORY : TemplateLoader.OUTPUT_DIRECTORY));
+	}
+
+	public static Set<String> getModDependencies(ItemStack scanner) {
+		//noinspection ConstantConditions
+		return scanner.hasTagCompound() ? NBTHelper.getStringSet(scanner.getTagCompound().getTagList(MOD_DEPENDENCIES_TAG, Constants.NBT.TAG_STRING)) : Collections.emptySet();
 	}
 
 	@Override
@@ -182,7 +193,7 @@ public class ItemStructureScanner extends ItemBaseStructure implements IItemKeyI
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void renderBox(EntityPlayer player, ItemStack stack, float delta) {
+	public void renderBox(EntityPlayer player, EnumHand hand, ItemStack stack, float delta) {
 		ItemStructureSettings settings = ItemStructureSettings.getSettingsFor(stack);
 		BlockPos firstCorner;
 		BlockPos secondCorner;
@@ -235,7 +246,12 @@ public class ItemStructureScanner extends ItemBaseStructure implements IItemKeyI
 		settings.clearSettings();
 		ItemStructureSettings.setSettingsFor(scanner, settings);
 		scanner.getTagCompound().removeTag(STRUCTURE_NAME_TAG);
+		scanner.getTagCompound().removeTag(MOD_DEPENDENCIES_TAG);
 		scanner.getTagCompound().removeTag((INCLUDE_TAG));
 		scanner.removeSubCompound(VALIDATOR_TAG);
+	}
+
+	public static void setModDependencies(ItemStack scanner, Set<String> mods) {
+		scanner.setTagInfo(MOD_DEPENDENCIES_TAG, NBTHelper.getNBTStringList(mods));
 	}
 }

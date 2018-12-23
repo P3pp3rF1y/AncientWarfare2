@@ -10,12 +10,11 @@ import net.shadowmage.ancientwarfare.core.util.BlockTools;
 public class ItemStructureSettings {
 	private static final String STRUCT_DATA_TAG = "structData";
 	private static final String BUILD_KEY_TAG = "buildKey";
-	private boolean[] setKeys = new boolean[4];
-	private BlockPos pos1;
-	private BlockPos pos2;
-	BlockPos key;
+	private BlockPos pos1 = BlockPos.ORIGIN;
+	private BlockPos pos2 = BlockPos.ORIGIN;
+	BlockPos key = BlockPos.ORIGIN;
 	EnumFacing buildFace;
-	String name;
+	String name = "";
 
 	private ItemStructureSettings() {
 
@@ -33,44 +32,38 @@ public class ItemStructureSettings {
 		} else {
 			tag = new NBTTagCompound();
 		}
-		for (int i = 0; i < settings.setKeys.length; i++) {
-			settings.setKeys[i] = false;
-		}
 		if (tag.hasKey("pos1")) {
 			settings.pos1 = BlockPos.fromLong(tag.getLong("pos1"));
-			settings.setKeys[0] = true;
 		}
 		if (tag.hasKey("pos2")) {
 			settings.pos2 = BlockPos.fromLong(tag.getLong("pos2"));
-			settings.setKeys[1] = true;
 		}
 		if (tag.hasKey(BUILD_KEY_TAG)) {
 			settings.key = BlockPos.fromLong(tag.getCompoundTag(BUILD_KEY_TAG).getLong("key"));
-			settings.setKeys[2] = true;
 			settings.buildFace = EnumFacing.VALUES[tag.getCompoundTag(BUILD_KEY_TAG).getByte("face")];
 		}
 		if (tag.hasKey("name")) {
 			settings.name = tag.getString("name");
-			settings.setKeys[3] = true;
 		}
+
 		return settings;
 	}
 
 	public static void setSettingsFor(ItemStack item, ItemStructureSettings settings) {
 		NBTTagCompound tag = new NBTTagCompound();
-		if (settings.setKeys[0]) {
+		if (settings.hasPos1()) {
 			tag.setLong("pos1", settings.getPos1().toLong());
 		}
-		if (settings.setKeys[1]) {
+		if (settings.hasPos2()) {
 			tag.setLong("pos2", settings.getPos2().toLong());
 		}
-		if (settings.setKeys[2]) {
-			NBTTagCompound tag1 = new NBTTagCompound();
-			tag1.setByte("face", (byte) settings.buildFace.ordinal());
-			tag1.setLong("key", settings.key.toLong());
-			tag.setTag(BUILD_KEY_TAG, tag1);
+		if (settings.hasBuildKey()) {
+			NBTTagCompound buildKeyTag = new NBTTagCompound();
+			buildKeyTag.setByte("face", (byte) settings.buildFace.ordinal());
+			buildKeyTag.setLong("key", settings.key.toLong());
+			tag.setTag(BUILD_KEY_TAG, buildKeyTag);
 		}
-		if (settings.setKeys[3]) {
+		if (settings.hasName()) {
 			tag.setString("name", settings.name);
 		}
 		item.setTagInfo(STRUCT_DATA_TAG, tag);
@@ -78,39 +71,35 @@ public class ItemStructureSettings {
 
 	public void setPos1(BlockPos pos) {
 		pos1 = pos;
-		setKeys[0] = true;
 	}
 
 	public void setPos2(BlockPos pos) {
 		pos2 = pos;
-		setKeys[1] = true;
 	}
 
 	public void setBuildKey(BlockPos pos, EnumFacing face) {
 		key = pos;
 		buildFace = face;
-		setKeys[2] = true;
 	}
 
 	public void setName(String name) {
 		this.name = name;
-		setKeys[3] = true;
 	}
 
 	public boolean hasPos1() {
-		return setKeys[0];
+		return pos1 != BlockPos.ORIGIN;
 	}
 
 	public boolean hasPos2() {
-		return setKeys[1];
+		return pos2 != BlockPos.ORIGIN;
 	}
 
 	public boolean hasBuildKey() {
-		return setKeys[2];
+		return key != BlockPos.ORIGIN;
 	}
 
 	public boolean hasName() {
-		return setKeys[3];
+		return !name.isEmpty();
 	}
 
 	public BlockPos buildKey() {
@@ -126,9 +115,10 @@ public class ItemStructureSettings {
 	}
 
 	void clearSettings() {
-		for (int i = 0; i < 3; i++) {
-			this.setKeys[i] = false;
-		}
+		pos1 = BlockPos.ORIGIN;
+		pos2 = BlockPos.ORIGIN;
+		key = BlockPos.ORIGIN;
+		name = "";
 	}
 
 	public BlockPos getPos1() {

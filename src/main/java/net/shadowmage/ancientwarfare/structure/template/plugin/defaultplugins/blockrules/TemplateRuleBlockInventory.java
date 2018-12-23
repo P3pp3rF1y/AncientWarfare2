@@ -2,101 +2,98 @@ package net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.b
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
-import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
 
 import javax.annotation.Nonnull;
-import java.util.List;
+import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.Map;
 
-public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
+public class TemplateRuleBlockInventory extends TemplateRuleBlockTile {
 
 	private static final String INVENTORY_DATA_TAG = "inventoryData";
 	public static final String PLUGIN_NAME = "inventory";
+	private static final String SIDED_INVENTORIES_TAG = "sidedInventories";
+	private static final String LEGACY_FEATURES_TAG = "legacyFeatures";
+	private boolean legacyFeatures;
 	private int randomLootLevel;
-	private NBTTagCompound tag;
-	private NonNullList<ItemStack> inventoryStacks;
+	private Map<EnumFacing, NonNullList<ItemStack>> inventoryStacks;
+
+	public TemplateRuleBlockInventory() {
+		super();
+	}
 
 	public TemplateRuleBlockInventory(World world, BlockPos pos, IBlockState state, int turns) {
+		this(world, pos, state, turns, new EnumFacing[] {null}, false);
+	}
+
+	public TemplateRuleBlockInventory(World world, BlockPos pos, IBlockState state, int turns, EnumFacing[] sides, boolean legacyFeatures) {
 		super(world, pos, state, turns);
-		TileEntity te = world.getTileEntity(pos);
-		if (te instanceof IInventory) {
-			IInventory inventory = (IInventory) te;
-			if (inventory.getSizeInventory() <= 0) {
-				return;
-			}
-			@Nonnull ItemStack keyStack = inventory.getStackInSlot(0);
-			boolean useKey = !keyStack.isEmpty() && (keyStack.getItem() == Items.GOLD_INGOT || keyStack.getItem() == Items.DIAMOND || keyStack.getItem() == Items.EMERALD);
-			if (useKey) {
-				for (int i = 1; i < inventory.getSizeInventory(); i++) {
-					if (!inventory.getStackInSlot(i).isEmpty()) {
-						useKey = false;
-						break;
+		this.legacyFeatures = legacyFeatures;
+		WorldTools.getTile(world, pos, TileEntity.class)
+				.ifPresent(te -> {
+					if (te instanceof TileEntityChest) {
+						putInInventoryStacks(null, InventoryTools.getItems(((TileEntityChest) te).getSingleChestHandler()));
+						setLegacyRandomLoot(legacyFeatures, null);
+					} else {
+						for (EnumFacing side : sides) {
+							WorldTools.getItemHandlerFromTile(te, side).ifPresent(itemHandler -> {
+								putInInventoryStacks(side, InventoryTools.getItems(itemHandler));
+								setLegacyRandomLoot(legacyFeatures, side);
+							});
+						}
 					}
-				}
+				});
+	}
+
+	private void setLegacyRandomLoot(boolean legacyFeatures, @Nullable EnumFacing side) {
+		if (legacyFeatures && side == null && inventoryStacks.get(null).size() == 1) {
+			ItemStack keyStack = inventoryStacks.get(null).get(0);
+			if (keyStack.getItem() == Items.GOLD_INGOT) {
+				this.randomLootLevel = 1;
+			} else if (keyStack.getItem() == Items.DIAMOND) {
+				this.randomLootLevel = 2;
+			} else if (keyStack.getItem() == Items.EMERALD) {
+				this.randomLootLevel = 3;
 			}
-			if (keyStack.getItem() == Items.GOLD_INGOT)
-				this.randomLootLevel = useKey ? 1 : 0;
-			else if (keyStack.getItem() == Items.DIAMOND)
-				this.randomLootLevel = useKey ? 2 : 0;
-			else
-				this.randomLootLevel = useKey ? 3 : 0;
-			inventoryStacks = NonNullList.withSize(inventory.getSizeInventory(), ItemStack.EMPTY);
-			@Nonnull ItemStack stack;
-			for (int i = 0; i < inventory.getSizeInventory(); i++) {
-				stack = inventory.getStackInSlot(i);
-				inventory.setInventorySlotContents(i, ItemStack.EMPTY);
-				inventoryStacks.set(i, stack.isEmpty() ? ItemStack.EMPTY : stack.copy());
-			}
-			tag = new NBTTagCompound();
-			te.writeToNBT(tag);
-			for (int i = 0; i < inventory.getSizeInventory(); i++) {
-				inventory.setInventorySlotContents(i, inventoryStacks.get(i));
-			}
-			//actual items were already removed from tag in previous for loop blocks prior to tile writing to nbt
-			tag.removeTag("Items");//remove vanilla inventory tag from tile-entities (need to custom handle AW inventoried blocks still)
 		}
 	}
 
-	public TemplateRuleBlockInventory(int ruleNumber, List<String> lines) throws TemplateParsingException.TemplateRuleParsingException {
-		super(ruleNumber, lines);
+	@Override
+	public void addResources(NonNullList<ItemStack> resources) {
+		super.addResources(resources);
+
+		for (NonNullList<ItemStack> stacks : inventoryStacks.values()) {
+			resources.addAll(stacks);
+		}
 	}
 
 	@Override
 	public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
 		super.handlePlacement(world, turns, pos, builder);
-		world.setBlockState(pos, BlockTools.rotateFacing(state, turns), 3);
-		TileEntity te = world.getTileEntity(pos);
-		if (!(te instanceof IInventory)) {
-			return;
-		}
-		IInventory inventory = (IInventory) te;
-		//TODO look into changing this so that the whole TE doesn't need reloading from custom NBT
-		//noinspection ConstantConditions
-		tag.setString("id", state.getBlock().getRegistryName().toString());
-		tag.setInteger("x", pos.getX());
-		tag.setInteger("y", pos.getY());
-		tag.setInteger("z", pos.getZ());
-		te.readFromNBT(tag);
 		if (randomLootLevel > 0) {
-			inventory.clear(); //clear the inventory in prep for random loot stuff
-			InventoryTools.generateLootFor(world, inventory, world.rand, randomLootLevel);
-		} else if (inventoryStacks != null) {
-			@Nonnull ItemStack stack;
-			for (int i = 0; i < inventory.getSizeInventory(); i++) {
-				stack = i < inventoryStacks.size() ? inventoryStacks.get(i) : ItemStack.EMPTY;
-				inventory.setInventorySlotContents(i, stack.isEmpty() ? ItemStack.EMPTY : stack.copy());
+			for (Map.Entry<EnumFacing, NonNullList<ItemStack>> inventoryEntry : inventoryStacks.entrySet()) {
+				WorldTools.getItemHandlerFromTile(world, pos, inventoryEntry.getKey()).ifPresent(itemHandler -> {
+					InventoryTools.emptyInventory(itemHandler);
+					InventoryTools.generateLootFor(world, itemHandler, world.rand, randomLootLevel);
+				});
 			}
+		} else if (legacyFeatures && inventoryStacks.containsKey(null) && !tag.hasKey("Items")) {
+			WorldTools.getItemHandlerFromTile(world, pos, null)
+					.ifPresent(itemHandler -> InventoryTools.insertItems(itemHandler, inventoryStacks.get(null), false));
 		}
 		BlockTools.notifyBlockUpdate(world, pos);
 	}
@@ -110,15 +107,32 @@ public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
 	public void writeRuleData(NBTTagCompound tag) {
 		super.writeRuleData(tag);
 		tag.setInteger("lootLevel", randomLootLevel);
-		tag.setTag("teData", this.tag);
+		tag.setBoolean(LEGACY_FEATURES_TAG, legacyFeatures);
 
+		for (EnumFacing side : inventoryStacks.keySet()) {
+			if (side == null) {
+				writeInventoryForSide(tag, side);
+			} else {
+				if (!tag.hasKey(SIDED_INVENTORIES_TAG)) {
+					tag.setTag(SIDED_INVENTORIES_TAG, new NBTTagCompound());
+				}
+				NBTTagCompound sidedTag = tag.getCompoundTag(SIDED_INVENTORIES_TAG);
+				NBTTagCompound sideTag = new NBTTagCompound();
+				writeInventoryForSide(sideTag, side);
+				sidedTag.setTag(side.getName(), sideTag);
+			}
+		}
+	}
+
+	private void writeInventoryForSide(NBTTagCompound tag, @Nullable EnumFacing side) {
+		NonNullList<ItemStack> stacks = inventoryStacks.get(side);
 		NBTTagCompound invData = new NBTTagCompound();
-		invData.setInteger("length", inventoryStacks.size());
+		invData.setInteger("length", stacks.size());
 		NBTTagCompound itemTag;
 		NBTTagList list = new NBTTagList();
 		@Nonnull ItemStack stack;
-		for (int i = 0; i < inventoryStacks.size(); i++) {
-			stack = inventoryStacks.get(i);
+		for (int i = 0; i < stacks.size(); i++) {
+			stack = stacks.get(i);
 			if (stack.isEmpty()) {
 				continue;
 			}
@@ -131,31 +145,53 @@ public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
 	}
 
 	@Override
-	public void parseRuleData(NBTTagCompound tag) {
-		super.parseRuleData(tag);
+	public void parseRule(NBTTagCompound tag) {
+		super.parseRule(tag);
 		if (tag.hasKey(INVENTORY_DATA_TAG)) {
-			NBTTagCompound inventoryTag = tag.getCompoundTag(INVENTORY_DATA_TAG);
-			int length = inventoryTag.getInteger("length");
-			inventoryStacks = NonNullList.withSize(length, ItemStack.EMPTY);
-			NBTTagCompound itemTag;
-			NBTTagList list = inventoryTag.getTagList("inventoryContents", Constants.NBT.TAG_COMPOUND);
-			int slot;
-			@Nonnull ItemStack stack;
-			for (int i = 0; i < list.tagCount(); i++) {
-				itemTag = list.getCompoundTagAt(i);
-				stack = new ItemStack(itemTag);
-				if (!stack.isEmpty()) {
-					slot = itemTag.getInteger("slot");
-					inventoryStacks.set(slot, stack);
+			parseInventoryForSide(tag, null);
+		}
+		if (tag.hasKey(SIDED_INVENTORIES_TAG)) {
+			NBTTagCompound sidedTag = tag.getCompoundTag(SIDED_INVENTORIES_TAG);
+			for (String key : sidedTag.getKeySet()) {
+				EnumFacing side = EnumFacing.byName(key);
+				if (side != null) {
+					parseInventoryForSide(sidedTag.getCompoundTag(key), side);
 				}
 			}
 		}
 		randomLootLevel = tag.getInteger("lootLevel");
-		this.tag = tag.getCompoundTag("teData");
+		legacyFeatures = !tag.hasKey(LEGACY_FEATURES_TAG) || tag.getBoolean(LEGACY_FEATURES_TAG);
+	}
+
+	private void parseInventoryForSide(NBTTagCompound tag, @Nullable EnumFacing side) {
+		NBTTagCompound inventoryTag = tag.getCompoundTag(INVENTORY_DATA_TAG);
+		int length = inventoryTag.getInteger("length");
+		NonNullList<ItemStack> stacks = NonNullList.withSize(length, ItemStack.EMPTY);
+		NBTTagCompound itemTag;
+		NBTTagList list = inventoryTag.getTagList("inventoryContents", Constants.NBT.TAG_COMPOUND);
+		int slot;
+		@Nonnull ItemStack stack;
+		for (int i = 0; i < list.tagCount(); i++) {
+			itemTag = list.getCompoundTagAt(i);
+			stack = new ItemStack(itemTag);
+			if (!stack.isEmpty()) {
+				slot = itemTag.getInteger("slot");
+				stacks.set(slot, stack);
+			}
+		}
+		putInInventoryStacks(side, stacks);
+	}
+
+	@SuppressWarnings("squid:S1640") //need to use a null key as well which is not supported in EnumMap
+	private void putInInventoryStacks(@Nullable EnumFacing side, NonNullList<ItemStack> stacks) {
+		if (inventoryStacks == null) {
+			inventoryStacks = new HashMap<>();
+		}
+		inventoryStacks.put(side, stacks);
 	}
 
 	@Override
-	protected String getPluginName() {
+	public String getPluginName() {
 		return PLUGIN_NAME;
 	}
 }

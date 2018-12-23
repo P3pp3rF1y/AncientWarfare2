@@ -58,7 +58,7 @@ public class StructureBoundingBoxRenderer {
 				return;
 			}
 			if (item instanceof IBoxRenderer) {
-				((IBoxRenderer) item).renderBox(player, stack, evt.getPartialTicks());
+				((IBoxRenderer) item).renderBox(player, hand, stack, evt.getPartialTicks());
 			}
 		}
 	}

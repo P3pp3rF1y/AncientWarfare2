@@ -1,1145 +1,1046 @@
 {
     "defaults": {
-        "attributes": [
-            {
-                "generic.maxHealth": 50
-            },
-            {
-                "generic.movementSpeed": 0.325
-            },
-            {
-                "generic.followRange": 16
-            },
-            {
-                "generic.attackDamage": 1
-            }
-        ],
+        "attributes": {
+            "generic.maxHealth": 50,
+            "generic.movementSpeed": 0.325,
+            "generic.followRange": 16,
+            "generic.attackDamage": 1
+        },
+        "enabled": true,
         "experience_drop": 0,
         "can_swim": true,
-        "can_break_doors": true
+        "can_break_doors": true,
+        "additional_attributes": {
+            "burns_in_sun": false,
+            "horse_entity": "net.minecraft.entity.passive.EntityHorse"
+        }
     },
-    "npc_subtypes": [
-        {
-            "soldier": {
-                "attributes": [
-                    {
-                        "generic.maxHealth": 20
-                    }
-                ],
-                "experience_drop": 20,
-                "equipment": [
-                    {
-                        "mainhand": "minecraft:iron_sword"
-                    }
-                ]
+    "npc_subtypes": {
+        "soldier": {
+            "attributes": {
+                "generic.maxHealth": 20
+            },
+            "experience_drop": 20,
+            "equipment": {
+                "mainhand": "minecraft:iron_sword"
             }
         },
-        {
+        "soldier.elite": {
+            "attributes": {
+                "generic.maxHealth": 20,
+                "generic.movementSpeed": 0.395,
+                "generic.attackDamage": 2
+            },
+            "experience_drop": 20,
+            "equipment": {
+                "mainhand": "minecraft:iron_sword"
+            }
+        },
+        "archer": {
+            "attributes": {
+                "generic.maxHealth": 20
+            },
+            "experience_drop": 20,
+            "equipment": {
+                "mainhand": "minecraft:bow"
+            }
+        },
+        "archer.elite": {
+            "attributes": {
+                "generic.maxHealth": 30,
+                "generic.movementSpeed": 0,
+                "generic.followRange": 32
+            },
+            "experience_drop": 30,
+            "equipment": {
+                "mainhand": "minecraft:bow"
+            }
+        },
+        "cavalry": {
+            "attributes": {
+                "generic.maxHealth": 40,
+                "generic.attackDamage": 2
+            },
+            "experience_drop": 40,
+            "equipment": {
+                "mainhand": "minecraft:iron_sword"
+            }
+        },
+        "mounted_archer": {
+            "attributes": {
+                "generic.maxHealth": 30
+            },
+            "experience_drop": 30,
+            "equipment": {
+                "mainhand": "minecraft:bow"
+            }
+        },
+        "leader": {
+            "attributes": {
+                "generic.maxHealth": 60,
+                "generic.attackDamage": 3
+            },
+            "experience_drop": 60,
+            "equipment": {
+                "mainhand": "minecraft:diamond_sword"
+            }
+        },
+        "leader.elite": {
+            "attributes": {
+                "generic.maxHealth": 80,
+                "generic.attackDamage": 4
+            },
+            "experience_drop": 80,
+            "equipment": {
+                "mainhand": "minecraft:diamond_sword"
+            }
+        },
+        "siege.engineer": {
+            "attributes": {
+                "generic.maxHealth": 30,
+                "generic.followRange": 60
+            },
+            "experience_drop": 30,
+            "equipment": {
+                "mainhand": "minecraft:air"
+            }
+        },
+        "priest": {
+            "attributes": {
+                "generic.maxHealth": 40,
+                "generic.movementSpeed": 0.375,
+                "generic.attackDamage": 0
+            },
+            "experience_drop": 40,
+            "equipment": {
+                "mainhand": "minecraft:book"
+            }
+        },
+        "bard": {
+            "attributes": {
+                "generic.attackDamage": 0
+            },
+            "equipment": {
+                "mainhand": "ancientwarfarenpc:bard_instrument"
+            },
+            "can_break_doors": false
+        },
+        "trader": {
+            "attributes": {
+                "generic.movementSpeed": 0.2,
+                "generic.attackDamage": 0
+            },
+            "equipment": {
+                "mainhand": "minecraft:book"
+            },
+            "can_break_doors": false
+        },
+        "civilian.female": {
+            "attributes": {
+                "generic.maxHealth": 10,
+                "generic.attackDamage": 0
+            },
+            "equipment": {
+                "mainhand": "minecraft:air"
+            },
+            "can_break_doors": false
+        },
+        "civilian.male": {
+            "attributes": {
+                "generic.maxHealth": 10,
+                "generic.attackDamage": 0
+            },
+            "equipment": {
+                "mainhand": "minecraft:air"
+            },
+            "can_break_doors": false
+        }
+    },
+    "factions": {
+        "empire": {
             "soldier.elite": {
-                "attributes": [
-                    {
-                        "generic.maxHealth": 20
-                    },
-                    {
-                        "generic.movementSpeed": 0.395
-                    },
-                    {
-                        "generic.attackDamage": 2
-                    }
-                ],
-                "experience_drop": 20,
-                "equipment": [
-                    {
-                        "mainhand": "minecraft:iron_sword"
-                    }
-                ]
-            }
-        },
-        {
-            "archer": {
-                "attributes": [
-                    {
-                        "generic.maxHealth": 20
-                    }
-                ],
-                "experience_drop": 20,
-                "equipment": [
-                    {
-                        "mainhand": "minecraft:bow"
-                    }
-                ]
-            }
-        },
-        {
-            "archer.elite": {
-                "attributes": [
-                    {
-                        "generic.maxHealth": 30
-                    },
-                    {
-                        "generic.movementSpeed": 0
-                    },
-                    {
-                        "generic.followRange": 32
-                    }
-                ],
-                "experience_drop": 30,
-                "equipment": [
-                    {
-                        "mainhand": "minecraft:bow"
-                    }
-                ]
-            }
-        },
-        {
+                "attributes": {
+                    "generic.maxHealth": 30
+                },
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:iron_halberd",
+                    "offhand": "ancientwarfarenpc:iron_shield"
+                },
+                "experience_drop": 30
+            },
+            "soldier": {
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:iron_spear",
+                    "offhand": "ancientwarfarenpc:iron_shield"
+                }
+            },
             "cavalry": {
-                "attributes": [
-                    {
-                        "generic.maxHealth": 40
-                    },
-                    {
-                        "generic.attackDamage": 2
-                    }
-                ],
-                "experience_drop": 40,
-                "equipment": [
-                    {
-                        "mainhand": "minecraft:iron_sword"
-                    }
-                ]
-            }
-        },
-        {
-            "mounted_archer": {
-                "attributes": [
-                    {
-                        "generic.maxHealth": 30
-                    }
-                ],
-                "experience_drop": 30,
-                "equipment": [
-                    {
-                        "mainhand": "minecraft:bow"
-                    }
-                ]
-            }
-        },
-        {
+                "attributes": {
+                    "generic.maxHealth": 65,
+                    "generic.movementSpeed": 0.3,
+                    "generic.attackDamage": 3
+                },
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:iron_lance",
+                    "offhand": "ancientwarfarenpc:iron_shield"
+                },
+                "experience_drop": 65
+            },
             "leader": {
-                "attributes": [
-                    {
-                        "generic.maxHealth": 60
-                    },
-                    {
-                        "generic.attackDamage": 3
-                    }
-                ],
-                "experience_drop": 60,
-                "equipment": [
-                    {
-                        "mainhand": "minecraft:diamond_sword"
-                    }
-                ]
+                "equipment": {
+                    "mainhand": "minecraft:diamond_axe",
+                    "offhand": "ancientwarfarenpc:iron_shield"
+                }
             }
         },
-        {
+        "norska": {
+            "soldier": {
+                "attributes": {
+                    "generic.maxHealth": 30
+                },
+                "experience_drop": 30
+            },
+            "soldier.elite": {
+                "attributes": {
+                    "generic.maxHealth": 50
+                },
+                "equipment": {
+                    "mainhand": "minecraft:iron_axe",
+                    "offhand": "minecraft:iron_axe"
+                },
+                "experience_drop": 50
+            },
+            "cavalry": {
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:iron_spear",
+                    "offhand": "ancientwarfarenpc:iron_shield"
+                }
+            },
+            "leader": {
+                "attributes": {
+                    "generic.maxHealth": 70
+                },
+                "equipment": {
+                    "mainhand": "minecraft:diamond_axe"
+                },
+                "experience_drop": 70
+            },
             "leader.elite": {
-                "attributes": [
-                    {
-                        "generic.maxHealth": 80
-                    },
-                    {
-                        "generic.attackDamage": 4
-                    }
-                ],
-                "experience_drop": 80,
-                "equipment": [
-                    {
-                        "mainhand": "minecraft:diamond_sword"
-                    }
-                ]
+                "attributes": {
+                    "generic.maxHealth": 100
+                },
+                "experience_drop": 100
             }
         },
-        {
-            "siege.engineer": {
-                "attributes": [
-                    {
-                        "generic.maxHealth": 30
-                    },
-                    {
-                        "generic.followRange": 60
-                    }
-                ],
-                "experience_drop": 30,
-                "equipment": [
-                    {
-                        "mainhand": "minecraft:air"
-                    }
-                ]
+        "sarkonid": {
+            "soldier": {
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:golden_spear",
+                    "offhand": "ancientwarfarenpc:gold_shield"
+                }
+            },
+            "soldier.elite": {
+                "equipment": {
+                    "mainhand": "minecraft:golden_sword",
+                    "offhand": "minecraft:iron_sword"
+                }
+            },
+            "cavalry": {
+                "attributes": {
+                    "generic.maxHealth": 50,
+                    "generic.movementSpeed": 0.3
+                },
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:golden_lance",
+                    "offhand": "ancientwarfarenpc:gold_shield"
+                },
+                "experience_drop": 50
+            },
+            "leader": {
+                "equipment": {
+                    "offhand": "ancientwarfarenpc:gold_shield"
+                }
+            },
+            "leader.elite": {
+                "equipment": {
+                    "offhand": "ancientwarfarenpc:gold_shield"
+                }
             }
         },
-        {
+        "xoltec": {
+            "soldier": {
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:stone_spear",
+                    "offhand": "ancientwarfarenpc:gold_shield"
+                }
+            },
+            "soldier.elite": {
+                "attributes": {
+                    "generic.maxHealth": 40
+                },
+                "equipment": {
+                    "mainhand": "minecraft:stone_axe"
+                },
+                "experience_drop": 40
+            },
+            "archer.elite": {
+                "attributes": {
+                    "generic.maxHealth": 40
+                },
+                "experience_drop": 40
+            },
+            "cavalry": {
+                "attributes": {
+                    "generic.maxHealth": 60
+                },
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:stone_spear",
+                    "offhand": "ancientwarfarenpc:gold_shield"
+                },
+                "experience_drop": 60,
+                "additional_attributes": {
+                    "horse_entity": "net.minecraft.entity.passive.EntityLlama"
+                }
+            },
+            "mounted_archer": {
+                "additional_attributes": {
+                    "horse_entity": "net.minecraft.entity.passive.EntityLlama"
+                }
+            },
+            "leader": {
+                "equipment": {
+                    "mainhand": "minecraft:diamond_axe"
+                }
+            },
             "priest": {
-                "attributes": [
-                    {
-                        "generic.maxHealth": 40
-                    },
-                    {
-                        "generic.movementSpeed": 0.375
-                    },
-                    {
-                        "generic.attackDamage": 0
-                    }
-                ],
-                "experience_drop": 40,
-                "equipment": [
-                    {
-                        "mainhand": "minecraft:book"
-                    }
-                ]
+                "attributes": {
+                    "generic.maxHealth": 50
+                },
+                "experience_drop": 50
             }
         },
-        {
-            "bard": {
-                "attributes": [
-                    {
-                        "generic.attackDamage": 0
-                    }
-                ],
-                "equipment": [
-                    {
-                        "mainhand": "ancientwarfarenpc:bard_instrument"
-                    }
-                ],
-                "can_break_doors": false
+        "witchbane": {
+            "soldier": {
+                "attributes": {
+                    "generic.maxHealth": 40
+                },
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:iron_spear",
+                    "offhand": "ancientwarfarenpc:iron_shield"
+                },
+                "experience_drop": 40
+            },
+            "soldier.elite": {
+                "attributes": {
+                    "generic.maxHealth": 60
+                },
+                "experience_drop": 60
+            },
+            "cavalry": {
+                "attributes": {
+                    "generic.maxHealth": 60,
+                    "generic.movementSpeed": 0.3,
+                    "generic.attackDamage": 3
+                },
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:iron_lance",
+                    "offhand": "ancientwarfarenpc:diamond_shield"
+                },
+                "experience_drop": 60
+            },
+            "leader": {
+                "attributes": {
+                    "generic.maxHealth": 70
+                },
+                "equipment": {
+                    "offhand": "ancientwarfarenpc:iron_shield"
+                },
+                "experience_drop": 70
+            },
+            "leader.elite": {
+                "attributes": {
+                    "generic.maxHealth": 100
+                },
+                "experience_drop": 100
+            },
+            "siege.engineer": {
+                "attributes": {
+                    "generic.maxHealth": 50
+                },
+                "experience_drop": 50
+            },
+            "priest": {
+                "attributes": {
+                    "generic.maxHealth": 50
+                },
+                "experience_drop": 50
             }
         },
-        {
+        "nogg": {
+            "soldier": {
+                "attributes": {
+                    "generic.maxHealth": 30
+                },
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:iron_halberd"
+                },
+                "experience_drop": 30
+            },
+            "soldier.elite": {
+                "attributes": {
+                    "generic.maxHealth": 40
+                },
+                "experience_drop": 40
+            },
+            "archer": {
+                "attributes": {
+                    "generic.maxHealth": 30
+                },
+                "experience_drop": 30
+            },
+            "archer.elite": {
+                "attributes": {
+                    "generic.maxHealth": 40
+                },
+                "experience_drop": 40
+            },
+            "cavalry": {
+                "attributes": {
+                    "generic.maxHealth": 65,
+                    "generic.movementSpeed": 0.3,
+                    "generic.attackDamage": 3
+                },
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:iron_lance",
+                    "offhand": "ancientwarfarenpc:iron_shield"
+                },
+                "experience_drop": 65
+            },
+            "siege.engineer": {
+                "attributes": {
+                    "generic.maxHealth": 40
+                },
+                "experience_drop": 40
+            },
+            "priest": {
+                "attributes": {
+                    "generic.maxHealth": 50
+                },
+                "experience_drop": 50
+            }
+        },
+        "buffloka": {
+            "soldier": {
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:stone_spear",
+                    "offhand": "ancientwarfarenpc:wooden_shield"
+                }
+            },
+            "soldier.elite": {
+                "attributes": {
+                    "generic.maxHealth": 30
+                },
+                "equipment": {
+                    "mainhand": "minecraft:stone_axe"
+                },
+                "experience_drop": 30
+            },
+            "cavalry": {
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:stone_spear",
+                    "offhand": "ancientwarfarenpc:wooden_shield"
+                }
+            },
+            "leader": {
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:diamond_spear"
+                }
+            },
+            "leader.elite": {
+                "equipment": {
+                    "mainhand": "minecraft:diamond_axe"
+                }
+            },
+            "priest": {
+                "equipment": {
+                    "mainhand": "minecraft:stick"
+                }
+            },
             "trader": {
-                "attributes": [
-                    {
-                        "generic.movementSpeed": 0.2
-                    },
-                    {
-                        "generic.attackDamage": 0
-                    }
-                ],
-                "equipment": [
-                    {
-                        "mainhand": "minecraft:book"
-                    }
-                ],
-                "can_break_doors": false
+                "equipment": {
+                    "mainhand": "minecraft:feather"
+                }
             }
         },
-        {
+        "zimba": {
+            "soldier": {
+                "equipment": {
+                    "mainhand": "minecraft:stone_sword",
+                    "offhand": "ancientwarfarenpc:wooden_shield"
+                }
+            },
+            "soldier.elite": {
+                "attributes": {
+                    "generic.maxHealth": 30
+                },
+                "equipment": {
+                    "offhand": "ancientwarfarenpc:wooden_shield"
+                },
+                "experience_drop": 30
+            },
+            "cavalry": {
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:iron_lance",
+                    "offhand": "ancientwarfarenpc:wooden_shield"
+                }
+            },
+            "leader": {
+                "equipment": {
+                    "mainhand": "minecraft:iron_sword"
+                }
+            },
+            "priest": {
+                "equipment": {
+                    "mainhand": "minecraft:stick"
+                }
+            },
+            "trader": {
+                "equipment": {
+                    "mainhand": "minecraft:stick"
+                }
+            }
+        },
+        "kong": {
+            "soldier": {
+                "attributes": {
+                    "generic.maxHealth": 15
+                },
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:wooden_spear"
+                },
+                "experience_drop": 15
+            },
+            "soldier.elite": {
+                "equipment": {
+                    "mainhand": "minecraft:wooden_axe"
+                }
+            },
+            "archer": {
+                "attributes": {
+                    "generic.maxHealth": 15
+                },
+                "experience_drop": 15
+            },
+            "archer.elite": {
+                "attributes": {
+                    "generic.maxHealth": 20
+                },
+                "experience_drop": 20
+            },
+            "cavalry": {
+                "attributes": {
+                    "generic.maxHealth": 50
+                },
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:golden_lance"
+                },
+                "experience_drop": 50
+            },
+            "mounted_archer": {
+                "attributes": {
+                    "generic.maxHealth": 50
+                },
+                "experience_drop": 50
+            },
+            "leader": {
+                "attributes": {
+                    "generic.maxHealth": 40
+                },
+                "experience_drop": 40
+            },
+            "leader.elite": {
+                "attributes": {
+                    "generic.maxHealth": 60
+                },
+                "experience_drop": 60
+            },
+            "siege.engineer": {
+                "attributes": {
+                    "generic.maxHealth": 50
+                },
+                "experience_drop": 50
+            },
+            "priest": {
+                "equipment": {
+                    "mainhand": "minecraft:rotten_flesh"
+                }
+            },
+            "trader": {
+                "equipment": {
+                    "mainhand": "minecraft:bone"
+                }
+            }
+        },
+        "orc": {
+            "soldier": {
+                "attributes": {
+                    "generic.maxHealth": 15
+                },
+                "equipment": {
+                    "offhand": "ancientwarfarenpc:wooden_shield"
+                },
+                "experience_drop": 15
+            },
+            "soldier.elite": {
+                "attributes": {
+                    "generic.maxHealth": 50
+                },
+                "experience_drop": 50
+            },
+            "archer": {
+                "attributes": {
+                    "generic.maxHealth": 15
+                },
+                "experience_drop": 15
+            },
+            "cavalry": {
+                "attributes": {
+                    "generic.maxHealth": 50
+                },
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:iron_spear"
+                },
+                "experience_drop": 50
+            },
+            "mounted_archer": {
+                "attributes": {
+                    "generic.maxHealth": 20
+                },
+                "experience_drop": 20
+            },
+            "leader": {
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:diamond_halberd"
+                }
+            },
+            "leader.elite": {
+                "attributes": {
+                    "generic.attackDamage": 5
+                }
+            },
+            "priest": {
+                "equipment": {
+                    "mainhand": "minecraft:skull"
+                }
+            },
+            "trader": {
+                "equipment": {
+                    "mainhand": "minecraft:feather"
+                }
+            }
+        },
+        "brigand": {
+            "soldier": {
+                "attributes": {
+                    "generic.maxHealth": 15
+                },
+                "equipment": {
+                    "mainhand": "minecraft:iron_axe"
+                },
+                "experience_drop": 15
+            },
+            "archer": {
+                "attributes": {
+                    "generic.maxHealth": 15
+                },
+                "experience_drop": 15
+            },
+            "archer.elite": {
+                "attributes": {
+                    "generic.maxHealth": 15
+                },
+                "experience_drop": 15
+            },
+            "cavalry": {
+                "attributes": {
+                    "generic.maxHealth": 20
+                },
+                "experience_drop": 20
+            },
+            "mounted_archer": {
+                "attributes": {
+                    "generic.maxHealth": 20
+                },
+                "experience_drop": 20
+            },
+            "leader": {
+                "attributes": {
+                    "generic.maxHealth": 40
+                },
+                "equipment": {
+                    "mainhand": "minecraft:iron_sword"
+                },
+                "experience_drop": 40
+            },
+            "leader.elite": {
+                "attributes": {
+                    "generic.maxHealth": 60
+                },
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:iron_halberd"
+                },
+                "experience_drop": 60
+            }
+        },
+        "pirate": {
+            "soldier": {
+                "attributes": {
+                    "generic.maxHealth": 15
+                },
+                "experience_drop": 15
+            },
+            "archer": {
+                "attributes": {
+                    "generic.maxHealth": 15
+                },
+                "experience_drop": 15
+            },
+            "archer.elite": {
+                "attributes": {
+                    "generic.maxHealth": 15
+                },
+                "experience_drop": 15
+            },
+            "cavalry": {
+                "attributes": {
+                    "generic.maxHealth": 20
+                },
+                "experience_drop": 20
+            },
+            "mounted_archer": {
+                "attributes": {
+                    "generic.maxHealth": 20
+                },
+                "experience_drop": 20
+            },
+            "leader": {
+                "attributes": {
+                    "generic.maxHealth": 40
+                },
+                "experience_drop": 40
+            },
+            "leader.elite": {
+                "attributes": {
+                    "generic.maxHealth": 60
+                },
+                "experience_drop": 60
+            }
+        },
+        "evil": {
+            "soldier": {
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:iron_spear",
+                    "offhand": "ancientwarfarenpc:iron_shield"
+                }
+            },
+            "soldier.elite": {
+                "attributes": {
+                    "generic.maxHealth": 60
+                },
+                "equipment": {
+                    "mainhand": "minecraft:iron_axe",
+                    "offhand": "minecraft:iron_axe"
+                },
+                "experience_drop": 60
+            },
+            "cavalry": {
+                "attributes": {
+                    "generic.movementSpeed": 0.3
+                },
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:diamond_lance",
+                    "offhand": "ancientwarfarenpc:iron_shield"
+                }
+            },
+            "mounted_archer": {
+                "attributes": {
+                    "generic.movementSpeed": 0.375
+                }
+            },
+            "leader": {
+                "attributes": {
+                    "generic.maxHealth": 75
+                },
+                "experience_drop": 75
+            },
+            "leader.elite": {
+                "attributes": {
+                    "generic.maxHealth": 100,
+                    "generic.attackDamage": 5
+                },
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:diamond_halberd"
+                },
+                "experience_drop": 100
+            },
+            "priest": {
+                "attributes": {
+                    "generic.maxHealth": 50
+                },
+                "experience_drop": 50
+            }
+        },
+        "good": {
+            "soldier": {
+                "attributes": {
+                    "generic.maxHealth": 30
+                },
+                "experience_drop": 30
+            },
+            "soldier.elite": {
+                "attributes": {
+                    "generic.maxHealth": 30
+                },
+                "experience_drop": 30
+            },
+            "archer": {
+                "attributes": {
+                    "generic.maxHealth": 30
+                },
+                "experience_drop": 30
+            },
+            "cavalry": {
+                "attributes": {
+                    "generic.maxHealth": 60
+                },
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:golden_lance",
+                    "offhand": "ancientwarfarenpc:diamond_shield"
+                },
+                "experience_drop": 60
+            },
+            "leader.elite": {
+                "attributes": {
+                    "generic.maxHealth": 100,
+                    "generic.attackDamage": 5
+                },
+                "experience_drop": 100
+            },
+            "priest": {
+                "attributes": {
+                    "generic.maxHealth": 50
+                },
+                "experience_drop": 50
+            }
+        },
+        "undead": {
+            "soldier": {
+                "additional_attributes": {
+                    "burns_in_sun": true
+                }
+            },
+            "soldier.elite": {
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:iron_halberd"
+                },
+                "additional_attributes": {
+                    "burns_in_sun": true
+                }
+            },
+            "archer": {
+                "additional_attributes": {
+                    "burns_in_sun": true
+                }
+            },
+            "archer.elite": {
+                "additional_attributes": {
+                    "burns_in_sun": true
+                }
+            },
+            "cavalry": {
+                "additional_attributes": {
+                    "burns_in_sun": true,
+                    "horse_entity": "net.minecraft.entity.passive.EntitySkeletonHorse"
+                }
+            },
+            "mounted_archer": {
+                "additional_attributes": {
+                    "burns_in_sun": true,
+                    "horse_entity": "net.minecraft.entity.passive.EntitySkeletonHorse"
+                }
+            },
+            "leader": {
+                "additional_attributes": {
+                    "burns_in_sun": true
+                }
+            },
+            "leader.elite": {
+                "attributes": {
+                    "generic.attackDamage": 5
+                },
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:diamond_halberd"
+                },
+                "additional_attributes": {
+                    "burns_in_sun": true
+                }
+            },
+            "siege.engineer": {
+                "additional_attributes": {
+                    "burns_in_sun": true
+                }
+            },
+            "priest": {
+                "equipment": {
+                    "mainhand": "minecraft:skull"
+                },
+                "additional_attributes": {
+                    "burns_in_sun": true
+                }
+            },
+            "bard": {
+                "additional_attributes": {
+                    "burns_in_sun": true
+                }
+            },
+            "trader": {
+                "equipment": {
+                    "mainhand": "minecraft:bone"
+                },
+                "additional_attributes": {
+                    "burns_in_sun": true
+                }
+            },
             "civilian.female": {
-                "attributes": [
-                    {
-                        "generic.maxHealth": 10
-                    },
-                    {
-                        "generic.attackDamage": 0
-                    }
-                ],
-                "equipment": [
-                    {
-                        "mainhand": "minecraft:air"
-                    }
-                ],
-                "can_break_doors": false
-            }
-        },
-        {
+                "additional_attributes": {
+                    "burns_in_sun": true
+                }
+            },
             "civilian.male": {
-                "attributes": [
-                    {
-                        "generic.maxHealth": 10
-                    },
-                    {
-                        "generic.attackDamage": 0
-                    }
-                ],
-                "equipment": [
-                    {
-                        "mainhand": "minecraft:air"
-                    }
-                ],
-                "can_break_doors": false
+                "additional_attributes": {
+                    "burns_in_sun": true
+                }
+            }
+        },
+        "demon": {
+            "soldier": {
+                "attributes": {
+                    "generic.maxHealth": 35
+                },
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:golden_spear"
+                },
+                "experience_drop": 35
+            },
+            "soldier.elite": {
+                "attributes": {
+                    "generic.maxHealth": 35
+                },
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:golden_halberd"
+                },
+                "experience_drop": 35
+            },
+            "cavalry": {
+                "attributes": {
+                    "generic.maxHealth": 55
+                },
+                "equipment": {
+                    "mainhand": "minecraft:golden_sword"
+                },
+                "experience_drop": 55
+            },
+            "mounted_archer": {
+                "attributes": {
+                    "generic.maxHealth": 45
+                },
+                "experience_drop": 45
+            },
+            "leader": {
+                "attributes": {
+                    "generic.maxHealth": 75
+                },
+                "experience_drop": 75
+            },
+            "leader.elite": {
+                "attributes": {
+                    "generic.maxHealth": 150,
+                    "generic.movementSpeed": 0.4,
+                    "generic.attackDamage": 6
+                },
+                "experience_drop": 150
+            },
+            "siege.engineer": {
+                "attributes": {
+                    "generic.maxHealth": 50
+                },
+                "experience_drop": 50
+            },
+            "priest": {
+                "attributes": {
+                    "generic.maxHealth": 50
+                },
+                "equipment": {
+                    "mainhand": "minecraft:ender_pearl"
+                },
+                "experience_drop": 50
+            },
+            "civilian.female": {
+                "attributes": {
+                    "generic.maxHealth": 20
+                }
+            },
+            "civilian.male": {
+                "attributes": {
+                    "generic.maxHealth": 20
+                }
+            }
+        },
+        "barbarian": {
+            "soldier": {
+                "equipment": {
+                    "mainhand": "minecraft:stone_axe"
+                }
+            },
+            "soldier.elite": {
+                "enabled": false
+            },
+            "archer.elite": {
+                "enabled": false
+            },
+            "cavalry": {
+                "enabled": false
+            },
+            "mounted_archer": {
+                "enabled": false
+            },
+            "leader": {
+                "equipment": {
+                    "mainhand": "minecraft:iron_axe",
+                    "offhand": "ancientwarfarenpc:wooden_shield"
+                }
+            },
+            "leader.elite": {
+                "enabled": false
+            },
+            "siege.engineer": {
+                "enabled": false
+            },
+            "priest": {
+                "enabled": false
+            },
+            "bard": {
+                "enabled": false
+            },
+            "trader": {
+                "enabled": false
+            },
+            "civilian.female": {
+                "enabled": false
+            },
+            "civilian.male": {
+                "enabled": false
             }
         }
-    ],
-    "factions": [
-        {
-            "empire": [
-                {
-                    "soldier.elite": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 30
-                            }
-                        ],
-                        "experience_drop": 30
-                    }
-                },
-                {
-                    "cavalry": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 65
-                            },
-                            {
-                                "generic.movementSpeed": 0.3
-                            },
-                            {
-                                "generic.attackDamage": 3
-                            }
-                        ],
-                        "experience_drop": 65
-                    }
-                }
-            ]
-        },
-        {
-            "norska": [
-                {
-                    "soldier": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 30
-                            }
-                        ],
-                        "experience_drop": 30
-                    }
-                },
-                {
-                    "soldier.elite": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 50
-                            }
-                        ],
-                        "experience_drop": 50
-                    }
-                },
-                {
-                    "leader": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 70
-                            }
-                        ],
-                        "experience_drop": 70
-                    }
-                },
-                {
-                    "leader.elite": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 100
-                            }
-                        ],
-                        "experience_drop": 100
-                    }
-                }
-            ]
-        },
-        {
-            "sarkonid": [
-                {
-                    "cavalry": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 50
-                            },
-                            {
-                                "generic.movementSpeed": 0.3
-                            }
-                        ],
-                        "experience_drop": 50
-                    }
-                }
-            ]
-        },
-        {
-            "xoltec": [
-                {
-                    "soldier.elite": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 40
-                            }
-                        ],
-                        "experience_drop": 40
-                    }
-                },
-                {
-                    "archer.elite": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 40
-                            }
-                        ],
-                        "experience_drop": 40
-                    }
-                },
-                {
-                    "cavalry": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 60
-                            }
-                        ],
-                        "experience_drop": 60
-                    }
-                },
-                {
-                    "priest": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 50
-                            }
-                        ],
-                        "experience_drop": 50
-                    }
-                }
-            ]
-        },
-        {
-            "witchbane": [
-                {
-                    "soldier": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 40
-                            }
-                        ],
-                        "experience_drop": 40
-                    }
-                },
-                {
-                    "soldier.elite": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 60
-                            }
-                        ],
-                        "experience_drop": 60
-                    }
-                },
-                {
-                    "cavalry": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 60
-                            },
-                            {
-                                "generic.movementSpeed": 0.3
-                            },
-                            {
-                                "generic.attackDamage": 3
-                            }
-                        ],
-                        "experience_drop": 60
-                    }
-                },
-                {
-                    "leader": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 70
-                            }
-                        ],
-                        "experience_drop": 70
-                    }
-                },
-                {
-                    "leader.elite": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 100
-                            }
-                        ],
-                        "experience_drop": 100
-                    }
-                },
-                {
-                    "siege.engineer": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 50
-                            }
-                        ],
-                        "experience_drop": 50
-                    }
-                },
-                {
-                    "priest": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 50
-                            }
-                        ],
-                        "experience_drop": 50
-                    }
-                }
-            ]
-        },
-        {
-            "nogg": [
-                {
-                    "soldier": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 30
-                            }
-                        ],
-                        "experience_drop": 30
-                    }
-                },
-                {
-                    "soldier.elite": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 40
-                            }
-                        ],
-                        "experience_drop": 40
-                    }
-                },
-                {
-                    "archer": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 30
-                            }
-                        ],
-                        "experience_drop": 30
-                    }
-                },
-                {
-                    "archer.elite": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 40
-                            }
-                        ],
-                        "experience_drop": 40
-                    }
-                },
-                {
-                    "cavalry": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 65
-                            },
-                            {
-                                "generic.movementSpeed": 0.3
-                            },
-                            {
-                                "generic.attackDamage": 3
-                            }
-                        ],
-                        "experience_drop": 65
-                    }
-                },
-                {
-                    "siege.engineer": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 40
-                            }
-                        ],
-                        "experience_drop": 40
-                    }
-                },
-                {
-                    "priest": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 50
-                            }
-                        ],
-                        "experience_drop": 50
-                    }
-                }
-            ]
-        },
-        {
-            "buffloka": [
-                {
-                    "soldier.elite": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 30
-                            }
-                        ],
-                        "experience_drop": 30
-                    }
-                }
-            ]
-        },
-        {
-            "zimba": [
-                {
-                    "soldier.elite": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 30
-                            }
-                        ],
-                        "experience_drop": 30
-                    }
-                }
-            ]
-        },
-        {
-            "kong": [
-                {
-                    "soldier": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 15
-                            }
-                        ],
-                        "experience_drop": 15
-                    }
-                },
-                {
-                    "archer": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 15
-                            }
-                        ],
-                        "experience_drop": 15
-                    }
-                },
-                {
-                    "archer.elite": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 20
-                            }
-                        ],
-                        "experience_drop": 20
-                    }
-                },
-                {
-                    "cavalry": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 50
-                            }
-                        ],
-                        "experience_drop": 50
-                    }
-                },
-                {
-                    "mounted_archer": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 50
-                            }
-                        ],
-                        "experience_drop": 50
-                    }
-                },
-                {
-                    "leader": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 40
-                            }
-                        ],
-                        "experience_drop": 40
-                    }
-                },
-                {
-                    "leader.elite": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 60
-                            }
-                        ],
-                        "experience_drop": 60
-                    }
-                },
-                {
-                    "siege.engineer": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 50
-                            }
-                        ],
-                        "experience_drop": 50
-                    }
-                }
-            ]
-        },
-        {
-            "orc": [
-                {
-                    "soldier": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 15
-                            }
-                        ],
-                        "experience_drop": 15
-                    }
-                },
-                {
-                    "soldier.elite": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 50
-                            }
-                        ],
-                        "experience_drop": 50
-                    }
-                },
-                {
-                    "archer": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 15
-                            }
-                        ],
-                        "experience_drop": 15
-                    }
-                },
-                {
-                    "cavalry": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 50
-                            }
-                        ],
-                        "experience_drop": 50
-                    }
-                },
-                {
-                    "mounted_archer": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 20
-                            }
-                        ],
-                        "experience_drop": 20
-                    }
-                },
-                {
-                    "leader.elite": {
-                        "attributes": [
-                            {
-                                "generic.attackDamage": 5
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
-        {
-            "brigand": [
-                {
-                    "soldier": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 15
-                            }
-                        ],
-                        "experience_drop": 15
-                    }
-                },
-                {
-                    "archer": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 15
-                            }
-                        ],
-                        "experience_drop": 15
-                    }
-                },
-                {
-                    "archer.elite": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 15
-                            }
-                        ],
-                        "experience_drop": 15
-                    }
-                },
-                {
-                    "cavalry": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 20
-                            }
-                        ],
-                        "experience_drop": 20
-                    }
-                },
-                {
-                    "mounted_archer": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 20
-                            }
-                        ],
-                        "experience_drop": 20
-                    }
-                },
-                {
-                    "leader": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 40
-                            }
-                        ],
-                        "experience_drop": 40
-                    }
-                },
-                {
-                    "leader.elite": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 60
-                            }
-                        ],
-                        "experience_drop": 60
-                    }
-                }
-            ]
-        },
-        {
-            "pirate": [
-                {
-                    "soldier": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 15
-                            }
-                        ],
-                        "experience_drop": 15
-                    }
-                },
-                {
-                    "archer": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 15
-                            }
-                        ],
-                        "experience_drop": 15
-                    }
-                },
-                {
-                    "archer.elite": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 15
-                            }
-                        ],
-                        "experience_drop": 15
-                    }
-                },
-                {
-                    "cavalry": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 20
-                            }
-                        ],
-                        "experience_drop": 20
-                    }
-                },
-                {
-                    "mounted_archer": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 20
-                            }
-                        ],
-                        "experience_drop": 20
-                    }
-                },
-                {
-                    "leader": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 40
-                            }
-                        ],
-                        "experience_drop": 40
-                    }
-                },
-                {
-                    "leader.elite": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 60
-                            }
-                        ],
-                        "experience_drop": 60
-                    }
-                }
-            ]
-        },
-        {
-            "evil": [
-                {
-                    "soldier.elite": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 60
-                            }
-                        ],
-                        "experience_drop": 60
-                    }
-                },
-                {
-                    "cavalry": {
-                        "attributes": [
-                            {
-                                "generic.movementSpeed": 0.3
-                            }
-                        ]
-                    }
-                },
-                {
-                    "mounted_archer": {
-                        "attributes": [
-                            {
-                                "generic.movementSpeed": 0.375
-                            }
-                        ]
-                    }
-                },
-                {
-                    "leader": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 75
-                            }
-                        ],
-                        "experience_drop": 75
-                    }
-                },
-                {
-                    "leader.elite": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 100
-                            },
-                            {
-                                "generic.attackDamage": 5
-                            }
-                        ],
-                        "experience_drop": 100
-                    }
-                },
-                {
-                    "priest": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 50
-                            }
-                        ],
-                        "experience_drop": 50
-                    }
-                }
-            ]
-        },
-        {
-            "good": [
-                {
-                    "soldier": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 30
-                            }
-                        ],
-                        "experience_drop": 30
-                    }
-                },
-                {
-                    "soldier.elite": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 30
-                            }
-                        ],
-                        "experience_drop": 30
-                    }
-                },
-                {
-                    "archer": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 30
-                            }
-                        ],
-                        "experience_drop": 30
-                    }
-                },
-                {
-                    "cavalry": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 60
-                            }
-                        ],
-                        "experience_drop": 60
-                    }
-                },
-                {
-                    "leader.elite": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 100
-                            },
-                            {
-                                "generic.attackDamage": 5
-                            }
-                        ],
-                        "experience_drop": 100
-                    }
-                },
-                {
-                    "priest": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 50
-                            }
-                        ],
-                        "experience_drop": 50
-                    }
-                }
-            ]
-        },
-        {
-            "undead": [
-                {
-                    "leader.elite": {
-                        "attributes": [
-                            {
-                                "generic.attackDamage": 5
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
-        {
-            "demon": [
-                {
-                    "soldier": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 35
-                            }
-                        ],
-                        "experience_drop": 35
-                    }
-                },
-                {
-                    "soldier.elite": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 35
-                            }
-                        ],
-                        "experience_drop": 35
-                    }
-                },
-                {
-                    "cavalry": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 55
-                            }
-                        ],
-                        "experience_drop": 55
-                    }
-                },
-                {
-                    "mounted_archer": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 45
-                            }
-                        ],
-                        "experience_drop": 45
-                    }
-                },
-                {
-                    "leader": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 75
-                            }
-                        ],
-                        "experience_drop": 75
-                    }
-                },
-                {
-                    "leader.elite": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 150
-                            },
-                            {
-                                "generic.movementSpeed": 0.4
-                            },
-                            {
-                                "generic.attackDamage": 6
-                            }
-                        ],
-                        "experience_drop": 150
-                    }
-                },
-                {
-                    "siege.engineer": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 50
-                            }
-                        ],
-                        "experience_drop": 50
-                    }
-                },
-                {
-                    "priest": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 50
-                            }
-                        ],
-                        "experience_drop": 50
-                    }
-                },
-                {
-                    "civilian.female": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 20
-                            }
-                        ]
-                    }
-                },
-                {
-                    "civilian.male": {
-                        "attributes": [
-                            {
-                                "generic.maxHealth": 20
-                            }
-                        ]
-                    }
-                }
-            ]
-        }
-    ]
+    }
 }

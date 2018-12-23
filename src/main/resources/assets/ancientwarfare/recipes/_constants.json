@@ -47,5 +47,61 @@
             "type": "forge:ore_dict",
             "ore": "cobblestone"
         }
+    },
+    {
+        "name": "STONE",
+        "ingredient": {
+            "type": "forge:ore_dict",
+            "ore": "stone"
+        }
+    },
+    {
+        "name": "GEMDIAMOND",
+        "ingredient": {
+            "type": "forge:ore_dict",
+            "ore": "gemDiamond"
+        }
+    },
+    {
+        "name": "DYEBLACK",
+        "ingredient": {
+            "type": "forge:ore_dict",
+            "ore": "dyeBlack"
+        }
+    },
+    {
+        "name": "DYEWHITE",
+        "ingredient": {
+            "type": "forge:ore_dict",
+            "ore": "dyeWhite"
+        }
+    },
+    {
+        "name": "DYERED",
+        "ingredient": {
+            "type": "forge:ore_dict",
+            "ore": "dyeRed"
+        }
+    },
+    {
+        "name": "DYEBLUE",
+        "ingredient": {
+            "type": "forge:ore_dict",
+            "ore": "dyeBlue"
+        }
+    },
+    {
+        "name": "DYEYELLOW",
+        "ingredient": {
+            "type": "forge:ore_dict",
+            "ore": "dyeYellow"
+        }
+    },
+    {
+        "name": "FEATHER",
+        "ingredient": {
+            "type": "forge:ore_dict",
+            "ore": "feather"
+        }
     }
 ]

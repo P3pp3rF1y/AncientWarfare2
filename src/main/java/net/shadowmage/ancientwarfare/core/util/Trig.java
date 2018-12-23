@@ -194,11 +194,7 @@ public class Trig {
 				hitPercent = (y - posY) / hitDiffY;
 				hitX = posX + hitDiffX * hitPercent;
 			}
-			if (hitGround && hitX < x)// hit was not far enough, increase power
-			{
-				bestVelocity = testVelocity;
-				testVelocity += velocityIncrement;
-			} else if (posX < x)//
+			if ((hitGround && hitX < x) || posX < x)// hit was not far enough, increase power
 			{
 				bestVelocity = testVelocity;
 				testVelocity += velocityIncrement;
@@ -283,6 +279,10 @@ public class Trig {
 			return test >= min && test <= max;
 		}
 		return test >= min || test <= max;
+	}
+
+	public static boolean anglesEqual(float angle1, float angle2) {
+		return MathUtils.epsilonEquals(wrapTo360(angle1), wrapTo360(angle2));
 	}
 
 	public static float getYawTowardsTarget(double xStart, double zStart, double x, double z, float originYaw) {

@@ -81,6 +81,8 @@ public class TemplateExporter {
 		writer.newLine();
 		writer.write("name=" + template.name);
 		writer.newLine();
+		writer.write("mods=" + String.join(",", template.modDependencies));
+		writer.newLine();
 		writer.write("size=" + template.getSize().getX() + "," + template.getSize().getY() + "," + template.getSize().getZ());
 		writer.newLine();
 		writer.write("offset=" + template.getOffset().getX() + "," + template.getOffset().getY() + "," + template.getOffset().getZ());

@@ -7,6 +7,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
@@ -33,6 +34,10 @@ public class StructureValidatorGround extends StructureValidator {
 
 	@Override
 	public boolean validatePlacement(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
+		if (y - template.offset.getY() <= 0) {
+			AncientWarfareStructure.LOG.debug("Ground isn't deep enough for the structure- required: {}, found: {}", Math.abs(bb.min.getY()), y);
+			return false;
+		}
 		int minY = getMinY(template, bb);
 		int maxY = getMaxY(template, bb);
 		return validateBorderBlocks(world, bb, minY, maxY, false);
@@ -42,11 +47,13 @@ public class StructureValidatorGround extends StructureValidator {
 	public void preGeneration(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureBB bb) {
 		prePlacementBorder(world, template, bb);
 		prePlacementUnderfill(world, bb);
-		clearBB(world, bb);
+		if (!isPreserveBlocks()) {
+			clearBB(world, bb);
+		}
 	}
 
 	private void clearBB(World world, StructureBB bb) {
-		BlockPos.getAllInBox(bb.min, bb.max).forEach(world::setBlockToAir);
+		BlockTools.getAllInBoxTopDown(bb.min, bb.max).forEach(world::setBlockToAir);
 	}
 
 	@Override
@@ -62,11 +69,11 @@ public class StructureValidatorGround extends StructureValidator {
 		if (getMaxLeveling() <= 0) {
 			return;
 		}
-		int topFilledY = WorldStructureGenerator.getTargetY(world, x, z, true);
-		int topNonAirBlock = world.getTopSolidOrLiquidBlock(new BlockPos(x, 1, z)).getY();
+		int topFilledY = Math.max(world.getSeaLevel(), WorldStructureGenerator.getTargetY(world, x, z, true));
+		int topNonAirBlock = BlockTools.getTopFilledHeight(world.getChunkFromBlockCoords(new BlockPos(x, 1, z)), x, z, false);
 		int step = WorldStructureGenerator.getStepNumber(x, z, bb.min.getX(), bb.max.getX(), bb.min.getZ(), bb.max.getZ());
 		int startY = Math.min(bb.min.getY() + template.getOffset().getY() + step, topFilledY + 1);
-		for (int y = startY; y <= topNonAirBlock; y++) {
+		for (int y = topNonAirBlock; y >= startY; y--) {
 			handleClearAction(world, new BlockPos(x, y, z), template, bb);
 		}
 		Biome biome = world.provider.getBiomeForCoords(new BlockPos(x, 1, z));

@@ -3,6 +3,8 @@ package net.shadowmage.ancientwarfare.vehicle.missiles;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
@@ -24,7 +26,9 @@ public class AmmoBallistaBoltExplosive extends Ammo {
 	@Override
 	public void onImpactWorld(World world, float x, float y, float z, MissileBase missile, RayTraceResult hit) {
 		if (!world.isRemote) {
-			createExplosion(world, missile, x, y, z, 0.8f);
+			Vec3i dirVec = hit.sideHit.getDirectionVec();
+			Vec3d hitVec = hit.hitVec.addVector(dirVec.getX() * 0.2d, dirVec.getY() * 0.2d, dirVec.getZ() * 0.2d);
+			createExplosion(world, missile, (float) hitVec.x, (float) hitVec.y, (float) hitVec.z, 0.8f);
 		}
 	}
 

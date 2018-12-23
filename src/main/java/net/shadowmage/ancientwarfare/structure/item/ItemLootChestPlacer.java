@@ -34,7 +34,7 @@ public class ItemLootChestPlacer extends ItemBaseStructure {
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-		if (!player.world.isRemote && !player.isSneaking()) {
+		if (!player.world.isRemote) {
 			NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_LOOT_CHEST_PLACER, 0, 0, 0);
 		}
 		return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
@@ -42,6 +42,9 @@ public class ItemLootChestPlacer extends ItemBaseStructure {
 
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		if (player.isSneaking()) {
+			return EnumActionResult.PASS;
+		}
 		if (world.isRemote) {
 			return EnumActionResult.SUCCESS;
 		}

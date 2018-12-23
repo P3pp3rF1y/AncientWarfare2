@@ -17,12 +17,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.proxy.IClientRegister;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
+import net.shadowmage.ancientwarfare.structure.render.GateProxyRenderer;
 import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
 
 import javax.annotation.Nullable;
@@ -31,14 +33,14 @@ public final class BlockGateProxy extends BlockContainer implements IClientRegis
 	private static final AxisAlignedBB Z_AXIS_AABB = new AxisAlignedBB(8D / 16D, 0, 0, 8D / 16D, 1, 1);
 	private static final AxisAlignedBB X_AXIS_AABB = new AxisAlignedBB(0, 0, 8D / 16D, 1, 1, 8D / 16D);
 	private static final AxisAlignedBB ZERO_AABB = new AxisAlignedBB(0, 0, 0, 0, 0, 0);
+	private static final AxisAlignedBB NO_AABB = new AxisAlignedBB(0, 0, 0, 0, 0, 0);
 
 	public BlockGateProxy() {
 		super(Material.ROCK);
 		setCreativeTab(null);
 		setUnlocalizedName("gate_proxy");
 		setRegistryName(new ResourceLocation(AncientWarfareStructure.MOD_ID, "gate_proxy"));
-		setResistance(2000.f);
-		setHardness(5.f);
+		setBlockUnbreakable();
 		AncientWarfareStructure.proxy.addClientRegister(this);
 	}
 
@@ -70,6 +72,11 @@ public final class BlockGateProxy extends BlockContainer implements IClientRegis
 	@Nullable
 	@Override
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return WorldTools.getTile(world, pos, TEGateProxy.class).map(TEGateProxy::isOpen).orElse(false) ? NULL_AABB :
+				getCorrectAxisAABB(world, pos);
+	}
+
+	private AxisAlignedBB getCorrectAxisAABB(IBlockAccess world, BlockPos pos) {
 		return (world.getBlockState(pos.offset(EnumFacing.WEST)).getBlock() == this || world.getBlockState(pos.offset(EnumFacing.EAST)).getBlock() == this)
 				? X_AXIS_AABB : Z_AXIS_AABB;
 	}
@@ -113,5 +120,12 @@ public final class BlockGateProxy extends BlockContainer implements IClientRegis
 			}
 		});
 		ModelRegistryHelper.register(modelLocation, new DummyBakedModel());
+
+		ClientRegistry.bindTileEntitySpecialRenderer(TEGateProxy.class, new GateProxyRenderer());
+	}
+
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return WorldTools.getTile(source, pos, TEGateProxy.class).map(TEGateProxy::isOpen).orElse(false) ? NO_AABB : FULL_BLOCK_AABB;
 	}
 }

@@ -1,33 +1,15 @@
-/*
- Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
- This software is distributed under the terms of the GNU General Public License.
- Please see COPYING for precise license information.
-
- This file is part of Ancient Warfare.
-
- Ancient Warfare is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- Ancient Warfare is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.structure.item;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.Tuple;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IBlockAccess;
@@ -39,17 +21,18 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.event.IBoxRenderer;
 import net.shadowmage.ancientwarfare.structure.gui.GuiStructureSelection;
+import net.shadowmage.ancientwarfare.structure.render.PreviewRenderer;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
-import net.shadowmage.ancientwarfare.structure.template.StructureTemplateClient;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
-import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManagerClient;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Optional;
 
 public class ItemStructureBuilder extends ItemBaseStructure implements IItemKeyInterface, IBoxRenderer {
+	private static final String LOCK_POS_TAG = "lockPos";
 
 	public ItemStructureBuilder(String name) {
 		super(name);
@@ -89,12 +72,18 @@ public class ItemStructureBuilder extends ItemBaseStructure implements IItemKeyI
 				player.sendMessage(new TextComponentTranslation("guistrings.template.not_found"));
 				return;
 			}
-			BlockPos bpHit = BlockTools.getBlockClickedOn(player, player.world, true);
-			if (bpHit == null) {
+			Optional<Tuple<BlockPos, EnumFacing>> buildPos = getBuildPosFromStackOrPlayer(player, stack);
+			if (!buildPos.isPresent()) {
 				return;
-			}//no hit position, clicked on air
-			StructureBuilder builder = new StructureBuilder(player.world, template, player.getHorizontalFacing(), bpHit);
+			}
+			BlockPos hit = buildPos.get().getFirst();
+			EnumFacing facing = buildPos.get().getSecond();
+
+			StructureBuilder builder = new StructureBuilder(player.world, template, facing, hit);
+			builder.getTemplate().getValidationSettings().preGeneration(player.world, hit, facing, builder.getTemplate(), builder.getBoundingBox());
 			builder.instantConstruction();
+			builder.getTemplate().getValidationSettings().postGeneration(player.world, hit, builder.getBoundingBox());
+			removeLockPosition(stack);
 			if (!player.capabilities.isCreativeMode) {
 				stack.shrink(1);
 			}
@@ -108,27 +97,84 @@ public class ItemStructureBuilder extends ItemBaseStructure implements IItemKeyI
 		if (!player.world.isRemote && !player.isSneaking() && player.capabilities.isCreativeMode) {
 			NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_BUILDER, 0, 0, 0);
 		}
+		ItemStack stack = player.getHeldItem(hand);
+		if (player.isSneaking() && getLockPosition(stack).isPresent()) {
+			removeLockPosition(stack);
+		}
+
 		return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
+	}
+
+	private void removeLockPosition(ItemStack stack) {
+		//noinspection ConstantConditions
+		stack.getTagCompound().removeTag(LOCK_POS_TAG);
+	}
+
+	@Override
+	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		ItemStack stack = player.getHeldItem(hand);
+		ItemStructureSettings buildSettings = ItemStructureSettings.getSettingsFor(stack);
+		if (player.isSneaking() && buildSettings.hasName()) {
+			if (!worldIn.isRemote) {
+				lockPosition(stack, pos.offset(facing), player);
+			}
+			return EnumActionResult.SUCCESS;
+		}
+
+		return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
+	}
+
+	private void lockPosition(ItemStack stack, BlockPos pos, EntityPlayer player) {
+		NBTTagCompound tag = stack.getTagCompound();
+		//noinspection ConstantConditions
+		tag.setLong(LOCK_POS_TAG, pos.toLong());
+		tag.setByte("lockFacing", (byte) player.getHorizontalFacing().getHorizontalIndex());
+	}
+
+	private Optional<Tuple<BlockPos, EnumFacing>> getLockPosition(ItemStack stack) {
+		NBTTagCompound tag = stack.getTagCompound();
+		return tag != null && tag.hasKey(LOCK_POS_TAG) ? Optional.of(new Tuple<>(BlockPos.fromLong(tag.getLong(LOCK_POS_TAG)), EnumFacing.HORIZONTALS[tag.getByte("lockFacing")])) : Optional.empty();
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void renderBox(EntityPlayer player, ItemStack stack, float delta) {
+	public void renderBox(EntityPlayer player, EnumHand hand, ItemStack stack, float delta) {
 		ItemStructureSettings settings = ItemStructureSettings.getSettingsFor(stack);
 		if (!settings.hasName()) {
 			return;
 		}
 		String name = settings.name();
-		StructureTemplateClient structure = StructureTemplateManagerClient.instance().getClientTemplate(name);
+		StructureTemplate structure = StructureTemplateManager.INSTANCE.getTemplate(name);
 		if (structure == null) {
 			return;
 		}
-		BlockPos hit = BlockTools.getBlockClickedOn(player, player.world, true);
-		if (hit == null) {
+		Optional<Tuple<BlockPos, EnumFacing>> buildPos = getBuildPosFromStackOrPlayer(player, stack);
+		if (!buildPos.isPresent())
 			return;
-		}
-		StructureBB bb = new StructureBB(hit, player.getHorizontalFacing(), structure.getSize(), structure.getOffset());
+
+		BlockPos hit = buildPos.get().getFirst();
+		EnumFacing facing = buildPos.get().getSecond();
+
+		StructureBB bb = new StructureBB(hit, facing, structure.getSize(), structure.getOffset());
+		int turns = (facing.getHorizontalIndex() + 2) % 4;
 		Util.renderBoundingBox(player, bb.min, bb.max, delta);
+		Util.renderBoundingBox(player, hit, hit, delta);
+		PreviewRenderer.renderTemplatePreview(player, hand, stack, delta, structure, bb, turns);
+	}
+
+	private Optional<Tuple<BlockPos, EnumFacing>> getBuildPosFromStackOrPlayer(EntityPlayer player, ItemStack stack) {
+		Optional<Tuple<BlockPos, EnumFacing>> lockPosition = getLockPosition(stack);
+		Optional<Tuple<BlockPos, EnumFacing>> buildPos;
+		if (lockPosition.isPresent()) {
+			buildPos = lockPosition;
+		} else {
+			BlockPos hit = BlockTools.getBlockClickedOn(player, player.world, true);
+			if (hit == null) {
+				return Optional.empty();
+			}
+			buildPos = Optional.of(new Tuple<>(hit, player.getHorizontalFacing()));
+		}
+		return buildPos;
 	}
 
 	@Override
@@ -138,4 +184,5 @@ public class ItemStructureBuilder extends ItemBaseStructure implements IItemKeyI
 
 		NetworkHandler.registerGui(NetworkHandler.GUI_BUILDER, GuiStructureSelection.class);
 	}
+
 }

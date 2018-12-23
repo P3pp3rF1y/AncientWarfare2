@@ -1,0 +1,29 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "B W",
+        "ELR"
+    ],
+    "key": {
+        "B": {
+            "item": "#DYEBLACK"
+        },
+        "W": {
+            "item": "#DYEWHITE"
+        },
+        "R": {
+            "item": "#DYERED"
+        },
+        "E": {
+            "item": "#DYEBLUE"
+        },
+        "L": {
+            "item": "#LOGWOOD"
+        }
+    },
+    "result": {
+        "type": "minecraft:item_nbt",
+        "item": "ancientwarfarestructure:totem_part",
+        "nbt": "{variant:2b}"
+    }
+}

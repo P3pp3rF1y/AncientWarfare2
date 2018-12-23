@@ -17,6 +17,8 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIWatchClosest;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRideHorse;
 
 public class NpcFactionMountedSoldier extends NpcFactionMounted {
+	private NpcAIAttackMeleeLongRange meleeAI;
+
 	@SuppressWarnings("unused") //required for deserialization
 	public NpcFactionMountedSoldier(World world) {
 		super(world);
@@ -30,13 +32,14 @@ public class NpcFactionMountedSoldier extends NpcFactionMounted {
 	}
 
 	private void addAI() {
+		meleeAI = new NpcAIAttackMeleeLongRange(this);
 		tasks.addTask(0, new EntityAISwimming(this));
 		tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
 		tasks.addTask(0, new NpcAIDoor(this, true));
 		tasks.addTask(0, new NpcAIFactionRideHorse<>(this));
 		tasks.addTask(1, new NpcAIFollowPlayer(this));
-		tasks.addTask(2, new NpcAIMoveHome(this, 50F, 5F, 30F, 5F));
-		tasks.addTask(3, new NpcAIAttackMeleeLongRange(this));
+		tasks.addTask(2, meleeAI);
+		tasks.addTask(3, new NpcAIMoveHome(this, 50F, 5F, 30F, 5F));
 
 		tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
 		tasks.addTask(102, new NpcAIWander(this));
@@ -51,4 +54,12 @@ public class NpcFactionMountedSoldier extends NpcFactionMounted {
 		return "cavalry";
 	}
 
+	@Override
+	public void onWeaponInventoryChanged() {
+		super.onWeaponInventoryChanged();
+
+		if (meleeAI != null) {
+			meleeAI.setAttackReachFromWeapon(getHeldItemMainhand());
+		}
+	}
 }

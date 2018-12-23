@@ -4,6 +4,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseControl;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
@@ -22,6 +23,7 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStac
 import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack.SortOrder;
 
 import javax.annotation.Nonnull;
+import java.util.Arrays;
 import java.util.Locale;
 
 public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseControl> {
@@ -124,7 +126,7 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
 		for (ItemHashEntry entry : getContainer().itemMap.keySet()) {
 			stack = entry.getItemStack();
 
-			if (matchesSearch(stack)) {
+			if (matchesSearch(stack, entry.getNameAndTooltip())) {
 				stack.setCount(getContainer().itemMap.getCount(entry));
 				displayStacks.add(stack);
 			}
@@ -133,10 +135,15 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
 		sortItems(displayStacks);
 
 		int x = 0, y = 0;
-		int totalSize = 21;
+		int totalSize = 22;
 		ItemSlot slot;
 		for (ItemStack displayStack : displayStacks) {
-			slot = new ItemSlot(4 + x * 18, 3 + y * 18, displayStack, this) {
+			if (x >= 9) {
+				x = 0;
+				y++;
+				totalSize += 18;
+			}
+			slot = new ItemSlot(4 + x * 18, 4 + y * 18, displayStack, this) {
 				@Override
 				public void onSlotClicked(ItemStack stack, boolean rightClicked) {
 					getContainer().handleClientRequestSpecific(getStack(), isShiftKeyDown(), rightClicked);
@@ -144,34 +151,40 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
 			};
 			area.addGuiElement(slot);
 			x++;
-			if (x >= 9) {
-				x = 0;
-				y++;
-				totalSize += 18;
-			}
 		}
 		area.setAreaSize(totalSize);
 	}
 
-	private boolean matchesSearch(ItemStack stack) {
+	private boolean matchesSearch(ItemStack stack, String nameAndTooltip) {
 		String searchInput = input.getText().toLowerCase(Locale.ENGLISH);
 		if (searchInput.isEmpty()) {
 			return true;
 		}
 
 		if (searchInput.startsWith("@")) {
-			String modName = searchInput.substring(1);
+			String[] searchStrings = searchInput.split(" ");
+			String modName = searchStrings[0].substring(1);
 			ResourceLocation registryName = stack.getItem().getRegistryName();
-			return registryName != null && registryName.getResourceDomain().contains(modName);
+			if (registryName == null || !registryName.getResourceDomain().contains(modName)) {
+				return false;
+			} else if (searchStrings.length <= 1) {
+				return true;
+			}
+			searchInput = String.join(" ", Arrays.copyOfRange(searchStrings, 1, searchStrings.length));
 		}
 
-		return stack.getDisplayName().toLowerCase().contains(searchInput);
+		return nameAndTooltip.contains(searchInput);
 	}
 
 	private void sortItems(NonNullList<ItemStack> items) {
 		sorter.setSortType(getContainer().getSortType());
 		sorter.setSortOrder(getContainer().getSortOrder());
-		items.sort(sorter);
+		try {
+			items.sort(sorter);
+		}
+		catch (IllegalArgumentException ex) {
+			AncientWarfareAutomation.LOG.error("Error sorting warehouse items: " + ex.getMessage());
+		}
 	}
 
 }

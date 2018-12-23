@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " # ",
+        " # ",
+        "#S#"
+    ],
+    "key": {
+        "S": {
+            "item": "#STICKWOOD"
+        },
+        "#": {
+            "item": "#GEMDIAMOND"
+        }
+    },
+    "result": {
+        "item": "ancientwarfarenpc:diamond_lance"
+    }
+}

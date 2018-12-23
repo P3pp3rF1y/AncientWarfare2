@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.ai.faction;
 
+import net.minecraft.entity.passive.AbstractHorse;
 import net.minecraft.entity.passive.EntityHorse;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIRideHorse;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
@@ -30,7 +31,7 @@ public class NpcAIFactionRideHorse<T extends NpcBase & IHorseMountedNpc> extends
 	}
 
 	private void spawnHorse() {
-		EntityHorse horse = new EntityHorse(npc.world);
+		AbstractHorse horse = npc.instantiateHorseEntity();
 		horse.setLocationAndAngles(npc.posX, npc.posY, npc.posZ, npc.rotationYaw, npc.rotationPitch);
 		horse.onInitialSpawn(npc.world.getDifficultyForLocation(npc.getPosition()), null);
 		horse.setGrowingAge(0);

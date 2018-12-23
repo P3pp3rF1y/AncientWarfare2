@@ -16,7 +16,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
 import net.shadowmage.ancientwarfare.structure.container.ContainerStructureScanner;
-import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManagerClient;
+import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 
 import java.io.File;
 
@@ -29,6 +29,7 @@ public class GuiStructureScanner extends GuiContainerBase<ContainerStructureScan
 	private Button setupValidationButton;
 	private Button selectBiomesButton;
 	private Button selectDimensionsButton;
+	private Button selectModsButton;
 	private Label statusMessage;
 	private int statusTicks = 0;
 	private Button boundsButton;
@@ -106,6 +107,15 @@ public class GuiStructureScanner extends GuiContainerBase<ContainerStructureScan
 			}
 		};
 		this.addGuiElement(selectDimensionsButton);
+		totalHeight += 16;
+
+		selectModsButton = new Button(8, totalHeight, 120, 16, "guistrings.select_mods") {
+			@Override
+			protected void onPressed() {
+				Minecraft.getMinecraft().displayGuiScreen(new GuiModSelection(GuiStructureScanner.this));
+			}
+		};
+		this.addGuiElement(selectModsButton);
 
 		addButtons();
 		updateElements();
@@ -176,6 +186,7 @@ public class GuiStructureScanner extends GuiContainerBase<ContainerStructureScan
 		setupValidationButton.setEnabled(readyToExport);
 		selectBiomesButton.setEnabled(readyToExport);
 		selectDimensionsButton.setEnabled(readyToExport);
+		selectModsButton.setEnabled(readyToExport);
 	}
 
 	@Override
@@ -213,7 +224,7 @@ public class GuiStructureScanner extends GuiContainerBase<ContainerStructureScan
 
 	private void restore() {
 		String name = nameInput.getText();
-		if (StructureTemplateManagerClient.instance().templateExists(name)) {
+		if (StructureTemplateManager.INSTANCE.templateExists(name)) {
 			getContainer().restoreTemplate(name);
 		} else {
 			statusMessage.setText("Template Name doesn't exist");

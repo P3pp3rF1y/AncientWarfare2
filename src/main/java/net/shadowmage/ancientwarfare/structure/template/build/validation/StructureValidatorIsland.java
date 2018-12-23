@@ -4,48 +4,39 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.worldgen.WorldStructureGenerator;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.util.List;
+import static net.shadowmage.ancientwarfare.structure.template.build.validation.properties.StructureValidationProperties.MAX_WATER_DEPTH;
+import static net.shadowmage.ancientwarfare.structure.template.build.validation.properties.StructureValidationProperties.MIN_WATER_DEPTH;
 
 public class StructureValidatorIsland extends StructureValidator {
-
-	private int minWaterDepth;
-	private int maxWaterDepth;
-
 	public StructureValidatorIsland() {
 		super(StructureValidationType.ISLAND);
 	}
 
-	@Override
-	protected void readFromLines(List<String> lines) {
-		for (String line : lines) {
-			if (startLow(line, "minwaterdepth=")) {
-				minWaterDepth = StringTools.safeParseInt("=", line);
-			} else if (startLow(line, "maxwaterdepth=")) {
-				maxWaterDepth = StringTools.safeParseInt("=", line);
-			}
-		}
+	private int getMinWaterDepth() {
+		return getPropertyValue(MIN_WATER_DEPTH);
 	}
 
-	@Override
-	protected void write(BufferedWriter out) throws IOException {
-		out.write("minWaterDepth=" + minWaterDepth);
-		out.newLine();
-		out.write("minWaterDepth=" + maxWaterDepth);
-		out.newLine();
+	private int getMaxWaterDepth() {
+		return getPropertyValue(MAX_WATER_DEPTH);
+	}
+
+	private void setMinWaterDepth(int depth) {
+		setPropertyValue(MIN_WATER_DEPTH, depth);
+	}
+
+	private void setMaxWaterDepth(int depth) {
+		setPropertyValue(MAX_WATER_DEPTH, depth);
 	}
 
 	@Override
 	protected void setDefaultSettings(StructureTemplate template) {
-		maxWaterDepth = template.getOffset().getY();
-		minWaterDepth = maxWaterDepth / 2;
+		setMaxWaterDepth(template.getOffset().getY());
+		setMinWaterDepth(getMaxWaterDepth() / 2);
 	}
 
 	@Override
@@ -53,13 +44,13 @@ public class StructureValidatorIsland extends StructureValidator {
 		int startY = y - 1;
 		y = WorldStructureGenerator.getTargetY(world, x, z, true) + 1;
 		int water = startY - y + 1;
-		return !(water < minWaterDepth || water > maxWaterDepth);
+		return !(water < getMinWaterDepth() || water > getMaxWaterDepth());
 	}
 
 	@Override
 	public boolean validatePlacement(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
-		int minY = y - maxWaterDepth;
-		int maxY = y - minWaterDepth;
+		int minY = y - getMaxWaterDepth();
+		int maxY = y - getMinWaterDepth();
 		return validateBorderBlocks(world, bb, minY, maxY, true);
 	}
 

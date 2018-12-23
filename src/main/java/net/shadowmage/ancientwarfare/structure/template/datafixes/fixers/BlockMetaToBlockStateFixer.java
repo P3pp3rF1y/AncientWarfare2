@@ -12,13 +12,12 @@ import net.shadowmage.ancientwarfare.core.util.NBTHelper;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.datafixes.FixResult;
-import net.shadowmage.ancientwarfare.structure.template.datafixes.IDataFixer;
 
 import java.util.Map;
 
 import static net.shadowmage.ancientwarfare.structure.api.TemplateRule.JSON_PREFIX;
 
-public class BlockMetaToBlockStateFixer implements IDataFixer {
+public class BlockMetaToBlockStateFixer extends RuleDataFixerBase {
 	private static final StructureTemplate.Version VERSION = new StructureTemplate.Version(2, 5);
 
 	@SuppressWarnings("squid:S1192")
@@ -37,7 +36,7 @@ public class BlockMetaToBlockStateFixer implements IDataFixer {
 
 	@Override
 	@SuppressWarnings("squid:CallToDeprecatedMethod")
-	public FixResult<String> fix(String ruleName, String data) {
+	protected FixResult<String> fixData(String ruleName, String data) {
 		NBTTagCompound tag;
 		try {
 			tag = JsonToNBT.getTagFromJson(data.substring(JSON_PREFIX.length()));

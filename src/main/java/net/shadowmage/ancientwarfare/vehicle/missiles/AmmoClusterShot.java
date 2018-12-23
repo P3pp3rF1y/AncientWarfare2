@@ -24,10 +24,7 @@ public class AmmoClusterShot extends Ammo {
 	@Override
 	public void onImpactWorld(World world, float x, float y, float z, MissileBase missile, RayTraceResult hit) {
 		if (!world.isRemote) {
-			double px = hit.hitVec.x - missile.motionX;
-			double py = hit.hitVec.y - missile.motionY;
-			double pz = hit.hitVec.z - missile.motionZ;
-			spawnGroundBurst(world, (float) px, (float) py, (float) pz, 10, AmmoRegistry.ammoBallShot, (int) ammoWeight, 35, hit.sideHit, missile.shooterLiving);
+			spawnGroundBurst(world, hit, 10, AmmoRegistry.ammoBallShot, (int) ammoWeight, 35, missile.shooterLiving);
 		}
 	}
 

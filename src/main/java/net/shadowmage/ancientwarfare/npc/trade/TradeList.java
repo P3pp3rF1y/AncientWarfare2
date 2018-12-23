@@ -8,9 +8,6 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.items.IItemHandler;
 import net.shadowmage.ancientwarfare.core.util.OrderingList;
 
-/*
- * Created by Olivier on 12/05/2015.
- */
 public class TradeList extends OrderingList<Trade> implements INBTSerializable<NBTTagCompound> {
 
 	public final void addNewTrade() {
@@ -40,11 +37,12 @@ public class TradeList extends OrderingList<Trade> implements INBTSerializable<N
 	public void deserializeNBT(NBTTagCompound tag) {
 		clear();
 		NBTTagList list = tag.getTagList("tradeList", Constants.NBT.TAG_COMPOUND);
-		Trade t;
 		for (int i = 0; i < list.tagCount(); i++) {
-			t = getNewTrade();
+			Trade t = getNewTrade();
 			t.readFromNBT(list.getCompoundTagAt(i));
-			add(t);
+			if (t.isValid()) {
+				add(t);
+			}
 		}
 	}
 }

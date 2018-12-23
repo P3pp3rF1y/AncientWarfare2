@@ -25,7 +25,7 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
-import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
+import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntityBase;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 
 import java.util.Map;
@@ -39,9 +39,9 @@ public class StructureBuilder implements IStructureBuilder {
 	protected StructureTemplate template;
 	protected World world;
 	BlockPos buildOrigin;
-	EnumFacing buildFace;
+	protected EnumFacing buildFace;
 	protected int turns;
-	int maxPriority = 4;
+	int maxPriority = 3;
 	int currentPriority;//current build priority...may not be needed anymore?
 	Vec3i curTempPos;
 	BlockPos destination;
@@ -100,7 +100,7 @@ public class StructureBuilder implements IStructureBuilder {
 	}
 
 	private void placeEntities() {
-		for (TemplateRuleEntity rule : template.getEntityRules().values()) {
+		for (TemplateRuleEntityBase rule : template.getEntityRules().values()) {
 			destination = BlockTools.rotateInArea(rule.getPosition(), template.getSize().getX(), template.getSize().getZ(), turns).add(bb.min);
 			rule.handlePlacement(world, turns, destination, this);
 		}
@@ -112,9 +112,9 @@ public class StructureBuilder implements IStructureBuilder {
 	 * with priority > 0
 	 */
 	@Override
-	public void placeBlock(BlockPos pos, IBlockState state, int priority) {
+	public boolean placeBlock(BlockPos pos, IBlockState state, int priority) {
 		if (pos.getY() <= 0 || pos.getY() >= world.getHeight()) {
-			return;
+			return false;
 		}
 
 		IBlockState adjustedState = state;
@@ -123,7 +123,7 @@ public class StructureBuilder implements IStructureBuilder {
 		}
 
 		int updateFlag = state.canProvidePower() ? 3 : 2;
-		world.setBlockState(pos, adjustedState, updateFlag);
+		return world.setBlockState(pos, adjustedState, updateFlag);
 	}
 
 	private void placeCurrentPosition(TemplateRule rule) {
@@ -263,6 +263,10 @@ public class StructureBuilder implements IStructureBuilder {
 							.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Y)),
 					new BlockSwapMapping(b -> b == Blocks.OAK_FENCE, s -> Blocks.ACACIA_FENCE.getDefaultState()))
 	);
+
+	public EnumFacing getBuildFace() {
+		return buildFace;
+	}
 
 	// @formatter:on
 

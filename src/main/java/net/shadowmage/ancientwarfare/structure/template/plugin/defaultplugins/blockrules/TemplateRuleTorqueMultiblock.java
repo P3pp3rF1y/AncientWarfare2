@@ -7,10 +7,7 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
-import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
-
-import java.util.List;
 
 public class TemplateRuleTorqueMultiblock extends TemplateRuleBlock {
 	public static final String PLUGIN_NAME = "awTorqueMulti";
@@ -22,8 +19,8 @@ public class TemplateRuleTorqueMultiblock extends TemplateRuleBlock {
 		WorldTools.getTile(world, pos).ifPresent(t -> t.writeToNBT(tag));
 	}
 
-	public TemplateRuleTorqueMultiblock(int ruleNumber, List<String> lines) throws TemplateParsingException.TemplateRuleParsingException {
-		super(ruleNumber, lines);
+	public TemplateRuleTorqueMultiblock() {
+		super();
 	}
 
 	@Override
@@ -35,8 +32,6 @@ public class TemplateRuleTorqueMultiblock extends TemplateRuleBlock {
 	public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
 		if (world.setBlockState(pos, state, 3)) {
 			WorldTools.getTile(world, pos).ifPresent(t -> {
-				//TODO look into changing this so that the whole TE doesn't need reloading from custom NBT
-				tag.setString("id", state.getBlock().getRegistryName().toString());
 				tag.setInteger("x", pos.getX());
 				tag.setInteger("y", pos.getY());
 				tag.setInteger("z", pos.getZ());
@@ -48,8 +43,8 @@ public class TemplateRuleTorqueMultiblock extends TemplateRuleBlock {
 	}
 
 	@Override
-	public void parseRuleData(NBTTagCompound tag) {
-		super.parseRuleData(tag);
+	public void parseRule(NBTTagCompound tag) {
+		super.parseRule(tag);
 		this.tag = tag.getCompoundTag("teData");
 	}
 
@@ -65,7 +60,7 @@ public class TemplateRuleTorqueMultiblock extends TemplateRuleBlock {
 	}
 
 	@Override
-	protected String getPluginName() {
+	public String getPluginName() {
 		return PLUGIN_NAME;
 	}
 }

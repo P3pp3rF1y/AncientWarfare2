@@ -4,7 +4,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.registry.UpgradeRegistry;
-import net.shadowmage.ancientwarfare.vehicle.upgrades.IVehicleUpgradeType;
+
+import javax.annotation.Nonnull;
 
 public class UpgradeStackHandler extends ItemStackHandler {
 	private VehicleBase vehicle;
@@ -14,12 +15,14 @@ public class UpgradeStackHandler extends ItemStackHandler {
 		this.vehicle = vehicle;
 	}
 
+	@Nonnull
+	@Override
+	public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+		return isItemValid(stack) ? super.insertItem(slot, stack, simulate) : stack;
+	}
+
 	public boolean isItemValid(ItemStack par1ItemStack) {
-		IVehicleUpgradeType upgrade = UpgradeRegistry.instance().getUpgrade(par1ItemStack);
-		if (upgrade != null) {
-			return vehicle.vehicleType.isUpgradeValid(upgrade);
-		}
-		return false;
+		return UpgradeRegistry.getUpgrade(par1ItemStack).map(upgrade -> vehicle.vehicleType.isUpgradeValid(upgrade)).orElse(false);
 	}
 
 	@Override
