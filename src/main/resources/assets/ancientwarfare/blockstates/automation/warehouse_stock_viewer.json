@@ -3,8 +3,8 @@
     "defaults": {
         "model": "ancientwarfare:automation/sign",
         "textures": {
-            "particle": "minecraft:blocks/planks_oak",
-            "texture": "minecraft:blocks/planks_oak"
+            "particle": "ancientwarfare:blocks/automation/warehouse_stock_viewer",
+            "texture": "ancientwarfare:blocks/automation/warehouse_stock_viewer"
         },
         "transform": "forge:default-block"
     },
