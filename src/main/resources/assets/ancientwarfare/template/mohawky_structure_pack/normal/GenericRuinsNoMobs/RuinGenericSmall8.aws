@@ -1,10 +1,11 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 9/23/2018 at: 4:2:13
+# Auto-generated structure template file. created on: 12/24/2018 at: 14:18:58
 # Lines beginning with # denote comments
 
 header:
-version=2.6
+version=2.8
 name=RuinGenericSmall8
+mods=
 size=10,19,16
 offset=4,9,15
 :endheader
@@ -19,16 +20,14 @@ preserveBlocks=false
 selectionWeight=30
 clusterValue=10
 minDuplicateDistance=900
-dimensionWhiteList=false
-dimensionList=
+dimensionWhiteList=true
+dimensionList=0
 biomeWhiteList=true
-biomeList=biomesoplenty:shrubland,minecraft:mutated_roofed_forest,biomesoplenty:dead_forest,minecraft:extreme_hills,biomesoplenty:ominous_woods,biomesoplenty:wasteland,biomesoplenty:steppe
+biomeList=biomesoplenty:shrubland,minecraft:mutated_roofed_forest,biomesoplenty:dead_forest,biomesoplenty:wasteland,minecraft:extreme_hills,biomesoplenty:ominous_woods,biomesoplenty:steppe
 leveling=6
 fill=6
 border=6
 blockSwap=true
-data:
-:enddata
 :endvalidation
 
 #### LAYERS ####
@@ -192,7 +191,7 @@ layer: 8
 2,2,2,2,2,2,2,2,2,2
 2,2,2,2,2,2,2,2,2,2
 2,2,2,2,2,2,2,2,2,2
-2,2,2,2,2,2,2,2,2,1
+2,2,2,2,2,2,2,2,2,2
 :endlayer
 layer: 9
 0,0,5,0,0,0,3,0,3,0
@@ -225,7 +224,7 @@ layer: 10
 0,0,11,15,14,9,0,0,0,0
 0,0,11,0,13,0,18,0,0,0
 0,0,0,0,0,15,10,9,0,0
-0,0,0,0,0,0,0,0,0,0
+0,0,0,0,0,0,8,0,0,0
 0,0,0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0,0,0
@@ -237,7 +236,7 @@ layer: 11
 0,0,0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
+0,0,0,0,18,0,0,0,0,0
 0,0,0,15,20,9,0,0,0,0
 0,0,0,0,21,0,0,0,0,0
 0,0,0,15,20,9,0,0,0,0
@@ -255,8 +254,8 @@ layer: 12
 0,0,0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,14,0,0,0,0,0
+0,0,0,0,18,0,0,0,0,0
+0,0,0,15,14,9,0,0,0,0
 0,0,0,0,21,0,0,0,0,0
 0,0,0,15,14,9,0,0,0,0
 0,0,0,0,8,0,0,0,0,0
@@ -380,7 +379,7 @@ rule:
 plugin=vanillaBlocks
 number=1
 data:
-JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"dirt",snowy:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"dirt",snowy:"false"}}}
 :enddata
 :endrule
 
@@ -388,7 +387,7 @@ rule:
 plugin=vanillaBlocks
 number=2
 data:
-JSON:{blockState:{blockName:"minecraft:grass",properties:{snowy:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:grass",properties:{snowy:"false"}}}
 :enddata
 :endrule
 
@@ -396,7 +395,7 @@ rule:
 plugin=vanillaBlocks
 number=3
 data:
-JSON:{blockState:{blockName:"minecraft:tallgrass",properties:{type:"tall_grass"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:tallgrass",properties:{type:"tall_grass"}}}
 :enddata
 :endrule
 
@@ -404,7 +403,7 @@ rule:
 plugin=vanillaBlocks
 number=4
 data:
-JSON:{blockState:{blockName:"minecraft:red_flower",properties:{type:"white_tulip"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:red_flower",properties:{type:"white_tulip"}}}
 :enddata
 :endrule
 
@@ -412,7 +411,7 @@ rule:
 plugin=vanillaBlocks
 number=5
 data:
-JSON:{blockState:{blockName:"minecraft:yellow_flower",properties:{type:"dandelion"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:yellow_flower",properties:{type:"dandelion"}}}
 :enddata
 :endrule
 
@@ -420,7 +419,7 @@ rule:
 plugin=vanillaBlocks
 number=6
 data:
-JSON:{blockState:{blockName:"minecraft:red_flower",properties:{type:"poppy"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:red_flower",properties:{type:"poppy"}}}
 :enddata
 :endrule
 
@@ -428,23 +427,23 @@ rule:
 plugin=vanillaBlocks
 number=7
 data:
-JSON:{blockState:{blockName:"minecraft:red_flower",properties:{type:"houstonia"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:red_flower",properties:{type:"houstonia"}}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaBlocks
+plugin=vine
 number=8
 data:
-JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"false",south:"true",north:"false",west:"false",up:"false"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"false",south:"false",north:"true",west:"false",up:"false"}}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaBlocks
+plugin=vine
 number=9
 data:
-JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"true",south:"false",north:"false",west:"false",up:"false"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"false",south:"false",north:"false",west:"true",up:"false"}}}
 :enddata
 :endrule
 
@@ -452,7 +451,7 @@ rule:
 plugin=vanillaBlocks
 number=10
 data:
-JSON:{blockState:{blockName:"minecraft:stonebrick",properties:{variant:"cracked_stonebrick"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stonebrick",properties:{variant:"cracked_stonebrick"}}}
 :enddata
 :endrule
 
@@ -460,7 +459,7 @@ rule:
 plugin=vanillaBlocks
 number=11
 data:
-JSON:{blockState:{blockName:"minecraft:wooden_slab",properties:{half:"bottom",variant:"spruce"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:wooden_slab",properties:{half:"bottom",variant:"spruce"}}}
 :enddata
 :endrule
 
@@ -468,7 +467,7 @@ rule:
 plugin=vanillaBlocks
 number=12
 data:
-JSON:{blockState:{blockName:"minecraft:tallgrass",properties:{type:"fern"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:tallgrass",properties:{type:"fern"}}}
 :enddata
 :endrule
 
@@ -476,7 +475,7 @@ rule:
 plugin=vanillaBlocks
 number=13
 data:
-JSON:{blockState:{blockName:"minecraft:leaves",properties:{check_decay:"false",decayable:"false",variant:"oak"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:leaves",properties:{check_decay:"false",decayable:"false",variant:"oak"}}}
 :enddata
 :endrule
 
@@ -484,15 +483,15 @@ rule:
 plugin=vanillaBlocks
 number=14
 data:
-JSON:{blockState:{blockName:"minecraft:stonebrick",properties:{variant:"mossy_stonebrick"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stonebrick",properties:{variant:"mossy_stonebrick"}}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaBlocks
+plugin=vine
 number=15
 data:
-JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"false",south:"false",north:"false",west:"true",up:"false"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"true",south:"false",north:"false",west:"false",up:"false"}}}
 :enddata
 :endrule
 
@@ -500,7 +499,7 @@ rule:
 plugin=vanillaBlocks
 number=16
 data:
-JSON:{blockState:{blockName:"minecraft:stone_slab",properties:{half:"bottom",variant:"cobblestone"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_slab",properties:{half:"bottom",variant:"cobblestone"}}}
 :enddata
 :endrule
 
@@ -508,15 +507,15 @@ rule:
 plugin=vanillaSkull
 number=17
 data:
-JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},buildPass:0,teData:{Rot:4,id:"minecraft:skull",SkullType:0b}}
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},skullRotation:6,teData:{Rot:14b,id:"minecraft:skull",SkullType:0b}}
 :enddata
 :endrule
 
 rule:
-plugin=vanillaBlocks
+plugin=vine
 number=18
 data:
-JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"false",south:"false",north:"true",west:"false",up:"false"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"false",south:"true",north:"false",west:"false",up:"false"}}}
 :enddata
 :endrule
 
@@ -524,7 +523,7 @@ rule:
 plugin=vanillaFlowerPot
 number=19
 data:
-JSON:{blockState:{blockName:"minecraft:flower_pot",properties:{contents:"empty",legacy_data:"0"}},itemName:"minecraft:air",buildPass:0,itemMeta:0}
+JSON:{blockState:{blockName:"minecraft:flower_pot",properties:{contents:"empty",legacy_data:"0"}},itemMeta:0}
 :enddata
 :endrule
 
@@ -532,7 +531,7 @@ rule:
 plugin=vanillaBlocks
 number=20
 data:
-JSON:{blockState:{blockName:"minecraft:stonebrick",properties:{variant:"chiseled_stonebrick"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stonebrick",properties:{variant:"chiseled_stonebrick"}}}
 :enddata
 :endrule
 
@@ -540,7 +539,7 @@ rule:
 plugin=vanillaBlocks
 number=21
 data:
-JSON:{blockState:{blockName:"minecraft:cobblestone_wall",properties:{east:"false",south:"false",north:"false",variant:"cobblestone",west:"false",up:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:cobblestone_wall",properties:{east:"false",south:"false",north:"false",variant:"cobblestone",west:"false",up:"false"}}}
 :enddata
 :endrule
 
