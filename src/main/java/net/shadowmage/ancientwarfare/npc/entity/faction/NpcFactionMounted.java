@@ -3,8 +3,10 @@ package net.shadowmage.ancientwarfare.npc.entity.faction;
 import net.minecraft.entity.passive.AbstractHorse;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
+import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRideHorse;
 import net.shadowmage.ancientwarfare.npc.entity.faction.attributes.AdditionalAttributes;
 
 import java.lang.reflect.Constructor;
@@ -12,6 +14,7 @@ import java.lang.reflect.InvocationTargetException;
 
 public abstract class NpcFactionMounted extends NpcFaction implements IHorseMountedNpc {
 	private boolean horseLives = true;
+	private NpcAIFactionRideHorse horseAI = new NpcAIFactionRideHorse<>(this);
 
 	@Override
 	public boolean isHorseAlive() {
@@ -25,10 +28,12 @@ public abstract class NpcFactionMounted extends NpcFaction implements IHorseMoun
 
 	public NpcFactionMounted(World world) {
 		super(world);
+		tasks.addTask(0, horseAI);
 	}
 
 	public NpcFactionMounted(World world, String factionName) {
 		super(world, factionName);
+		tasks.addTask(0, horseAI);
 	}
 
 	@Override
@@ -79,5 +84,11 @@ public abstract class NpcFactionMounted extends NpcFaction implements IHorseMoun
 			e.printStackTrace();
 		}
 		return new EntityHorse(world);
+	}
+
+	@Override
+	public void onDeath(DamageSource damageSource) {
+		horseAI.onKilled();
+		super.onDeath(damageSource);
 	}
 }
