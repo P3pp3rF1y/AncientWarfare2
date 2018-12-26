@@ -1,12 +1,12 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 12/24/2018 at: 14:18:30
+# Auto-generated structure template file. created on: 12/25/2018 at: 22:43:4
 # Lines beginning with # denote comments
 
 header:
 version=2.8
 name=BrigandHighwayMan
 mods=
-size=4,15,4
+size=4,6,4
 offset=1,5,3
 :endheader
 
@@ -64,60 +64,6 @@ layer: 4
 layer: 5
 0,0,0,0
 0,3,0,0
-0,0,0,0
-0,0,0,0
-:endlayer
-layer: 6
-0,0,0,0
-0,0,0,0
-0,0,0,0
-0,0,0,0
-:endlayer
-layer: 7
-0,0,0,0
-0,0,0,0
-0,0,0,0
-0,0,0,0
-:endlayer
-layer: 8
-0,0,0,0
-0,0,0,0
-0,0,0,0
-0,0,0,0
-:endlayer
-layer: 9
-0,0,0,0
-0,0,0,0
-0,0,0,0
-0,0,0,0
-:endlayer
-layer: 10
-0,0,0,0
-0,0,0,0
-0,0,0,0
-0,0,0,0
-:endlayer
-layer: 11
-0,0,0,0
-0,0,0,0
-0,0,0,0
-0,0,0,0
-:endlayer
-layer: 12
-0,0,0,0
-0,0,0,0
-0,0,0,0
-0,0,0,0
-:endlayer
-layer: 13
-0,0,0,0
-0,0,0,0
-0,0,0,0
-0,0,0,0
-:endlayer
-layer: 14
-0,0,0,0
-0,0,0,0
 0,0,0,0
 0,0,0,0
 :endlayer
