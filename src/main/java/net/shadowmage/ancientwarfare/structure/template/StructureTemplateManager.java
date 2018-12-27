@@ -4,6 +4,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructure;
@@ -38,7 +40,9 @@ public class StructureTemplateManager {
 
 		PacketStructure pkt = new PacketStructure();
 		pkt.packetData.setTag(SINGLE_STRUCTURE_TAG, template.serializeNBT());
-		NetworkHandler.sendToAllPlayers(pkt);
+		if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) {
+			NetworkHandler.sendToAllPlayers(pkt);
+		}
 	}
 
 	public void onPlayerConnect(EntityPlayerMP player) {
@@ -54,7 +58,9 @@ public class StructureTemplateManager {
 	public boolean removeTemplate(String name) {
 		if (loadedTemplates.containsKey(name)) {
 			loadedTemplates.remove(name);
-			NetworkHandler.sendToAllPlayers(new PacketStructureRemove(name));
+			if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) {
+				NetworkHandler.sendToAllPlayers(new PacketStructureRemove(name));
+			}
 			return true;
 		}
 		return false;
