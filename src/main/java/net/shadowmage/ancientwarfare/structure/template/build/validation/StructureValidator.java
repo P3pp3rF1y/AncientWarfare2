@@ -304,7 +304,7 @@ public abstract class StructureValidator {
 		return getPropertyValue(MAX_LEVELING);
 	}
 
-	int getBorderSize() {
+	public int getBorderSize() {
 		return getPropertyValue(BORDER_SIZE);
 	}
 

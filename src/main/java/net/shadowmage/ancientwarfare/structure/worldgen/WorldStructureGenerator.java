@@ -141,7 +141,7 @@ public class WorldStructureGenerator implements IWorldGenerator {
 		int zs = bb.getZSize();
 		int size = ((xs > zs ? xs : zs) / 16) + 3;
 		if (map != null) {
-			if (!checkOtherStructureCrossAndCloseness(world, pos, map, bb, size))
+			if (!checkOtherStructureCrossAndCloseness(world, pos, map, bb, size, template.getValidationSettings().getBorderSize()))
 				return true;
 		}
 
@@ -158,11 +158,12 @@ public class WorldStructureGenerator implements IWorldGenerator {
 		return false;
 	}
 
-	private boolean checkOtherStructureCrossAndCloseness(World world, BlockPos pos, StructureMap map, StructureBB bb, int size) {
+	private boolean checkOtherStructureCrossAndCloseness(World world, BlockPos pos, StructureMap map, StructureBB bb, int size, int borderSize) {
 		Collection<StructureEntry> bbCheckList = map.getEntriesNear(world, pos.getX(), pos.getZ(), size, true, new ArrayList<>());
 		double maxDistance = 0;
+		StructureBB bbWithBorder = new StructureBB(bb.min, bb.max).expand(borderSize, 0, borderSize);
 		for (StructureEntry entry : bbCheckList) {
-			if (bb.crossWith(entry.getBB())) {
+			if (bbWithBorder.crossWith(entry.getBB())) {
 				return false;
 			}
 			double distance = bb.getDistanceTo(entry.getBB());
