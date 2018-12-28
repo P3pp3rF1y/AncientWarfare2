@@ -56,7 +56,7 @@ public class WorldGenStructureManager {
 				if (templatesByBiome.containsKey(biome)) {
 					templatesByBiome.get(biome).add(template);
 				} else if (Loader.isModLoaded((new ResourceLocation(biome)).getResourceDomain())) {
-					AncientWarfareStructure.LOG.error("Could not locate biome: " + biome + " while registering template: " + template.name + " for world generation.");
+					AncientWarfareStructure.LOG.warn("Could not locate biome: " + biome + " while registering template: " + template.name + " for world generation.");
 				}
 			}
 		} else//blacklist, skip template-biomes
