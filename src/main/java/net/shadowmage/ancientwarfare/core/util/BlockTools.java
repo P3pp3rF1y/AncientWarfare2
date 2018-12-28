@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLever.EnumOrientation;
 import net.minecraft.block.BlockLog;
+import net.minecraft.block.BlockRailBase.EnumRailDirection;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -40,6 +41,8 @@ import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.Optional;
 import java.util.function.Function;
+
+import static net.minecraft.block.BlockRailBase.EnumRailDirection.*;
 
 public class BlockTools {
 
@@ -419,6 +422,42 @@ public class BlockTools {
 						return facing;
 					}
 					return facing == EnumFacing.Axis.X ? EnumFacing.Axis.Z : EnumFacing.Axis.X;
+				}
+			})
+			.put(EnumRailDirection.class, new IRotator<EnumRailDirection>() {
+				@Override
+				public EnumRailDirection rotateY(EnumRailDirection facing, int turns) {
+					EnumRailDirection rotatedFacing = facing;
+					for (int i = 0; i < turns; i++) {
+						rotatedFacing = rotateOnce(rotatedFacing);
+					}
+					return rotatedFacing;
+				}
+
+				private EnumRailDirection rotateOnce(EnumRailDirection facing) {
+					switch (facing) {
+						case NORTH_SOUTH:
+							return EAST_WEST;
+						case EAST_WEST:
+							return NORTH_SOUTH;
+						case ASCENDING_EAST:
+							return ASCENDING_SOUTH;
+						case ASCENDING_SOUTH:
+							return ASCENDING_WEST;
+						case ASCENDING_WEST:
+							return ASCENDING_NORTH;
+						case ASCENDING_NORTH:
+							return ASCENDING_EAST;
+						case SOUTH_EAST:
+							return SOUTH_WEST;
+						case SOUTH_WEST:
+							return NORTH_WEST;
+						case NORTH_WEST:
+							return NORTH_EAST;
+						case NORTH_EAST:
+						default:
+							return SOUTH_EAST;
+					}
 				}
 			})
 			.build();
