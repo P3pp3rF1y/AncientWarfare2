@@ -3,10 +3,13 @@ package net.shadowmage.ancientwarfare.vehicle.entity;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.crash.CrashReport;
+import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
@@ -16,6 +19,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ReportedException;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -457,6 +461,46 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	 */
 	public void onReloadUpdate() {
 		this.firingVarsHelper.onReloadUpdate();
+	}
+
+	@Override
+	protected void doBlockCollisions() {
+		AxisAlignedBB axisalignedbb = this.getEntityBoundingBox();
+		BlockPos.PooledMutableBlockPos posMin = BlockPos.PooledMutableBlockPos.retain(axisalignedbb.minX + 0.001D, axisalignedbb.minY + 0.001D, axisalignedbb.minZ + 0.001D);
+		BlockPos.PooledMutableBlockPos posMax = BlockPos.PooledMutableBlockPos.retain(axisalignedbb.maxX - 0.001D, axisalignedbb.maxY - 0.001D, axisalignedbb.maxZ - 0.001D);
+		BlockPos.PooledMutableBlockPos currentPos = BlockPos.PooledMutableBlockPos.retain();
+
+		if (world.isAreaLoaded(posMin, posMax)) {
+			for (int i = posMin.getX(); i <= posMax.getX(); ++i) {
+				for (int j = posMin.getY(); j <= posMax.getY(); ++j) {
+					for (int k = posMin.getZ(); k <= posMax.getZ(); ++k) {
+						currentPos.setPos(i, j, k);
+						IBlockState iblockstate = world.getBlockState(currentPos);
+
+						try {
+							iblockstate.getBlock().onEntityCollidedWithBlock(world, currentPos, iblockstate, this);
+							onInsideBlock(iblockstate, currentPos);
+						}
+						catch (Throwable throwable) {
+							CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Colliding entity with block");
+							CrashReportCategory crashreportcategory = crashreport.makeCategory("Block being collided with");
+							CrashReportCategory.addBlockInfo(crashreportcategory, currentPos, iblockstate);
+							throw new ReportedException(crashreport);
+						}
+					}
+				}
+			}
+		}
+
+		posMin.release();
+		posMax.release();
+		currentPos.release();
+	}
+
+	protected void onInsideBlock(IBlockState state, BlockPos pos) {
+		if (state.getBlock() == Blocks.WATERLILY) {
+			world.destroyBlock(new BlockPos(pos), true);
+		}
 	}
 
 	/**
