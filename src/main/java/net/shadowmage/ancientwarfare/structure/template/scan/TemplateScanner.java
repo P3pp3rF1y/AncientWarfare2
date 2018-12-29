@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.structure.template.scan;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.Tuple;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -17,6 +18,7 @@ import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,6 +93,10 @@ public class TemplateScanner {
 			}//end scan z-level for
 		}//end scan y-level for
 
+		Tuple<short[], Integer> smallerResult = removeTopAirOnlyLayers(xOutSize, ySize, zOutSize, templateRuleData);
+		templateRuleData = smallerResult.getFirst();
+		ySize = smallerResult.getSecond();
+
 		Map<Integer, TemplateRuleEntityBase> entityRules = new HashMap<>();
 		List<Entity> entitiesInAABB = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(min.getX(), min.getY(), min.getZ(), max.getX() + 1, max.getY() + 1, max.getZ() + 1));
 		nextRuleID = 0;
@@ -113,5 +119,30 @@ public class TemplateScanner {
 		template.setBlockRules(blockRules);
 		template.setEntityRules(entityRules);
 		return template;
+	}
+
+	private static Tuple<short[], Integer> removeTopAirOnlyLayers(int xSize, int ySize, int zSize, short[] templateRuleData) {
+		Vec3i size = new Vec3i(xSize, ySize, zSize);
+		for (int y = ySize - 1; y >= 0; y--) {
+			if (!areAllAirInLayer(size, y, templateRuleData)) {
+				if (y == ySize - 1) {
+					return new Tuple<>(templateRuleData, ySize);
+				}
+				return new Tuple<>(Arrays.copyOf(templateRuleData, xSize * (y + 1) * zSize), y + 1);
+			}
+		}
+		return new Tuple<>(new short[0], 0);
+	}
+
+	private static boolean areAllAirInLayer(Vec3i size, int yLayer, short[] templateRuleData) {
+		for (int z = 0; z < size.getZ(); z++) {
+			for (int x = 0; x < size.getX(); x++) {
+				int index = StructureTemplate.getIndex(new Vec3i(x, yLayer, z), size);
+				if (templateRuleData[index] != 0) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 }

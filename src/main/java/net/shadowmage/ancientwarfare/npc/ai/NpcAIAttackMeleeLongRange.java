@@ -59,7 +59,7 @@ public class NpcAIAttackMeleeLongRange extends NpcAIAttack<NpcBase> {
 	@Override
 	protected boolean shouldCloseOnTarget(double distanceToEntity) {
 		double attackDistance = (npc.width / 2D) + (getTarget().width / 2D) + attackReach;
-		return (distanceToEntity > (attackDistance * attackDistance));
+		return (distanceToEntity > (attackDistance * attackDistance)) || !npc.getEntitySenses().canSee(getTarget()) ;
 	}
 
 	@Override

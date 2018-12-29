@@ -51,7 +51,12 @@ public class TemplateRuleBlockTile extends TemplateRuleVanillaBlocks {
 			tag.setInteger("x", pos.getX());
 			tag.setInteger("y", pos.getY());
 			tag.setInteger("z", pos.getZ());
-			t.readFromNBT(tag);
+			try {
+				t.readFromNBT(tag);
+			}
+			catch (Exception e) {
+				AncientWarfareStructure.LOG.error("Error loading tile entity data from template for {}: {}", t.getClass(), e);
+			}
 		});
 	}
 

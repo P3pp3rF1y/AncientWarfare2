@@ -153,18 +153,10 @@ public abstract class NpcFaction extends NpcBase {
 	@Override
 	public boolean isHostileTowards(Entity e) {
 		if (e instanceof EntityPlayer) {
-			int standing = FactionTracker.INSTANCE.getStandingFor(world, e.getName(), getFaction());
-			if (getNpcFullType().endsWith("elite")) {
-				standing -= 50;
-			}
-			return standing < 0;
+			return FactionTracker.INSTANCE.getStandingFor(world, e.getName(), getFaction()) < 0;
 		} else if (e instanceof NpcPlayerOwned) {
 			NpcBase npc = (NpcBase) e;
-			int standing = FactionTracker.INSTANCE.getStandingFor(world, npc.getOwner().getName(), getFaction());
-			if (getNpcFullType().endsWith("elite")) {
-				standing -= 50;
-			}
-			return standing < 0;
+			return FactionTracker.INSTANCE.getStandingFor(world, npc.getOwner().getName(), getFaction()) < 0;
 		} else if (e instanceof NpcFaction) {
 			NpcFaction npc = (NpcFaction) e;
 			return !npc.getFaction().equals(factionName) && FactionRegistry.getFaction(getFaction()).isHostileTowards(npc.getFaction());

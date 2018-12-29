@@ -2,9 +2,7 @@ package net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.b
 
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 
@@ -34,6 +32,11 @@ public class TemplateRuleVine extends TemplateRuleVanillaBlocks {
 	}
 
 	@Override
+	public boolean shouldReuseRule(World world, IBlockState state, int turns, BlockPos pos) {
+		return state.getBlock() == this.state.getBlock() && rotateSides(state, turns).getProperties().equals(this.state.getProperties());
+	}
+
+	@Override
 	public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
 		builder.placeBlock(pos, getState(turns), buildPass);
 	}
@@ -41,11 +44,6 @@ public class TemplateRuleVine extends TemplateRuleVanillaBlocks {
 	@Override
 	public IBlockState getState(int turns) {
 		return rotateSides(state, turns);
-	}
-
-	@Override
-	public void renderRule(int turns, BlockPos pos, IBlockAccess blockAccess, BufferBuilder bufferBuilder) {
-		super.renderRule(turns, pos, blockAccess, bufferBuilder);
 	}
 
 	@Override

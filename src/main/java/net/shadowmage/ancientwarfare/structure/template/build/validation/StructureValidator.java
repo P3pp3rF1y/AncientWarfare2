@@ -6,6 +6,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -38,6 +39,9 @@ import static net.shadowmage.ancientwarfare.structure.template.build.validation.
 
 public abstract class StructureValidator {
 	public final StructureValidationType validationType;
+
+	private boolean riverBiomeChecked = false;
+	private boolean canSpawnInRiverBiome = false;
 
 	private HashMap<IStructureValidationProperty<?>, Object> properties = new LinkedHashMap<>();
 
@@ -300,7 +304,7 @@ public abstract class StructureValidator {
 		return getPropertyValue(MAX_LEVELING);
 	}
 
-	int getBorderSize() {
+	public int getBorderSize() {
 		return getPropertyValue(BORDER_SIZE);
 	}
 
@@ -309,28 +313,41 @@ public abstract class StructureValidator {
 		int bx;
 		int bz;
 		int borderSize = getBorderSize();
-		boolean riverBiomeValid = BiomeDictionary.hasType(world.provider.getBiomeForCoords(new BlockPos(bb.min.getX(), 1, bb.min.getZ())), BiomeDictionary.Type.RIVER);
+
 		for (bx = bb.min.getX() - borderSize; bx <= bb.max.getX() + borderSize; bx++) {
 			bz = bb.min.getZ() - borderSize;
-			if (!validateBlockHeightTypeAndBiome(world, bx, bz, minY, maxY, skipWater, riverBiomeValid)) {
+			if (!validateBlockHeightTypeAndBiome(world, bx, bz, minY, maxY, skipWater)) {
 				return false;
 			}
 			bz = bb.max.getZ() + borderSize;
-			if (!validateBlockHeightTypeAndBiome(world, bx, bz, minY, maxY, skipWater, riverBiomeValid)) {
+			if (!validateBlockHeightTypeAndBiome(world, bx, bz, minY, maxY, skipWater)) {
 				return false;
 			}
 		}
 		for (bz = bb.min.getZ() - borderSize + 1; bz <= bb.max.getZ() + borderSize - 1; bz++) {
 			bx = bb.min.getX() - borderSize;
-			if (!validateBlockHeightTypeAndBiome(world, bx, bz, minY, maxY, skipWater, riverBiomeValid)) {
+			if (!validateBlockHeightTypeAndBiome(world, bx, bz, minY, maxY, skipWater)) {
 				return false;
 			}
 			bx = bb.max.getX() + borderSize;
-			if (!validateBlockHeightTypeAndBiome(world, bx, bz, minY, maxY, skipWater, riverBiomeValid)) {
+			if (!validateBlockHeightTypeAndBiome(world, bx, bz, minY, maxY, skipWater)) {
 				return false;
 			}
 		}
 		return true;
+	}
+
+	private boolean canSpawnInRiverBiome() {
+		if (!riverBiomeChecked) {
+			//noinspection unchecked
+			canSpawnInRiverBiome = getPropertyValue(BIOME_WHITE_LIST) && getPropertyValue(BIOME_LIST).stream().anyMatch(name -> {
+				Biome biome = Biome.REGISTRY.getObject(new ResourceLocation((String) name));
+				return biome != null && BiomeDictionary.hasType(biome, BiomeDictionary.Type.RIVER);
+			});
+			riverBiomeChecked = true;
+		}
+
+		return canSpawnInRiverBiome;
 	}
 
 	/*
@@ -340,9 +357,9 @@ public abstract class StructureValidator {
 		return validateBlockType(world, x, validateBlockHeight(world, x, z, min, max, skipWater), z, isValidState);
 	}
 
-	private boolean validateBlockHeightTypeAndBiome(World world, int x, int z, int min, int max, boolean skipWater, boolean riverBiomeValid, Predicate<IBlockState> isValidState) {
+	private boolean validateBlockHeightTypeAndBiome(World world, int x, int z, int min, int max, boolean skipWater, Predicate<IBlockState> isValidState) {
 		BlockPos pos = new BlockPos(x, 1, z);
-		if (!riverBiomeValid && BiomeDictionary.hasType(world.provider.getBiomeForCoords(pos), BiomeDictionary.Type.RIVER)) {
+		if (!canSpawnInRiverBiome() && BiomeDictionary.hasType(world.provider.getBiomeForCoords(pos), BiomeDictionary.Type.RIVER)) {
 			AncientWarfareStructure.LOG.debug("Rejected for placement into river biome at {}", pos.toString());
 			return false;
 		}
@@ -350,8 +367,8 @@ public abstract class StructureValidator {
 		return validateBlockHeightAndType(world, x, z, min, max, skipWater, isValidState);
 	}
 
-	boolean validateBlockHeightTypeAndBiome(World world, int x, int z, int min, int max, boolean skipWater, boolean riverBiomeValid) {
-		return validateBlockHeightTypeAndBiome(world, x, z, min, max, skipWater, riverBiomeValid, AWStructureStatics::isValidTargetBlock);
+	boolean validateBlockHeightTypeAndBiome(World world, int x, int z, int min, int max, boolean skipWater) {
+		return validateBlockHeightTypeAndBiome(world, x, z, min, max, skipWater, AWStructureStatics::isValidTargetBlock);
 	}
 
 	/*

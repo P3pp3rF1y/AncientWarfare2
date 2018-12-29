@@ -19,7 +19,6 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWatchClosest;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionArcherStayAtHome;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRangedAttack;
-import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRideHorse;
 import net.shadowmage.ancientwarfare.npc.entity.RangeAttackHelper;
 
 public class NpcFactionMountedArcher extends NpcFactionMounted implements IRangedAttackMob {
@@ -55,7 +54,6 @@ public class NpcFactionMountedArcher extends NpcFactionMounted implements IRange
 		tasks.addTask(0, new EntityAISwimming(this));
 		tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
 		tasks.addTask(0, new NpcAIDoor(this, true));
-		tasks.addTask(0, new NpcAIFactionRideHorse<>(this));
 		tasks.addTask(1, new NpcAIFollowPlayer(this));
 		tasks.addTask(2, new NpcAIFactionArcherStayAtHome(this));
 		tasks.addTask(3, new NpcAIFactionRangedAttack(this));

@@ -73,7 +73,7 @@ public class ItemSpawner extends ItemBaseVehicle {
 		if (tag.hasKey(HEALTH_TAG)) {
 			vehicle.setHealth(tag.getFloat(HEALTH_TAG));
 		}
-		RayTraceResult rayTrace = rayTrace(world, player, false);
+		RayTraceResult rayTrace = rayTrace(world, player, true);
 		//noinspection ConstantConditions
 		if (rayTrace == null || rayTrace.typeOfHit != RayTraceResult.Type.BLOCK) {
 			return true;

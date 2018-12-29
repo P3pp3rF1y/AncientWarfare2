@@ -77,7 +77,7 @@ public class StructureValidatorHarbor extends StructureValidator {
 		testMax = temp.max;
 		for (int bx = testMin.getX(); bx <= testMax.getX(); bx++) {
 			for (int bz = testMin.getZ(); bz <= testMax.getZ(); bz++) {
-				if (!validateBlockHeightTypeAndBiome(world, bx, bz, minY, maxY, false, false)) {
+				if (!validateBlockHeightTypeAndBiome(world, bx, bz, minY, maxY, false)) {
 					return false;
 				}
 			}
