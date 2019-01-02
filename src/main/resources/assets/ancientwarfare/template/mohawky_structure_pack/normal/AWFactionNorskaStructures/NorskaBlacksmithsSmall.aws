@@ -1,12 +1,12 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 11/28/2018 at: 7:40:46
+# Auto-generated structure template file. created on: 1/2/2019 at: 21:48:40
 # Lines beginning with # denote comments
 
 header:
-version=2.7
+version=2.8
 name=NorskaBlacksmithsSmall
 mods=
-size=9,58,16
+size=9,14,16
 offset=4,6,15
 :endheader
 
@@ -20,10 +20,10 @@ preserveBlocks=false
 selectionWeight=50
 clusterValue=40
 minDuplicateDistance=1000
-dimensionWhiteList=false
-dimensionList=
+dimensionWhiteList=true
+dimensionList=0
 biomeWhiteList=true
-biomeList=minecraft:taiga_cold,biomesoplenty:cold_desert,traverse:snowy_coniferous_forest,minecraft:ice_mountains,biomesoplenty:alps,minecraft:ice_flats,minecraft:taiga_cold_hills,minecraft:cold_beach
+biomeList=minecraft:taiga_cold,traverse:snowy_coniferous_forest,biomesoplenty:cold_desert,minecraft:ice_mountains,biomesoplenty:alps,minecraft:ice_flats,minecraft:taiga_cold_hills,minecraft:cold_beach
 leveling=2
 fill=2
 border=2
@@ -283,805 +283,13 @@ layer: 13
 0,0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0,0
 :endlayer
-layer: 14
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 15
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 16
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 17
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 18
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 19
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 20
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 21
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 22
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 23
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 24
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 25
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 26
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 27
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 28
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 29
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 30
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 31
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 32
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 33
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 34
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 35
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 36
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 37
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 38
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 39
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 40
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 41
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 42
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 43
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 44
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 45
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 46
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 47
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 48
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 49
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 50
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 51
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 52
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 53
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 54
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 55
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 56
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 57
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0
-:endlayer
 
 #### RULES ####
 rule:
 plugin=vanillaBlocks
 number=1
 data:
-JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"dirt",snowy:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"dirt",snowy:"false"}}}
 :enddata
 :endrule
 
@@ -1089,7 +297,7 @@ rule:
 plugin=vanillaBlocks
 number=2
 data:
-JSON:{blockState:{blockName:"minecraft:grass",properties:{snowy:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:grass",properties:{snowy:"false"}}}
 :enddata
 :endrule
 
@@ -1097,7 +305,7 @@ rule:
 plugin=vanillaBlocks
 number=3
 data:
-JSON:{blockState:{blockName:"minecraft:planks",properties:{variant:"birch"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:planks",properties:{variant:"birch"}}}
 :enddata
 :endrule
 
@@ -1105,7 +313,7 @@ rule:
 plugin=vanillaBlocks
 number=4
 data:
-JSON:{blockState:{blockName:"minecraft:cobblestone"},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:cobblestone"}}
 :enddata
 :endrule
 
@@ -1113,7 +321,7 @@ rule:
 plugin=vanillaBlocks
 number=5
 data:
-JSON:{blockState:{blockName:"minecraft:snow_layer",properties:{layers:"1"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:snow_layer",properties:{layers:"1"}}}
 :enddata
 :endrule
 
@@ -1121,7 +329,7 @@ rule:
 plugin=vanillaBlocks
 number=6
 data:
-JSON:{blockState:{blockName:"minecraft:snow_layer",properties:{layers:"2"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:snow_layer",properties:{layers:"2"}}}
 :enddata
 :endrule
 
@@ -1129,7 +337,7 @@ rule:
 plugin=vanillaBlocks
 number=7
 data:
-JSON:{blockState:{blockName:"minecraft:snow_layer",properties:{layers:"3"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:snow_layer",properties:{layers:"3"}}}
 :enddata
 :endrule
 
@@ -1137,7 +345,7 @@ rule:
 plugin=vanillaBlocks
 number=8
 data:
-JSON:{blockState:{blockName:"minecraft:snow_layer",properties:{layers:"5"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:snow_layer",properties:{layers:"5"}}}
 :enddata
 :endrule
 
@@ -1145,7 +353,7 @@ rule:
 plugin=vanillaBlocks
 number=9
 data:
-JSON:{blockState:{blockName:"minecraft:snow_layer",properties:{layers:"4"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:snow_layer",properties:{layers:"4"}}}
 :enddata
 :endrule
 
@@ -1153,7 +361,7 @@ rule:
 plugin=vanillaBlocks
 number=10
 data:
-JSON:{blockState:{blockName:"minecraft:crafting_table"},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:crafting_table"}}
 :enddata
 :endrule
 
@@ -1161,7 +369,7 @@ rule:
 plugin=inventory
 number=11
 data:
-JSON:{blockState:{blockName:"minecraft:furnace",properties:{facing:"north"}},buildPass:0,lootLevel:0,teData:{CookTime:0,BurnTime:0,Items:[],id:"minecraft:furnace",CookTimeTotal:0,Lock:""},inventoryData:{length:0,inventoryContents:[]},legacyFeatures:0b}
+JSON:{blockState:{blockName:"minecraft:furnace",properties:{facing:"north"}},lootLevel:0,teData:{CookTime:0,BurnTime:0,Items:[],id:"minecraft:furnace",CookTimeTotal:0,Lock:""},inventoryData:{length:0,inventoryContents:[]},legacyFeatures:0b}
 :enddata
 :endrule
 
@@ -1169,7 +377,7 @@ rule:
 plugin=blockTile
 number=12
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"norska"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:5,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"norska"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:5,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -1177,7 +385,7 @@ rule:
 plugin=doors
 number=13
 data:
-JSON:{blockState:{blockName:"minecraft:wooden_door",properties:{hinge:"left",half:"lower",powered:"false",facing:"east",open:"false"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:wooden_door",properties:{hinge:"left",half:"lower",powered:"false",facing:"east",open:"false"}}}
 :enddata
 :endrule
 
@@ -1185,7 +393,7 @@ rule:
 plugin=blockTile
 number=14
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"norska"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:5,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"norska"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:5,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -1193,7 +401,7 @@ rule:
 plugin=bed
 number=15
 data:
-JSON:{blockState:{blockName:"minecraft:bed",properties:{part:"head",facing:"east",occupied:"false"}},buildPass:2,bedColor:14}
+JSON:{blockState:{blockName:"minecraft:bed",properties:{part:"head",facing:"east",occupied:"false"}},bedColor:14}
 :enddata
 :endrule
 
@@ -1201,7 +409,7 @@ rule:
 plugin=bed
 number=16
 data:
-JSON:{blockState:{blockName:"minecraft:bed",properties:{part:"foot",facing:"east",occupied:"false"}},buildPass:2,bedColor:14}
+JSON:{blockState:{blockName:"minecraft:bed",properties:{part:"foot",facing:"east",occupied:"false"}},bedColor:14}
 :enddata
 :endrule
 
@@ -1209,7 +417,7 @@ rule:
 plugin=inventory
 number=17
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{ForgeData:{},Items:[{Slot:7b,id:"minecraft:log",Count:5b,Damage:1s},{Slot:16b,id:"minecraft:wheat",Count:7b,Damage:0s},{Slot:25b,id:"minecraft:planks",Count:5b,Damage:1s}],id:"minecraft:chest",Lock:""},inventoryData:{length:3,inventoryContents:[{id:"minecraft:log",Count:5b,slot:0,Damage:1s},{id:"minecraft:wheat",Count:7b,slot:1,Damage:0s},{id:"minecraft:planks",Count:5b,slot:2,Damage:1s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},lootLevel:0,teData:{ForgeData:{},Items:[{Slot:7b,id:"minecraft:log",Count:5b,Damage:1s},{Slot:16b,id:"minecraft:wheat",Count:7b,Damage:0s},{Slot:25b,id:"minecraft:planks",Count:5b,Damage:1s}],id:"minecraft:chest",Lock:""},inventoryData:{length:3,inventoryContents:[{id:"minecraft:log",Count:5b,slot:0,Damage:1s},{id:"minecraft:wheat",Count:7b,slot:1,Damage:0s},{id:"minecraft:planks",Count:5b,slot:2,Damage:1s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -1217,7 +425,7 @@ rule:
 plugin=blockTile
 number=18
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},buildPass:0,teData:{LootTable:"ancientwarfare:inject/chests/village_blacksmith",lootRolls:2b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-1181668718756799474L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"ancientwarfare:inject/chests/village_blacksmith",lootRolls:2b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-1181668718756799474L}}
 :enddata
 :endrule
 
@@ -1225,7 +433,7 @@ rule:
 plugin=vanillaBlocks
 number=19
 data:
-JSON:{blockState:{blockName:"minecraft:double_stone_slab",properties:{seamless:"false",variant:"stone"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:double_stone_slab",properties:{seamless:"false",variant:"stone"}}}
 :enddata
 :endrule
 
@@ -1233,7 +441,7 @@ rule:
 plugin=vanillaBlocks
 number=20
 data:
-JSON:{blockState:{blockName:"minecraft:stone_stairs",properties:{half:"bottom",shape:"straight",facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_stairs",properties:{half:"bottom",shape:"straight",facing:"east"}}}
 :enddata
 :endrule
 
@@ -1241,7 +449,7 @@ rule:
 plugin=vanillaBlocks
 number=21
 data:
-JSON:{blockState:{blockName:"minecraft:fence",properties:{east:"false",south:"false",north:"false",west:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:fence",properties:{east:"false",south:"false",north:"false",west:"false"}}}
 :enddata
 :endrule
 
@@ -1249,7 +457,7 @@ rule:
 plugin=vanillaBlocks
 number=22
 data:
-JSON:{blockState:{blockName:"minecraft:planks",properties:{variant:"spruce"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:planks",properties:{variant:"spruce"}}}
 :enddata
 :endrule
 
@@ -1257,7 +465,7 @@ rule:
 plugin=vanillaBlocks
 number=23
 data:
-JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"west"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"west"}}}
 :enddata
 :endrule
 
@@ -1265,7 +473,7 @@ rule:
 plugin=doors
 number=24
 data:
-JSON:{blockState:{blockName:"minecraft:wooden_door",properties:{hinge:"left",half:"upper",powered:"false",facing:"south",open:"false"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:wooden_door",properties:{hinge:"left",half:"upper",powered:"false",facing:"south",open:"false"}}}
 :enddata
 :endrule
 
@@ -1273,7 +481,7 @@ rule:
 plugin=vanillaBlocks
 number=25
 data:
-JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"spruce",axis:"y"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"spruce",axis:"y"}}}
 :enddata
 :endrule
 
@@ -1281,7 +489,7 @@ rule:
 plugin=inventory
 number=26
 data:
-JSON:{blockState:{blockName:"minecraft:furnace",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{CookTime:0,BurnTime:0,Items:[],id:"minecraft:furnace",CookTimeTotal:0,Lock:""},inventoryData:{length:0,inventoryContents:[]},legacyFeatures:0b}
+JSON:{blockState:{blockName:"minecraft:furnace",properties:{facing:"west"}},lootLevel:0,teData:{CookTime:0,BurnTime:0,Items:[],id:"minecraft:furnace",CookTimeTotal:0,Lock:""},inventoryData:{length:0,inventoryContents:[]},legacyFeatures:0b}
 :enddata
 :endrule
 
@@ -1289,7 +497,7 @@ rule:
 plugin=vanillaBlocks
 number=27
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:fire_pit",properties:{lit:"true",variant:"square"}},buildPass:0}
+JSON:{blockState:{blockName:"ancientwarfarestructure:fire_pit",properties:{lit:"true",variant:"square"}}}
 :enddata
 :endrule
 
@@ -1297,7 +505,7 @@ rule:
 plugin=inventory
 number=28
 data:
-JSON:{blockState:{blockName:"minecraft:furnace",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{CookTime:0,BurnTime:0,Items:[],id:"minecraft:furnace",CookTimeTotal:0,Lock:""},inventoryData:{length:0,inventoryContents:[]},legacyFeatures:0b}
+JSON:{blockState:{blockName:"minecraft:furnace",properties:{facing:"west"}},lootLevel:0,teData:{CookTime:0,BurnTime:0,Items:[],id:"minecraft:furnace",CookTimeTotal:0,Lock:""},inventoryData:{length:0,inventoryContents:[]},legacyFeatures:0b}
 :enddata
 :endrule
 
@@ -1305,7 +513,7 @@ rule:
 plugin=vanillaBlocks
 number=29
 data:
-JSON:{blockState:{blockName:"minecraft:dark_oak_stairs",properties:{half:"bottom",shape:"straight",facing:"west"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:dark_oak_stairs",properties:{half:"bottom",shape:"straight",facing:"west"}}}
 :enddata
 :endrule
 
@@ -1313,7 +521,7 @@ rule:
 plugin=vanillaBlocks
 number=30
 data:
-JSON:{blockState:{blockName:"minecraft:dark_oak_stairs",properties:{half:"bottom",shape:"straight",facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:dark_oak_stairs",properties:{half:"bottom",shape:"straight",facing:"east"}}}
 :enddata
 :endrule
 
@@ -1321,7 +529,7 @@ rule:
 plugin=vanillaBlocks
 number=31
 data:
-JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"north"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"north"}}}
 :enddata
 :endrule
 
@@ -1329,7 +537,7 @@ rule:
 plugin=vanillaBlocks
 number=32
 data:
-JSON:{blockState:{blockName:"minecraft:stone_stairs",properties:{half:"bottom",shape:"straight",facing:"west"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_stairs",properties:{half:"bottom",shape:"straight",facing:"west"}}}
 :enddata
 :endrule
 
@@ -1337,7 +545,7 @@ rule:
 plugin=vanillaBlocks
 number=33
 data:
-JSON:{blockState:{blockName:"minecraft:web"},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:web"}}
 :enddata
 :endrule
 
@@ -1345,7 +553,7 @@ rule:
 plugin=inventory
 number=34
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:0,teData:{Items:[],id:"minecraft:chest",Lock:""},inventoryData:{length:0,inventoryContents:[]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},lootLevel:0,teData:{Items:[],id:"minecraft:chest",Lock:""},inventoryData:{length:0,inventoryContents:[]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -1353,7 +561,7 @@ rule:
 plugin=inventory
 number=35
 data:
-JSON:{blockState:{blockName:"minecraft:furnace",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{CookTime:0,BurnTime:0,Items:[],id:"minecraft:furnace",CookTimeTotal:0,Lock:""},inventoryData:{length:0,inventoryContents:[]},legacyFeatures:0b}
+JSON:{blockState:{blockName:"minecraft:furnace",properties:{facing:"west"}},lootLevel:0,teData:{CookTime:0,BurnTime:0,Items:[],id:"minecraft:furnace",CookTimeTotal:0,Lock:""},inventoryData:{length:0,inventoryContents:[]},legacyFeatures:0b}
 :enddata
 :endrule
 
@@ -1361,7 +569,7 @@ rule:
 plugin=inventory
 number=36
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:0,teData:{Items:[],id:"minecraft:chest",Lock:""},inventoryData:{length:0,inventoryContents:[]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},lootLevel:0,teData:{Items:[],id:"minecraft:chest",Lock:""},inventoryData:{length:0,inventoryContents:[]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -1369,7 +577,7 @@ rule:
 plugin=inventory
 number=37
 data:
-JSON:{blockState:{blockName:"minecraft:furnace",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{CookTime:0,BurnTime:0,Items:[],id:"minecraft:furnace",CookTimeTotal:0,Lock:""},inventoryData:{length:0,inventoryContents:[]},legacyFeatures:0b}
+JSON:{blockState:{blockName:"minecraft:furnace",properties:{facing:"west"}},lootLevel:0,teData:{CookTime:0,BurnTime:0,Items:[],id:"minecraft:furnace",CookTimeTotal:0,Lock:""},inventoryData:{length:0,inventoryContents:[]},legacyFeatures:0b}
 :enddata
 :endrule
 
@@ -1377,7 +585,7 @@ rule:
 plugin=vanillaBlocks
 number=38
 data:
-JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"south"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"south"}}}
 :enddata
 :endrule
 
@@ -1385,7 +593,7 @@ rule:
 plugin=vanillaBlocks
 number=39
 data:
-JSON:{blockState:{blockName:"minecraft:stonebrick",properties:{variant:"stonebrick"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stonebrick",properties:{variant:"stonebrick"}}}
 :enddata
 :endrule
 
@@ -1393,7 +601,7 @@ rule:
 plugin=vanillaBlocks
 number=40
 data:
-JSON:{blockState:{blockName:"minecraft:dark_oak_stairs",properties:{half:"top",shape:"straight",facing:"north"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:dark_oak_stairs",properties:{half:"top",shape:"straight",facing:"north"}}}
 :enddata
 :endrule
 
@@ -1401,7 +609,7 @@ rule:
 plugin=vanillaBlocks
 number=41
 data:
-JSON:{blockState:{blockName:"minecraft:dark_oak_stairs",properties:{half:"bottom",shape:"straight",facing:"south"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:dark_oak_stairs",properties:{half:"bottom",shape:"straight",facing:"south"}}}
 :enddata
 :endrule
 
@@ -1409,7 +617,7 @@ rule:
 plugin=vanillaBlocks
 number=42
 data:
-JSON:{blockState:{blockName:"minecraft:dark_oak_stairs",properties:{half:"bottom",shape:"straight",facing:"north"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:dark_oak_stairs",properties:{half:"bottom",shape:"straight",facing:"north"}}}
 :enddata
 :endrule
 
@@ -1417,7 +625,7 @@ rule:
 plugin=vanillaBlocks
 number=43
 data:
-JSON:{blockState:{blockName:"minecraft:dark_oak_stairs",properties:{half:"top",shape:"straight",facing:"south"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:dark_oak_stairs",properties:{half:"top",shape:"straight",facing:"south"}}}
 :enddata
 :endrule
 
@@ -1425,7 +633,7 @@ rule:
 plugin=vanillaBlocks
 number=44
 data:
-JSON:{blockState:{blockName:"minecraft:cobblestone_wall",properties:{east:"false",south:"false",north:"false",variant:"cobblestone",west:"false",up:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:cobblestone_wall",properties:{east:"false",south:"false",north:"false",variant:"cobblestone",west:"false",up:"false"}}}
 :enddata
 :endrule
 
