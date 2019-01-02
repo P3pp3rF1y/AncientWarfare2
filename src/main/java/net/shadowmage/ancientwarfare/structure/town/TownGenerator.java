@@ -128,50 +128,36 @@ public class TownGenerator {
 	 * add initial generation entries to list of structures to attempt to generate
 	 */
 	private void determineStructuresToGenerate() {
-		int gen;
 		for (TownStructureEntry e : template.getUniqueStructureEntries()) {
-			StructureTemplate t = StructureTemplateManager.INSTANCE.getTemplate(e.templateName);
-			if (t != null)
-				uniqueTemplatesToGenerate.add(t);
+			StructureTemplateManager.getTemplate(e.templateName).ifPresent(uniqueTemplatesToGenerate::add);
 		}
 
 		for (TownStructureEntry e : template.getMainStructureEntries()) {
-			StructureTemplate t = StructureTemplateManager.INSTANCE.getTemplate(e.templateName);
-			if (t != null)
-				mainTemplatesToGenerate.add(t);
+			StructureTemplateManager.getTemplate(e.templateName).ifPresent(mainTemplatesToGenerate::add);
 		}
 
 		for (TownStructureEntry e : template.getHouseStructureEntries()) {
-			StructureTemplate t = StructureTemplateManager.INSTANCE.getTemplate(e.templateName);
-			if (t == null) {
-				continue;
-			}
-			gen = e.min;
-			for (int i = 0; i < gen; i++) {
-				houseTemplatesToGenerate.add(t);
-			}
+			StructureTemplateManager.getTemplate(e.templateName).ifPresent(t -> {
+				for (int i = 0; i < e.min; i++) {
+					houseTemplatesToGenerate.add(t);
+				}
+			});
 		}
 
 		for (TownStructureEntry e : template.getCosmeticEntries()) {
-			StructureTemplate t = StructureTemplateManager.INSTANCE.getTemplate(e.templateName);
-			if (t == null) {
-				continue;
-			}
-			gen = e.min;
-			for (int i = 0; i < gen; i++) {
-				this.cosmeticTemplatesToGenerate.add(t);
-			}
+			StructureTemplateManager.getTemplate(e.templateName).ifPresent(t -> {
+				for (int i = 0; i < e.min; i++) {
+					this.cosmeticTemplatesToGenerate.add(t);
+				}
+			});
 		}
 
 		for (TownStructureEntry e : template.getExteriorStructureEntries()) {
-			StructureTemplate t = StructureTemplateManager.INSTANCE.getTemplate(e.templateName);
-			if (t == null) {
-				continue;
-			}
-			gen = e.min;
-			for (int i = 0; i < gen; i++) {
-				exteriorTemplatesToGenerate.add(t);
-			}
+			StructureTemplateManager.getTemplate(e.templateName).ifPresent(t -> {
+				for (int i = 0; i < e.min; i++) {
+					exteriorTemplatesToGenerate.add(t);
+				}
+			});
 		}
 	}
 

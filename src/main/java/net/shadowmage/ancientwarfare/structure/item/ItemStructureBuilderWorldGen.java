@@ -24,6 +24,7 @@ import net.shadowmage.ancientwarfare.structure.worldgen.WorldStructureGenerator;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Optional;
 
 public class ItemStructureBuilderWorldGen extends ItemBaseStructure implements IItemKeyInterface {
 
@@ -60,18 +61,18 @@ public class ItemStructureBuilderWorldGen extends ItemBaseStructure implements I
 		}
 		ItemStructureSettings buildSettings = ItemStructureSettings.getSettingsFor(stack);
 		if (buildSettings.hasName()) {
-			StructureTemplate template = StructureTemplateManager.INSTANCE.getTemplate(buildSettings.name);
-			if (template == null) {
-				player.sendMessage(new TextComponentTranslation("guistrings.template.not_found"));
-				return;
-			}
 			BlockPos bpHit = BlockTools.getBlockClickedOn(player, player.world, true);
 			if (bpHit == null) {
 				player.sendMessage(new TextComponentTranslation("block.not_found"));
 				return;
 			}
+			Optional<StructureTemplate> template = StructureTemplateManager.getTemplate(buildSettings.name);
+			if (!template.isPresent()) {
+				player.sendMessage(new TextComponentTranslation("guistrings.template.not_found"));
+				return;
+			}
 			StructureMap map = AWGameData.INSTANCE.getData(player.world, StructureMap.class);
-			WorldStructureGenerator.INSTANCE.attemptStructureGenerationAt(player.world, bpHit, player.getHorizontalFacing(), template, map);
+			WorldStructureGenerator.INSTANCE.attemptStructureGenerationAt(player.world, bpHit, player.getHorizontalFacing(), template.get(), map);
 		} else {
 			player.sendMessage(new TextComponentTranslation("guistrings.structure.no_selection"));
 		}

@@ -136,7 +136,7 @@ public class AncientWarfareStructure {
 	@SubscribeEvent
 	public void onLogin(PlayerEvent.PlayerLoggedInEvent evt) {
 		if (!evt.player.world.isRemote) {
-			StructureTemplateManager.INSTANCE.onPlayerConnect((EntityPlayerMP) evt.player);
+			StructureTemplateManager.onPlayerConnect((EntityPlayerMP) evt.player);
 		}
 	}
 

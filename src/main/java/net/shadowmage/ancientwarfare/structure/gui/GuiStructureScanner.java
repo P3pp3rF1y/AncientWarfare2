@@ -224,7 +224,7 @@ public class GuiStructureScanner extends GuiContainerBase<ContainerStructureScan
 
 	private void restore() {
 		String name = nameInput.getText();
-		if (StructureTemplateManager.INSTANCE.templateExists(name)) {
+		if (StructureTemplateManager.templateExists(name)) {
 			getContainer().restoreTemplate(name);
 		} else {
 			statusMessage.setText("Template Name doesn't exist");

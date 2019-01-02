@@ -12,11 +12,11 @@ import net.shadowmage.ancientwarfare.structure.container.ContainerStructureSelec
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 
-import java.util.Collection;
 import java.util.Comparator;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-public class GuiStructureSelectionBase extends GuiContainerBase<ContainerStructureSelectionBase> {
+public class GuiStructureSelectionBase extends GuiContainerBase<ContainerStructureSelectionBase> implements StructureTemplateManager.ITemplateObserver {
 
 	private Text filterInput;
 	private StructureTemplate currentSelection;
@@ -27,6 +27,12 @@ public class GuiStructureSelectionBase extends GuiContainerBase<ContainerStructu
 
 	public GuiStructureSelectionBase(ContainerBase par1Container) {
 		super(par1Container, 400, 240);
+		StructureTemplateManager.registerObserver(this);
+	}
+
+	@Override
+	public void onGuiClosed() {
+		StructureTemplateManager.unregisterObserver(this);
 	}
 
 	@Override
@@ -64,22 +70,20 @@ public class GuiStructureSelectionBase extends GuiContainerBase<ContainerStructu
 		resourceArea = new CompositeScrolled(this, 256, 40, 144, 200);
 		addGuiElement(resourceArea);
 
-		StructureTemplate t = StructureTemplateManager.INSTANCE.getTemplate(getContainer().structureName);
-		this.setSelection(t);
+		this.setSelection(getContainer().structureName);
 	}
 
 	@Override
 	public void setupElements() {
 		selectionArea.clearElements();
-		setSelectionName((currentSelection == null ? "guistrings.none" : currentSelection.name));
 
 		TemplateButton button;
 		int totalHeight = 8;
 
-		for (StructureTemplate template : getTemplatesForDisplay().stream()
-				.filter(t -> t.name.toLowerCase().contains(filterInput.getText().toLowerCase()))
-				.sorted(Comparator.comparing(t -> t.name.toLowerCase())).collect(Collectors.toList())) {
-			button = new TemplateButton(8, totalHeight, template);
+		for (String templateName : getTemplatesForDisplay().stream()
+				.filter(templateName -> templateName.toLowerCase().contains(filterInput.getText().toLowerCase()))
+				.sorted(Comparator.comparing(String::toLowerCase)).collect(Collectors.toList())) {
+			button = new TemplateButton(8, totalHeight, templateName);
 			selectionArea.addGuiElement(button);
 			totalHeight += 12;
 		}
@@ -87,37 +91,47 @@ public class GuiStructureSelectionBase extends GuiContainerBase<ContainerStructu
 		selectionArea.setAreaSize(totalHeight + 8);
 	}
 
-	protected Collection<StructureTemplate> getTemplatesForDisplay() {
-		return StructureTemplateManager.INSTANCE.getTemplates();
+	protected Set<String> getTemplatesForDisplay() {
+		return StructureTemplateManager.getTemplates();
+	}
+
+	@Override
+	public void notifyTemplateChange(StructureTemplate template) {
+		if (template.name.equals(selection.getText())) {
+			currentSelection = template;
+			updateSurivalResources();
+		}
 	}
 
 	private class TemplateButton extends Button {
-		private StructureTemplate template;
+		private String templateName;
 
-		private TemplateButton(int topLeftX, int topLeftY, StructureTemplate template) {
-			super(topLeftX, topLeftY, 232, 12, template.name);
-			this.template = template;
+		private TemplateButton(int topLeftX, int topLeftY, String templateName) {
+			super(topLeftX, topLeftY, 232, 12, templateName);
+			this.templateName = templateName;
 		}
 
 		@Override
 		protected void onPressed() {
-			setSelection(template);
+			setSelection(templateName);
 		}
 	}
 
-	private void setSelection(StructureTemplate template) {
+	private void setSelection(String templateName) {
+		setSelectionName(templateName);
+
+		currentSelection = StructureTemplateManager.getTemplate(templateName).orElse(null);
+		updateSurivalResources();
+	}
+
+	private void updateSurivalResources() {
 		resourceArea.clearElements();
 		int totalHeight = 8;
-		this.currentSelection = template;
-		this.setSelectionName(template == null ? "guistrings.none" : template.name);
-
-		if (template != null) {
-			if (template.getValidationSettings().isSurvival()) {
-				for (ItemStack stack : template.getResourceList()) {
-					ItemSlot item = new ItemSlot(8, totalHeight, stack, this);
-					resourceArea.addGuiElement(item);
-					totalHeight += 18;
-				}
+		if (currentSelection != null && currentSelection.getValidationSettings().isSurvival()) {
+			for (ItemStack stack : currentSelection.getResourceList()) {
+				ItemSlot item = new ItemSlot(8, totalHeight, stack, this);
+				resourceArea.addGuiElement(item);
+				totalHeight += 18;
 			}
 		}
 		resourceArea.setAreaSize(totalHeight + 8);

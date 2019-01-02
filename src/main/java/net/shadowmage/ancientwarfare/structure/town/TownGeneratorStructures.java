@@ -161,13 +161,11 @@ public class TownGeneratorStructures {
 		if (templateToGenerate == null) {
 			return;
 		}
-		StructureTemplate lamp = StructureTemplateManager.INSTANCE.getTemplate(templateToGenerate.templateName);
-		if (lamp == null) {
-			return;
-		}
-		for (TownPartBlock block : blocks) {
-			generateLamps(gen.world, block, lamp, gen.structureDoors);
-		}
+		StructureTemplateManager.getTemplate(templateToGenerate.templateName).ifPresent(lamp -> {
+			for (TownPartBlock block : blocks) {
+				generateLamps(gen.world, block, lamp, gen.structureDoors);
+			}
+		});
 	}
 
 	private static void generateLamps(World world, TownPartBlock block, StructureTemplate lamp, List<BlockPos> doors) {

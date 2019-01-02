@@ -154,7 +154,7 @@ public class ItemStructureScanner extends ItemBaseStructure implements IItemKeyI
 		template.setValidationSettings(validator);
 		boolean include = getIncludeImmediately(scanner);
 		if (include) {
-			StructureTemplateManager.INSTANCE.addTemplate(template);
+			StructureTemplateManager.addTemplate(template);
 		}
 		return TemplateExporter.exportTo(template, new File(include ? TemplateLoader.INCLUDE_DIRECTORY : TemplateLoader.OUTPUT_DIRECTORY));
 	}

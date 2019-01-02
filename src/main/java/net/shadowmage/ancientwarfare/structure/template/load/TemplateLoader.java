@@ -70,7 +70,7 @@ public class TemplateLoader {
 	}
 
 	public void reloadAll() {
-		StructureTemplateManager.INSTANCE.removeAll();
+		StructureTemplateManager.removeAll();
 		TownTemplateManager.INSTANCE.removeAll();
 
 		loadTemplates();
@@ -127,7 +127,7 @@ public class TemplateLoader {
 
 		if (template != null) {
 			AncientWarfareStructure.LOG.info("Loaded Structure Template: [" + template.name + "] WorldGen: " + template.getValidationSettings().isWorldGenEnabled() + "  Survival: " + template.getValidationSettings().isSurvival());
-			StructureTemplateManager.INSTANCE.addTemplate(template);
+			StructureTemplateManager.addTemplate(template);
 			return 1;
 		}
 		return 0;
