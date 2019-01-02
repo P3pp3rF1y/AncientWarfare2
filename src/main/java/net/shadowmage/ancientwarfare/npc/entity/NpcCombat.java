@@ -25,6 +25,8 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIMedicBase;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWatchClosest;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIOwnerHurtByTarget;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIOwnerHurtTarget;
 import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedAlarmResponse;
 import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedAttackRanged;
 import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedCommander;
@@ -83,8 +85,10 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
 		tasks.addTask(103, new NpcAIWatchClosest(this, EntityLiving.class, 8.0F));
 
 		targetTasks.addTask(0, new NpcAIPlayerOwnedCommander(this));
-		targetTasks.addTask(1, new NpcAIHurt(this));
-		targetTasks.addTask(2, new NpcAIAttackNearest(this, selector));
+		targetTasks.addTask(1, new NpcAIOwnerHurtByTarget(this));
+		targetTasks.addTask(2, new NpcAIOwnerHurtTarget(this));
+		targetTasks.addTask(3, new NpcAIHurt(this));
+		targetTasks.addTask(4, new NpcAIAttackNearest(this, selector));
 
 		setCanPickUpLoot(true);
 	}
