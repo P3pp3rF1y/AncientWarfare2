@@ -46,8 +46,8 @@ public final class FactionTradeList extends TradeList {
 		}
 	}
 
-	public void performTrade(EntityPlayer player, int tradeNum) {
-		get(tradeNum).performTrade(player, null);
+	public boolean performTrade(EntityPlayer player, int tradeNum) {
+		return get(tradeNum).performTrade(player, null);
 	}
 
 	@Override

@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -18,6 +19,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootTable;
 import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -36,6 +38,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -580,6 +583,11 @@ public class InventoryTools {
 		for (int slot = 0; slot < itemHandler.getSlots(); slot++) {
 			itemHandler.extractItem(slot, itemHandler.getStackInSlot(slot).getCount(), false);
 		}
+	}
+
+	public static Optional<IItemHandler> getItemHandlerFrom(ICapabilityProvider provider, @Nullable EnumFacing side) {
+		return provider.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side) ?
+				Optional.ofNullable(provider.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side)) : Optional.empty();
 	}
 
 	/*

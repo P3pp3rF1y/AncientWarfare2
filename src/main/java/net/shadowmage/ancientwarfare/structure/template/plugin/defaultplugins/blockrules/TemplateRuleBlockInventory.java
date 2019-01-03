@@ -50,7 +50,7 @@ public class TemplateRuleBlockInventory extends TemplateRuleBlockTile {
 						setLegacyRandomLoot(legacyFeatures, null);
 					} else {
 						for (EnumFacing side : sides) {
-							WorldTools.getItemHandlerFromTile(te, side).ifPresent(itemHandler -> {
+							InventoryTools.getItemHandlerFrom(te, side).ifPresent(itemHandler -> {
 								putInInventoryStacks(side, InventoryTools.getItems(itemHandler));
 								setLegacyRandomLoot(legacyFeatures, side);
 							});

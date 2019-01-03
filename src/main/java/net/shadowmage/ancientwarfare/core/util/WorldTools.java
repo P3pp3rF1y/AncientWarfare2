@@ -58,12 +58,7 @@ public class WorldTools {
 	}
 
 	public static Optional<IItemHandler> getItemHandlerFromTile(IBlockAccess world, BlockPos pos, @Nullable EnumFacing side) {
-		return getTile(world, pos, TileEntity.class).map(t -> getItemHandlerFromTile(t, side)).orElse(Optional.empty());
-	}
-
-	public static Optional<IItemHandler> getItemHandlerFromTile(TileEntity t, @Nullable EnumFacing side) {
-		return t.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side) ?
-				Optional.ofNullable(t.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side)) : Optional.empty();
+		return getTile(world, pos, TileEntity.class).map(t -> InventoryTools.getItemHandlerFrom(t, side)).orElse(Optional.empty());
 	}
 
 	public static boolean sendClientEventToTile(IBlockAccess world, BlockPos pos, int id, int param) {
