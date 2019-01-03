@@ -1,5 +1,5 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 1/2/2019 at: 23:32:33
+# Auto-generated structure template file. created on: 1/3/2019 at: 3:45:57
 # Lines beginning with # denote comments
 
 header:
@@ -23,7 +23,7 @@ minDuplicateDistance=999
 dimensionWhiteList=true
 dimensionList=0
 biomeWhiteList=true
-biomeList=biomesoplenty:meadow,minecraft:extreme_hills,traverse:meadow,minecraft:birch_forest,minecraft:birch_forest_hills,minecraft:smaller_extreme_hills
+biomeList=biomesoplenty:meadow,minecraft:extreme_hills,traverse:meadow,minecraft:birch_forest,minecraft:plains,minecraft:birch_forest_hills,minecraft:smaller_extreme_hills
 leveling=12
 fill=12
 border=8

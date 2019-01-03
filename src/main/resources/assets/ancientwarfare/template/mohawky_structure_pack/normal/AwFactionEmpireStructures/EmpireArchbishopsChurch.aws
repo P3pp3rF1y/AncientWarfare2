@@ -1,5 +1,5 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 1/2/2019 at: 23:32:30
+# Auto-generated structure template file. created on: 1/3/2019 at: 3:45:53
 # Lines beginning with # denote comments
 
 header:
@@ -23,7 +23,7 @@ minDuplicateDistance=1000
 dimensionWhiteList=true
 dimensionList=0
 biomeWhiteList=true
-biomeList=biomesoplenty:meadow,traverse:meadow
+biomeList=biomesoplenty:meadow,traverse:meadow,minecraft:plains
 leveling=6
 fill=6
 border=5
@@ -1981,7 +1981,7 @@ rule:
 plugin=blockTile
 number=13
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:9,spawnDelay:111,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{id:"minecraft:leather_helmet",Count:1b,Damage:0s}],HandDropChances:[0.085f,0.085f],HandItems:[{id:"minecraft:bow",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"primitivemobs:skeleton_warrior",minToSpawn:1}],groupWeight:1}],playerRange:8,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:4,transparent:0b,maxDelay:900,xpToDrop:60,mobRange:8,debugMode:0b,maxNearbyMonsters:8}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:9,spawnDelay:195,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{id:"minecraft:leather_helmet",Count:1b,Damage:0s}],HandDropChances:[0.085f,0.085f],HandItems:[{id:"minecraft:bow",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"primitivemobs:skeleton_warrior",minToSpawn:1}],groupWeight:1}],playerRange:8,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:4,transparent:0b,maxDelay:900,xpToDrop:60,mobRange:8,debugMode:0b,maxNearbyMonsters:8}}}
 :enddata
 :endrule
 
@@ -2125,7 +2125,7 @@ rule:
 plugin=blockTile
 number=31
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:8,spawnDelay:35,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"minecraft:zombie_villager",minToSpawn:1}],groupWeight:1}],playerRange:5,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:5,transparent:0b,maxDelay:800,xpToDrop:60,mobRange:12,debugMode:0b,maxNearbyMonsters:12}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:8,spawnDelay:182,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"minecraft:zombie_villager",minToSpawn:1}],groupWeight:1}],playerRange:5,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:5,transparent:0b,maxDelay:800,xpToDrop:60,mobRange:12,debugMode:0b,maxNearbyMonsters:12}}}
 :enddata
 :endrule
 
