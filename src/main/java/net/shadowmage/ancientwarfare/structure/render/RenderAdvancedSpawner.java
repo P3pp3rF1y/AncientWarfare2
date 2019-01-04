@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.world.GameType;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
 import org.lwjgl.opengl.GL11;
@@ -19,7 +20,7 @@ import java.util.List;
 public class RenderAdvancedSpawner extends TileEntitySpecialRenderer<TileAdvancedSpawner> {
 	@Override
 	public void render(TileAdvancedSpawner te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
-		if (!Minecraft.getMinecraft().player.isCreative()) {
+		if (!Minecraft.getMinecraft().player.isCreative() && Minecraft.getMinecraft().playerController.getCurrentGameType() != GameType.SPECTATOR) {
 			return;
 		}
 
