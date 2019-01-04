@@ -24,6 +24,7 @@ import net.shadowmage.ancientwarfare.npc.registry.NpcDefaultsRegistry;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
 import net.shadowmage.ancientwarfare.structure.worldgen.StructureEntry;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -88,7 +89,8 @@ public class EventHandler {
 					if (!factionNpc.isPassive()) {
 						evt.setCanceled(true);
 						evt.setCancellationResult(EnumActionResult.FAIL);
-						player.sendStatusMessage(new TextComponentTranslation("gui.ancientwarfarenpc.no_chest_access", factionNpc.getFaction()), true);
+						player.sendStatusMessage(new TextComponentTranslation("gui.ancientwarfarenpc.no_chest_access",
+								StringUtils.capitalize(factionNpc.getFaction())), true);
 					}
 				}
 			});
