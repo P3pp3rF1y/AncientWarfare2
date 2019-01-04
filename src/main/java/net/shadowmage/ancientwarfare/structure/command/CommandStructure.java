@@ -5,9 +5,11 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Tuple;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.shadowmage.ancientwarfare.core.command.ISubCommand;
@@ -51,6 +53,21 @@ public class CommandStructure extends ParentCommand {
 				}));
 		registerSubCommand(new SimpleSubCommand("scannersStartProcessingCommands", (server, sender, args) -> AWStructureStatics.processScannerCommands = true));
 		registerSubCommand(new SimpleSubCommand("scannersStopProcessingCommands", (server, sender, args) -> AWStructureStatics.processScannerCommands = false));
+		registerSubCommand(new SimpleSubCommand("scannerTp", (server, sender, args) -> {
+			if (args.length == 1) {
+				Tuple<Integer, BlockPos> pos = ScannerCommandTracker.getScannerPosByName(args[0]);
+				if (sender.getEntityWorld().provider.getDimension() == pos.getFirst() && sender instanceof EntityPlayer) {
+					EntityPlayer player = (EntityPlayer) sender;
+					BlockPos aboveScanner = pos.getSecond().up();
+					player.setPositionAndUpdate(aboveScanner.getX() + 0.5D, aboveScanner.getY(), aboveScanner.getZ() + 0.5D);
+				}
+			}
+		}) {
+			@Override
+			public int getMaxArgs() {
+				return 1;
+			}
+		});
 	}
 
 	@Override
@@ -190,6 +207,8 @@ public class CommandStructure extends ParentCommand {
 			return super.getTabCompletions(server, sender, args, targetPos);
 		} else if (args.length > 5 && args[0].equalsIgnoreCase("build")) {
 			return CommandBase.getListOfStringsMatchingLastWord(args, "north", "east", "south", "west");
+		} else if (args.length == 2 && args[0].equalsIgnoreCase("scannertp")) {
+			return CommandBase.getListOfStringsMatchingLastWord(args, ScannerCommandTracker.getTrackedScannerNames().toArray(new String[0]));
 		}
 		return Collections.emptyList();
 	}
