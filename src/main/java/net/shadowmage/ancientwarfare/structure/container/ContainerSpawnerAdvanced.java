@@ -5,28 +5,42 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockAdvancedSpawner;
+import net.shadowmage.ancientwarfare.structure.item.ItemSpawnerPlacer;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings;
 
-import javax.annotation.Nonnull;
-
 public class ContainerSpawnerAdvanced extends ContainerSpawnerAdvancedBase {
+	private static final String SPAWNER_SETTINGS_TAG = "spawnerSettings";
 
+	@SuppressWarnings("unused") //used in reflection
 	public ContainerSpawnerAdvanced(EntityPlayer player, int x, int y, int z) {
 		super(player);
 		settings = new SpawnerSettings();
-		@Nonnull ItemStack item = EntityTools.getItemFromEitherHand(player, ItemBlockAdvancedSpawner.class);
-		if (item.isEmpty() || !item.hasTagCompound() || !item.getTagCompound().hasKey("spawnerSettings")) {
-			throw new IllegalArgumentException("stack cannot be null, and must have tag compounds!!");
+		ItemStack item = EntityTools.getItemFromEitherHand(player, ItemBlockAdvancedSpawner.class);
+		if (!item.isEmpty()) {
+			//noinspection ConstantConditions
+			if (!item.hasTagCompound() || !item.getTagCompound().hasKey(SPAWNER_SETTINGS_TAG)) {
+				throw new IllegalArgumentException("stack must have correct data!!");
+			}
+			settings.readFromNBT(item.getTagCompound().getCompoundTag(SPAWNER_SETTINGS_TAG));
+		} else {
+			item = EntityTools.getItemFromEitherHand(player, ItemSpawnerPlacer.class);
+			if (!ItemSpawnerPlacer.hasSpawnerData(item)) {
+				throw new IllegalArgumentException("stack must have correct data!!");
+			}
+			settings.readFromNBT(ItemSpawnerPlacer.getSpawnerData(item));
 		}
-		settings.readFromNBT(item.getTagCompound().getCompoundTag("spawnerSettings"));
 	}
 
 	@Override
 	public void handlePacketData(NBTTagCompound tag) {
-		if (tag.hasKey("spawnerSettings")) {
-			@Nonnull ItemStack item = EntityTools.getItemFromEitherHand(player, ItemBlockAdvancedSpawner.class);
-			item.setTagInfo("spawnerSettings", tag.getCompoundTag("spawnerSettings"));
+		if (tag.hasKey(SPAWNER_SETTINGS_TAG)) {
+			ItemStack item = EntityTools.getItemFromEitherHand(player, ItemBlockAdvancedSpawner.class);
+			if (!item.isEmpty()) {
+				item.setTagInfo(SPAWNER_SETTINGS_TAG, tag.getCompoundTag(SPAWNER_SETTINGS_TAG));
+			} else {
+				item = EntityTools.getItemFromEitherHand(player, ItemSpawnerPlacer.class);
+				ItemSpawnerPlacer.setSpawnerData(item, tag.getCompoundTag(SPAWNER_SETTINGS_TAG));
+			}
 		}
 	}
-
 }
