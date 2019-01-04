@@ -1,5 +1,5 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 12/12/2018 at: 22:21:38
+# Auto-generated structure template file. created on: 1/4/2019 at: 21:3:55
 # Lines beginning with # denote comments
 
 header:
@@ -20,10 +20,10 @@ preserveBlocks=false
 selectionWeight=40
 clusterValue=50
 minDuplicateDistance=600
-dimensionWhiteList=false
-dimensionList=
+dimensionWhiteList=true
+dimensionList=0
 biomeWhiteList=true
-biomeList=minecraft:taiga,minecraft:redwood_taiga,minecraft:mutated_taiga,biomesoplenty:steppe,minecraft:extreme_hills,traverse:rocky_plains,traverse:rocky_plateau
+biomeList=traverse:rocky_plains,minecraft:taiga,minecraft:redwood_taiga,minecraft:extreme_hills,minecraft:mutated_taiga,biomesoplenty:steppe,traverse:rocky_plateau
 leveling=10
 fill=10
 border=10
@@ -3761,7 +3761,7 @@ rule:
 plugin=vanillaBlocks
 number=3
 data:
-JSON:{blockState:{blockName:"minecolonies:blocktimberframe_jungle_horizontalnocap",properties:{axis:"y"}}}
+JSON:{blockState:{blockName:"structurize:blocktimberframe_jungle_horizontalnocap",properties:{axis:"y"}}}
 :enddata
 :endrule
 
@@ -4574,11 +4574,3 @@ JSON:{blockState:{blockName:"minecraft:stone_stairs",properties:{half:"bottom",s
 :endrule
 
 #### ENTITIES ####
-entity:
-plugin=entity
-number=0
-data:
-JSON:{yOffset:0.0f,xOffset:0.3056528f,rotation:235.83508f,mobID:"primitivemobs:traveling_merchant",zOffset:0.6347656f,position:2474370924568L,entityData:{HurtByTimestamp:0,ForgeData:{},Attributes:[{Base:20.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.5d,Name:"generic.movementSpeed"},{Base:0.0d,Name:"generic.armor"},{Base:0.0d,Name:"generic.armorToughness"},{Base:1.0d,Name:"forge.swimSpeed"},{Base:16.0d,Modifiers:[{UUIDMost:6742912123123945138L,UUIDLeast:-5570320510765355684L,Amount:-0.018239370564990438d,Operation:1,Name:"Random spawn bonus"}],Name:"generic.followRange"}],Riches:0,Invulnerable:0b,FallFlying:0b,ForcedAge:0,PortalCooldown:0,AbsorptionAmount:0.0f,FallDistance:0.0f,DeathTime:0s,ForgeCaps:{"dsurround:emojidata":{as:0,es:0,et:0},"llibrary:extendedentitydatacapability":{"mm:living":{frozenYaw:0.0f,freezeProgress:0.0f,frozenPitch:0.0f,frozenYawHead:0.0f,frozenEntityID:-1,frozenLimbSwingAmount:0.0f,frozenRenderYawOffset:0.0f,frozenSwingProgress:0.0f}}},HandDropChances:[0.085f,0.085f],PersistenceRequired:0b,Age:0,Motion:[0.0d,-0.0784000015258789d,0.0d],Leashed:0b,Health:20.0f,LeftHanded:0b,Air:300s,OnGround:1b,Dimension:0,Offers:{Recipes:[{maxUses:7,buy:{id:"minecraft:apple",Count:4b,Damage:0s},sell:{id:"minecraft:emerald",Count:1b,Damage:0s},uses:0,rewardExp:1b},{maxUses:7,buy:{id:"minecraft:emerald",Count:1b,Damage:0s},sell:{id:"minecraft:gold_ingot",Count:8b,Damage:0s},uses:0,rewardExp:1b},{maxUses:7,buy:{id:"minecraft:emerald",Count:1b,Damage:0s},sell:{id:"minecraft:slime_ball",Count:4b,Damage:0s},uses:0,rewardExp:1b}]},Rotation:[55.835083f,0.0f],UpdateBlocked:0b,HandItems:[{},{}],ProfessionName:"primitivemobs:merchant",ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],Profession:7,Pos:[947.69434720634d,106.0d,667.3652343566224d],Fire:-1s,ArmorItems:[{},{},{},{}],CanPickUpLoot:1b,HurtTime:0s,CareerLevel:1,Career:1,Inventory:[],Willing:0b}}
-:enddata
-:endentity
-
