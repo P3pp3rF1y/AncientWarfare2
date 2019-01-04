@@ -17,6 +17,8 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIHurt;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWatchClosest;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIOwnerHurtByTarget;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIOwnerHurtTarget;
 import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedAlarmResponse;
 import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedCommander;
 import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedFollowCommand;
@@ -90,9 +92,11 @@ public class NpcSiegeEngineer extends NpcPlayerOwned implements IVehicleUser {
 		});
 		this.tasks.addTask(103, new NpcAIWatchClosest(this, EntityLiving.class, 8.0F));
 
-		this.targetTasks.addTask(0, new NpcAIPlayerOwnedCommander(this));
-		this.targetTasks.addTask(1, new NpcAIHurt(this));
-		this.targetTasks.addTask(2, new NpcAIAttackNearest(this, this::isHostileTowards));
+		targetTasks.addTask(0, new NpcAIPlayerOwnedCommander(this));
+		targetTasks.addTask(1, new NpcAIOwnerHurtByTarget(this));
+		targetTasks.addTask(2, new NpcAIOwnerHurtTarget(this));
+		targetTasks.addTask(3, new NpcAIHurt(this));
+		targetTasks.addTask(4, new NpcAIAttackNearest(this, this::isHostileTowards));
 	}
 
 	@Override

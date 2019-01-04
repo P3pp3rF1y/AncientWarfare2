@@ -1,10 +1,9 @@
 package net.shadowmage.ancientwarfare.structure.gui;
 
 import net.minecraft.client.Minecraft;
-import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 
-import java.util.Collection;
+import java.util.Set;
 
 public class GuiStructureSelectionDraftingStation extends GuiStructureSelectionBase {
 
@@ -16,8 +15,8 @@ public class GuiStructureSelectionDraftingStation extends GuiStructureSelectionB
 	}
 
 	@Override
-	protected Collection<StructureTemplate> getTemplatesForDisplay() {
-		return StructureTemplateManager.INSTANCE.getSurvivalStructures().values();
+	protected Set<String> getTemplatesForDisplay() {
+		return StructureTemplateManager.getSurvivalTemplates();
 	}
 
 	@Override
@@ -25,5 +24,4 @@ public class GuiStructureSelectionDraftingStation extends GuiStructureSelectionB
 		Minecraft.getMinecraft().displayGuiScreen(parent);
 		return false;
 	}
-
 }

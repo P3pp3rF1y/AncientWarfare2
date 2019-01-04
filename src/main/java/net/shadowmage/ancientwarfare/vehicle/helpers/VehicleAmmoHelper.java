@@ -178,15 +178,15 @@ public class VehicleAmmoHelper implements INBTSerializable<NBTTagCompound> {
 
 	@Nullable //TODO replace with optional
 	public IAmmo getCurrentAmmoType() {
+		if (currentAmmoType != null && ammoEntries.containsKey(currentAmmoType)) {
+			VehicleAmmoEntry entry = this.ammoEntries.get(currentAmmoType);
+			if (entry != null && (!(vehicle.getControllingPassenger() instanceof NpcBase) || entry.ammoCount > 0)) {
+				return entry.baseAmmoType;
+			}
+		}
 		if (!AWVehicleStatics.soldiersUseAmmo && vehicle.getControllingPassenger() instanceof NpcBase) {
 			NpcBase npc = (NpcBase) vehicle.getControllingPassenger();
 			return vehicle.vehicleType.getAmmoForSoldierRank(npc.getLevelingStats().getLevel());
-		}
-		if (currentAmmoType != null && ammoEntries.containsKey(currentAmmoType)) {
-			VehicleAmmoEntry entry = this.ammoEntries.get(currentAmmoType);
-			if (entry != null) {
-				return entry.baseAmmoType;
-			}
 		}
 		return null;
 	}

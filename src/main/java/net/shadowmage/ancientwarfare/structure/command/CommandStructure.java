@@ -28,6 +28,7 @@ import javax.annotation.Nullable;
 import java.io.File;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static net.shadowmage.ancientwarfare.structure.tile.ScannerCommandTracker.CommandType.REEXPORT;
 import static net.shadowmage.ancientwarfare.structure.tile.ScannerCommandTracker.CommandType.RELOAD_MAIN_SETTINGS;
@@ -112,16 +113,14 @@ public class CommandStructure extends ParentCommand {
 			if (subArgs.length > 4) {
 				face = EnumFacing.byName(subArgs[4]);
 			}
-			StructureTemplate template = StructureTemplateManager.INSTANCE.getTemplate(subArgs[0]);
-			TextComponentTranslation txt;
-			if (template == null) {
-				txt = new TextComponentTranslation("command.aw.structure.not_found", subArgs[0]);
-			} else {
-				StructureBuilder builder = new StructureBuilder(sender.getEntityWorld(), template, face, new BlockPos(x, y, z));
+			Optional<StructureTemplate> template = StructureTemplateManager.getTemplate(subArgs[0]);
+			if (template.isPresent()) {
+				StructureBuilder builder = new StructureBuilder(sender.getEntityWorld(), template.get(), face, new BlockPos(x, y, z));
 				builder.instantConstruction();
-				txt = new TextComponentTranslation("command.aw.structure.built", subArgs[0], x, y, z);
+				sender.sendMessage(new TextComponentTranslation("command.aw.structure.built", subArgs[0], x, y, z));
+			} else {
+				sender.sendMessage(new TextComponentTranslation("command.aw.structure.not_found", subArgs[0]));
 			}
-			sender.sendMessage(txt);
 		}
 
 		@Override
@@ -142,7 +141,7 @@ public class CommandStructure extends ParentCommand {
 				throw new WrongUsageException(getUsage(sender));
 			}
 			String name = subArgs[0];
-			boolean flag = StructureTemplateManager.INSTANCE.removeTemplate(name);
+			boolean flag = StructureTemplateManager.removeTemplate(name);
 			if (flag)//check if var2.len>=3, pull string of end...if string==true, try delete template file for name
 			{
 				TextComponentTranslation txt = new TextComponentTranslation("command.aw.structure.template_removed", name);

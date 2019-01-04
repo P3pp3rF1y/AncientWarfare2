@@ -18,7 +18,6 @@ import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.event.IBoxRenderer;
 import net.shadowmage.ancientwarfare.structure.render.PreviewRenderer;
-import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilderTicked;
@@ -72,11 +71,10 @@ public class ItemBlockStructureBuilder extends ItemBlockBase implements IBoxRend
 	}
 
 	public void setupStructureBuilder(World world, BlockPos pos, TileStructureBuilder tb, String name, EnumFacing face) {
-		StructureTemplate t = StructureTemplateManager.INSTANCE.getTemplate(name);
-		if (t != null) {
+		StructureTemplateManager.getTemplate(name).ifPresent(t -> {
 			BlockPos p = pos.offset(face, t.getSize().getZ() - 1 - t.getOffset().getZ() + 1);
 			tb.setBuilder(new StructureBuilderTicked(world, t, face, p));
-		}
+		});
 	}
 
 	@Override
@@ -87,19 +85,17 @@ public class ItemBlockStructureBuilder extends ItemBlockBase implements IBoxRend
 			return;
 		}
 		String name = stack.getTagCompound().getString(STRUCTURE_NAME_TAG);
-		StructureTemplate t = StructureTemplateManager.INSTANCE.getTemplate(name);
-		if (t == null) {
-			return;
-		}
 		BlockPos hit = BlockTools.getBlockClickedOn(player, player.world, true);
 		if (hit == null) {
 			return;
 		}
-		Util.renderBoundingBox(player, hit, hit, delta);
-		EnumFacing face = player.getHorizontalFacing();
-		BlockPos p2 = hit.offset(face, t.getSize().getZ() - 1 - t.getOffset().getZ() + 1);
-		StructureBB bb = new StructureBB(p2, face, t.getSize(), t.getOffset());
-		Util.renderBoundingBox(player, bb.min, bb.max, delta);
-		PreviewRenderer.renderTemplatePreview(player, hand, stack, delta, t, bb, (face.getHorizontalIndex() + 2) % 4);
+		StructureTemplateManager.getTemplate(name).ifPresent(t -> {
+			Util.renderBoundingBox(player, hit, hit, delta);
+			EnumFacing face = player.getHorizontalFacing();
+			BlockPos p2 = hit.offset(face, t.getSize().getZ() - 1 - t.getOffset().getZ() + 1);
+			StructureBB bb = new StructureBB(p2, face, t.getSize(), t.getOffset());
+			Util.renderBoundingBox(player, bb.min, bb.max, delta);
+			PreviewRenderer.renderTemplatePreview(player, hand, stack, delta, t, bb, (face.getHorizontalIndex() + 2) % 4);
+		});
 	}
 }

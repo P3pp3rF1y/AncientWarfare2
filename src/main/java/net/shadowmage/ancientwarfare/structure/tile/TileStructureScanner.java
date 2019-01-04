@@ -148,20 +148,21 @@ public class TileStructureScanner extends TileUpdatable implements IBlockBreakHa
 			return;
 		}
 
-		StructureTemplate template = StructureTemplateManager.INSTANCE.getTemplate(name);
-		ItemStructureSettings settings = ItemStructureSettings.getSettingsFor(scanner);
-		if (ItemStructureScanner.readyToExport(scanner)) {
-			int turns = (6 - settings.face().getHorizontalIndex()) % 4;
-			StructureTemplate dummyTemplate = TemplateScanner.scan(world, Collections.emptySet(), settings.getMin(), settings.getMax(), settings.buildKey(), turns, "dummy");
-			if (isSameTemplateSizeAndOffset(template, dummyTemplate)) {
-				setMainTemplateSettings(name, scanner, template);
-				//TODO fix incorrect y buildkey offset in structure builder and remove offesting buildkey up 1 block here
-				restoreTemplate(template, settings.getBoundingBox(), settings.buildKey().offset(EnumFacing.UP, 1), settings.face());
-				return;
+		StructureTemplateManager.getTemplate(name).ifPresent(template -> {
+			ItemStructureSettings settings = ItemStructureSettings.getSettingsFor(scanner);
+			if (ItemStructureScanner.readyToExport(scanner)) {
+				int turns = (6 - settings.face().getHorizontalIndex()) % 4;
+				StructureTemplate dummyTemplate = TemplateScanner.scan(world, Collections.emptySet(), settings.getMin(), settings.getMax(), settings.buildKey(), turns, "dummy");
+				if (isSameTemplateSizeAndOffset(template, dummyTemplate)) {
+					setMainTemplateSettings(name, scanner, template);
+					//TODO fix incorrect y buildkey offset in structure builder and remove offesting buildkey up 1 block here
+					restoreTemplate(template, settings.getBoundingBox(), settings.buildKey().offset(EnumFacing.UP, 1), settings.face());
+					return;
+				}
 			}
-		}
 
-		saveToScannerItemAndRestoreTemplate(name, scanner, template, settings);
+			saveToScannerItemAndRestoreTemplate(name, scanner, template, settings);
+		});
 	}
 
 	private void setMainTemplateSettings(String name, ItemStack scanner, StructureTemplate template) {
@@ -259,10 +260,7 @@ public class TileStructureScanner extends TileUpdatable implements IBlockBreakHa
 	private void reloadMainSettings() {
 		getScanner().ifPresent(scanner -> {
 					String name = ItemStructureScanner.getStructureName(scanner);
-					StructureTemplate template = StructureTemplateManager.INSTANCE.getTemplate(name);
-					if (template != null) {
-						setMainTemplateSettings(name, scanner, template);
-					}
+			StructureTemplateManager.getTemplate(name).ifPresent(template -> setMainTemplateSettings(name, scanner, template));
 			markDirty();
 				}
 		);

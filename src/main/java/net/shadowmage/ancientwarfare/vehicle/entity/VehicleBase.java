@@ -291,6 +291,11 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		}
 	}
 
+	@Override
+	protected boolean canTriggerWalking() {
+		return false;
+	}
+
 	/**
 	 * return an itemStack tagged appropriately for this vehicle
 	 *

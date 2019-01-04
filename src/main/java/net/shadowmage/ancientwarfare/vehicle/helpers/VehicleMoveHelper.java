@@ -1,24 +1,3 @@
-/**
- * Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
- * This software is distributed under the terms of the GNU General Public License.
- * Please see COPYING for precise license information.
- * <p>
- * This file is part of Ancient Warfare.
- * <p>
- * Ancient Warfare is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * <p>
- * Ancient Warfare is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.vehicle.helpers;
 
 import com.google.common.collect.Lists;
@@ -155,12 +134,9 @@ public class VehicleMoveHelper implements INBTSerializable<NBTTagCompound> {
 			this.pitchTicks--;
 		}
 		if (moveTicks > 0) {
-			double dx = (destX - vehicle.posX) / (float) moveTicks;
-			double dy = (destY - vehicle.posY) / (float) moveTicks;
-			double dz = (destZ - vehicle.posZ) / (float) moveTicks;
-			vehicle.motionX = dx;
-			vehicle.motionY = dy;
-			vehicle.motionZ = dz;
+			vehicle.motionX = destX - vehicle.posX;
+			vehicle.motionY = destY - vehicle.posY;
+			vehicle.motionZ = destZ - vehicle.posZ;
 			moveTicks--;
 		}
 		vehicle.wheelRotationPrev = vehicle.wheelRotation;
@@ -213,11 +189,10 @@ public class VehicleMoveHelper implements INBTSerializable<NBTTagCompound> {
 		this.tearUpGrass();
 		boolean sendUpdate = (vehicle.motionX != 0 || vehicle.motionY != 0 || vehicle.motionZ != 0 || vehicle.rotationYaw != vehicle.prevRotationYaw || vehicle.rotationPitch != vehicle.prevRotationPitch);
 		sendUpdate = sendUpdate || vehicle.getControllingPassenger() != null;
-		sendUpdate = sendUpdate && this.vehicle.ticksExisted % VEHICLE_MOVE_UPDATE_FREQUENCY == 0;
 		sendUpdate = sendUpdate || this.vehicle.ticksExisted % 60 == 0;
 		if (sendUpdate) {
 			boolean air = move == VehicleMovementType.AIR1 || move == VehicleMovementType.AIR2;
-			float motion = air ? vehicle.moveHelper.throttle : vehicle.moveHelper.forwardMotion;
+			float motion = air ? throttle : forwardMotion;
 			PacketVehicleBase pkt = new PacketVehicleMove(vehicle, vehicle.posX, vehicle.posY, vehicle.posZ, air, motion, vehicle.rotationYaw, vehicle.rotationPitch);
 			NetworkHandler.sendToAllTracking(vehicle, pkt);
 		}
@@ -235,7 +210,7 @@ public class VehicleMoveHelper implements INBTSerializable<NBTTagCompound> {
 			this.forwardMotion *= 0.85f;
 			this.strafeMotion *= 0.85f;
 		}
-		this.applyForwardInput(0.0125f, true);
+		this.applyForwardInput(0.0125f, false);
 	}
 
 	protected void applyWaterMotion2() {

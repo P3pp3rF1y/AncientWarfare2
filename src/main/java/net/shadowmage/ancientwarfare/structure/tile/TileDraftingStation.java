@@ -12,7 +12,6 @@ import net.shadowmage.ancientwarfare.core.tile.IBlockBreakHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.NBTHelper;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
-import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 
 import javax.annotation.Nonnull;
@@ -51,39 +50,29 @@ public class TileDraftingStation extends TileEntity implements ITickable, IBlock
 		if (!hasWorld() || world.isRemote) {
 			return;
 		}
-		if (structureName != null) {
-			StructureTemplate t = StructureTemplateManager.INSTANCE.getTemplate(structureName);
-			if (t == null) {
-				stopCurrentWork();
-			}
+		if (structureName != null && !StructureTemplateManager.getTemplate(structureName).isPresent()) {
+			stopCurrentWork();
 		}
 		if (structureName == null || !isStarted) {
 			return;
 		}
-		if (!isFinished) {
-			if (tryRemoveResource()) {
-				isFinished = true;
-			}
+		if (!isFinished && tryRemoveResource()) {
+			isFinished = true;
 		}
-		if (isFinished)//check finished again, as it might have changed during previous operation
-		{
-			if (tryFinish())//try to output item to output slot
-			{
-				stopCurrentWork();//clear structure, times, flags
-			}
+		if (isFinished && tryFinish()) {
+			stopCurrentWork();
 		}
 	}
 
 	private boolean tryRemoveResource() {
-		@Nonnull ItemStack stack1, stack2;
 		outerLoopLabel:
 		for (int k = 0; k < inputSlots.getSlots(); k++) {
-			stack2 = inputSlots.getStackInSlot(k);
+			ItemStack stack2 = inputSlots.getStackInSlot(k);
 			if (stack2.isEmpty()) {
 				continue;
 			}
 			for (int i = 0; i < neededResources.size(); i++) {
-				stack1 = neededResources.get(i);
+				ItemStack stack1 = neededResources.get(i);
 				if (InventoryTools.doItemStacksMatchRelaxed(stack1, stack2)) {
 					stack1.shrink(1);
 					stack2.shrink(1);
@@ -101,7 +90,7 @@ public class TileDraftingStation extends TileEntity implements ITickable, IBlock
 	}
 
 	public void tryStart() {
-		if (structureName != null && StructureTemplateManager.INSTANCE.getTemplate(structureName) != null) {
+		if (structureName != null && StructureTemplateManager.getTemplate(structureName) != null) {
 			this.isStarted = true;
 		}
 	}
@@ -158,8 +147,7 @@ public class TileDraftingStation extends TileEntity implements ITickable, IBlock
 		this.neededResources.clear();
 		returnResources.clear();
 		this.remainingTime = 0;
-		StructureTemplate t = StructureTemplateManager.INSTANCE.getTemplate(templateName);
-		if (t != null) {
+		StructureTemplateManager.getTemplate(templateName).ifPresent(t -> {
 			if (t.getValidationSettings().isSurvival())
 				this.structureName = templateName;
 			for (ItemStack item : t.getResourceList()) {
@@ -169,7 +157,7 @@ public class TileDraftingStation extends TileEntity implements ITickable, IBlock
 				returnResources.add(item.copy());
 			}
 			calcTime();
-		}
+		});
 		markDirty();
 	}
 

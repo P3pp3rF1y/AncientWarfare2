@@ -40,7 +40,7 @@ public class BlockStructureBuilder extends BlockBaseStructure {
 		if (displayCache == null || displayCache.isEmpty()) {
 			displayCache = NonNullList.create();
 
-			Set<String> templateNames = StructureTemplateManager.INSTANCE.getSurvivalStructures().keySet();
+			Set<String> templateNames = StructureTemplateManager.getSurvivalStructures().keySet();
 			@Nonnull ItemStack item;
 			for (String templateName : templateNames) {
 				item = new ItemStack(this);

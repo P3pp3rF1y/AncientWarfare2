@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.network.FMLEventChannel;
 import net.minecraftforge.fml.common.network.IGuiHandler;
@@ -146,7 +147,10 @@ public final class NetworkHandler implements IGuiHandler {
 	}
 
 	public static void sendToAllPlayers(PacketBase pkt) {
-		INSTANCE.channel.sendToAll(pkt.getFMLPacket());
+		//noinspection ConstantConditions
+		if (FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList() != null) {
+			INSTANCE.channel.sendToAll(pkt.getFMLPacket());
+		}
 	}
 
 	public static void sendToAllTracking(Entity e, PacketBase pkt) {

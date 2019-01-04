@@ -297,7 +297,7 @@ public class CommandUtils extends ParentCommand {
 				if (evt.phase == TickEvent.Phase.END) {
 					if (timeout <= 0) {
 						movePlayer();
-						timeout = 60;
+						timeout = 200;
 					} else {
 						timeout--;
 					}

@@ -4,6 +4,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.items.IItemHandler;
 
+import javax.annotation.Nullable;
+
 public class FactionTrade extends Trade {
 
 	private int refillFrequency;
@@ -21,7 +23,7 @@ public class FactionTrade extends Trade {
 
 	public boolean hasItems() {
 		for (int i = 0; i < size(); i++) {
-			if (getInputStack(i) != null || getOutputStack(i) != null) {
+			if (!getInputStack(i).isEmpty() || !getOutputStack(i).isEmpty()) {
 				return true;
 			}
 		}
@@ -85,14 +87,12 @@ public class FactionTrade extends Trade {
 	}
 
 	@Override
-	public void performTrade(EntityPlayer player, IItemHandler storage) {
-		if (currentAvailable > 0) {
-			super.performTrade(player, null);
-		}
+	public boolean performTrade(EntityPlayer player, @Nullable IItemHandler storage) {
+		return currentAvailable > 0 && super.performTrade(player, null);
 	}
 
 	@Override
-	protected void doTrade(EntityPlayer player, IItemHandler storage) {
+	protected void doTrade(EntityPlayer player, @Nullable IItemHandler storage) {
 		if (refillFrequency != 0) {
 			currentAvailable--;
 		}//0 denotes instant restock, no reason to decrease qty if it will just be instantly restocked when GUI is opened next

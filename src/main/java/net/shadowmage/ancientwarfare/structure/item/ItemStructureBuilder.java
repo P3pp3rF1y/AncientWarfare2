@@ -67,8 +67,8 @@ public class ItemStructureBuilder extends ItemBaseStructure implements IItemKeyI
 		}
 		ItemStructureSettings buildSettings = ItemStructureSettings.getSettingsFor(stack);
 		if (buildSettings.hasName()) {
-			StructureTemplate template = StructureTemplateManager.INSTANCE.getTemplate(buildSettings.name);
-			if (template == null) {
+			Optional<StructureTemplate> template = StructureTemplateManager.getTemplate(buildSettings.name);
+			if (!template.isPresent()) {
 				player.sendMessage(new TextComponentTranslation("guistrings.template.not_found"));
 				return;
 			}
@@ -79,7 +79,7 @@ public class ItemStructureBuilder extends ItemBaseStructure implements IItemKeyI
 			BlockPos hit = buildPos.get().getFirst();
 			EnumFacing facing = buildPos.get().getSecond();
 
-			StructureBuilder builder = new StructureBuilder(player.world, template, facing, hit);
+			StructureBuilder builder = new StructureBuilder(player.world, template.get(), facing, hit);
 			builder.getTemplate().getValidationSettings().preGeneration(player.world, hit, facing, builder.getTemplate(), builder.getBoundingBox());
 			builder.instantConstruction();
 			builder.getTemplate().getValidationSettings().postGeneration(player.world, hit, builder.getBoundingBox());
@@ -144,8 +144,8 @@ public class ItemStructureBuilder extends ItemBaseStructure implements IItemKeyI
 			return;
 		}
 		String name = settings.name();
-		StructureTemplate structure = StructureTemplateManager.INSTANCE.getTemplate(name);
-		if (structure == null) {
+		Optional<StructureTemplate> template = StructureTemplateManager.getTemplate(name);
+		if (!template.isPresent()) {
 			return;
 		}
 		Optional<Tuple<BlockPos, EnumFacing>> buildPos = getBuildPosFromStackOrPlayer(player, stack);
@@ -155,11 +155,11 @@ public class ItemStructureBuilder extends ItemBaseStructure implements IItemKeyI
 		BlockPos hit = buildPos.get().getFirst();
 		EnumFacing facing = buildPos.get().getSecond();
 
-		StructureBB bb = new StructureBB(hit, facing, structure.getSize(), structure.getOffset());
+		StructureBB bb = new StructureBB(hit, facing, template.get().getSize(), template.get().getOffset());
 		int turns = (facing.getHorizontalIndex() + 2) % 4;
 		Util.renderBoundingBox(player, bb.min, bb.max, delta);
 		Util.renderBoundingBox(player, hit, hit, delta);
-		PreviewRenderer.renderTemplatePreview(player, hand, stack, delta, structure, bb, turns);
+		PreviewRenderer.renderTemplatePreview(player, hand, stack, delta, template.get(), bb, turns);
 	}
 
 	private Optional<Tuple<BlockPos, EnumFacing>> getBuildPosFromStackOrPlayer(EntityPlayer player, ItemStack stack) {

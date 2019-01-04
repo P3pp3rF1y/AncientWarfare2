@@ -13,6 +13,10 @@ import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager
 import java.util.Optional;
 
 public class StructureBuilderTicked extends StructureBuilder {
+	private static final String CLEAR_POS_TAG = "clearPos";
+	private static final String CLEARED_TAG = "cleared";
+	private static final String CURRENT_PRIORITY_TAG = "currentPriority";
+	private static final String DESTINATION_TAG = "destination";
 	public boolean invalid = false;
 	private boolean hasClearedArea;
 	private BlockPos clearPos;
@@ -82,17 +86,17 @@ public class StructureBuilderTicked extends StructureBuilder {
 	public void readFromNBT(NBTTagCompound tag)//should be called immediately after construction
 	{
 		String name = tag.getString("name");
-		StructureTemplate template = StructureTemplateManager.INSTANCE.getTemplate(name);
-		if (template != null) {
-			this.template = template;
+		Optional<StructureTemplate> template = StructureTemplateManager.getTemplate(name);
+		if (template.isPresent()) {
+			this.template = template.get();
 			curTempPos = MathUtils.fromLong(tag.getLong("pos"));
-			this.clearPos = BlockPos.fromLong(tag.getLong("clearPos"));
-			this.hasClearedArea = tag.getBoolean("cleared");
+			this.clearPos = BlockPos.fromLong(tag.getLong(CLEAR_POS_TAG));
+			this.hasClearedArea = tag.getBoolean(CLEARED_TAG);
 			this.turns = tag.getInteger("turns");
 			this.buildFace = EnumFacing.VALUES[tag.getByte("buildFace")];
 			this.maxPriority = tag.getInteger("maxPriority");
-			this.currentPriority = tag.getInteger("currentPriority");
-			this.destination = BlockPos.fromLong(tag.getLong("destination"));
+			this.currentPriority = tag.getInteger(CURRENT_PRIORITY_TAG);
+			this.destination = BlockPos.fromLong(tag.getLong(DESTINATION_TAG));
 
 			this.bb = new StructureBB(BlockPos.fromLong(tag.getLong("bbMin")), BlockPos.fromLong(tag.getLong("bbMax")));
 			this.buildOrigin = BlockPos.fromLong(tag.getLong("buildOrigin"));
@@ -107,11 +111,11 @@ public class StructureBuilderTicked extends StructureBuilder {
 		tag.setByte("face", (byte) getBuildFace().ordinal());
 		tag.setInteger("turns", turns);
 		tag.setInteger("maxPriority", maxPriority);
-		tag.setInteger("currentPriority", currentPriority);
+		tag.setInteger(CURRENT_PRIORITY_TAG, currentPriority);
 		tag.setLong("pos", MathUtils.toLong(curTempPos));
-		tag.setLong("clearPos", clearPos.toLong());
-		tag.setBoolean("cleared", hasClearedArea);
-		tag.setLong("destination", destination.toLong());
+		tag.setLong(CLEAR_POS_TAG, clearPos.toLong());
+		tag.setBoolean(CLEARED_TAG, hasClearedArea);
+		tag.setLong(DESTINATION_TAG, destination.toLong());
 
 		tag.setLong("buildOrigin", buildOrigin.toLong());
 		tag.setLong("bbMin", bb.min.toLong());
@@ -125,19 +129,19 @@ public class StructureBuilderTicked extends StructureBuilder {
 
 	public NBTTagCompound serializeProgressData() {
 		NBTTagCompound tag = new NBTTagCompound();
-		tag.setInteger("currentPriority", currentPriority);
+		tag.setInteger(CURRENT_PRIORITY_TAG, currentPriority);
 		tag.setLong("pos", MathUtils.toLong(curTempPos));
-		tag.setLong("clearPos", clearPos.toLong());
-		tag.setBoolean("cleared", hasClearedArea);
-		tag.setLong("destination", destination.toLong());
+		tag.setLong(CLEAR_POS_TAG, clearPos.toLong());
+		tag.setBoolean(CLEARED_TAG, hasClearedArea);
+		tag.setLong(DESTINATION_TAG, destination.toLong());
 		return tag;
 	}
 
 	public void deserializeProgressData(NBTTagCompound tag) {
-		currentPriority = tag.getInteger("currentPriority");
+		currentPriority = tag.getInteger(CURRENT_PRIORITY_TAG);
 		curTempPos = MathUtils.fromLong(tag.getLong("pos"));
-		clearPos = BlockPos.fromLong(tag.getLong("clearPos"));
-		hasClearedArea = tag.getBoolean("cleared");
-		destination = BlockPos.fromLong(tag.getLong("destination"));
+		clearPos = BlockPos.fromLong(tag.getLong(CLEAR_POS_TAG));
+		hasClearedArea = tag.getBoolean(CLEARED_TAG);
+		destination = BlockPos.fromLong(tag.getLong(DESTINATION_TAG));
 	}
 }
