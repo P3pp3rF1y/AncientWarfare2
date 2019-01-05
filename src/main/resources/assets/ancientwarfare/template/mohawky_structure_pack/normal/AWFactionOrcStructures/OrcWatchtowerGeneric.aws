@@ -1,12 +1,12 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 11/20/2018 at: 17:1:15
+# Auto-generated structure template file. created on: 1/5/2019 at: 23:39:32
 # Lines beginning with # denote comments
 
 header:
-version=2.7
+version=2.8
 name=OrcWatchtowerGeneric
 mods=
-size=14,41,11
+size=14,16,11
 offset=6,5,10
 :endheader
 
@@ -20,16 +20,14 @@ preserveBlocks=false
 selectionWeight=30
 clusterValue=40
 minDuplicateDistance=600
-dimensionWhiteList=false
-dimensionList=
+dimensionWhiteList=true
+dimensionList=0
 biomeWhiteList=true
 biomeList=biomesoplenty:shrubland,minecraft:roofed_forest,biomesoplenty:bayou,biomesoplenty:dead_forest,traverse:woodlands,minecraft:forest,minecraft:extreme_hills,minecraft:mutated_swampland,traverse:badlands,biomesoplenty:highland,biomesoplenty:moor,biomesoplenty:dead_swamp,traverse:rocky_plains,minecraft:ice_flats
 leveling=5
 fill=0
 border=5
 blockSwap=false
-data:
-:enddata
 :endvalidation
 
 #### LAYERS ####
@@ -241,338 +239,13 @@ layer: 15
 0,0,0,0,0,0,0,56,0,53,0,0,0,0
 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 :endlayer
-layer: 16
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 17
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 18
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 19
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 20
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 21
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 22
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 23
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 24
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 25
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 26
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 27
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 28
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 29
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 30
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 31
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 32
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 33
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 34
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 35
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 36
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 37
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 38
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 39
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 40
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0,0,0,0,0
-:endlayer
 
 #### RULES ####
 rule:
 plugin=vanillaBlocks
 number=1
 data:
-JSON:{blockState:{blockName:"minecraft:stone",properties:{variant:"stone"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone",properties:{variant:"stone"}}}
 :enddata
 :endrule
 
@@ -580,7 +253,7 @@ rule:
 plugin=vanillaBlocks
 number=2
 data:
-JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"dirt",snowy:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"dirt",snowy:"false"}}}
 :enddata
 :endrule
 
@@ -588,7 +261,7 @@ rule:
 plugin=vanillaBlocks
 number=3
 data:
-JSON:{blockState:{blockName:"minecraft:mossy_cobblestone",properties:{}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:mossy_cobblestone"}}
 :enddata
 :endrule
 
@@ -596,7 +269,7 @@ rule:
 plugin=vanillaBlocks
 number=4
 data:
-JSON:{blockState:{blockName:"minecraft:stone_stairs",properties:{half:"bottom",shape:"straight",facing:"north"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_stairs",properties:{half:"bottom",shape:"straight",facing:"north"}}}
 :enddata
 :endrule
 
@@ -604,7 +277,7 @@ rule:
 plugin=vanillaBlocks
 number=5
 data:
-JSON:{blockState:{blockName:"minecraft:cobblestone",properties:{}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:cobblestone"}}
 :enddata
 :endrule
 
@@ -612,7 +285,7 @@ rule:
 plugin=inventory
 number=6
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:0,teData:{ForgeData:{},Items:[{Slot:13b,id:"minecraft:diamond_sword",Count:1b,Damage:0s},{Slot:23b,id:"minecraft:bow",Count:1b,Damage:0s},{Slot:24b,id:"minecraft:arrow",Count:64b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:3,inventoryContents:[{id:"minecraft:diamond_sword",Count:1b,slot:0,Damage:0s},{id:"minecraft:bow",Count:1b,slot:1,Damage:0s},{id:"minecraft:arrow",Count:64b,slot:2,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},lootLevel:0,teData:{ForgeData:{},Items:[{Slot:13b,id:"minecraft:diamond_sword",Count:1b,Damage:0s},{Slot:23b,id:"minecraft:bow",Count:1b,Damage:0s},{Slot:24b,id:"minecraft:arrow",Count:64b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:3,inventoryContents:[{id:"minecraft:diamond_sword",Count:1b,slot:0,Damage:0s},{id:"minecraft:bow",Count:1b,slot:1,Damage:0s},{id:"minecraft:arrow",Count:64b,slot:2,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -620,7 +293,7 @@ rule:
 plugin=blockTile
 number=7
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"orc"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier.elite",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"orc"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier.elite",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -628,7 +301,7 @@ rule:
 plugin=vanillaBlocks
 number=8
 data:
-JSON:{blockState:{blockName:"minecraft:stone_stairs",properties:{half:"bottom",shape:"straight",facing:"west"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_stairs",properties:{half:"bottom",shape:"straight",facing:"west"}}}
 :enddata
 :endrule
 
@@ -636,7 +309,7 @@ rule:
 plugin=vanillaBlocks
 number=9
 data:
-JSON:{blockState:{blockName:"minecraft:grass",properties:{snowy:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:grass",properties:{snowy:"false"}}}
 :enddata
 :endrule
 
@@ -644,7 +317,7 @@ rule:
 plugin=vanillaBlocks
 number=10
 data:
-JSON:{blockState:{blockName:"minecraft:gravel",properties:{}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:gravel"}}
 :enddata
 :endrule
 
@@ -652,7 +325,7 @@ rule:
 plugin=vanillaBlocks
 number=11
 data:
-JSON:{blockState:{blockName:"minecraft:tallgrass",properties:{type:"tall_grass"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:tallgrass",properties:{type:"tall_grass"}}}
 :enddata
 :endrule
 
@@ -660,7 +333,7 @@ rule:
 plugin=vanillaBlocks
 number=12
 data:
-JSON:{blockState:{blockName:"minecraft:fence",properties:{east:"false",south:"false",north:"false",west:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:fence",properties:{east:"false",south:"false",north:"false",west:"false"}}}
 :enddata
 :endrule
 
@@ -668,7 +341,7 @@ rule:
 plugin=vanillaBlocks
 number=13
 data:
-JSON:{blockState:{blockName:"minecraft:log2",properties:{variant:"dark_oak",axis:"y"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:log2",properties:{variant:"dark_oak",axis:"y"}}}
 :enddata
 :endrule
 
@@ -676,7 +349,7 @@ rule:
 plugin=inventory
 number=14
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{ForgeData:{},Items:[{Slot:2b,id:"minecraft:red_mushroom",Count:17b,Damage:0s},{Slot:3b,id:"ancientwarfarenpc:coin",Count:31b,tag:{metal:"copper"},Damage:0s},{Slot:4b,id:"ancientwarfarenpc:coin",Count:26b,tag:{metal:"silver"},Damage:0s},{Slot:5b,id:"ancientwarfarenpc:coin",Count:10b,tag:{metal:"gold"},Damage:0s},{Slot:7b,id:"minecraft:gold_nugget",Count:8b,Damage:0s},{Slot:9b,id:"minecraft:dye",Count:15b,Damage:4s},{Slot:12b,id:"minecraft:rotten_flesh",Count:16b,Damage:0s},{Slot:13b,id:"minecraft:poisonous_potato",Count:16b,Damage:0s},{Slot:15b,id:"minecraft:slime_ball",Count:17b,Damage:0s},{Slot:17b,id:"minecraft:torch",Count:20b,Damage:0s},{Slot:19b,id:"minecraft:spider_eye",Count:16b,Damage:0s},{Slot:23b,id:"minecraft:coal",Count:11b,Damage:0s},{Slot:25b,id:"minecraft:brown_mushroom",Count:15b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:13,inventoryContents:[{id:"minecraft:red_mushroom",Count:17b,slot:0,Damage:0s},{id:"ancientwarfarenpc:coin",Count:31b,tag:{metal:"copper"},slot:1,Damage:0s},{id:"ancientwarfarenpc:coin",Count:26b,tag:{metal:"silver"},slot:2,Damage:0s},{id:"ancientwarfarenpc:coin",Count:10b,tag:{metal:"gold"},slot:3,Damage:0s},{id:"minecraft:gold_nugget",Count:8b,slot:4,Damage:0s},{id:"minecraft:dye",Count:15b,slot:5,Damage:4s},{id:"minecraft:rotten_flesh",Count:16b,slot:6,Damage:0s},{id:"minecraft:poisonous_potato",Count:16b,slot:7,Damage:0s},{id:"minecraft:slime_ball",Count:17b,slot:8,Damage:0s},{id:"minecraft:torch",Count:20b,slot:9,Damage:0s},{id:"minecraft:spider_eye",Count:16b,slot:10,Damage:0s},{id:"minecraft:coal",Count:11b,slot:11,Damage:0s},{id:"minecraft:brown_mushroom",Count:15b,slot:12,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},lootLevel:0,teData:{ForgeData:{},Items:[{Slot:2b,id:"minecraft:red_mushroom",Count:17b,Damage:0s},{Slot:3b,id:"ancientwarfarenpc:coin",Count:31b,tag:{metal:"copper"},Damage:0s},{Slot:4b,id:"ancientwarfarenpc:coin",Count:26b,tag:{metal:"silver"},Damage:0s},{Slot:5b,id:"ancientwarfarenpc:coin",Count:10b,tag:{metal:"gold"},Damage:0s},{Slot:7b,id:"minecraft:gold_nugget",Count:8b,Damage:0s},{Slot:9b,id:"minecraft:dye",Count:15b,Damage:4s},{Slot:12b,id:"minecraft:rotten_flesh",Count:16b,Damage:0s},{Slot:13b,id:"minecraft:poisonous_potato",Count:16b,Damage:0s},{Slot:15b,id:"minecraft:slime_ball",Count:17b,Damage:0s},{Slot:17b,id:"minecraft:torch",Count:20b,Damage:0s},{Slot:19b,id:"minecraft:spider_eye",Count:16b,Damage:0s},{Slot:23b,id:"minecraft:coal",Count:11b,Damage:0s},{Slot:25b,id:"minecraft:brown_mushroom",Count:15b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:13,inventoryContents:[{id:"minecraft:red_mushroom",Count:17b,slot:0,Damage:0s},{id:"ancientwarfarenpc:coin",Count:31b,tag:{metal:"copper"},slot:1,Damage:0s},{id:"ancientwarfarenpc:coin",Count:26b,tag:{metal:"silver"},slot:2,Damage:0s},{id:"ancientwarfarenpc:coin",Count:10b,tag:{metal:"gold"},slot:3,Damage:0s},{id:"minecraft:gold_nugget",Count:8b,slot:4,Damage:0s},{id:"minecraft:dye",Count:15b,slot:5,Damage:4s},{id:"minecraft:rotten_flesh",Count:16b,slot:6,Damage:0s},{id:"minecraft:poisonous_potato",Count:16b,slot:7,Damage:0s},{id:"minecraft:slime_ball",Count:17b,slot:8,Damage:0s},{id:"minecraft:torch",Count:20b,slot:9,Damage:0s},{id:"minecraft:spider_eye",Count:16b,slot:10,Damage:0s},{id:"minecraft:coal",Count:11b,slot:11,Damage:0s},{id:"minecraft:brown_mushroom",Count:15b,slot:12,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -684,7 +357,7 @@ rule:
 plugin=vanillaBlocks
 number=15
 data:
-JSON:{blockState:{blockName:"minecraft:wooden_slab",properties:{half:"top",variant:"oak"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:wooden_slab",properties:{half:"top",variant:"oak"}}}
 :enddata
 :endrule
 
@@ -692,7 +365,7 @@ rule:
 plugin=vanillaBlocks
 number=16
 data:
-JSON:{blockState:{blockName:"minecraft:wooden_slab",properties:{half:"bottom",variant:"dark_oak"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:wooden_slab",properties:{half:"bottom",variant:"dark_oak"}}}
 :enddata
 :endrule
 
@@ -700,7 +373,7 @@ rule:
 plugin=blockTile
 number=17
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:2,spawnDelay:262,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"orc"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:6,transparent:0b,maxDelay:800,xpToDrop:60,mobRange:12,debugMode:0b,maxNearbyMonsters:12}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:2,spawnDelay:478,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"orc"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:6,transparent:0b,maxDelay:800,xpToDrop:60,mobRange:12,debugMode:0b,maxNearbyMonsters:12}}}
 :enddata
 :endrule
 
@@ -708,7 +381,7 @@ rule:
 plugin=blockTile
 number=18
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"orc"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier.elite",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"orc"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier.elite",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -716,7 +389,7 @@ rule:
 plugin=vanillaSkull
 number=19
 data:
-JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},buildPass:0,skullRotation:8,teData:{Rot:4b,id:"minecraft:skull",SkullType:0b}}
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},skullRotation:8,teData:{Rot:4b,id:"minecraft:skull",SkullType:0b}}
 :enddata
 :endrule
 
@@ -724,7 +397,7 @@ rule:
 plugin=vanillaSkull
 number=20
 data:
-JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},buildPass:0,skullRotation:12,teData:{Rot:8b,id:"minecraft:skull",SkullType:0b}}
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},skullRotation:12,teData:{Rot:8b,id:"minecraft:skull",SkullType:0b}}
 :enddata
 :endrule
 
@@ -732,7 +405,7 @@ rule:
 plugin=vanillaBlocks
 number=21
 data:
-JSON:{blockState:{blockName:"minecraft:dark_oak_stairs",properties:{half:"bottom",shape:"straight",facing:"south"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:dark_oak_stairs",properties:{half:"bottom",shape:"straight",facing:"south"}}}
 :enddata
 :endrule
 
@@ -740,7 +413,7 @@ rule:
 plugin=vanillaBlocks
 number=22
 data:
-JSON:{blockState:{blockName:"minecraft:dark_oak_stairs",properties:{half:"bottom",shape:"straight",facing:"west"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:dark_oak_stairs",properties:{half:"bottom",shape:"straight",facing:"west"}}}
 :enddata
 :endrule
 
@@ -748,7 +421,7 @@ rule:
 plugin=vanillaBlocks
 number=23
 data:
-JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"east"}}}
 :enddata
 :endrule
 
@@ -756,7 +429,7 @@ rule:
 plugin=vanillaBlocks
 number=24
 data:
-JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"south"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"south"}}}
 :enddata
 :endrule
 
@@ -764,7 +437,7 @@ rule:
 plugin=vanillaBlocks
 number=25
 data:
-JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"west"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"west"}}}
 :enddata
 :endrule
 
@@ -772,7 +445,7 @@ rule:
 plugin=vanillaSkull
 number=26
 data:
-JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"west"}},buildPass:0,skullRotation:8,teData:{Rot:4b,id:"minecraft:skull",SkullType:0b}}
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"west"}},skullRotation:8,teData:{Rot:4b,id:"minecraft:skull",SkullType:0b}}
 :enddata
 :endrule
 
@@ -780,7 +453,7 @@ rule:
 plugin=vanillaSkull
 number=27
 data:
-JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},buildPass:0,skullRotation:4,teData:{Rot:0b,id:"minecraft:skull",SkullType:0b}}
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},skullRotation:4,teData:{Rot:0b,id:"minecraft:skull",SkullType:0b}}
 :enddata
 :endrule
 
@@ -788,7 +461,7 @@ rule:
 plugin=vanillaBlocks
 number=28
 data:
-JSON:{blockState:{blockName:"minecraft:planks",properties:{variant:"dark_oak"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:planks",properties:{variant:"dark_oak"}}}
 :enddata
 :endrule
 
@@ -796,7 +469,7 @@ rule:
 plugin=vanillaSkull
 number=29
 data:
-JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},buildPass:0,skullRotation:0,teData:{Rot:12b,id:"minecraft:skull",SkullType:3b}}
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},skullRotation:0,teData:{Rot:12b,id:"minecraft:skull",SkullType:3b}}
 :enddata
 :endrule
 
@@ -804,7 +477,7 @@ rule:
 plugin=vanillaSkull
 number=30
 data:
-JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},buildPass:0,skullRotation:12,teData:{Rot:8b,id:"minecraft:skull",SkullType:0b}}
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},skullRotation:12,teData:{Rot:8b,id:"minecraft:skull",SkullType:0b}}
 :enddata
 :endrule
 
@@ -812,7 +485,7 @@ rule:
 plugin=vanillaSkull
 number=31
 data:
-JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},buildPass:0,skullRotation:12,teData:{Rot:8b,id:"minecraft:skull",SkullType:0b}}
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},skullRotation:12,teData:{Rot:8b,id:"minecraft:skull",SkullType:0b}}
 :enddata
 :endrule
 
@@ -820,7 +493,7 @@ rule:
 plugin=vanillaBlocks
 number=32
 data:
-JSON:{blockState:{blockName:"minecraft:dark_oak_stairs",properties:{half:"top",shape:"straight",facing:"west"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:dark_oak_stairs",properties:{half:"top",shape:"straight",facing:"west"}}}
 :enddata
 :endrule
 
@@ -828,7 +501,7 @@ rule:
 plugin=vanillaSkull
 number=33
 data:
-JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},buildPass:0,skullRotation:8,teData:{Rot:4b,id:"minecraft:skull",SkullType:0b}}
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},skullRotation:8,teData:{Rot:4b,id:"minecraft:skull",SkullType:0b}}
 :enddata
 :endrule
 
@@ -836,7 +509,7 @@ rule:
 plugin=vanillaBlocks
 number=34
 data:
-JSON:{blockState:{blockName:"minecraft:dark_oak_stairs",properties:{half:"top",shape:"straight",facing:"south"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:dark_oak_stairs",properties:{half:"top",shape:"straight",facing:"south"}}}
 :enddata
 :endrule
 
@@ -844,7 +517,7 @@ rule:
 plugin=vanillaBlocks
 number=35
 data:
-JSON:{blockState:{blockName:"minecraft:dark_oak_stairs",properties:{half:"top",shape:"straight",facing:"north"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:dark_oak_stairs",properties:{half:"top",shape:"straight",facing:"north"}}}
 :enddata
 :endrule
 
@@ -852,7 +525,7 @@ rule:
 plugin=vanillaSkull
 number=36
 data:
-JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},buildPass:0,skullRotation:12,teData:{Rot:8b,id:"minecraft:skull",SkullType:0b}}
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},skullRotation:12,teData:{Rot:8b,id:"minecraft:skull",SkullType:0b}}
 :enddata
 :endrule
 
@@ -860,7 +533,7 @@ rule:
 plugin=vanillaSkull
 number=37
 data:
-JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},buildPass:0,skullRotation:4,teData:{Rot:0b,id:"minecraft:skull",SkullType:0b}}
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},skullRotation:4,teData:{Rot:0b,id:"minecraft:skull",SkullType:0b}}
 :enddata
 :endrule
 
@@ -868,7 +541,7 @@ rule:
 plugin=vanillaSkull
 number=38
 data:
-JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},buildPass:0,skullRotation:0,teData:{Rot:12b,id:"minecraft:skull",SkullType:0b}}
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},skullRotation:0,teData:{Rot:12b,id:"minecraft:skull",SkullType:0b}}
 :enddata
 :endrule
 
@@ -876,7 +549,7 @@ rule:
 plugin=vanillaBlocks
 number=39
 data:
-JSON:{blockState:{blockName:"minecraft:dark_oak_stairs",properties:{half:"top",shape:"straight",facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:dark_oak_stairs",properties:{half:"top",shape:"straight",facing:"east"}}}
 :enddata
 :endrule
 
@@ -884,7 +557,7 @@ rule:
 plugin=vanillaSkull
 number=40
 data:
-JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},buildPass:0,skullRotation:4,teData:{Rot:0b,id:"minecraft:skull",SkullType:0b}}
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},skullRotation:4,teData:{Rot:0b,id:"minecraft:skull",SkullType:0b}}
 :enddata
 :endrule
 
@@ -892,7 +565,7 @@ rule:
 plugin=vanillaSkull
 number=41
 data:
-JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},buildPass:0,skullRotation:4,teData:{Rot:0b,id:"minecraft:skull",SkullType:0b}}
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},skullRotation:4,teData:{Rot:0b,id:"minecraft:skull",SkullType:0b}}
 :enddata
 :endrule
 
@@ -900,7 +573,7 @@ rule:
 plugin=vanillaBlocks
 number=42
 data:
-JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"oak",axis:"z"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"oak",axis:"z"}}}
 :enddata
 :endrule
 
@@ -908,7 +581,7 @@ rule:
 plugin=vanillaBlocks
 number=43
 data:
-JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"oak",axis:"x"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"oak",axis:"x"}}}
 :enddata
 :endrule
 
@@ -916,7 +589,7 @@ rule:
 plugin=blockTile
 number=44
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"orc"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer.elite",minToSpawn:1}],groupWeight:1}],playerRange:32,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"orc"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer.elite",minToSpawn:1}],groupWeight:1}],playerRange:32,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -924,7 +597,7 @@ rule:
 plugin=blockTile
 number=45
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"orc"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer.elite",minToSpawn:1}],groupWeight:1}],playerRange:32,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"orc"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer.elite",minToSpawn:1}],groupWeight:1}],playerRange:32,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -932,7 +605,7 @@ rule:
 plugin=blockTile
 number=46
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"orc"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.leader.elite",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"orc"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.leader.elite",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -940,7 +613,7 @@ rule:
 plugin=blockTile
 number=47
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"orc"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier.elite",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"orc"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier.elite",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -948,7 +621,7 @@ rule:
 plugin=blockTile
 number=48
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"orc"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer.elite",minToSpawn:1}],groupWeight:1}],playerRange:32,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"orc"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer.elite",minToSpawn:1}],groupWeight:1}],playerRange:32,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -956,7 +629,7 @@ rule:
 plugin=blockTile
 number=49
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"orc"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer.elite",minToSpawn:1}],groupWeight:1}],playerRange:32,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"orc"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer.elite",minToSpawn:1}],groupWeight:1}],playerRange:32,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -964,7 +637,7 @@ rule:
 plugin=vanillaSkull
 number=50
 data:
-JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},buildPass:0,skullRotation:12,teData:{Rot:8b,id:"minecraft:skull",SkullType:0b}}
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},skullRotation:12,teData:{Rot:8b,id:"minecraft:skull",SkullType:0b}}
 :enddata
 :endrule
 
@@ -972,7 +645,7 @@ rule:
 plugin=vanillaSkull
 number=51
 data:
-JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},buildPass:0,skullRotation:12,teData:{Rot:8b,id:"minecraft:skull",SkullType:0b}}
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},skullRotation:12,teData:{Rot:8b,id:"minecraft:skull",SkullType:0b}}
 :enddata
 :endrule
 
@@ -980,7 +653,7 @@ rule:
 plugin=vanillaSkull
 number=52
 data:
-JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},buildPass:0,skullRotation:8,teData:{Rot:4b,id:"minecraft:skull",SkullType:0b}}
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},skullRotation:8,teData:{Rot:4b,id:"minecraft:skull",SkullType:0b}}
 :enddata
 :endrule
 
@@ -988,7 +661,7 @@ rule:
 plugin=vanillaSkull
 number=53
 data:
-JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},buildPass:0,skullRotation:12,teData:{Rot:8b,id:"minecraft:skull",SkullType:0b}}
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},skullRotation:12,teData:{Rot:8b,id:"minecraft:skull",SkullType:0b}}
 :enddata
 :endrule
 
@@ -996,7 +669,7 @@ rule:
 plugin=vanillaBlocks
 number=54
 data:
-JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"up"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"up"}}}
 :enddata
 :endrule
 
@@ -1004,7 +677,7 @@ rule:
 plugin=vanillaSkull
 number=55
 data:
-JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},buildPass:0,skullRotation:8,teData:{Rot:4b,id:"minecraft:skull",SkullType:0b}}
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},skullRotation:8,teData:{Rot:4b,id:"minecraft:skull",SkullType:0b}}
 :enddata
 :endrule
 
@@ -1012,7 +685,7 @@ rule:
 plugin=vanillaSkull
 number=56
 data:
-JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},buildPass:0,skullRotation:0,teData:{Rot:12b,id:"minecraft:skull",SkullType:0b}}
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},skullRotation:0,teData:{Rot:12b,id:"minecraft:skull",SkullType:0b}}
 :enddata
 :endrule
 
@@ -1020,7 +693,7 @@ rule:
 plugin=vanillaSkull
 number=57
 data:
-JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},buildPass:0,skullRotation:4,teData:{Rot:0b,id:"minecraft:skull",SkullType:0b}}
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},skullRotation:4,teData:{Rot:0b,id:"minecraft:skull",SkullType:0b}}
 :enddata
 :endrule
 
@@ -1028,7 +701,7 @@ rule:
 plugin=vanillaSkull
 number=58
 data:
-JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},buildPass:0,skullRotation:4,teData:{Rot:0b,id:"minecraft:skull",SkullType:0b}}
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},skullRotation:4,teData:{Rot:0b,id:"minecraft:skull",SkullType:0b}}
 :enddata
 :endrule
 
