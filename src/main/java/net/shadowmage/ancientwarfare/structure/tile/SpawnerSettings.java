@@ -246,8 +246,8 @@ public class SpawnerSettings {
 			redstoneMode = tag.getBoolean(REDSTONE_MODE_TAG);
 			prevRedstoneState = tag.getBoolean(PREV_REDSTONE_STATE_TAG);
 		}
-		minDelay = tag.getInteger(MIN_DELAY_TAG);
-		maxDelay = tag.getInteger(MAX_DELAY_TAG);
+		minDelay = Math.max(tag.getInteger(MIN_DELAY_TAG), 10);
+		maxDelay = Math.max(tag.getInteger(MAX_DELAY_TAG), 10);
 		spawnDelay = tag.getInteger(SPAWN_DELAY_TAG);
 		playerRange = tag.getInteger(PLAYER_RANGE_TAG);
 		mobRange = tag.getInteger(MOB_RANGE_TAG);

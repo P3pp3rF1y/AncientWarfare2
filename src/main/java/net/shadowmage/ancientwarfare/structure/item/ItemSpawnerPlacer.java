@@ -147,7 +147,8 @@ public class ItemSpawnerPlacer extends ItemBaseStructure implements IItemKeyInte
 				group.addSpawnSetting(spawnSettings);
 				settings.addSpawnGroup(group);
 				settings.setSpawnDelay(0);
-				settings.setMaxDelay(0);
+				settings.setMinDelay(10);
+				settings.setMaxDelay(10);
 				settings.setSpawnRange(0);
 				settings.setPlayerRange(16);
 				settings.toggleTransparent();
