@@ -638,7 +638,6 @@ public class AWStructureStatics extends ModConfiguration {
 
 	private void initializeDefaultTargetBlocks() {
 		String[] defaultTargetBlocks = new String[] {"minecraft:snow",
-				"minecraft:snow_layer",
 				"minecraft:ice",
 				"minecraft:water",
 				"minecraft:clay",
@@ -665,7 +664,7 @@ public class AWStructureStatics extends ModConfiguration {
 				"mam:mam_depthquartz",
 				"mam:mam_depthquartzchiseled",
 				"mam:mam_depthquartzlines",
-				"mam:mam_depthcrystalblock",};
+				"mam:mam_depthcrystalblock"};
 		defaultTargetBlocks = config.get("target_blocks", targetBlocks, defaultTargetBlocks, "List of blocks that are valid").getStringList();
 		Collections.addAll(worldGenTargetBlocks, defaultTargetBlocks);
 	}
