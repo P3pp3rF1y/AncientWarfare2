@@ -1,12 +1,12 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 11/18/2018 at: 20:5:34
+# Auto-generated structure template file. created on: 1/4/2019 at: 23:15:42
 # Lines beginning with # denote comments
 
 header:
-version=2.7
+version=2.8
 name=LizardmanRaidingWarband
 mods=
-size=7,15,7
+size=7,6,7
 offset=2,5,6
 :endheader
 
@@ -20,16 +20,14 @@ preserveBlocks=false
 selectionWeight=30
 clusterValue=10
 minDuplicateDistance=800
-dimensionWhiteList=false
-dimensionList=
+dimensionWhiteList=true
+dimensionList=0
 biomeWhiteList=true
 biomeList=biomesoplenty:shrubland,minecraft:mesa,biomesoplenty:dead_forest,traverse:rocky_plains,traverse:desert_shrubland,traverse:badlands,minecraft:savanna,biomesoplenty:steppe,minecraft:plains,biomesoplenty:grassland
 leveling=3
 fill=3
 border=3
 blockSwap=true
-data:
-:enddata
 :endvalidation
 
 #### LAYERS ####
@@ -87,94 +85,13 @@ layer: 5
 0,3,8,7,3,5,0
 3,3,3,3,3,3,0
 :endlayer
-layer: 6
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-:endlayer
-layer: 7
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-:endlayer
-layer: 8
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-:endlayer
-layer: 9
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-:endlayer
-layer: 10
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-:endlayer
-layer: 11
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-:endlayer
-layer: 12
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-:endlayer
-layer: 13
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-:endlayer
-layer: 14
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-0,0,0,0,0,0,0
-:endlayer
 
 #### RULES ####
 rule:
 plugin=vanillaBlocks
 number=1
 data:
-JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"dirt",snowy:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"dirt",snowy:"false"}}}
 :enddata
 :endrule
 
@@ -182,7 +99,7 @@ rule:
 plugin=vanillaBlocks
 number=2
 data:
-JSON:{blockState:{blockName:"minecraft:grass",properties:{snowy:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:grass",properties:{snowy:"false"}}}
 :enddata
 :endrule
 
@@ -190,7 +107,7 @@ rule:
 plugin=vanillaBlocks
 number=3
 data:
-JSON:{blockState:{blockName:"minecraft:tallgrass",properties:{type:"tall_grass"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:tallgrass",properties:{type:"tall_grass"}}}
 :enddata
 :endrule
 
@@ -198,7 +115,7 @@ rule:
 plugin=blockTile
 number=4
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"kong"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.mounted_archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"kong"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.mounted_archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -206,7 +123,7 @@ rule:
 plugin=blockTile
 number=5
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"kong"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.cavalry",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"kong"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.cavalry",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -214,7 +131,7 @@ rule:
 plugin=blockTile
 number=6
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"kong"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.mounted_archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"kong"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.mounted_archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -222,7 +139,7 @@ rule:
 plugin=blockTile
 number=7
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"kong"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.cavalry",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"kong"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.cavalry",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -230,7 +147,7 @@ rule:
 plugin=blockTile
 number=8
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"kong"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.cavalry",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"kong"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.cavalry",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -238,7 +155,7 @@ rule:
 plugin=blockTile
 number=9
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"kong"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.mounted_archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"kong"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.mounted_archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
