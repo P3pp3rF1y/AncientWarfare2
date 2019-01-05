@@ -66,11 +66,13 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
 		tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
 		tasks.addTask(0, new NpcAIDoor(this, true));
 		tasks.addTask(0, horseAI);
-		tasks.addTask(2, new NpcAIFollowPlayer(this));
-		tasks.addTask(2, new NpcAIPlayerOwnedFollowCommand(this));
-		tasks.addTask(3, new NpcAIPlayerOwnedAlarmResponse(this));
-		tasks.addTask(4, new NpcAIPlayerOwnedGetFood(this));
-		tasks.addTask(5, new NpcAIPlayerOwnedIdleWhenHungry(this));
+		tasks.addTask(1, new NpcAIPlayerOwnedFollowCommand(this));
+		tasks.addTask(2, new NpcAIPlayerOwnedGetFood(this));
+		tasks.addTask(3, new NpcAIPlayerOwnedIdleWhenHungry(this));
+
+		tasks.addTask(5, new NpcAIFollowPlayer(this));
+		tasks.addTask(6, new NpcAIPlayerOwnedAlarmResponse(this));
+
 		//6--empty....
 		//7==combat task, inserted from onweaponinventoryupdated
 		tasks.addTask(8, new NpcAIMedicBase(this));
@@ -116,9 +118,9 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
 			tasks.removeTask(meleeAI);
 			@Nonnull ItemStack stack = getHeldItemMainhand();
 			if (isBow(stack.getItem())) {
-				tasks.addTask(7, arrowAI);
+				tasks.addTask(4, arrowAI);
 			} else {
-				tasks.addTask(7, meleeAI);
+				tasks.addTask(4, meleeAI);
 			}
 			if (meleeAI != null) {
 				meleeAI.setAttackReachFromWeapon(getHeldItemMainhand());
