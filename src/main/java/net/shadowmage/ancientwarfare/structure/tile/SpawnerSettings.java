@@ -19,6 +19,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
+import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
@@ -73,6 +74,9 @@ public class SpawnerSettings {
 	private boolean lightSensitive;
 
 	private int xpToDrop;
+
+	private boolean isOneShotSpawner;
+	private String factionName = "";
 
 	float blockHardness = 2.f;
 
@@ -155,22 +159,8 @@ public class SpawnerSettings {
 				return;
 			}
 		}
-		if (playerRange > 0) {
-			List<EntityPlayer> nearbyPlayers = getPlayersWithinAABB();
-			if (nearbyPlayers.isEmpty()) {
-				return;
-			}
-			boolean doSpawn = false;
-			for (EntityPlayer player : nearbyPlayers) {
-				if (debugMode || !player.capabilities.isCreativeMode) {
-					doSpawn = true;
-					break;
-				}
-			}
-			if (!doSpawn) {
-				return;
-			}
-		}
+		if (!checkPlayerConditions())
+			return;
 
 		if (maxNearbyMonsters > 0 && mobRange > 0) {
 			int nearbyCount = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos, pos.add(1, 1, 1)).grow(mobRange, mobRange, mobRange)).size();
@@ -206,6 +196,26 @@ public class SpawnerSettings {
 				spawnGroups.remove(toSpawn);
 			}
 		}
+	}
+
+	private boolean checkPlayerConditions() {
+		if (playerRange > 0) {
+			List<EntityPlayer> nearbyPlayers = getPlayersWithinAABB();
+			if (nearbyPlayers.isEmpty()) {
+				return false;
+			}
+
+			for (EntityPlayer player : nearbyPlayers) {
+				if ((debugMode || !player.capabilities.isCreativeMode) && !isContinuousSpawnerOfFriendlyFaction(player)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	private boolean isContinuousSpawnerOfFriendlyFaction(EntityPlayer player) {
+		return !isOneShotSpawner && !factionName.isEmpty() && FactionTracker.INSTANCE.getStandingFor(world, player.getName(), factionName) >= 0;
 	}
 
 	private List<EntityPlayer> getPlayersWithinAABB() {
@@ -277,6 +287,23 @@ public class SpawnerSettings {
 		}
 		if (tag.hasKey(INVENTORY_TAG)) {
 			inventory.deserializeNBT(tag.getCompoundTag(INVENTORY_TAG));
+		}
+	}
+
+	void updateSpawnProperties() {
+		if (world == null || world.isRemote) {
+			return;
+		}
+
+		isOneShotSpawner = false;
+		factionName = "";
+		if (spawnGroups.size() == 1 && spawnGroups.get(0).entitiesToSpawn.size() == 1) {
+			EntitySpawnSettings entitySettings = spawnGroups.get(0).entitiesToSpawn.get(0);
+			if (entitySettings.maxToSpawn == 1 && entitySettings.minToSpawn == 1 && entitySettings.remainingSpawnCount == 1) {
+				isOneShotSpawner = true;
+			}
+			Entity entity = EntityList.createEntityByIDFromName(entitySettings.entityId, world);
+			factionName = entity instanceof NpcFaction ? entitySettings.customTag.getString("factionName") : "";
 		}
 	}
 
@@ -685,16 +712,12 @@ public class SpawnerSettings {
 			world.spawnEntity(e);
 			setDataFromTag(e); //and some data needs to be set after onInitialSpawn fires for entity]
 			if (e instanceof NpcFaction) {
-				if (isOneShotSpawner()) {
+				if (getParentSettings().getParentSettings().isOneShotSpawner) {
 					((NpcFaction) e).setRespawnData(e.getPosition(), getParentSettings().getParentSettings().writeToNBT(new NBTTagCompound()));
 				} else {
 					((NpcFaction) e).setCanDespawn();
 				}
 			}
-		}
-
-		private boolean isOneShotSpawner() {
-			return maxToSpawn == 1 && minToSpawn == 1 && remainingSpawnCount == 1;
 		}
 
 		private void setDataFromTag(Entity e) {

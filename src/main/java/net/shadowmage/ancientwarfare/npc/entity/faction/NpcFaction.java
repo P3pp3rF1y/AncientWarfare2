@@ -66,7 +66,7 @@ public abstract class NpcFaction extends NpcBase {
 	protected void despawnEntity() {
 		super.despawnEntity();
 
-		if (isDead && respawnPos != BlockPos.ORIGIN && world.isAirBlock(respawnPos)) {
+		if (isDead && !respawnPos.equals(BlockPos.ORIGIN) && world.isAirBlock(respawnPos)) {
 			world.setBlockState(respawnPos, AWStructureBlocks.ADVANCED_SPAWNER.getDefaultState());
 			WorldTools.getTile(world, respawnPos, TileAdvancedSpawner.class).ifPresent(te -> {
 				SpawnerSettings settings = new SpawnerSettings();

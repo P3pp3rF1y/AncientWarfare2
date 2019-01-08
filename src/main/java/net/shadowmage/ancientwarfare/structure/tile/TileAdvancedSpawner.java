@@ -52,6 +52,12 @@ public class TileAdvancedSpawner extends TileUpdatable implements ITickable, IBl
 	}
 
 	@Override
+	public void validate() {
+		super.validate();
+		settings.updateSpawnProperties();
+	}
+
+	@Override
 	protected void writeUpdateNBT(NBTTagCompound tag) {
 		super.writeUpdateNBT(tag);
 		settings.writeToNBT(tag);
@@ -71,6 +77,9 @@ public class TileAdvancedSpawner extends TileUpdatable implements ITickable, IBl
 
 	public void setSettings(SpawnerSettings settings) {
 		this.settings = settings;
+		this.settings.setWorld(world, pos);
+		this.settings.updateSpawnProperties();
+
 		BlockTools.notifyBlockUpdate(this);
 	}
 
