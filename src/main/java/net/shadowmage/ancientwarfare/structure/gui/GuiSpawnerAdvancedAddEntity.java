@@ -39,7 +39,7 @@ public class GuiSpawnerAdvancedAddEntity extends GuiContainerBase {
 		this.settings = settings;
 		if (this.settings == null) {
 			showAddButton = true;
-			this.settings = new EntitySpawnSettings();
+			this.settings = new EntitySpawnSettings(group);
 		} else
 			showAddButton = false;
 		loadData();

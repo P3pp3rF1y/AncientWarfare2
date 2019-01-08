@@ -15,6 +15,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionFleeSun;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRestrictSun;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
@@ -26,15 +27,20 @@ import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
 import net.shadowmage.ancientwarfare.npc.registry.FactionNpcDefault;
 import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
 import net.shadowmage.ancientwarfare.npc.registry.NpcDefaultsRegistry;
+import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
+import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings;
+import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+@SuppressWarnings({"squid:MaximumInheritanceDepth","squid:S2160"})
 public abstract class NpcFaction extends NpcBase {
 	protected String factionName;
-	private Map<IAdditionalAttribute<?>, Object> additionalAttributes = new HashMap<>();
+	private BlockPos respawnPos = BlockPos.ORIGIN;
+	private NBTTagCompound spawnerSettings;
 
 	public NpcFaction(World world) {
 		super(world);
@@ -47,6 +53,38 @@ public abstract class NpcFaction extends NpcBase {
 		addAI();
 	}
 
+	private Map<IAdditionalAttribute<?>, Object> additionalAttributes = new HashMap<>();
+	private boolean canDespawn = true; //used for previously existing entities so that they wouldn't despawn and leave structures unattended
+	//TODO remove in the near future 3 or 4/2019
+
+	@Override
+	protected boolean canDespawn() {
+		return canDespawn;
+	}
+
+	@Override
+	protected void despawnEntity() {
+		super.despawnEntity();
+
+		if (isDead && respawnPos != BlockPos.ORIGIN && world.isAirBlock(respawnPos)) {
+			world.setBlockState(respawnPos, AWStructureBlocks.ADVANCED_SPAWNER.getDefaultState());
+			WorldTools.getTile(world, respawnPos, TileAdvancedSpawner.class).ifPresent(te -> {
+				SpawnerSettings settings = new SpawnerSettings();
+				settings.readFromNBT(spawnerSettings);
+				te.setSettings(settings);
+			});
+		}
+	}
+
+	public void setRespawnData(BlockPos spawnerPos, NBTTagCompound spawnerSettings) {
+		this.respawnPos = spawnerPos;
+		this.spawnerSettings = spawnerSettings;
+	}
+
+	public void setCanDespawn() {
+		canDespawn = true;
+	}
+
 	private void addAI() {
 		tasks.addTask(2, new NpcAIFactionRestrictSun(this));
 		tasks.addTask(3, new NpcAIFactionFleeSun(this, 1.0D));
@@ -56,7 +94,7 @@ public abstract class NpcFaction extends NpcBase {
 		additionalAttributes.put(attribute, value);
 	}
 
-	protected <T> Optional<T> getAdditionalAttributeValue(IAdditionalAttribute<T> attribute) {
+	<T> Optional<T> getAdditionalAttributeValue(IAdditionalAttribute<T> attribute) {
 		return Optional.ofNullable(attribute.getValueClass().cast(additionalAttributes.get(attribute)));
 	}
 
@@ -222,6 +260,9 @@ public abstract class NpcFaction extends NpcBase {
 		super.readEntityFromNBT(tag);
 		factionName = tag.getString("factionName");
 		NpcDefaultsRegistry.getFactionNpcDefault(this).applyAdditionalAttributes(this);
+		canDespawn = tag.getBoolean("canDespawn");
+		respawnPos = BlockPos.fromLong(tag.getLong("respawnPos"));
+		spawnerSettings = tag.getCompoundTag("spawnerSettings");
 	}
 
 	@Override
@@ -230,5 +271,8 @@ public abstract class NpcFaction extends NpcBase {
 		if (factionName != null) {
 			tag.setString("factionName", factionName);
 		}
+		tag.setBoolean("canDespawn", canDespawn);
+		tag.setLong("respawnPos", respawnPos.toLong());
+		tag.setTag("spawnerSettings", spawnerSettings);
 	}
 }

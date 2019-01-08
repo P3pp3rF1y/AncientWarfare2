@@ -839,7 +839,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	}
 
 	@Override
-	protected final boolean canDespawn() {
+	protected boolean canDespawn() {
 		return false;
 	}
 

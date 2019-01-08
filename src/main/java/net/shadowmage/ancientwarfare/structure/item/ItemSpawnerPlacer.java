@@ -137,13 +137,13 @@ public class ItemSpawnerPlacer extends ItemBaseStructure implements IItemKeyInte
 			Entity entity = event.getTarget();
 
 			SpawnerSettings settings = new SpawnerSettings();
-			SpawnerSettings.EntitySpawnSettings spawnSettings = new SpawnerSettings.EntitySpawnSettings();
+			SpawnerSettings.EntitySpawnGroup group = new SpawnerSettings.EntitySpawnGroup(settings);
+			SpawnerSettings.EntitySpawnSettings spawnSettings = new SpawnerSettings.EntitySpawnSettings(group);
 			if (hasSpawnerData(spawnerPlacer)) {
 				settings.readFromNBT(getSpawnerData(spawnerPlacer));
 				spawnSettings = getFirstEntitySpawnSettings(settings);
 			} else {
 				setDefaultEntitySpawnSettings(spawnSettings);
-				SpawnerSettings.EntitySpawnGroup group = new SpawnerSettings.EntitySpawnGroup();
 				group.addSpawnSetting(spawnSettings);
 				settings.addSpawnGroup(group);
 				settings.setSpawnDelay(0);

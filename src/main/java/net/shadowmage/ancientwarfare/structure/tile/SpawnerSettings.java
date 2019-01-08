@@ -93,8 +93,8 @@ public class SpawnerSettings {
 		settings.mobRange = 4;
 		settings.maxNearbyMonsters = 8;
 
-		EntitySpawnGroup group = new EntitySpawnGroup();
-		group.addSpawnSetting(new EntitySpawnSettings());
+		EntitySpawnGroup group = new EntitySpawnGroup(settings);
+		group.addSpawnSetting(new EntitySpawnSettings(group));
 		settings.addSpawnGroup(group);
 
 		return settings;
@@ -156,7 +156,7 @@ public class SpawnerSettings {
 			}
 		}
 		if (playerRange > 0) {
-			List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos, pos.add(1, 1, 1)).grow(playerRange, playerRange, playerRange));
+			List<EntityPlayer> nearbyPlayers = getPlayersWithinAABB();
 			if (nearbyPlayers.isEmpty()) {
 				return;
 			}
@@ -206,6 +206,17 @@ public class SpawnerSettings {
 				spawnGroups.remove(toSpawn);
 			}
 		}
+	}
+
+	private List<EntityPlayer> getPlayersWithinAABB() {
+		List<EntityPlayer> players = new ArrayList<>();
+
+		for (EntityPlayer player : world.playerEntities) {
+			if (player.getEntityBoundingBox().intersects(new AxisAlignedBB(pos, pos.add(1, 1, 1)).grow(playerRange, playerRange, playerRange))) {
+				players.add(player);
+			}
+		}
+		return players;
 	}
 
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
@@ -260,7 +271,7 @@ public class SpawnerSettings {
 		NBTTagList groupList = tag.getTagList(SPAWN_GROUPS_TAG, Constants.NBT.TAG_COMPOUND);
 		EntitySpawnGroup group;
 		for (int i = 0; i < groupList.tagCount(); i++) {
-			group = new EntitySpawnGroup();
+			group = new EntitySpawnGroup(this);
 			group.readFromNBT(groupList.getCompoundTagAt(i));
 			spawnGroups.add(group);
 		}
@@ -408,6 +419,15 @@ public class SpawnerSettings {
 	public static final class EntitySpawnGroup {
 		private int groupWeight = 1;
 		private List<EntitySpawnSettings> entitiesToSpawn = new ArrayList<>();
+		private SpawnerSettings settings;
+
+		public EntitySpawnGroup(SpawnerSettings settings) {
+			this.settings = settings;
+		}
+
+		public SpawnerSettings getParentSettings() {
+			return settings;
+		}
 
 		public void setWeight(int weight) {
 			this.groupWeight = weight <= 0 ? 1 : weight;
@@ -466,7 +486,7 @@ public class SpawnerSettings {
 			NBTTagList settingsList = tag.getTagList("settingsList", Constants.NBT.TAG_COMPOUND);
 			EntitySpawnSettings setting;
 			for (int i = 0; i < settingsList.tagCount(); i++) {
-				setting = new EntitySpawnSettings();
+				setting = new EntitySpawnSettings(this);
 				setting.readFromNBT(settingsList.getCompoundTagAt(i));
 				if (!setting.shouldRemove()) {
 					this.entitiesToSpawn.add(setting);
@@ -490,6 +510,15 @@ public class SpawnerSettings {
 		int remainingSpawnCount = -1;
 		private boolean forced;
 		private boolean hostile = true;
+		private EntitySpawnGroup group;
+
+		public EntitySpawnSettings(EntitySpawnGroup group) {
+			this.group = group;
+		}
+
+		public EntitySpawnGroup getParentSettings() {
+			return group;
+		}
 
 		public final void writeToNBT(NBTTagCompound tag) {
 			tag.setBoolean(HOSTILE_TAG, hostile);
@@ -654,7 +683,18 @@ public class SpawnerSettings {
 			}
 			setDataFromTag(e); //some data needs to be set before spawning entity in the world (like factionName)
 			world.spawnEntity(e);
-			setDataFromTag(e); //and some data needs to be set after onInitialSpawn fires for entity
+			setDataFromTag(e); //and some data needs to be set after onInitialSpawn fires for entity]
+			if (e instanceof NpcFaction) {
+				if (isOneShotSpawner()) {
+					((NpcFaction) e).setRespawnData(e.getPosition(), getParentSettings().getParentSettings().writeToNBT(new NBTTagCompound()));
+				} else {
+					((NpcFaction) e).setCanDespawn();
+				}
+			}
+		}
+
+		private boolean isOneShotSpawner() {
+			return maxToSpawn == 1 && minToSpawn == 1 && remainingSpawnCount == 1;
 		}
 
 		private void setDataFromTag(Entity e) {
