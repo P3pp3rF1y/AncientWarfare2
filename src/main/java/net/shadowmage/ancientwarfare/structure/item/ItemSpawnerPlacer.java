@@ -174,14 +174,14 @@ public class ItemSpawnerPlacer extends ItemBaseStructure implements IItemKeyInte
 		SpawnerSettings.EntitySpawnSettings spawnSettings;
 		SpawnerSettings.EntitySpawnGroup group;
 		if (settings.getSpawnGroups().isEmpty()) {
-			group = new SpawnerSettings.EntitySpawnGroup();
+			group = new SpawnerSettings.EntitySpawnGroup(settings);
 			settings.addSpawnGroup(group);
 		} else {
 			group = settings.getSpawnGroups().iterator().next();
 		}
 
 		if (group.getEntitiesToSpawn().isEmpty()) {
-			spawnSettings = new SpawnerSettings.EntitySpawnSettings();
+			spawnSettings = new SpawnerSettings.EntitySpawnSettings(group);
 			setDefaultEntitySpawnSettings(spawnSettings);
 			group.addSpawnSetting(spawnSettings);
 		} else {
