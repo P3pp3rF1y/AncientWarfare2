@@ -553,7 +553,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	}
 
 	@Override
-	public final void setRevengeTarget(EntityLivingBase entity) {
+	public final void setRevengeTarget(@Nullable EntityLivingBase entity) {
 		if (entity != null && !canTarget(entity)) {
 			return;
 		}

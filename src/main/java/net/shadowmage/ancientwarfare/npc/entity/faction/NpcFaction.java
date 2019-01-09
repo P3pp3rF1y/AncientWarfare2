@@ -12,9 +12,12 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
+import net.shadowmage.ancientwarfare.core.util.NBTHelper;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionFleeSun;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRestrictSun;
@@ -32,15 +35,24 @@ import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @SuppressWarnings({"squid:MaximumInheritanceDepth","squid:S2160"})
 public abstract class NpcFaction extends NpcBase {
+	private static final int DEATH_REVENGE_TICKS = 6000;
+	private static final int HIT_REVENGE_TICKS = DEATH_REVENGE_TICKS / 20;
+	private static final int REVENGE_LIST_VALIDATION_TICKS = DEATH_REVENGE_TICKS / 100;
+	private static final double REVENGE_SET_RANGE = 50D;
+
 	protected String factionName;
 	private BlockPos respawnPos = BlockPos.ORIGIN;
 	private NBTTagCompound spawnerSettings;
+	private Map<String, Long> revengePlayers = new HashMap<>();
 
 	public NpcFaction(World world) {
 		super(world);
@@ -60,6 +72,10 @@ public abstract class NpcFaction extends NpcBase {
 	@Override
 	protected boolean canDespawn() {
 		return canDespawn;
+	}
+
+	public void setDeathRevengePlayer(String playerName) {
+		revengePlayers.put(playerName, world.getTotalWorldTime() + DEATH_REVENGE_TICKS);
 	}
 
 	@Override
@@ -190,16 +206,43 @@ public abstract class NpcFaction extends NpcBase {
 
 	@Override
 	public boolean isHostileTowards(Entity e) {
-		if (e instanceof EntityPlayer) {
-			return FactionTracker.INSTANCE.getStandingFor(world, e.getName(), getFaction()) < 0;
-		} else if (e instanceof NpcPlayerOwned) {
-			NpcBase npc = (NpcBase) e;
-			return FactionTracker.INSTANCE.getStandingFor(world, npc.getOwner().getName(), getFaction()) < 0;
+		if (e instanceof EntityPlayer || e instanceof NpcPlayerOwned) {
+			String playerName = e instanceof EntityPlayer ? e.getName() : ((NpcBase) e).getOwner().getName();
+			return revengePlayers.keySet().contains(playerName) || FactionTracker.INSTANCE.getStandingFor(world, playerName, getFaction()) < 0;
 		} else if (e instanceof NpcFaction) {
 			NpcFaction npc = (NpcFaction) e;
 			return !npc.getFaction().equals(factionName) && FactionRegistry.getFaction(getFaction()).isHostileTowards(npc.getFaction());
 		} else {
 			return FactionRegistry.getFaction(factionName).isTarget(e);
+		}
+	}
+
+	@Override
+	public void onEntityUpdate() {
+		super.onEntityUpdate();
+		if (world.getWorldTime() % REVENGE_LIST_VALIDATION_TICKS == 0) {
+			Iterator<Map.Entry<String, Long>> it = revengePlayers.entrySet().iterator();
+			while(it.hasNext()) {
+				Map.Entry<String, Long> playerRevengeTime = it.next();
+				if (world.getTotalWorldTime() > playerRevengeTime.getValue()) {
+					it.remove();
+					setAttackTarget(null);
+					setRevengeTarget(null);
+				}
+			}
+		}
+
+	}
+
+	@Override
+	protected void damageEntity(DamageSource damageSrc, float damageAmount) {
+		super.damageEntity(damageSrc, damageAmount);
+
+		if (damageSrc.damageType.equals("player")) {
+			//noinspection ConstantConditions
+			revengePlayers.put(damageSrc.getTrueSource().getName(), world.getTotalWorldTime() + HIT_REVENGE_TICKS);
+		} else if ((damageSrc.damageType.equals("mob") && damageSrc.getTrueSource() instanceof NpcBase)) {
+			revengePlayers.put(((NpcBase) damageSrc.getTrueSource()).getOwner().getName(), world.getTotalWorldTime() + HIT_REVENGE_TICKS);
 		}
 	}
 
@@ -220,12 +263,18 @@ public abstract class NpcFaction extends NpcBase {
 	@Override
 	public void onDeath(DamageSource damageSource) {
 		super.onDeath(damageSource);
-		if (damageSource.getTrueSource() instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer) damageSource.getTrueSource();
-			FactionTracker.INSTANCE.adjustStandingFor(world, player.getName(), getFaction(), -AWNPCStatics.factionLossOnDeath);
-		} else if (damageSource.getTrueSource() instanceof NpcPlayerOwned) {
-			String playerName = ((NpcBase) damageSource.getTrueSource()).getOwner().getName();
+		if (damageSource.getTrueSource() instanceof EntityPlayer || damageSource.getTrueSource() instanceof NpcPlayerOwned) {
+			String playerName = damageSource.getTrueSource() instanceof EntityPlayer ? damageSource.getTrueSource().getName() :
+					((NpcBase) damageSource.getTrueSource()).getOwner().getName();
 			FactionTracker.INSTANCE.adjustStandingFor(world, playerName, getFaction(), -AWNPCStatics.factionLossOnDeath);
+
+			setDeathRevengePlayer(playerName);
+			world.getEntitiesWithinAABB(NpcFaction.class, new AxisAlignedBB(getPosition()).grow(REVENGE_SET_RANGE))
+					.forEach(factionNpc -> {
+						if (factionNpc.getFaction().equals(getFaction())) {
+							factionNpc.setDeathRevengePlayer(playerName);
+						}
+					});
 		}
 	}
 
@@ -263,7 +312,9 @@ public abstract class NpcFaction extends NpcBase {
 		canDespawn = tag.getBoolean("canDespawn");
 		respawnPos = BlockPos.fromLong(tag.getLong("respawnPos"));
 		spawnerSettings = tag.getCompoundTag("spawnerSettings");
-	}
+		revengePlayers = NBTHelper.getMap(tag.getTagList("revengePlayers", Constants.NBT.TAG_COMPOUND),
+				t -> t.getString("playerName"), t -> t.getLong("time") );
+}
 
 	@Override
 	public void writeEntityToNBT(NBTTagCompound tag) {
@@ -274,5 +325,7 @@ public abstract class NpcFaction extends NpcBase {
 		tag.setBoolean("canDespawn", canDespawn);
 		tag.setLong("respawnPos", respawnPos.toLong());
 		tag.setTag("spawnerSettings", spawnerSettings);
+		tag.setTag("revengePlayers", NBTHelper.mapToCompoundList(revengePlayers,
+				(t, playerName) -> t.setString("playerName", playerName), (t, time) -> t.setLong("time", time)));
 	}
 }

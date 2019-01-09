@@ -22,6 +22,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collector;
 
 public class NBTHelper {
@@ -146,5 +149,29 @@ public class NBTHelper {
 
 	public static BlockPos readBlockPosFromNBT(NBTTagCompound tag) {
 		return new BlockPos(tag.getInteger("x"), tag.getInteger("y"), tag.getInteger("z"));
+	}
+
+	public static <K, V> Map<K, V> getMap(NBTTagList list, Function<NBTTagCompound, K> getKey, Function<NBTTagCompound, V> getValue) {
+		Map<K, V> ret = new HashMap<>();
+		for (int i=0; i<list.tagCount(); i++) {
+			NBTTagCompound tag = list.getCompoundTagAt(i);
+
+			ret.put(getKey.apply(tag), getValue.apply(tag));
+		}
+
+		return ret;
+	}
+
+	public static <K,V> NBTTagList mapToCompoundList(Map<K, V> map, BiConsumer<NBTTagCompound, K> setKeyTag, BiConsumer<NBTTagCompound, V> setValueTag) {
+		NBTTagList list = new NBTTagList();
+		for(Map.Entry<K, V> entry : map.entrySet()) {
+			NBTTagCompound nbtEntry = new NBTTagCompound();
+			setKeyTag.accept(nbtEntry, entry.getKey());
+			setValueTag.accept(nbtEntry, entry.getValue());
+
+			list.appendTag(nbtEntry);
+		}
+
+		return list;
 	}
 }
