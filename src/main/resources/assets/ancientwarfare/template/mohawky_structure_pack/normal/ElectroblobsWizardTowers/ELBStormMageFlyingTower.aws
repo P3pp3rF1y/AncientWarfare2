@@ -5,7 +5,7 @@
 header:
 version=2.8
 name=ELBStormMageFlyingTower
-mods=
+mods=ebwizardry
 size=17,115,16
 offset=7,0,15
 :endheader

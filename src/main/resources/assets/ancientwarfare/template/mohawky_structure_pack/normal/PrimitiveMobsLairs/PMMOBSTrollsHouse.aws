@@ -5,7 +5,7 @@
 header:
 version=2.8
 name=PMMOBSTrollsHouse
-mods=
+mods=primitivemobs
 size=33,41,47
 offset=15,9,46
 :endheader

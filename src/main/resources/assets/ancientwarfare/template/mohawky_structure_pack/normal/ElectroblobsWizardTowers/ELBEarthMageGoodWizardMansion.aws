@@ -5,7 +5,7 @@
 header:
 version=2.8
 name=ELBEarthMageGoodWizardMansion
-mods=
+mods=ebwizardry
 size=32,77,23
 offset=15,13,22
 :endheader
