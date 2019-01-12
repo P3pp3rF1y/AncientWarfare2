@@ -23,6 +23,8 @@ import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
+import net.shadowmage.ancientwarfare.structure.util.CapabilityRespawnData;
+import net.shadowmage.ancientwarfare.structure.util.IRespawnData;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -711,12 +713,20 @@ public class SpawnerSettings {
 			setDataFromTag(e); //some data needs to be set before spawning entity in the world (like factionName)
 			world.spawnEntity(e);
 			setDataFromTag(e); //and some data needs to be set after onInitialSpawn fires for entity]
+			if (getParentSettings().getParentSettings().isOneShotSpawner) {
+				setRespawnData(e);
+			}
 			if (e instanceof NpcFaction) {
-				if (getParentSettings().getParentSettings().isOneShotSpawner) {
-					((NpcFaction) e).setRespawnData(e.getPosition(), getParentSettings().getParentSettings().writeToNBT(new NBTTagCompound()));
-				} else {
-					((NpcFaction) e).setCanDespawn();
-				}
+				((NpcFaction) e).setCanDespawn();
+			}
+		}
+
+		@SuppressWarnings("ConstantConditions")
+		private void setRespawnData(Entity e) {
+			if (e.hasCapability(CapabilityRespawnData.RESPAWN_DATA_CAPABILITY, null)) {
+				IRespawnData respawnData = e.getCapability(CapabilityRespawnData.RESPAWN_DATA_CAPABILITY, null);
+				respawnData.setRespawnPos(e.getPosition());
+				respawnData.setSpawnerSettings(getParentSettings().getParentSettings().writeToNBT(new NBTTagCompound()));
 			}
 		}
 

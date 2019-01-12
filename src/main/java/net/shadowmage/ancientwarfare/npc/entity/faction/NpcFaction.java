@@ -18,7 +18,6 @@ import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.util.NBTHelper;
-import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionFleeSun;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRestrictSun;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
@@ -30,16 +29,14 @@ import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
 import net.shadowmage.ancientwarfare.npc.registry.FactionNpcDefault;
 import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
 import net.shadowmage.ancientwarfare.npc.registry.NpcDefaultsRegistry;
-import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
-import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings;
-import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
+import net.shadowmage.ancientwarfare.structure.util.CapabilityRespawnData;
+import net.shadowmage.ancientwarfare.structure.util.IRespawnData;
+import net.shadowmage.ancientwarfare.structure.util.SpawnerHelper;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 @SuppressWarnings({"squid:MaximumInheritanceDepth","squid:S2160"})
@@ -50,8 +47,6 @@ public abstract class NpcFaction extends NpcBase {
 	private static final double REVENGE_SET_RANGE = 50D;
 
 	protected String factionName;
-	private BlockPos respawnPos = BlockPos.ORIGIN;
-	private NBTTagCompound spawnerSettings;
 	private Map<String, Long> revengePlayers = new HashMap<>();
 
 	public NpcFaction(World world) {
@@ -82,19 +77,10 @@ public abstract class NpcFaction extends NpcBase {
 	protected void despawnEntity() {
 		super.despawnEntity();
 
-		if (isDead && !respawnPos.equals(BlockPos.ORIGIN) && world.isAirBlock(respawnPos)) {
-			world.setBlockState(respawnPos, AWStructureBlocks.ADVANCED_SPAWNER.getDefaultState());
-			WorldTools.getTile(world, respawnPos, TileAdvancedSpawner.class).ifPresent(te -> {
-				SpawnerSettings settings = new SpawnerSettings();
-				settings.readFromNBT(spawnerSettings);
-				te.setSettings(settings);
-			});
+		if (isDead && hasCapability(CapabilityRespawnData.RESPAWN_DATA_CAPABILITY, null)) {
+			IRespawnData respawnData = getCapability(CapabilityRespawnData.RESPAWN_DATA_CAPABILITY, null);
+			SpawnerHelper.createSpawner(respawnData, world);
 		}
-	}
-
-	public void setRespawnData(BlockPos spawnerPos, NBTTagCompound spawnerSettings) {
-		this.respawnPos = spawnerPos;
-		this.spawnerSettings = spawnerSettings;
 	}
 
 	public void setCanDespawn() {
@@ -310,8 +296,6 @@ public abstract class NpcFaction extends NpcBase {
 		factionName = tag.getString("factionName");
 		NpcDefaultsRegistry.getFactionNpcDefault(this).applyAdditionalAttributes(this);
 		canDespawn = tag.getBoolean("canDespawn");
-		respawnPos = BlockPos.fromLong(tag.getLong("respawnPos"));
-		spawnerSettings = tag.getCompoundTag("spawnerSettings");
 		revengePlayers = NBTHelper.getMap(tag.getTagList("revengePlayers", Constants.NBT.TAG_COMPOUND),
 				t -> t.getString("playerName"), t -> t.getLong("time") );
 }
@@ -323,8 +307,6 @@ public abstract class NpcFaction extends NpcBase {
 			tag.setString("factionName", factionName);
 		}
 		tag.setBoolean("canDespawn", canDespawn);
-		tag.setLong("respawnPos", respawnPos.toLong());
-		tag.setTag("spawnerSettings", spawnerSettings);
 		tag.setTag("revengePlayers", NBTHelper.mapToCompoundList(revengePlayers,
 				(t, playerName) -> t.setString("playerName", playerName), (t, time) -> t.setLong("time", time)));
 	}

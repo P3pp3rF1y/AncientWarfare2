@@ -1,9 +1,12 @@
 package net.shadowmage.ancientwarfare.structure;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -34,6 +37,7 @@ import net.shadowmage.ancientwarfare.structure.container.ContainerStructureScann
 import net.shadowmage.ancientwarfare.structure.container.ContainerStructureSelection;
 import net.shadowmage.ancientwarfare.structure.container.ContainerTownSelection;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
+import net.shadowmage.ancientwarfare.structure.event.OneShotEntityDespawnListener;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructure;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructureRemove;
 import net.shadowmage.ancientwarfare.structure.proxy.CommonProxyStructure;
@@ -52,6 +56,7 @@ import net.shadowmage.ancientwarfare.structure.template.datafixes.fixers.RuleNam
 import net.shadowmage.ancientwarfare.structure.template.datafixes.fixers.json.JsonSimplificationFixer;
 import net.shadowmage.ancientwarfare.structure.template.load.TemplateLoader;
 import net.shadowmage.ancientwarfare.structure.town.WorldTownGenerator;
+import net.shadowmage.ancientwarfare.structure.util.CapabilityRespawnData;
 import net.shadowmage.ancientwarfare.structure.worldgen.WorldGenTickHandler;
 import net.shadowmage.ancientwarfare.structure.worldgen.WorldStructureGenerator;
 import org.apache.logging.log4j.LogManager;
@@ -131,6 +136,7 @@ public class AncientWarfareStructure {
 		TemplateLoader.INSTANCE.loadTemplates();
 		statics.save();
 		AWStructureStatics.logSkippableBlocksCoveredByMaterial();
+		CapabilityRespawnData.register();
 	}
 
 	@SubscribeEvent
@@ -138,6 +144,16 @@ public class AncientWarfareStructure {
 		if (!evt.player.world.isRemote) {
 			StructureTemplateManager.onPlayerConnect((EntityPlayerMP) evt.player);
 		}
+	}
+
+	@SubscribeEvent
+	public void onEntityCapabilityAttach(AttachCapabilitiesEvent<Entity> event) {
+		CapabilityRespawnData.onAttach(event);
+	}
+
+	@SubscribeEvent
+	public void onWorldLoad(WorldEvent.Load event) {
+		event.getWorld().addEventListener(OneShotEntityDespawnListener.INSTANCE);
 	}
 
 	@EventHandler
