@@ -48,6 +48,9 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 		NpcDefault npcDefault = NpcDefaultsRegistry.getOwnedNpcDefault(this);
 		npcDefault.applyPathSettings((PathNavigateGround) getNavigator());
 		npcDefault.applyAttributes(this);
+		inventoryArmorDropChances = new float[] {1.f, 1.f, 1.f, 1.f};
+		inventoryHandsDropChances = new float[] {1.f, 1.f};
+
 	}
 
 	@Override

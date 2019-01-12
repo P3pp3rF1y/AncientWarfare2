@@ -143,8 +143,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	public NpcBase(World par1World) {
 		super(par1World);
 		levelingStats = new NpcLevelingStats(this);
-		this.inventoryArmorDropChances = new float[] {1.f, 1.f, 1.f, 1.f};
-		this.inventoryHandsDropChances = new float[] {1.f, 1.f};
 		this.navigator = new NpcNavigator(this);
 		setPathPriority(PathNodeType.DOOR_WOOD_CLOSED, 0);
 	}
