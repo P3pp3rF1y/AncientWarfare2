@@ -290,6 +290,8 @@ public class SpawnerSettings {
 		if (tag.hasKey(INVENTORY_TAG)) {
 			inventory.deserializeNBT(tag.getCompoundTag(INVENTORY_TAG));
 		}
+
+		updateSpawnProperties();
 	}
 
 	void updateSpawnProperties() {
