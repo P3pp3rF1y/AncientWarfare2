@@ -5,7 +5,6 @@ import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
-import net.shadowmage.ancientwarfare.core.gui.elements.Checkbox;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
@@ -178,16 +177,6 @@ public class GuiSpawnerAdvancedAddEntity extends GuiContainerBase {
 		input.setValue(settings.getSpawnTotal());
 		area.addGuiElement(input);
 		totalHeight += 12;
-
-		Checkbox box = new Checkbox(8, totalHeight, 16, 16, "guistrings.spawner.force_spawn") {
-			@Override
-			public void onToggled() {
-				settings.toggleForce();
-			}
-		};
-		box.setChecked(settings.isForced());
-		area.addGuiElement(box);
-		totalHeight += 16;
 
 		label = new Label(8, totalHeight, "guistrings.spawner.custom_tag");
 		area.addGuiElement(label);

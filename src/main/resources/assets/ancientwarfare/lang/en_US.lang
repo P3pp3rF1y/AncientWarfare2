@@ -326,7 +326,6 @@ guistrings.spawner.entity_list=Spawn List
 guistrings.spawner.min=Min
 guistrings.spawner.max=Max
 guistrings.spawner.total=Total
-guistrings.spawner.force_spawn=Forced Spawn
 guistrings.spawner.add_entity=Add Entity
 guistrings.spawner.remove=-
 guistrings.spawner.add=+

@@ -527,7 +527,6 @@ public class SpawnerSettings {
 	public static final class EntitySpawnSettings {
 		private static final String ENTITY_ID_TAG = "entityId";
 		private static final String CUSTOM_TAG = "customTag";
-		private static final String FORCED_TAG = "forced";
 		private static final String MIN_TO_SPAWN_TAG = "minToSpawn";
 		private static final String MAX_TO_SPAWN_TAG = "maxToSpawn";
 		private static final String REMAINING_SPAWN_COUNT_TAG = "remainingSpawnCount";
@@ -537,7 +536,6 @@ public class SpawnerSettings {
 		private int minToSpawn = 2;
 		private int maxToSpawn = 4;
 		int remainingSpawnCount = -1;
-		private boolean forced;
 		private boolean hostile = true;
 		private EntitySpawnGroup group;
 
@@ -555,7 +553,6 @@ public class SpawnerSettings {
 			if (customTag != null) {
 				tag.setTag(CUSTOM_TAG, customTag);
 			}
-			tag.setBoolean(FORCED_TAG, forced);
 			tag.setInteger(MIN_TO_SPAWN_TAG, minToSpawn);
 			tag.setInteger(MAX_TO_SPAWN_TAG, maxToSpawn);
 			tag.setInteger(REMAINING_SPAWN_COUNT_TAG, remainingSpawnCount);
@@ -568,7 +565,6 @@ public class SpawnerSettings {
 			if (tag.hasKey(CUSTOM_TAG)) {
 				customTag = tag.getCompoundTag(CUSTOM_TAG);
 			}
-			forced = tag.getBoolean(FORCED_TAG);
 			minToSpawn = tag.getInteger(MIN_TO_SPAWN_TAG);
 			maxToSpawn = tag.getInteger(MAX_TO_SPAWN_TAG);
 		}
@@ -618,10 +614,6 @@ public class SpawnerSettings {
 			this.remainingSpawnCount = total;
 		}
 
-		public final void toggleForce() {
-			forced = !forced;
-		}
-
 		private boolean shouldRemove() {
 			return remainingSpawnCount == 0;
 		}
@@ -647,10 +639,6 @@ public class SpawnerSettings {
 
 		public final int getSpawnTotal() {
 			return remainingSpawnCount;
-		}
-
-		public final boolean isForced() {
-			return forced;
 		}
 
 		public final NBTTagCompound getCustomTag() {
@@ -685,11 +673,7 @@ public class SpawnerSettings {
 					int z = spawnPos.getZ() - range + world.rand.nextInt(range * 2 + 1);
 					for (int y = spawnPos.getY() - range; y <= spawnPos.getY() + range; y++) {
 						e.setLocationAndAngles(x + 0.5d, y, z + 0.5d, world.rand.nextFloat() * 360, 0);
-						if (!forced && e instanceof EntityLiving) {
-							doSpawn = ((EntityLiving) e).getCanSpawnHere() && ((EntityLiving) e).isNotColliding();
-							if (doSpawn)
-								break;
-						} else {
+						if (range == 0 || checkEntityIsNotColliding(e)) {
 							doSpawn = true;
 							break;
 						}
@@ -703,6 +687,10 @@ public class SpawnerSettings {
 					}
 				}
 			}
+		}
+
+		private boolean checkEntityIsNotColliding(Entity e) {
+			return e.world.getCollisionBoxes(e, e.getEntityBoundingBox()).isEmpty() && e.world.checkNoEntityCollision(e.getEntityBoundingBox(), e);
 		}
 
 		private void spawnEntityAt(Entity e, World world) {

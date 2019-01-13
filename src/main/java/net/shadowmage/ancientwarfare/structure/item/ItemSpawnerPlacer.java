@@ -167,7 +167,6 @@ public class ItemSpawnerPlacer extends ItemBaseStructure implements IItemKeyInte
 		spawnSettings.setSpawnLimitTotal(1);
 		spawnSettings.setSpawnCountMin(1);
 		spawnSettings.setSpawnCountMax(1);
-		spawnSettings.toggleForce();
 	}
 
 	private SpawnerSettings.EntitySpawnSettings getFirstEntitySpawnSettings(SpawnerSettings settings) {
