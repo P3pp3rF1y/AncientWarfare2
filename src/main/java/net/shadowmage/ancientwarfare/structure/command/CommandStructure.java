@@ -15,7 +15,9 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.shadowmage.ancientwarfare.core.command.ISubCommand;
 import net.shadowmage.ancientwarfare.core.command.ParentCommand;
 import net.shadowmage.ancientwarfare.core.command.SimpleSubCommand;
+import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
+import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
 import net.shadowmage.ancientwarfare.structure.item.ItemStructureScanner;
 import net.shadowmage.ancientwarfare.structure.item.ItemStructureSettings;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
@@ -24,6 +26,7 @@ import net.shadowmage.ancientwarfare.structure.template.WorldGenStructureManager
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
 import net.shadowmage.ancientwarfare.structure.template.load.TemplateLoader;
 import net.shadowmage.ancientwarfare.structure.tile.ScannerCommandTracker;
+import net.shadowmage.ancientwarfare.structure.worldgen.StructureEntry;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -68,6 +71,13 @@ public class CommandStructure extends ParentCommand {
 				return 1;
 			}
 		});
+		registerSubCommand(new SimpleSubCommand("name", (server, sender, args) -> {
+			Optional<StructureEntry> structure = AWGameData.INSTANCE.getData(sender.getEntityWorld(), StructureMap.class)
+					.getStructureAt(sender.getEntityWorld(), sender.getPosition());
+
+			sender.sendMessage(structure.isPresent() ? new TextComponentTranslation("command.aw.structure.name", structure.get().getName())
+					: new TextComponentTranslation("command.aw.structure.no_structure"));
+		}));
 	}
 
 	@Override

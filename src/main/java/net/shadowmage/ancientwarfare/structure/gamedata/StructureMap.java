@@ -4,15 +4,18 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.structure.worldgen.StructureEntry;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 //TODO world capability
@@ -44,6 +47,16 @@ public class StructureMap extends WorldSavedData {
 		int cz = worldZ >> 4;
 		return map.getEntriesNear(world.provider.getDimension(), cx, cz, chunkRadius, expandBySize, list);
 	}
+
+	public Optional<StructureEntry> getStructureAt(World world, BlockPos pos) {
+		for (StructureEntry structure : getEntriesNear(world, pos.getX(), pos.getZ(), 1, true, new ArrayList<>())) {
+			if (structure.getBB().contains(pos)) {
+				return Optional.of(structure);
+			}
+		}
+		return Optional.empty();
+	}
+
 
 	public void setGeneratedAt(World world, int worldX, int worldY, int worldZ, EnumFacing face, StructureEntry entry, boolean unique) {
 		int cx = worldX >> 4;

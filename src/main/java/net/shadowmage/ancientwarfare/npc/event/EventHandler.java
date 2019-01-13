@@ -23,12 +23,9 @@ import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
 import net.shadowmage.ancientwarfare.npc.registry.NpcDefaultsRegistry;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
-import net.shadowmage.ancientwarfare.structure.worldgen.StructureEntry;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -84,7 +81,7 @@ public class EventHandler {
 		BlockPos pos = evt.getPos();
 		EntityPlayer player = evt.getEntityPlayer();
 		if (!player.capabilities.isCreativeMode && !player.isSneaking() && isChest(world, pos)) {
-			getStructure(world, pos).ifPresent(structure -> {
+			AWGameData.INSTANCE.getData(world, StructureMap.class).getStructureAt(world, pos).ifPresent(structure -> {
 				for (NpcFaction factionNpc : world.getEntitiesWithinAABB(NpcFaction.class, structure.getBB().getAABB())) {
 					if (!factionNpc.isPassive()) {
 						evt.setCanceled(true);
@@ -95,16 +92,6 @@ public class EventHandler {
 				}
 			});
 		}
-	}
-
-	private Optional<StructureEntry> getStructure(World world, BlockPos pos) {
-		StructureMap map = AWGameData.INSTANCE.getData(world, StructureMap.class);
-		for (StructureEntry structure : map.getEntriesNear(world, pos.getX(), pos.getZ(), 1, true, new ArrayList<>())) {
-			if (structure.getBB().contains(pos)) {
-				return Optional.of(structure);
-			}
-		}
-		return Optional.empty();
 	}
 
 	private boolean isChest(World world, BlockPos pos) {
