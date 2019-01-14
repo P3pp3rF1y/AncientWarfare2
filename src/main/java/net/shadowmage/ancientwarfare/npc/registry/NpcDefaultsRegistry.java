@@ -18,6 +18,7 @@ import net.shadowmage.ancientwarfare.npc.entity.faction.attributes.IAdditionalAt
 import net.shadowmage.ancientwarfare.npc.init.AWNPCEntities;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -47,6 +48,10 @@ public class NpcDefaultsRegistry {
 	}
 
 	private static final String FACTION_NPC_PREFIX = "faction.";
+
+	public static Collection<OwnedNpcDefault> getOwnedNpcDefaults() {
+		return ownedNpcDefaults.values();
+	}
 
 	public static class OwnedNpcDefaultsParser extends NpcDefaultsParserBase {
 		@Override

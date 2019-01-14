@@ -51,6 +51,10 @@ public class FactionDefinition {
 				&& targetList.contains(EntityRegistry.getEntry(entity.getClass()).getRegistryName().toString());
 	}
 
+	public Set<String> getTargetList() {
+		return targetList;
+	}
+
 	public static class CopyBuilder {
 		private final String name;
 		private final int color;

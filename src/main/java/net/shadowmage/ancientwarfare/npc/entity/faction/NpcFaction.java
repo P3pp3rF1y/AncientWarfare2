@@ -18,6 +18,7 @@ import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.util.NBTHelper;
+import net.shadowmage.ancientwarfare.npc.ai.AIHelper;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionFleeSun;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRestrictSun;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
@@ -199,7 +200,7 @@ public abstract class NpcFaction extends NpcBase {
 			NpcFaction npc = (NpcFaction) e;
 			return !npc.getFaction().equals(factionName) && FactionRegistry.getFaction(getFaction()).isHostileTowards(npc.getFaction());
 		} else {
-			return FactionRegistry.getFaction(factionName).isTarget(e);
+			return FactionRegistry.getFaction(factionName).isTarget(e) || AIHelper.isAdditionalEntityToTarget(e);
 		}
 	}
 
