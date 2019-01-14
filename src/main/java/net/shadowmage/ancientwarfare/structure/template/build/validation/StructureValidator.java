@@ -132,14 +132,16 @@ public abstract class StructureValidator {
 
 		IBlockState state = world.getBlockState(pos);
 		if (state.getMaterial() != Material.AIR) {
-			Optional<ITreeScanner> treeScanner = TreeFarmRegistry.getRegisteredTreeScanner(state);
-			if (!treeScanner.isPresent()) {
-				world.setBlockToAir(pos);
-				return;
+			if (state.getMaterial() == Material.WOOD) {
+				Optional<ITreeScanner> treeScanner = TreeFarmRegistry.getRegisteredTreeScanner(state);
+				if (treeScanner.isPresent()) {
+					ITree tree = treeScanner.get().scanTree(world, pos);
+					tree.getLeafPositions().forEach(world::setBlockToAir);
+					tree.getTrunkPositions().forEach(world::setBlockToAir);
+					return;
+				}
 			}
-			ITree tree = treeScanner.get().scanTree(world, pos);
-			tree.getLeafPositions().forEach(world::setBlockToAir);
-			tree.getTrunkPositions().forEach(world::setBlockToAir);
+			world.setBlockToAir(pos);
 		}
 	}
 

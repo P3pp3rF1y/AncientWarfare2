@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.structure.tile;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -17,6 +18,11 @@ import javax.annotation.Nullable;
 public class TileAdvancedLootChest extends TileEntityChest {
 	private static final String LOOT_TABLE_TAG = "lootTable";
 	private static final String LOOT_ROLLS_TAG = "lootRolls";
+
+	public int getLootRolls() {
+		return lootRolls;
+	}
+
 	private int lootRolls = 0;
 
 	@Override
@@ -103,7 +109,10 @@ public class TileAdvancedLootChest extends TileEntityChest {
 	}
 
 	@Override
-	public String getName() {
-		return lootTable != null ? lootRolls + " x " + lootTable : "";
+	public ItemStack getStackInSlot(int index) {
+		if (world.isRemote) {
+			return this.getItems().get(index);
+		}
+		return super.getStackInSlot(index);
 	}
 }

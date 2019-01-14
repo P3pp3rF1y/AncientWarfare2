@@ -6,7 +6,6 @@ import com.google.gson.JsonObject;
 import net.minecraft.util.JsonUtils;
 import net.shadowmage.ancientwarfare.core.registry.IRegistryDataParser;
 import net.shadowmage.ancientwarfare.core.util.parsing.JsonHelper;
-import net.shadowmage.ancientwarfare.core.util.parsing.ResourceLocationMatcher;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -74,12 +73,12 @@ public class FactionRegistry {
 			return JsonHelper.mapFromJson(json, HOSTILE_TOWARDS_FACTIONS, Entry::getKey, entry -> JsonUtils.getBoolean(entry.getValue(), ""));
 		}
 
-		private Set<ResourceLocationMatcher> parseTargetList(JsonObject json) {
+		private Set<String> parseTargetList(JsonObject json) {
 			if (!json.has(ENTITIES_TO_TARGET)) {
 				return Collections.emptySet();
 			}
 			JsonArray targets = JsonUtils.getJsonArray(json, ENTITIES_TO_TARGET);
-			return StreamSupport.stream(targets.spliterator(), false).map(e -> new ResourceLocationMatcher(JsonUtils.getString(e, "")))
+			return StreamSupport.stream(targets.spliterator(), false).map(e -> JsonUtils.getString(e, ""))
 					.collect(Collectors.toCollection(HashSet::new));
 		}
 	}

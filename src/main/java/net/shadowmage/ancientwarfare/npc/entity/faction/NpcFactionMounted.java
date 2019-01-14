@@ -37,6 +37,15 @@ public abstract class NpcFactionMounted extends NpcFaction implements IHorseMoun
 	}
 
 	@Override
+	protected void despawnEntity() {
+		super.despawnEntity();
+		if (isDead && getRidingEntity() instanceof EntityHorse) {
+			getRidingEntity().setDead();
+			dismountRidingEntity();
+		}
+	}
+
+	@Override
 	protected void onRepack() {
 		if (getRidingEntity() instanceof EntityHorse) {
 			getRidingEntity().setDead();

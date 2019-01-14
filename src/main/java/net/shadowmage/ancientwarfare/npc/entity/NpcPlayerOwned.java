@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
+import net.shadowmage.ancientwarfare.npc.ai.AIHelper;
 import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedRideHorse;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
@@ -48,6 +49,9 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 		NpcDefault npcDefault = NpcDefaultsRegistry.getOwnedNpcDefault(this);
 		npcDefault.applyPathSettings((PathNavigateGround) getNavigator());
 		npcDefault.applyAttributes(this);
+		inventoryArmorDropChances = new float[] {1.f, 1.f, 1.f, 1.f};
+		inventoryHandsDropChances = new float[] {1.f, 1.f};
+
 	}
 
 	@Override
@@ -178,7 +182,7 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 		} else if (entityTarget instanceof NpcFaction) {
 			return ((NpcFaction) entityTarget).isHostileTowards(this); // hostility is based on faction standing
 		}
-		return NpcDefaultsRegistry.getOwnedNpcDefault(this).isTarget(entityTarget);
+		return NpcDefaultsRegistry.getOwnedNpcDefault(this).isTarget(entityTarget) || AIHelper.isAdditionalEntityToTarget(entityTarget);
 	}
 
 	@Override

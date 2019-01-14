@@ -1,12 +1,12 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 11/21/2018 at: 9:16:21
+# Auto-generated structure template file. created on: 1/4/2019 at: 23:51:39
 # Lines beginning with # denote comments
 
 header:
-version=2.7
+version=2.8
 name=EvilSpiderTower
 mods=
-size=10,53,10
+size=10,40,10
 offset=5,14,9
 :endheader
 
@@ -20,16 +20,14 @@ preserveBlocks=false
 selectionWeight=30
 clusterValue=20
 minDuplicateDistance=900
-dimensionWhiteList=false
-dimensionList=
+dimensionWhiteList=true
+dimensionList=0
 biomeWhiteList=true
 biomeList=minecraft:swampland,biomesoplenty:shrubland,biomesoplenty:woodland,biomesoplenty:bayou,biomesoplenty:dead_forest,traverse:woodlands,minecraft:mutated_swampland,traverse:badlands,biomesoplenty:moor,biomesoplenty:ominous_woods,biomesoplenty:dead_swamp,biomesoplenty:wasteland,traverse:rocky_plains
 leveling=2
 fill=0
 border=0
 blockSwap=false
-data:
-:enddata
 :endvalidation
 
 #### LAYERS ####
@@ -513,169 +511,13 @@ layer: 39
 0,0,0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0,0,0
 :endlayer
-layer: 40
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 41
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 42
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 43
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 44
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 45
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 46
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 47
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 48
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 49
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 50
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 51
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-:endlayer
-layer: 52
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-0,0,0,0,0,0,0,0,0,0
-:endlayer
 
 #### RULES ####
 rule:
 plugin=vanillaBlocks
 number=1
 data:
-JSON:{blockState:{blockName:"minecraft:stonebrick",properties:{variant:"stonebrick"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stonebrick",properties:{variant:"stonebrick"}}}
 :enddata
 :endrule
 
@@ -683,7 +525,7 @@ rule:
 plugin=blockTile
 number=2
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},buildPass:0,teData:{LootTable:"ancientwarfare:inject/chests/simple_dungeon",lootRolls:2b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:1213889126744010167L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"ancientwarfare:inject/chests/simple_dungeon",lootRolls:2b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:1213889126744010167L}}
 :enddata
 :endrule
 
@@ -691,7 +533,7 @@ rule:
 plugin=blockTile
 number=3
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:8,spawnDelay:228,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:spider",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:1,transparent:0b,maxDelay:800,xpToDrop:60,mobRange:12,debugMode:0b,maxNearbyMonsters:12}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:8,spawnDelay:64,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:spider",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:1,transparent:0b,maxDelay:800,xpToDrop:60,mobRange:12,debugMode:0b,maxNearbyMonsters:12}}}
 :enddata
 :endrule
 
@@ -699,7 +541,7 @@ rule:
 plugin=vanillaBlocks
 number=4
 data:
-JSON:{blockState:{blockName:"minecraft:stonebrick",properties:{variant:"mossy_stonebrick"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stonebrick",properties:{variant:"mossy_stonebrick"}}}
 :enddata
 :endrule
 
@@ -707,7 +549,7 @@ rule:
 plugin=vanillaBlocks
 number=5
 data:
-JSON:{blockState:{blockName:"minecraft:monster_egg",properties:{variant:"stone_brick"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:monster_egg",properties:{variant:"stone_brick"}}}
 :enddata
 :endrule
 
@@ -715,7 +557,7 @@ rule:
 plugin=vanillaBlocks
 number=6
 data:
-JSON:{blockState:{blockName:"minecraft:stonebrick",properties:{variant:"cracked_stonebrick"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stonebrick",properties:{variant:"cracked_stonebrick"}}}
 :enddata
 :endrule
 
@@ -723,7 +565,7 @@ rule:
 plugin=blockTile
 number=7
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:spider",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:spider",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -731,7 +573,7 @@ rule:
 plugin=vanillaBlocks
 number=8
 data:
-JSON:{blockState:{blockName:"minecraft:wooden_slab",properties:{half:"top",variant:"oak"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:wooden_slab",properties:{half:"top",variant:"oak"}}}
 :enddata
 :endrule
 
@@ -739,7 +581,7 @@ rule:
 plugin=vanillaBlocks
 number=9
 data:
-JSON:{blockState:{blockName:"minecraft:wooden_slab",properties:{half:"bottom",variant:"oak"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:wooden_slab",properties:{half:"bottom",variant:"oak"}}}
 :enddata
 :endrule
 
@@ -747,7 +589,7 @@ rule:
 plugin=vanillaBlocks
 number=10
 data:
-JSON:{blockState:{blockName:"minecraft:web",properties:{}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:web"}}
 :enddata
 :endrule
 
@@ -755,7 +597,7 @@ rule:
 plugin=vanillaBlocks
 number=11
 data:
-JSON:{blockState:{blockName:"minecraft:stonebrick",properties:{variant:"chiseled_stonebrick"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stonebrick",properties:{variant:"chiseled_stonebrick"}}}
 :enddata
 :endrule
 
@@ -763,7 +605,7 @@ rule:
 plugin=vanillaBlocks
 number=12
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"north"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"north"}}}
 :enddata
 :endrule
 
@@ -771,7 +613,7 @@ rule:
 plugin=vanillaBlocks
 number=13
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"south"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"south"}}}
 :enddata
 :endrule
 
@@ -779,7 +621,7 @@ rule:
 plugin=vanillaBlocks
 number=14
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"east"}}}
 :enddata
 :endrule
 
@@ -787,7 +629,7 @@ rule:
 plugin=vanillaBlocks
 number=15
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"west"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"west"}}}
 :enddata
 :endrule
 
@@ -795,7 +637,7 @@ rule:
 plugin=vanillaBlocks
 number=16
 data:
-JSON:{blockState:{blockName:"minecraft:mossy_cobblestone",properties:{}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:mossy_cobblestone"}}
 :enddata
 :endrule
 
@@ -803,7 +645,7 @@ rule:
 plugin=blockTile
 number=17
 data:
-JSON:{blockState:{blockName:"minecraft:mob_spawner",properties:{}},buildPass:0,teData:{MaxNearbyEntities:6s,RequiredPlayerRange:16s,SpawnCount:4s,SpawnData:{id:"minecraft:pig"},MaxSpawnDelay:800s,Delay:20s,id:"minecraft:mob_spawner",SpawnRange:4s,MinSpawnDelay:200s,SpawnPotentials:[{Entity:{id:"minecraft:pig"},Weight:1}]}}
+JSON:{blockState:{blockName:"minecraft:mob_spawner"},teData:{MaxNearbyEntities:6s,RequiredPlayerRange:16s,SpawnCount:4s,SpawnData:{id:"minecraft:pig"},MaxSpawnDelay:800s,Delay:0s,id:"minecraft:mob_spawner",SpawnRange:4s,MinSpawnDelay:200s,SpawnPotentials:[{Entity:{id:"minecraft:pig"},Weight:1}]}}
 :enddata
 :endrule
 
@@ -811,7 +653,7 @@ rule:
 plugin=blockTile
 number=18
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:spider",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:spider",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -819,7 +661,7 @@ rule:
 plugin=blockTile
 number=19
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:spider",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:spider",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -827,7 +669,7 @@ rule:
 plugin=blockTile
 number=20
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:spider",minToSpawn:1}],groupWeight:1}],playerRange:10,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:spider",minToSpawn:1}],groupWeight:1}],playerRange:10,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -835,7 +677,7 @@ rule:
 plugin=blockTile
 number=21
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:spider",minToSpawn:1}],groupWeight:1}],playerRange:10,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:spider",minToSpawn:1}],groupWeight:1}],playerRange:10,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -843,7 +685,7 @@ rule:
 plugin=blockTile
 number=22
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:spider",minToSpawn:1}],groupWeight:1}],playerRange:10,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:spider",minToSpawn:1}],groupWeight:1}],playerRange:10,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -851,7 +693,7 @@ rule:
 plugin=blockTile
 number=23
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:spider",minToSpawn:1}],groupWeight:1}],playerRange:10,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:spider",minToSpawn:1}],groupWeight:1}],playerRange:10,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -859,7 +701,7 @@ rule:
 plugin=blockTile
 number=24
 data:
-JSON:{blockState:{blockName:"minecraft:mob_spawner",properties:{}},buildPass:0,teData:{MaxNearbyEntities:6s,RequiredPlayerRange:16s,SpawnCount:4s,SpawnData:{id:"minecraft:pig"},MaxSpawnDelay:800s,Delay:20s,id:"minecraft:mob_spawner",SpawnRange:4s,MinSpawnDelay:200s,SpawnPotentials:[{Entity:{id:"minecraft:pig"},Weight:1}]}}
+JSON:{blockState:{blockName:"minecraft:mob_spawner"},teData:{MaxNearbyEntities:6s,RequiredPlayerRange:16s,SpawnCount:4s,SpawnData:{id:"minecraft:pig"},MaxSpawnDelay:800s,Delay:0s,id:"minecraft:mob_spawner",SpawnRange:4s,MinSpawnDelay:200s,SpawnPotentials:[{Entity:{id:"minecraft:pig"},Weight:1}]}}
 :enddata
 :endrule
 
@@ -867,7 +709,7 @@ rule:
 plugin=blockTile
 number=25
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:spider",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:spider",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -875,7 +717,7 @@ rule:
 plugin=blockTile
 number=26
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"east"}},buildPass:0,teData:{LootTable:"ancientwarfare:inject/chests/simple_dungeon",lootRolls:2b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:7322914105210762871L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"east"}},teData:{LootTable:"ancientwarfare:inject/chests/simple_dungeon",lootRolls:2b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:7322914105210762871L}}
 :enddata
 :endrule
 
@@ -883,7 +725,7 @@ rule:
 plugin=blockTile
 number=27
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"evil"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:4,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"evil"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:4,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -891,7 +733,7 @@ rule:
 plugin=inventory
 number=28
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},buildPass:0,lootLevel:0,teData:{ForgeData:{},Items:[{Slot:1b,id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"gold"},Damage:0s},{Slot:2b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},Damage:0s},{Slot:4b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"silver"},Damage:0s},{Slot:5b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},Damage:0s},{Slot:6b,id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"silver"},Damage:0s},{Slot:7b,id:"ancientwarfarenpc:coin",Count:7b,tag:{metal:"copper"},Damage:0s},{Slot:8b,id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"copper"},Damage:0s},{Slot:10b,id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"gold"},Damage:0s},{Slot:11b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"gold"},Damage:0s},{Slot:13b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},Damage:0s},{Slot:14b,id:"ancientwarfarenpc:coin",Count:6b,tag:{metal:"silver"},Damage:0s},{Slot:15b,id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"silver"},Damage:0s},{Slot:16b,id:"ancientwarfarenpc:coin",Count:7b,tag:{metal:"copper"},Damage:0s},{Slot:17b,id:"ancientwarfarenpc:coin",Count:6b,tag:{metal:"copper"},Damage:0s},{Slot:19b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"gold"},Damage:0s},{Slot:20b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},Damage:0s},{Slot:21b,id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"gold"},Damage:0s},{Slot:22b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},Damage:0s},{Slot:23b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"silver"},Damage:0s},{Slot:24b,id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"silver"},Damage:0s},{Slot:25b,id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"copper"},Damage:0s},{Slot:26b,id:"ancientwarfarenpc:coin",Count:6b,tag:{metal:"copper"},Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:22,inventoryContents:[{id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"gold"},slot:0,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},slot:1,Damage:0s},{id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"silver"},slot:2,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},slot:3,Damage:0s},{id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"silver"},slot:4,Damage:0s},{id:"ancientwarfarenpc:coin",Count:7b,tag:{metal:"copper"},slot:5,Damage:0s},{id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"copper"},slot:6,Damage:0s},{id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"gold"},slot:7,Damage:0s},{id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"gold"},slot:8,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},slot:9,Damage:0s},{id:"ancientwarfarenpc:coin",Count:6b,tag:{metal:"silver"},slot:10,Damage:0s},{id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"silver"},slot:11,Damage:0s},{id:"ancientwarfarenpc:coin",Count:7b,tag:{metal:"copper"},slot:12,Damage:0s},{id:"ancientwarfarenpc:coin",Count:6b,tag:{metal:"copper"},slot:13,Damage:0s},{id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"gold"},slot:14,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},slot:15,Damage:0s},{id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"gold"},slot:16,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},slot:17,Damage:0s},{id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"silver"},slot:18,Damage:0s},{id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"silver"},slot:19,Damage:0s},{id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"copper"},slot:20,Damage:0s},{id:"ancientwarfarenpc:coin",Count:6b,tag:{metal:"copper"},slot:21,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},lootLevel:0,teData:{ForgeData:{},Items:[{Slot:1b,id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"gold"},Damage:0s},{Slot:2b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},Damage:0s},{Slot:4b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"silver"},Damage:0s},{Slot:5b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},Damage:0s},{Slot:6b,id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"silver"},Damage:0s},{Slot:7b,id:"ancientwarfarenpc:coin",Count:7b,tag:{metal:"copper"},Damage:0s},{Slot:8b,id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"copper"},Damage:0s},{Slot:10b,id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"gold"},Damage:0s},{Slot:11b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"gold"},Damage:0s},{Slot:13b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},Damage:0s},{Slot:14b,id:"ancientwarfarenpc:coin",Count:6b,tag:{metal:"silver"},Damage:0s},{Slot:15b,id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"silver"},Damage:0s},{Slot:16b,id:"ancientwarfarenpc:coin",Count:7b,tag:{metal:"copper"},Damage:0s},{Slot:17b,id:"ancientwarfarenpc:coin",Count:6b,tag:{metal:"copper"},Damage:0s},{Slot:19b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"gold"},Damage:0s},{Slot:20b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},Damage:0s},{Slot:21b,id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"gold"},Damage:0s},{Slot:22b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},Damage:0s},{Slot:23b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"silver"},Damage:0s},{Slot:24b,id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"silver"},Damage:0s},{Slot:25b,id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"copper"},Damage:0s},{Slot:26b,id:"ancientwarfarenpc:coin",Count:6b,tag:{metal:"copper"},Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:22,inventoryContents:[{id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"gold"},slot:0,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},slot:1,Damage:0s},{id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"silver"},slot:2,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},slot:3,Damage:0s},{id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"silver"},slot:4,Damage:0s},{id:"ancientwarfarenpc:coin",Count:7b,tag:{metal:"copper"},slot:5,Damage:0s},{id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"copper"},slot:6,Damage:0s},{id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"gold"},slot:7,Damage:0s},{id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"gold"},slot:8,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},slot:9,Damage:0s},{id:"ancientwarfarenpc:coin",Count:6b,tag:{metal:"silver"},slot:10,Damage:0s},{id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"silver"},slot:11,Damage:0s},{id:"ancientwarfarenpc:coin",Count:7b,tag:{metal:"copper"},slot:12,Damage:0s},{id:"ancientwarfarenpc:coin",Count:6b,tag:{metal:"copper"},slot:13,Damage:0s},{id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"gold"},slot:14,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},slot:15,Damage:0s},{id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"gold"},slot:16,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},slot:17,Damage:0s},{id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"silver"},slot:18,Damage:0s},{id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"silver"},slot:19,Damage:0s},{id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"copper"},slot:20,Damage:0s},{id:"ancientwarfarenpc:coin",Count:6b,tag:{metal:"copper"},slot:21,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -899,7 +741,7 @@ rule:
 plugin=blockTile
 number=29
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"evil"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:4,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"evil"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:4,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -907,7 +749,7 @@ rule:
 plugin=blockTile
 number=30
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:spider",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:spider",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -915,7 +757,7 @@ rule:
 plugin=blockTile
 number=31
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:spider",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:spider",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -923,7 +765,7 @@ rule:
 plugin=blockTile
 number=32
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:spider",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:spider",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -931,7 +773,7 @@ rule:
 plugin=blockTile
 number=33
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:cave_spider",minToSpawn:1}],groupWeight:1}],playerRange:4,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:cave_spider",minToSpawn:1}],groupWeight:1}],playerRange:4,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -939,7 +781,7 @@ rule:
 plugin=blockTile
 number=34
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:cave_spider",minToSpawn:1}],groupWeight:1}],playerRange:4,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:cave_spider",minToSpawn:1}],groupWeight:1}],playerRange:4,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 

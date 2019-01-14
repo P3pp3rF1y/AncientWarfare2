@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.npc.registry;
 
 import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
-import net.shadowmage.ancientwarfare.core.util.parsing.ResourceLocationMatcher;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,15 +11,15 @@ public class FactionDefinition {
 	private int color;
 	private int playerDefaultStanding;
 	private final Set<String> hostileTowards;
-	private final Set<ResourceLocationMatcher> targetList;
+	private final Set<String> targetList;
 
-	FactionDefinition(int playerDefaultStanding, Set<String> hostileTowards, Set<ResourceLocationMatcher> targetList) {
+	FactionDefinition(int playerDefaultStanding, Set<String> hostileTowards, Set<String> targetList) {
 		this.playerDefaultStanding = playerDefaultStanding;
 		this.hostileTowards = hostileTowards;
 		this.targetList = targetList;
 	}
 
-	private FactionDefinition(String name, int color, int playerDefaultStanding, Set<String> hostileTowards, Set<ResourceLocationMatcher> targetList) {
+	private FactionDefinition(String name, int color, int playerDefaultStanding, Set<String> hostileTowards, Set<String> targetList) {
 		this(playerDefaultStanding, hostileTowards, targetList);
 		this.name = name;
 		this.color = color;
@@ -49,16 +48,21 @@ public class FactionDefinition {
 	public boolean isTarget(Entity entity) {
 		//noinspection ConstantConditions
 		return EntityRegistry.getEntry(entity.getClass()) != null
-				&& targetList.stream().anyMatch(m -> m.test(EntityRegistry.getEntry(entity.getClass()).getRegistryName()));
+				&& targetList.contains(EntityRegistry.getEntry(entity.getClass()).getRegistryName().toString());
 	}
+
+	public Set<String> getTargetList() {
+		return targetList;
+	}
+
 	public static class CopyBuilder {
 		private final String name;
 		private final int color;
 		private int playerDefaultStanding;
 		private Set<String> hostileTowards;
-		private Set<ResourceLocationMatcher> targetList;
+		private Set<String> targetList;
 
-		private CopyBuilder(String name, int color, int playerDefaultStanding, Set<String> hostileTowards, Set<ResourceLocationMatcher> targetList) {
+		private CopyBuilder(String name, int color, int playerDefaultStanding, Set<String> hostileTowards, Set<String> targetList) {
 			this.name = name;
 			this.color = color;
 			this.playerDefaultStanding = playerDefaultStanding;
@@ -80,7 +84,7 @@ public class FactionDefinition {
 			return this;
 		}
 
-		CopyBuilder overrideTargetList(Set<ResourceLocationMatcher> targetList) {
+		CopyBuilder overrideTargetList(Set<String> targetList) {
 			this.targetList = targetList;
 			return this;
 		}

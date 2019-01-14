@@ -351,7 +351,7 @@ public class GuiSpawnerAdvanced extends GuiContainerBase<ContainerSpawnerAdvance
 		button = new Button(8, totalHeight, 120, 12, "guistrings.spawner.add_group") {
 			@Override
 			protected void onPressed() {
-				getContainer().settings.addSpawnGroup(new EntitySpawnGroup());
+				getContainer().settings.addSpawnGroup(new EntitySpawnGroup(getContainer().settings));
 				refreshGui();
 			}
 		};

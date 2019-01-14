@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.entity.vehicle;
 
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 
 public interface ITarget {
@@ -8,6 +9,8 @@ public interface ITarget {
 	double getY();
 
 	double getZ();
+
+	AxisAlignedBB getBoundigBox();
 
 	boolean exists(World world);
 }

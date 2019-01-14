@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.npc.entity.vehicle;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -41,6 +42,13 @@ public class TargetFactory {
 		@Override
 		public double getZ() {
 			return 0;
+		}
+
+		private final AxisAlignedBB noBounds = new AxisAlignedBB(0, 0, 0, 0, 0, 0);
+
+		@Override
+		public AxisAlignedBB getBoundigBox() {
+			return noBounds;
 		}
 
 		@Override

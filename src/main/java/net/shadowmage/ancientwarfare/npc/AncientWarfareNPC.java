@@ -113,6 +113,8 @@ public class AncientWarfareNPC {
 		MinecraftForge.EVENT_BUS.register(FactionTracker.INSTANCE);
 
 		statics.save();
+
+		net.shadowmage.ancientwarfare.npc.event.EventHandler.INSTANCE.initModsCoveredByTargets();
 	}
 
 	@SubscribeEvent

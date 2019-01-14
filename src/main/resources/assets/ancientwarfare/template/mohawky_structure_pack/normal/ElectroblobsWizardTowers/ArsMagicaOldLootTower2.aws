@@ -5,7 +5,7 @@
 header:
 version=2.8
 name=ArsMagicaOldLootTower2
-mods=
+mods=ebwizardry
 size=13,35,14
 offset=7,6,13
 :endheader

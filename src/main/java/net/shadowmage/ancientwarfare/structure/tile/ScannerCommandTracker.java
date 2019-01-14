@@ -1,6 +1,9 @@
 package net.shadowmage.ancientwarfare.structure.tile;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.Tuple;
 import net.minecraft.util.math.BlockPos;
+import net.shadowmage.ancientwarfare.structure.item.ItemStructureScanner;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,12 +20,15 @@ public class ScannerCommandTracker {
 	private static Map<Integer, CommandType> issuedGlobalCommands = new LinkedHashMap<>();
 	private static Map<BlockPos, Set<Integer>> executedTileCommands = new HashMap<>();
 	private static Map<BlockPos, Map<Integer, CommandType>> tileCommandsToExecute = new HashMap<>();
+	private static Map<String, Tuple<Integer, BlockPos>> scannerPositions = new HashMap<>();
 
 	public static void issueGlobalCommand(CommandType type) {
 		issuedGlobalCommands.put(currentId++, type);
 	}
 
-	public static Optional<CommandType> getAndRemoveNextCommand(BlockPos pos) {
+	public static Optional<CommandType> getAndRemoveNextCommand(TileStructureScanner scanner) {
+		noteScannerPosition(scanner);
+		BlockPos pos = scanner.getPos();
 		if (!tileCommandsToExecute.containsKey(pos)) {
 			tileCommandsToExecute.put(pos, new LinkedHashMap<>());
 		}
@@ -45,11 +51,27 @@ public class ScannerCommandTracker {
 		return Optional.of(next.getValue());
 	}
 
+	private static void noteScannerPosition(TileStructureScanner scanner) {
+		ItemStack scannerStack = scanner.getScannerInventory().getStackInSlot(0);
+		String name = ItemStructureScanner.getStructureName(scannerStack);
+		if (!name.isEmpty() && !scannerPositions.containsKey(name)) {
+			scannerPositions.put(name, new Tuple<>(scanner.getWorld().provider.getDimension(), scanner.getPos()));
+		}
+	}
+
 	private static void setExecuted(BlockPos pos, Integer id) {
 		if (!executedTileCommands.containsKey(pos)) {
 			executedTileCommands.put(pos, new HashSet<>());
 		}
 		executedTileCommands.get(pos).add(id);
+	}
+
+	public static Set<String> getTrackedScannerNames() {
+		return scannerPositions.keySet();
+	}
+
+	public static Tuple<Integer, BlockPos> getScannerPosByName(String name) {
+		return scannerPositions.get(name);
 	}
 
 	public enum CommandType {

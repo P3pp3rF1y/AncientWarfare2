@@ -19,9 +19,12 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
+import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
+import net.shadowmage.ancientwarfare.structure.util.CapabilityRespawnData;
+import net.shadowmage.ancientwarfare.structure.util.IRespawnData;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -74,6 +77,9 @@ public class SpawnerSettings {
 
 	private int xpToDrop;
 
+	private boolean isOneShotSpawner;
+	private String factionName = "";
+
 	float blockHardness = 2.f;
 
 	/*
@@ -93,8 +99,8 @@ public class SpawnerSettings {
 		settings.mobRange = 4;
 		settings.maxNearbyMonsters = 8;
 
-		EntitySpawnGroup group = new EntitySpawnGroup();
-		group.addSpawnSetting(new EntitySpawnSettings());
+		EntitySpawnGroup group = new EntitySpawnGroup(settings);
+		group.addSpawnSetting(new EntitySpawnSettings(group));
 		settings.addSpawnGroup(group);
 
 		return settings;
@@ -155,22 +161,8 @@ public class SpawnerSettings {
 				return;
 			}
 		}
-		if (playerRange > 0) {
-			List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos, pos.add(1, 1, 1)).grow(playerRange, playerRange, playerRange));
-			if (nearbyPlayers.isEmpty()) {
-				return;
-			}
-			boolean doSpawn = false;
-			for (EntityPlayer player : nearbyPlayers) {
-				if (debugMode || !player.capabilities.isCreativeMode) {
-					doSpawn = true;
-					break;
-				}
-			}
-			if (!doSpawn) {
-				return;
-			}
-		}
+		if (!checkPlayerConditions())
+			return;
 
 		if (maxNearbyMonsters > 0 && mobRange > 0) {
 			int nearbyCount = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos, pos.add(1, 1, 1)).grow(mobRange, mobRange, mobRange)).size();
@@ -206,6 +198,37 @@ public class SpawnerSettings {
 				spawnGroups.remove(toSpawn);
 			}
 		}
+	}
+
+	private boolean checkPlayerConditions() {
+		if (playerRange > 0) {
+			List<EntityPlayer> nearbyPlayers = getPlayersWithinAABB();
+			if (nearbyPlayers.isEmpty()) {
+				return false;
+			}
+
+			for (EntityPlayer player : nearbyPlayers) {
+				if ((debugMode || !player.capabilities.isCreativeMode) && !isContinuousSpawnerOfFriendlyFaction(player)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	private boolean isContinuousSpawnerOfFriendlyFaction(EntityPlayer player) {
+		return !isOneShotSpawner && !factionName.isEmpty() && FactionTracker.INSTANCE.getStandingFor(world, player.getName(), factionName) >= 0;
+	}
+
+	private List<EntityPlayer> getPlayersWithinAABB() {
+		List<EntityPlayer> players = new ArrayList<>();
+
+		for (EntityPlayer player : world.playerEntities) {
+			if (player.getEntityBoundingBox().intersects(new AxisAlignedBB(pos, pos.add(1, 1, 1)).grow(playerRange, playerRange, playerRange))) {
+				players.add(player);
+			}
+		}
+		return players;
 	}
 
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
@@ -246,8 +269,8 @@ public class SpawnerSettings {
 			redstoneMode = tag.getBoolean(REDSTONE_MODE_TAG);
 			prevRedstoneState = tag.getBoolean(PREV_REDSTONE_STATE_TAG);
 		}
-		minDelay = tag.getInteger(MIN_DELAY_TAG);
-		maxDelay = tag.getInteger(MAX_DELAY_TAG);
+		minDelay = Math.max(tag.getInteger(MIN_DELAY_TAG), 10);
+		maxDelay = Math.max(tag.getInteger(MAX_DELAY_TAG), 10);
 		spawnDelay = tag.getInteger(SPAWN_DELAY_TAG);
 		playerRange = tag.getInteger(PLAYER_RANGE_TAG);
 		mobRange = tag.getInteger(MOB_RANGE_TAG);
@@ -260,12 +283,31 @@ public class SpawnerSettings {
 		NBTTagList groupList = tag.getTagList(SPAWN_GROUPS_TAG, Constants.NBT.TAG_COMPOUND);
 		EntitySpawnGroup group;
 		for (int i = 0; i < groupList.tagCount(); i++) {
-			group = new EntitySpawnGroup();
+			group = new EntitySpawnGroup(this);
 			group.readFromNBT(groupList.getCompoundTagAt(i));
 			spawnGroups.add(group);
 		}
 		if (tag.hasKey(INVENTORY_TAG)) {
 			inventory.deserializeNBT(tag.getCompoundTag(INVENTORY_TAG));
+		}
+
+		updateSpawnProperties();
+	}
+
+	void updateSpawnProperties() {
+		if (world == null || world.isRemote) {
+			return;
+		}
+
+		isOneShotSpawner = false;
+		factionName = "";
+		if (spawnGroups.size() == 1 && spawnGroups.get(0).entitiesToSpawn.size() == 1) {
+			EntitySpawnSettings entitySettings = spawnGroups.get(0).entitiesToSpawn.get(0);
+			if (entitySettings.maxToSpawn == 1 && entitySettings.minToSpawn == 1 && entitySettings.remainingSpawnCount == 1) {
+				isOneShotSpawner = true;
+			}
+			Entity entity = EntityList.createEntityByIDFromName(entitySettings.entityId, world);
+			factionName = entity instanceof NpcFaction ? entitySettings.customTag.getString("factionName") : "";
 		}
 	}
 
@@ -408,6 +450,15 @@ public class SpawnerSettings {
 	public static final class EntitySpawnGroup {
 		private int groupWeight = 1;
 		private List<EntitySpawnSettings> entitiesToSpawn = new ArrayList<>();
+		private SpawnerSettings settings;
+
+		public EntitySpawnGroup(SpawnerSettings settings) {
+			this.settings = settings;
+		}
+
+		public SpawnerSettings getParentSettings() {
+			return settings;
+		}
 
 		public void setWeight(int weight) {
 			this.groupWeight = weight <= 0 ? 1 : weight;
@@ -466,7 +517,7 @@ public class SpawnerSettings {
 			NBTTagList settingsList = tag.getTagList("settingsList", Constants.NBT.TAG_COMPOUND);
 			EntitySpawnSettings setting;
 			for (int i = 0; i < settingsList.tagCount(); i++) {
-				setting = new EntitySpawnSettings();
+				setting = new EntitySpawnSettings(this);
 				setting.readFromNBT(settingsList.getCompoundTagAt(i));
 				if (!setting.shouldRemove()) {
 					this.entitiesToSpawn.add(setting);
@@ -478,7 +529,6 @@ public class SpawnerSettings {
 	public static final class EntitySpawnSettings {
 		private static final String ENTITY_ID_TAG = "entityId";
 		private static final String CUSTOM_TAG = "customTag";
-		private static final String FORCED_TAG = "forced";
 		private static final String MIN_TO_SPAWN_TAG = "minToSpawn";
 		private static final String MAX_TO_SPAWN_TAG = "maxToSpawn";
 		private static final String REMAINING_SPAWN_COUNT_TAG = "remainingSpawnCount";
@@ -488,8 +538,16 @@ public class SpawnerSettings {
 		private int minToSpawn = 2;
 		private int maxToSpawn = 4;
 		int remainingSpawnCount = -1;
-		private boolean forced;
 		private boolean hostile = true;
+		private EntitySpawnGroup group;
+
+		public EntitySpawnSettings(EntitySpawnGroup group) {
+			this.group = group;
+		}
+
+		public EntitySpawnGroup getParentSettings() {
+			return group;
+		}
 
 		public final void writeToNBT(NBTTagCompound tag) {
 			tag.setBoolean(HOSTILE_TAG, hostile);
@@ -497,7 +555,6 @@ public class SpawnerSettings {
 			if (customTag != null) {
 				tag.setTag(CUSTOM_TAG, customTag);
 			}
-			tag.setBoolean(FORCED_TAG, forced);
 			tag.setInteger(MIN_TO_SPAWN_TAG, minToSpawn);
 			tag.setInteger(MAX_TO_SPAWN_TAG, maxToSpawn);
 			tag.setInteger(REMAINING_SPAWN_COUNT_TAG, remainingSpawnCount);
@@ -510,7 +567,6 @@ public class SpawnerSettings {
 			if (tag.hasKey(CUSTOM_TAG)) {
 				customTag = tag.getCompoundTag(CUSTOM_TAG);
 			}
-			forced = tag.getBoolean(FORCED_TAG);
 			minToSpawn = tag.getInteger(MIN_TO_SPAWN_TAG);
 			maxToSpawn = tag.getInteger(MAX_TO_SPAWN_TAG);
 		}
@@ -560,10 +616,6 @@ public class SpawnerSettings {
 			this.remainingSpawnCount = total;
 		}
 
-		public final void toggleForce() {
-			forced = !forced;
-		}
-
 		private boolean shouldRemove() {
 			return remainingSpawnCount == 0;
 		}
@@ -589,10 +641,6 @@ public class SpawnerSettings {
 
 		public final int getSpawnTotal() {
 			return remainingSpawnCount;
-		}
-
-		public final boolean isForced() {
-			return forced;
 		}
 
 		public final NBTTagCompound getCustomTag() {
@@ -627,11 +675,7 @@ public class SpawnerSettings {
 					int z = spawnPos.getZ() - range + world.rand.nextInt(range * 2 + 1);
 					for (int y = spawnPos.getY() - range; y <= spawnPos.getY() + range; y++) {
 						e.setLocationAndAngles(x + 0.5d, y, z + 0.5d, world.rand.nextFloat() * 360, 0);
-						if (!forced && e instanceof EntityLiving) {
-							doSpawn = ((EntityLiving) e).getCanSpawnHere() && ((EntityLiving) e).isNotColliding();
-							if (doSpawn)
-								break;
-						} else {
+						if (range == 0 || checkEntityIsNotColliding(e)) {
 							doSpawn = true;
 							break;
 						}
@@ -647,6 +691,10 @@ public class SpawnerSettings {
 			}
 		}
 
+		private boolean checkEntityIsNotColliding(Entity e) {
+			return e.world.getCollisionBoxes(e, e.getEntityBoundingBox()).isEmpty() && e.world.checkNoEntityCollision(e.getEntityBoundingBox(), e);
+		}
+
 		private void spawnEntityAt(Entity e, World world) {
 			if (e instanceof EntityLiving) {
 				((EntityLiving) e).onInitialSpawn(world.getDifficultyForLocation(e.getPosition()), null);
@@ -654,7 +702,22 @@ public class SpawnerSettings {
 			}
 			setDataFromTag(e); //some data needs to be set before spawning entity in the world (like factionName)
 			world.spawnEntity(e);
-			setDataFromTag(e); //and some data needs to be set after onInitialSpawn fires for entity
+			setDataFromTag(e); //and some data needs to be set after onInitialSpawn fires for entity]
+			if (getParentSettings().getParentSettings().isOneShotSpawner) {
+				setRespawnData(e);
+			}
+			if (e instanceof NpcFaction) {
+				((NpcFaction) e).setCanDespawn();
+			}
+		}
+
+		@SuppressWarnings("ConstantConditions")
+		private void setRespawnData(Entity e) {
+			if (e.hasCapability(CapabilityRespawnData.RESPAWN_DATA_CAPABILITY, null)) {
+				IRespawnData respawnData = e.getCapability(CapabilityRespawnData.RESPAWN_DATA_CAPABILITY, null);
+				respawnData.setRespawnPos(e.getPosition());
+				respawnData.setSpawnerSettings(getParentSettings().getParentSettings().writeToNBT(new NBTTagCompound()));
+			}
 		}
 
 		private void setDataFromTag(Entity e) {

@@ -48,12 +48,12 @@ public class StructureValidatorGround extends StructureValidator {
 		prePlacementBorder(world, template, bb);
 		prePlacementUnderfill(world, bb);
 		if (!isPreserveBlocks()) {
-			clearBB(world, bb);
+			clearBB(world, template, bb);
 		}
 	}
 
-	private void clearBB(World world, StructureBB bb) {
-		BlockTools.getAllInBoxTopDown(bb.min, bb.max).forEach(world::setBlockToAir);
+	private void clearBB(World world, StructureTemplate template, StructureBB bb) {
+		BlockTools.getAllInBoxTopDown(bb.min, bb.max.add(0, 10, 0)).forEach(pos -> handleClearAction(world, pos, template, bb));
 	}
 
 	@Override

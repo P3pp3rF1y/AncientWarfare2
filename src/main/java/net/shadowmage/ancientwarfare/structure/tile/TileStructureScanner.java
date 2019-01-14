@@ -238,7 +238,7 @@ public class TileStructureScanner extends TileUpdatable implements IBlockBreakHa
 		if (AWStructureStatics.processScannerCommands || commandExecutionErrorCount > MAX_COMMAND_EXECUTION_ERRORS) {
 			BlockPos logPos = pos.toImmutable();
 			try {
-				ScannerCommandTracker.getAndRemoveNextCommand(pos).ifPresent(cmd -> {
+				ScannerCommandTracker.getAndRemoveNextCommand(this).ifPresent(cmd -> {
 							switch (cmd) {
 								case RELOAD_MAIN_SETTINGS:
 									reloadMainSettings();

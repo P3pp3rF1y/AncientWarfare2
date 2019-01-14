@@ -143,8 +143,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	public NpcBase(World par1World) {
 		super(par1World);
 		levelingStats = new NpcLevelingStats(this);
-		this.inventoryArmorDropChances = new float[] {1.f, 1.f, 1.f, 1.f};
-		this.inventoryHandsDropChances = new float[] {1.f, 1.f};
 		this.navigator = new NpcNavigator(this);
 		setPathPriority(PathNodeType.DOOR_WOOD_CLOSED, 0);
 	}
@@ -553,7 +551,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	}
 
 	@Override
-	public final void setRevengeTarget(EntityLivingBase entity) {
+	public final void setRevengeTarget(@Nullable EntityLivingBase entity) {
 		if (entity != null && !canTarget(entity)) {
 			return;
 		}
@@ -839,7 +837,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	}
 
 	@Override
-	protected final boolean canDespawn() {
+	protected boolean canDespawn() {
 		return false;
 	}
 

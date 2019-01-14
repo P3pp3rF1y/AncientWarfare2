@@ -10,7 +10,6 @@ import net.minecraft.util.JsonUtils;
 import net.shadowmage.ancientwarfare.core.registry.IRegistryDataParser;
 import net.shadowmage.ancientwarfare.core.util.RegistryTools;
 import net.shadowmage.ancientwarfare.core.util.parsing.JsonHelper;
-import net.shadowmage.ancientwarfare.core.util.parsing.ResourceLocationMatcher;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
@@ -19,6 +18,7 @@ import net.shadowmage.ancientwarfare.npc.entity.faction.attributes.IAdditionalAt
 import net.shadowmage.ancientwarfare.npc.init.AWNPCEntities;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -48,6 +48,10 @@ public class NpcDefaultsRegistry {
 	}
 
 	private static final String FACTION_NPC_PREFIX = "faction.";
+
+	public static Collection<OwnedNpcDefault> getOwnedNpcDefaults() {
+		return ownedNpcDefaults.values();
+	}
 
 	public static class OwnedNpcDefaultsParser extends NpcDefaultsParserBase {
 		@Override
@@ -82,19 +86,19 @@ public class NpcDefaultsRegistry {
 			npcSubtypeDefault = getCanSwim(data).map(npcSubtypeDefault::setCanSwim).orElse(npcSubtypeDefault);
 			npcSubtypeDefault = getCanBreakDoors(data).map(npcSubtypeDefault::setCanBreakDoors).orElse(npcSubtypeDefault);
 			npcSubtypeDefault = npcSubtypeDefault.setEquipment(getEquipment(data));
-			Set<ResourceLocationMatcher> overrideTargetList = getTargetList(data);
+			Set<String> overrideTargetList = getTargetList(data);
 			if (!overrideTargetList.isEmpty()) {
 				npcSubtypeDefault = npcSubtypeDefault.overrideTargets(overrideTargetList);
 			}
 			return npcSubtypeDefault;
 		}
 
-		private Set<ResourceLocationMatcher> getTargetList(JsonObject json) {
+		private Set<String> getTargetList(JsonObject json) {
 			if (!json.has("entities_to_target")) {
 				return Collections.emptySet();
 			}
 			JsonArray targets = JsonUtils.getJsonArray(json, "entities_to_target");
-			return StreamSupport.stream(targets.spliterator(), false).map(e -> new ResourceLocationMatcher(JsonUtils.getString(e, "")))
+			return StreamSupport.stream(targets.spliterator(), false).map(e -> JsonUtils.getString(e, ""))
 					.collect(Collectors.toCollection(HashSet::new));
 		}
 

@@ -12,9 +12,13 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
+import net.shadowmage.ancientwarfare.core.util.NBTHelper;
+import net.shadowmage.ancientwarfare.npc.ai.AIHelper;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionFleeSun;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRestrictSun;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
@@ -26,15 +30,25 @@ import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
 import net.shadowmage.ancientwarfare.npc.registry.FactionNpcDefault;
 import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
 import net.shadowmage.ancientwarfare.npc.registry.NpcDefaultsRegistry;
+import net.shadowmage.ancientwarfare.structure.util.CapabilityRespawnData;
+import net.shadowmage.ancientwarfare.structure.util.IRespawnData;
+import net.shadowmage.ancientwarfare.structure.util.SpawnerHelper;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+@SuppressWarnings({"squid:MaximumInheritanceDepth","squid:S2160"})
 public abstract class NpcFaction extends NpcBase {
+	private static final int DEATH_REVENGE_TICKS = 6000;
+	private static final int HIT_REVENGE_TICKS = DEATH_REVENGE_TICKS / 20;
+	private static final int REVENGE_LIST_VALIDATION_TICKS = DEATH_REVENGE_TICKS / 100;
+	private static final double REVENGE_SET_RANGE = 50D;
+
 	protected String factionName;
-	private Map<IAdditionalAttribute<?>, Object> additionalAttributes = new HashMap<>();
+	private Map<String, Long> revengePlayers = new HashMap<>();
 
 	public NpcFaction(World world) {
 		super(world);
@@ -47,6 +61,33 @@ public abstract class NpcFaction extends NpcBase {
 		addAI();
 	}
 
+	private Map<IAdditionalAttribute<?>, Object> additionalAttributes = new HashMap<>();
+	private boolean canDespawn = true; //used for previously existing entities so that they wouldn't despawn and leave structures unattended
+	//TODO remove in the near future 3 or 4/2019
+
+	@Override
+	protected boolean canDespawn() {
+		return canDespawn;
+	}
+
+	public void setDeathRevengePlayer(String playerName) {
+		revengePlayers.put(playerName, world.getTotalWorldTime() + DEATH_REVENGE_TICKS);
+	}
+
+	@Override
+	protected void despawnEntity() {
+		super.despawnEntity();
+
+		if (isDead && hasCapability(CapabilityRespawnData.RESPAWN_DATA_CAPABILITY, null)) {
+			IRespawnData respawnData = getCapability(CapabilityRespawnData.RESPAWN_DATA_CAPABILITY, null);
+			SpawnerHelper.createSpawner(respawnData, world);
+		}
+	}
+
+	public void setCanDespawn() {
+		canDespawn = true;
+	}
+
 	private void addAI() {
 		tasks.addTask(2, new NpcAIFactionRestrictSun(this));
 		tasks.addTask(3, new NpcAIFactionFleeSun(this, 1.0D));
@@ -56,7 +97,7 @@ public abstract class NpcFaction extends NpcBase {
 		additionalAttributes.put(attribute, value);
 	}
 
-	protected <T> Optional<T> getAdditionalAttributeValue(IAdditionalAttribute<T> attribute) {
+	<T> Optional<T> getAdditionalAttributeValue(IAdditionalAttribute<T> attribute) {
 		return Optional.ofNullable(attribute.getValueClass().cast(additionalAttributes.get(attribute)));
 	}
 
@@ -152,16 +193,43 @@ public abstract class NpcFaction extends NpcBase {
 
 	@Override
 	public boolean isHostileTowards(Entity e) {
-		if (e instanceof EntityPlayer) {
-			return FactionTracker.INSTANCE.getStandingFor(world, e.getName(), getFaction()) < 0;
-		} else if (e instanceof NpcPlayerOwned) {
-			NpcBase npc = (NpcBase) e;
-			return FactionTracker.INSTANCE.getStandingFor(world, npc.getOwner().getName(), getFaction()) < 0;
+		if (e instanceof EntityPlayer || e instanceof NpcPlayerOwned) {
+			String playerName = e instanceof EntityPlayer ? e.getName() : ((NpcBase) e).getOwner().getName();
+			return revengePlayers.keySet().contains(playerName) || FactionTracker.INSTANCE.getStandingFor(world, playerName, getFaction()) < 0;
 		} else if (e instanceof NpcFaction) {
 			NpcFaction npc = (NpcFaction) e;
 			return !npc.getFaction().equals(factionName) && FactionRegistry.getFaction(getFaction()).isHostileTowards(npc.getFaction());
 		} else {
-			return FactionRegistry.getFaction(factionName).isTarget(e);
+			return FactionRegistry.getFaction(factionName).isTarget(e) || AIHelper.isAdditionalEntityToTarget(e);
+		}
+	}
+
+	@Override
+	public void onEntityUpdate() {
+		super.onEntityUpdate();
+		if (world.getWorldTime() % REVENGE_LIST_VALIDATION_TICKS == 0) {
+			Iterator<Map.Entry<String, Long>> it = revengePlayers.entrySet().iterator();
+			while(it.hasNext()) {
+				Map.Entry<String, Long> playerRevengeTime = it.next();
+				if (world.getTotalWorldTime() > playerRevengeTime.getValue()) {
+					it.remove();
+					setAttackTarget(null);
+					setRevengeTarget(null);
+				}
+			}
+		}
+
+	}
+
+	@Override
+	protected void damageEntity(DamageSource damageSrc, float damageAmount) {
+		super.damageEntity(damageSrc, damageAmount);
+
+		if (damageSrc.damageType.equals("player")) {
+			//noinspection ConstantConditions
+			revengePlayers.put(damageSrc.getTrueSource().getName(), world.getTotalWorldTime() + HIT_REVENGE_TICKS);
+		} else if ((damageSrc.damageType.equals("mob") && damageSrc.getTrueSource() instanceof NpcBase)) {
+			revengePlayers.put(((NpcBase) damageSrc.getTrueSource()).getOwner().getName(), world.getTotalWorldTime() + HIT_REVENGE_TICKS);
 		}
 	}
 
@@ -182,12 +250,18 @@ public abstract class NpcFaction extends NpcBase {
 	@Override
 	public void onDeath(DamageSource damageSource) {
 		super.onDeath(damageSource);
-		if (damageSource.getTrueSource() instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer) damageSource.getTrueSource();
-			FactionTracker.INSTANCE.adjustStandingFor(world, player.getName(), getFaction(), -AWNPCStatics.factionLossOnDeath);
-		} else if (damageSource.getTrueSource() instanceof NpcPlayerOwned) {
-			String playerName = ((NpcBase) damageSource.getTrueSource()).getOwner().getName();
+		if (damageSource.getTrueSource() instanceof EntityPlayer || damageSource.getTrueSource() instanceof NpcPlayerOwned) {
+			String playerName = damageSource.getTrueSource() instanceof EntityPlayer ? damageSource.getTrueSource().getName() :
+					((NpcBase) damageSource.getTrueSource()).getOwner().getName();
 			FactionTracker.INSTANCE.adjustStandingFor(world, playerName, getFaction(), -AWNPCStatics.factionLossOnDeath);
+
+			setDeathRevengePlayer(playerName);
+			world.getEntitiesWithinAABB(NpcFaction.class, new AxisAlignedBB(getPosition()).grow(REVENGE_SET_RANGE))
+					.forEach(factionNpc -> {
+						if (factionNpc.getFaction().equals(getFaction())) {
+							factionNpc.setDeathRevengePlayer(playerName);
+						}
+					});
 		}
 	}
 
@@ -222,7 +296,10 @@ public abstract class NpcFaction extends NpcBase {
 		super.readEntityFromNBT(tag);
 		factionName = tag.getString("factionName");
 		NpcDefaultsRegistry.getFactionNpcDefault(this).applyAdditionalAttributes(this);
-	}
+		canDespawn = tag.getBoolean("canDespawn");
+		revengePlayers = NBTHelper.getMap(tag.getTagList("revengePlayers", Constants.NBT.TAG_COMPOUND),
+				t -> t.getString("playerName"), t -> t.getLong("time") );
+}
 
 	@Override
 	public void writeEntityToNBT(NBTTagCompound tag) {
@@ -230,5 +307,8 @@ public abstract class NpcFaction extends NpcBase {
 		if (factionName != null) {
 			tag.setString("factionName", factionName);
 		}
+		tag.setBoolean("canDespawn", canDespawn);
+		tag.setTag("revengePlayers", NBTHelper.mapToCompoundList(revengePlayers,
+				(t, playerName) -> t.setString("playerName", playerName), (t, time) -> t.setLong("time", time)));
 	}
 }

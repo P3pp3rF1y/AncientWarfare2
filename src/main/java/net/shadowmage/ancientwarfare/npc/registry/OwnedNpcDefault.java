@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.npc.registry;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
-import net.shadowmage.ancientwarfare.core.util.parsing.ResourceLocationMatcher;
 
 import javax.annotation.concurrent.Immutable;
 import java.util.HashMap;
@@ -12,21 +11,21 @@ import java.util.Set;
 
 @Immutable
 public class OwnedNpcDefault extends NpcDefault {
-	private final Set<ResourceLocationMatcher> targetList;
+	private final Set<String> targetList;
 
-	public OwnedNpcDefault(Set<ResourceLocationMatcher> targetList, Map<String, Double> attributes, int experienceDrop, boolean canSwim, boolean canBreakDoors, Map<Integer, Item> equipment) {
+	public OwnedNpcDefault(Set<String> targetList, Map<String, Double> attributes, int experienceDrop, boolean canSwim, boolean canBreakDoors, Map<Integer, Item> equipment) {
 		super(attributes, experienceDrop, canSwim, canBreakDoors, equipment);
 		this.targetList = targetList;
 	}
 
-	public OwnedNpcDefault overrideTargets(Set<ResourceLocationMatcher> newTargetList) {
+	public OwnedNpcDefault overrideTargets(Set<String> newTargetList) {
 		return new OwnedNpcDefault(newTargetList, attributes, experienceDrop, canSwim, canBreakDoors, equipment);
 	}
 
 	public boolean isTarget(Entity entity) {
 		//noinspection ConstantConditions
 		return EntityRegistry.getEntry(entity.getClass()) != null
-				&& targetList.stream().anyMatch(m -> m.test(EntityRegistry.getEntry(entity.getClass()).getRegistryName()));
+				&& targetList.contains(EntityRegistry.getEntry(entity.getClass()).getRegistryName().toString());
 	}
 
 	@Override
@@ -58,5 +57,9 @@ public class OwnedNpcDefault extends NpcDefault {
 		newEquipment.putAll(equipment);
 		newEquipment.putAll(additionalEquipment);
 		return new OwnedNpcDefault(targetList, attributes, experienceDrop, canSwim, canBreakDoors, newEquipment);
+	}
+
+	public Set<String> getTargetList() {
+		return targetList;
 	}
 }

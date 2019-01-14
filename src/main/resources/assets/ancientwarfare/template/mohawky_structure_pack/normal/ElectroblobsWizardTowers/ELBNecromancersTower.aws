@@ -5,7 +5,7 @@
 header:
 version=2.8
 name=ELBNecromancersTower
-mods=
+mods=ebwizardry
 size=41,110,43
 offset=18,8,42
 :endheader

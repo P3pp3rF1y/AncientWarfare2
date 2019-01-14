@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.structure.template.build;
 
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -217,5 +218,9 @@ public class StructureBB extends Zone {
 		int xDistance = Math.abs(getCenterX() - bb.getCenterX());
 		int zDistance = Math.abs(getCenterZ() - bb.getCenterZ());
 		return Math.sqrt(xDistance * xDistance + zDistance * zDistance);
+	}
+
+	public AxisAlignedBB getAABB() {
+		return new AxisAlignedBB(min, max);
 	}
 }

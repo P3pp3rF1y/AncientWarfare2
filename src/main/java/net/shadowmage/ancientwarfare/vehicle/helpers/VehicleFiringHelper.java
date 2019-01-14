@@ -21,6 +21,7 @@
 
 package net.shadowmage.ancientwarfare.vehicle.helpers;
 
+import com.google.common.primitives.Floats;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.math.MathHelper;
@@ -559,8 +560,18 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 	}
 
 	private boolean isYawPointedAt(ITarget target) {
-		return !vehicle.canAimRotate() && (Math.abs(getAimYaw(target) - Trig.wrapTo360(vehicle.rotationYaw)) < NEGLIGIBLE_ANGLE_DIFFERENCE) || (Math
-				.abs(getAimYaw(target) - vehicle.localTurretRotation) < NEGLIGIBLE_ANGLE_DIFFERENCE);
+		float minYaw = getAimYaw(target.getBoundigBox().minX, target.getBoundigBox().minZ);
+		float maxYaw = getAimYaw(target.getBoundigBox().maxX, target.getBoundigBox().maxZ);
+
+		if (minYaw > maxYaw) {
+			float temp = minYaw;
+			minYaw = maxYaw;
+			maxYaw = temp;
+		}
+
+		float vehicleRotation = vehicle.canAimRotate() ? vehicle.localTurretRotation : vehicle.rotationYaw;
+
+		return Trig.isAngleBetween(vehicleRotation, minYaw, maxYaw);
 	}
 
 	private boolean isPitchPointedAt(ITarget target) {
@@ -569,17 +580,30 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 		}
 
 		Vec3d offset = vehicle.getMissileOffset();
-		float targetX = (float) target.getX() - (float) (vehicle.posX + offset.x);
-		float targetY = (float) target.getY() - (float) (vehicle.posY + offset.y);
-		float targetZ = (float) target.getZ() - (float) (vehicle.posZ + offset.z);
+		float targetX = (float) target.getBoundigBox().minX - (float) (vehicle.posX + offset.x);
+		float targetY = (float) target.getBoundigBox().minY - (float) (vehicle.posY + offset.y);
+		float targetZ = (float) target.getBoundigBox().minZ - (float) (vehicle.posZ + offset.z);
 
-		Tuple<Float, Float> angles = Trig.getLaunchAngleToHit(targetX, targetY, targetZ, vehicle.localLaunchPower);
+		Tuple<Float, Float> anglesMin = Trig.getLaunchAngleToHit(targetX, targetY, targetZ, vehicle.localLaunchPower);
 		//noinspection SimplifiableIfStatement
-		if (angles.getFirst().isNaN() || angles.getSecond().isNaN()) {
-			return false;
+		if (Math.abs(anglesMin.getSecond() - vehicle.localTurretPitch) < NEGLIGIBLE_ANGLE_DIFFERENCE || Math
+				.abs(anglesMin.getFirst() - vehicle.localTurretPitch) < NEGLIGIBLE_ANGLE_DIFFERENCE) {
+			return true;
 		}
-		return Math.abs(angles.getSecond() - vehicle.localTurretPitch) < NEGLIGIBLE_ANGLE_DIFFERENCE || Math
-				.abs(angles.getFirst() - vehicle.localTurretPitch) < NEGLIGIBLE_ANGLE_DIFFERENCE;
+
+		targetX = (float) target.getBoundigBox().maxX - (float) (vehicle.posX + offset.x);
+		targetY = (float) target.getBoundigBox().maxY - (float) (vehicle.posY + offset.y);
+		targetZ = (float) target.getBoundigBox().maxZ - (float) (vehicle.posZ + offset.z);
+
+		Tuple<Float, Float> anglesMax = Trig.getLaunchAngleToHit(targetX, targetY, targetZ, vehicle.localLaunchPower);
+		//noinspection SimplifiableIfStatement
+		if (Math.abs(anglesMax.getSecond() - vehicle.localTurretPitch) < NEGLIGIBLE_ANGLE_DIFFERENCE || Math
+				.abs(anglesMax.getFirst() - vehicle.localTurretPitch) < NEGLIGIBLE_ANGLE_DIFFERENCE) {
+			return true;
+		}
+
+		return Trig.isAngleBetween(vehicle.localTurretPitch, anglesMin.getFirst(), anglesMax.getFirst())
+				|| Trig.isAngleBetween(vehicle.localTurretPitch, anglesMin.getSecond(), anglesMax.getSecond());
 	}
 
 	private boolean isPowerSetToPointAt(ITarget target) {
@@ -587,10 +611,21 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 			return true;
 		}
 
-		float power = Trig
-				.iterativeSpeedFinder((float) target.getX(), (float) target.getY(), (float) target.getZ(), vehicle.localTurretPitch + vehicle.rotationPitch,
+		float powerMin = getPowerFor((float) target.getBoundigBox().minX, (float) target.getBoundigBox().minY, (float) target.getBoundigBox().minZ);
+		float powerMax = getPowerFor((float) target.getBoundigBox().maxX, (float) target.getBoundigBox().maxY, (float) target.getBoundigBox().maxZ);
+
+		if (powerMin > powerMax) {
+			float temp = powerMin;
+			powerMin = powerMax;
+			powerMax = temp;
+		}
+
+		return vehicle.localLaunchPower >= powerMin && vehicle.localLaunchPower <= powerMax;
+	}
+
+	private float getPowerFor(float minX, float minY, float minZ) {
+		return Trig.iterativeSpeedFinder(minX, minY, minZ, vehicle.localTurretPitch + vehicle.rotationPitch,
 						TRAJECTORY_ITERATIONS_CLIENT, (vehicle.ammoHelper.getCurrentAmmoType() != null && vehicle.ammoHelper.getCurrentAmmoType().isRocket()));
-		return !MathUtils.epsilonEquals(vehicle.localLaunchPower, power);
 	}
 
 	public float getAimYaw(ITarget target) {
