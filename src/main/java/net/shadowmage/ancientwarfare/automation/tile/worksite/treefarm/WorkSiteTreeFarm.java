@@ -29,7 +29,6 @@ import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nullable;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -41,8 +40,8 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
 	private final Set<BlockPos> blocksToShear = new LinkedHashSet<>();
 	private final Set<BlockPos> leafBlocksToChop = new LinkedHashSet<>();
 	private final Set<BlockPos> trunkBlocksToChop = new LinkedHashSet<>();
-	private final Set<BlockPos> blocksToPlant = new HashSet<>();
-	private final Set<BlockPos> blocksToFertilize = new HashSet<>();
+	private final Set<BlockPos> blocksToPlant = new LinkedHashSet<>();
+	private final Set<BlockPos> blocksToFertilize = new LinkedHashSet<>();
 
 	private final IItemHandler inventoryForDrops;
 
@@ -104,14 +103,16 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
 				.filter(t -> t.getSecond().isPresent()).map(t -> new Tuple<>(t.getFirst(), t.getSecond().get())).findFirst();
 		if (plantable.isPresent()) {
 			Iterator<BlockPos> it = blocksToPlant.iterator();
-			BlockPos position = it.next();
-			it.remove();
+			while (it.hasNext()) {
+				BlockPos position = it.next();
+				it.remove();
 
-			ItemStack stack = plantable.get().getFirst();
-			ISapling sapling = plantable.get().getSecond();
-			if (canReplace(position) && tryPlantingSapling(position, stack, sapling)) {
-				InventoryTools.removeItems(plantableInventory, stack, 1);
-				return true;
+				ItemStack stack = plantable.get().getFirst();
+				ISapling sapling = plantable.get().getSecond();
+				if (canReplace(position) && tryPlantingSapling(position, stack, sapling)) {
+					InventoryTools.removeItems(plantableInventory, stack, 1);
+					return true;
+				}
 			}
 		}
 
