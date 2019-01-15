@@ -114,6 +114,8 @@ public class AncientWarfareStructure {
 
 		RegistryLoader.registerParser(new EntitySpawnNBTRegistry.Parser());
 		RegistryLoader.registerParser(new StructureBlockRegistry.Parser());
+
+		CapabilityRespawnData.register();
 	}
 
 	@EventHandler
@@ -136,7 +138,6 @@ public class AncientWarfareStructure {
 		TemplateLoader.INSTANCE.loadTemplates();
 		statics.save();
 		AWStructureStatics.logSkippableBlocksCoveredByMaterial();
-		CapabilityRespawnData.register();
 	}
 
 	@SubscribeEvent

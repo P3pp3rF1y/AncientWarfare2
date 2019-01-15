@@ -169,14 +169,17 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
 		private int depositAllItemsExcept(IItemHandler from, IItemHandler to) {
 			float movedStacks = 0;
 			for (ItemStack stack : InventoryTools.getIterator(from)) {
-				if (matchesFilter(stack)) {
+				if (stack.isEmpty() || matchesFilter(stack)) {
 					continue;
 				}
-				ItemStack remaining = InventoryTools.insertItem(to, stack, true);
+				ItemStack filter = stack.copy();
+				ItemStack remaining = InventoryTools.insertItem(to, filter, true);
 				int toMove = stack.getCount() - remaining.getCount();
-				ItemStack removedStack = InventoryTools.removeItems(from, stack, toMove);
-				InventoryTools.insertItem(to, removedStack);
-				movedStacks += ((float) removedStack.getCount()) / ((float) stack.getMaxStackSize());
+				if (!InventoryTools.removeItems(from, filter, toMove, true).isEmpty()) {
+					ItemStack removedStack = InventoryTools.removeItems(from, filter, toMove);
+					InventoryTools.insertItem(to, removedStack);
+					movedStacks += ((float) removedStack.getCount()) / ((float) filter.getMaxStackSize());
+				}
 			}
 			return (int) Math.ceil(movedStacks);
 		}
