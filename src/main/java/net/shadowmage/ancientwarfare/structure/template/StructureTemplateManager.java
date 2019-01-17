@@ -50,7 +50,8 @@ public class StructureTemplateManager {
 	}
 
 	private static void syncTemplateToClient(StructureTemplate template) {
-		if (FMLCommonHandler.instance().getSide() == Side.SERVER) {
+		//noinspection ConstantConditions
+		if (FMLCommonHandler.instance().getSide() == Side.SERVER && FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList() != null) {
 			PacketStructure pkt = new PacketStructure();
 			pkt.packetData.setTag(SINGLE_STRUCTURE_TAG, template.serializeNBT());
 			NetworkHandler.sendToAllPlayers(pkt);
