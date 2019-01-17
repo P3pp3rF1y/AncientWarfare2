@@ -1,5 +1,5 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 1/4/2019 at: 9:47:15
+# Auto-generated structure template file. created on: 1/4/2019 at: 23:20:2
 # Lines beginning with # denote comments
 
 header:
@@ -891,7 +891,7 @@ rule:
 plugin=inventory
 number=38
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},lootLevel:0,teData:{ForgeData:{},Items:[],id:"minecraft:chest",Lock:""},inventoryData:{length:0,inventoryContents:[]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},lootLevel:0,teData:{ForgeData:{},Items:[{Slot:15b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},Damage:0s},{Slot:16b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},Damage:0s},{Slot:17b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},Damage:0s},{Slot:24b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},Damage:0s},{Slot:26b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:5,inventoryContents:[{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},slot:0,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},slot:1,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},slot:2,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},slot:3,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},slot:4,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -899,7 +899,7 @@ rule:
 plugin=inventory
 number=39
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},lootLevel:0,teData:{ForgeData:{},Items:[],id:"minecraft:chest",Lock:""},inventoryData:{length:0,inventoryContents:[]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},lootLevel:0,teData:{ForgeData:{},Items:[{Slot:1b,id:"minecraft:melon",Count:2b,Damage:0s},{Slot:2b,id:"minecraft:bread",Count:2b,Damage:0s},{Slot:5b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"silver"},Damage:0s},{Slot:6b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},Damage:0s},{Slot:7b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},Damage:0s},{Slot:8b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},Damage:0s},{Slot:10b,id:"minecraft:melon",Count:1b,Damage:0s},{Slot:11b,id:"minecraft:bread",Count:1b,Damage:0s},{Slot:15b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},Damage:0s},{Slot:16b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"copper"},Damage:0s},{Slot:17b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},Damage:0s},{Slot:19b,id:"minecraft:melon",Count:1b,Damage:0s},{Slot:21b,id:"minecraft:bread",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:13,inventoryContents:[{id:"minecraft:melon",Count:2b,slot:0,Damage:0s},{id:"minecraft:bread",Count:2b,slot:1,Damage:0s},{id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"silver"},slot:2,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},slot:3,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},slot:4,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},slot:5,Damage:0s},{id:"minecraft:melon",Count:1b,slot:6,Damage:0s},{id:"minecraft:bread",Count:1b,slot:7,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},slot:8,Damage:0s},{id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"copper"},slot:9,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},slot:10,Damage:0s},{id:"minecraft:melon",Count:1b,slot:11,Damage:0s},{id:"minecraft:bread",Count:1b,slot:12,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -907,7 +907,7 @@ rule:
 plugin=inventory
 number=40
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},lootLevel:0,teData:{ForgeData:{},Items:[],id:"minecraft:chest",Lock:""},inventoryData:{length:0,inventoryContents:[]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},lootLevel:0,teData:{ForgeData:{},Items:[{Slot:4b,id:"minecraft:wool",Count:1b,Damage:7s},{Slot:7b,id:"minecraft:wool",Count:1b,Damage:0s},{Slot:8b,id:"minecraft:wool",Count:1b,Damage:0s},{Slot:10b,id:"minecraft:wool",Count:1b,Damage:8s},{Slot:11b,id:"minecraft:wool",Count:1b,Damage:8s},{Slot:13b,id:"minecraft:wool",Count:1b,Damage:7s},{Slot:14b,id:"minecraft:wool",Count:1b,Damage:7s},{Slot:16b,id:"minecraft:wool",Count:1b,Damage:0s},{Slot:17b,id:"minecraft:wool",Count:2b,Damage:0s},{Slot:19b,id:"minecraft:wool",Count:1b,Damage:8s},{Slot:20b,id:"minecraft:wool",Count:1b,Damage:8s},{Slot:22b,id:"minecraft:wool",Count:1b,Damage:7s},{Slot:23b,id:"minecraft:wool",Count:1b,Damage:7s},{Slot:25b,id:"minecraft:wool",Count:1b,Damage:0s},{Slot:26b,id:"minecraft:wool",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:15,inventoryContents:[{id:"minecraft:wool",Count:1b,slot:0,Damage:7s},{id:"minecraft:wool",Count:1b,slot:1,Damage:0s},{id:"minecraft:wool",Count:1b,slot:2,Damage:0s},{id:"minecraft:wool",Count:1b,slot:3,Damage:8s},{id:"minecraft:wool",Count:1b,slot:4,Damage:8s},{id:"minecraft:wool",Count:1b,slot:5,Damage:7s},{id:"minecraft:wool",Count:1b,slot:6,Damage:7s},{id:"minecraft:wool",Count:1b,slot:7,Damage:0s},{id:"minecraft:wool",Count:2b,slot:8,Damage:0s},{id:"minecraft:wool",Count:1b,slot:9,Damage:8s},{id:"minecraft:wool",Count:1b,slot:10,Damage:8s},{id:"minecraft:wool",Count:1b,slot:11,Damage:7s},{id:"minecraft:wool",Count:1b,slot:12,Damage:7s},{id:"minecraft:wool",Count:1b,slot:13,Damage:0s},{id:"minecraft:wool",Count:1b,slot:14,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -915,7 +915,7 @@ rule:
 plugin=inventory
 number=41
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},lootLevel:0,teData:{ForgeData:{},Items:[],id:"minecraft:chest",Lock:""},inventoryData:{length:0,inventoryContents:[]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},lootLevel:0,teData:{ForgeData:{},Items:[{Slot:1b,id:"minecraft:wool",Count:1b,Damage:8s},{Slot:2b,id:"minecraft:wool",Count:2b,Damage:8s},{Slot:4b,id:"minecraft:wool",Count:2b,Damage:7s},{Slot:5b,id:"minecraft:wool",Count:1b,Damage:7s},{Slot:7b,id:"minecraft:wool",Count:1b,Damage:0s},{Slot:8b,id:"minecraft:wool",Count:1b,Damage:0s},{Slot:10b,id:"minecraft:wool",Count:2b,Damage:8s},{Slot:14b,id:"minecraft:wool",Count:1b,Damage:7s},{Slot:16b,id:"minecraft:wool",Count:1b,Damage:0s},{Slot:19b,id:"minecraft:wool",Count:1b,Damage:8s},{Slot:22b,id:"minecraft:wool",Count:1b,Damage:7s},{Slot:25b,id:"minecraft:wool",Count:1b,Damage:0s},{Slot:26b,id:"minecraft:wool",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:13,inventoryContents:[{id:"minecraft:wool",Count:1b,slot:0,Damage:8s},{id:"minecraft:wool",Count:2b,slot:1,Damage:8s},{id:"minecraft:wool",Count:2b,slot:2,Damage:7s},{id:"minecraft:wool",Count:1b,slot:3,Damage:7s},{id:"minecraft:wool",Count:1b,slot:4,Damage:0s},{id:"minecraft:wool",Count:1b,slot:5,Damage:0s},{id:"minecraft:wool",Count:2b,slot:6,Damage:8s},{id:"minecraft:wool",Count:1b,slot:7,Damage:7s},{id:"minecraft:wool",Count:1b,slot:8,Damage:0s},{id:"minecraft:wool",Count:1b,slot:9,Damage:8s},{id:"minecraft:wool",Count:1b,slot:10,Damage:7s},{id:"minecraft:wool",Count:1b,slot:11,Damage:0s},{id:"minecraft:wool",Count:1b,slot:12,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
