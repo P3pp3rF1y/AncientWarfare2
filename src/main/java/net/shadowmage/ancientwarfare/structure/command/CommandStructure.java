@@ -195,9 +195,6 @@ public class CommandStructure extends ParentCommand {
 	}
 
 	private class ReexportCommand implements ISubCommand {
-		private boolean finishedMoving = true;
-		private int timeout = 0;
-
 		@Override
 		public String getName() {
 			return "scannersReexport";
