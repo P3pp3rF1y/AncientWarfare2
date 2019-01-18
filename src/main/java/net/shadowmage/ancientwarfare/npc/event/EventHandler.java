@@ -50,11 +50,9 @@ public class EventHandler {
 		// Again search for a task to use for the same priority as our attack NPC task, but
 		// look for "EntityAINearestAttackableTarget" instead which is for ranged units
 		for (EntityAITaskEntry taskEntry : entity.targetTasks.taskEntries) {
-			if ((taskEntry.action instanceof EntityAINearestAttackableTarget && ((EntityAINearestAttackableTarget) taskEntry.action).targetClass == EntityPlayer.class)
-					|| anyAdditionalHostileAIChecksMatch(taskEntry)) {
-				if (taskEntry.priority != -1) {
-					return taskEntry.priority;
-				}
+			if (((taskEntry.action instanceof EntityAINearestAttackableTarget && ((EntityAINearestAttackableTarget) taskEntry.action).targetClass == EntityPlayer.class)
+					|| anyAdditionalHostileAIChecksMatch(taskEntry)) && taskEntry.priority != -1) {
+				return taskEntry.priority;
 			}
 		}
 		return -1;
@@ -120,7 +118,7 @@ public class EventHandler {
 		}
 
 		//noinspection ConstantConditions
-		if (!modsCoveredByTargetLists.contains(entityEntry.getRegistryName().getResourcePath())) {
+		if (!modsCoveredByTargetLists.contains(entityEntry.getRegistryName().getResourceDomain())) {
 			AIHelper.addHostileEntityToTarget(entity);
 			return true;
 		}
