@@ -51,13 +51,22 @@ public class EventHandler {
 		// look for "EntityAINearestAttackableTarget" instead which is for ranged units
 		for (EntityAITaskEntry taskEntry : entity.targetTasks.taskEntries) {
 			if ((taskEntry.action instanceof EntityAINearestAttackableTarget && ((EntityAINearestAttackableTarget) taskEntry.action).targetClass == EntityPlayer.class)
-					|| additionalHostileAIChecks.stream().anyMatch(p -> p.test(taskEntry.action))) {
+					|| anyAdditionalHostileAIChecksMatch(taskEntry)) {
 				if (taskEntry.priority != -1) {
 					return taskEntry.priority;
 				}
 			}
 		}
 		return -1;
+	}
+
+	private boolean anyAdditionalHostileAIChecksMatch(EntityAITaskEntry taskEntry) {
+		for (Predicate<EntityAIBase> additionalCheck : additionalHostileAIChecks) {
+			if (additionalCheck.test(taskEntry.action)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void initModsCoveredByTargets() {
