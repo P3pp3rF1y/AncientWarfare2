@@ -13,26 +13,26 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 
-import javax.annotation.Nullable;
-
 public class CapabilityRespawnData {
 	private CapabilityRespawnData() {}
 
 	private static final String RESPAWN_POS_TAG = "respawnPos";
 	private static final String SPAWNER_SETTINGS_TAG = "spawnerSettings";
+	private static final String SPAWN_TIME_TAG = "spawnTime";
 
 	@CapabilityInject(IRespawnData.class)
+	@SuppressWarnings({"squid:S1444", "squid:S3008"})
 	public static Capability<IRespawnData> RESPAWN_DATA_CAPABILITY = null;
 
 	public static void register() {
 		CapabilityManager.INSTANCE.register(IRespawnData.class, new Capability.IStorage<IRespawnData>() {
-			@Nullable
 			@Override
 			public NBTBase writeNBT(Capability<IRespawnData> capability, IRespawnData instance, EnumFacing side) {
 				NBTTagCompound tag = new NBTTagCompound();
 				if (instance.canRespawn()) {
 					tag.setLong(RESPAWN_POS_TAG, instance.getRespawnPos().toLong());
 					tag.setTag(SPAWNER_SETTINGS_TAG, instance.getSpawnerSettings());
+					tag.setLong(SPAWN_TIME_TAG, instance.getSpawnTime());
 				}
 
 				return tag;
@@ -45,6 +45,7 @@ public class CapabilityRespawnData {
 					if (tag.hasKey(RESPAWN_POS_TAG)) {
 						instance.setRespawnPos(BlockPos.fromLong(tag.getLong(RESPAWN_POS_TAG)));
 						instance.setSpawnerSettings(tag.getCompoundTag(SPAWNER_SETTINGS_TAG));
+						instance.setSpawnTime(tag.getLong(SPAWN_TIME_TAG));
 					}
 				}
 			}
