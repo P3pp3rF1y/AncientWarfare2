@@ -13,8 +13,10 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -23,8 +25,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collector;
 
 public class NBTHelper {
@@ -172,6 +174,25 @@ public class NBTHelper {
 			list.appendTag(nbtEntry);
 		}
 
+		return list;
+	}
+
+	public static void writeSerializablesTo(NBTTagCompound tag, String key, List<? extends INBTSerializable> elements) {
+		NBTTagList list = new NBTTagList();
+		for (INBTSerializable serializable : elements) {
+			list.appendTag(serializable.serializeNBT());
+		}
+		tag.setTag(key, list);
+	}
+
+	public static <T extends INBTSerializable<NBTTagCompound>> List<T> deserializeListFrom(NBTTagCompound tag, String key, Supplier<T> supplier) {
+		NBTTagList tags = tag.getTagList(key, Constants.NBT.TAG_COMPOUND);
+		ArrayList<T> list = new ArrayList<>();
+		for (int i = 0; i < tags.tagCount(); i++) {
+			T element = supplier.get();
+			element.deserializeNBT(tags.getCompoundTagAt(i));
+			list.add(element);
+		}
 		return list;
 	}
 }

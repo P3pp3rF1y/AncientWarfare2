@@ -17,25 +17,16 @@ import javax.annotation.Nonnull;
 import java.util.List;
 
 public class TileWarehouse extends TileWarehouseBase {
-
 	private SortType sortType = SortType.NAME;
 	private SortOrder sortOrder = SortOrder.DESCENDING;
-
-	public TileWarehouse() {
-
-	}
 
 	@Override
 	public void invalidate() {
 		BlockPos max = getWorkBoundsMax();
-		if (max == null)
-			return;
 		BlockPos min = getWorkBoundsMin();
-		if (min == null)
-			return;
 		List<TileEntity> tiles = WorldTools.getTileEntitiesInArea(world, min.getX(), min.getY(), min.getZ(), max.getX(), max.getY(), max.getZ());
 		for (TileEntity te : tiles) {
-			if (te instanceof IControlledTile && ((IControlledTile) te).getController() == this) {
+			if (te instanceof IControlledTile && ((IControlledTile) te).getController().map(controller -> controller == this).orElse(false)) {
 				((IControlledTile) te).setController(null);
 			}
 		}
@@ -211,96 +202,102 @@ public class TileWarehouse extends TileWarehouseBase {
 			cachedItems.add(ItemStack.EMPTY);
 		}
 
-		return new IItemHandlerModifiable() {
-			@Override
-			public void setStackInSlot(int slot, @Nonnull ItemStack stack) {
-				ItemStack currentStack = cachedItems.get(slot);
+		return new WarehouseItemHandler(cachedItems);
+	}
 
-				if (currentStack.isEmpty()) {
-					insertItem(slot, stack, false);
+	private class WarehouseItemHandler implements IItemHandlerModifiable {
+		private final NonNullList<ItemStack> cachedItems;
+
+		private WarehouseItemHandler(NonNullList<ItemStack> cachedItems) {this.cachedItems = cachedItems;}
+
+		@Override
+		public void setStackInSlot(int slot, @Nonnull ItemStack stack) {
+			ItemStack currentStack = cachedItems.get(slot);
+
+			if (currentStack.isEmpty()) {
+				insertItem(slot, stack, false);
+			} else {
+				int countChange = stack.getCount() - currentStack.getCount();
+
+				if (countChange == 0) {
+					return;
+				}
+
+				if (countChange > 0) {
+					ItemStack copy = stack.copy();
+					copy.setCount(countChange);
+					insertItem(slot, copy, false);
 				} else {
-					int countChange = stack.getCount() - currentStack.getCount();
-
-					if (countChange == 0) {
-						return;
-					}
-
-					if (countChange > 0) {
-						ItemStack copy = stack.copy();
-						copy.setCount(countChange);
-						insertItem(slot, copy, false);
-					} else {
-						extractItem(slot, -countChange, false);
-					}
+					extractItem(slot, -countChange, false);
 				}
 			}
+		}
 
-			@Override
-			public int getSlots() {
-				return cachedItems.size();
-			}
+		@Override
+		public int getSlots() {
+			return cachedItems.size();
+		}
 
-			@Nonnull
-			@Override
-			public ItemStack getStackInSlot(int slot) {
-				return slot < cachedItems.size() ? cachedItems.get(slot) : ItemStack.EMPTY;
-			}
+		@Nonnull
+		@Override
+		public ItemStack getStackInSlot(int slot) {
+			return slot < cachedItems.size() ? cachedItems.get(slot) : ItemStack.EMPTY;
+		}
 
-			@Nonnull
-			@Override
-			public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-				ItemStack cachedStack = cachedItems.get(slot);
-				if (cachedStack.isEmpty() || InventoryTools.doItemStacksMatchRelaxed(stack, cachedStack)) {
-					int maxToAdd = Math.min(stack.getMaxStackSize() - cachedStack.getCount(), stack.getCount());
-					if (!simulate) {
-						cachedStack.setCount(cachedStack.getCount() + maxToAdd);
-						ItemStack result = tryAddItem(stack, maxToAdd);
-						if (maxToAdd == stack.getCount()) {
-							return result;
-						} else {
-							ItemStack ret = stack.copy();
-							ret.setCount(stack.getCount() - maxToAdd + result.getCount());
-							return ret;
-						}
-					}
-					ItemStack ret = ItemStack.EMPTY;
-					if (maxToAdd < stack.getCount()) {
-						ret = stack.copy();
-						ret.setCount(stack.getCount() - maxToAdd);
-					}
-
-					return ret;
-				}
-
-				return stack;
-			}
-
-			@Nonnull
-			@Override
-			public ItemStack extractItem(int slot, int amount, boolean simulate) {
-				ItemStack cachedStack = cachedItems.get(slot);
-
-				if (cachedStack.isEmpty()) {
-					return ItemStack.EMPTY;
-				}
-
-				int maxToRemove = Math.min(cachedStack.getCount(), amount);
-
+		@Nonnull
+		@Override
+		public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+			ItemStack cachedStack = cachedItems.get(slot);
+			if (cachedStack.isEmpty() || InventoryTools.doItemStacksMatchRelaxed(stack, cachedStack)) {
+				int maxToAdd = Math.min(stack.getMaxStackSize() - cachedStack.getCount(), stack.getCount());
 				if (!simulate) {
-					ItemStack result = tryGetItem(cachedStack, maxToRemove);
-					cachedStack.setCount(cachedStack.getCount() - maxToRemove);
-					return result;
+					cachedStack.setCount(cachedStack.getCount() + maxToAdd);
+					ItemStack result = tryAddItem(stack, maxToAdd);
+					if (maxToAdd == stack.getCount()) {
+						return result;
+					} else {
+						ItemStack ret = stack.copy();
+						ret.setCount(stack.getCount() - maxToAdd + result.getCount());
+						return ret;
+					}
+				}
+				ItemStack ret = ItemStack.EMPTY;
+				if (maxToAdd < stack.getCount()) {
+					ret = stack.copy();
+					ret.setCount(stack.getCount() - maxToAdd);
 				}
 
-				ItemStack ret = cachedStack.copy();
-				ret.setCount(maxToRemove);
 				return ret;
 			}
 
-			@Override
-			public int getSlotLimit(int slot) {
-				return 64;
+			return stack;
+		}
+
+		@Nonnull
+		@Override
+		public ItemStack extractItem(int slot, int amount, boolean simulate) {
+			ItemStack cachedStack = cachedItems.get(slot);
+
+			if (cachedStack.isEmpty()) {
+				return ItemStack.EMPTY;
 			}
-		};
+
+			int maxToRemove = Math.min(cachedStack.getCount(), amount);
+
+			if (!simulate) {
+				ItemStack result = tryGetItem(cachedStack, maxToRemove);
+				cachedStack.setCount(cachedStack.getCount() - maxToRemove);
+				return result;
+			}
+
+			ItemStack ret = cachedStack.copy();
+			ret.setCount(maxToRemove);
+			return ret;
+		}
+
+		@Override
+		public int getSlotLimit(int slot) {
+			return 64;
+		}
 	}
 }

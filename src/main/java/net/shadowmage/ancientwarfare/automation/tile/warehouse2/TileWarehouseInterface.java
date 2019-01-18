@@ -13,9 +13,8 @@ import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.tile.IBlockBreakHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
-import net.shadowmage.ancientwarfare.core.util.NBTSerializableUtils;
+import net.shadowmage.ancientwarfare.core.util.NBTHelper;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +31,8 @@ public class TileWarehouseInterface extends TileControlled implements IInteracta
 	private boolean init = false;
 	private final List<InterfaceFillRequest> fillRequests = new ArrayList<>();
 	private final List<InterfaceEmptyRequest> emptyRequests = new ArrayList<>();
-	List<WarehouseInterfaceFilter> filters = new ArrayList<>();
-	List<ContainerWarehouseInterface> viewers = new ArrayList<>();
+	private List<WarehouseInterfaceFilter> filters = new ArrayList<>();
+	private List<ContainerWarehouseInterface> viewers = new ArrayList<>();
 
 	public void addViewer(ContainerWarehouseInterface viewer) {
 		if (!hasWorld() || world.isRemote) {
@@ -46,7 +45,7 @@ public class TileWarehouseInterface extends TileControlled implements IInteracta
 		viewers.remove(viewer);
 	}
 
-	public void updateViewers() {
+	private void updateViewers() {
 		for (ContainerWarehouseInterface v : viewers) {
 			v.onInterfaceFiltersChanged();
 		}
@@ -87,14 +86,14 @@ public class TileWarehouseInterface extends TileControlled implements IInteracta
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 		inventory.deserializeNBT(tag.getCompoundTag("inventory"));
-		filters = NBTSerializableUtils.read(tag, "filterList", WarehouseInterfaceFilter.class);
+		filters = NBTHelper.deserializeListFrom(tag, "filterList", WarehouseInterfaceFilter::new);
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 		tag.setTag("inventory", inventory.serializeNBT());
-		NBTSerializableUtils.write(tag, "filterList", getFilters());
+		NBTHelper.writeSerializablesTo(tag, "filterList", getFilters());
 		return tag;
 	}
 
@@ -104,9 +103,8 @@ public class TileWarehouseInterface extends TileControlled implements IInteracta
 		}
 		fillRequests.clear();
 		emptyRequests.clear();
-		@Nonnull ItemStack stack;
 		for (int i = 0; i < inventory.getSlots(); i++) {
-			stack = inventory.getStackInSlot(i);
+			ItemStack stack = inventory.getStackInSlot(i);
 			if (stack.isEmpty()) {
 				continue;
 			}
@@ -122,23 +120,19 @@ public class TileWarehouseInterface extends TileControlled implements IInteracta
 			}
 		}
 
-		int count;
 		for (WarehouseInterfaceFilter filter : filters) {
 			if (filter.getFilterItem().isEmpty()) {
 				continue;
 			}
-			count = InventoryTools.getCountOf(inventory, filter.getFilterItem());
+			int count = InventoryTools.getCountOf(inventory, filter.getFilterItem());
 			if (count < filter.getFilterQuantity()) {
 				fillRequests.add(new InterfaceFillRequest(filter.getFilterItem().copy(), filter.getFilterQuantity() - count));
 			}
 		}
-		TileWarehouseBase twb = (TileWarehouseBase) getController();
-		if (twb != null) {
-			twb.onIterfaceInventoryChanged(this);
-		}
+		getController().ifPresent(controller -> controller.onIterfaceInventoryChanged(this));
 	}
 
-	protected boolean matchesFilter(ItemStack stack) {
+	private boolean matchesFilter(ItemStack stack) {
 		if (filters.isEmpty()) {
 			return false;
 		}
@@ -150,7 +144,7 @@ public class TileWarehouseInterface extends TileControlled implements IInteracta
 		return false;
 	}
 
-	protected int getFilterQuantity(ItemStack stack) {
+	private int getFilterQuantity(ItemStack stack) {
 		int qty = 0;
 		for (WarehouseInterfaceFilter filter : filters) {
 			if (filter.apply(stack)) {
@@ -177,7 +171,7 @@ public class TileWarehouseInterface extends TileControlled implements IInteracta
 		final ItemStack requestedItem;
 		final int requestAmount;
 
-		public InterfaceFillRequest(ItemStack item, int amount) {
+		private InterfaceFillRequest(ItemStack item, int amount) {
 			requestedItem = item;
 			requestAmount = amount;
 		}
@@ -187,7 +181,7 @@ public class TileWarehouseInterface extends TileControlled implements IInteracta
 		final int slotNum;
 		final int count;
 
-		public InterfaceEmptyRequest(int slot, int count) {
+		private InterfaceEmptyRequest(int slot, int count) {
 			slotNum = slot;
 			this.count = count;
 		}
@@ -202,7 +196,7 @@ public class TileWarehouseInterface extends TileControlled implements IInteracta
 	@Override
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
 		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-			return (T) inventory;
+			return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory);
 		}
 		return super.getCapability(capability, facing);
 	}

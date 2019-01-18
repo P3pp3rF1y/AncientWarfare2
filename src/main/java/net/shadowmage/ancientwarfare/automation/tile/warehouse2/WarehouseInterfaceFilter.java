@@ -7,33 +7,23 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public final class WarehouseInterfaceFilter implements Predicate<ItemStack>, INBTSerializable<NBTTagCompound> {
+	private static final String FILTER_TAG = "filter";
 
-	@Nonnull
 	private ItemStack filterItem = ItemStack.EMPTY;
 	private int quantity;
 
-	public WarehouseInterfaceFilter() {
+	@Override
+	@SuppressWarnings("squid:S4449") //if we got null stack here there is something seriously wrong in the code using this and it should be fixed instead
+	public boolean apply(@Nullable ItemStack item) {
+		//noinspection ConstantConditions
+		return InventoryTools.doItemStacksMatchRelaxed(filterItem, item);
 	}
 
 	@Override
-	public boolean apply(ItemStack item) {
-		if (item.isEmpty()) {
-			return false;
-		}
-		if (filterItem.isEmpty()) {
-			return false;
-		}//null filter item, invalid filter
-		if (item.getItem() != filterItem.getItem()) {
-			return false;
-		}//item not equivalent, obvious mis-match
-		return InventoryTools.doItemStacksMatchRelaxed(filterItem, item);//finally, items were equal, no ignores' -- check both dmg and tag
-	}
-
-	@Override
-	public boolean equals(Object object) {
+	public boolean equals(@Nullable Object object) {
 		return object instanceof WarehouseInterfaceFilter && ((WarehouseInterfaceFilter) object).quantity == this.quantity && ItemStack.areItemStacksEqual(this.filterItem, ((WarehouseInterfaceFilter) object).filterItem);
 	}
 
@@ -77,7 +67,7 @@ public final class WarehouseInterfaceFilter implements Predicate<ItemStack>, INB
 		NBTTagCompound tag = new NBTTagCompound();
 		tag.setInteger("quantity", quantity);
 		if (!filterItem.isEmpty()) {
-			tag.setTag("filter", filterItem.writeToNBT(new NBTTagCompound()));
+			tag.setTag(FILTER_TAG, filterItem.writeToNBT(new NBTTagCompound()));
 		}
 		return tag;
 	}
@@ -85,8 +75,8 @@ public final class WarehouseInterfaceFilter implements Predicate<ItemStack>, INB
 	@Override
 	public void deserializeNBT(NBTTagCompound tag) {
 		quantity = tag.getInteger("quantity");
-		if (tag.hasKey("filter")) {
-			filterItem = new ItemStack(tag.getCompoundTag("filter"));
+		if (tag.hasKey(FILTER_TAG)) {
+			filterItem = new ItemStack(tag.getCompoundTag(FILTER_TAG));
 		}
 	}
 }

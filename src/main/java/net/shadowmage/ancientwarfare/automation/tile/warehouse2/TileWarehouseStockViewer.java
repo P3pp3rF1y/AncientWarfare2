@@ -11,13 +11,13 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.owner.IOwnable;
 import net.shadowmage.ancientwarfare.core.owner.Owner;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
-import net.shadowmage.ancientwarfare.core.util.NBTSerializableUtils;
+import net.shadowmage.ancientwarfare.core.util.NBTHelper;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public class TileWarehouseStockViewer extends TileControlled implements IOwnable, IInteractableTile {
@@ -25,7 +25,6 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
 	private static final String FILTER_LIST_TAG = "filterList";
 	private final List<WarehouseStockFilter> filters = new ArrayList<>();
 	private Owner owner = Owner.EMPTY;
-	private boolean shouldUpdate = false;
 
 	private final Set<ContainerWarehouseStockViewer> viewers = new HashSet<>();
 
@@ -50,39 +49,22 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
 	public void setFilters(List<WarehouseStockFilter> filters) {
 		this.filters.clear();
 		this.filters.addAll(filters);
-		shouldUpdate = false;//set to false, as we are manually updating right now
-		recountFilters(false);//recount filters, do not send update
+		recountFilters();//recount filters, do not send update
 		BlockTools.notifyBlockUpdate(this); //to re-send description packet to client with new filters
 	}
 
 	/*
 	 * should be called whenever controller tile is set or warehouse inventory updated
 	 */
-	private void recountFilters(boolean sendToClients) {
-		TileWarehouseBase twb = (TileWarehouseBase) getController();
-		int count;
-		int index = 0;
-		if (twb == null) {
-			count = 0;
+	private void recountFilters() {
+		Optional<TileWarehouseBase> controller = getController();
+		if (!controller.isPresent()) {
 			for (WarehouseStockFilter filter : this.filters) {
-				if (count != filter.getQuantity()) {
-					filter.setQuantity(0);
-					if (sendToClients) {
-						world.addBlockEvent(pos, getBlockType(), index, count);
-					}
-				}
-				index++;
+				filter.setQuantity(0);
 			}
 		} else {
 			for (WarehouseStockFilter filter : this.filters) {
-				count = filter.getFilterItem().isEmpty() ? 0 : twb.getCountOf(filter.getFilterItem());
-				if (count != filter.getQuantity()) {
-					filter.setQuantity(count);
-					if (sendToClients) {
-						world.addBlockEvent(pos, getBlockType(), index, count);
-					}
-				}
-				index++;
+				filter.setQuantity(filter.getFilterItem().isEmpty() ? 0 : controller.get().getCountOf(filter.getFilterItem()));
 			}
 		}
 	}
@@ -93,7 +75,7 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
 	}
 
 	@Override
-	protected void onControllerChanged(IControllerTile oldController, IControllerTile newController) {
+	protected void onControllerChanged() {
 		onWarehouseInventoryUpdated();
 	}
 
@@ -127,53 +109,43 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
 
 	@Override
 	protected void updateTile() {
-		if (shouldUpdate) {
-			shouldUpdate = false;
-			recountFilters(true);
-		}
+		//noop
 	}
 
 	/*
 	 * should be called on SERVER whenever warehouse inventory changes
 	 */
 	void onWarehouseInventoryUpdated() {
-		shouldUpdate = true;
+		BlockTools.notifyBlockUpdate(this);
+		recountFilters();
 	}
 
 	@Override
 	protected void writeUpdateNBT(NBTTagCompound tag) {
 		super.writeUpdateNBT(tag);
-		NBTSerializableUtils.write(tag, FILTER_LIST_TAG, filters);
+		NBTHelper.writeSerializablesTo(tag, FILTER_LIST_TAG, filters);
 	}
 
 	@Override
 	protected void handleUpdateNBT(NBTTagCompound tag) {
 		super.handleUpdateNBT(tag);
 		this.filters.clear();
-		this.filters.addAll(NBTSerializableUtils.read(tag, TileWarehouseStockViewer.FILTER_LIST_TAG, WarehouseStockFilter.class));
+		this.filters.addAll(NBTHelper.deserializeListFrom(tag, TileWarehouseStockViewer.FILTER_LIST_TAG, WarehouseStockFilter::new));
+		BlockTools.notifyBlockUpdate(this);
 		updateViewers();
-	}
-
-	@Override
-	public boolean receiveClientEvent(int a, int b) {
-		if (world.isRemote && a >= 0 && a < filters.size()) {
-			filters.get(a).setQuantity(b);
-			updateViewers();
-		}
-		return true;
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
-		filters.addAll(NBTSerializableUtils.read(tag, TileWarehouseStockViewer.FILTER_LIST_TAG, WarehouseStockFilter.class));
+		filters.addAll(NBTHelper.deserializeListFrom(tag, TileWarehouseStockViewer.FILTER_LIST_TAG, WarehouseStockFilter::new));
 		owner = Owner.deserializeFromNBT(tag);
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
-		NBTSerializableUtils.write(tag, TileWarehouseStockViewer.FILTER_LIST_TAG, filters);
+		NBTHelper.writeSerializablesTo(tag, FILTER_LIST_TAG, filters);
 		owner.serializeToNBT(tag);
 
 		return tag;
@@ -182,13 +154,10 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
 	public static class WarehouseStockFilter implements INBTSerializable<NBTTagCompound> {
 		private static final String ITEM_TAG = "item";
 		private static final String QUANTITY_TAG = "quantity";
-		@Nonnull
 		private ItemStack item = ItemStack.EMPTY;
 		private int quantity;
 
-		//TODO see if reflection above that uses this constructor can be replaced
-		public WarehouseStockFilter() {
-		}
+		public WarehouseStockFilter() {}
 
 		public WarehouseStockFilter(ItemStack item, int qty) {
 			setQuantity(qty);

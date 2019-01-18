@@ -13,7 +13,7 @@ import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.tile.IBlockBreakHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
-import net.shadowmage.ancientwarfare.core.util.NBTSerializableUtils;
+import net.shadowmage.ancientwarfare.core.util.NBTHelper;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -35,12 +35,11 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
 	@Override
 	public ItemStack tryAdd(ItemStack cursorStack) {
 		int moved = insertItem(cursorStack, cursorStack.getCount());
-		TileWarehouseBase twb = (TileWarehouseBase) getController();
-		if (twb != null) {
+		getController().ifPresent(controller -> {
 			ItemStack filter = cursorStack.copy();
 			filter.setCount(1);
-			twb.changeCachedQuantity(filter, moved);
-		}
+			controller.changeCachedQuantity(filter, moved);
+		});
 		cursorStack.shrink(moved);
 		if (cursorStack.getCount() <= 0) {
 			return ItemStack.EMPTY;
@@ -50,7 +49,7 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
 
 	@Override
 	protected void updateTile() {
-
+		//noop
 	}
 
 	@Override
@@ -70,7 +69,7 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
 
 	@Override
 	public void onWarehouseInventoryUpdated(TileWarehouseBase warehouse) {
-
+		//noop
 	}
 
 	@Override
@@ -84,9 +83,7 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
 		old.addAll(this.filters);
 		this.filters.clear();
 		this.filters.addAll(filters);
-		if (this.getController() != null) {
-			((TileWarehouseBase) this.getController()).onStorageFilterChanged(this, old, this.filters);
-		}
+		getController().ifPresent(controller -> controller.onStorageFilterChanged(this, old, this.filters));
 		updateViewers();
 		markDirty();
 	}
@@ -130,14 +127,14 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 		inventory.readFromNBT(tag.getCompoundTag("inventory"));
-		filters.addAll(NBTSerializableUtils.read(tag, "filterList", WarehouseStorageFilter.class));
+		filters.addAll(NBTHelper.deserializeListFrom(tag, "filterList", WarehouseStorageFilter::new));
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 		tag.setTag("inventory", inventory.writeToNBT(new NBTTagCompound()));
-		NBTSerializableUtils.write(tag, "filterList", filters);
+		NBTHelper.writeSerializablesTo(tag, "filterList", filters);
 		return tag;
 	}
 
@@ -154,13 +151,13 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
 		viewers.remove(containerWarehouseStorage);
 	}
 
-	protected void updateViewers() {
+	private void updateViewers() {
 		for (ContainerWarehouseStorage viewer : viewers) {
 			viewer.onFilterListUpdated();
 		}
 	}
 
-	protected void updateViewersForInventory() {
+	private void updateViewersForInventory() {
 		for (ContainerWarehouseStorage viewer : viewers) {
 			viewer.onStorageInventoryUpdated();
 		}
@@ -187,12 +184,11 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
 		int stackSize = cursorStack.getCount();
 		int moved;
 		moved = insertItem(cursorStack, cursorStack.getCount());
-		TileWarehouseBase twb = (TileWarehouseBase) getController();
-		if (twb != null) {
+		getController().ifPresent(controller -> {
 			ItemStack filter = cursorStack.copy();
 			filter.setCount(1);
-			twb.changeCachedQuantity(filter, moved);
-		}
+			controller.changeCachedQuantity(filter, moved);
+		});
 		cursorStack.shrink(moved);
 		if (cursorStack.getCount() <= 0) {
 			player.inventory.setItemStack(ItemStack.EMPTY);
@@ -228,10 +224,8 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
 		toMove = toMove > count ? count : toMove;
 		if (toMove > 0) {
 			extractItem(filter, toMove);
-			TileWarehouseBase twb = (TileWarehouseBase) getController();
-			if (twb != null) {
-				twb.changeCachedQuantity(filter, -toMove);
-			}
+			int cacheChange = toMove; //because we need final variable for lambda
+			getController().ifPresent(controller -> controller.changeCachedQuantity(filter, -cacheChange));
 		}
 		ItemStack newCursorStack = filter.copy();
 		newCursorStack.setCount(stackSize + toMove);

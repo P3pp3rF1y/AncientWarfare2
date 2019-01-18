@@ -8,7 +8,7 @@ import net.minecraftforge.items.SlotItemHandler;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseInterface;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.WarehouseInterfaceFilter;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
-import net.shadowmage.ancientwarfare.core.util.NBTSerializableUtils;
+import net.shadowmage.ancientwarfare.core.util.NBTHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,14 +46,14 @@ public class ContainerWarehouseInterface extends ContainerTileBase<TileWarehouse
 
 	public NBTTagCompound getTagToSend() {
 		NBTTagCompound tag = new NBTTagCompound();
-		NBTSerializableUtils.write(tag, "filterList", filters);
+		NBTHelper.writeSerializablesTo(tag, "filterList", filters);
 		return tag;
 	}
 
 	@Override
 	public void handlePacketData(NBTTagCompound tag) {
 		if (tag.hasKey("filterList")) {
-			List<WarehouseInterfaceFilter> filters = NBTSerializableUtils.read(tag, "filterList", WarehouseInterfaceFilter.class);
+			List<WarehouseInterfaceFilter> filters = NBTHelper.deserializeListFrom(tag, "filterList", WarehouseInterfaceFilter::new);
 			if (player.world.isRemote) {
 				this.filters = filters;
 				refreshGui();

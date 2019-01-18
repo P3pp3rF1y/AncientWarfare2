@@ -5,16 +5,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
 
-import javax.annotation.Nonnull;
-
 public class WarehouseStorageFilter implements INBTSerializable<NBTTagCompound> {
-
 	ItemHashEntry hashKey;
-	@Nonnull
-	ItemStack item;
+	ItemStack item = ItemStack.EMPTY;
 
-	public WarehouseStorageFilter() {
-	}
+	public WarehouseStorageFilter() {}
 
 	public WarehouseStorageFilter(ItemStack filter) {
 		setFilterItem(filter);
