@@ -208,7 +208,7 @@ public class SpawnerSettings {
 			}
 
 			for (EntityPlayer player : nearbyPlayers) {
-				if ((debugMode || !player.capabilities.isCreativeMode) && !isContinuousSpawnerOfFriendlyFaction(player)) {
+				if ((debugMode || (!player.isCreative() && !player.isSpectator())) && !isContinuousSpawnerOfFriendlyFaction(player)) {
 					return true;
 				}
 			}
