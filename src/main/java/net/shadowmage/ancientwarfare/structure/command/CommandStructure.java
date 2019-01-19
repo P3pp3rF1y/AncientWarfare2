@@ -25,7 +25,7 @@ import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager
 import net.shadowmage.ancientwarfare.structure.template.WorldGenStructureManager;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
 import net.shadowmage.ancientwarfare.structure.template.load.TemplateLoader;
-import net.shadowmage.ancientwarfare.structure.tile.ScannerCommandTracker;
+import net.shadowmage.ancientwarfare.structure.tile.ScannerTracker;
 import net.shadowmage.ancientwarfare.structure.worldgen.StructureEntry;
 
 import javax.annotation.Nonnull;
@@ -35,35 +35,23 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static net.shadowmage.ancientwarfare.structure.tile.ScannerCommandTracker.CommandType.REEXPORT;
-import static net.shadowmage.ancientwarfare.structure.tile.ScannerCommandTracker.CommandType.RELOAD_MAIN_SETTINGS;
-
 public class CommandStructure extends ParentCommand {
 
 	public CommandStructure() {
 		registerSubCommand(new DeleteCommand());
 		registerSubCommand(new BuildCommand());
 		registerSubCommand(new SaveCommand());
-		registerSubCommand(new SimpleSubCommand("scannersReloadMainSettings",
-				(server, sender, args) -> ScannerCommandTracker.issueGlobalCommand(RELOAD_MAIN_SETTINGS)));
-		registerSubCommand(new SimpleSubCommand("scannersReexport",
-				(server, sender, args) -> ScannerCommandTracker.issueGlobalCommand(REEXPORT)));
 		registerSubCommand(new SimpleSubCommand("reload",
 				(server, sender, args) -> {
 					WorldGenStructureManager.INSTANCE.loadBiomeList(); //reset biome to template cache
 					TemplateLoader.INSTANCE.reloadAll();
 					sender.sendMessage(new TextComponentTranslation("command.aw.structure.reloaded"));
 				}));
-		registerSubCommand(new SimpleSubCommand("scannersStartProcessingCommands", (server, sender, args) -> AWStructureStatics.processScannerCommands = true));
-		registerSubCommand(new SimpleSubCommand("scannersStopProcessingCommands", (server, sender, args) -> AWStructureStatics.processScannerCommands = false));
+		registerSubCommand(new ReexportCommand());
 		registerSubCommand(new SimpleSubCommand("scannerTp", (server, sender, args) -> {
-			if (args.length == 1) {
-				Tuple<Integer, BlockPos> pos = ScannerCommandTracker.getScannerPosByName(args[0]);
-				if (sender.getEntityWorld().provider.getDimension() == pos.getFirst() && sender instanceof EntityPlayer) {
-					EntityPlayer player = (EntityPlayer) sender;
-					BlockPos aboveScanner = pos.getSecond().up();
-					player.setPositionAndUpdate(aboveScanner.getX() + 0.5D, aboveScanner.getY(), aboveScanner.getZ() + 0.5D);
-				}
+			if (args.length == 1 && sender instanceof EntityPlayer) {
+				Tuple<Integer, BlockPos> pos = ScannerTracker.getScannerPosByName(args[0]);
+				ScannerTracker.teleportAboveScannerBlock((EntityPlayer) sender, pos);
 			}
 		}) {
 			@Override
@@ -75,8 +63,8 @@ public class CommandStructure extends ParentCommand {
 			Optional<StructureEntry> structure = AWGameData.INSTANCE.getData(sender.getEntityWorld(), StructureMap.class)
 					.getStructureAt(sender.getEntityWorld(), sender.getPosition());
 
-			sender.sendMessage(structure.isPresent() ? new TextComponentTranslation("command.aw.structure.name", structure.get().getName())
-					: new TextComponentTranslation("command.aw.structure.no_structure"));
+			sender.sendMessage(structure.map(structureEntry -> new TextComponentTranslation("command.aw.structure.name", structureEntry.getName()))
+					.orElseGet(() -> new TextComponentTranslation("command.aw.structure.no_structure")));
 		}));
 	}
 
@@ -206,6 +194,29 @@ public class CommandStructure extends ParentCommand {
 		}
 	}
 
+	private class ReexportCommand implements ISubCommand {
+		@Override
+		public String getName() {
+			return "scannersReexport";
+		}
+
+		@Override
+		public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+			if (sender instanceof EntityPlayer) {
+				boolean reloadMainSettings = false;
+				if (args.length == 1) {
+					reloadMainSettings = Boolean.valueOf(args[0]);
+				}
+				ScannerTracker.reexportAll((EntityPlayer) sender, reloadMainSettings);
+			}
+		}
+
+		@Override
+		public int getMaxArgs() {
+			return 1;
+		}
+	}
+
 	@Override
 	public int getRequiredPermissionLevel() {
 		return 2;
@@ -218,7 +229,7 @@ public class CommandStructure extends ParentCommand {
 		} else if (args.length > 5 && args[0].equalsIgnoreCase("build")) {
 			return CommandBase.getListOfStringsMatchingLastWord(args, "north", "east", "south", "west");
 		} else if (args.length == 2 && args[0].equalsIgnoreCase("scannertp")) {
-			return CommandBase.getListOfStringsMatchingLastWord(args, ScannerCommandTracker.getTrackedScannerNames().toArray(new String[0]));
+			return CommandBase.getListOfStringsMatchingLastWord(args, ScannerTracker.getTrackedScannerNames().toArray(new String[0]));
 		}
 		return Collections.emptyList();
 	}

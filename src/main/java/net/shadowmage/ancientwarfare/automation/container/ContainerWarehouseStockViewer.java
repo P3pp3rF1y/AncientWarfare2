@@ -5,7 +5,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStockViewer;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStockViewer.WarehouseStockFilter;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
-import net.shadowmage.ancientwarfare.core.util.NBTSerializableUtils;
+import net.shadowmage.ancientwarfare.core.util.NBTHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,14 +31,14 @@ public class ContainerWarehouseStockViewer extends ContainerTileBase<TileWarehou
 	@Override
 	public void handlePacketData(NBTTagCompound tag) {
 		if (tag.hasKey("filterList")) {
-			tileEntity.setFilters(NBTSerializableUtils.read(tag, "filterList", WarehouseStockFilter.class));
+			tileEntity.setFilters(NBTHelper.deserializeListFrom(tag, "filterList", WarehouseStockFilter::new));
 		}
 		super.handlePacketData(tag);
 	}
 
 	public void sendFiltersToServer() {
 		NBTTagCompound tag = new NBTTagCompound();
-		NBTSerializableUtils.write(tag, "filterList", filters);
+		NBTHelper.writeSerializablesTo(tag, "filterList", filters);
 		sendDataToServer(tag);
 	}
 

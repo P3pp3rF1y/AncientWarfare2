@@ -62,15 +62,14 @@ public abstract class NpcFaction extends NpcBase {
 	}
 
 	private Map<IAdditionalAttribute<?>, Object> additionalAttributes = new HashMap<>();
-	private boolean canDespawn = true; //used for previously existing entities so that they wouldn't despawn and leave structures unattended
-	//TODO remove in the near future 3 or 4/2019
+	private boolean canDespawn = false;
 
 	@Override
 	protected boolean canDespawn() {
 		return canDespawn;
 	}
 
-	public void setDeathRevengePlayer(String playerName) {
+	private void setDeathRevengePlayer(String playerName) {
 		revengePlayers.put(playerName, world.getTotalWorldTime() + DEATH_REVENGE_TICKS);
 	}
 
@@ -80,7 +79,9 @@ public abstract class NpcFaction extends NpcBase {
 
 		if (isDead && hasCapability(CapabilityRespawnData.RESPAWN_DATA_CAPABILITY, null)) {
 			IRespawnData respawnData = getCapability(CapabilityRespawnData.RESPAWN_DATA_CAPABILITY, null);
-			SpawnerHelper.createSpawner(respawnData, world);
+			if (respawnData != null) {
+				SpawnerHelper.createSpawner(respawnData, world);
+			}
 		}
 	}
 
@@ -173,7 +174,9 @@ public abstract class NpcFaction extends NpcBase {
 	}
 
 	@Override
+	@SuppressWarnings("squid:CallToDeprecatedMethod") //need to use I18n call that's available server side for this
 	public String getName() {
+		//noinspection deprecation
 		String name = I18n.translateToLocal("entity.ancientwarfarenpc." + getNpcFullType() + ".name");
 		if (hasCustomName()) {
 			name = name + " : " + getCustomNameTag();

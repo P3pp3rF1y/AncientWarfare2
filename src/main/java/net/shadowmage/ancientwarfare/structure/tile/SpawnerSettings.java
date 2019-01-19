@@ -52,6 +52,7 @@ public class SpawnerSettings {
 	private static final String SPAWN_GROUPS_TAG = "spawnGroups";
 	private static final String INVENTORY_TAG = "inventory";
 	private static final String HOSTILE_TAG = "hostile";
+	public static final String FACTION_NAME_TAG = "factionName";
 	private List<EntitySpawnGroup> spawnGroups = new ArrayList<>();
 
 	private ItemStackHandler inventory = new ItemStackHandler(9);
@@ -156,7 +157,6 @@ public class SpawnerSettings {
 		if (lightSensitive) {
 			int light = world.getBlockState(pos).getLightValue(world, pos);
 
-			//TODO check this light calculation stuff...
 			if (light >= 8) {
 				return;
 			}
@@ -208,7 +208,7 @@ public class SpawnerSettings {
 			}
 
 			for (EntityPlayer player : nearbyPlayers) {
-				if ((debugMode || !player.capabilities.isCreativeMode) && !isContinuousSpawnerOfFriendlyFaction(player)) {
+				if ((debugMode || (!player.isCreative() && !player.isSpectator())) && !isContinuousSpawnerOfFriendlyFaction(player)) {
 					return true;
 				}
 			}
@@ -307,7 +307,7 @@ public class SpawnerSettings {
 				isOneShotSpawner = true;
 			}
 			Entity entity = EntityList.createEntityByIDFromName(entitySettings.entityId, world);
-			factionName = entity instanceof NpcFaction ? entitySettings.customTag.getString("factionName") : "";
+			factionName = entity instanceof NpcFaction ? entitySettings.customTag.getString(FACTION_NAME_TAG) : "";
 		}
 	}
 
@@ -469,17 +469,17 @@ public class SpawnerSettings {
 		}
 
 		private void spawnEntities(World world, BlockPos spawnPos, int grpIndex, int range) {
-			EntitySpawnSettings settings;
 			Iterator<EntitySpawnSettings> it = entitiesToSpawn.iterator();
 			int index = 0;
-			while (it.hasNext() && (settings = it.next()) != null) {
-				settings.spawnEntities(world, spawnPos, range);
-				if (settings.shouldRemove()) {
+			EntitySpawnSettings entitySpawnSettings;
+			while (it.hasNext() && (entitySpawnSettings = it.next()) != null) {
+				entitySpawnSettings.spawnEntities(world, spawnPos, range);
+				if (entitySpawnSettings.shouldRemove()) {
 					it.remove();
 				}
 
 				int a1 = 0;
-				int b2 = settings.remainingSpawnCount;
+				int b2 = entitySpawnSettings.remainingSpawnCount;
 				int a = (a1 << 16) | (grpIndex & 0x0000ffff);
 				int b = (index << 16) | (b2 & 0x0000ffff);
 				world.addBlockEvent(spawnPos, AWStructureBlocks.ADVANCED_SPAWNER, a, b);
@@ -532,7 +532,7 @@ public class SpawnerSettings {
 		private static final String MIN_TO_SPAWN_TAG = "minToSpawn";
 		private static final String MAX_TO_SPAWN_TAG = "maxToSpawn";
 		private static final String REMAINING_SPAWN_COUNT_TAG = "remainingSpawnCount";
-		private static final String FACTION_NAME_TAG = "factionName";
+		private static final String FACTION_NAME_TAG = SpawnerSettings.FACTION_NAME_TAG;
 		private ResourceLocation entityId = new ResourceLocation("pig");
 		private NBTTagCompound customTag;
 		private int minToSpawn = 2;
@@ -545,7 +545,7 @@ public class SpawnerSettings {
 			this.group = group;
 		}
 
-		public EntitySpawnGroup getParentSettings() {
+		private EntitySpawnGroup getParentSettings() {
 			return group;
 		}
 
@@ -717,6 +717,7 @@ public class SpawnerSettings {
 				IRespawnData respawnData = e.getCapability(CapabilityRespawnData.RESPAWN_DATA_CAPABILITY, null);
 				respawnData.setRespawnPos(e.getPosition());
 				respawnData.setSpawnerSettings(getParentSettings().getParentSettings().writeToNBT(new NBTTagCompound()));
+				respawnData.setSpawnTime(e.world.getTotalWorldTime());
 			}
 		}
 

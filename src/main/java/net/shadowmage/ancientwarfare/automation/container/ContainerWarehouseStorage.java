@@ -11,7 +11,7 @@ import net.shadowmage.ancientwarfare.automation.tile.warehouse2.WarehouseStorage
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
-import net.shadowmage.ancientwarfare.core.util.NBTSerializableUtils;
+import net.shadowmage.ancientwarfare.core.util.NBTHelper;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -67,20 +67,20 @@ public class ContainerWarehouseStorage extends ContainerTileBase<TileWarehouseSt
 	@Override
 	public void sendInitData() {
 		NBTTagCompound tag = new NBTTagCompound();
-		NBTSerializableUtils.write(tag, "filterList", filters);
+		NBTHelper.writeSerializablesTo(tag, "filterList", filters);
 		sendDataToClient(tag);
 	}
 
 	public void sendFiltersToServer() {
 		NBTTagCompound tag = new NBTTagCompound();
-		NBTSerializableUtils.write(tag, "filterList", filters);
+		NBTHelper.writeSerializablesTo(tag, "filterList", filters);
 		sendDataToServer(tag);
 	}
 
 	@Override
 	public void handlePacketData(NBTTagCompound tag) {
 		if (tag.hasKey("filterList")) {
-			List<WarehouseStorageFilter> filters = NBTSerializableUtils.read(tag, "filterList", WarehouseStorageFilter.class);
+			List<WarehouseStorageFilter> filters = NBTHelper.deserializeListFrom(tag, "filterList", WarehouseStorageFilter::new);
 			if (player.world.isRemote) {
 				this.filters = filters;
 				refreshGui();

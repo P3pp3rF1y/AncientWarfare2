@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.util;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
@@ -17,6 +16,11 @@ public class SpawnerHelper {
 			WorldTools.getTile(world, respawnData.getRespawnPos(), TileAdvancedSpawner.class).ifPresent(te -> {
 				SpawnerSettings settings = new SpawnerSettings();
 				settings.readFromNBT(respawnData.getSpawnerSettings());
+				//if entity spawned just a fraction of time before it must be set to be "disabled" so change it to zombie
+				if (world.getTotalWorldTime() - respawnData.getSpawnTime() < 10
+						&& !settings.getSpawnGroups().isEmpty() && !settings.getSpawnGroups().get(0).getEntitiesToSpawn().isEmpty()) {
+					settings.getSpawnGroups().get(0).getEntitiesToSpawn().get(0).setEntityToSpawn(new ResourceLocation("zombie"));
+				}
 				te.setSettings(settings);
 			});
 		}

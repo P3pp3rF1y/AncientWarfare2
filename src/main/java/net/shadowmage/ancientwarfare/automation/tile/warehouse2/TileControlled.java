@@ -8,10 +8,13 @@ import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
-public abstract class TileControlled extends TileUpdatable implements IControlledTile, ITickable {
+import javax.annotation.Nullable;
+import java.util.Optional;
 
+public abstract class TileControlled extends TileUpdatable implements IControlledTile, ITickable {
+	private static final String CONTROLLER_POSITION_TAG = "controllerPosition";
 	private boolean init;
-	private IControllerTile controller;
+	private TileWarehouseBase controller;
 	private BlockPos controllerPosition;
 
 	@Override
@@ -40,11 +43,9 @@ public abstract class TileControlled extends TileUpdatable implements IControlle
 		BlockPos min = pos.add(-16, -4, -16);
 		BlockPos max = pos.add(16, 4, 16);
 		for (TileEntity te : WorldTools.getTileEntitiesInArea(world, min.getX(), min.getY(), min.getZ(), max.getX(), max.getY(), max.getZ())) {
-			if (te instanceof IControllerTile) {
-				if (isValidController((IControllerTile) te)) {
-					((IControllerTile) te).addControlledTile(this);
-					break;
-				}
+			if (te instanceof IControllerTile && isValidController((IControllerTile) te)) {
+				((IControllerTile) te).addControlledTile(this);
+				break;
 			}
 		}
 	}
@@ -73,19 +74,18 @@ public abstract class TileControlled extends TileUpdatable implements IControlle
 	}
 
 	@Override
-	public final void setController(IControllerTile tile) {
-		IControllerTile oldController = tile;
+	public final void setController(@Nullable TileWarehouseBase tile) {
 		this.controller = tile;
 		this.controllerPosition = tile == null ? null : tile.getPosisition();
-		onControllerChanged(oldController, controller);
+		onControllerChanged();
 	}
 
-	protected void onControllerChanged(IControllerTile oldController, IControllerTile newController) {
+	protected void onControllerChanged() {
 	}
 
 	@Override
-	public final IControllerTile getController() {
-		return controller;
+	public final Optional<TileWarehouseBase> getController() {
+		return Optional.ofNullable(controller);
 	}
 
 	@Override
@@ -96,8 +96,8 @@ public abstract class TileControlled extends TileUpdatable implements IControlle
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
-		if (tag.hasKey("controllerPosition")) {
-			controllerPosition = BlockPos.fromLong(tag.getLong("controllerPosition"));
+		if (tag.hasKey(CONTROLLER_POSITION_TAG)) {
+			controllerPosition = BlockPos.fromLong(tag.getLong(CONTROLLER_POSITION_TAG));
 		}
 	}
 
@@ -105,16 +105,15 @@ public abstract class TileControlled extends TileUpdatable implements IControlle
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 		if (controllerPosition != null) {
-			tag.setLong("controllerPosition", controllerPosition.toLong());
+			tag.setLong(CONTROLLER_POSITION_TAG, controllerPosition.toLong());
 		}
 		return tag;
 	}
 
 	@Override
 	public final boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		return obj instanceof TileControlled && this.world == ((TileControlled) obj).getWorld() && this.getPos().equals(((TileControlled) obj).getPos());
+		return this == obj
+				|| (obj instanceof TileControlled && this.world == ((TileControlled) obj).getWorld() && this.getPos().equals(((TileControlled) obj).getPos()));
 	}
 
 	@Override

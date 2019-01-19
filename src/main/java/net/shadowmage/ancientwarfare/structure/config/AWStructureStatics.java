@@ -23,7 +23,6 @@ public class AWStructureStatics extends ModConfiguration {
 		super(mod);
 	}
 
-	public static boolean processScannerCommands = false;
 	public static String templateExtension = "aws";
 	public static String townTemplateExtension = "awt";
 	public static boolean enableWorldGen = true;

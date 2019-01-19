@@ -7,6 +7,7 @@ public class RespawnData implements IRespawnData {
 	private BlockPos respawnPos = BlockPos.ORIGIN;
 	private NBTTagCompound spawnerSettings = new NBTTagCompound();
 	private boolean canRespawn = false;
+	private long spawnTime = 0;
 
 	@Override
 	public boolean canRespawn() {
@@ -24,6 +25,11 @@ public class RespawnData implements IRespawnData {
 	}
 
 	@Override
+	public long getSpawnTime() {
+		return spawnTime;
+	}
+
+	@Override
 	public void setRespawnPos(BlockPos pos) {
 		respawnPos = pos;
 		canRespawn = !respawnPos.equals(BlockPos.ORIGIN);
@@ -32,5 +38,10 @@ public class RespawnData implements IRespawnData {
 	@Override
 	public void setSpawnerSettings(NBTTagCompound tag) {
 		spawnerSettings = tag;
+	}
+
+	@Override
+	public void setSpawnTime(long time) {
+		spawnTime = time;
 	}
 }

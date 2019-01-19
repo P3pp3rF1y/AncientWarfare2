@@ -9,15 +9,15 @@ import java.util.List;
 
 public interface IWarehouseStorageTile {
 
-	public int getStorageAdditionSize();
+	int getStorageAdditionSize();
 
-	public void onWarehouseInventoryUpdated(TileWarehouseBase warehouse);
+	void onWarehouseInventoryUpdated(TileWarehouseBase warehouse);
 
-	public List<WarehouseStorageFilter> getFilters();
+	List<WarehouseStorageFilter> getFilters();
 
-	public void setFilters(List<WarehouseStorageFilter> filters);
+	void setFilters(List<WarehouseStorageFilter> filters);
 
-	public void addItems(ItemQuantityMap map);
+	void addItems(ItemQuantityMap map);
 
 	int getQuantityStored(ItemStack filter);
 
@@ -27,12 +27,12 @@ public interface IWarehouseStorageTile {
 
 	int insertItem(ItemStack filter, int amount);
 
-	public void addViewer(ContainerWarehouseStorage containerWarehouseStorage);
+	void addViewer(ContainerWarehouseStorage containerWarehouseStorage);
 
-	public void removeViewer(ContainerWarehouseStorage containerWarehouseStorage);
+	void removeViewer(ContainerWarehouseStorage containerWarehouseStorage);
 
-	public void handleSlotClick(EntityPlayer player, ItemStack item, boolean isShiftClick, boolean isRightClick);
+	void handleSlotClick(EntityPlayer player, ItemStack item, boolean isShiftClick, boolean isRightClick);
 
-	public ItemStack tryAdd(ItemStack stack);
+	ItemStack tryAdd(ItemStack stack);
 
 }
