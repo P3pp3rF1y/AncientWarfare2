@@ -623,9 +623,9 @@ entity.ancientwarfarenpc.kong.bard.name=丛林吟游诗人
 entity.ancientwarfarenpc.kong.siege_engineer.name=丛林攻城工程师
 entity.ancientwarfarenpc.pirate.soldier.name=海盗
 entity.ancientwarfarenpc.pirate.soldier.elite.name=海盗劫掠者
-#REF!
+entity.ancientwarfarenpc.pirate.cavalry.name=走私黑帮
 entity.ancientwarfarenpc.pirate.archer.name=海盗弓箭手
-entity.ancientwarfarenpc.pirate.archer.elite.name=走私黑帮
+entity.ancientwarfarenpc.pirate.archer.elite.name=海盗瞭望员
 entity.ancientwarfarenpc.pirate.mounted_archer.name=走私掠夺者
 entity.ancientwarfarenpc.pirate.leader.name=海盗船长
 entity.ancientwarfarenpc.pirate.leader.elite.name=海盗头目
