@@ -60,7 +60,7 @@ public class TemplateRuleEntity extends TemplateRuleEntityBase {
 	protected Optional<Entity> createEntity(World world, int turns, BlockPos pos, IStructureBuilder builder) {
 		Entity e = EntityList.createEntityByIDFromName(registryName, world);
 		if (e == null) {
-			AncientWarfareStructure.LOG.warn("Could not create entity for name: " + registryName.toString() + " Entity skipped during structure creation.\n" + "Entity data: " + tag);
+			AncientWarfareStructure.LOG.warn("Could not create entity for name: " + registryName.toString() + " Entity skipped during structure creation.");
 			return Optional.empty();
 		}
 		e.readFromNBT(getEntityNBT(pos, turns));
