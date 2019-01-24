@@ -5,6 +5,7 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
 import net.shadowmage.ancientwarfare.structure.town.WorldTownGenerator;
 
@@ -143,7 +144,12 @@ public final class WorldGenTickHandler {
 
 		@Override
 		public void call() {
-			builder.instantConstruction();
+			try {
+				builder.instantConstruction();
+			}
+			catch (Exception ex) {
+				AncientWarfareStructure.LOG.error("Error building structure {}: /n{}", builder.getTemplate().name, ex);
+			}
 		}
 	}
 

@@ -491,7 +491,7 @@ public abstract class StructureValidator {
 		}
 	}
 
-	void prePlacementBorder(World world, StructureTemplate template, StructureBB bb) {
+	protected void prePlacementBorder(World world, StructureTemplate template, StructureBB bb) {
 		int borderSize = getBorderSize();
 		if (borderSize <= 0) {
 			return;

@@ -482,6 +482,10 @@ public class BlockTools {
 		return new PropertyState<>(property, (V) value.get());
 	}
 
+	public static int getTopFilledHeight(World world, int x, int z, boolean skippables) {
+		return getTopFilledHeight(world.getChunkFromChunkCoords(x >> 4, z >> 4), x, z, skippables);
+	}
+
 	public static int getTopFilledHeight(Chunk chunk, int x, int z, boolean skippables) {
 		int maxY = chunk.getTopFilledSegment() + 16;
 		Block block;
