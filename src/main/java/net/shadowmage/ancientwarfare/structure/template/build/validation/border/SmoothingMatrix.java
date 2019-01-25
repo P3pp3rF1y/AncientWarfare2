@@ -214,8 +214,9 @@ public class SmoothingMatrix {
 
 			Set<HorizontalCoords> toRecheckDistance = new HashSet<>();
 			BlockPos currentPos = new BlockPos(minPos.getX() + current.getX(),
-					getYBelowFloatingIsland(minPos.getX() + current.getX(), minPos.getZ() + current.getZ(),
-							BlockTools.getTopFilledHeight(world, minPos.getX() + current.getX(), minPos.getZ() + current.getZ(), false), false),
+					getYBelowFloatingIsland(minPos.getX() + current.getX(),
+							BlockTools.getTopFilledHeight(world, minPos.getX() + current.getX(), minPos.getZ() + current.getZ(), false),
+							minPos.getZ() + current.getZ(), false),
 					minPos.getZ() + current.getZ());
 			SmoothedBorderPoint currentPoint = new SmoothedBorderPoint(current.getX(), current.getZ(), currentPos);
 			addPoint(currentPoint);
