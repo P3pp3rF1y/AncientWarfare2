@@ -135,16 +135,16 @@ public class SmoothingMatrix {
 				double pointDist = pointToSmooth.getStructureBorderDistance();
 				if (steepFormula) {
 					double ratio = pointDist / outerDistToStructure;
-					setNewSmoothedY(pointToSmooth, structureBorderY + (int) (yDiff * ratio * ratio));
+					setNewSmoothedY(pointToSmooth, structureBorderY + (int) Math.round(yDiff * ratio * ratio));
 				} else {
 					double halfDist = outerDistToStructure / 2;
 					int halfYDiff = yDiff / 2;
 					if (pointDist <= halfDist) {
 						double ratio = pointDist / halfDist;
-						setNewSmoothedY(pointToSmooth, structureBorderY + (int) (halfYDiff * ratio * ratio));
+						setNewSmoothedY(pointToSmooth, structureBorderY + (int) Math.round(halfYDiff * ratio * ratio));
 					} else {
 						double ratio = (outerDistToStructure - pointDist) / halfDist;
-						setNewSmoothedY(pointToSmooth, outerBorderPoint.getWorldPos().getY() - (int) (halfYDiff * ratio * ratio));
+						setNewSmoothedY(pointToSmooth, outerBorderPoint.getWorldPos().getY() - (int) Math.round(halfYDiff * ratio * ratio));
 					}
 				}
 
