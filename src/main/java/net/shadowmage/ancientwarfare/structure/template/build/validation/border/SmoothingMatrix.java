@@ -214,7 +214,8 @@ public class SmoothingMatrix {
 
 			Set<HorizontalCoords> toRecheckDistance = new HashSet<>();
 			BlockPos currentPos = new BlockPos(minPos.getX() + current.getX(),
-					BlockTools.getTopFilledHeight(world, minPos.getX() + current.getX(), minPos.getZ() + current.getZ(), false),
+					getYBelowFloatingIsland(minPos.getX() + current.getX(), minPos.getZ() + current.getZ(),
+							BlockTools.getTopFilledHeight(world, minPos.getX() + current.getX(), minPos.getZ() + current.getZ(), false), false),
 					minPos.getZ() + current.getZ());
 			SmoothedBorderPoint currentPoint = new SmoothedBorderPoint(current.getX(), current.getZ(), currentPos);
 			addPoint(currentPoint);
@@ -348,9 +349,27 @@ public class SmoothingMatrix {
 		int y = yLevel;
 		if (yLevel == 0) {
 			y = WorldStructureGenerator.getTargetY(world, minPos.getX() + x, minPos.getZ() + z, true);
+			y = getYBelowFloatingIsland(minPos.getX() + x, y, minPos.getZ() + z);
 		}
 		BlockPos pos = new BlockPos(minPos.getX() + x, y, minPos.getZ() + z);
 		addPoint(x, z, pos, type);
+	}
+
+	private int getYBelowFloatingIsland(int x, int y, int z) {
+		return getYBelowFloatingIsland(x, y, z, true);
+	}
+
+	private int getYBelowFloatingIsland(int x, int y, int z, boolean useSkippables) {
+		if (y - groundY > borderSize) {
+			//try restarting search in between groundY and found Y
+			int startAtY = groundY + ((y - groundY) / 2);
+			int newY = useSkippables ? WorldStructureGenerator.getTargetY(world, x, z, true, startAtY) :
+					BlockTools.getTopFilledHeight(world, x, z, false, startAtY);
+			if (newY != startAtY) {
+				return newY;
+			}
+		}
+		return y;
 	}
 
 	private void addPoint(int x, int z, BlockPos pos, SmoothingPoint.Type type) {
@@ -393,10 +412,10 @@ public class SmoothingMatrix {
 		BlockPos originalPos = point.getWorldPos();
 		BlockPos smoothedPos = point.getSmoothedPos();
 
-		int topSolidY = WorldStructureGenerator.getTargetY(world, originalPos.getX(), originalPos.getZ(), false);
+		int topSolidY = WorldStructureGenerator.getTargetY(world, originalPos.getX(), originalPos.getZ(), false, originalPos.getY());
 		Biome biome = world.getBiome(originalPos);
 		IBlockState topBlock = biome.topBlock;
-		int topNonWaterY = WorldStructureGenerator.getTargetY(world, originalPos.getX(), originalPos.getZ(), true);
+		int topNonWaterY = WorldStructureGenerator.getTargetY(world, originalPos.getX(), originalPos.getZ(), true, originalPos.getY());
 		boolean seaWaterTop = false;
 		if (smoothedPos.getY() <= world.getSeaLevel() && world.getBlockState(new BlockPos(smoothedPos.getX(), world.getSeaLevel() - 1, smoothedPos.getZ())).getMaterial() == Material.WATER) {
 			seaWaterTop = true;
@@ -408,8 +427,12 @@ public class SmoothingMatrix {
 
 		if (originalPos.getY() > smoothedPos.getY() && (!seaWaterTop || topNonWaterY > smoothedPos.getY())) {
 			if (seaWaterTop) {
-				BlockTools.getAllInBoxTopDown(smoothedPos, new BlockPos(smoothedPos.getX(), topNonWaterY, smoothedPos.getZ()))
+				BlockTools.getAllInBoxTopDown(smoothedPos, new BlockPos(smoothedPos.getX(), Math.min(topNonWaterY, world.getSeaLevel() - 1), smoothedPos.getZ()))
 						.forEach(pos -> world.setBlockState(pos, Blocks.WATER.getDefaultState()));
+				if (topSolidY > world.getSeaLevel()) {
+					BlockTools.getAllInBoxTopDown(smoothedPos.getX(), world.getSeaLevel(), smoothedPos.getZ(), originalPos.getX(), originalPos.getY(), originalPos.getZ())
+							.forEach(handleClearing);
+				}
 			} else {
 				BlockTools.getAllInBoxTopDown(smoothedPos, originalPos).forEach(handleClearing);
 			}
