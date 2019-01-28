@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.structure.init;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
@@ -11,6 +10,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.registries.IForgeRegistry;
+import net.shadowmage.ancientwarfare.core.item.ItemBlockBase;
 import net.shadowmage.ancientwarfare.core.util.InjectionTools;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.block.BlockAdvancedLootChest;
@@ -22,6 +22,10 @@ import net.shadowmage.ancientwarfare.structure.block.BlockSoundBlock;
 import net.shadowmage.ancientwarfare.structure.block.BlockStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.block.BlockStructureScanner;
 import net.shadowmage.ancientwarfare.structure.block.BlockTotemPart;
+import net.shadowmage.ancientwarfare.structure.block.altar.BlockAltarCandle;
+import net.shadowmage.ancientwarfare.structure.block.altar.BlockAltarLectern;
+import net.shadowmage.ancientwarfare.structure.block.altar.BlockAltarLongCloth;
+import net.shadowmage.ancientwarfare.structure.block.altar.BlockAltarShortCloth;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockAdvancedSpawner;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockFirePit;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockStructureBuilder;
@@ -52,6 +56,10 @@ public class AWStructureBlocks {
 	public static final Block ADVANCED_LOOT_CHEST = InjectionTools.nullValue();
 	public static final Block FIRE_PIT = InjectionTools.nullValue();
 	public static final Block TOTEM_PART = InjectionTools.nullValue();
+	public static final Block ALTAR_SHORT_CLOTH = InjectionTools.nullValue();
+	public static final Block ALTAR_LONG_CLOTH = InjectionTools.nullValue();
+	public static final Block ALTAR_CANDLE = InjectionTools.nullValue();
+	public static final Block ALTAR_LECTERN = InjectionTools.nullValue();
 
 	@SuppressWarnings("ConstantConditions")
 	@SubscribeEvent
@@ -59,14 +67,19 @@ public class AWStructureBlocks {
 		IForgeRegistry<Item> registry = event.getRegistry();
 
 		registry.register(new ItemBlockAdvancedSpawner(AWStructureBlocks.ADVANCED_SPAWNER));
-		registry.register(new ItemBlock(AWStructureBlocks.GATE_PROXY).setRegistryName(AWStructureBlocks.GATE_PROXY.getRegistryName()));
-		registry.register(new ItemBlock(AWStructureBlocks.DRAFTING_STATION).setRegistryName(AWStructureBlocks.DRAFTING_STATION.getRegistryName()));
+		registry.register(new ItemBlockBase(AWStructureBlocks.GATE_PROXY));
+		registry.register(new ItemBlockBase(AWStructureBlocks.DRAFTING_STATION));
 		registry.register(new ItemBlockStructureBuilder(AWStructureBlocks.STRUCTURE_BUILDER_TICKED));
-		registry.register(new ItemBlock(AWStructureBlocks.SOUND_BLOCK).setRegistryName(AWStructureBlocks.SOUND_BLOCK.getRegistryName()));
-		registry.register(new ItemBlock(AWStructureBlocks.STRUCTURE_SCANNER_BLOCK).setRegistryName(AWStructureBlocks.STRUCTURE_SCANNER_BLOCK.getRegistryName()));
-		registry.register(new ItemBlock(AWStructureBlocks.ADVANCED_LOOT_CHEST).setRegistryName(AWStructureBlocks.ADVANCED_LOOT_CHEST.getRegistryName()));
+		registry.register(new ItemBlockBase(AWStructureBlocks.SOUND_BLOCK));
+		registry.register(new ItemBlockBase(AWStructureBlocks.STRUCTURE_SCANNER_BLOCK));
+		registry.register(new ItemBlockBase(AWStructureBlocks.ADVANCED_LOOT_CHEST));
 		registry.register(new ItemBlockFirePit(FIRE_PIT));
 		registry.register(new ItemBlockTotemPart(TOTEM_PART));
+
+		registry.register(new ItemBlockBase(AWStructureBlocks.ALTAR_SHORT_CLOTH));
+		registry.register(new ItemBlockBase(AWStructureBlocks.ALTAR_LONG_CLOTH));
+		registry.register(new ItemBlockBase(AWStructureBlocks.ALTAR_CANDLE));
+		registry.register(new ItemBlockBase(AWStructureBlocks.ALTAR_LECTERN));
 	}
 
 	@SubscribeEvent
@@ -98,6 +111,11 @@ public class AWStructureBlocks {
 		registerTile(TileTotemPart.class, "totem_part_tile");
 
 		registry.register(new BlockFirePit());
+
+		registry.register(new BlockAltarShortCloth());
+		registry.register(new BlockAltarLongCloth());
+		registry.register(new BlockAltarCandle());
+		registry.register(new BlockAltarLectern());
 	}
 
 	private static void registerTile(Class<? extends TileEntity> teClass, String teId) {

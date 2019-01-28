@@ -1,0 +1,15 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "cube_bottom_top",
+        "textures": {
+            "bottom": "ancientwarfare:blocks/structure/altar_long_cloth_bottom",
+            "top": "ancientwarfare:blocks/structure/altar_long_cloth_top",
+            "side": "ancientwarfare:blocks/structure/altar_long_cloth_side"
+        },
+        "transform": "forge:default-block"
+    },
+    "variants": {
+        "normal": [{}]
+    }
+}
