@@ -27,12 +27,14 @@ import net.shadowmage.ancientwarfare.structure.block.altar.BlockAltarLectern;
 import net.shadowmage.ancientwarfare.structure.block.altar.BlockAltarLongCloth;
 import net.shadowmage.ancientwarfare.structure.block.altar.BlockAltarShortCloth;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockAdvancedSpawner;
+import net.shadowmage.ancientwarfare.structure.item.ItemBlockColored;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockFirePit;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockTotemPart;
 import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedLootChest;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
+import net.shadowmage.ancientwarfare.structure.tile.TileColored;
 import net.shadowmage.ancientwarfare.structure.tile.TileDraftingStation;
 import net.shadowmage.ancientwarfare.structure.tile.TileSoundBlock;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
@@ -78,7 +80,7 @@ public class AWStructureBlocks {
 
 		registry.register(new ItemBlockBase(AWStructureBlocks.ALTAR_SHORT_CLOTH));
 		registry.register(new ItemBlockBase(AWStructureBlocks.ALTAR_LONG_CLOTH));
-		registry.register(new ItemBlockBase(AWStructureBlocks.ALTAR_CANDLE));
+		registry.register(new ItemBlockColored(AWStructureBlocks.ALTAR_CANDLE));
 		registry.register(new ItemBlockBase(AWStructureBlocks.ALTAR_LECTERN));
 	}
 
@@ -115,6 +117,7 @@ public class AWStructureBlocks {
 		registry.register(new BlockAltarShortCloth());
 		registry.register(new BlockAltarLongCloth());
 		registry.register(new BlockAltarCandle());
+		registerTile(TileColored.class, "altar_candle_tile");
 		registry.register(new BlockAltarLectern());
 	}
 
