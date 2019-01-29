@@ -1,9 +1,11 @@
 package net.shadowmage.ancientwarfare.structure.template.build.validation.border;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 
 public class SmoothingPoint {
 	private BlockPos worldPos;
+	private IBlockState blockState;
 
 	public Type getType() {
 		return type;
@@ -38,10 +40,18 @@ public class SmoothingPoint {
 		this.type = type;
 	}
 
+	public void setBlockState(IBlockState blockState) {
+		this.blockState = blockState;
+	}
+
 	public double getDistanceToBorder() {
 		int xDiff = Math.abs(x - closestBorderPoint.x);
 		int zDiff = Math.abs(z - closestBorderPoint.z);
 		return Math.sqrt(((double) xDiff * xDiff) + zDiff * zDiff);
+	}
+
+	public IBlockState getBlockState() {
+		return blockState;
 	}
 
 	public enum Type {

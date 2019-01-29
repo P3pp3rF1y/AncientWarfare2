@@ -114,7 +114,7 @@ public abstract class StructureValidator {
 	 */
 	public abstract void preGeneration(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureBB bb);
 
-	public void postGeneration(World world, BlockPos origin, StructureBB bb) {
+	public void postGeneration(World world, BlockPos origin, StructureBB bb, StructureTemplate template) {
 
 	}
 

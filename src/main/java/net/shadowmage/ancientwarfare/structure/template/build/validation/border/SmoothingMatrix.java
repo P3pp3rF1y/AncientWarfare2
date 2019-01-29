@@ -46,7 +46,7 @@ public class SmoothingMatrix {
 		minPos = bb.min.add(-borderSize - 2, 0, -borderSize - 2);
 
 		inializePoints();
-		calculateNewYLevels();
+		calculateNewYLevelsAndBlocks();
 		processSmoothing();
 	}
 
@@ -122,7 +122,7 @@ public class SmoothingMatrix {
 		fillInBorderPointsToSmooth(getFirstPointToSmooth());
 	}
 
-	private void calculateNewYLevels() {
+	private void calculateNewYLevelsAndBlocks() {
 		for (SmoothingPoint outerBorderPoint : typePoints.get(SmoothingPoint.Type.OUTER_BORDER)) {
 			Set<SmoothedBorderPoint> borderPointsToSmooth = getPointsToClosestStructureBorder(outerBorderPoint);
 			SmoothingPoint referencePoint = getReferencePoint(outerBorderPoint);
@@ -147,8 +147,17 @@ public class SmoothingMatrix {
 						setNewSmoothedY(pointToSmooth, outerBorderPoint.getWorldPos().getY() - (int) Math.round(halfYDiff * ratio * ratio));
 					}
 				}
-
+				setBlockStateForPoint(outerBorderPoint, outerDistToStructure, yDiff, pointToSmooth, pointDist);
 			}
+		}
+	}
+
+	private void setBlockStateForPoint(SmoothingPoint outerBorderPoint, double outerDistToStructure, int yDiff, SmoothedBorderPoint pointToSmooth, double pointDist) {
+		if ((Math.round(pointDist / outerDistToStructure * yDiff) - Math.round((pointDist - 1) / outerDistToStructure * yDiff)) < 2) {
+			pointToSmooth.setBlockState(
+					world.rand.nextDouble() > pointDist / outerDistToStructure ? pointToSmooth.getClosestBorderPoint().getBlockState() : outerBorderPoint.getBlockState());
+		} else {
+			pointToSmooth.setBlockState(world.getBiome(pointToSmooth.getWorldPos()).topBlock);
 		}
 	}
 
@@ -316,7 +325,7 @@ public class SmoothingMatrix {
 
 			addPoint(nextToFill.getX(), nextToFill.getZ(),
 					new BlockPos(bb.min.getX() - borderSize - 2 + nextToFill.getX(), 1, bb.min.getZ() - borderSize - 2 + nextToFill.getZ()),
-					SmoothingPoint.Type.STRUCTURE_INSIDE);
+					SmoothingPoint.Type.STRUCTURE_INSIDE, Blocks.AIR.getDefaultState());
 
 			addAdjacentIfEmpty(pointsToFill, new HorizontalCoords(nextToFill.getX() + 1, nextToFill.getZ()));
 			addAdjacentIfEmpty(pointsToFill, new HorizontalCoords(nextToFill.getX() - 1, nextToFill.getZ()));
@@ -353,7 +362,7 @@ public class SmoothingMatrix {
 			y = getYBelowFloatingIsland(minPos.getX() + x, y, minPos.getZ() + z);
 		}
 		BlockPos pos = new BlockPos(minPos.getX() + x, y, minPos.getZ() + z);
-		addPoint(x, z, pos, type);
+		addPoint(x, z, pos, type, world.getBlockState(pos));
 	}
 
 	private int getYBelowFloatingIsland(int x, int y, int z) {
@@ -373,8 +382,9 @@ public class SmoothingMatrix {
 		return y;
 	}
 
-	private void addPoint(int x, int z, BlockPos pos, SmoothingPoint.Type type) {
+	private void addPoint(int x, int z, BlockPos pos, SmoothingPoint.Type type, IBlockState state) {
 		SmoothingPoint point = new SmoothingPoint(x, z, pos, type);
+		point.setBlockState(state);
 		addPoint(point);
 	}
 
@@ -415,7 +425,6 @@ public class SmoothingMatrix {
 
 		int topSolidY = WorldStructureGenerator.getTargetY(world, originalPos.getX(), originalPos.getZ(), false, originalPos.getY());
 		Biome biome = world.getBiome(originalPos);
-		IBlockState topBlock = biome.topBlock;
 		int topNonWaterY = WorldStructureGenerator.getTargetY(world, originalPos.getX(), originalPos.getZ(), true, originalPos.getY());
 		boolean seaWaterTop = false;
 		if (smoothedPos.getY() <= world.getSeaLevel() && world.getBlockState(new BlockPos(smoothedPos.getX(), world.getSeaLevel() - 1, smoothedPos.getZ())).getMaterial() == Material.WATER) {
@@ -443,6 +452,6 @@ public class SmoothingMatrix {
 			BlockPos.getAllInBox(originalPos.getX(), topNonWaterY + 1, originalPos.getZ(), originalPos.getX(), smoothedPos.getY() - 1, originalPos.getZ())
 					.forEach(pos -> world.setBlockState(pos, fillerBlock));
 		}
-		world.setBlockState(smoothedPos, topBlock);
+		world.setBlockState(smoothedPos, point.getBlockState());
 	}
 }

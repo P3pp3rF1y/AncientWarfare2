@@ -200,6 +200,7 @@ tile.totem_part.elephant_left.name=Elephant Statue Left Side
 tile.totem_part.elephant_right.name=Elephant Statue Right Side
 tile.totem_part.elephant_body.name=Elephant Statue Body
 tile.altar_lectern.name=Altar Lectern
+tile.altar_sun.name=Altar Sun
 tile.altar_candle.name=%s Altar Candle
 tile.altar_short_cloth.name=Altar With Short %s Cloth on top
 tile.altar_long_cloth.name=Altar With Long %s Cloth on top

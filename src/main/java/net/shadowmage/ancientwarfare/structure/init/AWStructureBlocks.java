@@ -26,6 +26,7 @@ import net.shadowmage.ancientwarfare.structure.block.altar.BlockAltarCandle;
 import net.shadowmage.ancientwarfare.structure.block.altar.BlockAltarLectern;
 import net.shadowmage.ancientwarfare.structure.block.altar.BlockAltarLongCloth;
 import net.shadowmage.ancientwarfare.structure.block.altar.BlockAltarShortCloth;
+import net.shadowmage.ancientwarfare.structure.block.altar.BlockAltarSun;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockAdvancedSpawner;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockColored;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockFirePit;
@@ -62,6 +63,7 @@ public class AWStructureBlocks {
 	public static final Block ALTAR_LONG_CLOTH = InjectionTools.nullValue();
 	public static final Block ALTAR_CANDLE = InjectionTools.nullValue();
 	public static final Block ALTAR_LECTERN = InjectionTools.nullValue();
+	public static final Block ALTAR_SUN = InjectionTools.nullValue();
 
 	@SuppressWarnings("ConstantConditions")
 	@SubscribeEvent
@@ -82,6 +84,7 @@ public class AWStructureBlocks {
 		registry.register(new ItemBlockColored(AWStructureBlocks.ALTAR_LONG_CLOTH));
 		registry.register(new ItemBlockColored(AWStructureBlocks.ALTAR_CANDLE));
 		registry.register(new ItemBlockBase(AWStructureBlocks.ALTAR_LECTERN));
+		registry.register(new ItemBlockBase(AWStructureBlocks.ALTAR_SUN));
 	}
 
 	@SubscribeEvent
@@ -119,6 +122,7 @@ public class AWStructureBlocks {
 		registry.register(new BlockAltarCandle());
 		registerTile(TileColored.class, "altar_candle_tile");
 		registry.register(new BlockAltarLectern());
+		registry.register(new BlockAltarSun());
 	}
 
 	private static void registerTile(Class<? extends TileEntity> teClass, String teId) {

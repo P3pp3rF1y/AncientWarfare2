@@ -45,10 +45,9 @@ public class StructureValidatorGround extends StructureValidator {
 
 	@Override
 	public void preGeneration(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureBB bb) {
-		smoothoutBorder(world, bb, template);
-		prePlacementUnderfill(world, bb);
 		if (!isPreserveBlocks()) {
 			clearBB(world, template, bb);
+			prePlacementUnderfill(world, bb);
 		}
 	}
 
@@ -64,7 +63,10 @@ public class StructureValidatorGround extends StructureValidator {
 	}
 
 	@Override
-	public void postGeneration(World world, BlockPos origin, StructureBB bb) {
+	public void postGeneration(World world, BlockPos origin, StructureBB bb, StructureTemplate template) {
+		if (!isPreserveBlocks()) {
+			smoothoutBorder(world, bb, template);
+		}
 		Biome biome = world.provider.getBiomeForCoords(origin);
 		if (biome.getEnableSnow()) {
 			WorldStructureGenerator.sprinkleSnow(world, bb, getBorderSize());

@@ -82,7 +82,7 @@ public class ItemStructureBuilder extends ItemBaseStructure implements IItemKeyI
 			StructureBuilder builder = new StructureBuilder(player.world, template.get(), facing, hit);
 			builder.getTemplate().getValidationSettings().preGeneration(player.world, hit, facing, builder.getTemplate(), builder.getBoundingBox());
 			builder.instantConstruction();
-			builder.getTemplate().getValidationSettings().postGeneration(player.world, hit, builder.getBoundingBox());
+			builder.getTemplate().getValidationSettings().postGeneration(player.world, hit, builder.getBoundingBox(), builder.getTemplate());
 			removeLockPosition(stack);
 			if (!player.capabilities.isCreativeMode) {
 				stack.shrink(1);
