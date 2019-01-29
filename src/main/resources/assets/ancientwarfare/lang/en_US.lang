@@ -196,7 +196,31 @@ tile.totem_part.irminsul_base.name=Irminsul Base
 tile.totem_part.irminsul_mid.name=Irminsul Middle
 tile.totem_part.irminsul_top.name=Irminsul Top
 tile.totem_part.irminsul_side.name=Irminsul Side
+tile.totem_part.elephant_left.name=Elephant Statue Left Side
+tile.totem_part.elephant_right.name=Elephant Statue Right Side
+tile.totem_part.elephant_body.name=Elephant Statue Body
+tile.altar_lectern.name=Altar Lectern
+tile.altar_candle.name=%s Altar Candle
+tile.altar_short_cloth.name=Altar With Short %s Cloth on top
+tile.altar_long_cloth.name=Altar With Long %s Cloth on top
 
+#colors
+black=Black
+red=Red
+green=Green
+brown=Brown
+blue=Blue
+purple=Purple
+cyan=Cyan
+silver=Light Gray
+gray=Gray
+pink=Pink
+lime=Lime
+yellow=Yellow
+lightBlue=Light Blue
+magenta=Magenta
+orange=Orange
+white=White
 
 #npc
 tile.town_hall.name=Town Hall

@@ -31,6 +31,15 @@
             },
             "irminsul_side": {
                 "model": "ancientwarfare:structure/totem_part_irminsul_side"
+            },
+            "elephant_left": {
+                "model": "ancientwarfare:structure/totem_part_elephant_left"
+            },
+            "elephant_body": {
+                "model": "ancientwarfare:structure/totem_part_elephant_body"
+            },
+            "elephant_right": {
+                "model": "ancientwarfare:structure/totem_part_elephant_right"
             }
         },
         "visible": {

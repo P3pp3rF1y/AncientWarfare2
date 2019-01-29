@@ -213,16 +213,8 @@ public class BlockTotemPart extends BlockBaseStructure {
 			public void placeAdditionalParts(World world, BlockPos pos, EnumFacing facing) {
 				world.setBlockState(pos.up(), AWStructureBlocks.TOTEM_PART.getDefaultState().withProperty(VISIBLE, false));
 				WorldTools.getTile(world, pos.up(), TileTotemPart.class).ifPresent(t -> t.setMainBlockPos(pos));
-				placeWingBlock(world, pos, pos.offset(facing.rotateY()), facing.getOpposite());
-				placeWingBlock(world, pos, pos.offset(facing.rotateYCCW()), facing);
-			}
-
-			private void placeWingBlock(World world, BlockPos mainPos, BlockPos wingPos, EnumFacing wingFacing) {
-				world.setBlockState(wingPos, AWStructureBlocks.TOTEM_PART.getDefaultState().withProperty(FACING, wingFacing));
-				WorldTools.getTile(world, wingPos, TileTotemPart.class).ifPresent(t -> {
-					t.setVariant(Variant.WINGS);
-					t.setMainBlockPos(mainPos);
-				});
+				placeSideBlock(world, pos, pos.offset(facing.rotateY()), facing.getOpposite(), Variant.WINGS);
+				placeSideBlock(world, pos, pos.offset(facing.rotateYCCW()), facing, Variant.WINGS);
 			}
 		},
 		WINGS(4) {
@@ -256,22 +248,51 @@ public class BlockTotemPart extends BlockBaseStructure {
 
 			@Override
 			public void placeAdditionalParts(World world, BlockPos pos, EnumFacing facing) {
-				placeSideBlock(world, pos, pos.offset(facing.rotateY()), facing.getOpposite());
-				placeSideBlock(world, pos, pos.offset(facing.rotateYCCW()), facing);
+				placeSideBlock(world, pos, pos.offset(facing.rotateY()), facing.getOpposite(), Variant.IRMINSUL_SIDE);
+				placeSideBlock(world, pos, pos.offset(facing.rotateYCCW()), facing, Variant.IRMINSUL_SIDE);
 			}
 
-			private void placeSideBlock(World world, BlockPos mainPos, BlockPos wingPos, EnumFacing wingFacing) {
-				world.setBlockState(wingPos, AWStructureBlocks.TOTEM_PART.getDefaultState().withProperty(FACING, wingFacing));
-				WorldTools.getTile(world, wingPos, TileTotemPart.class).ifPresent(t -> {
-					t.setVariant(Variant.IRMINSUL_SIDE);
-					t.setMainBlockPos(mainPos);
-				});
-			}
 		},
 		IRMINSUL_SIDE(8) {
 			@Override
 			public AxisAlignedBB getBoundingBox(EnumFacing facing) {
 				return facing.getAxis() == EnumFacing.Axis.X ? IRMINSUL_SIDE_AABB_X : IRMINSUL_SIDE_AABB_Z;
+			}
+		},
+		ELEPHANT_LEFT(9) {
+			@Override
+			public AxisAlignedBB getBoundingBox(EnumFacing value) {
+				return FULL_BLOCK_AABB;
+			}
+		},
+		ELEPHANT_RIGHT(10) {
+			@Override
+			public AxisAlignedBB getBoundingBox(EnumFacing value) {
+				return FULL_BLOCK_AABB;
+			}
+		},
+		ELEPHANT_BODY(11) {
+			@Override
+			public void placeAdditionalParts(World world, BlockPos pos, EnumFacing facing) {
+				BlockPos right = pos.offset(facing.rotateY());
+				BlockPos left = pos.offset(facing.rotateYCCW());
+				placeInvisibleBlock(world, pos, right.up(), ELEPHANT_RIGHT);
+				placeSideBlock(world, pos, right, facing, ELEPHANT_RIGHT);
+				placeInvisibleBlock(world, pos, left.up(), ELEPHANT_LEFT);
+				placeSideBlock(world, pos, left, facing, ELEPHANT_LEFT);
+				placeInvisibleBlock(world, pos, pos.up(), ELEPHANT_BODY);
+			}
+
+			@Override
+			protected Set<BlockPos> getAdditionalPartPositions(BlockPos pos, EnumFacing facing) {
+				BlockPos right = pos.offset(facing.rotateY());
+				BlockPos left = pos.offset(facing.rotateYCCW());
+				return ImmutableSet.of(pos.up(), right, left, right.up(), left.up());
+			}
+
+			@Override
+			public AxisAlignedBB getBoundingBox(EnumFacing value) {
+				return FULL_BLOCK_AABB;
 			}
 		};
 
@@ -344,6 +365,23 @@ public class BlockTotemPart extends BlockBaseStructure {
 
 		public AxisAlignedBB getBoundingBox(EnumFacing value) {
 			return DEFAULT_AABB;
+		}
+
+		private static void placeInvisibleBlock(World world, BlockPos mainPos, BlockPos sidePos, Variant variant) {
+			world.setBlockState(sidePos, AWStructureBlocks.TOTEM_PART.getDefaultState().withProperty(VISIBLE, false));
+			setupTileData(world, mainPos, sidePos, variant);
+		}
+
+		private static void setupTileData(World world, BlockPos mainPos, BlockPos sidePos, Variant variant) {
+			WorldTools.getTile(world, sidePos, TileTotemPart.class).ifPresent(t -> {
+				t.setVariant(variant);
+				t.setMainBlockPos(mainPos);
+			});
+		}
+
+		private static void placeSideBlock(World world, BlockPos mainPos, BlockPos sidePos, EnumFacing sideFacing, Variant variant) {
+			world.setBlockState(sidePos, AWStructureBlocks.TOTEM_PART.getDefaultState().withProperty(FACING, sideFacing));
+			setupTileData(world, mainPos, sidePos, variant);
 		}
 	}
 }
