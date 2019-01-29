@@ -4,7 +4,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.shadowmage.ancientwarfare.structure.init.AWStructureItems;
+
+import static net.shadowmage.ancientwarfare.structure.init.AWStructureItems.*;
 
 @SideOnly(Side.CLIENT)
 public class AWStructureItemColors {
@@ -13,6 +14,6 @@ public class AWStructureItemColors {
 	public static void init() {
 		ItemColors itemColors = Minecraft.getMinecraft().getItemColors();
 
-		itemColors.registerItemColorHandler((stack, tintIndex) -> AWStructureItems.ALTAR_CANDLE.getColor(stack), AWStructureItems.ALTAR_CANDLE);
+		itemColors.registerItemColorHandler((stack, tintIndex) -> ALTAR_CANDLE.getColor(stack), ALTAR_CANDLE, ALTAR_LONG_CLOTH, ALTAR_SHORT_CLOTH);
 	}
 }

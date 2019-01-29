@@ -78,8 +78,8 @@ public class AWStructureBlocks {
 		registry.register(new ItemBlockFirePit(FIRE_PIT));
 		registry.register(new ItemBlockTotemPart(TOTEM_PART));
 
-		registry.register(new ItemBlockBase(AWStructureBlocks.ALTAR_SHORT_CLOTH));
-		registry.register(new ItemBlockBase(AWStructureBlocks.ALTAR_LONG_CLOTH));
+		registry.register(new ItemBlockColored(AWStructureBlocks.ALTAR_SHORT_CLOTH));
+		registry.register(new ItemBlockColored(AWStructureBlocks.ALTAR_LONG_CLOTH));
 		registry.register(new ItemBlockColored(AWStructureBlocks.ALTAR_CANDLE));
 		registry.register(new ItemBlockBase(AWStructureBlocks.ALTAR_LECTERN));
 	}

@@ -31,6 +31,8 @@ public class AWStructureItems {
 	public static final Item TOTEM_PART = InjectionTools.nullValue();
 	public static final ItemBlockStructureBuilder STRUCTURE_BUILDER_TICKED = InjectionTools.nullValue();
 	public static final ItemBlockColored ALTAR_CANDLE = InjectionTools.nullValue();
+	public static final ItemBlockColored ALTAR_SHORT_CLOTH = InjectionTools.nullValue();
+	public static final ItemBlockColored ALTAR_LONG_CLOTH = InjectionTools.nullValue();
 
 	@SubscribeEvent
 	public static void register(RegistryEvent.Register<Item> event) {

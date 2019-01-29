@@ -1,12 +1,16 @@
 package net.shadowmage.ancientwarfare.structure.tile;
 
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagInt;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 
 public class TileColored extends TileUpdatable {
+	private static final String DYE_COLOR_TAG = "dyeColor";
+	private static final String COLOR_TAG = "color";
 	private boolean customColor = false;
 	private int dyeColor = -1;
 	private int color = -1;
@@ -30,6 +34,16 @@ public class TileColored extends TileUpdatable {
 		return EnumDyeColor.byDyeDamage(dyeColor).getColorValue();
 	}
 
+	public ItemStack getPickBlock() {
+		ItemStack item = new ItemStack(world.getBlockState(pos).getBlock());
+		if (customColor) {
+			item.setTagInfo(COLOR_TAG, new NBTTagInt(color));
+		} else {
+			item.setTagInfo(DYE_COLOR_TAG, new NBTTagInt(dyeColor));
+		}
+		return item;
+	}
+
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
@@ -38,8 +52,8 @@ public class TileColored extends TileUpdatable {
 
 	private void readNBT(NBTTagCompound compound) {
 		customColor = compound.getBoolean("customColor");
-		dyeColor = compound.getInteger("dyeColor");
-		color = compound.getInteger("color");
+		dyeColor = compound.getInteger(DYE_COLOR_TAG);
+		color = compound.getInteger(COLOR_TAG);
 	}
 
 	@Override
@@ -50,8 +64,8 @@ public class TileColored extends TileUpdatable {
 
 	private void writeNBT(NBTTagCompound compound) {
 		compound.setBoolean("customColor", customColor);
-		compound.setInteger("dyeColor", dyeColor);
-		compound.setInteger("color", color);
+		compound.setInteger(DYE_COLOR_TAG, dyeColor);
+		compound.setInteger(COLOR_TAG, color);
 	}
 
 	@Override
