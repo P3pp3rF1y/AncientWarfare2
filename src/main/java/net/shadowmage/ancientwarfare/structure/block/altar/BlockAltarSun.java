@@ -4,11 +4,14 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static net.shadowmage.ancientwarfare.core.render.property.CoreProperties.FACING;
 
@@ -18,6 +21,7 @@ public class BlockAltarSun extends BlockAltarTop {
 
 	public BlockAltarSun() {
 		super(Material.WOOD, "altar_sun");
+		setLightLevel(12 / 15F);
 	}
 
 	@Override
@@ -51,5 +55,11 @@ public class BlockAltarSun extends BlockAltarTop {
 				return AABB_WEST_EAST;
 		}
 		return AABB_NORTH_SOUTH;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+		return layer == BlockRenderLayer.CUTOUT;
 	}
 }

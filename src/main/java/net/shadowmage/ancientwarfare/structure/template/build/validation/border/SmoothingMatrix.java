@@ -153,7 +153,7 @@ public class SmoothingMatrix {
 	}
 
 	private void setBlockStateForPoint(SmoothingPoint outerBorderPoint, double outerDistToStructure, int yDiff, SmoothedBorderPoint pointToSmooth, double pointDist) {
-		if ((Math.round(pointDist / outerDistToStructure * yDiff) - Math.round((pointDist - 1) / outerDistToStructure * yDiff)) < 2) {
+		if (Math.round(yDiff / outerDistToStructure) < 2) {
 			pointToSmooth.setBlockState(
 					world.rand.nextDouble() > pointDist / outerDistToStructure ? pointToSmooth.getClosestBorderPoint().getBlockState() : outerBorderPoint.getBlockState());
 		} else {
