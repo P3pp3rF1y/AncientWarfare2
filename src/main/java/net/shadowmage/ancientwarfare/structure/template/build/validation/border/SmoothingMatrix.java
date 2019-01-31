@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.structure.template.build.validation.border;
 
 import com.google.common.collect.ImmutableSet;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -18,6 +19,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -153,6 +155,11 @@ public class SmoothingMatrix {
 	}
 
 	private void setBlockStateForPoint(SmoothingPoint outerBorderPoint, double outerDistToStructure, int yDiff, SmoothedBorderPoint pointToSmooth, double pointDist) {
+		if (!pointToSmooth.getClosestBorderPoint().useStateForBlending()) {
+			pointToSmooth.setBlockState(outerBorderPoint.getBlockState());
+			return;
+		}
+
 		if (Math.round(yDiff / outerDistToStructure) < 2) {
 			pointToSmooth.setBlockState(
 					world.rand.nextDouble() > pointDist / outerDistToStructure ? pointToSmooth.getClosestBorderPoint().getBlockState() : outerBorderPoint.getBlockState());
@@ -325,7 +332,7 @@ public class SmoothingMatrix {
 
 			addPoint(nextToFill.getX(), nextToFill.getZ(),
 					new BlockPos(bb.min.getX() - borderSize - 2 + nextToFill.getX(), 1, bb.min.getZ() - borderSize - 2 + nextToFill.getZ()),
-					SmoothingPoint.Type.STRUCTURE_INSIDE, Blocks.AIR.getDefaultState());
+					SmoothingPoint.Type.STRUCTURE_INSIDE);
 
 			addAdjacentIfEmpty(pointsToFill, new HorizontalCoords(nextToFill.getX() + 1, nextToFill.getZ()));
 			addAdjacentIfEmpty(pointsToFill, new HorizontalCoords(nextToFill.getX() - 1, nextToFill.getZ()));
@@ -362,7 +369,42 @@ public class SmoothingMatrix {
 			y = getYBelowFloatingIsland(minPos.getX() + x, y, minPos.getZ() + z);
 		}
 		BlockPos pos = new BlockPos(minPos.getX() + x, y, minPos.getZ() + z);
-		addPoint(x, z, pos, type, world.getBlockState(pos));
+		Optional<IBlockState> state = getPointBlockState(pos, type);
+		if (state.isPresent()) {
+			addPoint(x, z, pos, type, state.get());
+		} else {
+			addPoint(x, z, pos, type);
+		}
+	}
+
+	private static final Set<Block> STRUCTURE_BORDER_BLOCK_WHITELIST = ImmutableSet.of(
+			Blocks.STONE,
+			Blocks.GRAVEL,
+			Blocks.DIRT,
+			Blocks.GRASS,
+			Blocks.SAND,
+			Blocks.SANDSTONE,
+			Blocks.COBBLESTONE,
+			Blocks.MOSSY_COBBLESTONE,
+			Blocks.OBSIDIAN,
+			Blocks.SNOW,
+			Blocks.NETHERRACK,
+			Blocks.SOUL_SAND,
+			Blocks.MYCELIUM,
+			Blocks.END_STONE,
+			Blocks.HARDENED_CLAY,
+			Blocks.CLAY,
+			Blocks.GRASS_PATH,
+			Blocks.ICE,
+			Blocks.PACKED_ICE
+	);
+
+	private Optional<IBlockState> getPointBlockState(BlockPos pos, SmoothingPoint.Type type) {
+		IBlockState state = world.getBlockState(pos);
+		if (type == SmoothingPoint.Type.STRUCTURE_BORDER && !STRUCTURE_BORDER_BLOCK_WHITELIST.contains(state.getBlock())) {
+			return Optional.empty();
+		}
+		return Optional.of(state);
 	}
 
 	private int getYBelowFloatingIsland(int x, int y, int z) {
@@ -382,10 +424,14 @@ public class SmoothingMatrix {
 		return y;
 	}
 
-	private void addPoint(int x, int z, BlockPos pos, SmoothingPoint.Type type, IBlockState state) {
+	private SmoothingPoint addPoint(int x, int z, BlockPos pos, SmoothingPoint.Type type) {
 		SmoothingPoint point = new SmoothingPoint(x, z, pos, type);
-		point.setBlockState(state);
 		addPoint(point);
+		return point;
+	}
+
+	private void addPoint(int x, int z, BlockPos pos, SmoothingPoint.Type type, IBlockState state) {
+		addPoint(x, z, pos, type).setBlockState(state);
 	}
 
 	private void addPoint(SmoothingPoint point) {

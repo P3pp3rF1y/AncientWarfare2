@@ -6,6 +6,7 @@ import net.minecraft.util.math.BlockPos;
 public class SmoothingPoint {
 	private BlockPos worldPos;
 	private IBlockState blockState;
+	private boolean useStateForBlending = false;
 
 	public Type getType() {
 		return type;
@@ -42,6 +43,7 @@ public class SmoothingPoint {
 
 	public void setBlockState(IBlockState blockState) {
 		this.blockState = blockState;
+		useStateForBlending = true;
 	}
 
 	public double getDistanceToBorder() {
@@ -52,6 +54,10 @@ public class SmoothingPoint {
 
 	public IBlockState getBlockState() {
 		return blockState;
+	}
+
+	public boolean useStateForBlending() {
+		return useStateForBlending;
 	}
 
 	public enum Type {
