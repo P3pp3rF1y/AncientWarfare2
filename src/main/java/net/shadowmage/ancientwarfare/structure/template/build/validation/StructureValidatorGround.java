@@ -11,7 +11,7 @@ import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
-import net.shadowmage.ancientwarfare.structure.template.build.validation.border.SmoothingMatrix;
+import net.shadowmage.ancientwarfare.structure.template.build.validation.border.SmoothingMatrixBuilder;
 import net.shadowmage.ancientwarfare.structure.worldgen.WorldStructureGenerator;
 
 public class StructureValidatorGround extends StructureValidator {
@@ -54,7 +54,8 @@ public class StructureValidatorGround extends StructureValidator {
 	private void smoothoutBorder(World world, StructureBB bb, StructureTemplate template) {
 		int borderSize = getBorderSize();
 		if (borderSize > 0) {
-			new SmoothingMatrix(world, bb, borderSize, bb.min.getY() + template.getOffset().getY() - 1).apply(pos -> handleClearAction(world, pos, template, bb));
+			new SmoothingMatrixBuilder(world, bb, borderSize, bb.min.getY() + template.getOffset().getY() - 1).build()
+					.apply(world, pos -> handleClearAction(world, pos, template, bb));
 		}
 	}
 
