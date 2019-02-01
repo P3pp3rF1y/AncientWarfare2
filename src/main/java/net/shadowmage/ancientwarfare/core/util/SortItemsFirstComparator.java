@@ -45,7 +45,8 @@ public class SortItemsFirstComparator implements Comparator<ItemStack> {
 		for (Map.Entry<Predicate<ItemStack>, Integer> entry : firstElements.entrySet()) {
 			if (entry.getKey().test(o1)) {
 				sortWeight1 = entry.getValue();
-			} else if (entry.getKey().test(o2)) {
+			}
+			if (entry.getKey().test(o2)) {
 				sortWeight2 = entry.getValue();
 			}
 
