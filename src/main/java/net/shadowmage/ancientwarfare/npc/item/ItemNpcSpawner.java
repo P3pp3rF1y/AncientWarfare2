@@ -165,8 +165,7 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 	}
 
 	private static String getShortNpcType(AWNPCEntities.NpcDeclaration dec) {
-		String shortType = dec.getNpcType().substring("faction.".length());
-		return shortType.equals("siege_engineer") ? "siege.engineer" : shortType;
+		return dec.getNpcType().substring("faction.".length());
 	}
 
 	private static ItemStack getStackForNpcType(String type, String npcSubtype) {

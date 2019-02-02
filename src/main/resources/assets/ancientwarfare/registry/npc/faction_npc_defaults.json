@@ -95,7 +95,7 @@
                 "mainhand": "minecraft:diamond_sword"
             }
         },
-        "siege.engineer": {
+        "siege_engineer": {
             "attributes": {
                 "generic.maxHealth": 30,
                 "generic.followRange": 60
@@ -363,7 +363,7 @@
                 },
                 "experience_drop": 100
             },
-            "siege.engineer": {
+            "siege_engineer": {
                 "attributes": {
                     "generic.maxHealth": 50
                 },
@@ -416,7 +416,7 @@
                 },
                 "experience_drop": 65
             },
-            "siege.engineer": {
+            "siege_engineer": {
                 "attributes": {
                     "generic.maxHealth": 40
                 },
@@ -564,7 +564,7 @@
                 },
                 "experience_drop": 60
             },
-            "siege.engineer": {
+            "siege_engineer": {
                 "attributes": {
                     "generic.maxHealth": 50
                 },
@@ -885,7 +885,7 @@
                     "burns_in_sun": true
                 }
             },
-            "siege.engineer": {
+            "siege_engineer": {
                 "additional_attributes": {
                     "burns_in_sun": true
                 }
@@ -970,7 +970,7 @@
                 },
                 "experience_drop": 150
             },
-            "siege.engineer": {
+            "siege_engineer": {
                 "attributes": {
                     "generic.maxHealth": 50
                 },
@@ -1023,7 +1023,7 @@
             "leader.elite": {
                 "enabled": false
             },
-            "siege.engineer": {
+            "siege_engineer": {
                 "enabled": false
             },
             "priest": {

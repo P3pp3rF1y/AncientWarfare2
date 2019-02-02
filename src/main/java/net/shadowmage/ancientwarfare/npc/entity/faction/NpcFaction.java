@@ -141,16 +141,16 @@ public abstract class NpcFaction extends NpcBase {
 
 	public void setFactionNameAndDefaults(String factionName) {
 		this.factionName = factionName;
-		applyFactionNpcSettings();
+		FactionNpcDefault npcDefault = NpcDefaultsRegistry.getFactionNpcDefault(this);
+		applyFactionNpcSettings(npcDefault);
+		npcDefault.applyEquipment(this);
 	}
 
-	private void applyFactionNpcSettings() {
-		FactionNpcDefault npcDefault = NpcDefaultsRegistry.getFactionNpcDefault(this);
+	private void applyFactionNpcSettings(FactionNpcDefault npcDefault) {
 		npcDefault.applyAttributes(this);
 		npcDefault.applyAdditionalAttributes(this);
 		experienceValue = npcDefault.getExperienceDrop();
 		npcDefault.applyPathSettings((PathNavigateGround) getNavigator());
-		npcDefault.applyEquipment(this);
 	}
 
 	@Override
@@ -298,7 +298,7 @@ public abstract class NpcFaction extends NpcBase {
 	public void readEntityFromNBT(NBTTagCompound tag) {
 		super.readEntityFromNBT(tag);
 		factionName = tag.getString("factionName");
-		NpcDefaultsRegistry.getFactionNpcDefault(this).applyAdditionalAttributes(this);
+		applyFactionNpcSettings(NpcDefaultsRegistry.getFactionNpcDefault(this));
 		canDespawn = tag.getBoolean("canDespawn");
 		revengePlayers = NBTHelper.getMap(tag.getTagList("revengePlayers", Constants.NBT.TAG_COMPOUND),
 				t -> t.getString("playerName"), t -> t.getLong("time") );

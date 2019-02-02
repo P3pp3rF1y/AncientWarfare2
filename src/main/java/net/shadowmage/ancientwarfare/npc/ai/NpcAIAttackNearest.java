@@ -4,6 +4,7 @@ import com.google.common.base.Predicate;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 import javax.annotation.Nullable;
@@ -28,5 +29,10 @@ public class NpcAIAttackNearest extends EntityAINearestAttackableTarget {
 	@Override
 	protected boolean isSuitableTarget(EntityLivingBase target, boolean unused) {
 		return AIHelper.isTarget((NpcBase) this.taskOwner, target, shouldCheckSight);
+	}
+
+	@Override
+	protected AxisAlignedBB getTargetableArea(double targetDistance) {
+		return taskOwner.getEntityBoundingBox().grow(targetDistance, targetDistance, targetDistance);
 	}
 }
