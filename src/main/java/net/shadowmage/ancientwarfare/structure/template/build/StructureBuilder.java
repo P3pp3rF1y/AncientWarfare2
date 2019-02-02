@@ -28,6 +28,7 @@ import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntityBase;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -50,6 +51,7 @@ public class StructureBuilder implements IStructureBuilder {
 
 	private boolean isFinished = false;
 	private Biome biome;
+	private Map<BlockPos, IBlockState> statesToSetAgain = new HashMap<>();
 
 	public StructureBuilder(World world, StructureTemplate template, EnumFacing face, BlockPos pos) {
 		this(world, template, face, pos, new StructureBB(pos, face, template));
@@ -96,7 +98,15 @@ public class StructureBuilder implements IStructureBuilder {
 			}
 			increment();
 		}
+		setStateAgainForSpecialBlocks();
+
 		this.placeEntities();
+	}
+
+	private void setStateAgainForSpecialBlocks() {
+		for (Map.Entry<BlockPos, IBlockState> entry : statesToSetAgain.entrySet()) {
+			world.setBlockState(entry.getKey(), entry.getValue(), 2);
+		}
 	}
 
 	private void placeEntities() {
@@ -123,7 +133,12 @@ public class StructureBuilder implements IStructureBuilder {
 		}
 
 		int updateFlag = state.canProvidePower() ? 3 : 2;
-		return world.setBlockState(pos, adjustedState, updateFlag);
+		boolean result = world.setBlockState(pos, adjustedState, updateFlag);
+		if (result && DOUBLE_SET_BLOCKS.contains(adjustedState.getBlock())) {
+			statesToSetAgain.put(pos, adjustedState);
+		}
+
+		return result;
 	}
 
 	private void placeCurrentPosition(TemplateRule rule) {
@@ -229,6 +244,8 @@ public class StructureBuilder implements IStructureBuilder {
 
 		return originalBlockState;
 	}
+
+	private static final Set<Block> DOUBLE_SET_BLOCKS = ImmutableSet.of(Blocks.RAIL, Blocks.ACTIVATOR_RAIL, Blocks.DETECTOR_RAIL, Blocks.GOLDEN_RAIL);
 
 	// @formatter:off
 	private static final Map<Class, Set<IBlockSwapMapping>> BIOME_SWAP_STATES = ImmutableMap.of(

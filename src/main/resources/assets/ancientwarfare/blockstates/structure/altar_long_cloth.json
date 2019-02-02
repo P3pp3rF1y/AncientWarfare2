@@ -1,0 +1,17 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "ancientwarfare:structure/altar_base",
+        "textures": {
+            "bottom": "ancientwarfare:blocks/structure/altar_long_cloth_bottom",
+            "top": "ancientwarfare:blocks/structure/altar_long_cloth_top",
+            "side": "ancientwarfare:blocks/structure/altar_long_cloth_side",
+            "top_overlay": "ancientwarfare:blocks/structure/altar_long_cloth_top_overlay",
+            "side_overlay": "ancientwarfare:blocks/structure/altar_long_cloth_side_overlay"
+        },
+        "transform": "forge:default-block"
+    },
+    "variants": {
+        "normal": [{}]
+    }
+}

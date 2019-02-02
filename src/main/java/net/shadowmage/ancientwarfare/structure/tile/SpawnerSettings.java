@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
@@ -27,6 +28,8 @@ import net.shadowmage.ancientwarfare.structure.util.CapabilityRespawnData;
 import net.shadowmage.ancientwarfare.structure.util.IRespawnData;
 
 import javax.annotation.Nullable;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -577,6 +580,7 @@ public class SpawnerSettings {
 			ResourceLocation registryName = EntityRegistry.getEntry(entity.getClass()).getRegistryName();
 			setEntityToSpawn(registryName);
 		}
+
 		public final void setEntityToSpawn(ResourceLocation entityId) {
 			this.entityId = entityId;
 			if (!ForgeRegistries.ENTITIES.containsKey(this.entityId)) {
@@ -695,6 +699,22 @@ public class SpawnerSettings {
 			return e.world.getCollisionBoxes(e, e.getEntityBoundingBox()).isEmpty() && e.world.checkNoEntityCollision(e.getEntityBoundingBox(), e);
 		}
 
+		private static final Method CAN_DESPAWN = ReflectionHelper.findMethod(EntityLiving.class, "canDespawn", "func_70692_ba");
+
+		private boolean canDespawn(Entity e) {
+			if (!(e instanceof EntityLiving)) {
+				return true;
+			}
+
+			try {
+				return (boolean) CAN_DESPAWN.invoke(e);
+			}
+			catch (IllegalAccessException | InvocationTargetException ex) {
+				AncientWarfareStructure.LOG.error("Error calling canDespawn on entity: {}", ex);
+			}
+			return true;
+		}
+
 		private void spawnEntityAt(Entity e, World world) {
 			if (e instanceof EntityLiving) {
 				((EntityLiving) e).onInitialSpawn(world.getDifficultyForLocation(e.getPosition()), null);
@@ -703,7 +723,7 @@ public class SpawnerSettings {
 			setDataFromTag(e); //some data needs to be set before spawning entity in the world (like factionName)
 			world.spawnEntity(e);
 			setDataFromTag(e); //and some data needs to be set after onInitialSpawn fires for entity]
-			if (getParentSettings().getParentSettings().isOneShotSpawner) {
+			if (getParentSettings().getParentSettings().isOneShotSpawner && canDespawn(e)) {
 				setRespawnData(e);
 			}
 			if (e instanceof NpcFaction) {

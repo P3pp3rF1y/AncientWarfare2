@@ -8,6 +8,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.shadowmage.ancientwarfare.core.util.InjectionTools;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
+import net.shadowmage.ancientwarfare.structure.item.ItemBlockColored;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockInfo;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.item.ItemConstructionTool;
@@ -29,6 +30,9 @@ public class AWStructureItems {
 	public static final Item STRUCTURE_SCANNER = InjectionTools.nullValue();
 	public static final Item TOTEM_PART = InjectionTools.nullValue();
 	public static final ItemBlockStructureBuilder STRUCTURE_BUILDER_TICKED = InjectionTools.nullValue();
+	public static final ItemBlockColored ALTAR_CANDLE = InjectionTools.nullValue();
+	public static final ItemBlockColored ALTAR_SHORT_CLOTH = InjectionTools.nullValue();
+	public static final ItemBlockColored ALTAR_LONG_CLOTH = InjectionTools.nullValue();
 
 	@SubscribeEvent
 	public static void register(RegistryEvent.Register<Item> event) {

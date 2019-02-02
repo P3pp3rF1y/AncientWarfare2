@@ -1,0 +1,108 @@
+{
+    "credit": "Made by Silentine, with Blockbench",
+    "textures": {
+        "0": "ancientwarfare:blocks/structure/altar_candle",
+        "particle": "ancientwarfare:blocks/structure/altar_candle"
+    },
+    "elements": [
+        {
+            "name": "tip",
+            "from": [7.5, 9, 7.5],
+            "to": [8.5, 10, 8.5],
+            "faces": {
+                "north": {"uv": [0, 0, 0.5, 0.5], "texture": "#0"},
+                "east": {"uv": [0, 0, 0.5, 0.5], "texture": "#0"},
+                "south": {"uv": [0, 0, 0.5, 0.5], "texture": "#0"},
+                "west": {"uv": [0, 0, 0.5, 0.5], "texture": "#0"},
+                "up": {"uv": [0, 0, 0.5, 0.5], "texture": "#0"},
+                "down": {"uv": [0, 0, 0.5, 0.5], "texture": "#0"}
+            }
+        },
+        {
+            "name": "body",
+            "from": [7, 1, 7],
+            "to": [9, 5, 9],
+            "faces": {
+                "north": {"uv": [1, 4, 2, 6], "texture": "#0"},
+                "east": {"uv": [2, 4, 3, 6], "texture": "#0"},
+                "south": {"uv": [3, 4, 4, 6], "texture": "#0"},
+                "west": {"uv": [0, 4, 1, 6], "texture": "#0"}
+            }
+        },
+        {
+            "name": "body2",
+            "from": [7, 5, 7],
+            "to": [9, 9, 9],
+            "faces": {
+                "north": {"uv": [1, 2, 2, 4], "texture": "#0", "tintindex": 0},
+                "east": {"uv": [2, 2, 3, 4], "texture": "#0", "tintindex": 0},
+                "south": {"uv": [3, 2, 4, 4], "texture": "#0", "tintindex": 0},
+                "west": {"uv": [0, 2, 1, 4], "texture": "#0", "tintindex": 0},
+                "up": {"uv": [1, 1, 2, 2], "texture": "#0", "tintindex": 0}
+            }
+        },
+        {
+            "name": "handle01",
+            "from": [6.5, 4, 6.5],
+            "to": [9.5, 5, 9.5],
+            "faces": {
+                "north": {"uv": [1.5, 7.5, 3, 8], "texture": "#0"},
+                "east": {"uv": [3, 7.5, 4.5, 8], "texture": "#0"},
+                "south": {"uv": [4.5, 7.5, 6, 8], "texture": "#0"},
+                "west": {"uv": [0, 7.5, 1.5, 8], "texture": "#0"},
+                "up": {"uv": [1.5, 6, 3, 7.5], "texture": "#0"},
+                "down": {"uv": [3, 6, 4.5, 7.5], "texture": "#0"}
+            }
+        },
+        {
+            "name": "handle02",
+            "from": [6, 0, 6],
+            "to": [10, 1, 10],
+            "faces": {
+                "north": {"uv": [2, 10, 4, 10.5], "texture": "#0"},
+                "east": {"uv": [4, 10, 6, 10.5], "texture": "#0"},
+                "south": {"uv": [6, 10, 8, 10.5], "texture": "#0"},
+                "west": {"uv": [0, 10, 2, 10.5], "texture": "#0"},
+                "up": {"uv": [2, 8, 4, 10], "texture": "#0"},
+                "down": {"uv": [4, 8, 6, 10], "texture": "#0"}
+            }
+        }
+    ],
+    "display": {
+        "thirdperson_righthand": {
+            "scale": [0.375, 0.375, 0.375],
+            "rotation": [75, 45, 0],
+            "translation": [0, 2.5, 0]
+        },
+        "thirdperson_lefthand": {
+            "rotation": [75, 45, 0],
+            "translation": [0, 2.5, 0],
+            "scale": [0.375, 0.375, 0.375]
+        },
+        "firstperson_righthand": {
+            "rotation": [0, 45, 0],
+            "translation": [0, 0, 0],
+            "scale": [0.4, 0.4, 0.4]
+        },
+        "ground": {
+            "rotation": [0, 0, 0],
+            "translation": [0, 3, 0],
+            "scale": [0.25, 0.25, 0.25]
+        },
+        "gui": {
+            "rotation": [30, 225, 0],
+            "translation": [0, 0, 0],
+            "scale": [0.625, 0.625, 0.625]
+        },
+        "fixed": {
+            "rotation": [0, 0, 0],
+            "translation": [0, 0, 0],
+            "scale": [0.5, 0.5, 0.5]
+        },
+        "firstperson_lefthand": {
+            "scale": [0.4, 0.4, 0.4],
+            "rotation": [0, 45, 0],
+            "translation": [0, 0, 0]
+        }
+    }
+}

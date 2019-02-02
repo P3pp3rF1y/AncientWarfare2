@@ -1,0 +1,122 @@
+{
+    "credit": "Made by Silentine, with Blockbench",
+    "textures": {
+        "1": "ancientwarfare:blocks/structure/totem_part_elephant_ear",
+        "3": "ancientwarfare:blocks/structure/totem_part_elephant_parts",
+        "particle": "ancientwarfare:blocks/structure/totem_part_elephant_parts"
+    },
+    "elements": [
+        {
+            "name": "leftear",
+            "from": [4, 16, 0],
+            "to": [16, 28, 3],
+            "faces": {
+                "north": {"uv": [9, 1.5, 15, 7.5], "texture": "#1"},
+                "east": {"uv": [7, 1, 8, 7], "texture": "#1"},
+                "south": {"uv": [1.5, 1.5, 7.5, 7.5], "texture": "#1"},
+                "west": {"uv": [0, 1.5, 1.5, 7.5], "texture": "#1"},
+                "up": {"uv": [1.5, 0, 7.5, 1.5], "texture": "#1"},
+                "down": {"uv": [13.5, 1.5, 7.5, 0], "texture": "#1"}
+            }
+        },
+        {
+            "name": "upperarm",
+            "from": [10, 4, 6],
+            "to": [16, 14, 12],
+            "faces": {
+                "north": {"uv": [6, 1.5, 4.5, 4], "texture": "#3"},
+                "east": {"uv": [4.5, 4, 3, 1.5], "rotation": 180, "texture": "#3"},
+                "south": {"uv": [1.5, 1.5, 3, 4], "texture": "#3"},
+                "west": {"uv": [1.5, 1.5, 0, 4], "rotation": 180, "texture": "#3"},
+                "up": {"uv": [3, 1.5, 1.5, 0], "rotation": 180, "texture": "#3"},
+                "down": {"uv": [3, 1.5, 4.5, 0], "rotation": 180, "texture": "#3"}
+            }
+        },
+        {
+            "name": "lowerarm",
+            "from": [10, 4, 12],
+            "to": [16, 10, 16],
+            "faces": {
+                "north": {"uv": [0, 0, 0, 0], "texture": "null"},
+                "east": {"uv": [3.5, 6.5, 2.5, 5], "rotation": 180, "texture": "#3"},
+                "south": {"uv": [2.5, 5, 1, 6.5], "texture": "#3"},
+                "west": {"uv": [1, 6.5, 0, 5], "rotation": 180, "texture": "#3"},
+                "up": {"uv": [1, 5, 2.5, 4], "rotation": 180, "texture": "#3"},
+                "down": {"uv": [2.5, 5, 4, 4], "rotation": 180, "texture": "#3"}
+            }
+        },
+        {
+            "name": "backarm",
+            "from": [7, 6, 3],
+            "to": [13, 16, 9],
+            "faces": {
+                "north": {"uv": [10.5, 1.5, 12, 4], "texture": "#3"},
+                "east": {"uv": [10.5, 4, 9, 1.5], "rotation": 180, "texture": "#3"},
+                "south": {"uv": [7.5, 1.5, 9, 4], "texture": "#3"},
+                "west": {"uv": [7.5, 4, 6, 1.5], "rotation": 180, "texture": "#3"},
+                "up": {"uv": [9, 1.5, 7.5, 0], "rotation": 180, "texture": "#3"},
+                "down": {"uv": [9, 1.5, 10.5, 0], "rotation": 180, "texture": "#3"}
+            }
+        },
+        {
+            "name": "leg",
+            "from": [10, 0, 3],
+            "to": [16, 10, 13],
+            "faces": {
+                "north": {"uv": [8, 9, 6.5, 11.5], "texture": "#3"},
+                "east": {"uv": [6.5, 11.5, 4, 9], "rotation": 180, "texture": "#3"},
+                "south": {"uv": [2.5, 9, 4, 11.5], "texture": "#3"},
+                "west": {"uv": [2.5, 11.5, 0, 9], "rotation": 180, "texture": "#3"},
+                "up": {"uv": [2.5, 9, 4, 6.5], "rotation": 180, "texture": "#3"},
+                "down": {"uv": [4, 9, 5.5, 6.5], "rotation": 180, "texture": "#3"}
+            }
+        }
+    ],
+    "display": {
+        "thirdperson_righthand": {
+            "scale": [0.375, 0.375, 0.375],
+            "rotation": [75, -135, 0],
+            "translation": [0, 2.5, 0]
+        },
+        "gui": {
+            "scale": [0.425, 0.425, 0.425],
+            "rotation": [30, -45, 0],
+            "translation": [0, -2.5, 0]
+        },
+        "thirdperson_lefthand": {
+            "rotation": [75, -135, 0],
+            "translation": [0, 2.5, 0],
+            "scale": [0.375, 0.375, 0.375]
+        },
+        "firstperson_righthand": {
+            "rotation": [0, -45, 0],
+            "translation": [0, 0, 0],
+            "scale": [0.4, 0.4, 0.4]
+        },
+        "ground": {
+            "rotation": [0, 0, 0],
+            "translation": [0, 3, 0],
+            "scale": [0.25, 0.25, 0.25]
+        },
+        "fixed": {
+            "rotation": [0, 180, 0],
+            "translation": [0, 0, 0],
+            "scale": [0.5, 0.5, 0.5]
+        },
+        "firstperson_lefthand": {
+            "scale": [0.4, 0.4, 0.4],
+            "rotation": [0, -45, 0],
+            "translation": [0, 0, 0]
+        }
+    },
+    "groups": [
+        {
+            "name": "leftear",
+            "children": [0]
+        },
+        {
+            "name": "leftpart",
+            "children": [1, 2, 3, 4]
+        }
+    ]
+}

@@ -15,7 +15,7 @@ import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 
 public class BlockBaseStructure extends BlockBase implements IClientRegister {
-	BlockBaseStructure(Material material, String regName) {
+	public BlockBaseStructure(Material material, String regName) {
 		super(material, AncientWarfareStructure.MOD_ID, regName);
 		setCreativeTab(AncientWarfareStructure.TAB);
 
