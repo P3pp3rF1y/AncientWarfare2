@@ -3,7 +3,7 @@ package net.shadowmage.ancientwarfare.npc.skin;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Loader;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+import net.shadowmage.ancientwarfare.core.AWNPCStatics;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.util.FileUtils;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
