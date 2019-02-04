@@ -3,8 +3,9 @@ package net.shadowmage.ancientwarfare.npc.skin;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Loader;
-import net.shadowmage.ancientwarfare.core.AWNPCStatics;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
+import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.core.util.FileUtils;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
@@ -55,7 +56,12 @@ public class NpcSkinManager {
 
 	public void loadSkins() {
 		//noinspection ConstantConditions
-		loadSkinsFromSource(Loader.instance().activeModContainer().getSource(), DEFAULT_SKINS);
+		if (AWNPCStatics.loadDefaultSkinPack) {
+			loadSkinsFromSource(Loader.instance().activeModContainer().getSource(), DEFAULT_SKINS);
+		}
+		else {
+
+		}
 		loadSkinsFromSource(new File(SKINS_CONFIG_PATH), "");
 	}
 
@@ -76,7 +82,7 @@ public class NpcSkinManager {
 			}
 			return true;
 		}, (root, file) -> {
-			String relative = root.relativize(file).toString();
+			String relative = root.relativize(file).toString().replace('\\','/');
 
 			String extension = FilenameUtils.getExtension(file.toString());
 
