@@ -127,7 +127,7 @@
         },
         "trader": {
             "attributes": {
-                "generic.movementSpeed": 0.2,
+                "generic.movementSpeed": 0,
                 "generic.attackDamage": 0
             },
             "equipment": {
