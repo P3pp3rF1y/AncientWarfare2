@@ -59,9 +59,6 @@ public class NpcSkinManager {
 		if (AWNPCStatics.loadDefaultSkinPack) {
 			loadSkinsFromSource(Loader.instance().activeModContainer().getSource(), DEFAULT_SKINS);
 		}
-		else {
-
-		}
 		loadSkinsFromSource(new File(SKINS_CONFIG_PATH), "");
 	}
 
