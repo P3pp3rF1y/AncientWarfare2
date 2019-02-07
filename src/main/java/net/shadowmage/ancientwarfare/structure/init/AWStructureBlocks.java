@@ -18,6 +18,7 @@ import net.shadowmage.ancientwarfare.structure.block.BlockAdvancedSpawner;
 import net.shadowmage.ancientwarfare.structure.block.BlockDraftingStation;
 import net.shadowmage.ancientwarfare.structure.block.BlockFirePit;
 import net.shadowmage.ancientwarfare.structure.block.BlockGateProxy;
+import net.shadowmage.ancientwarfare.structure.block.BlockProtectionFlag;
 import net.shadowmage.ancientwarfare.structure.block.BlockSoundBlock;
 import net.shadowmage.ancientwarfare.structure.block.BlockStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.block.BlockStructureScanner;
@@ -37,6 +38,7 @@ import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedLootChest;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
 import net.shadowmage.ancientwarfare.structure.tile.TileColored;
 import net.shadowmage.ancientwarfare.structure.tile.TileDraftingStation;
+import net.shadowmage.ancientwarfare.structure.tile.TileProtectionFlag;
 import net.shadowmage.ancientwarfare.structure.tile.TileSoundBlock;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureScanner;
@@ -64,27 +66,29 @@ public class AWStructureBlocks {
 	public static final Block ALTAR_CANDLE = InjectionTools.nullValue();
 	public static final Block ALTAR_LECTERN = InjectionTools.nullValue();
 	public static final Block ALTAR_SUN = InjectionTools.nullValue();
+	public static final BlockProtectionFlag PROTECTION_FLAG = InjectionTools.nullValue();
 
 	@SuppressWarnings("ConstantConditions")
 	@SubscribeEvent
 	public static void registerItemBlocks(RegistryEvent.Register<Item> event) {
 		IForgeRegistry<Item> registry = event.getRegistry();
 
-		registry.register(new ItemBlockAdvancedSpawner(AWStructureBlocks.ADVANCED_SPAWNER));
-		registry.register(new ItemBlockBase(AWStructureBlocks.GATE_PROXY));
-		registry.register(new ItemBlockBase(AWStructureBlocks.DRAFTING_STATION));
-		registry.register(new ItemBlockStructureBuilder(AWStructureBlocks.STRUCTURE_BUILDER_TICKED));
-		registry.register(new ItemBlockBase(AWStructureBlocks.SOUND_BLOCK));
-		registry.register(new ItemBlockBase(AWStructureBlocks.STRUCTURE_SCANNER_BLOCK));
-		registry.register(new ItemBlockBase(AWStructureBlocks.ADVANCED_LOOT_CHEST));
+		registry.register(new ItemBlockAdvancedSpawner(ADVANCED_SPAWNER));
+		registry.register(new ItemBlockBase(GATE_PROXY));
+		registry.register(new ItemBlockBase(DRAFTING_STATION));
+		registry.register(new ItemBlockStructureBuilder(STRUCTURE_BUILDER_TICKED));
+		registry.register(new ItemBlockBase(SOUND_BLOCK));
+		registry.register(new ItemBlockBase(STRUCTURE_SCANNER_BLOCK));
+		registry.register(new ItemBlockBase(ADVANCED_LOOT_CHEST));
 		registry.register(new ItemBlockFirePit(FIRE_PIT));
 		registry.register(new ItemBlockTotemPart(TOTEM_PART));
 
-		registry.register(new ItemBlockColored(AWStructureBlocks.ALTAR_SHORT_CLOTH));
-		registry.register(new ItemBlockColored(AWStructureBlocks.ALTAR_LONG_CLOTH));
-		registry.register(new ItemBlockColored(AWStructureBlocks.ALTAR_CANDLE));
-		registry.register(new ItemBlockBase(AWStructureBlocks.ALTAR_LECTERN));
-		registry.register(new ItemBlockBase(AWStructureBlocks.ALTAR_SUN));
+		registry.register(new ItemBlockColored(ALTAR_SHORT_CLOTH));
+		registry.register(new ItemBlockColored(ALTAR_LONG_CLOTH));
+		registry.register(new ItemBlockColored(ALTAR_CANDLE));
+		registry.register(new ItemBlockBase(ALTAR_LECTERN));
+		registry.register(new ItemBlockBase(ALTAR_SUN));
+		registry.register(new ItemBlockBase(PROTECTION_FLAG));
 	}
 
 	@SubscribeEvent
@@ -123,6 +127,9 @@ public class AWStructureBlocks {
 		registerTile(TileColored.class, "altar_candle_tile");
 		registry.register(new BlockAltarLectern());
 		registry.register(new BlockAltarSun());
+
+		registry.register(new BlockProtectionFlag());
+		registerTile(TileProtectionFlag.class, "protection_flag_tile");
 	}
 
 	private static void registerTile(Class<? extends TileEntity> teClass, String teId) {

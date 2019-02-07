@@ -7,6 +7,7 @@ import net.minecraft.util.JsonUtils;
 import net.shadowmage.ancientwarfare.core.registry.IRegistryDataParser;
 import net.shadowmage.ancientwarfare.core.util.parsing.JsonHelper;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -27,6 +28,10 @@ public class FactionRegistry {
 
 	public static FactionDefinition getFaction(String name) {
 		return factions.getOrDefault(name, EMPTY_FACTION);
+	}
+
+	public static Collection<FactionDefinition> getFactionDefinitions() {
+		return factions.values();
 	}
 
 	public static class FactionParser implements IRegistryDataParser {

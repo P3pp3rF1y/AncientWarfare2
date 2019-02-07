@@ -13,7 +13,7 @@ import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
 public class NPCItemColors {
 	private NPCItemColors() {}
 
-	private static final int FACTION_TOP_COLOR = 0xEF5757;
+	public static final int FACTION_TOP_COLOR = 0xEF5757;
 
 	public static void init() {
 		ItemColors itemColors = Minecraft.getMinecraft().getItemColors();

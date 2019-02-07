@@ -76,7 +76,7 @@ public class NpcSkinManager {
 			}
 			return true;
 		}, (root, file) -> {
-			String relative = root.relativize(file).toString();
+			String relative = root.relativize(file).toString().replace('\\', '/');
 
 			String extension = FilenameUtils.getExtension(file.toString());
 

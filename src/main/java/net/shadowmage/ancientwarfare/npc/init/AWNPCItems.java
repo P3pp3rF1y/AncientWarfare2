@@ -9,6 +9,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.shadowmage.ancientwarfare.core.util.InjectionTools;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
+import net.shadowmage.ancientwarfare.npc.client.NPCItemColors;
 import net.shadowmage.ancientwarfare.npc.item.ItemBardInstrument;
 import net.shadowmage.ancientwarfare.npc.item.ItemCoin;
 import net.shadowmage.ancientwarfare.npc.item.ItemCombatOrder;
@@ -21,6 +22,10 @@ import net.shadowmage.ancientwarfare.npc.item.ItemShield;
 import net.shadowmage.ancientwarfare.npc.item.ItemTradeOrder;
 import net.shadowmage.ancientwarfare.npc.item.ItemUpkeepOrder;
 import net.shadowmage.ancientwarfare.npc.item.ItemWorkOrder;
+import net.shadowmage.ancientwarfare.npc.registry.FactionDefinition;
+import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
+import net.shadowmage.ancientwarfare.structure.block.BlockProtectionFlag;
+import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
 
 @ObjectHolder(AncientWarfareNPC.MOD_ID)
 @Mod.EventBusSubscriber(modid = AncientWarfareNPC.MOD_ID)
@@ -79,5 +84,12 @@ public class AWNPCItems {
 		registry.register(new ItemExtendedReachWeapon(Item.ToolMaterial.IRON, "iron_" + name, attackOffset, attackSpeed, reach));
 		registry.register(new ItemExtendedReachWeapon(Item.ToolMaterial.GOLD, "golden_" + name, attackOffset, attackSpeed, reach));
 		registry.register(new ItemExtendedReachWeapon(Item.ToolMaterial.DIAMOND, "diamond_" + name, attackOffset, attackSpeed, reach));
+	}
+
+	public static void addFactionBlocks() {
+		for (FactionDefinition definition : FactionRegistry.getFactionDefinitions()) {
+			AWStructureBlocks.PROTECTION_FLAG.addFlagDefinition(new BlockProtectionFlag.FlagDefinition(
+					"ancientwarfarenpc.protection_flag.faction." + definition.getName(), 0xEF5757, definition.getColor()));
+		}
 	}
 }

@@ -39,6 +39,7 @@ import net.shadowmage.ancientwarfare.npc.container.ContainerUpkeepOrder;
 import net.shadowmage.ancientwarfare.npc.container.ContainerWorkOrder;
 import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
 import net.shadowmage.ancientwarfare.npc.init.AWNPCEntities;
+import net.shadowmage.ancientwarfare.npc.init.AWNPCItems;
 import net.shadowmage.ancientwarfare.npc.network.PacketExtendedReachAttack;
 import net.shadowmage.ancientwarfare.npc.network.PacketFactionUpdate;
 import net.shadowmage.ancientwarfare.npc.network.PacketNpcCommand;
@@ -115,6 +116,7 @@ public class AncientWarfareNPC {
 		statics.save();
 
 		net.shadowmage.ancientwarfare.npc.event.EventHandler.INSTANCE.initModsCoveredByTargets();
+		AWNPCItems.addFactionBlocks();
 	}
 
 	@SubscribeEvent
