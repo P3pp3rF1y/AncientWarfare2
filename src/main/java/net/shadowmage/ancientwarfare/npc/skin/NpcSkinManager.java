@@ -5,9 +5,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Loader;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
-import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.core.util.FileUtils;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
+import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import org.apache.commons.io.FilenameUtils;
 
@@ -79,7 +79,7 @@ public class NpcSkinManager {
 			}
 			return true;
 		}, (root, file) -> {
-			String relative = root.relativize(file).toString().replace('\\','/');
+			String relative = root.relativize(file).toString().replace('\\', '/');
 
 			String extension = FilenameUtils.getExtension(file.toString());
 
