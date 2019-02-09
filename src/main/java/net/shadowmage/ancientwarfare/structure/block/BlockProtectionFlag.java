@@ -13,7 +13,6 @@ import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -168,8 +167,6 @@ public class BlockProtectionFlag extends BlockBaseStructure {
 					.build());
 			items.add(stack);
 		}
-
-		super.getSubBlocks(itemIn, items);
 	}
 
 	@Override

@@ -1,9 +1,12 @@
 package net.shadowmage.ancientwarfare.npc.registry;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class FactionDefinition {
@@ -12,6 +15,7 @@ public class FactionDefinition {
 	private int playerDefaultStanding;
 	private final Set<String> hostileTowards;
 	private final Set<String> targetList;
+	private Map<String, NBTTagCompound> themedBlocksTags = new HashMap<>();
 
 	FactionDefinition(int playerDefaultStanding, Set<String> hostileTowards, Set<String> targetList) {
 		this.playerDefaultStanding = playerDefaultStanding;
@@ -19,10 +23,11 @@ public class FactionDefinition {
 		this.targetList = targetList;
 	}
 
-	private FactionDefinition(String name, int color, int playerDefaultStanding, Set<String> hostileTowards, Set<String> targetList) {
+	private FactionDefinition(String name, int color, int playerDefaultStanding, Set<String> hostileTowards, Set<String> targetList, Map<String, NBTTagCompound> themedBlocksTags) {
 		this(playerDefaultStanding, hostileTowards, targetList);
 		this.name = name;
 		this.color = color;
+		this.themedBlocksTags = themedBlocksTags;
 	}
 
 	public String getName() {
@@ -38,7 +43,7 @@ public class FactionDefinition {
 	}
 
 	public CopyBuilder copy(String name, int color) {
-		return new CopyBuilder(name, color, getPlayerDefaultStanding(), new HashSet<>(hostileTowards), new HashSet<>(targetList));
+		return new CopyBuilder(name, color, getPlayerDefaultStanding(), new HashSet<>(hostileTowards), new HashSet<>(targetList), new HashMap<>(themedBlocksTags));
 	}
 
 	public int getPlayerDefaultStanding() {
@@ -55,19 +60,25 @@ public class FactionDefinition {
 		return targetList;
 	}
 
+	public Map<String, NBTTagCompound> getThemedBlocksTags() {
+		return themedBlocksTags;
+	}
+
 	public static class CopyBuilder {
 		private final String name;
 		private final int color;
 		private int playerDefaultStanding;
 		private Set<String> hostileTowards;
 		private Set<String> targetList;
+		private Map<String, NBTTagCompound> themedBlocksTags;
 
-		private CopyBuilder(String name, int color, int playerDefaultStanding, Set<String> hostileTowards, Set<String> targetList) {
+		private CopyBuilder(String name, int color, int playerDefaultStanding, Set<String> hostileTowards, Set<String> targetList, Map<String, NBTTagCompound> themedBlocksTags) {
 			this.name = name;
 			this.color = color;
 			this.playerDefaultStanding = playerDefaultStanding;
 			this.hostileTowards = hostileTowards;
 			this.targetList = targetList;
+			this.themedBlocksTags = themedBlocksTags;
 		}
 
 		void setPlayerDefaultStanding(int playerDefaultStanding) {
@@ -89,8 +100,13 @@ public class FactionDefinition {
 			return this;
 		}
 
+		CopyBuilder overrideThemedBlocksTags(Map<String, NBTTagCompound> themedBlocksTags) {
+			this.themedBlocksTags = themedBlocksTags;
+			return this;
+		}
+
 		public FactionDefinition build() {
-			return new FactionDefinition(name, color, playerDefaultStanding, hostileTowards, targetList);
+			return new FactionDefinition(name, color, playerDefaultStanding, hostileTowards, targetList, themedBlocksTags);
 		}
 	}
 }

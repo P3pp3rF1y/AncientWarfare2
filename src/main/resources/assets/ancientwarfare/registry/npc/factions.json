@@ -354,7 +354,18 @@
                 "zawa:africanlion",
                 "zawa:amurleopard",
                 "zawa:bengaltiger"
-            ]
+            ],
+            "themed_blocks": {
+                "ancientwarfarestructure:altar_long_cloth": {
+                    "color": 8388736
+                },
+                "ancientwarfarestructure:altar_short_cloth": {
+                    "color": 8388736
+                },
+                "ancientwarfarestructure:altar_candle": {
+                    "color": 16777215
+                }
+            }
         },
         {
             "name": "norska",
@@ -1629,7 +1640,19 @@
                 "zawa:africanlion",
                 "zawa:amurleopard",
                 "zawa:bengaltiger"
-            ]
+            ],
+            "themed_blocks": {
+                "ancientwarfarestructure:altar_long_cloth": {
+                    "color": 16777215
+                },
+                "ancientwarfarestructure:altar_short_cloth": {
+                    "color": 16777215
+                },
+                "ancientwarfarestructure:altar_candle": {
+                    "color": 0,
+                    "flameColor": 16711680
+                }
+            }
         },
         {
             "name": "nogg",
@@ -1953,7 +1976,18 @@
                 "zawa:africanlion",
                 "zawa:amurleopard",
                 "zawa:bengaltiger"
-            ]
+            ],
+            "themed_blocks": {
+                "ancientwarfarestructure:altar_long_cloth": {
+                    "color": 2263842
+                },
+                "ancientwarfarestructure:altar_short_cloth": {
+                    "color": 2263842
+                },
+                "ancientwarfarestructure:altar_candle": {
+                    "color": 16777215
+                }
+            }
         },
         {
             "name": "buffloka",
@@ -3057,7 +3091,19 @@
                 "twilightforest:winter_wolf",
                 "varodd:monkey",
                 "varodd:pegasus"
-            ]
+            ],
+            "themed_blocks": {
+                "ancientwarfarestructure:altar_long_cloth": {
+                    "color": 0
+                },
+                "ancientwarfarestructure:altar_short_cloth": {
+                    "color": 0
+                },
+                "ancientwarfarestructure:altar_candle": {
+                    "color": 0,
+                    "flameColor": 16776960
+                }
+            }
         },
         {
             "name": "good",
@@ -3379,7 +3425,19 @@
                 "zawa:africanlion",
                 "zawa:amurleopard",
                 "zawa:bengaltiger"
-            ]
+            ],
+            "themed_blocks": {
+                "ancientwarfarestructure:altar_long_cloth": {
+                    "color": 3329330
+                },
+                "ancientwarfarestructure:altar_short_cloth": {
+                    "color": 3329330
+                },
+                "ancientwarfarestructure:altar_candle": {
+                    "color": 16777215,
+                    "flameColor": 255
+                }
+            }
         },
         {
             "name": "undead",
@@ -3541,7 +3599,19 @@
                 "varodd:kobold",
                 "varodd:monkey",
                 "varodd:pegasus"
-            ]
+            ],
+            "themed_blocks": {
+                "ancientwarfarestructure:altar_long_cloth": {
+                    "color": 8421504
+                },
+                "ancientwarfarestructure:altar_short_cloth": {
+                    "color": 8421504
+                },
+                "ancientwarfarestructure:altar_candle": {
+                    "color": 8421504,
+                    "flameSmoke": 1
+                }
+            }
         },
         {
             "name": "demon",
@@ -3705,7 +3775,19 @@
                 "varodd:kobold",
                 "varodd:monkey",
                 "varodd:pegasus"
-            ]
+            ],
+            "themed_blocks": {
+                "ancientwarfarestructure:altar_long_cloth": {
+                    "color": 16720896
+                },
+                "ancientwarfarestructure:altar_short_cloth": {
+                    "color": 16720896
+                },
+                "ancientwarfarestructure:altar_candle": {
+                    "color": 16711680,
+                    "flameColor": 16711680
+                }
+            }
         },
         {
             "name": "barbarian",

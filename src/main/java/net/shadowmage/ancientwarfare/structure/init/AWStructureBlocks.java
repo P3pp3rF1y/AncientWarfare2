@@ -36,6 +36,7 @@ import net.shadowmage.ancientwarfare.structure.item.ItemBlockTotemPart;
 import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedLootChest;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
+import net.shadowmage.ancientwarfare.structure.tile.TileAltarCandle;
 import net.shadowmage.ancientwarfare.structure.tile.TileColored;
 import net.shadowmage.ancientwarfare.structure.tile.TileDraftingStation;
 import net.shadowmage.ancientwarfare.structure.tile.TileProtectionFlag;
@@ -123,8 +124,9 @@ public class AWStructureBlocks {
 
 		registry.register(new BlockAltarShortCloth());
 		registry.register(new BlockAltarLongCloth());
+		registerTile(TileColored.class, "colored_tile");
 		registry.register(new BlockAltarCandle());
-		registerTile(TileColored.class, "altar_candle_tile");
+		registerTile(TileAltarCandle.class, "altar_candle_tile");
 		registry.register(new BlockAltarLectern());
 		registry.register(new BlockAltarSun());
 
