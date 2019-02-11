@@ -18,6 +18,7 @@ import net.shadowmage.ancientwarfare.structure.block.BlockAdvancedSpawner;
 import net.shadowmage.ancientwarfare.structure.block.BlockDraftingStation;
 import net.shadowmage.ancientwarfare.structure.block.BlockFirePit;
 import net.shadowmage.ancientwarfare.structure.block.BlockGateProxy;
+import net.shadowmage.ancientwarfare.structure.block.BlockGoldenIdol;
 import net.shadowmage.ancientwarfare.structure.block.BlockProtectionFlag;
 import net.shadowmage.ancientwarfare.structure.block.BlockSoundBlock;
 import net.shadowmage.ancientwarfare.structure.block.BlockStructureBuilder;
@@ -68,6 +69,7 @@ public class AWStructureBlocks {
 	public static final Block ALTAR_LECTERN = InjectionTools.nullValue();
 	public static final Block ALTAR_SUN = InjectionTools.nullValue();
 	public static final BlockProtectionFlag PROTECTION_FLAG = InjectionTools.nullValue();
+	public static final Block GOLDEN_IDOL = InjectionTools.nullValue();
 
 	@SuppressWarnings("ConstantConditions")
 	@SubscribeEvent
@@ -90,6 +92,7 @@ public class AWStructureBlocks {
 		registry.register(new ItemBlockBase(ALTAR_LECTERN));
 		registry.register(new ItemBlockBase(ALTAR_SUN));
 		registry.register(new ItemBlockBase(PROTECTION_FLAG));
+		registry.register(new ItemBlockBase(GOLDEN_IDOL));
 	}
 
 	@SubscribeEvent
@@ -132,6 +135,8 @@ public class AWStructureBlocks {
 
 		registry.register(new BlockProtectionFlag());
 		registerTile(TileProtectionFlag.class, "protection_flag_tile");
+
+		registry.register(new BlockGoldenIdol());
 	}
 
 	private static void registerTile(Class<? extends TileEntity> teClass, String teId) {
