@@ -154,11 +154,11 @@ public class AWStructureBlocks {
 
 		registry.register(new BlockTotemCube("goblin_totem_1"));
 		registry.register(new BlockTotemCube("goblin_totem_2"));
-		registry.register(new BlockTotemCube("goblin_totem_2_lit"));
+		registry.register(new BlockTotemCube("goblin_totem_2_lit", true));
 
 		registry.register(new BlockTotemCube("orc_totem_1"));
 		registry.register(new BlockTotemCube("orc_totem_2"));
-		registry.register(new BlockTotemCube("orc_totem_2_lit"));
+		registry.register(new BlockTotemCube("orc_totem_2_lit", true));
 
 	}
 
