@@ -23,6 +23,7 @@ import net.shadowmage.ancientwarfare.structure.block.BlockProtectionFlag;
 import net.shadowmage.ancientwarfare.structure.block.BlockSoundBlock;
 import net.shadowmage.ancientwarfare.structure.block.BlockStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.block.BlockStructureScanner;
+import net.shadowmage.ancientwarfare.structure.block.BlockTotemCube;
 import net.shadowmage.ancientwarfare.structure.block.BlockTotemPart;
 import net.shadowmage.ancientwarfare.structure.block.altar.BlockAltarCandle;
 import net.shadowmage.ancientwarfare.structure.block.altar.BlockAltarLectern;
@@ -70,6 +71,12 @@ public class AWStructureBlocks {
 	public static final Block ALTAR_SUN = InjectionTools.nullValue();
 	public static final BlockProtectionFlag PROTECTION_FLAG = InjectionTools.nullValue();
 	public static final Block GOLDEN_IDOL = InjectionTools.nullValue();
+	public static final Block ORC_TOTEM_1 = InjectionTools.nullValue();
+	public static final Block ORC_TOTEM_2 = InjectionTools.nullValue();
+	public static final Block ORC_TOTEM_2_LIT = InjectionTools.nullValue();
+	public static final Block GOBLIN_TOTEM_1 = InjectionTools.nullValue();
+	public static final Block GOBLIN_TOTEM_2 = InjectionTools.nullValue();
+	public static final Block GOBLIN_TOTEM_2_LIT = InjectionTools.nullValue();
 
 	@SuppressWarnings("ConstantConditions")
 	@SubscribeEvent
@@ -93,6 +100,13 @@ public class AWStructureBlocks {
 		registry.register(new ItemBlockBase(ALTAR_SUN));
 		registry.register(new ItemBlockBase(PROTECTION_FLAG));
 		registry.register(new ItemBlockBase(GOLDEN_IDOL));
+
+		registry.register(new ItemBlockBase(ORC_TOTEM_1));
+		registry.register(new ItemBlockBase(ORC_TOTEM_2));
+		registry.register(new ItemBlockBase(ORC_TOTEM_2_LIT));
+		registry.register(new ItemBlockBase(GOBLIN_TOTEM_1));
+		registry.register(new ItemBlockBase(GOBLIN_TOTEM_2));
+		registry.register(new ItemBlockBase(GOBLIN_TOTEM_2_LIT));
 	}
 
 	@SubscribeEvent
@@ -137,6 +151,15 @@ public class AWStructureBlocks {
 		registerTile(TileProtectionFlag.class, "protection_flag_tile");
 
 		registry.register(new BlockGoldenIdol());
+
+		registry.register(new BlockTotemCube("goblin_totem_1"));
+		registry.register(new BlockTotemCube("goblin_totem_2"));
+		registry.register(new BlockTotemCube("goblin_totem_2_lit"));
+
+		registry.register(new BlockTotemCube("orc_totem_1"));
+		registry.register(new BlockTotemCube("orc_totem_2"));
+		registry.register(new BlockTotemCube("orc_totem_2_lit"));
+
 	}
 
 	private static void registerTile(Class<? extends TileEntity> teClass, String teId) {
