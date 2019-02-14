@@ -795,7 +795,10 @@
                 "attributes": {
                     "generic.maxHealth": 30
                 },
-                "experience_drop": 30
+                "experience_drop": 30,
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:golden_spear"
+                }
             },
             "soldier.elite": {
                 "attributes": {
