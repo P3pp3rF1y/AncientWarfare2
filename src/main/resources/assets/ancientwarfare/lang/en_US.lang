@@ -213,6 +213,7 @@ tile.orc_totem_2_lit.name=Orc Totem 2 Lit
 tile.goblin_totem_1.name=Goblin Totem 1
 tile.goblin_totem_2.name=Goblin Totem 2
 tile.goblin_totem_2_lit.name=Goblin Totem 2 Lit
+tile.golden_idol.name=Golden Idol
 
 #colors
 black=Black
