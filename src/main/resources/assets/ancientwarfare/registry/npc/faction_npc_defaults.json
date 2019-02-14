@@ -1044,6 +1044,44 @@
             "civilian.male": {
                 "enabled": false
             }
+        },
+        "smingol": {
+            "soldier": {
+                "enabled": false
+            },
+            "soldier.elite": {
+                "enabled": false
+            },
+            "archer": {
+                "enabled": false
+            },
+            "archer.elite": {
+                "enabled": false
+            },
+            "leader": {
+                "enabled": false
+            },
+            "leader.elite": {
+                "enabled": false
+            },
+            "siege_engineer": {
+                "enabled": false
+            },
+            "priest": {
+                "enabled": false
+            },
+            "bard": {
+                "enabled": false
+            },
+            "trader": {
+                "enabled": false
+            },
+            "civilian.female": {
+                "enabled": false
+            },
+            "civilian.male": {
+                "enabled": false
+            }
         }
     }
 }
