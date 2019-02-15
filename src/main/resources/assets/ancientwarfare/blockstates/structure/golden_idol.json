@@ -5,6 +5,10 @@
     },
     "variants": {
         "normal": [{}],
+        "bottom_part": {
+            "true": {},
+            "false": {}
+        },
         "facing": {
             "north": {},
             "south": {
