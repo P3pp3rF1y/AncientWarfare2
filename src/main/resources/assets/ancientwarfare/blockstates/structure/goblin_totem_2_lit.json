@@ -8,7 +8,7 @@
             "up": "ancientwarfare:blocks/structure/totem_top_2",
             "north": "ancientwarfare:blocks/structure/goblin_totem_front_2_lit",
             "west": "ancientwarfare:blocks/structure/totem_side_2",
-            "south": "ancientwarfare:blocks/structure/totem_side_2",
+            "south": "ancientwarfare:blocks/structure/goblin_totem_front_2_lit",
             "east": "ancientwarfare:blocks/structure/totem_side_2"
         },
         "transform": "forge:default-block"
