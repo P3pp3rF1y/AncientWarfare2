@@ -39,7 +39,7 @@ public class StructureMap extends WorldSavedData {
 		NBTTagCompound mapTag = new NBTTagCompound();
 		map.writeToNBT(mapTag);
 		nbttagcompound.setTag("map", mapTag);
-		return mapTag;
+		return nbttagcompound;
 	}
 
 	public Collection<StructureEntry> getEntriesNear(World world, int worldX, int worldZ, int chunkRadius, boolean expandBySize, Collection<StructureEntry> list) {
@@ -92,7 +92,7 @@ public class StructureMap extends WorldSavedData {
 
 		public void readFromNBT(NBTTagCompound nbttagcompound) {
 			NBTTagList uniquesList = nbttagcompound.getTagList("uniques", Constants.NBT.TAG_STRING);
-			NBTTagList dimensionList = nbttagcompound.getTagList("dimensions", Constants.NBT.TAG_STRING);
+			NBTTagList dimensionList = nbttagcompound.getTagList("dimensions", Constants.NBT.TAG_COMPOUND);
 
 			NBTTagCompound dimensionTag;
 			int dim;

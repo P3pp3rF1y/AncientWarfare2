@@ -11,6 +11,11 @@ public class StructureEntry {
 	public String name;
 	private int value;
 	public final StructureBB bb;
+	private BlockPos protectionFlagPos = BlockPos.ORIGIN;
+
+	public void setProtectionFlagPos(BlockPos protectionFlagPos) {
+		this.protectionFlagPos = protectionFlagPos;
+	}
 
 	public StructureEntry(int x, int y, int z, EnumFacing face, StructureTemplate template) {
 		name = template.name;
@@ -56,4 +61,7 @@ public class StructureEntry {
 		return bb;
 	}
 
+	public BlockPos getProtectionFlagPos() {
+		return protectionFlagPos;
+	}
 }
