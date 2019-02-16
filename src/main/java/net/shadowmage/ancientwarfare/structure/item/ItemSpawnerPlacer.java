@@ -49,7 +49,9 @@ public class ItemSpawnerPlacer extends ItemBaseStructure implements IItemKeyInte
 		if (stack.hasTagCompound() && hasSpawnerData(stack)) {
 			SpawnerSettings settings = new SpawnerSettings();
 			settings.readFromNBT(getSpawnerData(stack));
-			tooltip.add(I18n.format(settings.getSpawnGroups().get(0).getEntitiesToSpawn().get(0).getEntityName()));
+			if (!settings.getSpawnGroups().isEmpty() && !settings.getSpawnGroups().get(0).getEntitiesToSpawn().isEmpty()) {
+				tooltip.add(I18n.format(settings.getSpawnGroups().get(0).getEntitiesToSpawn().get(0).getEntityName()));
+			}
 		} else {
 			tooltip.add(I18n.format("guistrings.no_selection"));
 		}
