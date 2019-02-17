@@ -5,6 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -20,6 +21,7 @@ import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureEntry;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
+import net.shadowmage.ancientwarfare.structure.init.AWStructureSounds;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructureEntry;
 
 import java.util.Optional;
@@ -131,6 +133,7 @@ public class TileProtectionFlag extends TileUpdatable {
 		if (checkStructureConquered(structure.get(), player)) {
 			setOwner(player, player.getGameProfile());
 			player.sendStatusMessage(new TextComponentTranslation("gui.ancientwarfarestructure.structure_conquered", structure.get().getName()), true);
+			world.playSound(null, pos, AWStructureSounds.PROTECTION_FLAG_CLAIM, SoundCategory.BLOCKS, 1, 1);
 		}
 		markDirty();
 		BlockTools.notifyBlockUpdate(this);
