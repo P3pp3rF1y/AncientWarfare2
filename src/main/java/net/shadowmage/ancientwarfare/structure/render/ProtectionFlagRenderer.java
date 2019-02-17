@@ -1,7 +1,7 @@
 package net.shadowmage.ancientwarfare.structure.render;
 
+import codechicken.lib.render.CCModelState;
 import codechicken.lib.render.item.IItemRenderer;
-import codechicken.lib.util.TransformUtils;
 import com.google.common.collect.ImmutableList;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
@@ -13,7 +13,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.resources.DefaultPlayerSkin;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,6 +20,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.model.IModelState;
+import net.minecraftforge.common.model.TRSRTransformation;
 import net.shadowmage.ancientwarfare.structure.tile.TileProtectionFlag;
 
 import java.util.ArrayList;
@@ -29,11 +29,29 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static codechicken.lib.util.TransformUtils.create;
+import static codechicken.lib.util.TransformUtils.flipLeft;
+
 public class ProtectionFlagRenderer extends TileEntitySpecialRenderer<TileProtectionFlag> implements IItemRenderer {
-	public static final ResourceLocation BASE_BANNER_TEXTURE = new ResourceLocation("minecraft:textures/entity/banner_base.png");
+	private static final ResourceLocation BASE_BANNER_TEXTURE = new ResourceLocation("minecraft:textures/entity/banner_base.png");
 	private final ModelBanner bannerModel = new ModelBanner();
 	private static final Map<String, ResourceLocation> flagTextures = new HashMap<>();
 	private final ModelSkeletonHead humanoidHead = new ModelHumanoidHead();
+
+	private static final IModelState TRANSFORMS;
+
+	static {
+		Map<ItemCameraTransforms.TransformType, TRSRTransformation> map = new HashMap<>();
+		TRSRTransformation thirdPerson = create(0F, 2.5F, 0F, 75F, 45F, 0F, 0.375F);
+		map.put(ItemCameraTransforms.TransformType.GUI, create(0F, -3F, 0F, 30F, 45F, 0F, 0.525F));
+		map.put(ItemCameraTransforms.TransformType.GROUND, create(0F, 3F, 0F, 0F, 0F, 0F, 0.25F));
+		map.put(ItemCameraTransforms.TransformType.FIXED, create(0F, 0F, 0F, 0F, 0F, 0F, 0.5F));
+		map.put(ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, thirdPerson);
+		map.put(ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, flipLeft(thirdPerson));
+		map.put(ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND, create(0F, 0F, 0F, 0F, 45F, 0F, 0.4F));
+		map.put(ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, create(0F, 0F, 0F, 0F, 225F, 0F, 0.4F));
+		TRANSFORMS = new CCModelState(map);
+	}
 
 	@Override
 	public void render(TileProtectionFlag te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
@@ -68,7 +86,6 @@ public class ProtectionFlagRenderer extends TileEntitySpecialRenderer<TileProtec
 		GlStateManager.disableCull();
 
 		GlStateManager.translate(x + 0.5F, y + 2F, z + 0.5F);
-		float rotationIn = (float) Math.PI;
 
 		GlStateManager.enableRescaleNormal();
 		GlStateManager.scale(-1.0F, -1.0F, 1.0F);
@@ -144,7 +161,7 @@ public class ProtectionFlagRenderer extends TileEntitySpecialRenderer<TileProtec
 
 	@Override
 	public IModelState getTransforms() {
-		return TransformUtils.DEFAULT_BLOCK;
+		return TRANSFORMS;
 	}
 
 	@Override

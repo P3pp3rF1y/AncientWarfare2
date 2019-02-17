@@ -95,7 +95,7 @@ public class AWNPCItems {
 	public static void addFactionBlocks() {
 		for (FactionDefinition definition : FactionRegistry.getFactionDefinitions()) {
 			AWStructureBlocks.PROTECTION_FLAG.addFlagDefinition(new BlockProtectionFlag.FlagDefinition(
-					"ancientwarfarenpc.protection_flag.faction." + definition.getName(), 0xEF5757, definition.getColor()));
+					definition.getName(), 0xEF5757, definition.getColor()));
 
 			for (Map.Entry<String, NBTTagCompound> blockData : definition.getThemedBlocksTags().entrySet()) {
 				Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockData.getKey()));

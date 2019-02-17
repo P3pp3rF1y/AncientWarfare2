@@ -11,22 +11,30 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.owner.Owner;
 import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.core.util.TextUtils;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
+import net.shadowmage.ancientwarfare.structure.gamedata.StructureEntry;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
-import net.shadowmage.ancientwarfare.structure.worldgen.StructureEntry;
+import net.shadowmage.ancientwarfare.structure.network.PacketStructureEntry;
 
 import java.util.Optional;
 
 public class TileProtectionFlag extends TileUpdatable {
-	private static final String UNLOCALIZED_NAME_TAG = "unlocalizedName";
+	private static final String NAME_TAG = "name";
 	private static final String PLAYER_PROFILE_TAG = "playerProfile";
+	private static final String OWNER_TAG = "owner";
+	private static final float UNBREAKABLE = -1F;
+
 	private int topColor = -1;
 	private int bottomColor = -1;
-	private String unlocalizedName;
-	private GameProfile playerProfile = null;
+	private String name = "";
+	private Owner owner = Owner.EMPTY;
+	private GameProfile playerProfile;
 
 	@Override
 	protected void writeUpdateNBT(NBTTagCompound tag) {
@@ -37,7 +45,8 @@ public class TileProtectionFlag extends TileUpdatable {
 	private NBTTagCompound writeNBT(NBTTagCompound tag) {
 		tag.setInteger("topColor", topColor);
 		tag.setInteger("bottomColor", bottomColor);
-		if (playerProfile != null) {
+		if (owner != Owner.EMPTY) {
+			tag.setTag(OWNER_TAG, owner.serializeToNBT(new NBTTagCompound()));
 			tag.setTag(PLAYER_PROFILE_TAG, NBTUtil.writeGameProfile(new NBTTagCompound(), playerProfile));
 		}
 		return tag;
@@ -52,22 +61,32 @@ public class TileProtectionFlag extends TileUpdatable {
 	private void readNBT(NBTTagCompound tag) {
 		topColor = tag.getInteger("topColor");
 		bottomColor = tag.getInteger("bottomColor");
-		if (tag.hasKey(PLAYER_PROFILE_TAG)) {
+		if (tag.hasKey(OWNER_TAG)) {
+			owner = Owner.deserializeFromNBT(tag.getCompoundTag(OWNER_TAG));
 			playerProfile = NBTUtil.readGameProfileFromNBT(tag.getCompoundTag(PLAYER_PROFILE_TAG));
 		}
+	}
+
+	@Override
+	public void validate() {
+		super.validate();
+		AWGameData.INSTANCE.getData(world, StructureMap.class).getStructureAt(world, pos).ifPresent(structure -> {
+			structure.setProtectionFlagPos(pos);
+			NetworkHandler.sendToAllPlayers(new PacketStructureEntry(world.provider.getDimension(), structure.getChunkX(), structure.getChunkZ(), structure, false));
+		});
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
 		readNBT(compound);
-		unlocalizedName = compound.getString(UNLOCALIZED_NAME_TAG);
+		name = compound.getString(NAME_TAG);
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		NBTTagCompound tag = writeNBT(super.writeToNBT(compound));
-		tag.setString(UNLOCALIZED_NAME_TAG, unlocalizedName);
+		tag.setString(NAME_TAG, name);
 		return tag;
 	}
 
@@ -75,7 +94,7 @@ public class TileProtectionFlag extends TileUpdatable {
 		ItemStack stack = new ItemStack(AWStructureBlocks.PROTECTION_FLAG);
 		NBTTagCompound tag = new NBTTagCompound();
 		writeNBT(tag);
-		tag.setString(UNLOCALIZED_NAME_TAG, unlocalizedName);
+		tag.setString(NAME_TAG, name);
 		stack.setTagCompound(tag);
 		return stack;
 	}
@@ -85,7 +104,7 @@ public class TileProtectionFlag extends TileUpdatable {
 		if (stack.hasTagCompound()) {
 			NBTTagCompound tag = stack.getTagCompound();
 			readNBT(tag);
-			unlocalizedName = tag.getString(UNLOCALIZED_NAME_TAG);
+			name = tag.getString(NAME_TAG);
 		}
 	}
 
@@ -98,7 +117,7 @@ public class TileProtectionFlag extends TileUpdatable {
 	}
 
 	public void onActivatedBy(EntityPlayer player) {
-		if (isPlayerOwned()) {
+		if (isPlayerOwned() || world.isRemote) {
 			return;
 		}
 
@@ -108,11 +127,16 @@ public class TileProtectionFlag extends TileUpdatable {
 		}
 
 		if (checkStructureConquered(structure.get(), player)) {
-			playerProfile = player.getGameProfile();
+			setOwner(player, player.getGameProfile());
 			player.sendStatusMessage(new TextComponentTranslation("gui.ancientwarfarestructure.structure_conquered", structure.get().getName()), true);
 		}
 		markDirty();
 		BlockTools.notifyBlockUpdate(this);
+	}
+
+	private void setOwner(EntityPlayer player, GameProfile playerProfile) {
+		owner = new Owner(player);
+		this.playerProfile = playerProfile;
 	}
 
 	private boolean checkStructureConquered(StructureEntry structure, EntityPlayer player) {
@@ -120,7 +144,7 @@ public class TileProtectionFlag extends TileUpdatable {
 		for (NpcFaction factionNpc : world.getEntitiesWithinAABB(NpcFaction.class, boundingBox)) {
 			if (!factionNpc.isPassive()) {
 				player.sendStatusMessage(new TextComponentTranslation("gui.ancientwarfarestructure.structure_hostile_alive",
-						factionNpc.getPosition().toString()), true);
+						TextUtils.getSimpleBlockPosString(factionNpc.getPosition())), true);
 				return false;
 			}
 		}
@@ -128,7 +152,7 @@ public class TileProtectionFlag extends TileUpdatable {
 		for (BlockPos blockPos : BlockPos.getAllInBox(structure.getBB().min, structure.getBB().max)) {
 			if (world.getBlockState(blockPos).getBlock() == AWStructureBlocks.ADVANCED_SPAWNER) {
 				player.sendStatusMessage(new TextComponentTranslation("gui.ancientwarfarestructure.structure_spawner_present",
-						blockPos.toString()), true);
+						TextUtils.getSimpleBlockPosString(blockPos)), true);
 				return false;
 			}
 		}
@@ -136,7 +160,7 @@ public class TileProtectionFlag extends TileUpdatable {
 	}
 
 	public boolean isPlayerOwned() {
-		return playerProfile != null;
+		return owner != Owner.EMPTY;
 	}
 
 	public GameProfile getPlayerProfile() {
@@ -147,5 +171,13 @@ public class TileProtectionFlag extends TileUpdatable {
 	@SideOnly(Side.CLIENT)
 	public AxisAlignedBB getRenderBoundingBox() {
 		return new AxisAlignedBB(pos, pos.add(1, 3, 1));
+	}
+
+	public float getPlayerRelativeBlockHardness(EntityPlayer player, float original) {
+		return owner.isOwnerOrSameTeamOrFriend(player) ? original : UNBREAKABLE;
+	}
+
+	public boolean shouldProtectAgainst(EntityPlayer player) {
+		return !owner.isOwnerOrSameTeamOrFriend(player);
 	}
 }

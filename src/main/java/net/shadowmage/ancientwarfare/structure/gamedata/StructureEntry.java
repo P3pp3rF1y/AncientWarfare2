@@ -1,4 +1,4 @@
-package net.shadowmage.ancientwarfare.structure.worldgen;
+package net.shadowmage.ancientwarfare.structure.gamedata;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -7,11 +7,12 @@ import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 
 public class StructureEntry {
-
 	public String name;
 	private int value;
 	public final StructureBB bb;
 	private BlockPos protectionFlagPos = BlockPos.ORIGIN;
+	private int cx;
+	private int cz;
 
 	public void setProtectionFlagPos(BlockPos protectionFlagPos) {
 		this.protectionFlagPos = protectionFlagPos;
@@ -20,13 +21,17 @@ public class StructureEntry {
 	public StructureEntry(int x, int y, int z, EnumFacing face, StructureTemplate template) {
 		name = template.name;
 		bb = new StructureBB(new BlockPos(x, y, z), face, template.getSize(), template.getOffset());
+		cx = x >> 4;
+		cz = z >> 4;
 		value = template.getValidationSettings().getClusterValue();
 	}
 
-	public StructureEntry(StructureBB bb, String name, int value) {
+	public StructureEntry(StructureBB bb, String name, int value, int cx, int cz) {
 		this.name = name;
 		this.bb = bb;
 		this.value = value;
+		this.cx = cx;
+		this.cz = cz;
 	}
 
 	public StructureEntry() {
@@ -37,6 +42,9 @@ public class StructureEntry {
 		tag.setString("name", name);
 		tag.setInteger("value", value);
 		tag.setIntArray("bb", new int[] {bb.min.getX(), bb.min.getY(), bb.min.getZ(), bb.max.getX(), bb.max.getY(), bb.max.getZ()});
+		tag.setLong("protectionFlagPos", protectionFlagPos.toLong());
+		tag.setInteger("cx", 4);
+		tag.setInteger("cz", 4);
 	}
 
 	public void readFromNBT(NBTTagCompound tag) {
@@ -47,6 +55,9 @@ public class StructureEntry {
 			bb.min = new BlockPos(datas[0], datas[1], datas[2]);
 			bb.max = new BlockPos(datas[3], datas[4], datas[5]);
 		}
+		protectionFlagPos = BlockPos.fromLong(tag.getLong("protectionFlagPos"));
+		cx = tag.getInteger("cx");
+		cz = tag.getInteger("cz");
 	}
 
 	public String getName() {
@@ -63,5 +74,13 @@ public class StructureEntry {
 
 	public BlockPos getProtectionFlagPos() {
 		return protectionFlagPos;
+	}
+
+	public int getChunkZ() {
+		return cz;
+	}
+
+	public int getChunkX() {
+		return cx;
 	}
 }

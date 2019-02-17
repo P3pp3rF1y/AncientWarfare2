@@ -10,9 +10,9 @@ import net.minecraftforge.fml.common.Loader;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
+import net.shadowmage.ancientwarfare.structure.gamedata.StructureEntry;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
-import net.shadowmage.ancientwarfare.structure.worldgen.StructureEntry;
 
 import java.util.ArrayList;
 import java.util.Collection;

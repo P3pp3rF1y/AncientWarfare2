@@ -57,6 +57,9 @@ public final class NetworkHandler implements IGuiHandler {
 
 	public static final int PACKET_EXTENDED_REACH_ATTACK = 27;
 
+	public static final int PACKET_STRUCTURE_MAP = 28;
+	public static final int PACKET_STRUCTURE_ENTRY = 29;
+
 	public static final int GUI_CRAFTING = 0;
 	public static final int GUI_SCANNER = 1;
 	public static final int GUI_BUILDER = 2;

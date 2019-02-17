@@ -8,10 +8,10 @@ import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
+import net.shadowmage.ancientwarfare.structure.gamedata.StructureEntry;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
 import net.shadowmage.ancientwarfare.structure.gamedata.TownMap;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
-import net.shadowmage.ancientwarfare.structure.worldgen.StructureEntry;
 import net.shadowmage.ancientwarfare.structure.worldgen.WorldGenTickHandler;
 
 import java.util.List;
@@ -75,7 +75,8 @@ public class WorldTownGenerator implements IWorldGenerator {
 	 */
 		StructureMap map = AWGameData.INSTANCE.getData(world, StructureMap.class);
 		StructureBB bb = new StructureBB(new BlockPos(area.getBlockMinX(), area.getMinY(), area.getBlockMinZ()), new BlockPos(area.getBlockMaxX(), area.getMaxY(), area.getBlockMaxZ()));
-		StructureEntry entry = new StructureEntry(bb, template.getTownTypeName(), template.getClusterValue());
+		//TODO the getcenter calls here are likely incorrect and would result in only one structure recorded per town
+		StructureEntry entry = new StructureEntry(bb, template.getTownTypeName(), template.getClusterValue(), area.getCenterX() >> 4, area.getCenterZ() >> 4);
 		map.setGeneratedAt(world, area.getCenterX(), area.getSurfaceY(), area.getCenterZ(), EnumFacing.DOWN, entry, false);
 
         /*

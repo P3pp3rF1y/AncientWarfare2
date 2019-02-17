@@ -33,6 +33,7 @@ import net.shadowmage.ancientwarfare.structure.block.altar.BlockAltarSun;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockAdvancedSpawner;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockColored;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockFirePit;
+import net.shadowmage.ancientwarfare.structure.item.ItemBlockProtectionFlag;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockTotemPart;
 import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
@@ -98,7 +99,7 @@ public class AWStructureBlocks {
 		registry.register(new ItemBlockColored(ALTAR_CANDLE));
 		registry.register(new ItemBlockBase(ALTAR_LECTERN));
 		registry.register(new ItemBlockBase(ALTAR_SUN));
-		registry.register(new ItemBlockBase(PROTECTION_FLAG));
+		registry.register(new ItemBlockProtectionFlag(PROTECTION_FLAG));
 		registry.register(new ItemBlockBase(GOLDEN_IDOL));
 
 		registry.register(new ItemBlockBase(ORC_TOTEM_1));

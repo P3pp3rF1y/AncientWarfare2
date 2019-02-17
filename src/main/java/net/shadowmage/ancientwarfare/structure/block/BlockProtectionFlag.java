@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.block;
 
 import codechicken.lib.model.ModelRegistryHelper;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockStandingSign;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
@@ -51,6 +50,14 @@ public class BlockProtectionFlag extends BlockBaseStructure {
 
 	public BlockProtectionFlag() {
 		super(Material.WOOD, "protection_flag");
+		setResistance(6000000F);
+	}
+
+	@Override
+	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World worldIn, BlockPos pos) {
+		float original = super.getPlayerRelativeBlockHardness(state, player, worldIn, pos);
+		return WorldTools.getTile(worldIn, pos, TileProtectionFlag.class).map(te -> te.getPlayerRelativeBlockHardness(player, original))
+				.orElse(original);
 	}
 
 	@Nullable
@@ -132,16 +139,6 @@ public class BlockProtectionFlag extends BlockBaseStructure {
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
-		if (!world.getBlockState(pos.down()).getMaterial().isSolid()) {
-			dropBlockAsItem(world, pos, state, 0);
-			world.setBlockToAir(pos);
-		}
-
-		super.neighborChanged(state, world, pos, blockIn, fromPos);
-	}
-
-	@Override
 	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, ROTATION);
 	}
@@ -163,7 +160,7 @@ public class BlockProtectionFlag extends BlockBaseStructure {
 			stack.setTagCompound(new NBTBuilder()
 					.setInteger("topColor", flagDefinition.getTopColor())
 					.setInteger("bottomColor", flagDefinition.getBottomColor())
-					.setString("unlocalizedName", flagDefinition.getUnlocalizedName())
+					.setString("name", flagDefinition.getName())
 					.build());
 			items.add(stack);
 		}
@@ -186,25 +183,25 @@ public class BlockProtectionFlag extends BlockBaseStructure {
 
 	public static class FlagDefinition {
 
-		private String unlocalizedName;
+		private String name;
 		private int topColor;
 		private int bottomColor;
 
-		public FlagDefinition(String unlocalizedName, int topColor, int bottomColor) {
-			this.unlocalizedName = unlocalizedName;
+		public FlagDefinition(String name, int topColor, int bottomColor) {
+			this.name = name;
 			this.topColor = topColor;
 			this.bottomColor = bottomColor;
 		}
 
-		public String getUnlocalizedName() {
-			return unlocalizedName;
+		public String getName() {
+			return name;
 		}
 
-		public int getTopColor() {
+		private int getTopColor() {
 			return topColor;
 		}
 
-		public int getBottomColor() {
+		private int getBottomColor() {
 			return bottomColor;
 		}
 	}

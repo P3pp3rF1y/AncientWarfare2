@@ -214,6 +214,7 @@ tile.goblin_totem_1.name=Goblin Totem 1
 tile.goblin_totem_2.name=Goblin Totem 2
 tile.goblin_totem_2_lit.name=Goblin Totem 2 Lit
 tile.golden_idol.name=Golden Idol
+tile.protection_flag.name=%s Protection Flag
 
 #colors
 black=Black
@@ -1238,7 +1239,8 @@ keybind.vehicle.ammo.select=Open Ammo Selection GUI
 
 gui.ancientwarfarevehicles.ammo.no_ammo=Vehicle is not loaded with any ammo
 gui.ancientwarfarenpc.no_chest_access=This chest belongs to the %s. It will not open for you!
+gui.ancientwarfarenpc.no_chest_access_flag_not_claimed=You can't open the chest until you claim the flag at: %s
 
-gui.ancientwarfarestructure.structure_hostile_alive=Can't conquer structure with hostile entity inside at %s
-gui.ancientwarfarestructure.structure_spawner_present=Can't conquer structure with spawner block inside at %s
+gui.ancientwarfarestructure.structure_hostile_alive=Can't conquer structure with hostile entity inside at: %s
+gui.ancientwarfarestructure.structure_spawner_present=Can't conquer structure with spawner block inside at: %s
 gui.ancientwarfarestructure.structure_conquered=You have conquered %s
