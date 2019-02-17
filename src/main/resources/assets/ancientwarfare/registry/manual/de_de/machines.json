@@ -1,0 +1,203 @@
+{
+    "type": "manual_content",
+    "lang": "de_DE",
+    "category": "machines",
+    "content": [
+        {
+            "content_type": "heading",
+            "text": "Maschinen",
+            "level": 1
+        },
+        {
+            "content_type": "text",
+            "text": "Die Ancient Warfare Machinen sind eine Möglichkeit, die meisten Funktionen in Minecraft zu automatisieren. Sie verwenden Drehmoment als Energie, um ihre Aufgabe zu erfüllen. Alle Maschinen verwenden eine Seite des blockspezifischen Inventarsystems, die die meisten Maschinen über mehrere Inventare hat. Diese Seiten können angepasst werden. Standardmäßig ist das obere Inventar auf den unteren Rand des Blocks eingestellt. \nAncient Warfare ist bestrebt, mit so vielen Mods wie möglich kompatibel zu sein. Wenn Sie jedoch einen Mod haben den AW nicht unterstützt, wenden Sie sich bitte an das AW Dev-Team!"
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfareautomation:crop_farm"
+        },
+        {
+            "content_type": "heading",
+            "text": "Pflanzen Farm",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Die Fläche der Blöcke, die bearbeitet /gepflanzt /geerntet werden, können in der Anpassungs-GUI ‘Bounds’ angepasst werden. Geerntete Ressourcen werden in den oberen Lagerbereich gelegt. Pflanzen die gepflanzt werden sollen, sollten in den mittleren Lagerbereich eingefügt werden. Der untere Bereich ist für Knochenmehl reserviert, der verwendet wird, um das Wachstum von Feldfrüchten zu beschleunigen, nachdem die Pflanzung abgeschlossen ist. Kann verzauberte Werkzeuge und Upgrades für Qualitätswerkzeuge verwenden."
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfareautomation:fruit_farm"
+        },
+        {
+            "content_type": "heading",
+            "text": "Obst Farm",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Die Obst Farm pflanzt und erntet Obst in Vanilla und viele modifizierte Früchte wie Ernte Craft Früchte, sofern der Bereich innerhalb der Grenzen der jeweiligen Früchte, die gepflanzt und geerntet werden eingehalten wird. Die Fläche der Blöcke die abgeerntet werden können in der Anpassungs-GUI angepasst werden. Geerntete Früchte werden in den oberen Lagerbereich gelegt. Die gepflanzt werden sollen, sollten in den mittleren Lagerbereich eingefügt werden. Kann verzauberte Werkzeuge und Upgrades für Qualitätswerkzeuge verwenden."
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfareautomation:tree_farm"
+        },
+        {
+            "content_type": "heading",
+            "text": "Baum Farm",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Die Baum Farm pflanzt Setzlinge und erntet Holz von Bäumen. Die zu bepflanzenden und zu ernteten Blöcke können in der Anpassungs-GUI ‘Bounds’ angepasst werden. Geerntetes Holz wird in den oberen Lagerbereich gelegt. Setzlinge, die gepflanzt werden sollen, werden in den mittleren Lagerbereich gebracht. Kann verzauberte Werkzeuge und Upgrades für Qualitätswerkzeuge verwenden. \nDie Baum Farm kann auch den Anbau von riesigen Pilzen in einer geeigneten Anbauumgebung bewältigen."
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfareautomation:animal_farm"
+        },
+        {
+            "content_type": "heading",
+            "text": "Tier Farm",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Die Tier Farm ermöglicht die automatisierte Fütterung und Ernte von Vieh. Die maximal zulässige Anzahl von Tieren pro Typ kann über die Schaltfläche  ”Andere” in der Haupt-GUI konfiguriert werden. Geerntete Ressourcen werden in den obersten Lagerbereich gelegt. Futtermittel für die Tiere können im mittleren Lagerbereich platziert werden. Der untere Lagerbereich kann für Eimer zum Melken von Kühen und Scheren von Schafen verwendet werden. Tiere werden nur dann gefüttert, wenn zwei erwachsene, zuchtbereite Tiere zur Verfügung stehen. Kann verzauberte Werkzeuge und Upgrades für Qualitätswerkzeuge verwenden. \n \n \n \n \n \n"
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfareautomation:fish_farm"
+        },
+        {
+            "content_type": "heading",
+            "text": "Fisch Farm",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Die Fisch Farm bietet ein automatisiertes Mittel zum Fangen von Fisch und Tintenfisch. Mehr Wasser in und unterhalb der Grenzen der Fisch Farm führt zu einer schnelleren Produktion. Das Fangen von Fisch und/oder Tintenfisch kann über die GUI ”Andere” aktiviert/ deaktiviert werden.\n \n \n"
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfareautomation:quarry"
+        },
+        {
+            "content_type": "heading",
+            "text": "Bergbau Farm",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Die Bergbau Farm erntet Blöcke. Standardmäßig kann der Steinbruch jeden Block ernten der mit einer Steinhacke geerntet werden kann. Upgrades stehen zur Verfügung, um härtere Blöcke zu ernten. Im oberen Inventarbereich werden die geernteten Ressourcen platziert. Der Steinbruch entfernt Wasserquellenblöcke, erntet jedoch nicht unterhalb von Lava. \n \n \n \n"
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfareautomation:auto_crafting"
+        },
+        {
+            "content_type": "heading",
+            "text": "Auto Crafting Tisch",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Der Auto Crafting Tisch ist ein Tisch der Automatisierung des Handwerks gewidmet. Er verfügt über drei Bestandsbereiche: Rohwarenlagerung, Rezeptlayout und Fertigungsausgabe. Für jede Arbeitseinheit mit Energieeingabe wird ein Gegenstand hergestellt. Um den Auto Crafting Tisch zu verwenden legen Sie Ihr gewünschtes Rezept im Rezeptraster ab. Nur Items aus dem Rohmaterial-Inventarbereich werden beim Herstellen verwendet. Nachdem Ihr Rezept wie geplant angelegt wurde, sollte das zu produzierende Element im Ausgabebereich angezeigt werden. Legen Sie alle Items für die Herstellung des Rezepts ab. Das Eingangsinventar ist das große zweireihige Inventar und ist von oberhalb der Station zu erreichen, während das Ausgangsinventar das kleinere einreihige Inventar direkt von der Fertigungsstraße nach unten ist."
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfareautomation:mailbox"
+        },
+        {
+            "content_type": "heading",
+            "text": "Mailbox",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Mailboxen dienen im Spiel zum Teleportieren von Gegenständen. Die Zeitdauer des Items wird anhand der Entfernung festgelegt. Mailboxen können entweder für das öffentliche Netzwerk oder für ein privates Netzwerk für jeden Spieler gekennzeichnet werden. Mailboxen brauchen keine Energieeingabe oder -interaktion, außer dem Hinzufügen von Elementen zum Senden und Entfernen von empfangenen Elementen. Mit öffentlichen Mailboxen kann von jedermann unabhängig vom Team oder dem Besitzer der Mailbox interagiert werden. Öffentliche Mailboxen können von jeder anderen öffentlichen Mailbox gesendet werden. Jeder kann die vollständige Liste der öffentlichen Mailboxnamen sehen. Private Mailboxen können nur von ihrem Besitzer benutzt werden. Private Mailboxen können nur eine andere private Mailboxe besitzen und von dieser empfangen. Nur der Besitzer eines privaten Netzwerks kann Mailboxnamen hinzufügen oder entfernen."
+        },
+        {
+            "content_type": "item",
+            "items": [
+                {
+                    "name": "ancientwarfareautomation:chunk_loader_simple"
+                },
+                {
+                    "name": "ancientwarfareautomation:chunk_loader_deluxe"
+                }
+            ]
+        },
+        {
+            "content_type": "heading",
+            "text": "Chunkloader",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Chunkloader zwingen Minecraft, bestimmte Weltstücke zu laden und zu ticken. Die Anforderung ist, dass ein Spieler in der Nähe sein muss. Dies ermöglicht es den Maschinen, die Arbeit fortzusetzen und das Spiel läuft für die betroffenen Chunks wie gewohnt. Der 'Simple Chunk Loader' lädt einen 3x3-Chunk-Bereich von der Mitte des Chunks ein, in dem er platziert wird. Der 'Deluxe Chunk Loader' verfügt über eine GUI, welche Chunks geladen werden sollen. Alle Chunks können in einem 5x5-Bereich geladen werden, auch insgesamt bis zu 25 Chunks."
+        },
+        {
+            "content_type": "item",
+            "items": [
+                {
+                    "name": "ancientwarfareautomation:worksite_upgrade",
+                    "data": 0
+                },
+                {
+                    "name": "ancientwarfareautomation:worksite_upgrade",
+                    "data": 1
+                },
+                {
+                    "name": "ancientwarfareautomation:worksite_upgrade",
+                    "data": 2
+                },
+                {
+                    "name": "ancientwarfareautomation:worksite_upgrade",
+                    "data": 3
+                },
+                {
+                    "name": "ancientwarfareautomation:worksite_upgrade",
+                    "data": 4
+                },
+                {
+                    "name": "ancientwarfareautomation:worksite_upgrade",
+                    "data": 5
+                }
+            ]
+        },
+        {
+            "content_type": "item",
+            "items": [
+                {
+                    "name": "ancientwarfareautomation:worksite_upgrade",
+                    "data": 6
+                },
+                {
+                    "name": "ancientwarfareautomation:worksite_upgrade",
+                    "data": 7
+                },
+                {
+                    "name": "ancientwarfareautomation:worksite_upgrade",
+                    "data": 8
+                },
+                {
+                    "name": "ancientwarfareautomation:worksite_upgrade",
+                    "data": 9
+                },
+                {
+                    "name": "ancientwarfareautomation:worksite_upgrade",
+                    "data": 10
+                }
+            ]
+        },
+        {
+            "content_type": "heading",
+            "text": "Bounds Upgrades, Tool Upgrades, Worksite Chunkloaders und verzauberte Tool Upgrades",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Die verschiedenen Maschinen-Upgrades bieten Boni für Maschinen und können in die meisten Maschinen eingefügt werden, indem Sie mit der rechten Maustaste auf den Steuerblock der Maschinen klicken. Bounds Upgrades für die meisten Maschinen gibt es in zwei Größen: Medium, wodurch die maximalen Grenzen auf 9x9 und Large erhöht werden, wodurch die maximalen Grenzen auf 16x16 erhöht werden. Alle Farm-Maschinen können Bounds-Upgrades durchführen, was im Bounds-Bildschirm einstellbar ist. Der Steinbruch hat seine eigenen Bounds-Upgrades, die ebenfalls in zwei Größen erhältlich sind: Quarry Medium, das die maximalen Grenzen auf 32x32 erhöht, und Quarry Large, wodurch die maximalen Grenzen auf 64x64 \nWerkzeugqualitäts-Upgrades gibt es in drei Stufen: Basic, Intermediate und Advanced, die die Effizienz der Maschine in zunehmendem Maße steigern. Wenn es in Steinbrüchen angelegt ist, bietet es die Möglichkeit auf eine Zwischenstufe zu wechseln. Von der Zwischenstufe auf die Berechtigung, von einer Diamant-Spitzhacke auf die Fortgeschrittene. Bis 25 insgesamt Chunks. Es gibt auch Chunkloader-Upgrades für Maschinen, die alle Chunks laden, die Maschinensteuerblöcke oder ihre Begrenzungen überschneiden. Dadurch kann diese Machine normal funktionieren, ohne dass sich Spieler in der Nähe befinden. Dies kann für große Steinbrüche nützlich sein. Die verzauberten Tool-Upgrades sind in zwei Stufen erhältlich, leicht verzaubert und stark verzaubert, die die Effizienz der Maschinen erhöht. Das leicht verzauberte Upgrade ergibt das Äquivalent von “Plündern I” und Glück I” zum Ernten von Blöcken oder zum Töten von Tieren. Das stark verzauberte Upgrade ergibt das Äquivalent von “Plündern II” und “Glück II” "
+        }
+    ]
+}

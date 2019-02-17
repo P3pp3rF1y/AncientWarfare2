@@ -1,0 +1,44 @@
+{
+    "type": "manual_content",
+    "lang": "de_DE",
+    "category": "table_of_contents",
+    "content": [
+        {
+            "content_type": "toc_list",
+            "items": [
+                {
+                    "text": "Forschungssystem",
+                    "category_link": "research"
+                },
+                {
+                    "text": "Drehmoment",
+                    "category_link": "torque"
+                },
+                {
+                    "text": "Maschinen",
+                    "category_link": "machines"
+                },
+                {
+                    "text": "Lager",
+                    "category_link": "warehouse"
+                },
+                {
+                    "text": "NPCs",
+                    "category_link": "npcs"
+                },
+                {
+                    "text": "Völker Info",
+                    "category_link": "factions"
+                },
+                {
+                    "text": "Structures",
+                    "category_link": "structures"
+                },
+                {
+                    "text": "Vehicles",
+                    "category_link": "vehicles"
+                }
+            ]
+        }
+    ]
+}
