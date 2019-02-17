@@ -44,7 +44,7 @@ import java.util.Set;
 
 public class BlockProtectionFlag extends BlockBaseStructure {
 	private static final AxisAlignedBB STANDING_AABB = new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 1.0D, 0.75D);
-	private static final PropertyInteger ROTATION = PropertyInteger.create("rotation", 0, 15);
+	public static final PropertyInteger ROTATION = PropertyInteger.create("rotation", 0, 15);
 
 	private Set<FlagDefinition> flagDefinitions = new LinkedHashSet<>();
 
