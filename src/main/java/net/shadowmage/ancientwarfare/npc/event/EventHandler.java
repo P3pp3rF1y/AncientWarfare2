@@ -143,15 +143,19 @@ public class EventHandler {
 				if (tile.isPresent() && tile.get().shouldProtectAgainst(player)) {
 					evt.setCanceled(true);
 					evt.setCancellationResult(EnumActionResult.FAIL);
-					player.sendStatusMessage(new TextComponentTranslation("gui.ancientwarfarenpc.no_chest_access_flag_not_claimed",
-							TextUtils.getSimpleBlockPosString(structure.getProtectionFlagPos())), true);
+					if (world.isRemote) {
+						player.sendStatusMessage(new TextComponentTranslation("gui.ancientwarfarenpc.no_chest_access_flag_not_claimed",
+								TextUtils.getSimpleBlockPosString(structure.getProtectionFlagPos())), true);
+					}
 				} else {
 					for (NpcFaction factionNpc : world.getEntitiesWithinAABB(NpcFaction.class, structure.getBB().getAABB())) {
 						if (!factionNpc.isPassive()) {
 							evt.setCanceled(true);
 							evt.setCancellationResult(EnumActionResult.FAIL);
-							player.sendStatusMessage(new TextComponentTranslation("gui.ancientwarfarenpc.no_chest_access",
-									StringUtils.capitalize(factionNpc.getFaction())), true);
+							if (world.isRemote) {
+								player.sendStatusMessage(new TextComponentTranslation("gui.ancientwarfarenpc.no_chest_access",
+										StringUtils.capitalize(factionNpc.getFaction())), true);
+							}
 						}
 					}
 				}
