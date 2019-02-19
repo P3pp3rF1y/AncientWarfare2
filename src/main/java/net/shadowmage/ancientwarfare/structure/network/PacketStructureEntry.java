@@ -56,6 +56,8 @@ public class PacketStructureEntry extends PacketBase {
 	@SideOnly(Side.CLIENT)
 	protected void execute() {
 		WorldClient world = Minecraft.getMinecraft().world;
-		AWGameData.INSTANCE.getData(world, StructureMap.class).setGeneratedAt(dimension, cx, cz, entry, unique);
+		if (world != null) {
+			AWGameData.INSTANCE.getData(world, StructureMap.class).setGeneratedAt(dimension, cx, cz, entry, unique);
+		}
 	}
 }
