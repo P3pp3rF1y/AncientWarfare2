@@ -29,6 +29,10 @@ public class HorizontalCoords {
 		return new HorizontalCoords(this.x + offset.x, this.z + offset.z);
 	}
 
+	public HorizontalCoords getOpposite() {
+		return new HorizontalCoords(-x, -z);
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o)
@@ -46,5 +50,9 @@ public class HorizontalCoords {
 		int result = x;
 		result = 31 * result + z;
 		return result;
+	}
+
+	public Set<HorizontalCoords> getPerpendicular() {
+		return ImmutableSet.of(new HorizontalCoords(z, x), new HorizontalCoords(z, -x));
 	}
 }
