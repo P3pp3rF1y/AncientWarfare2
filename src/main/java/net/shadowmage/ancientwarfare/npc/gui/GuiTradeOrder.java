@@ -16,12 +16,12 @@ import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.npc.container.ContainerTradeOrder;
 import net.shadowmage.ancientwarfare.npc.trade.POTradeDepositEntry;
+import net.shadowmage.ancientwarfare.npc.trade.POTradeList;
 import net.shadowmage.ancientwarfare.npc.trade.POTradePoint;
 import net.shadowmage.ancientwarfare.npc.trade.POTradeRestockData;
 import net.shadowmage.ancientwarfare.npc.trade.POTradeRoute;
 import net.shadowmage.ancientwarfare.npc.trade.POTradeWithdrawEntry;
 import net.shadowmage.ancientwarfare.npc.trade.Trade;
-import net.shadowmage.ancientwarfare.npc.trade.TradeList;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -121,7 +121,7 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
 
 	private void setupTradeMode() {
 		tradesArea.clearElements();
-		final TradeList tradeList = getContainer().orders.getTradeList();
+		POTradeList tradeList = getContainer().orders.getTradeList();
 
 		int totalHeight = 8;
 
@@ -170,7 +170,7 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
 	}
 
 	private void addTradeControls(int startWidth, int startHeight, final int tradeNum) {
-		final TradeList tradeList = getContainer().orders.getTradeList();
+		POTradeList tradeList = getContainer().orders.getTradeList();
 		startHeight -= 1;//offset by 1 to lineup better with the item slot boxes, as they align to the inner slot rather than border
 		int infoX = 2 * startWidth + 5;
 		Button upButton = new Button(infoX, startHeight, 55, 12, "guistrings.up") {

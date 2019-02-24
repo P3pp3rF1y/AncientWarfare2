@@ -8,15 +8,12 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.items.IItemHandler;
 import net.shadowmage.ancientwarfare.core.util.OrderingList;
 
-public class TradeList extends OrderingList<Trade> implements INBTSerializable<NBTTagCompound> {
-
+public abstract class TradeList<T extends Trade> extends OrderingList<T> implements INBTSerializable<NBTTagCompound> {
 	public final void addNewTrade() {
 		add(getNewTrade());
 	}
 
-	protected Trade getNewTrade() {
-		return new POTrade();
-	}
+	protected abstract T getNewTrade();
 
 	public void performTrade(EntityPlayer player, IItemHandler storage, int integer) {
 		get(integer).performTrade(player, storage);
@@ -26,7 +23,7 @@ public class TradeList extends OrderingList<Trade> implements INBTSerializable<N
 	public NBTTagCompound serializeNBT() {
 		NBTTagCompound tag = new NBTTagCompound();
 		NBTTagList list = new NBTTagList();
-		for (Trade aTrade : this.points) {
+		for (T aTrade : this.points) {
 			list.appendTag(aTrade.writeToNBT(new NBTTagCompound()));
 		}
 		tag.setTag("tradeList", list);
@@ -38,7 +35,7 @@ public class TradeList extends OrderingList<Trade> implements INBTSerializable<N
 		clear();
 		NBTTagList list = tag.getTagList("tradeList", Constants.NBT.TAG_COMPOUND);
 		for (int i = 0; i < list.tagCount(); i++) {
-			Trade t = getNewTrade();
+			T t = getNewTrade();
 			t.readFromNBT(list.getCompoundTagAt(i));
 			if (t.isValid()) {
 				add(t);

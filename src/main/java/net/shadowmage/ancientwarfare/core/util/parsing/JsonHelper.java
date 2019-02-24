@@ -4,6 +4,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.google.gson.internal.Streams;
+import com.google.gson.stream.JsonWriter;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
@@ -19,6 +21,11 @@ import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.RegistryTools;
 
 import javax.annotation.Nullable;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -220,6 +227,31 @@ public class JsonHelper {
 		}
 
 		return ret;
+	}
+
+	public static void saveJsonFile(JsonObject parent, File file) {
+		if (file.exists()) {
+			//noinspection ResultOfMethodCallIgnored
+			file.delete();
+		}
+		try {
+			if (!file.getParentFile().mkdirs()) {
+				AncientWarfareCore.LOG.error("Unable to create folders for file : " + file.getAbsolutePath());
+			}
+			if (!file.createNewFile()) {
+				AncientWarfareCore.LOG.error("Unable to create new file : " + file.getAbsolutePath());
+			}
+		}
+		catch (IOException e) {
+			AncientWarfareCore.LOG.error("Error creating file", e);
+		}
+		try (BufferedWriter writer = Files.newBufferedWriter(file.toPath(),
+				StandardOpenOption.WRITE, StandardOpenOption.CREATE)) {
+			Streams.write(parent, new JsonWriter(writer));
+		}
+		catch (IOException e) {
+			AncientWarfareCore.LOG.error("Error saving Json file", e);
+		}
 	}
 
 	private interface ItemStackCreator<R> {

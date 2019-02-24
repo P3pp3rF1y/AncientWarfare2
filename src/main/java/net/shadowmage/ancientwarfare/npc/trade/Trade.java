@@ -12,6 +12,7 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.List;
 
 /*
  * Created by Olivier on 12/05/2015.
@@ -28,8 +29,16 @@ public abstract class Trade {
 		return input.get(index);
 	}
 
+	public List<ItemStack> getInput() {
+		return input;
+	}
+
 	public ItemStack getOutputStack(int index) {
 		return output.get(index);
+	}
+
+	public List<ItemStack> getOutput() {
+		return output;
 	}
 
 	public void setInputStack(int index, ItemStack stack) {

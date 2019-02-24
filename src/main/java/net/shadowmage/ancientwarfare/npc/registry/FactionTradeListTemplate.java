@@ -6,6 +6,7 @@ import java.util.List;
 
 public class FactionTradeListTemplate {
 	private final String name;
+
 	private final List<FactionTradeTemplate> trades;
 
 	public FactionTradeListTemplate(String name, List<FactionTradeTemplate> trades) {
@@ -15,6 +16,10 @@ public class FactionTradeListTemplate {
 
 	public String getName() {
 		return name;
+	}
+
+	public List<FactionTradeTemplate> getTrades() {
+		return trades;
 	}
 
 	public FactionTradeList toTradeList() {

@@ -3,7 +3,14 @@ package net.shadowmage.ancientwarfare.npc.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionTrader;
+import net.shadowmage.ancientwarfare.npc.registry.FactionTradeListRegistry;
+import net.shadowmage.ancientwarfare.npc.registry.FactionTradeListTemplate;
+import net.shadowmage.ancientwarfare.npc.registry.FactionTradeTemplate;
+import net.shadowmage.ancientwarfare.npc.trade.FactionTrade;
 import net.shadowmage.ancientwarfare.npc.trade.FactionTradeList;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ContainerNpcFactionTradeSetup extends ContainerNpcBase<NpcFactionTrader> {
 
@@ -56,5 +63,20 @@ public class ContainerNpcFactionTradeSetup extends ContainerNpcBase<NpcFactionTr
 	public void setTradeList(FactionTradeList tradeList) {
 		this.tradeList = tradeList;
 		sendTradeListToServer();
+	}
+
+	public void saveTradeTemplate(String templateName, boolean factionSpecific) {
+		List<FactionTradeTemplate> trades = new ArrayList<>();
+		for (FactionTrade trade : tradeList) {
+			trades.add(FactionTradeTemplate.fromTrade(trade));
+		}
+
+		FactionTradeListTemplate list = new FactionTradeListTemplate(templateName, trades);
+
+		if (factionSpecific) {
+			FactionTradeListRegistry.saveFactionTradeList(list, entity.getFaction());
+		} else {
+			FactionTradeListRegistry.saveTradeList(list);
+		}
 	}
 }

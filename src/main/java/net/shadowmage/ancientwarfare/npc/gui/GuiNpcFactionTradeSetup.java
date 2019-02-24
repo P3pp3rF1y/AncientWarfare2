@@ -12,15 +12,15 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Line;
 import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcFactionTradeSetup;
 import net.shadowmage.ancientwarfare.npc.trade.FactionTrade;
+import net.shadowmage.ancientwarfare.npc.trade.FactionTradeList;
 import net.shadowmage.ancientwarfare.npc.trade.Trade;
-import net.shadowmage.ancientwarfare.npc.trade.TradeList;
 
 import javax.annotation.Nonnull;
 
 public class GuiNpcFactionTradeSetup extends GuiContainerBase<ContainerNpcFactionTradeSetup> {
 
 	private CompositeScrolled area;
-	private TradeList tradeList;
+	private FactionTradeList tradeList;
 
 	public GuiNpcFactionTradeSetup(ContainerBase container) {
 		super(container, 320, 240);
@@ -40,6 +40,15 @@ public class GuiNpcFactionTradeSetup extends GuiContainerBase<ContainerNpcFactio
 		};
 
 		addGuiElement(templateButton);
+
+		Button templateSaveButton = new Button(170, ySize - 69, xSize - 174, 12, "guistrings.save_to_trade_template") {
+			@Override
+			protected void onPressed() {
+				Minecraft.getMinecraft().displayGuiScreen(new GuiTradeTemplateSave(GuiNpcFactionTradeSetup.this));
+				refreshGui();
+			}
+		};
+		addGuiElement(templateSaveButton);
 	}
 
 	@Override
