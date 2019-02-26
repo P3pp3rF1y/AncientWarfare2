@@ -20,7 +20,9 @@ public class RenderAdvancedLootChest extends TileEntitySpecialRenderer<TileAdvan
 			setLightmapDisabled(false);
 		}
 
-		chestRenderer.render(te, x, y, z, partialTicks, destroyStage, alpha);
+		if (te.getClass() == TileAdvancedLootChest.class) {
+			chestRenderer.render(te, x, y, z, partialTicks, destroyStage, alpha);
+		}
 	}
 
 	@Override

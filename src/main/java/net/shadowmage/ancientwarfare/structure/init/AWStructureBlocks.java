@@ -19,6 +19,7 @@ import net.shadowmage.ancientwarfare.structure.block.BlockDraftingStation;
 import net.shadowmage.ancientwarfare.structure.block.BlockFirePit;
 import net.shadowmage.ancientwarfare.structure.block.BlockGateProxy;
 import net.shadowmage.ancientwarfare.structure.block.BlockGoldenIdol;
+import net.shadowmage.ancientwarfare.structure.block.BlockLootBasket;
 import net.shadowmage.ancientwarfare.structure.block.BlockProtectionFlag;
 import net.shadowmage.ancientwarfare.structure.block.BlockSoundBlock;
 import net.shadowmage.ancientwarfare.structure.block.BlockStructureBuilder;
@@ -42,6 +43,7 @@ import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
 import net.shadowmage.ancientwarfare.structure.tile.TileAltarCandle;
 import net.shadowmage.ancientwarfare.structure.tile.TileColored;
 import net.shadowmage.ancientwarfare.structure.tile.TileDraftingStation;
+import net.shadowmage.ancientwarfare.structure.tile.TileLootBasket;
 import net.shadowmage.ancientwarfare.structure.tile.TileProtectionFlag;
 import net.shadowmage.ancientwarfare.structure.tile.TileSoundBlock;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
@@ -78,6 +80,7 @@ public class AWStructureBlocks {
 	public static final Block GOBLIN_TOTEM_1 = InjectionTools.nullValue();
 	public static final Block GOBLIN_TOTEM_2 = InjectionTools.nullValue();
 	public static final Block GOBLIN_TOTEM_2_LIT = InjectionTools.nullValue();
+	public static final Block LOOT_BASKET = InjectionTools.nullValue();
 
 	@SuppressWarnings("ConstantConditions")
 	@SubscribeEvent
@@ -108,6 +111,8 @@ public class AWStructureBlocks {
 		registry.register(new ItemBlockBase(GOBLIN_TOTEM_1));
 		registry.register(new ItemBlockBase(GOBLIN_TOTEM_2));
 		registry.register(new ItemBlockBase(GOBLIN_TOTEM_2_LIT));
+
+		registry.register(new ItemBlockBase(LOOT_BASKET));
 	}
 
 	@SubscribeEvent
@@ -160,6 +165,9 @@ public class AWStructureBlocks {
 		registry.register(new BlockTotemCube("orc_totem_1"));
 		registry.register(new BlockTotemCube("orc_totem_2"));
 		registry.register(new BlockTotemCube("orc_totem_2_lit", true));
+
+		registry.register(new BlockLootBasket());
+		registerTile(TileLootBasket.class, "loot_basket");
 
 	}
 
