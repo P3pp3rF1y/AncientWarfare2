@@ -116,7 +116,7 @@ public class GuiSoundBlock extends GuiContainerBase<ContainerSoundBlock> {
 
 	private int addTuneEntry(final SongEntry entry, final int index, int startHeight) {
 		int y = startHeight;
-		Button input = new Button(8, startHeight, 120, 12, entry.name()) {
+		Button input = new Button(8, startHeight, 120, 12, getShortenedName(entry.name())) {
 			@Override
 			public void onPressed() {
 				Minecraft.getMinecraft().displayGuiScreen(new GuiSoundSelect(GuiSoundBlock.this, entry));
@@ -166,6 +166,10 @@ public class GuiSoundBlock extends GuiContainerBase<ContainerSoundBlock> {
 		area.addGuiElement(new Line(0, startHeight + 2, xSize, startHeight + 2, 1, 0x000000ff));
 		startHeight += 5;
 		return startHeight;
+	}
+
+	private String getShortenedName(String name) {
+		return name.replace("ancientwarfarestructure:auto_load/", "auto:");
 	}
 
 	@Override
