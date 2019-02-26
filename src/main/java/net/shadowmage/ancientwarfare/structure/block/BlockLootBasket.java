@@ -126,7 +126,6 @@ public class BlockLootBasket extends BlockBaseStructure {
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if (!worldIn.isRemote) {
-			playerIn.openGui();
 			getContainer(worldIn, pos).ifPresent(playerIn::displayGUIChest);
 		}
 		return true;
