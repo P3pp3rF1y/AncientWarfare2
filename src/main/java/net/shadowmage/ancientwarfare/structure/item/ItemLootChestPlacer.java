@@ -1,10 +1,8 @@
 package net.shadowmage.ancientwarfare.structure.item;
 
-import net.minecraft.block.BlockChest;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagByte;
-import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -16,6 +14,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
+import net.shadowmage.ancientwarfare.core.util.NBTBuilder;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.gui.GuiLootChestPlacer;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
@@ -27,6 +27,7 @@ import java.util.Random;
 public class ItemLootChestPlacer extends ItemBaseStructure {
 	private static final String LOOT_TABLE_NAME_TAG = "lootTableName";
 	private static final String LOOT_ROLLS_TAG = "lootRolls";
+	private static final String BASKET_TAG = "basket";
 
 	public ItemLootChestPlacer() {
 		super("loot_chest_placer");
@@ -56,8 +57,9 @@ public class ItemLootChestPlacer extends ItemBaseStructure {
 		}
 
 		BlockPos placePos = pos.offset(facing);
-		if (AWStructureBlocks.ADVANCED_LOOT_CHEST.canPlaceBlockAt(world, placePos)) {
-			world.setBlockState(placePos, AWStructureBlocks.ADVANCED_LOOT_CHEST.getDefaultState().withProperty(BlockChest.FACING, player.getHorizontalFacing().getOpposite()));
+		Block block = getPlaceBasket(placer) ? AWStructureBlocks.LOOT_BASKET : AWStructureBlocks.ADVANCED_LOOT_CHEST;
+		if (block.canPlaceBlockAt(world, placePos)) {
+			world.setBlockState(placePos, block.getDefaultState().withProperty(CoreProperties.FACING, player.getHorizontalFacing().getOpposite()));
 			WorldTools.getTile(world, placePos, TileAdvancedLootChest.class)
 					.ifPresent(t -> {
 						t.setLootTable(lt.get().getFirst(), new Random(placePos.toLong()).nextLong());
@@ -79,9 +81,12 @@ public class ItemLootChestPlacer extends ItemBaseStructure {
 				Optional.of(new Tuple<>(new ResourceLocation(placer.getTagCompound().getString(LOOT_TABLE_NAME_TAG)), placer.getTagCompound().getByte(LOOT_ROLLS_TAG))) : Optional.empty();
 	}
 
-	public static void setLootParameters(ItemStack placer, String lootTableName, byte rolls) {
-		placer.setTagInfo(LOOT_TABLE_NAME_TAG, new NBTTagString(lootTableName));
-		placer.setTagInfo(LOOT_ROLLS_TAG, new NBTTagByte(rolls));
+	public static boolean getPlaceBasket(ItemStack placer) {
+		return placer.hasTagCompound() && placer.getTagCompound().getBoolean(BASKET_TAG);
+	}
+
+	public static void setLootParameters(ItemStack placer, String lootTableName, byte rolls, boolean basket) {
+		placer.setTagCompound(new NBTBuilder().setString(LOOT_TABLE_NAME_TAG, lootTableName).setByte(LOOT_ROLLS_TAG, rolls).setBoolean(BASKET_TAG, basket).build());
 	}
 
 	@Override

@@ -30,26 +30,28 @@ public class ContainerLootChestPlacer extends ContainerBase {
 
 	@Override
 	public void handlePacketData(NBTTagCompound tag) {
-		setLootParameters(tag.getString("setTable"), tag.getByte("rolls"));
+		setLootParameters(tag.getString("setTable"), tag.getByte("rolls"), tag.getBoolean("basket"));
 	}
 
-	public void setLootParameters(String lootTableName, byte rolls) {
+	public void setLootParameters(String lootTableName, byte rolls, boolean basket) {
 		if (player.world.isRemote) {
 			NBTTagCompound tag = new NBTTagCompound();
 			tag.setString("setTable", lootTableName);
 			tag.setByte("rolls", rolls);
+			tag.setBoolean("basket", basket);
 			sendDataToServer(tag);
 			return;
 		}
 
-		ItemLootChestPlacer.setLootParameters(placer, lootTableName, rolls);
+		ItemLootChestPlacer.setLootParameters(placer, lootTableName, rolls, basket);
 	}
 
 	public Optional<Tuple<ResourceLocation, Byte>> getLootParameters() {
 		return ItemLootChestPlacer.getLootParameters(placer);
 	}
 
-	public void setLootTable(String lootTableName) {
-
+	public boolean getPlaceBasket() {
+		return ItemLootChestPlacer.getPlaceBasket(placer);
 	}
+
 }
