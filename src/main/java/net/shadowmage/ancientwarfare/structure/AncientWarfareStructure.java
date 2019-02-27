@@ -27,6 +27,7 @@ import net.shadowmage.ancientwarfare.structure.command.CommandStructure;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.container.ContainerDraftingStation;
 import net.shadowmage.ancientwarfare.structure.container.ContainerGateControl;
+import net.shadowmage.ancientwarfare.structure.container.ContainerLootBasket;
 import net.shadowmage.ancientwarfare.structure.container.ContainerLootChestPlacer;
 import net.shadowmage.ancientwarfare.structure.container.ContainerSoundBlock;
 import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerAdvanced;
@@ -108,6 +109,7 @@ public class AncientWarfareStructure {
 		NetworkHandler.registerContainer(NetworkHandler.GUI_DRAFTING_STATION, ContainerDraftingStation.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_SOUND_BLOCK, ContainerSoundBlock.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_LOOT_CHEST_PLACER, ContainerLootChestPlacer.class);
+		NetworkHandler.registerContainer(NetworkHandler.GUI_LOOT_BASKET, ContainerLootBasket.class);
 		proxy.preInit();
 
 		TemplateLoader.INSTANCE.initializeAndExportDefaults();

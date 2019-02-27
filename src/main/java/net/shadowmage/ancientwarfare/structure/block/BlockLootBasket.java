@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.structure.block;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;
@@ -8,14 +7,16 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.ILockableContainer;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.structure.gui.GuiLootBasket;
 import net.shadowmage.ancientwarfare.structure.tile.TileLootBasket;
 
 import javax.annotation.Nullable;
@@ -124,44 +125,18 @@ public class BlockLootBasket extends BlockBaseStructure {
 	}
 
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if (!worldIn.isRemote) {
-			getContainer(worldIn, pos).ifPresent(playerIn::displayGUIChest);
+			NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_LOOT_BASKET, pos);
 		}
 		return true;
 	}
 
-	public Optional<ILockableContainer> getContainer(World worldIn, BlockPos pos) {
-		TileEntity tileentity = worldIn.getTileEntity(pos);
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerClient() {
+		super.registerClient();
 
-		if (!(tileentity instanceof TileLootBasket)) {
-			return Optional.empty();
-		} else {
-			ILockableContainer container = (TileLootBasket) tileentity;
-
-			for (EnumFacing enumfacing : EnumFacing.Plane.HORIZONTAL) {
-				BlockPos blockpos = pos.offset(enumfacing);
-				Block block = worldIn.getBlockState(blockpos).getBlock();
-
-				if (block == this) {
-					TileEntity tile = worldIn.getTileEntity(blockpos);
-
-					container = updateContainerIfDoubleBasket(container, enumfacing, tile);
-				}
-			}
-
-			return Optional.of(container);
-		}
-	}
-
-	private ILockableContainer updateContainerIfDoubleBasket(ILockableContainer container, EnumFacing enumfacing, @Nullable TileEntity tile) {
-		if (tile instanceof TileLootBasket) {
-			if (enumfacing != EnumFacing.WEST && enumfacing != EnumFacing.NORTH) {
-				container = new InventoryLargeChest("container.chestDouble", container, (TileLootBasket) tile);
-			} else {
-				container = new InventoryLargeChest("container.chestDouble", (TileLootBasket) tile, container);
-			}
-		}
-		return container;
+		NetworkHandler.registerGui(NetworkHandler.GUI_LOOT_BASKET, GuiLootBasket.class);
 	}
 }
