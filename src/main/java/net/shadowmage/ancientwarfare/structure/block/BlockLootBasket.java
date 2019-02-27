@@ -30,6 +30,14 @@ public class BlockLootBasket extends BlockBaseStructure {
 
 	public BlockLootBasket() {
 		super(Material.GRASS, "loot_basket");
+		setHardness(2);
+		setHarvestLevel("axe", 0);
+	}
+
+	@Nullable
+	@Override
+	public String getHarvestTool(IBlockState state) {
+		return super.getHarvestTool(state);
 	}
 
 	@Override
