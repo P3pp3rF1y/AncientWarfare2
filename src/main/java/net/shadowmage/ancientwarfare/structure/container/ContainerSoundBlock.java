@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.structure.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.SongPlayData;
 import net.shadowmage.ancientwarfare.structure.tile.TileSoundBlock;
 
@@ -36,6 +37,7 @@ public class ContainerSoundBlock extends ContainerTileBase<TileSoundBlock> {
 		tileEntity.setPlayerRange(range);
 		if (!tileEntity.getWorld().isRemote) {
 			tileEntity.markDirty();
+			BlockTools.notifyBlockUpdate(tileEntity);
 		}
 		refreshGui();
 	}
