@@ -137,8 +137,8 @@ public class TileSoundBlock extends TileUpdatable implements ISinger, ITickable 
 	private void resetCurrentTune() {
 		tuneIndex = -1;
 		AncientWarfareStructure.proxy.resetSoundAt(pos);
-		int diff = Math.abs(tuneData.getMaxDelay() - tuneData.getMinDelay());
-		currentDelay = tuneData.getMinDelay() + diff > 0 ? world.rand.nextInt(diff) : 0;
+		int diff = Math.abs(tuneData.getMaxDelay() - tuneData.getMinDelay()) * 20;
+		currentDelay = tuneData.getMinDelay() * 20 + (diff > 0 ? world.rand.nextInt(diff) : 0);
 	}
 
 	@Override
