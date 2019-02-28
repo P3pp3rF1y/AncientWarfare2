@@ -10,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -25,6 +26,13 @@ import java.util.Optional;
 import static net.shadowmage.ancientwarfare.core.render.property.CoreProperties.FACING;
 
 public class BlockLootBasket extends BlockBaseStructure {
+	private static final AxisAlignedBB SINGLE_SOUTH_NORTH = new AxisAlignedBB(0D, 0D, 2 / 16D, 1D, 12 / 16D, 14 / 16D);
+	private static final AxisAlignedBB SINGLE_WEST_EAST = new AxisAlignedBB(2 / 16D, 0D, 0D, 14 / 16D, 12 / 16D, 1D);
+	private static final AxisAlignedBB DOUBLE_NORTH = new AxisAlignedBB(0D, 0D, 0D, 1D, 12 / 16D, 13 / 16D);
+	private static final AxisAlignedBB DOUBLE_SOUTH = new AxisAlignedBB(0D, 0D, 3 / 16D, 1D, 12 / 16D, 1D);
+	private static final AxisAlignedBB DOUBLE_WEST = new AxisAlignedBB(0D, 0D, 0D, 13 / 16D, 12 / 16D, 1D);
+	private static final AxisAlignedBB DOUBLE_EAST = new AxisAlignedBB(3 / 16D, 0D, 0D, 1D, 12 / 16D, 1D);
+
 	private static final PropertyBool DOUBLE = PropertyBool.create("double");
 	private static final PropertyBool VISIBLE = PropertyBool.create("visible");
 
@@ -87,6 +95,20 @@ public class BlockLootBasket extends BlockBaseStructure {
 	@Override
 	public boolean hasTileEntity(IBlockState state) {
 		return true;
+	}
+
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		if (source.getBlockState(pos.north()).getBlock() == this) {
+			return DOUBLE_NORTH;
+		} else if (source.getBlockState(pos.south()).getBlock() == this) {
+			return DOUBLE_SOUTH;
+		} else if (source.getBlockState(pos.west()).getBlock() == this) {
+			return DOUBLE_WEST;
+		} else if (source.getBlockState(pos.east()).getBlock() == this) {
+			return DOUBLE_EAST;
+		}
+		return state.getValue(FACING).getAxis() == EnumFacing.Axis.X ? SINGLE_WEST_EAST : SINGLE_SOUTH_NORTH;
 	}
 
 	@Nullable
