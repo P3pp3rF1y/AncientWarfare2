@@ -26,9 +26,17 @@
             "content_type": "text",
             "text": "Mit dem Gegenstand Diamanthammer (AW) kann der Spieler Drehmoment erzeugen, Blöcke mit Drehmoment-Plättchen und Maschinen drehen oder als Waffe nutzen. Sie können die Z-Taste verwenden, um Mods umzuschalten. Mit der linken Maustaste angreifen, und mit der rechten Maustaste, um die speziellen Operationen auszuführen. Bewegen Sie den Mauszeiger über den Hammer, um den Tool Tipp anzuzeigen. \n \n \n \n \n"
         },
-        {
-            "content_type": "item",
-            "name": "ancientwarfareautomation:windmill_blade"
+		{
+            "content_type": "image",
+            "path": "/images/Windmill1.jpg",
+            "width": 756,
+            "height": 425
+        },
+		{
+            "content_type": "image",
+            "path": "/images/Windmill2.jpg",
+            "width": 756,
+            "height": 425
         },
         {
             "content_type": "heading",
@@ -39,9 +47,11 @@
             "content_type": "text",
             "text": "Die Windmühle ist eine Multiblock-Struktur zur Erzeugung von Drehmoment. Sie besteht aus einem Windmühlensteuerblock und Windmühlenflügeln. Die Größe der Windmühlenflügelblöcke ist eine volle Fläche einer ungeraden Größe von einem Minimum von 5×5 bis zu einem Maximum von 17×17 und einen Block dick. Sobald die Flügelblöcke richtig angeordnet sind, werden sie zu den eigentlichen Flügeln einer Windmühle. Platzieren Sie den Windmühlencontrollerblock auf beiden Seiten der zentralen Welle der Flügel. Zwei Steuerblöcke bieten keinen Nutzen, nur einer wird mit Strom versorgt. Je größer die Windmühle ist, desto mehr Drehmoment wird erzeugt."
         },
-        {
-            "content_type": "item",
-            "name": "ancientwarfareautomation:waterwheel_generator"
+		{
+            "content_type": "image",
+            "path": "/images/Waterwheel1.jpg",
+            "width": 756,
+            "height": 425
         },
         {
             "content_type": "heading",
@@ -165,34 +175,11 @@
             "content_type": "text",
             "text": "Drehmomentverteiler werden verwendet um eine einzelne Drehmomentwellenlinie in mehrere zu teilen. Sie verfügen über einen Eingang und fünf Ausgangsseiten, sodass die Leistung von einem einzigen Eingang in mehrere Richtungen verteilt werden kann. \n \n \n \n \n"
         },
-        {
-            "content_type": "item",
-            "items": [
-                {
-                    "name": "ancientwarfareautomation:flywheel_controller",
-                    "data": 0
-                },
-                {
-                    "name": "ancientwarfareautomation:flywheel_controller",
-                    "data": 1
-                },
-                {
-                    "name": "ancientwarfareautomation:flywheel_controller",
-                    "data": 2
-                },
-                {
-                    "name": "ancientwarfareautomation:flywheel_storage",
-                    "data": 0
-                },
-                {
-                    "name": "ancientwarfareautomation:flywheel_storage",
-                    "data": 1
-                },
-                {
-                    "name": "ancientwarfareautomation:flywheel_storage",
-                    "data": 2
-                }
-            ]
+		{
+            "content_type": "image",
+            "path": "/images/Flywheel_Storage1.jpg",
+            "width": 756,
+            "height": 425
         },
         {
             "content_type": "heading",

@@ -26,9 +26,17 @@
             "content_type": "text",
             "text": "古代战争的锤子可以被玩家用来产生扭力，旋转包括扭矩层级和机器在内的方块，或者作为武器。您可以使用“Z”键切换，并使用左键单击进行攻击，右键单击执行特殊操作. 将鼠标悬停在锤子上以查看工具提示. \n \n \n \n \n"
         },
-        {
-            "content_type": "item",
-            "name": "ancientwarfareautomation:windmill_blade"
+		{
+            "content_type": "image",
+            "path": "/images/Windmill1.jpg",
+            "width": 756,
+            "height": 425
+        },
+		{
+            "content_type": "image",
+            "path": "/images/Windmill2.jpg",
+            "width": 756,
+            "height": 425
         },
         {
             "content_type": "heading",
@@ -39,9 +47,11 @@
             "content_type": "text",
             "text": "风车是一种产生扭力的多块结构. 它由风车控制块和风车叶片块组成风车叶片块的尺寸为任何奇数尺寸的完整方形，从最小5x5到最大17x17，一个方块厚.一旦叶片块正确排列，它们将呈现到风车的实际叶片中. 将风车控制器块放在叶片中心轴的任一侧. 两个控制块将没有任何好处，只有一个控制器将收到能量。风车越大，输出的扭力就越多."
         },
-        {
-            "content_type": "item",
-            "name": "ancientwarfareautomation:waterwheel_generator"
+		{
+            "content_type": "image",
+            "path": "/images/Waterwheel1.jpg",
+            "width": 756,
+            "height": 425
         },
         {
             "content_type": "heading",
@@ -165,34 +175,11 @@
             "content_type": "text",
             "text": "扭矩分配器用于将单个扭矩轴管路拆分为多个扭矩轴管路。它有一个输入端和五个输出端，因此它可以用来从一个输入端向多个方向分配功率. \n \n \n \n \n"
         },
-        {
-            "content_type": "item",
-            "items": [
-                {
-                    "name": "ancientwarfareautomation:flywheel_controller",
-                    "data": 0
-                },
-                {
-                    "name": "ancientwarfareautomation:flywheel_controller",
-                    "data": 1
-                },
-                {
-                    "name": "ancientwarfareautomation:flywheel_controller",
-                    "data": 2
-                },
-                {
-                    "name": "ancientwarfareautomation:flywheel_storage",
-                    "data": 0
-                },
-                {
-                    "name": "ancientwarfareautomation:flywheel_storage",
-                    "data": 1
-                },
-                {
-                    "name": "ancientwarfareautomation:flywheel_storage",
-                    "data": 2
-                }
-            ]
+		{
+            "content_type": "image",
+            "path": "/images/Flywheel_Storage1.jpg",
+            "width": 756,
+            "height": 425
         },
         {
             "content_type": "heading",

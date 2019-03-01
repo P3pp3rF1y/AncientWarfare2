@@ -12,6 +12,12 @@
             "content_type": "text",
             "text": "The Ancient Warfare Machines are a way to automate most functions in Minecraft, and all of them use Torque as energy to perform its task. The Machines can also be worked on by an appropriate NPC worker. All Machines use a side of the block specific inventory system, since most Machines have multiple inventories, and the side of the block determines which inventory items are going to be located. These Sides can be customized by clicking on the button “Sides” located on the bottom left corner of most Machine GUIs. By default, the “Top” inventory is set to the bottom of the block, the “Middle” inventory is set to the front of the block, and the “Bottom” inventory is set to the top of the block. \nAncient Warfare strives to be compatible with as many mods as possible, but if you have a mod that AW does not support, please do contact the AW Dev team!"
         },
+		{
+            "content_type": "image",
+            "path": "/images/Sides_GUI1.jpg",
+            "width": 764,
+            "height": 421
+        },
         {
             "content_type": "item",
             "name": "ancientwarfareautomation:crop_farm"
