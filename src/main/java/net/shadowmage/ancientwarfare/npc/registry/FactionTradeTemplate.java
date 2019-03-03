@@ -40,11 +40,11 @@ public class FactionTradeTemplate {
 		trade.setRefillFrequency(refillFrequency);
 		int slot = 0;
 		for (ItemStack stack : input) {
-			trade.setInputStack(slot, stack);
+			trade.setInputStack(slot++, stack);
 		}
 		slot = 0;
 		for (ItemStack stack : output) {
-			trade.setOutputStack(slot, stack);
+			trade.setOutputStack(slot++, stack);
 		}
 		return trade;
 	}
