@@ -95,6 +95,7 @@ public class CompositeScrolled extends Composite implements IScrollableCallback 
 					} else {
 						if (evt.type == Listener.MOUSE_UP) {
 							for (GuiElement element : elements) {
+								element.handleMouseInput(evt);
 								element.setSelected(false);
 							}
 						}
