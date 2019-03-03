@@ -4,26 +4,22 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
-import net.shadowmage.ancientwarfare.core.util.SongPlayData;
 import net.shadowmage.ancientwarfare.structure.tile.TileSoundBlock;
+import net.shadowmage.ancientwarfare.structure.util.BlockSongPlayData;
 
 public class ContainerSoundBlock extends ContainerTileBase<TileSoundBlock> {
 	private static final String TUNE_DATA_TAG = "tuneData";
-	private static final String RANGE_TAG = "range";
-	public SongPlayData data;
-	public int range;
+	public BlockSongPlayData data;
 
 	public ContainerSoundBlock(EntityPlayer player, int x, int y, int z) {
 		super(player, x, y, z);
 		data = tileEntity.getSongs();
-		range = tileEntity.getPlayerRange();
 	}
 
 	@Override
 	public void sendInitData() {
 		NBTTagCompound tag = new NBTTagCompound();
 		tag.setTag(TUNE_DATA_TAG, data.writeToNBT(new NBTTagCompound()));
-		tag.setInteger(RANGE_TAG, range);
 		sendDataToClient(tag);
 	}
 
@@ -33,9 +29,8 @@ public class ContainerSoundBlock extends ContainerTileBase<TileSoundBlock> {
 			tileEntity.getSongs().readFromNBT(tag.getCompoundTag(TUNE_DATA_TAG));
 			data = tileEntity.getSongs();
 		}
-		range = tag.getInteger(RANGE_TAG);
-		tileEntity.setPlayerRange(range);
 		if (!tileEntity.getWorld().isRemote) {
+			tileEntity.resetStateValues();
 			tileEntity.markDirty();
 			BlockTools.notifyBlockUpdate(tileEntity);
 		}
@@ -47,7 +42,6 @@ public class ContainerSoundBlock extends ContainerTileBase<TileSoundBlock> {
 		{
 			NBTTagCompound tag = new NBTTagCompound();
 			tag.setTag(TUNE_DATA_TAG, data.writeToNBT(new NBTTagCompound()));
-			tag.setInteger(RANGE_TAG, range);
 			sendDataToServer(tag);
 		}
 	}

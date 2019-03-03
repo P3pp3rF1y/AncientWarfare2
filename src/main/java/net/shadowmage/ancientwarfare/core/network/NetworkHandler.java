@@ -60,6 +60,8 @@ public final class NetworkHandler implements IGuiHandler {
 	public static final int PACKET_STRUCTURE_MAP = 28;
 	public static final int PACKET_STRUCTURE_ENTRY = 29;
 
+	public static final int PACKET_SOUND_BLOCK_PLAYER_SPEC_VALUES = 30;
+
 	public static final int GUI_CRAFTING = 0;
 	public static final int GUI_SCANNER = 1;
 	public static final int GUI_BUILDER = 2;

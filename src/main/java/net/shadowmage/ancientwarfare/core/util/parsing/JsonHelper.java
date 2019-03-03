@@ -235,7 +235,7 @@ public class JsonHelper {
 			file.delete();
 		}
 		try {
-			if (!file.getParentFile().mkdirs()) {
+			if (!file.getParentFile().exists() && !file.getParentFile().mkdirs()) {
 				AncientWarfareCore.LOG.error("Unable to create folders for file : " + file.getAbsolutePath());
 			}
 			if (!file.createNewFile()) {

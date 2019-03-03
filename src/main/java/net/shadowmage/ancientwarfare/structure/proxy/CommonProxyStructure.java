@@ -1,8 +1,11 @@
 package net.shadowmage.ancientwarfare.structure.proxy;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
+
+import java.util.Optional;
 
 public class CommonProxyStructure extends CommonProxyBase {
 	public void clearTemplatePreviewCache() {
@@ -39,4 +42,6 @@ public class CommonProxyStructure extends CommonProxyBase {
 	public double getClientPlayerDistanceTo(BlockPos pos) {
 		return 0;
 	}
+
+	public Optional<EntityPlayer> getPlayer() { return Optional.empty(); }
 }

@@ -95,6 +95,9 @@ public class SongPlayData {
 	public void readFromNBT(NBTTagCompound tag) {
 		minDelay = tag.getInteger("minDelay");
 		maxDelay = tag.getInteger("maxDelay");
+		if (maxDelay < minDelay) {
+			maxDelay = minDelay;
+		}
 		random = tag.getBoolean("random");
 		playOnPlayerEntry = tag.getBoolean("playerEntry");
 		tunes.clear();

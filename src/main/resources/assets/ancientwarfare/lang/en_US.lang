@@ -444,6 +444,18 @@ guistrings.movedown=▼
 guistrings.movedown.tooltip=Move down
 guistrings.info_tool.click_to_print_stack_info=Click slot to print Item stack info
 guistrings.loot_basket.top_inventory=Basket
+guistrings.sound_block.range=Range
+guistrings.sound_block.only_once=Only once
+guistrings.sound_block.stop_after=Stop after
+guistrings.sound_block.repetitions=repetitions
+guistrings.sound_block.blocks_away=blocks away
+guistrings.sound_block.play_when_player_less_than=Play when player less than
+guistrings.sound_block.any_time=Any time
+guistrings.sound_block.day=Day
+guistrings.sound_block.night=Night
+guistrings.sound_block.play_in_random_order=Play in random order
+guistrings.sound_block.turned_off_by_protection_flag=Turned off by protection flag
+guistrings.sound_block.loop=Loop
 
 #automation
 guistrings.automation.ignore_damage=Ign. Dmg

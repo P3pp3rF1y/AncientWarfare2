@@ -5,6 +5,7 @@ import com.google.common.collect.Sets;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -32,6 +33,7 @@ import net.shadowmage.ancientwarfare.structure.sounds.SoundLoader;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 @SuppressWarnings("unused")
@@ -131,5 +133,10 @@ public class ClientProxyStructure extends CommonProxyStructure {
 	@Override
 	public double getClientPlayerDistanceTo(BlockPos pos) {
 		return Minecraft.getMinecraft().player.getDistance(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
+	}
+
+	@Override
+	public Optional<EntityPlayer> getPlayer() {
+		return Optional.of(Minecraft.getMinecraft().player);
 	}
 }
