@@ -26,8 +26,8 @@ import java.util.Optional;
 import static net.shadowmage.ancientwarfare.core.render.property.CoreProperties.FACING;
 
 public class BlockLootBasket extends BlockBaseStructure {
-	private static final AxisAlignedBB SINGLE_SOUTH_NORTH = new AxisAlignedBB(0D, 0D, 2 / 16D, 1D, 12 / 16D, 14 / 16D);
-	private static final AxisAlignedBB SINGLE_WEST_EAST = new AxisAlignedBB(2 / 16D, 0D, 0D, 14 / 16D, 12 / 16D, 1D);
+	private static final AxisAlignedBB SINGLE_SOUTH_NORTH = new AxisAlignedBB(0D, 0D, 1 / 16D, 1D, 12 / 16D, 15 / 16D);
+	private static final AxisAlignedBB SINGLE_WEST_EAST = new AxisAlignedBB(1 / 16D, 0D, 0D, 15 / 16D, 12 / 16D, 1D);
 	private static final AxisAlignedBB DOUBLE_NORTH = new AxisAlignedBB(0D, 0D, 0D, 1D, 12 / 16D, 13 / 16D);
 	private static final AxisAlignedBB DOUBLE_SOUTH = new AxisAlignedBB(0D, 0D, 3 / 16D, 1D, 12 / 16D, 1D);
 	private static final AxisAlignedBB DOUBLE_WEST = new AxisAlignedBB(0D, 0D, 0D, 13 / 16D, 12 / 16D, 1D);
