@@ -70,6 +70,48 @@ public class GuiSoundBlock extends GuiContainerBase<ContainerSoundBlock> {
 			totalHeight = addLoopElements(totalHeight);
 		}
 
+		totalHeight += 4;
+
+		anyTime = new Checkbox(10, totalHeight, 12, 12, "guistrings.sound_block.any_time") {
+			@Override
+			public void onToggled() {
+				if (checked()) {
+					data.setTimeOfDay(BlockSongPlayData.TimeOfDay.ANY);
+					day.setChecked(false);
+					night.setChecked(false);
+				}
+			}
+		};
+		anyTime.setChecked(data.getTimeOfDay() == BlockSongPlayData.TimeOfDay.ANY);
+		addGuiElement(anyTime);
+
+		day = new Checkbox(74, totalHeight, 12, 12, "guistrings.sound_block.day") {
+			@Override
+			public void onToggled() {
+				if (checked()) {
+					data.setTimeOfDay(BlockSongPlayData.TimeOfDay.DAY);
+					anyTime.setChecked(false);
+					night.setChecked(false);
+				}
+			}
+		};
+		day.setChecked(data.getTimeOfDay() == BlockSongPlayData.TimeOfDay.DAY);
+		addGuiElement(day);
+
+		night = new Checkbox(122, totalHeight, 12, 12, "guistrings.sound_block.night") {
+			@Override
+			public void onToggled() {
+				if (checked()) {
+					data.setTimeOfDay(BlockSongPlayData.TimeOfDay.NIGHT);
+					anyTime.setChecked(false);
+					day.setChecked(false);
+				}
+			}
+		};
+		night.setChecked(data.getTimeOfDay() == BlockSongPlayData.TimeOfDay.NIGHT);
+		addGuiElement(night);
+		totalHeight += 14;
+
 		Checkbox protectionFlagTurnOff = new Checkbox(8, totalHeight, 16, 16, "guistrings.sound_block.turned_off_by_protection_flag") {
 			@Override
 			public void onToggled() {
@@ -91,6 +133,18 @@ public class GuiSoundBlock extends GuiContainerBase<ContainerSoundBlock> {
 		addGuiElement(random);
 
 		totalHeight += 20;
+
+		addGuiElement(new Label(32, totalHeight + 1, "guistrings.sound_block.sound_range").setShadow(true));
+
+		NumberInput soundRange = new NumberInput(8, totalHeight, 22, data.getSoundRange(), this) {
+			@Override
+			public void onValueUpdated(float value) {
+				data.setSoundRange((int) value);
+			}
+		};
+		soundRange.setIntegerValue();
+		addGuiElement(soundRange);
+		totalHeight += 14;
 
 		int areaHeight = addTuneEntries(data, totalHeight);
 
@@ -175,46 +229,6 @@ public class GuiSoundBlock extends GuiContainerBase<ContainerSoundBlock> {
 		whenInRange.setChecked(data.getWhenInRange());
 		addGuiElement(whenInRange);
 		addGuiElement(new Label(210, totalHeight + 4, "guistrings.sound_block.blocks_away").setShadow(true));
-		totalHeight += 18;
-
-		anyTime = new Checkbox(24, totalHeight, 12, 12, "guistrings.sound_block.any_time") {
-			@Override
-			public void onToggled() {
-				if (checked()) {
-					data.setTimeOfDay(BlockSongPlayData.TimeOfDay.ANY);
-					day.setChecked(false);
-					night.setChecked(false);
-				}
-			}
-		};
-		anyTime.setChecked(data.getTimeOfDay() == BlockSongPlayData.TimeOfDay.ANY);
-		addGuiElement(anyTime);
-
-		day = new Checkbox(88, totalHeight, 12, 12, "guistrings.sound_block.day") {
-			@Override
-			public void onToggled() {
-				if (checked()) {
-					data.setTimeOfDay(BlockSongPlayData.TimeOfDay.DAY);
-					anyTime.setChecked(false);
-					night.setChecked(false);
-				}
-			}
-		};
-		day.setChecked(data.getTimeOfDay() == BlockSongPlayData.TimeOfDay.DAY);
-		addGuiElement(day);
-
-		night = new Checkbox(136, totalHeight, 12, 12, "guistrings.sound_block.night") {
-			@Override
-			public void onToggled() {
-				if (checked()) {
-					data.setTimeOfDay(BlockSongPlayData.TimeOfDay.NIGHT);
-					anyTime.setChecked(false);
-					day.setChecked(false);
-				}
-			}
-		};
-		night.setChecked(data.getTimeOfDay() == BlockSongPlayData.TimeOfDay.NIGHT);
-		addGuiElement(night);
 		totalHeight += 18;
 
 		return totalHeight;

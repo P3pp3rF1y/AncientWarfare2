@@ -39,7 +39,7 @@ public class TileSoundBlock extends TileUpdatable implements ISinger, ITickable 
 
 	@Override
 	public void update() {
-		if (!world.isRemote || isStopped() || validateAndGetPlaying()) {
+		if (!world.isRemote || isStopped() || validateAndGetPlaying() || !tuneData.getTimeOfDay().takesPlaceNow(world)) {
 			return;
 		}
 
@@ -50,7 +50,7 @@ public class TileSoundBlock extends TileUpdatable implements ISinger, ITickable 
 				return;
 			}
 
-			if (tuneData.getTimeOfDay().takesPlaceNow(world) && --currentDelay <= 0) {
+			if (--currentDelay <= 0) {
 				startSong();
 				if (tuneData.getLimitedRepetitions() && incNumberOfTimesRepeated() >= tuneData.getRepetitions()) {
 					setStopped();
@@ -146,11 +146,11 @@ public class TileSoundBlock extends TileUpdatable implements ISinger, ITickable 
 			tuneIndex = 0;
 			if (tuneData.size() > 0) {
 				tuneIndex = world.rand.nextInt(tuneData.size());
-				tuneData.get(tuneIndex).getSound().ifPresent(s -> AncientWarfareStructure.proxy.setSoundAt(pos, s));
+				tuneData.get(tuneIndex).getSound().ifPresent(s -> AncientWarfareStructure.proxy.setSoundAt(pos, s, tuneData.getSoundRange() / 16f));
 			}
 		} else {
 			tuneIndex = tuneIndex + 1 < tuneData.size() ? tuneIndex + 1 : 0;
-			tuneData.get(tuneIndex).getSound().ifPresent(s -> AncientWarfareStructure.proxy.setSoundAt(pos, s));
+			tuneData.get(tuneIndex).getSound().ifPresent(s -> AncientWarfareStructure.proxy.setSoundAt(pos, s, tuneData.getSoundRange() / 16f));
 		}
 		AncientWarfareStructure.proxy.playSoundAt(pos);
 	}
@@ -166,10 +166,8 @@ public class TileSoundBlock extends TileUpdatable implements ISinger, ITickable 
 		super.handleUpdateNBT(tag);
 		readFromNBT(tag);
 
-		if (isStopped()) {
-			if (AncientWarfareStructure.proxy.isSoundPlayingAt(pos)) {
-				AncientWarfareStructure.proxy.stopSoundAt(pos);
-			}
+		if (isStopped() && AncientWarfareStructure.proxy.isSoundPlayingAt(pos)) {
+			AncientWarfareStructure.proxy.stopSoundAt(pos);
 		}
 	}
 

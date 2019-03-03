@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class BlockSongPlayData extends SongPlayData {
+	public static final String SOUND_RANGE_TAG = "soundRange";
 	private boolean playOnce = false;
 	private int playerRange = 20;
 	private boolean limitedRepetitions = false;
@@ -15,6 +16,7 @@ public class BlockSongPlayData extends SongPlayData {
 	private boolean whenInRange = false;
 	private TimeOfDay timeOfDay = TimeOfDay.ANY;
 	private boolean protectionFlagTurnOff = false;
+	private int soundRange = 16;
 
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
@@ -26,6 +28,7 @@ public class BlockSongPlayData extends SongPlayData {
 		whenInRange = tag.getBoolean("whenInRange");
 		timeOfDay = TimeOfDay.getById(tag.getInteger("timeOfDay"));
 		protectionFlagTurnOff = tag.getBoolean("protectionFlagTurnOff");
+		setSoundRange(tag.hasKey(SOUND_RANGE_TAG) ? tag.getInteger(SOUND_RANGE_TAG) : 64);
 	}
 
 	@Override
@@ -38,6 +41,7 @@ public class BlockSongPlayData extends SongPlayData {
 		tag.setBoolean("whenInRange", whenInRange);
 		tag.setInteger("timeOfDay", timeOfDay.getId());
 		tag.setBoolean("protectionFlagTurnOff", protectionFlagTurnOff);
+		tag.setInteger(SOUND_RANGE_TAG, soundRange);
 		return tag;
 	}
 
@@ -95,6 +99,14 @@ public class BlockSongPlayData extends SongPlayData {
 
 	public boolean getProtectionFlagTurnOff() {
 		return protectionFlagTurnOff;
+	}
+
+	public void setSoundRange(int value) {
+		soundRange = Math.max(16, value);
+	}
+
+	public int getSoundRange() {
+		return soundRange;
 	}
 
 	public enum TimeOfDay {

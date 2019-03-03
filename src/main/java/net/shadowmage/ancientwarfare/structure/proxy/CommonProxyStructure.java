@@ -16,7 +16,7 @@ public class CommonProxyStructure extends CommonProxyBase {
 		//noop here, overriden in the client proxy
 	}
 
-	public void setSoundAt(BlockPos pos, SoundEvent currentTune) {
+	public void setSoundAt(BlockPos pos, SoundEvent currentTune, float volume) {
 		//noop here, overriden in the client proxy
 	}
 

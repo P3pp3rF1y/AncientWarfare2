@@ -7,6 +7,7 @@ import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -98,8 +99,12 @@ public class ClientProxyStructure extends CommonProxyStructure {
 	}
 
 	@Override
-	public void setSoundAt(BlockPos pos, SoundEvent currentTune) {
-		currentSounds.put(pos, PositionedSoundRecord.getRecordSoundRecord(currentTune, (float) pos.getX(), (float) pos.getY(), (float) pos.getZ()));
+	public void setSoundAt(BlockPos pos, SoundEvent soundEvent, float volume) {
+		currentSounds.put(pos, getPositionedSoundRecord(soundEvent, (float) pos.getX(), (float) pos.getY(), (float) pos.getZ(), volume));
+	}
+
+	private PositionedSoundRecord getPositionedSoundRecord(SoundEvent soundEvent, float x, float y, float z, float volume) {
+		return new PositionedSoundRecord(soundEvent.getSoundName(), SoundCategory.RECORDS, volume, 1.0F, false, 0, ISound.AttenuationType.LINEAR, x, y, z);
 	}
 
 	@Override
