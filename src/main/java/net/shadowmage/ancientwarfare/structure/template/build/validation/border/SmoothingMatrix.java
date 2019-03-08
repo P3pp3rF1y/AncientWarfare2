@@ -37,6 +37,10 @@ public class SmoothingMatrix {
 	}
 
 	public Optional<SmoothingPoint> getPoint(int x, int z) {
+		if (smoothingPoints.length == 0 || x < 0 || x >= smoothingPoints.length || z < 0 || z >= smoothingPoints[0].length) {
+			return Optional.empty();
+		}
+
 		return Optional.ofNullable(smoothingPoints[x][z]);
 	}
 

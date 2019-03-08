@@ -11,7 +11,8 @@ import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
 import net.shadowmage.ancientwarfare.core.util.SongPlayData;
 
-import java.util.Iterator;
+import java.util.Comparator;
+import java.util.stream.Collectors;
 
 public class GuiSoundSelect extends GuiContainerBase {
 	private final GuiContainerBase parent;
@@ -63,26 +64,23 @@ public class GuiSoundSelect extends GuiContainerBase {
 		addGuiElement(area);
 	}
 
+	private String getShortenedName(String name) {
+		return name.replace("ancientwarfarestructure:auto_load/", "auto:");
+	}
+
 	@Override
 	public void setupElements() {
 		area.clearElements();
-		Iterator<ResourceLocation> itr;
-		try {
-			itr = ForgeRegistries.SOUND_EVENTS.getKeys().stream().filter(input -> input.toString().contains(selectionLabel.getText())).iterator();
-		}
-		catch (Exception e) {
-			return;
-		}
-
 		int totalHeight = 8;
 		Button button;
-		while (itr.hasNext()) {
-			final ResourceLocation regisryName = itr.next();
-			final String name = regisryName.toString();
-			button = new Button(8, totalHeight, 256 - 8 - 16, 12, name) {
+		for (ResourceLocation registryName : ForgeRegistries.SOUND_EVENTS.getKeys().stream()
+				.filter(input -> input.toString().contains(selectionLabel.getText()))
+				.sorted(Comparator.naturalOrder()).collect(Collectors.toList())) {
+			String name = registryName.toString();
+			button = new Button(8, totalHeight, 256 - 8 - 16, 12, getShortenedName(name)) {
 				@Override
 				protected void onPressed() {
-					songEntry.setSound(ForgeRegistries.SOUND_EVENTS.getValue(regisryName));
+					songEntry.setSound(ForgeRegistries.SOUND_EVENTS.getValue(registryName));
 					selectionLabel.setText(name);
 					refreshGui();
 				}

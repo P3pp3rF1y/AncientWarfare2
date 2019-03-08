@@ -1,13 +1,14 @@
 package net.shadowmage.ancientwarfare.core.util;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /*
  * Cover for objects in an ordered list
  * Replicates common methods from the underlying ArrayList, adding fail-safe range checks.
  * Adds moving objects up/down in the list.
  */
-public class OrderingList<T> {
+public class OrderingList<T> implements Iterable<T> {
 	protected final ArrayList<T> points = new ArrayList<>();
 
 	public final void increment(int index) {
@@ -50,5 +51,10 @@ public class OrderingList<T> {
 
 	public final boolean isEmpty() {
 		return points.isEmpty();
+	}
+
+	@Override
+	public Iterator<T> iterator() {
+		return points.iterator();
 	}
 }

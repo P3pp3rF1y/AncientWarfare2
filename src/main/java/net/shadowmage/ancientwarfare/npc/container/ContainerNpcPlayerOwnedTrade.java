@@ -9,12 +9,12 @@ import net.minecraftforge.items.SlotItemHandler;
 import net.shadowmage.ancientwarfare.core.init.AWCoreItems;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.npc.entity.NpcTrader;
-import net.shadowmage.ancientwarfare.npc.trade.TradeList;
+import net.shadowmage.ancientwarfare.npc.trade.POTradeList;
 
 public class ContainerNpcPlayerOwnedTrade extends ContainerNpcBase<NpcTrader> {
 
 	private EnumHand hand;
-	public TradeList tradeList;
+	public POTradeList tradeList;
 	public final IItemHandler storage;
 
 	public ContainerNpcPlayerOwnedTrade(EntityPlayer player, int x, int y, int z) {
@@ -48,7 +48,7 @@ public class ContainerNpcPlayerOwnedTrade extends ContainerNpcBase<NpcTrader> {
 	@Override
 	public void handlePacketData(NBTTagCompound tag) {
 		if (tag.hasKey("tradeData")) {
-			tradeList = new TradeList();
+			tradeList = new POTradeList();
 			tradeList.deserializeNBT(tag.getCompoundTag("tradeData"));
 		} else if (tag.hasKey("doTrade")) {
 			tradeList.performTrade(player, storage, tag.getInteger("doTrade"));

@@ -147,7 +147,7 @@ public class WorldStructureGenerator implements IWorldGenerator {
 		int size = ((xs > zs ? xs : zs) / 16) + 3;
 		if (map != null) {
 			if (!checkOtherStructureCrossAndCloseness(world, pos, map, bb, size, template.getValidationSettings().getBorderSize()))
-				return true;
+				return false;
 		}
 
 		TownMap townMap = AWGameData.INSTANCE.getPerWorldData(world, TownMap.class);

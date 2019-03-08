@@ -27,6 +27,7 @@ import net.shadowmage.ancientwarfare.structure.command.CommandStructure;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.container.ContainerDraftingStation;
 import net.shadowmage.ancientwarfare.structure.container.ContainerGateControl;
+import net.shadowmage.ancientwarfare.structure.container.ContainerLootBasket;
 import net.shadowmage.ancientwarfare.structure.container.ContainerLootChestPlacer;
 import net.shadowmage.ancientwarfare.structure.container.ContainerSoundBlock;
 import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerAdvanced;
@@ -38,6 +39,7 @@ import net.shadowmage.ancientwarfare.structure.container.ContainerStructureSelec
 import net.shadowmage.ancientwarfare.structure.container.ContainerTownSelection;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.event.OneShotEntityDespawnListener;
+import net.shadowmage.ancientwarfare.structure.network.PacketSoundBlockPlayerSpecValues;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructure;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructureRemove;
 import net.shadowmage.ancientwarfare.structure.proxy.CommonProxyStructure;
@@ -96,6 +98,7 @@ public class AncientWarfareStructure {
 
 		PacketBase.registerPacketType(NetworkHandler.PACKET_STRUCTURE, PacketStructure.class);
 		PacketBase.registerPacketType(NetworkHandler.PACKET_STRUCTURE_REMOVE, PacketStructureRemove.class);
+		PacketBase.registerPacketType(NetworkHandler.PACKET_SOUND_BLOCK_PLAYER_SPEC_VALUES, PacketSoundBlockPlayerSpecValues.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_SCANNER, ContainerStructureScanner.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_BUILDER, ContainerStructureSelection.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_TOWN_BUILDER, ContainerTownSelection.class);
@@ -108,6 +111,7 @@ public class AncientWarfareStructure {
 		NetworkHandler.registerContainer(NetworkHandler.GUI_DRAFTING_STATION, ContainerDraftingStation.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_SOUND_BLOCK, ContainerSoundBlock.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_LOOT_CHEST_PLACER, ContainerLootChestPlacer.class);
+		NetworkHandler.registerContainer(NetworkHandler.GUI_LOOT_BASKET, ContainerLootBasket.class);
 		proxy.preInit();
 
 		TemplateLoader.INSTANCE.initializeAndExportDefaults();

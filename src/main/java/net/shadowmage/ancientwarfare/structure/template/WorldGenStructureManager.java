@@ -14,6 +14,7 @@ import net.shadowmage.ancientwarfare.structure.gamedata.StructureEntry;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -150,22 +151,27 @@ public class WorldGenStructureManager {
 		if (trimmedPotentialStructures.isEmpty()) {
 			return null;
 		}
-		int totalWeight = 0;
-		for (StructureTemplate t : trimmedPotentialStructures) {
-			totalWeight += t.getValidationSettings().getSelectionWeight();
-		}
-		totalWeight -= rng.nextInt(totalWeight + 1);
-		StructureTemplate toReturn = null;
-		for (StructureTemplate t : trimmedPotentialStructures) {
-			toReturn = t;
-			totalWeight -= t.getValidationSettings().getSelectionWeight();
-			if (totalWeight <= 0) {
-				break;
-			}
-		}
+		StructureTemplate toReturn = getWeightedRandomStructure(rng);
 		distancesFound.clear();
 		trimmedPotentialStructures.clear();
 		return toReturn;
 	}
 
+	@Nullable
+	private StructureTemplate getWeightedRandomStructure(Random rng) {
+		int totalWeight = 0;
+		for (StructureTemplate t : trimmedPotentialStructures) {
+			totalWeight += t.getValidationSettings().getSelectionWeight();
+		}
+		int rnd = rng.nextInt(totalWeight + 1);
+		StructureTemplate toReturn = null;
+		for (StructureTemplate t : trimmedPotentialStructures) {
+			rnd -= t.getValidationSettings().getSelectionWeight();
+			if (rnd <= 0) {
+				toReturn = t;
+				break;
+			}
+		}
+		return toReturn;
+	}
 }

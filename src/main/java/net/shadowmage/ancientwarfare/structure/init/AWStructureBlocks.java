@@ -13,19 +13,37 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.shadowmage.ancientwarfare.core.item.ItemBlockBase;
 import net.shadowmage.ancientwarfare.core.util.InjectionTools;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
-import net.shadowmage.ancientwarfare.structure.block.*;
+import net.shadowmage.ancientwarfare.structure.block.BlockAdvancedLootChest;
+import net.shadowmage.ancientwarfare.structure.block.BlockAdvancedSpawner;
+import net.shadowmage.ancientwarfare.structure.block.BlockDraftingStation;
+import net.shadowmage.ancientwarfare.structure.block.BlockFirePit;
+import net.shadowmage.ancientwarfare.structure.block.BlockGateProxy;
+import net.shadowmage.ancientwarfare.structure.block.BlockGoldenIdol;
+import net.shadowmage.ancientwarfare.structure.block.BlockLootBasket;
+import net.shadowmage.ancientwarfare.structure.block.BlockProtectionFlag;
+import net.shadowmage.ancientwarfare.structure.block.BlockSoundBlock;
+import net.shadowmage.ancientwarfare.structure.block.BlockStructureBuilder;
+import net.shadowmage.ancientwarfare.structure.block.BlockStructureScanner;
+import net.shadowmage.ancientwarfare.structure.block.BlockTotemCube;
+import net.shadowmage.ancientwarfare.structure.block.BlockTotemPart;
 import net.shadowmage.ancientwarfare.structure.block.altar.BlockAltarCandle;
 import net.shadowmage.ancientwarfare.structure.block.altar.BlockAltarLectern;
 import net.shadowmage.ancientwarfare.structure.block.altar.BlockAltarLongCloth;
 import net.shadowmage.ancientwarfare.structure.block.altar.BlockAltarShortCloth;
 import net.shadowmage.ancientwarfare.structure.block.altar.BlockAltarSun;
-import net.shadowmage.ancientwarfare.structure.item.*;
+import net.shadowmage.ancientwarfare.structure.item.ItemBlockAdvancedSpawner;
+import net.shadowmage.ancientwarfare.structure.item.ItemBlockColored;
+import net.shadowmage.ancientwarfare.structure.item.ItemBlockFirePit;
+import net.shadowmage.ancientwarfare.structure.item.ItemBlockProtectionFlag;
+import net.shadowmage.ancientwarfare.structure.item.ItemBlockStructureBuilder;
+import net.shadowmage.ancientwarfare.structure.item.ItemBlockTotemPart;
 import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedLootChest;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
 import net.shadowmage.ancientwarfare.structure.tile.TileAltarCandle;
 import net.shadowmage.ancientwarfare.structure.tile.TileColored;
 import net.shadowmage.ancientwarfare.structure.tile.TileDraftingStation;
+import net.shadowmage.ancientwarfare.structure.tile.TileLootBasket;
 import net.shadowmage.ancientwarfare.structure.tile.TileProtectionFlag;
 import net.shadowmage.ancientwarfare.structure.tile.TileSoundBlock;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
@@ -62,8 +80,7 @@ public class AWStructureBlocks {
 	public static final Block GOBLIN_TOTEM_1 = InjectionTools.nullValue();
 	public static final Block GOBLIN_TOTEM_2 = InjectionTools.nullValue();
 	public static final Block GOBLIN_TOTEM_2_LIT = InjectionTools.nullValue();
-	public static final Block BRAZIER_EMBER = InjectionTools.nullValue();
-	public static final Block BRAZIER_FLAME = InjectionTools.nullValue();
+	public static final Block LOOT_BASKET = InjectionTools.nullValue();
 
 	@SuppressWarnings("ConstantConditions")
 	@SubscribeEvent
@@ -79,8 +96,6 @@ public class AWStructureBlocks {
 		registry.register(new ItemBlockBase(ADVANCED_LOOT_CHEST));
 		registry.register(new ItemBlockFirePit(FIRE_PIT));
 		registry.register(new ItemBlockTotemPart(TOTEM_PART));
-		registry.register(new ItemBlockBrazierEmber(BRAZIER_EMBER));
-		registry.register(new ItemBlockBrazierFlame(BRAZIER_FLAME));
 
 		registry.register(new ItemBlockColored(ALTAR_SHORT_CLOTH));
 		registry.register(new ItemBlockColored(ALTAR_LONG_CLOTH));
@@ -96,6 +111,8 @@ public class AWStructureBlocks {
 		registry.register(new ItemBlockBase(GOBLIN_TOTEM_1));
 		registry.register(new ItemBlockBase(GOBLIN_TOTEM_2));
 		registry.register(new ItemBlockBase(GOBLIN_TOTEM_2_LIT));
+
+		registry.register(new ItemBlockBase(LOOT_BASKET));
 	}
 
 	@SubscribeEvent
@@ -149,8 +166,8 @@ public class AWStructureBlocks {
 		registry.register(new BlockTotemCube("orc_totem_2"));
 		registry.register(new BlockTotemCube("orc_totem_2_lit", true));
 
-		registry.register(new BlockBrazierEmber());
-		registry.register(new BlockBrazierFlame());
+		registry.register(new BlockLootBasket());
+		registerTile(TileLootBasket.class, "loot_basket");
 
 	}
 

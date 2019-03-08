@@ -7,6 +7,7 @@ public class SmoothingPoint {
 	private BlockPos worldPos;
 	private IBlockState blockState;
 	private boolean useStateForBlending = false;
+	private double distanceToBorder = Double.MAX_VALUE;
 
 	public Type getType() {
 		return type;
@@ -47,9 +48,7 @@ public class SmoothingPoint {
 	}
 
 	public double getDistanceToBorder() {
-		int xDiff = Math.abs(x - closestBorderPoint.x);
-		int zDiff = Math.abs(z - closestBorderPoint.z);
-		return Math.sqrt(((double) xDiff * xDiff) + zDiff * zDiff);
+		return distanceToBorder;
 	}
 
 	public IBlockState getBlockState() {
@@ -90,6 +89,9 @@ public class SmoothingPoint {
 		if (distance < structureBorderDistance) {
 			structureBorderDistance = distance;
 			closestBorderPoint = coords;
+			int xDiff = Math.abs(x - closestBorderPoint.x);
+			int zDiff = Math.abs(z - closestBorderPoint.z);
+			distanceToBorder = Math.sqrt(((double) xDiff * xDiff) + zDiff * zDiff);
 			return true;
 		}
 		return false;

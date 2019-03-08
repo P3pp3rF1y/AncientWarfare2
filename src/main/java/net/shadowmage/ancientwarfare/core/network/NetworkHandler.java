@@ -60,6 +60,8 @@ public final class NetworkHandler implements IGuiHandler {
 	public static final int PACKET_STRUCTURE_MAP = 28;
 	public static final int PACKET_STRUCTURE_ENTRY = 29;
 
+	public static final int PACKET_SOUND_BLOCK_PLAYER_SPEC_VALUES = 30;
+
 	public static final int GUI_CRAFTING = 0;
 	public static final int GUI_SCANNER = 1;
 	public static final int GUI_BUILDER = 2;
@@ -117,6 +119,8 @@ public final class NetworkHandler implements IGuiHandler {
 	public static final int GUI_INFO_TOOL = 57;
 
 	public static final int GUI_GATE_CONTROL_CREATIVE = 58;
+
+	public static final int GUI_LOOT_BASKET = 59;
 
 	private FMLEventChannel channel;
 

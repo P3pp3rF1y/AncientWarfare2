@@ -326,7 +326,7 @@ public class Text extends GuiElement {
 		GlStateManager.color(1.0f, 1.0f, 1.0f, 1.f);
 		GlStateManager.enableTexture2D();
 
-		Minecraft.getMinecraft().fontRenderer.drawString(text, renderX + 2, renderY + 2, 0xffffffff);
+		Minecraft.getMinecraft().fontRenderer.drawString(text, renderX + 2, renderY + 2, enabled ? 0xffffffff : 0xA9A9A9ff);
 
 		if (selected) {
 			int w = 0;

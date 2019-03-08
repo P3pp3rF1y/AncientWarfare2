@@ -17,6 +17,7 @@ import net.shadowmage.ancientwarfare.core.owner.Owner;
 import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.TextUtils;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureEntry;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
@@ -131,12 +132,21 @@ public class TileProtectionFlag extends TileUpdatable {
 		}
 
 		if (checkStructureConquered(structure.get(), player)) {
+			turnOffSoundBlocks(structure.get());
 			setOwner(player, player.getGameProfile());
 			player.sendStatusMessage(new TextComponentTranslation("gui.ancientwarfarestructure.structure_conquered", structure.get().getName()), true);
 			world.playSound(null, pos, AWStructureSounds.PROTECTION_FLAG_CLAIM, SoundCategory.BLOCKS, 1, 1);
 		}
 		markDirty();
 		BlockTools.notifyBlockUpdate(this);
+	}
+
+	private void turnOffSoundBlocks(StructureEntry structure) {
+		for (BlockPos blockPos : BlockPos.getAllInBox(structure.getBB().min, structure.getBB().max)) {
+			if (world.getBlockState(blockPos).getBlock() == AWStructureBlocks.SOUND_BLOCK) {
+				WorldTools.getTile(world, blockPos, TileSoundBlock.class).ifPresent(TileSoundBlock::turnOffByProtectionFlag);
+			}
+		}
 	}
 
 	private void setOwner(EntityPlayer player, GameProfile playerProfile) {

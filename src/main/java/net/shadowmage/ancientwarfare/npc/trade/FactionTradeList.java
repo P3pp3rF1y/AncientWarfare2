@@ -5,12 +5,12 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.Iterator;
 
-public final class FactionTradeList extends TradeList {
+public final class FactionTradeList extends TradeList<FactionTrade> {
 
 	private int ticks = 0;
 
 	@Override
-	protected Trade getNewTrade() {
+	protected FactionTrade getNewTrade() {
 		return new FactionTrade();
 	}
 
@@ -37,10 +37,10 @@ public final class FactionTradeList extends TradeList {
 	 * should be called before the changed list is sent from client->server from setup GUI.
 	 */
 	public void removeEmptyTrades() {
-		Iterator<Trade> it = points.iterator();
-		Trade t;
+		Iterator<FactionTrade> it = points.iterator();
+		FactionTrade t;
 		while (it.hasNext() && (t = it.next()) != null) {
-			if (!((FactionTrade) t).hasItems()) {
+			if (!t.hasItems()) {
 				it.remove();
 			}
 		}

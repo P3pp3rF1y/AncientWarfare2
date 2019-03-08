@@ -1,0 +1,33 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "ancientwarfare:structure/loot_basket"
+    },
+    "variants": {
+        "normal": [{}],
+        "facing": {
+            "north": {},
+            "south": {
+                "y": 180
+            },
+            "west": {
+                "y": 270
+            },
+            "east": {
+                "y": 90
+            }
+        },
+        "double": {
+            "true": {
+                "model": "ancientwarfare:structure/double_loot_basket"
+            },
+            "false": {}
+        },
+        "visible": {
+            "true": {},
+            "false": {
+                "model": "ancientwarfare:structure/invisible_basket"
+            }
+        }
+    }
+}
