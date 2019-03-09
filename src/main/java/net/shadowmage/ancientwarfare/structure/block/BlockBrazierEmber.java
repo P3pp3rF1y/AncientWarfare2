@@ -16,7 +16,13 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.*;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -28,7 +34,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.util.NBTBuilder;
 
-import javax.annotation.Nullable;
 import java.util.Random;
 
 public class BlockBrazierEmber extends BlockBaseStructure {
@@ -51,22 +56,22 @@ public class BlockBrazierEmber extends BlockBaseStructure {
 	@Override
 	public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
 		Item item = Item.getItemFromBlock(this);
-			ItemStack stack = new ItemStack(item);
-			stack.setTagCompound(new NBTBuilder().setBoolean(LIT_TAG, false).build());
-			items.add(stack);
-			stack = new ItemStack(item);
-			stack.setTagCompound(new NBTBuilder().setBoolean(LIT_TAG, true).build());
-			items.add(stack);
+		ItemStack stack = new ItemStack(item);
+		stack.setTagCompound(new NBTBuilder().setBoolean(LIT_TAG, false).build());
+		items.add(stack);
+		stack = new ItemStack(item);
+		stack.setTagCompound(new NBTBuilder().setBoolean(LIT_TAG, true).build());
+		items.add(stack);
 	}
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(LIT, (meta >> 3) == 1);
+		return getDefaultState().withProperty(LIT, (meta == 1));
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return (state.getValue(LIT) ? 1 << 3 : 0);
+		return state.getValue(LIT) ? 1 : 0;
 	}
 
 	@Override
@@ -86,17 +91,6 @@ public class BlockBrazierEmber extends BlockBaseStructure {
 
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) { return AABB; }
-
-	@Nullable
-	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
-		return AABB;
-	}
-
-	@Override
-	public boolean isPassable(IBlockAccess worldIn, BlockPos pos) {
-		return false;
-	}
 
 	@Override
 	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
@@ -119,8 +113,7 @@ public class BlockBrazierEmber extends BlockBaseStructure {
 			return;
 		}
 		//noinspection ConstantConditions
-		state = state
-				.withProperty(LIT, stack.getTagCompound().getBoolean(LIT_TAG));
+		state = state.withProperty(LIT, stack.getTagCompound().getBoolean(LIT_TAG));
 		worldIn.setBlockState(pos, state);
 	}
 
@@ -129,12 +122,6 @@ public class BlockBrazierEmber extends BlockBaseStructure {
 		ItemStack pickStack = new ItemStack(Item.getItemFromBlock(this));
 		pickStack.setTagCompound(new NBTBuilder().setBoolean(LIT_TAG, state.getValue(LIT)).build());
 		return pickStack;
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public BlockRenderLayer getBlockLayer() {
-		return BlockRenderLayer.CUTOUT;
 	}
 
 	@Override
@@ -182,6 +169,7 @@ public class BlockBrazierEmber extends BlockBaseStructure {
 	public int tickRate(World worldIn) {
 		return 30;
 	}
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand) {
@@ -200,6 +188,7 @@ public class BlockBrazierEmber extends BlockBaseStructure {
 			worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, x, y, z, 0.0D, 0.0D, 0.0D);
 		}
 	}
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerClient() {

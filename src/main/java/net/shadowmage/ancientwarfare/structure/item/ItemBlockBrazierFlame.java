@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.structure.item;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.item.ItemBlockBase;
-import net.shadowmage.ancientwarfare.structure.block.BlockBrazierEmber;
 import net.shadowmage.ancientwarfare.structure.block.BlockBrazierFlame;
 
 public class ItemBlockBrazierFlame extends ItemBlockBase {

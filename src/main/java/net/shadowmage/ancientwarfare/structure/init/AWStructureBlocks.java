@@ -15,6 +15,8 @@ import net.shadowmage.ancientwarfare.core.util.InjectionTools;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.block.BlockAdvancedLootChest;
 import net.shadowmage.ancientwarfare.structure.block.BlockAdvancedSpawner;
+import net.shadowmage.ancientwarfare.structure.block.BlockBrazierEmber;
+import net.shadowmage.ancientwarfare.structure.block.BlockBrazierFlame;
 import net.shadowmage.ancientwarfare.structure.block.BlockDraftingStation;
 import net.shadowmage.ancientwarfare.structure.block.BlockFirePit;
 import net.shadowmage.ancientwarfare.structure.block.BlockGateProxy;
@@ -32,6 +34,8 @@ import net.shadowmage.ancientwarfare.structure.block.altar.BlockAltarLongCloth;
 import net.shadowmage.ancientwarfare.structure.block.altar.BlockAltarShortCloth;
 import net.shadowmage.ancientwarfare.structure.block.altar.BlockAltarSun;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockAdvancedSpawner;
+import net.shadowmage.ancientwarfare.structure.item.ItemBlockBrazierEmber;
+import net.shadowmage.ancientwarfare.structure.item.ItemBlockBrazierFlame;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockColored;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockFirePit;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockProtectionFlag;
@@ -81,6 +85,8 @@ public class AWStructureBlocks {
 	public static final Block GOBLIN_TOTEM_2 = InjectionTools.nullValue();
 	public static final Block GOBLIN_TOTEM_2_LIT = InjectionTools.nullValue();
 	public static final Block LOOT_BASKET = InjectionTools.nullValue();
+	public static final Block Brazier_Ember = InjectionTools.nullValue();
+	public static final Block Brazier_Flame = InjectionTools.nullValue();
 
 	@SuppressWarnings("ConstantConditions")
 	@SubscribeEvent
@@ -96,6 +102,8 @@ public class AWStructureBlocks {
 		registry.register(new ItemBlockBase(ADVANCED_LOOT_CHEST));
 		registry.register(new ItemBlockFirePit(FIRE_PIT));
 		registry.register(new ItemBlockTotemPart(TOTEM_PART));
+		registry.register(new ItemBlockBrazierEmber(Brazier_Ember));
+		registry.register(new ItemBlockBrazierFlame(Brazier_Flame));
 
 		registry.register(new ItemBlockColored(ALTAR_SHORT_CLOTH));
 		registry.register(new ItemBlockColored(ALTAR_LONG_CLOTH));
@@ -144,6 +152,8 @@ public class AWStructureBlocks {
 		registerTile(TileTotemPart.class, "totem_part_tile");
 
 		registry.register(new BlockFirePit());
+		registry.register(new BlockBrazierFlame());
+		registry.register(new BlockBrazierEmber());
 
 		registry.register(new BlockAltarShortCloth());
 		registry.register(new BlockAltarLongCloth());
