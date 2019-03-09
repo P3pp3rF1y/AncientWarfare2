@@ -1,0 +1,203 @@
+{
+    "type": "manual_content",
+    "lang": "de_DE",
+    "category": "torque",
+    "content": [
+        {
+            "content_type": "heading",
+            "text": "Drehmoment Energie System",
+            "level": 1
+        },
+        {
+            "content_type": "text",
+            "text": "Ancient Warfare verfügt über ein eigenes Energiesystem, das als Drehmoment bezeichnet wird, um Ancient Warfare ein vollständig unabhängiges Stromversorgungssystem zu ermöglichen, während es mit RF (nicht FE) kompatibel bleibt. Drehmoment basiert auf dem realen physikalischen Prinzip und der damit verbundenen Kraft. Dies bedeutet, dass es auch von Reibung betroffen ist, und für jedes Drehmoment-Plättchen ein Drehmomentverlust entsteht. \nRF wird in einem Verhältnis von 10:1 in Drehmoment umgewandelt und funktioniert so, als wäre es eine native Verbindung, d.h. eine vollständige Eingangs und Ausgangsverbindung. Es sollte auf jedem RF-fähigen Mod funktionieren. \n \n \n \n"
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfare:diamond_hammer",
+            "data": 3
+        },
+        {
+            "content_type": "heading",
+            "text": "Drehmomenterzeugung",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Mit dem Gegenstand Diamanthammer (AW) kann der Spieler Drehmoment erzeugen, Blöcke mit Drehmoment-Plättchen und Maschinen drehen oder als Waffe nutzen. Sie können die Z-Taste verwenden, um Mods umzuschalten. Mit der linken Maustaste angreifen, und mit der rechten Maustaste, um die speziellen Operationen auszuführen. Bewegen Sie den Mauszeiger über den Hammer, um den Tool Tipp anzuzeigen. \n \n \n \n \n"
+        },
+		{
+            "content_type": "image",
+            "path": "/images/Windmill1.jpg",
+            "width": 756,
+            "height": 425
+        },
+		{
+            "content_type": "image",
+            "path": "/images/Windmill2.jpg",
+            "width": 756,
+            "height": 425
+        },
+        {
+            "content_type": "heading",
+            "text": "Windmühle",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Die Windmühle ist eine Multiblock-Struktur zur Erzeugung von Drehmoment. Sie besteht aus einem Windmühlensteuerblock und Windmühlenflügeln. Die Größe der Windmühlenflügelblöcke ist eine volle Fläche einer ungeraden Größe von einem Minimum von 5×5 bis zu einem Maximum von 17×17 und einen Block dick. Sobald die Flügelblöcke richtig angeordnet sind, werden sie zu den eigentlichen Flügeln einer Windmühle. Platzieren Sie den Windmühlencontrollerblock auf beiden Seiten der zentralen Welle der Flügel. Zwei Steuerblöcke bieten keinen Nutzen, nur einer wird mit Strom versorgt. Je größer die Windmühle ist, desto mehr Drehmoment wird erzeugt."
+        },
+		{
+            "content_type": "image",
+            "path": "/images/Waterwheel1.jpg",
+            "width": 756,
+            "height": 425
+        },
+        {
+            "content_type": "heading",
+            "text": "Wasserrad",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Das Wasserrad besteht aus dem Wasserradsteuerblock und einer Wasserquelle. Das Wasserrad muss auf die Quelle des fließenden Wassers gerichtet sein. Sobald es richtig ausgerichtet ist, beginnt das Wasserrad sich zu drehen. Das Wasserrad benötigt mindestens 3x3 Blöcke, die um den Steuerblock zentriert sind, um zu drehen. \n \n \n \n \n"
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfareautomation:stirling_generator"
+        },
+        {
+            "content_type": "heading",
+            "text": "Eisengenerator",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Der Eisengenerator erzeugt Drehmoment durch das Verbrennen von Kraftstoff und erzeugt 1 Drehmoment pro Tick solange er Kraftstoff enthält. Alles was als Kraftstoff registriert ist kann verwendet werden und es wird eine konstante Leistungsmenge erzeugt, unabhängig davon was der Kraftstoff ist. Die Brennzeit wird durch die Vanilla-Brennzeit bestimmt. Wenn es sich um einen modifizierten Brennstoff handelt, wird die vom Mod eingestellte Brennzeit verwendet. \n \n \n \n \n"
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfareautomation:hand_cranked_generator"
+        },
+        {
+            "content_type": "heading",
+            "text": "Handkurbelgenerator",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Der von Hand gedrehte Generator erzeugt ein Drehmoment von einer Spieler oder NPC-Eingabe. Die Handwerker- und Arbeiter-NPC werden es als Baustelle betrachten und der Spieler kann Strom erzeugen indem er im Arbeitsmodus mit einem Hammer mit Rechtsklick anklickt."
+        },
+        {
+            "content_type": "heading",
+            "text": "Drehmomentübertragung und Lagerung",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Ancient Warfare bietet eine Methode zum Übertragen der Drehmomentleistung von einem der Generatoren an die Drehmoment verbrauchenden Maschinen oder Drehmomentspeicherblöcke. Der Hammer kann verwendet werden um diese Blöcke zu drehen. Als Faustregel gilt jedoch, dass Sie Ihr Übertragungssystem vom Verbraucher zum Produzenten aufbauen. Das Drehmoment in einem Drehmoment-Feld kann ermittelt werden indem Sie mit einer leeren Hand mit der rechten Maustaste auf ein Drehmoment-Feld klicken. Dies zeigt die gespeicherte Energiemenge, die ankommende Kraft, die ausgefallene Kraft und den durch Reibung verlorenen Kraftaufwand."
+        },
+        {
+            "content_type": "item",
+            "items": [
+                {
+                    "name": "ancientwarfareautomation:torque_shaft",
+                    "data": 0
+                },
+                {
+                    "name": "ancientwarfareautomation:torque_shaft",
+                    "data": 1
+                },
+                {
+                    "name": "ancientwarfareautomation:torque_shaft",
+                    "data": 2
+                }
+            ]
+        },
+        {
+            "content_type": "heading",
+            "text": "Drehmomentwellen",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Drehmomentwellen dienen als Kraftübertragung des Drehmomentübertragungssystems. Sie haben eine Eingangs- und Ausgangsseite und können das Drehmoment nur in einer geraden Linie übertragen. Sie haben den geringsten Drehmomentverlust, sind billiger herzustellen und der einfachste Übertragungsblock."
+        },
+        {
+            "content_type": "item",
+            "items": [
+                {
+                    "name": "ancientwarfareautomation:torque_junction",
+                    "data": 0
+                },
+                {
+                    "name": "ancientwarfareautomation:torque_junction",
+                    "data": 1
+                },
+                {
+                    "name": "ancientwarfareautomation:torque_junction",
+                    "data": 2
+                }
+            ]
+        },
+        {
+            "content_type": "heading",
+            "text": "Drehmomentübergänge",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Drehmomentübergänge ermöglichen Drehungen und Biegungen im Drehmomentübertragungssystem. Sie verfügen über fünf Eingänge und eine Ausgangsseite. Dadurch können sie nicht nur als Drehrichtung wirken, sondern auch als Kombination anderer Drehmomentwellen -Linien in einer einzigen. Die Ausgabeseite ist durch eine etwas abweichende Farbseite des Blocks gekennzeichnet, wobei ein dunkles Quadrat an den Rand grenzt. Wenn die Verbindung ordnungsgemäß hergestellt ist verbindet sie sich mit benachbarten Wellen, anderen Verbindungsstellen und Verteilern."
+        },
+        {
+            "content_type": "item",
+            "items": [
+                {
+                    "name": "ancientwarfareautomation:torque_distributor",
+                    "data": 0
+                },
+                {
+                    "name": "ancientwarfareautomation:torque_distributor",
+                    "data": 1
+                },
+                {
+                    "name": "ancientwarfareautomation:torque_distributor",
+                    "data": 2
+                }
+            ]
+        },
+        {
+            "content_type": "heading",
+            "text": "Drehmomentverteiler",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Drehmomentverteiler werden verwendet um eine einzelne Drehmomentwellenlinie in mehrere zu teilen. Sie verfügen über einen Eingang und fünf Ausgangsseiten, sodass die Leistung von einem einzigen Eingang in mehrere Richtungen verteilt werden kann. \n \n \n \n \n"
+        },
+		{
+            "content_type": "image",
+            "path": "/images/Flywheel_Storage1.jpg",
+            "width": 756,
+            "height": 425
+        },
+        {
+            "content_type": "heading",
+            "text": "Schwungrad-Lagerung",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Das Schwungradspeichersystem kann für temporäre Energiespeicherung verwendet werden. Da sie jedoch im Vergleich zu Wellen, Übergängen und Verteilern hohen Leistungsverlust aufweisen, werden Schwungräder nicht für langfristige Energiespeicherungen empfohlen. Schwungräder sind eine Multiblock-Struktur, die aus einem Schwungradsteuerblock und mindestens einem Schwungradenergiespeicherblock besteht. Der Steuerblock sollte auf dem Energiespeicherblock platziert werden, der maximal 21 Blöcke groß sein kann. Die Energiespeicherblöcke können auch in einem 3x3-Multiblock angeordnet werden, wobei sich der Steuerblock im oberen mittleren Block befindet. Bei korrekter Einrichtung und mit ausreichender Leistung im Steuerblock beginnt sich das Schwungrad zu drehen."
+        },
+        {
+            "content_type": "heading",
+            "text": "Stufen",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Für jeden der eben genannten Transfer- und Speicherblöcke gibt es drei verschiedene Stufen. Diese Stufen sind leicht, mittel und schwer, wobei sie nach und nach effizienter sind als die vorherigen. Niedrigere Stufen haben eine niedrigere Drehmomentübertragungsfähigkeit und einen höheren Drehmomentverlust, während höhere Stufen eine höhere Drehmomentübertragungsfähigkeit und einen geringeren Drehmomentverlust aufweisen."
+        }
+    ]
+}

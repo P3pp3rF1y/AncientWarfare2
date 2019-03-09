@@ -1,0 +1,187 @@
+{
+    "type": "manual_content",
+    "lang": "zh_CN",
+    "category": "factions",
+    "content": [
+        {
+            "content_type": "heading",
+            "text": "派系",
+            "level": 1
+        },
+        {
+            "content_type": "heading",
+            "text": "玩家团队与派系的关系",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "玩家放置的每台机器、仓库和NPC都属于该玩家，默认情况下，其他玩家无法访问 . 为了允许您的朋友访问您拥有的方块和NPC，您必须将他们添加到您的团队中. 这可以通过使用普通的记分板命令将您自己和他们添加到同一个团队来完成. 基本上，您需要的命令是 “/scoreboard teams add 【您的团队名称】 ”  和  “/scoreboard teams join 【您的团队名称】” 添加团队的命令只需要执行一次，然后您和任何其他人都可以使用第二个join命令来加入团队. 通过在Minecraft wiki上查找记分板命令的用法，可以找到更高级的团队选项。您也可以使用ftbutils mod中的团队功能加入团队. \n如果你想改变与某个派系的关系，你可以与该派系特定的交易者进行交易。这最终会使他们不敌视你，但他们只会对你友好。没有办法加入一个派系，这是一个设计好的特性。世界上的派系注定是一支明确的独立力量，而不是你可以加入或接管的东西."
+        },
+        {
+            "content_type": "text",
+            "text": "欢迎来到城主指南，了解古代战争mod中的民族和生物。 在aw的世界里，玩家将遇到许多不同的文明和部落，与之互动.某些是友好的,某些是中立的, 也有些是敌对的."
+        },
+        {
+            "content_type": "heading",
+            "text": "文明",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "“非野蛮的” 派系 被归类为文明 因为除了正常世界中出现的结构,他们还将生成自己的小城镇和有围墙的城市。 – 此外，他们还经常使用城防工程来防御. \nNoggs - Colour (Emerald Green) \nEmpire - Colour (Purple) \nWitchbane - Colour (White) \nXoltec - Colour (Orange) \nNorska - Colour (Light Blue) \nSarkonids - Colour (Red)"
+        },
+        {
+            "content_type": "heading",
+            "text": "部落",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "“蛮族的” 派系被归类为部落 因为它们不生成小城镇或有围墙的城市，而且通常有较小的部落村落 -通常没有城防工程. \nZimba - Colour (Yellow) \nKongs - Colour (Dark Green) \nBuffloka - Colour (Green) \nPirates - Colour (Ochre) \nBrigands - Colour (Brown) \nOrcs - Colour - (Dark Grey) \nDemons - Colour - (Scarlet) \nThe Undead - Colour - (Light Grey) \nThe Malice (Evil) - Colour (Black) \nThe Guardians (Good) - Colour (Light Green)"
+        },
+        {
+            "content_type": "heading",
+            "text": "维京",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Flag Colour (Light Blue) \nN维京战士们意志像钉子一样坚韧不拔，居住在北方严酷的雪地里,常部署有守兵和烽火台,他们的城镇用粗壮的木头当做围墙. \n维京贵族阶级 – 称为 Jarls -在 Jarls 大厅里装满了他们纵横大陆的战斗中积累的宝藏。为他们服务的 -狂战士- 在战斗中很凶猛，能够承受住足以杀死普通人五次以上的伤害. 维京人活着是为了战斗，对于他们战斗是生命的目的, 为在瓦哈拉奥丁身边赢得一席之地而英勇牺牲. \n在 维京人的土地上, 挪威古老的神对闯入奥丁神庙、托尔神庙和弗雷亚神庙的旅行者来说是神秘而又险恶的，尽管伟大的奖赏等待着能够在奥丁神庙完成勇士考验的战士. \n维京人的 -符文术士- 拥有可怕力量的祭司 – 能够召唤-女武神-来对付入侵者.\n在 维京领域的航行者可能会在海上遇到他们可怕的龙头长船. 维京的海盗舰队遍布各个海域, 尤其是在河流或海岸附近 - 也许他们在去抢劫你自己简陋的住所的路上，就在你读这本书的时候？ \n维京人对于所有人几乎都是有敌意的, 对 兽人 也无爱, 尤其是 帝国 还有 圣教军. \n维京商人专卖北方森林木、毛皮和皮革、琥珀和武器."
+        },
+        {
+            "content_type": "heading",
+            "text": "布法罗卡",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Flag Colour (Green) \n在世界上的平原和草原 红树林和枫树林, 高贵的游牧民族 布法罗卡 可能会被发现. 骄傲顽强的马背上的战士, 布法罗卡 猎杀野牛和海狸，种植玉米和大米. 布法罗卡的露营地由棚屋和小屋组成，防御严密不是通过防御工事，而是大量的战士,每个营地都相互支援。. \n-布法罗卡酋长- 是勇敢的，很难杀死战士,-布法罗卡萨满- 有治疗能力，可以召唤图腾灵来保卫村庄. \n布法罗卡商人专卖皮草和皮革、牛排，并接受工具和武器作为交换."
+        },
+        {
+            "content_type": "heading",
+            "text": "索尔特克",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Flag Colour (Orange) \n在干旱的梅萨地区被发现 在那里他们将最伟大的巫师视作拥有至高黑暗神荣耀的领袖 他们以血祭祀下界的恶魔. \n索尔特克人所在的高原经常会发现一些定居点，在那里复杂的灌溉系统可以让他们种植作物. 他们也是熟练的矿工，索尔特克定居点经常布满开采丰富矿脉和金属的矿井和隧道. \n索尔特克是一个军事社会，有许多属于不同等级的战士 – 捷豹骑士和鹰骑士是最熟练和最凶猛的.索尔特克的武器是由黑曜石制成的，可以造成巨大的伤害. \n索尔特克是孤立的，很少在高贫瘠的台地之外遇到. \n-索尔特克死亡祭司-是他们社会的真正统治者，他们非常可怕。这些拥有最高权力的人经常能召唤来自冥界的恶魔来攻击入侵者,他们的神庙里常常装满了献给他们的恶魔神的珍宝. 然而，旅行者和冒险家应该小心，因为他们也受到许多守护者、诡计和陷阱的保护 \n其他部落和王国都害怕索尔特克，因为他们习惯于把旅行者牺牲给他们的恶魔之神，因此与每个人都处于战争之中.索尔特克的商人专门从事宝石、黑曜石、彩色染料及其密集农业生产."
+        },
+        {
+            "content_type": "heading",
+            "text": "金刚族",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Flag Colour (Dark Green) \n在雾气弥漫的丛林深处，疯狂的打鼓声警告旅行者，他正在进入恐怖的金刚族部落. 他们把牙齿磨尖，以便更好地吃掉被俘者,金刚族是食人的，他们把旅行者和冒险家当作下一顿午餐,可能是加番石榴豆和一个不错的基安蒂酒（哧溜！嗝） . \n金刚族人住在高大的丛林树丛中的树屋里，粗心大意的旅行者可能会发现自己被困在他们下面的一个被遮盖的坑里，用作陷阱. \n虽然人们对金刚星知之甚少，但据说它们崇拜某种巨型猿类，并在满月时向它献祭处女. \n金刚是原始的战士，依靠弓箭和长矛远距离作战 但要小心——有时他们的箭带毒. \n据说-金刚族萨满-能够召唤巨型猿来保护它们的祭祀场所,也许他们中最强大的力量甚至可以召唤他们可怕的古神 – 金刚! \n金刚族商人专注丛林、可可和皮革，并喜欢任何形式的腐肉作为交换."
+        },
+        {
+            "content_type": "heading",
+            "text": "津巴",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Flag Colour (Yellow) \n在广阔的热带大草原上，在大象、水牛和斑马的游牧群中，可以找到强大的津巴部落村庄. 尽管津巴人以热爱和平的农业人民而闻名，但他们还是有许多技术娴熟、勇敢的战士 – 他们的豹战士被给遇见过他们的人以深深地恐惧. \n津巴人平民可能会在他们的村庄里见到，他们的战士巡逻对可能会在稀树草原和稀树草原高原上遇到. 津巴兵动作敏捷，弓箭射击距离远，射击准确 -  他们提防闯入他们土地的人，可能攻击他们，也可能不攻击他们. \n-津巴巫医- 有治疗能力，可以召唤狮子帮助他们的战士对付入侵者. \n津巴的商人专注于小麦、动物肉。皮革、皮革和类似金属作为回报."
+        },
+        {
+            "content_type": "heading",
+            "text": "帝国",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Flag Colour (Purple) \n帝国是永恒的，或者说帝国的领主宣称是这样, 世界各地的许多人都认为是这样。帝国是世界上的主导力量，它的定居点、城镇、城市和城堡都牢牢地”种植“在草地、平原、桦树林和果园中，为皇帝和他的宫廷的占有土地. 帝国土地人口稠密，农场、磨坊、铁匠、商人之家和教堂丰富. \n帝国军 由帝国卫兵组成 – 帝王军团和帝国骑士中的精锐战士，他们的长矛和武装的盔甲威力被许多人认为是不可战胜的. 他们由坚定的戟兵和长弓兵以及骑马的弓箭手支援. \n帝国的城堡、前哨站和塔楼保护着他们的土地，似乎有着取之不尽的士兵. \n帝国与圣教军派系结盟，对守护者和诺格派系保持中立.其他人，他们都在与之交战，并将之视为要征服和踩在脚下的目标. \n帝国商人有各种各样的货物和材料；然而，他们只接受其他材料或帝国硬币作为报酬."
+        },
+        {
+            "content_type": "heading",
+            "text": "诺格",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Flag Colour (Emerald Green) \n诺格定居点分布广泛，可能是旅行者见过的最友好的人. 诺格是一个农业和采矿的民族, 有着引以为豪的伐木工传统. 他们的定居点通常都是设防良好的小村庄或小市场. \n诺格多募集一般的战士，依靠大量的民兵, 剑客和弓箭手. 诺格贵族,被称为Noggins，是技艺高超的骑手，他们的侍从是弓箭手. \n-诺格祭司- 以其开朗快乐的性格而闻名，他们的医治能力是好的. \n诺格交易者通常会有各种各样的材料和货物来交换，并且经常会接受许多奇怪的东西作为回报."
+        },
+        {
+            "content_type": "heading",
+            "text": "圣教军",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Flag Colour (White) \n帝国的宗教是神圣教会，它形成了帝国的一个独立的联盟派别. 总是想消灭邪恶族, 不死族和任何非人类的东西,他们还试图摧毁寺庙和崇拜其他任何神的地方。从某种意义上说，圣教军是帝国扩张的侵略性十字军. 圣教军的防御工事通常是城堡，通常可以是很多很多守卫的大家伙. \n圣教军是帝国教会的军事力量，旨在征服和改造异教徒部落和国家. 他们是精锐的战士，很难战胜. \n圣教军牧师有很强的治疗能力，可以在战斗中复活倒下的同伴. 那些拥有最高权力的人也可以召唤天使战士来帮助他们. \n圣教军交易者专注书籍, 羽毛和墨水袋. 他们接受帝国货币和一些材料作为交换."
+        },
+        {
+            "content_type": "heading",
+            "text": "萨科尼特",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Flag Colour (Red) \n在酷热的沙漠中，可能会遇到萨科尼特人的沙漠据点. 这些凶猛的沙漠战士坚定地保卫着太阳灼烤着的土地. 萨科尼特人可以在孤立的村庄前哨塔，城堡和有围墙的城市中找到. \n萨科尼特是一个友好的民族，试图和平地生活，但如果受到攻击，他们将有力地保卫自己. \n萨科尼德的 -埃米尔- 是技艺高超、狡猾的战士，因为他们的速度很难击败他们. \n萨科尼特祭司可以在战斗中复活阵亡的萨科尼特人，并可以召唤迪金斯来帮助他们. \n萨科尼特贸易商有非常广泛的材料和物品可供贸易，萨科尼特集市是参观和贸易的传奇之地."
+        },
+        {
+            "content_type": "heading",
+            "text": "海盗",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Flag Colour (Ochre) \n当帝国开始扩张并在世界各地建立军事殖民地时，为运送殖民者而建造的舰队数量众多且强大. 然而，有时船员们会反抗帝国船长严厉和压迫性的统治，海盗兄弟会由此诞生. \n海盗可能会在海上的船只上，或在海岸或岛屿海盗据点上遇到. 海盗不带俘虏，只想抢劫和破坏，也许还想喝朗姆酒，在你冰冷的尸体上唱歌跳舞. \n海盗首领是臭名昭著的难以打败的战士，通常拥有从以前的受害者那里掠夺来的魔法武器和盔甲。. \n最糟糕的是，海盗很久以前就发现了火药的秘密，所以他们的船只和据点都装备了大炮. \n海盗巫毒女祭司有强大的治疗能力来恢复他们的战士，有时可以召唤亡灵的海盗伙伴来帮助他们. \n海盗商人专门从他们的不义之财中变卖贵重物品，因此他们将用宝石、黄金、武器和手工艺品来交换通常很普通的物品，如木头，用来修理船只. 海盗商人总是用火药交易."
+        },
+        {
+            "content_type": "heading",
+            "text": "强盗",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Flag Colour (Brown) \n在所有的陆地上，都有人企图掠夺他们的同伴或冒失的旅行者，抢劫、偷窃和谋杀. 这就是所谓的强盗. 土匪强盗随处可见, 他们倾向于选择孤独和孤立的地方作为他们的基地，因为他们被所有其他部落和王国通缉. \n土匪可以在帐篷营地、废墟塔、洞穴、废弃村庄和古墓中找到. \n强盗不是强悍的战士，但经常大量出现. \n土匪牧师是异端者，虽然他们能治愈自己的追随者，但他们也能向敌人投掷毒瓶.\n强盗商人卖掉他们从旅行者那里抢来的东西，换取黄金，因为强盗极度贪婪，他们只想要黄金."
+        },
+        {
+            "content_type": "heading",
+            "text": "兽人",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Flag Colour (dark grey) \n无论是阴郁多雾的土地，还是贫瘠荒芜的土地，还是在废弃的废墟和地下深处，都可能发现可怕的半人类兽人种族，用他们所创造的病态的巢穴感染和污染土地 \n兽人被所有其他种族所鄙视，经常被邪恶或恶魔派系奴役和用作战士，他们崇拜他们的救世主巴哈罗格，据说他有朝一日会赋予他们统治全世界的权力– 所有其他部落和王国都将成为他们的奴隶的时代, 这是兽人的梦想. \n-兽人军阀长- 可以是势不可挡的战士，用野蛮的力量、强大的打击和吸收伤害的能力来摧毁敌人，这些伤害会杀死一个人七次以上. -阿鲁克- 凶猛而致命 – 通常在攻击中使用两种武器，而兽人弓箭手是狡猾的，在攻击时经常使用火箭. \n兽人憎恶所有非同族人, 但对马夫和马匹有一种特别的厌恶，他们会一看到就攻击他们. \n兽人商人将用金属和石头换取动物肉或腐烂的肉."
+        },
+        {
+            "content_type": "heading",
+            "text": "恶魔",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Flag Colour (Scarlet) \n在现实世界之外的黑暗地区，许多人都知道，黑暗势力潜伏着，等待着他们再次闯入人类世界的机会. 这些物种被称为恶魔 – 邪恶和混乱的生物, 火、烟、硫磺的产物. \n冒险家应该小心找到通往他们的地下城市的恶魔之门,或是巫师和黑暗领主，他们可以在有限的时间内召唤他们，在人类的世界里执行他们的命令。. \n恶魔是强大的，几乎是不灭的，拥有强大力量的生物，不可轻视."
+        },
+        {
+            "content_type": "heading",
+            "text": "亡灵",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Flag Colour (Light Grey) \n在腐朽荒芜的坟墓里.在古地窖和陵墓里. 在门密封的地下室里，青铜色的破碎的门，以及早已被遗忘的墓地，不安静的死者徘徊和盘踞。在被遗弃的古代地方，隐藏在黑暗中，巫妖领主和鬼王，幽灵领主和那些曾经统治着消失已久的帝国的活生生的木乃伊意识到了他们对活物的憎恨，并以他们的亡灵军队发动战争. \n不死族战士很难被打败，但是他们面对太阳光和金银武器展现的脆弱是他们的局限性. \n不死族没有交易者，因为没有人会买他们提供的唯一东西——死亡."
+        },
+        {
+            "content_type": "heading",
+            "text": "The Malice",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Flag Colour (Black) \nIn dark forests, festering swamps, brooding ruins and deep lightless underground caverns, Malice lurks and schemes and plots to destroy the world. The creatures of Malice are found everywhere – Evil Sorcerers, Black Knights, Killer Klowns, Servants of Evil, Possessed Scarecrows, Cultists, Vampire Lords, Wights, Spectres and Wraiths all await the unlucky adventurer. \nMalice creatures can be found in Haunted or Ruined castles, in the mountain top strongholds of Vampire Lords and the wasteland towers of Dark Lords. \nEvil Sorcerers and Dark Lords can often summon Demons from the Nether. Malice temples and tombs can be rich in treasures, but are haunted terrifying places, infested with guardians, monsters, traps and trickery. \nThe Malice is at war with everyone, but often allied with the Demon, Orc and Undead factions. \nMalice Traders specialise in potions of harm, poisons and evil magical weapons. But their prices are high and often paid in blood."
+        },
+        {
+            "content_type": "heading",
+            "text": "The Guardians",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Flag Colour (Light Green) \nTo combat the Malice many forces of good have come together and allied to thwart their evil plans for domination. Elves of the greenwoods, Forest rangers of the North, Questing Knights, Druids and Wizards will always aid and assist the weary traveller beset by the Malice. \nGuardian settlements may be found in many places, from thriving elf holds, to lonely moorland towers, to clifftop wizard’s towers and the sacred tree rings of the Druids. \nGuardian traders will stock useful things and potions for adventurers, and ask for food, weapons and coins in exchange."
+        }
+    ]
+}

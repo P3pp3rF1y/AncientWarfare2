@@ -9,6 +9,15 @@
             "level": 1
         },
         {
+            "content_type": "heading",
+            "text": "Player Teams and Relations with Factions",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Every Machine, Warehouse, and NPC placed by a Player belongs to that Player, and by default, are not accessible by other Players. In order to allow your friends to access your owned blocks and NPCs, you must add them to your team. This can be done by adding yourself and them to the same team using the vanilla scoreboard commands. Essentially, the commands you need are “/scoreboard teams add YOUR_TEAM_NAME” and “/scoreboard teams join YOUR_TEAM_NAME”. The command to add the team is only needed to be done once, and then you and any others may use the second join command to join the team. More advanced team options can be found out by looking up the usage of the scoreboard commands on the Minecraft Wiki. You can also join a team by using the Team features in the FTBUtils mod. \\nIf you want to change your relations with a faction, you may trade with Traders specific to that faction. This will eventually make them not hostile to you, but they will be merely friendly with you. There is no way to join a faction, and this is an intended feature. The factions in the world are meant to be a present, independent force in your world, not something you can just join or take over."
+        },
+        {
             "content_type": "text",
             "text": "Welcome to the Castellans Guide to the peoples and creatures of Ancient Warfare. In the world of AW players will meet many different civilisations and tribes with which to interact with. Some will be friendly, some neutral, and some hostile."
         },

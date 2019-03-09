@@ -1,0 +1,94 @@
+{
+    "type": "manual_content",
+    "lang": "de_DE",
+    "category": "warehouse",
+    "content": [
+        {
+            "content_type": "heading",
+            "text": "Lager",
+            "level": 1
+        },
+        {
+            "content_type": "text",
+            "text": "Das Lager ist als nachrüstbarer, selbstsortierender und selbstorganisierender Lagerraum für Items gedacht. Es hat Arbeitslimits wie andere Bauplätze. Ist auch eine Multiblock-Struktur, da es andere Blöcke für seine Funktionalität benötigt. Das Lager besteht aus 4 verschiedenen Blocktypen: dem Lagerkontrollblock, dem Lagerspeicherblock, dem Lagerschnittstellenblock und den Lager Stock Viewer-Schildern. Außerdem gibt es eine Lager-Werkbank, die es Spielern erlaubt, Items aus dem Lager zu verwenden. \n \n \n"
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfareautomation:warehouse_control"
+        },
+        {
+            "content_type": "heading",
+            "text": "Lagerkontrollblock",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Der Lagerkontrollblock dient als Kern des Lagermultiblocksystems. Ähnlich wie bei den Maschinen verwaltet der Kontrollblock die Grenzen des Lagers und ist das Ziel für den Energieeintrag, entweder durch einen Drehmoment erzeugende Maschine oder einen Handwerker-NPC. An sich stellt der Kontrollblock einen Speicher bereit, der von den Lagerspeicherblöcken bereitgestellt wird. Der Kontrollblock verfügt über KEINE Inventare und kann für die automatische Itemübertragung nicht aufgerufen werden. Dies muss über die Lagerschnittstellen erfolgen. Der Kontrollblock hat zwar keine Lager- oder Bestandsaufnahmen, bietet jedoch auch die Möglichkeit alle Elemente in den Speicherblöcken einzugeben. \nWenn keine Aktualisierungen vorgenommen werden, steuert der Kontrollblock die Standardgrenzen von 5x5x4-Blöcken, die können die Bounds-Upgrades erhöhen, genau wie bei den Maschinen. Wenn Sie sich im Kontrollblock befinden, können Sie die Grenzen über die Schaltfläche “Bounds“ in der GUI anpassen."
+        },
+        {
+            "content_type": "item",
+            "items": [
+                {
+                    "name": "ancientwarfareautomation:warehouse_storage",
+                    "data": 0
+                },
+                {
+                    "name": "ancientwarfareautomation:warehouse_storage",
+                    "data": 1
+                },
+                {
+                    "name": "ancientwarfareautomation:warehouse_storage",
+                    "data": 2
+                }
+            ]
+        },
+        {
+            "content_type": "heading",
+            "text": "Speicherblöcke und ihre Möglichkeiten",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Lagerspeicherblöcke bieten die Möglichkeit die Kapazität des Lagers zu erweitern. Jeder zusätzliche Speicherblock innerhalb der verwalteten Grenzen erhöht die Gesamtkapazität des Lagers. Höhere Arten von Speicherblöcken bieten mehr Kapazität als niedrigere Arten. Items werden tatsächlich in diesen Speicherblöcken gespeichert. Wenn Sie einen Speicherblock abbauen, werden alle Elemente in der Welt abgelegt und sind nicht mehr im Lager verfügbar. Die Spieler können Elemente hinzufügen und daraus entfernen. Die Hauptaufgabe besteht darin, dass der Lagerkontrollblock ihre gespeicherten Elemente steuert. Mit Lagerspeicherblöcken können Sie interagieren, um Inhalte anzuzeigen oder zu bearbeiten oder Inhaltsfilter festlegen. Sobald ein Filter festgelegt ist, werden die Filter in diesen Speicherblock eingefügt. Eventuell vorhandene Items bleiben erhalten. Eine leere Filterliste zeigt an, dass ein beliebiges Item dort gespeichert werden kann. Ein leerer Filter entspricht keinem Item. Diese Blöcke bieten keine von außen zugänglichen Bestandsaufnahmen. Alle automatisierten Interaktionen müssen die Lagerschnittstellenblöcke durchlaufen."
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfareautomation:warehouse_interface"
+        },
+        {
+            "content_type": "heading",
+            "text": "Interface",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Die Lagerspeicherblöcke bieten die Möglichkeit durch externe und automatisierte Prozesse auf die Items im Lager zuzugreifen. Diese Blöcke stellen ein von außen zugängliches Inventar bereit, das direkt von NPC-Boten, Trichter oder anderen Mod-hinzugefügten Mitteln zum Manipulieren von blockbasierten Inventaren manipuliert wird. Der Speicherblock dient sowohl als Eingabe als auch als Ausgabe für das Lager. Und jeder Speicherblock kann als Eingabe, Ausgabe oder beides verwendet werden. Mit dem Lagerspeicherblock kann eine GUI zur Steuerung der Filterliste geöffnet werden. Die Filterliste bestimmt welche Elemente automatisch in die Benutzeroberfläche eingefügt werden. Alle Elemente in der Filterliste werden vom Kontrollblock in bestimmten Abständen angezeigt. Alle Elemente die nicht in der Filterliste enthalten sind, werden vom Kontrollblock entfernt."
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfareautomation:warehouse_crafting"
+        },
+        {
+            "content_type": "heading",
+            "text": "Lager-Werkbank",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Die Lager-Werkbank muss neben einem Lagersteuerblock (nicht innerhalb der Grenzen) platziert werden. Wie bei anderen Handwerksstationen kann das Rezept im Rezeptraster angeordnet werden. Ergebnisse können aus dem Ergebnisschlitz gezogen werden. Alle Items für das Craften werden von den Speicherblöcken des Lagers abgerufen. \n \n \n"
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfareautomation:warehouse_stock_viewer"
+        },
+        {
+            "content_type": "heading",
+            "text": "Stock Viewer",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Ermöglicht das Erstellen eines ‘Schildes’ das die Menge bestimmter Items anzeigt, die in einem Lager gespeichert sind. Es muss innerhalb oder an der Seite des Blocks innerhalb der Lagergrenzen angebracht werden. Es verfügt über eine Konfig-Liste der Elemente, die angezeigt werden sollen."
+        }
+    ]
+}
