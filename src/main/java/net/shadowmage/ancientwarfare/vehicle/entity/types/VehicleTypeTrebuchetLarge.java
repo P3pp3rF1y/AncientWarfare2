@@ -8,6 +8,7 @@ import net.shadowmage.ancientwarfare.vehicle.entity.materials.VehicleMaterial;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
 import net.shadowmage.ancientwarfare.vehicle.registry.AmmoRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.ArmorRegistry;
+import net.shadowmage.ancientwarfare.vehicle.registry.UpgradeRegistry;
 
 public class VehicleTypeTrebuchetLarge extends VehicleType {
 	public VehicleTypeTrebuchetLarge(int typeNum) {
@@ -57,6 +58,12 @@ public class VehicleTypeTrebuchetLarge extends VehicleType {
 		this.validArmors.add(ArmorRegistry.armorStone);
 		this.validArmors.add(ArmorRegistry.armorIron);
 		this.validArmors.add(ArmorRegistry.armorObsidian);
+
+		this.validUpgrades.add(UpgradeRegistry.pitchDownUpgrade);
+		this.validUpgrades.add(UpgradeRegistry.pitchUpUpgrade);
+		this.validUpgrades.add(UpgradeRegistry.powerUpgrade);
+		this.validUpgrades.add(UpgradeRegistry.reloadUpgrade);
+		this.validUpgrades.add(UpgradeRegistry.aimUpgrade);
 
 		this.displayName = "item.vehicleSpawner.16";
 		this.displayTooltip.add("item.vehicleSpawner.tooltip.weight");
