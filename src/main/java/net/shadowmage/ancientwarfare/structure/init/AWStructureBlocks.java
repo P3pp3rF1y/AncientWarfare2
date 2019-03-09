@@ -85,8 +85,8 @@ public class AWStructureBlocks {
 	public static final Block GOBLIN_TOTEM_2 = InjectionTools.nullValue();
 	public static final Block GOBLIN_TOTEM_2_LIT = InjectionTools.nullValue();
 	public static final Block LOOT_BASKET = InjectionTools.nullValue();
-	public static final Block Brazier_Ember = InjectionTools.nullValue();
-	public static final Block Brazier_Flame = InjectionTools.nullValue();
+	public static final Block BRAZIER_EMBER = InjectionTools.nullValue();
+	public static final Block BRAZIER_FLAME = InjectionTools.nullValue();
 
 	@SuppressWarnings("ConstantConditions")
 	@SubscribeEvent
@@ -102,8 +102,8 @@ public class AWStructureBlocks {
 		registry.register(new ItemBlockBase(ADVANCED_LOOT_CHEST));
 		registry.register(new ItemBlockFirePit(FIRE_PIT));
 		registry.register(new ItemBlockTotemPart(TOTEM_PART));
-		registry.register(new ItemBlockBrazierEmber(Brazier_Ember));
-		registry.register(new ItemBlockBrazierFlame(Brazier_Flame));
+		registry.register(new ItemBlockBrazierEmber(BRAZIER_EMBER));
+		registry.register(new ItemBlockBrazierFlame(BRAZIER_FLAME));
 
 		registry.register(new ItemBlockColored(ALTAR_SHORT_CLOTH));
 		registry.register(new ItemBlockColored(ALTAR_LONG_CLOTH));
