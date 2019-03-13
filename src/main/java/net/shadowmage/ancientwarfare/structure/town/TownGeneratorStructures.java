@@ -48,15 +48,24 @@ public class TownGeneratorStructures {
 	}
 
 	private static void generateUniques(List<TownPartBlock> blocks, List<StructureTemplate> templatesToGenerate, TownGenerator gen) {
+		List<Integer> indexes = new ArrayList<>();
+		for (int i = 0; i < templatesToGenerate.size(); i++) {
+			indexes.add(i);
+		}
 		for (TownPartBlock block : blocks) {
 			for (TownPartPlot plot : block.plots)//iterate through plots, gen on the first valid plot for the block, then break to the next block
 			{
 				if (plot.closed || !plot.hasRoadBorder()) {
 					continue;
 				}
-				if (templatesToGenerate.isEmpty() || generateStructureForPlot(gen, plot, templatesToGenerate.get(0), false)) {
+				if (indexes.isEmpty()) {
 					return;
 				}
+				int idx = gen.rng.nextInt(indexes.size());
+				if (generateStructureForPlot(gen, plot, templatesToGenerate.get(indexes.get(idx)), false)) {
+					return;
+				}
+				indexes.remove(idx);
 			}
 		}
 	}

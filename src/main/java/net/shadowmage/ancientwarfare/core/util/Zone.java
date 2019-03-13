@@ -17,14 +17,14 @@ public class Zone implements INBTSerializable<NBTTagCompound> {
 
 	}
 
+	public boolean crossWith(int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
+		return !(max.getX() < minX || max.getY() < minY || max.getZ() < minZ || min.getX() > maxX || min.getY() > maxY || min.getZ() > maxZ);
+	}
 	/*
 	 * does the input share any block position with this zone ?
 	 */
 	public boolean crossWith(Zone z) {
-		if (max.getX() < z.min.getX() || max.getY() < z.min.getY() || max.getZ() < z.min.getZ() || min.getX() > z.max.getX() || min.getY() > z.max.getY() || min.getZ() > z.max.getZ()) {
-			return false;
-		}
-		return true;
+		return crossWith(z.min.getX(), z.min.getY(), z.min.getZ(), z.max.getX(), z.max.getY(), z.max.getZ());
 	}
 
 	public boolean isPositionIn(int x, int y, int z) {
