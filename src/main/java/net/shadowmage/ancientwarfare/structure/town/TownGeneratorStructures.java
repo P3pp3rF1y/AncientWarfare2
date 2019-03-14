@@ -22,7 +22,7 @@ public class TownGeneratorStructures {
 	private TownGeneratorStructures() {}
 
 	public static void generateStructures(final TownGenerator gen) {
-		final List<TownPartBlock> blocks = new ArrayList<>();
+		List<TownPartBlock> blocks = new ArrayList<>();
 		for (TownPartQuadrant tq : gen.quadrants) {
 			tq.addBlocks(blocks);
 		}
@@ -33,11 +33,12 @@ public class TownGeneratorStructures {
 		generateCosmetics(blocks, gen.cosmeticTemplatesToGenerate, gen);
 
 		if (gen.template.getExteriorSize() > 0) {
-			blocks.clear();
+			List<TownPartBlock> exteriorBlocks = new ArrayList<>();
 			for (TownPartQuadrant tq : gen.externalQuadrants) {
-				tq.addBlocks(blocks);
+				tq.addBlocks(exteriorBlocks);
 			}
-			generateExteriorStructures(blocks, gen.exteriorTemplatesToGenerate, gen);
+			generateExteriorStructures(exteriorBlocks, gen.exteriorTemplatesToGenerate, gen);
+			blocks.addAll(exteriorBlocks);
 		}
 
 		WorldGenTickHandler.INSTANCE.addStructureGenCallback(() -> {
