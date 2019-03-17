@@ -82,7 +82,7 @@ public class TemplateRuleBlockTile extends TemplateRuleVanillaBlocks {
 		return PLUGIN_NAME;
 	}
 
-	private static final Field TILE_REGISTRY = ReflectionHelper.findField(TileEntity.class, "field_190562_f", "REGISTRY");
+	private static final Field TILE_REGISTRY = ReflectionHelper.findField(TileEntity.class, "REGISTRY", "field_190562_f");
 
 	private Optional<Class<? extends TileEntity>> getTeClass() {
 		try {
