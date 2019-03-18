@@ -46,7 +46,6 @@ public class ContainerNpcInventory extends ContainerNpcBase<NpcBase> {
 					entity.setFollowingEntity(player);
 			}else if (tag.hasKey("donotpursue")) {
 				entity.setDoNotPursue();
-				this.DoNotPursue = tag.getBoolean("donotpursue");
 			}
 			if (tag.hasKey("customTexture")) {
 				entity.setCustomTexRef(tag.getString("customTexture"));
