@@ -127,6 +127,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	public Set<Entity> nearbyHostiles = new LinkedHashSet<Entity>();
 
 	private boolean aiEnabled = true;
+	public boolean DoNotPursue = false; //if the npc should not pursue targets away from its position/route
 
 	private int attackDamage = -1;//faction based only
 	private int armorValue = -1;//faction based only
@@ -401,6 +402,10 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
 	private void setRainedOn(boolean rainedOn) {
 		this.rainedOn = rainedOn;
+	}
+
+	public boolean setDoNotPursue() {
+		return DoNotPursue = true;
 	}
 
 	public void setIsAIEnabled(boolean val) {
