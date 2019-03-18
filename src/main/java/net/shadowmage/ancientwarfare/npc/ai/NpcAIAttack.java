@@ -43,7 +43,7 @@ public abstract class NpcAIAttack<T extends NpcBase> extends NpcAI<T> {
 	public final void updateTask() {
 		npc.getLookHelper().setLookPositionWithEntity(target, 30.f, 30.f);
 		double distanceToEntity = this.npc.getDistanceSq(target.posX, target.getEntityBoundingBox().minY, target.posZ);
-		if (shouldCloseOnTarget(distanceToEntity) && (!npc.DoNotPursue)) {
+		if (shouldCloseOnTarget(distanceToEntity)) {
 			npc.addAITask(TASK_MOVE);
 			moveToEntity(target, distanceToEntity);
 		} else {
