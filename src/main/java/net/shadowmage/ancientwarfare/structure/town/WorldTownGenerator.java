@@ -62,9 +62,6 @@ public class WorldTownGenerator implements IWorldGenerator {
 		{
 			area.chunkMaxZ = area.chunkMinZ + template.getMaxSize();
 		}
-		if (!TownPlacementValidator.validateAreaForPlacement(world, area)) {
-			return;
-		}//cannot validate the area until bounds are possibly shrunk by selected template
 		generate(world, area, template);
 
 	}

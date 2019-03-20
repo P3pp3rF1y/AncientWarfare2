@@ -63,6 +63,9 @@ public class BlockTotemPart extends BlockBaseStructure {
 	public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
 		Item item = Item.getItemFromBlock(this);
 		for (Variant variant : Variant.values()) {
+			if (!variant.includeInSubBlocks()) {
+				continue;
+			}
 			ItemStack stack = new ItemStack(item);
 			stack.setTagCompound(new NBTBuilder().setByte(VARIANT_TAG, variant.getId()).build());
 			items.add(stack);
@@ -264,11 +267,21 @@ public class BlockTotemPart extends BlockBaseStructure {
 			public AxisAlignedBB getBoundingBox(EnumFacing value) {
 				return FULL_BLOCK_AABB;
 			}
+
+			@Override
+			public boolean includeInSubBlocks() {
+				return false;
+			}
 		},
 		ELEPHANT_RIGHT(10) {
 			@Override
 			public AxisAlignedBB getBoundingBox(EnumFacing value) {
 				return FULL_BLOCK_AABB;
+			}
+
+			@Override
+			public boolean includeInSubBlocks() {
+				return false;
 			}
 		},
 		ELEPHANT_BODY(11) {
@@ -294,7 +307,72 @@ public class BlockTotemPart extends BlockBaseStructure {
 			public AxisAlignedBB getBoundingBox(EnumFacing value) {
 				return FULL_BLOCK_AABB;
 			}
+		}, XOLTEC_IDOL_BODY_LEFT(12) {
+			@Override
+			public void placeAdditionalParts(World world, BlockPos pos, EnumFacing facing) {
+				BlockPos right = pos.offset(facing.rotateY());
+				placeSideBlock(world, pos, right, facing, XOLTEC_IDOL_BODY_RIGHT);
+				placeSideBlock(world, pos, right.up(), facing, XOLTEC_IDOL_HEAD_RIGHT);
+				placeInvisibleBlock(world, pos, right.up().up(), XOLTEC_IDOL_HEAD_RIGHT, facing);
+				placeSideBlock(world, pos, pos.up(), facing, XOLTEC_IDOL_HEAD_LEFT);
+				placeInvisibleBlock(world, pos, pos.up().up(), XOLTEC_IDOL_HEAD_LEFT, facing);
+			}
+
+			@Override
+			protected Set<BlockPos> getAdditionalPartPositions(BlockPos pos, EnumFacing facing) {
+				BlockPos right = pos.offset(facing.rotateY());
+				return ImmutableSet.of(right, right.up(), right.up().up(), pos.up(), pos.up().up());
+			}
+
+			@Override
+			public AxisAlignedBB getBoundingBox(EnumFacing facing) {
+				return getXoltecIdolAABB(facing);
+			}
+		}, XOLTEC_IDOL_BODY_RIGHT(13) {
+			@Override
+			public boolean includeInSubBlocks() {
+				return false;
+			}
+
+			@Override
+			public AxisAlignedBB getBoundingBox(EnumFacing facing) {
+				return getXoltecIdolAABB(facing);
+			}
+		}, XOLTEC_IDOL_HEAD_LEFT(14) {
+			@Override
+			public boolean includeInSubBlocks() {
+				return false;
+			}
+
+			@Override
+			public AxisAlignedBB getBoundingBox(EnumFacing facing) {
+				return getXoltecIdolAABB(facing);
+			}
+		}, XOLTEC_IDOL_HEAD_RIGHT(15) {
+			@Override
+			public boolean includeInSubBlocks() {
+				return false;
+			}
+
+			@Override
+			public AxisAlignedBB getBoundingBox(EnumFacing facing) {
+				return getXoltecIdolAABB(facing);
+			}
 		};
+
+		private static AxisAlignedBB getXoltecIdolAABB(EnumFacing facing) {
+			switch (facing) {
+				case NORTH:
+					return XOLTEC_IDOL_NORTH_AABB;
+				case SOUTH:
+					return XOLTEC_IDOL_SOUTH_AABB;
+				case WEST:
+					return XOLTEC_IDOL_WEST_AABB;
+				case EAST:
+				default:
+					return XOLTEC_IDOL_EAST_AABB;
+			}
+		}
 
 		private int id;
 
@@ -311,8 +389,10 @@ public class BlockTotemPart extends BlockBaseStructure {
 		protected static final AxisAlignedBB IRMINSUL_TOP_AABB_Z = new AxisAlignedBB(0D, 0D, 4D / 16D, 1D, (16D - 2D) / 16D, (16D - 4D) / 16D);
 		protected static final AxisAlignedBB IRMINSUL_SIDE_AABB_X = new AxisAlignedBB(4D / 16D, 3D / 16D, 0D, (16D - 4D) / 16D, (16D - 2D) / 16D, 1D);
 		protected static final AxisAlignedBB IRMINSUL_SIDE_AABB_Z = new AxisAlignedBB(0D, 3D / 16D, 4D / 16D, 1D, (16D - 2D) / 16D, (16D - 4D) / 16D);
-
-
+		protected static final AxisAlignedBB XOLTEC_IDOL_SOUTH_AABB = new AxisAlignedBB(0D, 0D, 8D / 16D, 1D, 1D, 1D);
+		protected static final AxisAlignedBB XOLTEC_IDOL_NORTH_AABB = new AxisAlignedBB(0D, 0D, 0D, 1D, 1D, 8D / 16D);
+		protected static final AxisAlignedBB XOLTEC_IDOL_WEST_AABB = new AxisAlignedBB(0D, 0D, 0D, 8D / 16D, 1D, 1D);
+		protected static final AxisAlignedBB XOLTEC_IDOL_EAST_AABB = new AxisAlignedBB(8D / 16D, 0D, 0D, 1D, 1D, 1D);
 
 		public int getId() {
 			return id;
@@ -368,7 +448,11 @@ public class BlockTotemPart extends BlockBaseStructure {
 		}
 
 		private static void placeInvisibleBlock(World world, BlockPos mainPos, BlockPos sidePos, Variant variant) {
-			world.setBlockState(sidePos, AWStructureBlocks.TOTEM_PART.getDefaultState().withProperty(VISIBLE, false));
+			placeInvisibleBlock(world, mainPos, sidePos, variant, EnumFacing.NORTH);
+		}
+
+		private static void placeInvisibleBlock(World world, BlockPos mainPos, BlockPos sidePos, Variant variant, EnumFacing facing) {
+			world.setBlockState(sidePos, AWStructureBlocks.TOTEM_PART.getDefaultState().withProperty(VISIBLE, false).withProperty(FACING, facing));
 			setupTileData(world, mainPos, sidePos, variant);
 		}
 
@@ -382,6 +466,10 @@ public class BlockTotemPart extends BlockBaseStructure {
 		private static void placeSideBlock(World world, BlockPos mainPos, BlockPos sidePos, EnumFacing sideFacing, Variant variant) {
 			world.setBlockState(sidePos, AWStructureBlocks.TOTEM_PART.getDefaultState().withProperty(FACING, sideFacing));
 			setupTileData(world, mainPos, sidePos, variant);
+		}
+
+		public boolean includeInSubBlocks() {
+			return true;
 		}
 	}
 }

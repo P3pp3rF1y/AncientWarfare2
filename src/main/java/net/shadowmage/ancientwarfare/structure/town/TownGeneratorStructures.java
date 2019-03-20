@@ -10,18 +10,19 @@ import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplate.TownStructureEntry;
 import net.shadowmage.ancientwarfare.structure.worldgen.WorldGenTickHandler;
-import net.shadowmage.ancientwarfare.structure.worldgen.WorldGenTickHandler.StructureGenerationCallbackTicket;
 import net.shadowmage.ancientwarfare.structure.worldgen.WorldStructureGenerator;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 public class TownGeneratorStructures {
+	private TownGeneratorStructures() {}
 
 	public static void generateStructures(final TownGenerator gen) {
-		final List<TownPartBlock> blocks = new ArrayList<>();
+		List<TownPartBlock> blocks = new ArrayList<>();
 		for (TownPartQuadrant tq : gen.quadrants) {
 			tq.addBlocks(blocks);
 		}
@@ -32,57 +33,53 @@ public class TownGeneratorStructures {
 		generateCosmetics(blocks, gen.cosmeticTemplatesToGenerate, gen);
 
 		if (gen.template.getExteriorSize() > 0) {
-			blocks.clear();
+			List<TownPartBlock> exteriorBlocks = new ArrayList<>();
 			for (TownPartQuadrant tq : gen.externalQuadrants) {
-				tq.addBlocks(blocks);
+				tq.addBlocks(exteriorBlocks);
 			}
-			generateExteriorStructures(blocks, gen.exteriorTemplatesToGenerate, gen);
+			generateExteriorStructures(exteriorBlocks, gen.exteriorTemplatesToGenerate, gen);
+			blocks.addAll(exteriorBlocks);
 		}
 
-		WorldGenTickHandler.INSTANCE.addStructureGenCallback(new StructureGenerationCallbackTicket() {
-			@Override
-			public void call() {
-				TownGeneratorStructures.generateLamps(blocks, gen.template.getLamp(), gen);
-				WorldStructureGenerator.sprinkleSnow(gen.world, gen.maximalBounds, 0);
-				gen.generateVillagers();
-			}
+		WorldGenTickHandler.INSTANCE.addStructureGenCallback(() -> {
+			TownGeneratorStructures.generateLamps(blocks, gen.template.getLamp(), gen);
+			WorldStructureGenerator.sprinkleSnow(gen.world, gen.maximalBounds, 0);
+			gen.generateVillagers();
 		});
 	}
 
 	private static void generateUniques(List<TownPartBlock> blocks, List<StructureTemplate> templatesToGenerate, TownGenerator gen) {
-		outer:
+		List<Integer> indexes = new ArrayList<>();
+		for (int i = 0; i < templatesToGenerate.size(); i++) {
+			indexes.add(i);
+		}
 		for (TownPartBlock block : blocks) {
 			for (TownPartPlot plot : block.plots)//iterate through plots, gen on the first valid plot for the block, then break to the next block
 			{
-				if (plot.closed) {
+				if (plot.closed || !plot.hasRoadBorder()) {
 					continue;
 				}
-				if (!plot.hasRoadBorder()) {
-					continue;
-				}//no borders
-				if (templatesToGenerate.isEmpty()) {
-					break outer;
+				if (indexes.isEmpty()) {
+					return;
 				}
-				if (generateStructureForPlot(gen, plot, templatesToGenerate.get(0), false)) {
-					templatesToGenerate.remove(0);
+				int idx = gen.rng.nextInt(indexes.size());
+				if (generateStructureForPlot(gen, plot, templatesToGenerate.get(indexes.get(idx)), false)) {
+					return;
 				}
+				indexes.remove(idx);
 			}
 		}
 	}
 
 	private static void generateMains(List<TownPartBlock> blocks, List<StructureTemplate> templatesToGenerate, TownGenerator gen) {
-		outer:
 		for (TownPartBlock block : blocks) {
 			for (TownPartPlot plot : block.plots)//iterate through plots, gen on the first valid plot for the block, then break to the next block
 			{
-				if (plot.closed) {
+				if (plot.closed || !plot.hasRoadBorder()) {
 					continue;
 				}
-				if (!plot.hasRoadBorder()) {
-					continue;
-				}//no borders
 				if (templatesToGenerate.isEmpty()) {
-					break outer;
+					return;
 				}
 				if (generateStructureForPlot(gen, plot, templatesToGenerate.get(0), false)) {
 					templatesToGenerate.remove(0);
@@ -92,37 +89,33 @@ public class TownGeneratorStructures {
 	}
 
 	private static void generateHouses(List<TownPartBlock> blocks, List<StructureTemplate> templatesToGenerate, TownGenerator gen) {
-		outer:
 		for (TownPartBlock block : blocks) {
 			for (TownPartPlot plot : block.plots) {
 				if (templatesToGenerate.isEmpty()) {
-					break outer;
+					return;
 				}
 				if (plot.closed || !plot.hasRoadBorder()) {
 					continue;
 				}
-				if (gen.template.getInteriorEmtpyPlotChance() > 0) {
-					if (gen.rng.nextInt(100) < gen.template.getInteriorEmtpyPlotChance()) {
-						plot.skipped = true;//mark skipped, so it is skipped by cosmetic generation as well (do not close, allow expansion onto this plot).
-						continue;
-					}
+				if (gen.template.getInteriorEmtpyPlotChance() > 0 && gen.rng.nextInt(100) < gen.template.getInteriorEmtpyPlotChance()) {
+					plot.skipped = true;//mark skipped, so it is skipped by cosmetic generation as well (do not close, allow expansion onto this plot).
+					continue;
 				}
-				generateStructureForPlot(gen, plot, getRandomTemplate(templatesToGenerate, gen.rng), false);
+				getRandomTemplate(templatesToGenerate, gen.rng).ifPresent(template -> generateStructureForPlot(gen, plot, template, false));
 			}
 		}
 	}
 
 	private static void generateCosmetics(List<TownPartBlock> blocks, List<StructureTemplate> templatesToGenerate, TownGenerator gen) {
-		outer:
 		for (TownPartBlock block : blocks) {
 			for (TownPartPlot plot : block.plots) {
 				if (plot.closed || plot.skipped) {
 					continue;
 				}
 				if (templatesToGenerate.isEmpty()) {
-					break outer;
+					return;
 				}
-				generateStructureForPlot(gen, plot, getRandomTemplate(templatesToGenerate, gen.rng), true);
+				getRandomTemplate(templatesToGenerate, gen.rng).ifPresent(template -> generateStructureForPlot(gen, plot, template, true));
 			}
 		}
 	}
@@ -135,23 +128,21 @@ public class TownGeneratorStructures {
 		l2 = gen.wallsBounds.getZSize() / 2.f;
 		float minDistance = l1 < l2 ? l1 : l2;
 		float minMaxDelta = maxDistance - minDistance;
-		float plotDistance, distPercent;
 
-		outer:
 		for (TownPartBlock block : blocks) {
 			for (TownPartPlot plot : block.plots) {
 				if (plot.closed) {
 					continue;
 				}
 				if (templatesToGenerate.isEmpty()) {
-					break outer;
+					return;
 				}
-				plotDistance = Trig.getDistance(plot.bb.getCenterX(), 0, plot.bb.getCenterZ(), gen.maximalBounds.getCenterX(), 0, gen.maximalBounds.getCenterZ()) - minDistance;
-				distPercent = plotDistance / minMaxDelta;
+				float plotDistance = Trig.getDistance(plot.bb.getCenterX(), 0, plot.bb.getCenterZ(), gen.maximalBounds.getCenterX(), 0, gen.maximalBounds.getCenterZ()) - minDistance;
+				float distPercent = plotDistance / minMaxDelta;
 				distPercent = 1.f - distPercent;
 				distPercent *= distPercent;
 				if (gen.rng.nextFloat() < distPercent) {
-					generateStructureForPlot(gen, plot, getRandomTemplate(templatesToGenerate, gen.rng), true);
+					getRandomTemplate(templatesToGenerate, gen.rng).ifPresent(template -> generateStructureForPlot(gen, plot, template, true));
 				}
 			}
 		}
@@ -301,10 +292,8 @@ public class TownGeneratorStructures {
 		else {
 			length += expansion;
 		}
-		if (plot.getWidth() < width || plot.getLength() < length) {
-			if (!plot.expand(width, length)) {
-				return false;
-			}
+		if ((plot.getWidth() < width || plot.getLength() < length) && !plot.expand(width, length)) {
+			return false;
 		}
 		plot.markClosed();
 		if (face == EnumFacing.SOUTH || face == EnumFacing.NORTH) {
@@ -356,12 +345,12 @@ public class TownGeneratorStructures {
 	/*
 	 * pull a random template from the input generation list, does not remove
 	 */
-	private static StructureTemplate getRandomTemplate(List<StructureTemplate> templatesToGenerate, Random rng) {
+	private static Optional<StructureTemplate> getRandomTemplate(List<StructureTemplate> templatesToGenerate, Random rng) {
 		if (templatesToGenerate.isEmpty()) {
-			return null;
+			return Optional.empty();
 		}
 		int roll = rng.nextInt(templatesToGenerate.size());
-		return templatesToGenerate.get(roll);
+		return Optional.of(templatesToGenerate.get(roll));
 	}
 
 	public static class TownPartBlockComparator implements Comparator<TownPartBlock> {
