@@ -5,6 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
+import net.shadowmage.ancientwarfare.core.gui.elements.Checkbox;
 import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
@@ -16,9 +17,10 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcCombat;
 import net.shadowmage.ancientwarfare.npc.init.AWNPCItems;
 
 public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
-
 	private Text nameInput;
-
+	Button button;
+	private Checkbox doNotPursue;
+	private boolean val;
 	private static int buttonX = 8 + 18 + 18 + 18 + 18 + 4;
 
 	public GuiNpcInventory(ContainerBase container) {
@@ -50,8 +52,6 @@ public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
 			}
 		};
 		addGuiElement(textureInput);
-
-		Button button;
 
 		if (getContainer().entity instanceof NpcBase) {
 
@@ -102,8 +102,18 @@ public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
 			addGuiElement(button);
 		}
 
+		doNotPursue = new Checkbox(buttonX, 96, 12, 12,"guistrings.npc.donotpursue") {
+			@Override
+			public void onToggled() {
+				if(checked()) {
+					getContainer().donotpursue();
+				}
+			}
+		};
+		addGuiElement(doNotPursue);
+
 		if (player.capabilities.isCreativeMode) {
-			button = new Button(buttonX, 96, 75, 12, "guistrings.npc.creative_gui") {
+			button = new Button(buttonX, 108, 75, 12, "guistrings.npc.creative_gui") {
 				@Override
 				protected void onPressed() {
 					NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_CREATIVE, getContainer().entity.getEntityId(), 0, 0);
@@ -157,6 +167,7 @@ public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
 	@Override
 	public void setupElements() {
 		nameInput.setText(getContainer().entity.getCustomNameTag());
+		doNotPursue.setChecked(getContainer().DoNotPursue);
 	}
 
 }

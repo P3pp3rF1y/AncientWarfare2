@@ -7,7 +7,7 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.inventory.NpcEquipmentHandler;
 
 public class ContainerNpcInventory extends ContainerNpcBase<NpcBase> {
-
+	public boolean DoNotPursue; //if the npc should not pursue targets away from its position/route
 	public final int guiHeight;
 	private String name;
 
@@ -44,6 +44,8 @@ public class ContainerNpcInventory extends ContainerNpcBase<NpcBase> {
 					entity.clearFollowingEntity();
 				else
 					entity.setFollowingEntity(player);
+			}else if (tag.hasKey("donotpursue")) {
+				entity.setDoNotPursue();
 			}
 			if (tag.hasKey("customTexture")) {
 				entity.setCustomTexRef(tag.getString("customTexture"));
