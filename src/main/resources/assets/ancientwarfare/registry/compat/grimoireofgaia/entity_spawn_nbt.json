@@ -4,7 +4,7 @@
         "gaia.entity.EntityMobHostileBase": [
             "MobType"
         ],
-        "gaia.entity.EntityMobPassiveDay": [
+        "gaia.entity.EntityMobAssistDay": [
             "MobType"
         ]
     }
