@@ -8,6 +8,7 @@ import net.shadowmage.ancientwarfare.npc.inventory.NpcEquipmentHandler;
 
 public class ContainerNpcInventory extends ContainerNpcBase<NpcBase> {
 	public boolean doNotPursue; //if the npc should not pursue targets away from its position/route
+	public boolean isArcher = entity.getNpcSubType().equals("archer");
 	public final int guiHeight;
 	private String name;
 

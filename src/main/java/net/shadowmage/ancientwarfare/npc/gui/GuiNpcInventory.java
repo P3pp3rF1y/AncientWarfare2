@@ -111,13 +111,15 @@ public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
 			addGuiElement(button);
 		}
 
-		doNotPursueCheckbox = new Checkbox(buttonX, 108, 12, 12,"guistrings.npc.donotpursue") {
-			@Override
-			public void onToggled() {
-				getContainer().doNotPursue = checked();
-			}
-		};
-		addGuiElement(doNotPursueCheckbox);
+		if (getContainer().isArcher) {
+			doNotPursueCheckbox = new Checkbox(buttonX, 108, 12, 12, "guistrings.npc.donotpursue") {
+				@Override
+				public void onToggled() {
+					getContainer().doNotPursue = checked();
+				}
+			};
+			addGuiElement(doNotPursueCheckbox);
+		}
 
 		ItemSlot slot;
 		boolean isCombatNpc = getContainer().entity instanceof NpcCombat;
@@ -158,7 +160,9 @@ public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
 	@Override
 	public void setupElements() {
 		nameInput.setText(getContainer().entity.getCustomNameTag());
-		doNotPursueCheckbox.setChecked(getContainer().doNotPursue);
+		if (getContainer().isArcher) {
+			doNotPursueCheckbox.setChecked(getContainer().doNotPursue);
+		}
 	}
 
 	@Override
