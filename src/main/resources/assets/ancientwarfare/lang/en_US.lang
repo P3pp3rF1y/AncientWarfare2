@@ -537,6 +537,7 @@ guistrings.npc.resurrected=Resurrected: %b
 guistrings.npc.clear_death_list=Clear List
 guistrings.npc.town_range=Range:
 guistrings.npc.repack=Repack
+guistrings.npc.donotpursue=Stand Ground
 guistrings.npc.repack.tooltip=Put the NPC back into item form.
 guistrings.npc.togglefollow=Toggle Follow
 guistrings.npc.togglefollow.tooltip=Sneak + right-click on an NPC for a shortcut to toggle follow

@@ -102,17 +102,8 @@ public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
 			addGuiElement(button);
 		}
 
-		doNotPursueCheckbox = new Checkbox(buttonX, 96, 12, 12,"guistrings.npc.donotpursue") {
-			@Override
-			public void onToggled() {
-				getContainer().doNotPursue = checked();
-				hasChanged = true;
-			}
-		};
-		addGuiElement(doNotPursueCheckbox);
-
 		if (player.capabilities.isCreativeMode) {
-			button = new Button(buttonX, 108, 75, 12, "guistrings.npc.creative_gui") {
+			button = new Button(buttonX, 96, 75, 12, "guistrings.npc.creative_gui") {
 				@Override
 				protected void onPressed() {
 					NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_CREATIVE, getContainer().entity.getEntityId(), 0, 0);
@@ -120,6 +111,15 @@ public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
 			};
 			addGuiElement(button);
 		}
+
+		doNotPursueCheckbox = new Checkbox(buttonX, 108, 12, 12,"guistrings.npc.donotpursue") {
+			@Override
+			public void onToggled() {
+				getContainer().doNotPursue = checked();
+				hasChanged = true;
+			}
+		};
+		addGuiElement(doNotPursueCheckbox);
 
 		ItemSlot slot;
 		boolean isCombatNpc = getContainer().entity instanceof NpcCombat;
