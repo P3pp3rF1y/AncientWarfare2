@@ -20,7 +20,6 @@ public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
 	private Text nameInput;
 	Button button;
 	private Checkbox doNotPursueCheckbox;
-	private boolean hasChanged = false;
 	private static int buttonX = 8 + 18 + 18 + 18 + 18 + 4;
 
 	public GuiNpcInventory(ContainerBase container) {
@@ -116,7 +115,6 @@ public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
 			@Override
 			public void onToggled() {
 				getContainer().doNotPursue = checked();
-				hasChanged = true;
 			}
 		};
 		addGuiElement(doNotPursueCheckbox);
@@ -165,9 +163,7 @@ public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
 
 	@Override
 	protected boolean onGuiCloseRequested() {
-		if (hasChanged) {
-			getContainer().sendChangesToServer();
-		}
+		getContainer().sendChangesToServer();
 		getContainer().setName();
 		return super.onGuiCloseRequested();
 

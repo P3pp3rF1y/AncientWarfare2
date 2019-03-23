@@ -10,7 +10,6 @@ public class ContainerNpcInventory extends ContainerNpcBase<NpcBase> {
 	public boolean doNotPursue; //if the npc should not pursue targets away from its position/route
 	public final int guiHeight;
 	private String name;
-	private boolean hasChanged;//if set to true, will set all flags to entity on container close
 
 	public ContainerNpcInventory(EntityPlayer player, int x, int y, int z) {
 		super(player, x);
@@ -66,7 +65,6 @@ public class ContainerNpcInventory extends ContainerNpcBase<NpcBase> {
 				entity.setCustomTexRef(tag.getString("customTexture"));
 			}
 		}
-		hasChanged = true;
 		refreshGui();
 	}
 
@@ -88,10 +86,7 @@ public class ContainerNpcInventory extends ContainerNpcBase<NpcBase> {
 		super.onContainerClosed(p_75134_1_);
 		entity.setCustomNameTag(name);
 		entity.updateTexture();
-		if (hasChanged && !player.world.isRemote) {
-			hasChanged = false;
-			entity.setDoNotPursue(doNotPursue);
-		}
+		entity.setDoNotPursue(doNotPursue);
 	}
 
 	public void setName() {
