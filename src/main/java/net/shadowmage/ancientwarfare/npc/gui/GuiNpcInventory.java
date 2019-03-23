@@ -19,8 +19,8 @@ import net.shadowmage.ancientwarfare.npc.init.AWNPCItems;
 public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
 	private Text nameInput;
 	Button button;
-	private Checkbox doNotPursue;
-	private boolean val;
+	private Checkbox doNotPursueCheckbox;
+	private boolean hasChanged = false;
 	private static int buttonX = 8 + 18 + 18 + 18 + 18 + 4;
 
 	public GuiNpcInventory(ContainerBase container) {
@@ -102,15 +102,14 @@ public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
 			addGuiElement(button);
 		}
 
-		doNotPursue = new Checkbox(buttonX, 96, 12, 12,"guistrings.npc.donotpursue") {
+		doNotPursueCheckbox = new Checkbox(buttonX, 96, 12, 12,"guistrings.npc.donotpursue") {
 			@Override
 			public void onToggled() {
-				if(checked()) {
-					getContainer().donotpursue();
-				}
+				getContainer().doNotPursue = checked();
+				hasChanged = true;
 			}
 		};
-		addGuiElement(doNotPursue);
+		addGuiElement(doNotPursueCheckbox);
 
 		if (player.capabilities.isCreativeMode) {
 			button = new Button(buttonX, 108, 75, 12, "guistrings.npc.creative_gui") {
@@ -159,15 +158,19 @@ public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
 	}
 
 	@Override
-	protected boolean onGuiCloseRequested() {
-		getContainer().setName();
-		return super.onGuiCloseRequested();
+	public void setupElements() {
+		nameInput.setText(getContainer().entity.getCustomNameTag());
+		doNotPursueCheckbox.setChecked(getContainer().doNotPursue);
 	}
 
 	@Override
-	public void setupElements() {
-		nameInput.setText(getContainer().entity.getCustomNameTag());
-		doNotPursue.setChecked(getContainer().DoNotPursue);
+	protected boolean onGuiCloseRequested() {
+		if (hasChanged) {
+			getContainer().sendChangesToServer();
+		}
+		getContainer().setName();
+		return super.onGuiCloseRequested();
+
 	}
 
 }

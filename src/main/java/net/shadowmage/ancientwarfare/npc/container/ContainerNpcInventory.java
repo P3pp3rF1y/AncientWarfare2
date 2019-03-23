@@ -7,9 +7,10 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.inventory.NpcEquipmentHandler;
 
 public class ContainerNpcInventory extends ContainerNpcBase<NpcBase> {
-	public boolean DoNotPursue; //if the npc should not pursue targets away from its position/route
+	public boolean doNotPursue; //if the npc should not pursue targets away from its position/route
 	public final int guiHeight;
 	private String name;
+	private boolean hasChanged;//if set to true, will set all flags to entity on container close
 
 	public ContainerNpcInventory(EntityPlayer player, int x, int y, int z) {
 		super(player, x);
@@ -24,7 +25,20 @@ public class ContainerNpcInventory extends ContainerNpcBase<NpcBase> {
 		addSlotToContainer(new SlotItemHandler(inventory, 1, 8, 8 + 18 * 1));//shield slot
 
 		guiHeight = addPlayerSlots(8 + 5 * 18 + 8 + 18) + 8;
+
 		name = entity.getCustomNameTag();
+
+		doNotPursue = entity.getDoNotPursue();
+	}
+	public void sendChangesToServer() {
+		NBTTagCompound tag = new NBTTagCompound();
+		tag.setBoolean("donotpursue", doNotPursue);
+		sendDataToServer(tag);
+	}
+	public void sendInitData() {
+		NBTTagCompound tag = new NBTTagCompound();
+		tag.setBoolean("donotpursue", doNotPursue);
+		sendDataToClient(tag);
 	}
 
 	@Override
@@ -44,13 +58,16 @@ public class ContainerNpcInventory extends ContainerNpcBase<NpcBase> {
 					entity.clearFollowingEntity();
 				else
 					entity.setFollowingEntity(player);
-			}else if (tag.hasKey("donotpursue")) {
-				entity.setDoNotPursue();
+			}
+			if (tag.hasKey("donotpursue")) {
+				doNotPursue = tag.getBoolean("donotpursue");
 			}
 			if (tag.hasKey("customTexture")) {
 				entity.setCustomTexRef(tag.getString("customTexture"));
 			}
 		}
+		hasChanged = true;
+		refreshGui();
 	}
 
 	public void handleNpcNameUpdate(String newName) {
@@ -71,6 +88,10 @@ public class ContainerNpcInventory extends ContainerNpcBase<NpcBase> {
 		super.onContainerClosed(p_75134_1_);
 		entity.setCustomNameTag(name);
 		entity.updateTexture();
+		if (hasChanged && !player.world.isRemote) {
+			hasChanged = false;
+			entity.setDoNotPursue(doNotPursue);
+		}
 	}
 
 	public void setName() {
