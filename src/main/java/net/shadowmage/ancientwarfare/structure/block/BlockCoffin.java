@@ -23,10 +23,10 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockCoffin;
 import net.shadowmage.ancientwarfare.structure.render.CoffinRenderer;
+import net.shadowmage.ancientwarfare.structure.render.ParticleDummyModel;
 import net.shadowmage.ancientwarfare.structure.tile.TileCoffin;
 
 import javax.annotation.Nullable;
@@ -113,8 +113,6 @@ public class BlockCoffin extends BlockBaseStructure {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerClient() {
-		ModelLoaderHelper.registerItem(this, CoffinRenderer.MODEL_LOCATION);
-
 		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
 			@Override
 			@SideOnly(Side.CLIENT)
@@ -122,10 +120,9 @@ public class BlockCoffin extends BlockBaseStructure {
 				return CoffinRenderer.MODEL_LOCATION;
 			}
 		});
-
-		ClientRegistry.bindTileEntitySpecialRenderer(TileCoffin.class, new CoffinRenderer());
-
+		ModelRegistryHelper.register(CoffinRenderer.MODEL_LOCATION, ParticleDummyModel.INSTANCE);
 		ModelRegistryHelper.registerItemRenderer(Item.getItemFromBlock(this), new CoffinRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileCoffin.class, new CoffinRenderer());
 	}
 
 	public enum CoffinDirection implements IStringSerializable {

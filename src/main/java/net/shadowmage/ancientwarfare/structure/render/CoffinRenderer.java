@@ -9,7 +9,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.model.IModelState;
@@ -30,8 +29,10 @@ public class CoffinRenderer extends TileEntitySpecialRenderer<TileCoffin> implem
 
 	private static final Map<Integer, ResourceLocation> TEXTURES = new HashMap<>();
 
-	public static void setTexture(int variantId, ResourceLocation textureLocation) {
-		TEXTURES.put(variantId, textureLocation);
+	static {
+		for (int id = 1; id <= 6; id++) {
+			TEXTURES.put(id, new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/model/structure/coffin_" + id + ".png"));
+		}
 	}
 
 	private static final IModelState TRANSFORMS;
@@ -41,14 +42,14 @@ public class CoffinRenderer extends TileEntitySpecialRenderer<TileCoffin> implem
 		TRSRTransformation thirdPerson;
 
 		map = new EnumMap<>(ItemCameraTransforms.TransformType.class);
-		thirdPerson = TransformUtils.create(0F, 2.5F, 0F, 75F, 45F, 0F, 0.375F);
-		map.put(ItemCameraTransforms.TransformType.GUI, TransformUtils.create(0F, 0F, 0F, 30F, 45F, 0F, 0.625F));
-		map.put(ItemCameraTransforms.TransformType.GROUND, TransformUtils.create(0F, 3F, 0F, 0F, 0F, 0F, 0.25F));
-		map.put(ItemCameraTransforms.TransformType.FIXED, TransformUtils.create(0F, 0F, 0F, 0F, 0F, 0F, 0.5F));
+		thirdPerson = TransformUtils.create(0F, 3F, 5F, 75F, 180F, 180F, 0.015F);
+		map.put(ItemCameraTransforms.TransformType.GUI, TransformUtils.create(6F, 5F, 0F, 60F, 225F, 200F, 0.035F));
+		map.put(ItemCameraTransforms.TransformType.GROUND, TransformUtils.create(0F, 8F, 0F, 0F, 0F, 180F, 0.025F));
+		map.put(ItemCameraTransforms.TransformType.FIXED, TransformUtils.create(0F, -4F, -12F, 90F, 180F, 0F, 0.035F));
 		map.put(ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, thirdPerson);
 		map.put(ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, TransformUtils.flipLeft(thirdPerson));
-		map.put(ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND, TransformUtils.create(0F, 0F, 0F, 0F, 45F, 0F, 0.4F));
-		map.put(ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, TransformUtils.create(0F, 0F, 0F, 0F, 225F, 0F, 0.4F));
+		map.put(ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND, TransformUtils.create(25F, -15F, -10F, 50F, 170F, 170F, 0.08F));
+		map.put(ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, TransformUtils.create(25F, -15F, -10F, 50F, 170F, 170F, 0.08F));
 		TRANSFORMS = new CCModelState(map);
 	}
 
@@ -78,15 +79,6 @@ public class CoffinRenderer extends TileEntitySpecialRenderer<TileCoffin> implem
 		bindTexture(new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/model/structure/coffin_1.png"));
 		COFFIN_MODEL.renderAll();
 		GlStateManager.popMatrix();
-
-		GlStateManager.popMatrix();
-
-		GlStateManager.pushMatrix();
-		GlStateManager.translate((float) x + 0.5F, (float) y + 0.3F, (float) z + 0.5F);
-		GlStateManager.rotate(90, 1, 0, 0);
-		EntityZombie zombie = new EntityZombie(Minecraft.getMinecraft().world);
-		zombie.setLocationAndAngles(x, y, z, 0, 0);
-		Minecraft.getMinecraft().getRenderManager().renderEntity(zombie, 0.0D, 0.0D, 0.0D, 0.0F, 0f, false);
 		GlStateManager.popMatrix();
 	}
 
@@ -94,7 +86,7 @@ public class CoffinRenderer extends TileEntitySpecialRenderer<TileCoffin> implem
 	public void renderItem(ItemStack stack, ItemCameraTransforms.TransformType transformType) {
 		GlStateManager.pushMatrix();
 
-		bindTexture(TEXTURES.get(1));
+		Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURES.get(1));
 
 		COFFIN_MODEL.renderAll();
 
