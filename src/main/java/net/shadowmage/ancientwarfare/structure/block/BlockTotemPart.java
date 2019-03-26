@@ -15,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
@@ -24,12 +25,14 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.NBTBuilder;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
@@ -60,15 +63,37 @@ public class BlockTotemPart extends BlockBaseStructure {
 
 	@Override
 	public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
-		Item item = Item.getItemFromBlock(this);
 		for (Variant variant : Variant.values()) {
 			if (!variant.includeInSubBlocks()) {
 				continue;
 			}
-			ItemStack stack = new ItemStack(item);
-			stack.setTagCompound(new NBTBuilder().setByte(VARIANT_TAG, variant.getId()).build());
-			items.add(stack);
+			items.add(getVariantStack(variant));
 		}
+	}
+
+	private ItemStack getVariantStack(Variant variant) {
+		Item item = Item.getItemFromBlock(this);
+		ItemStack stack = new ItemStack(item);
+		stack.setTagCompound(new NBTBuilder().setByte(VARIANT_TAG, variant.getId()).build());
+		return stack;
+	}
+
+	@Override
+	public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack) {
+		player.addStat(StatList.getBlockStats(this));
+		player.addExhaustion(0.005F);
+
+		InventoryTools.dropItemInWorld(world, getVariantStack((te instanceof TileTotemPart ? ((TileTotemPart) te).getDropVariant() : Variant.BASE)), pos);
+	}
+
+	@Override
+	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+		//drops handled in harvest block because access to tile entity is needed
+	}
+
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+		return getVariantStack(WorldTools.getTile(world, pos, TileTotemPart.class).map(TileTotemPart::getDropVariant).orElse(Variant.BASE));
 	}
 
 	@Override
