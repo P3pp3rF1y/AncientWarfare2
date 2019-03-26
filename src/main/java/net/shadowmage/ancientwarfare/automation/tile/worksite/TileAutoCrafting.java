@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -39,11 +40,11 @@ public class TileAutoCrafting extends TileWorksiteBase {
 	private boolean canHoldLastCheck = false;
 
 	@Override
-	public void onBlockBroken() {
+	public void onBlockBroken(IBlockState state) {
 		craftingRecipeMemory.dropInventory();
 		InventoryTools.dropItemsInWorld(world, outputInventory, pos);
 		InventoryTools.dropItemsInWorld(world, resourceInventory, pos);
-		super.onBlockBroken();
+		super.onBlockBroken(state);
 	}
 
 	public boolean tryCraftItem() {

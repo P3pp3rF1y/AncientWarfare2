@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -36,8 +37,8 @@ public class TileOreProcessor extends TileWorksiteBase {
 	}
 
 	@Override
-	public void onBlockBroken() {
-		super.onBlockBroken();
+	public void onBlockBroken(IBlockState state) {
+		super.onBlockBroken(state);
 		if (!world.isRemote) {
 			InventoryTools.dropItemsInWorld(world, inventory, pos);
 		}

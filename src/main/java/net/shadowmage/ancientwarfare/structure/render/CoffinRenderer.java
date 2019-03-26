@@ -15,7 +15,7 @@ import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
-import net.shadowmage.ancientwarfare.structure.block.BlockCoffin;
+import net.shadowmage.ancientwarfare.structure.block.BlockMulti;
 import net.shadowmage.ancientwarfare.structure.model.ModelCoffin;
 import net.shadowmage.ancientwarfare.structure.tile.TileCoffin;
 
@@ -56,8 +56,11 @@ public class CoffinRenderer extends TileEntitySpecialRenderer<TileCoffin> implem
 	@Override
 	public void render(TileCoffin te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		IBlockState state = te.getWorld().getBlockState(te.getPos());
-		float rotation = state.getValue(BlockCoffin.DIRECTION).getRotationAngle();
-		boolean upright = state.getValue(BlockCoffin.UPRIGHT);
+		if (state.getValue(BlockMulti.INVISIBLE)) {
+			return;
+		}
+		float rotation = te.getDirection().getRotationAngle();
+		boolean upright = te.getUpright();
 
 		RenderTools.setFullColorLightmap();
 		GlStateManager.pushMatrix();

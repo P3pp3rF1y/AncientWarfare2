@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.tile;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
@@ -226,7 +227,7 @@ public class TileStructureScanner extends TileUpdatable implements IBlockBreakHa
 	}
 
 	@Override
-	public void onBlockBroken() {
+	public void onBlockBroken(IBlockState state) {
 		InventoryTools.dropItemsInWorld(world, scannerInventory, pos);
 	}
 

@@ -65,7 +65,7 @@ public class ItemBlockCoffin extends ItemBlockBase {
 
 	public static boolean canPlaceHorizontal(World world, BlockPos pos, EnumFacing sidePlacedOn, EntityLivingBase placer) {
 		EnumFacing facing = placer.getHorizontalFacing();
-		for (int offset = 0; offset < 3; offset++) {
+		for (int offset = 1; offset < 3; offset++) {
 			if (!mayPlaceAt(world, pos.offset(facing, offset), sidePlacedOn, offset == 0)) {
 				return false;
 			}

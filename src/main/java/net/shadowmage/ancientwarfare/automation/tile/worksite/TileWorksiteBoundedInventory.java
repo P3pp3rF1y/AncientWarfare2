@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
 import com.google.common.collect.Maps;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -76,8 +77,8 @@ public abstract class TileWorksiteBoundedInventory extends TileWorksiteBounded {
 	}
 
 	@Override
-	public void onBlockBroken() {
-		super.onBlockBroken();
+	public void onBlockBroken(IBlockState state) {
+		super.onBlockBroken(state);
 		InventoryTools.dropItemsInWorld(world, mainInventory, pos);
 	}
 

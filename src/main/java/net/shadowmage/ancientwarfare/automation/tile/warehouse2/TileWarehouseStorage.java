@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -53,7 +54,7 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
 	}
 
 	@Override
-	public void onBlockBroken() {
+	public void onBlockBroken(IBlockState state) {
 		ItemQuantityMap qtm = new ItemQuantityMap();
 		addItems(qtm);
 		NonNullList<ItemStack> list = qtm.getItems();

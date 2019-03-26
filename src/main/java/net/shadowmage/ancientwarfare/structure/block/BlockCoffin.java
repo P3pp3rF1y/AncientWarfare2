@@ -3,9 +3,6 @@ package net.shadowmage.ancientwarfare.structure.block;
 import codechicken.lib.model.ModelRegistryHelper;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
@@ -24,35 +21,19 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.util.Trig;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockCoffin;
 import net.shadowmage.ancientwarfare.structure.render.CoffinRenderer;
 import net.shadowmage.ancientwarfare.structure.render.ParticleDummyModel;
 import net.shadowmage.ancientwarfare.structure.tile.TileCoffin;
+import net.shadowmage.ancientwarfare.structure.tile.TileMulti;
 
 import javax.annotation.Nullable;
 import java.util.Map;
 
-public class BlockCoffin extends BlockBaseStructure {
-	public static final PropertyBool UPRIGHT = PropertyBool.create("upright");
-	public static final PropertyEnum<CoffinDirection> DIRECTION = PropertyEnum.<CoffinDirection>create("direction", CoffinDirection.class);
-
+public class BlockCoffin extends BlockMulti {
 	public BlockCoffin() {
 		super(Material.WOOD, "coffin");
-	}
-
-	@Override
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, UPRIGHT, DIRECTION);
-	}
-
-	@Override
-	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(UPRIGHT, (meta & 1) == 1).withProperty(DIRECTION, CoffinDirection.fromMeta(meta >> 1));
-	}
-
-	@Override
-	public int getMetaFromState(IBlockState state) {
-		return (state.getValue(UPRIGHT) ? 1 : 0) | state.getValue(DIRECTION).getMeta() << 1;
 	}
 
 	@Override
@@ -68,7 +49,7 @@ public class BlockCoffin extends BlockBaseStructure {
 
 	@Override
 	public EnumBlockRenderType getRenderType(IBlockState state) {
-		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
+		return state.getValue(INVISIBLE) ? EnumBlockRenderType.INVISIBLE : EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 
 	@Override
@@ -98,16 +79,15 @@ public class BlockCoffin extends BlockBaseStructure {
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-		boolean upright = !ItemBlockCoffin.canPlaceHorizontal(worldIn, pos, facing, placer);
-		return getDefaultState().withProperty(UPRIGHT, upright)
-				.withProperty(DIRECTION, upright ? CoffinDirection.fromYaw(placer.rotationYaw) : CoffinDirection.fromFacing(placer.getHorizontalFacing()));
-	}
-
-	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		//TODO set variants as well set invisible blocks
-		// invisible blocks should have render type set as such rather than TESR rendering exiting exiting early
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		WorldTools.getTile(world, pos, TileCoffin.class).ifPresent(te -> {
+			boolean upright = !ItemBlockCoffin.canPlaceHorizontal(world, pos, placer.getHorizontalFacing(), placer);
+			te.setUpright(upright);
+			te.setDirection(upright ? CoffinDirection.fromYaw(placer.rotationYaw) : CoffinDirection.fromFacing(placer.getHorizontalFacing()));
+			te.getAdditionalPositions(state).forEach(additionalPos -> world.setBlockState(additionalPos, getDefaultState().withProperty(INVISIBLE, true)));
+			te.getAdditionalPositions(state).forEach(additionalPos -> WorldTools.getTile(world, additionalPos, TileMulti.class)
+					.ifPresent(teAdditional -> teAdditional.setMainBlockPos(pos)));
+		});
 	}
 
 	@Override
@@ -126,23 +106,25 @@ public class BlockCoffin extends BlockBaseStructure {
 	}
 
 	public enum CoffinDirection implements IStringSerializable {
-		NORTH(0, 0, "north"),
-		EAST(1, 90, "east"),
-		SOUTH(2, 180, "south"),
-		WEST(3, 270, "west"),
-		NORTH_EAST(4, 45, "north_east"),
-		SOUTH_EAST(5, 135, "south_east"),
-		SOUTH_WEST(6, 225, "south_west"),
-		NORTH_WEST(7, 315, "north_west");
+		NORTH(0, 0, "north", EnumFacing.NORTH),
+		EAST(1, 90, "east", EnumFacing.EAST),
+		SOUTH(2, 180, "south", EnumFacing.SOUTH),
+		WEST(3, 270, "west", EnumFacing.WEST),
+		NORTH_EAST(4, 45, "north_east", EnumFacing.NORTH),
+		SOUTH_EAST(5, 135, "south_east", EnumFacing.NORTH),
+		SOUTH_WEST(6, 225, "south_west", EnumFacing.NORTH),
+		NORTH_WEST(7, 315, "north_west", EnumFacing.NORTH);
 
 		private int meta;
 		private int rotationAngle;
 		private String name;
+		private EnumFacing facing;
 
-		CoffinDirection(int meta, int rotationAngle, String name) {
+		CoffinDirection(int meta, int rotationAngle, String name, EnumFacing facing) {
 			this.meta = meta;
 			this.rotationAngle = rotationAngle;
 			this.name = name;
+			this.facing = facing;
 		}
 
 		public static CoffinDirection fromYaw(float rotationYaw) {
@@ -167,31 +149,31 @@ public class BlockCoffin extends BlockBaseStructure {
 			}
 		}
 
+		public EnumFacing getFacing() {
+			return facing;
+		}
+
 		@Override
 		public String getName() {
 			return name;
 		}
 
-		private static final Map<Integer, CoffinDirection> META_VALUES;
+		private static final Map<String, CoffinDirection> NAME_VALUES;
 		private static final Map<Integer, CoffinDirection> ROTATION_VALUES;
 
 		static {
-			ImmutableMap.Builder<Integer, CoffinDirection> builder = ImmutableMap.<Integer, CoffinDirection>builder();
-			ImmutableMap.Builder<Integer, CoffinDirection> builderRotation = ImmutableMap.<Integer, CoffinDirection>builder();
+			ImmutableMap.Builder<String, CoffinDirection> builder = ImmutableMap.builder();
+			ImmutableMap.Builder<Integer, CoffinDirection> builderRotation = ImmutableMap.builder();
 			for (CoffinDirection coffinDirection : values()) {
-				builder.put(coffinDirection.getMeta(), coffinDirection);
+				builder.put(coffinDirection.getName(), coffinDirection);
 				builderRotation.put(coffinDirection.getRotationAngle(), coffinDirection);
 			}
-			META_VALUES = builder.build();
+			NAME_VALUES = builder.build();
 			ROTATION_VALUES = builderRotation.build();
 		}
 
-		private Integer getMeta() {
-			return meta;
-		}
-
-		public static CoffinDirection fromMeta(int meta) {
-			return META_VALUES.getOrDefault(meta, NORTH);
+		public static CoffinDirection fromName(String name) {
+			return NAME_VALUES.getOrDefault(name, NORTH);
 		}
 
 		static CoffinDirection fromRotation(int rotationAngle) {
