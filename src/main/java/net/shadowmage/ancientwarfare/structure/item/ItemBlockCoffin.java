@@ -16,6 +16,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.item.ItemBlockBase;
+import net.shadowmage.ancientwarfare.core.util.NBTBuilder;
+import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
 
 public class ItemBlockCoffin extends ItemBlockBase {
 	public ItemBlockCoffin(Block block) {
@@ -84,5 +86,16 @@ public class ItemBlockCoffin extends ItemBlockBase {
 		} else {
 			return state.getBlock().isReplaceable(world, pos) && (!checkSide || world.getBlockState(pos).getBlock().canPlaceBlockOnSide(world, pos, sidePlacedOn));
 		}
+	}
+
+	public static int getVariant(ItemStack stack) {
+		//noinspection ConstantConditions
+		return stack.hasTagCompound() ? stack.getTagCompound().getInteger("variant") : 1;
+	}
+
+	public static ItemStack getVariantStack(int variant) {
+		ItemStack stack = new ItemStack(AWStructureBlocks.COFFIN);
+		stack.setTagCompound(new NBTBuilder().setInteger("variant", variant).build());
+		return stack;
 	}
 }

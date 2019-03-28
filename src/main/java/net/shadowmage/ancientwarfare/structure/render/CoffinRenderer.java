@@ -16,6 +16,7 @@ import net.minecraftforge.common.model.TRSRTransformation;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 import net.shadowmage.ancientwarfare.structure.block.BlockMulti;
+import net.shadowmage.ancientwarfare.structure.item.ItemBlockCoffin;
 import net.shadowmage.ancientwarfare.structure.model.ModelCoffin;
 import net.shadowmage.ancientwarfare.structure.tile.TileCoffin;
 
@@ -79,7 +80,7 @@ public class CoffinRenderer extends TileEntitySpecialRenderer<TileCoffin> implem
 		}
 		GlStateManager.rotate(upright ? 265 : 180, 1, 0, 0);
 		GlStateManager.scale(0.09f, 0.09f, 0.09f);
-		bindTexture(new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/model/structure/coffin_1.png"));
+		bindTexture(TEXTURES.get(te.getVariant()));
 		COFFIN_MODEL.renderAll();
 		GlStateManager.popMatrix();
 		GlStateManager.popMatrix();
@@ -87,9 +88,13 @@ public class CoffinRenderer extends TileEntitySpecialRenderer<TileCoffin> implem
 
 	@Override
 	public void renderItem(ItemStack stack, ItemCameraTransforms.TransformType transformType) {
+		int variant = ItemBlockCoffin.getVariant(stack);
+		if (variant < 1) {
+			return;
+		}
 		GlStateManager.pushMatrix();
 
-		Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURES.get(1));
+		Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURES.get(variant));
 
 		COFFIN_MODEL.renderAll();
 

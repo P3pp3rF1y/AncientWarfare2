@@ -6,13 +6,16 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -20,6 +23,7 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockCoffin;
@@ -45,6 +49,13 @@ public class BlockCoffin extends BlockMulti {
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileCoffin();
+	}
+
+	@Override
+	public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
+		for (int variant = 1; variant <= 6; variant++) {
+			items.add(ItemBlockCoffin.getVariantStack(variant));
+		}
 	}
 
 	@Override
@@ -84,10 +95,22 @@ public class BlockCoffin extends BlockMulti {
 			boolean upright = !ItemBlockCoffin.canPlaceHorizontal(world, pos, placer.getHorizontalFacing(), placer);
 			te.setUpright(upright);
 			te.setDirection(upright ? CoffinDirection.fromYaw(placer.rotationYaw) : CoffinDirection.fromFacing(placer.getHorizontalFacing()));
+			te.setVariant(ItemBlockCoffin.getVariant(stack));
 			te.getAdditionalPositions(state).forEach(additionalPos -> world.setBlockState(additionalPos, getDefaultState().withProperty(INVISIBLE, true)));
 			te.getAdditionalPositions(state).forEach(additionalPos -> WorldTools.getTile(world, additionalPos, TileMulti.class)
 					.ifPresent(teAdditional -> teAdditional.setMainBlockPos(pos)));
 		});
+	}
+
+	@Override
+	public void onBlockHarvested(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
+		WorldTools.getTile(world, pos, TileCoffin.class)
+				.ifPresent(te -> InventoryTools.dropItemInWorld(world, ItemBlockCoffin.getVariantStack(te.getVariant()), pos));
+	}
+
+	@Override
+	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+		//drops handled in onBlockHarvested
 	}
 
 	@Override
