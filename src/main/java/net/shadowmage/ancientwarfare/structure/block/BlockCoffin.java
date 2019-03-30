@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
@@ -126,6 +127,12 @@ public class BlockCoffin extends BlockMulti {
 		ModelRegistryHelper.register(CoffinRenderer.MODEL_LOCATION, ParticleDummyModel.INSTANCE);
 		ModelRegistryHelper.registerItemRenderer(Item.getItemFromBlock(this), new CoffinRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileCoffin.class, new CoffinRenderer());
+	}
+
+	@Override
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		WorldTools.getTile(world, pos, TileCoffin.class).ifPresent(TileCoffin::open);
+		return true;
 	}
 
 	public enum CoffinDirection implements IStringSerializable {

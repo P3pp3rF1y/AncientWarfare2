@@ -82,10 +82,15 @@ public class ModelCoffin extends ModelBase {
 	}
 
 	public void renderAll() {
+		renderAll(0F);
+	}
+
+	public void renderAll(float lidAngle) {
 		float scale = 1f;
 		sideR2.render(scale);
 		bottom.render(scale);
 		sideL2.render(scale);
+		setRotateAngle(lid, 0F, 0F, lidAngle);
 		lid.render(scale);
 		sideBottom.render(scale);
 		sideTop.render(scale);
@@ -97,8 +102,12 @@ public class ModelCoffin extends ModelBase {
 	 * This is a helper function from Tabula to set the rotation of model parts
 	 */
 	private void setRotateAngle(ModelRenderer modelRenderer, float y) {
-		modelRenderer.rotateAngleX = 0.0F;
+		setRotateAngle(modelRenderer, 0F, y, 0F);
+	}
+
+	private void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
+		modelRenderer.rotateAngleX = x;
 		modelRenderer.rotateAngleY = y;
-		modelRenderer.rotateAngleZ = 0.0F;
+		modelRenderer.rotateAngleZ = z;
 	}
 }
