@@ -3,7 +3,9 @@ package net.shadowmage.ancientwarfare.structure.tile;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.tile.IBlockBreakHandler;
 import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
@@ -55,5 +57,14 @@ public abstract class TileMulti extends TileUpdatable implements IBlockBreakHand
 		getAdditionalPositions(state).forEach(position -> world.setBlockToAir(position));
 	}
 
-	protected abstract Set<BlockPos> getAdditionalPositions(IBlockState state);
+	public abstract Set<BlockPos> getAdditionalPositions(IBlockState state);
+
+	public void setPlacementDirection(World world, BlockPos pos, IBlockState state, EnumFacing horizontalFacing, float rotationYaw) {
+		//noop by default
+	}
+
+	public void setMainPosOnAdditionalBlocks() {
+		getAdditionalPositions(world.getBlockState(pos)).forEach(additionalPos -> WorldTools.getTile(world, additionalPos, TileMulti.class)
+				.ifPresent(teAdditional -> teAdditional.setMainBlockPos(pos)));
+	}
 }

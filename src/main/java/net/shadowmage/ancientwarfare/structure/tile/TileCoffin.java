@@ -3,10 +3,12 @@ package net.shadowmage.ancientwarfare.structure.tile;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
+import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.block.BlockCoffin;
 
@@ -38,6 +40,11 @@ public class TileCoffin extends TileMulti implements ITickable {
 	public Set<BlockPos> getAdditionalPositions(IBlockState state) {
 		return upright ? ImmutableSet.of(pos.up(), pos.up().up()) :
 				ImmutableSet.of(pos.offset(direction.getFacing()), pos.offset(direction.getFacing()).offset(direction.getFacing()));
+	}
+
+	@Override
+	public void setPlacementDirection(World world, BlockPos pos, IBlockState state, EnumFacing horizontalFacing, float rotationYaw) {
+		setDirection(upright ? BlockCoffin.CoffinDirection.fromYaw(rotationYaw) : BlockCoffin.CoffinDirection.fromFacing(horizontalFacing));
 	}
 
 	@Override
@@ -106,7 +113,7 @@ public class TileCoffin extends TileMulti implements ITickable {
 			opening = true;
 			return;
 		}
-		WorldTools.getTile(world, mainPos.get(), TileCoffin.class).ifPresent(te -> te.setOpening());
+		WorldTools.getTile(world, mainPos.get(), TileCoffin.class).ifPresent(TileCoffin::setOpening);
 	}
 
 	private void setOpening() {

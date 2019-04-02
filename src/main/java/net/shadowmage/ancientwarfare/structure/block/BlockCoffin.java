@@ -11,7 +11,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -31,25 +30,12 @@ import net.shadowmage.ancientwarfare.structure.item.ItemBlockCoffin;
 import net.shadowmage.ancientwarfare.structure.render.CoffinRenderer;
 import net.shadowmage.ancientwarfare.structure.render.ParticleDummyModel;
 import net.shadowmage.ancientwarfare.structure.tile.TileCoffin;
-import net.shadowmage.ancientwarfare.structure.tile.TileMulti;
 
-import javax.annotation.Nullable;
 import java.util.Map;
 
-public class BlockCoffin extends BlockMulti {
+public class BlockCoffin extends BlockMulti<TileCoffin> {
 	public BlockCoffin() {
-		super(Material.WOOD, "coffin");
-	}
-
-	@Override
-	public boolean hasTileEntity(IBlockState state) {
-		return true;
-	}
-
-	@Nullable
-	@Override
-	public TileEntity createTileEntity(World world, IBlockState state) {
-		return new TileCoffin();
+		super(Material.WOOD, "coffin", TileCoffin::new, TileCoffin.class);
 	}
 
 	@Override
@@ -91,20 +77,17 @@ public class BlockCoffin extends BlockMulti {
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		WorldTools.getTile(world, pos, TileCoffin.class).ifPresent(te -> {
-			boolean upright = !ItemBlockCoffin.canPlaceHorizontal(world, pos, placer.getHorizontalFacing(), placer);
-			te.setUpright(upright);
-			te.setDirection(upright ? CoffinDirection.fromYaw(placer.rotationYaw) : CoffinDirection.fromFacing(placer.getHorizontalFacing()));
-			te.setVariant(ItemBlockCoffin.getVariant(stack));
-			te.getAdditionalPositions(state).forEach(additionalPos -> world.setBlockState(additionalPos, getDefaultState().withProperty(INVISIBLE, true)));
-			te.getAdditionalPositions(state).forEach(additionalPos -> WorldTools.getTile(world, additionalPos, TileMulti.class)
-					.ifPresent(teAdditional -> teAdditional.setMainBlockPos(pos)));
-		});
+	protected void setPlacementProperties(World world, BlockPos pos, EntityLivingBase placer, ItemStack stack, TileCoffin te) {
+		boolean upright = !ItemBlockCoffin.canPlaceHorizontal(world, pos, placer.getHorizontalFacing(), placer);
+		te.setUpright(upright);
+		te.setVariant(ItemBlockCoffin.getVariant(stack));
 	}
 
 	@Override
 	public void onBlockHarvested(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
+		if (player.capabilities.isCreativeMode) {
+			return;
+		}
 		WorldTools.getTile(world, pos, TileCoffin.class)
 				.ifPresent(te -> InventoryTools.dropItemInWorld(world, ItemBlockCoffin.getVariantStack(te.getVariant()), pos));
 	}
@@ -136,22 +119,20 @@ public class BlockCoffin extends BlockMulti {
 	}
 
 	public enum CoffinDirection implements IStringSerializable {
-		NORTH(0, 0, "north", EnumFacing.NORTH),
-		EAST(1, 90, "east", EnumFacing.EAST),
-		SOUTH(2, 180, "south", EnumFacing.SOUTH),
-		WEST(3, 270, "west", EnumFacing.WEST),
-		NORTH_EAST(4, 45, "north_east", EnumFacing.NORTH),
-		SOUTH_EAST(5, 135, "south_east", EnumFacing.NORTH),
-		SOUTH_WEST(6, 225, "south_west", EnumFacing.NORTH),
-		NORTH_WEST(7, 315, "north_west", EnumFacing.NORTH);
+		NORTH(0, "north", EnumFacing.NORTH),
+		EAST(90, "east", EnumFacing.EAST),
+		SOUTH(180, "south", EnumFacing.SOUTH),
+		WEST(270, "west", EnumFacing.WEST),
+		NORTH_EAST(45, "north_east", EnumFacing.NORTH),
+		SOUTH_EAST(135, "south_east", EnumFacing.NORTH),
+		SOUTH_WEST(225, "south_west", EnumFacing.NORTH),
+		NORTH_WEST(315, "north_west", EnumFacing.NORTH);
 
-		private int meta;
 		private int rotationAngle;
 		private String name;
 		private EnumFacing facing;
 
-		CoffinDirection(int meta, int rotationAngle, String name, EnumFacing facing) {
-			this.meta = meta;
+		CoffinDirection(int rotationAngle, String name, EnumFacing facing) {
 			this.rotationAngle = rotationAngle;
 			this.name = name;
 			this.facing = facing;
@@ -176,6 +157,28 @@ public class BlockCoffin extends BlockMulti {
 				default:
 				case NORTH:
 					return NORTH;
+			}
+		}
+
+		public CoffinDirection rotateY() {
+			switch (this) {
+				case EAST:
+					return SOUTH;
+				case SOUTH:
+					return WEST;
+				case WEST:
+					return NORTH;
+				case NORTH_EAST:
+					return SOUTH_EAST;
+				case SOUTH_EAST:
+					return SOUTH_WEST;
+				case SOUTH_WEST:
+					return NORTH_WEST;
+				case NORTH_WEST:
+					return NORTH_EAST;
+				default:
+				case NORTH:
+					return EAST;
 			}
 		}
 

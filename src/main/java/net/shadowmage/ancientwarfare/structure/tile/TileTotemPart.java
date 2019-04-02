@@ -56,7 +56,7 @@ public class TileTotemPart extends TileMulti {
 	}
 
 	@Override
-	protected Set<BlockPos> getAdditionalPositions(IBlockState state) {
+	public Set<BlockPos> getAdditionalPositions(IBlockState state) {
 		return getVariant().getAdditionalPartPositions(pos, state.getValue(FACING));
 	}
 
