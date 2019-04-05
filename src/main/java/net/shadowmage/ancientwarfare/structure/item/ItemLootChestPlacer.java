@@ -19,7 +19,7 @@ import net.shadowmage.ancientwarfare.core.util.NBTBuilder;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.gui.GuiLootChestPlacer;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
-import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedLootChest;
+import net.shadowmage.ancientwarfare.structure.tile.IUpdatableLootContainer;
 
 import java.util.Optional;
 import java.util.Random;
@@ -60,7 +60,7 @@ public class ItemLootChestPlacer extends ItemBaseStructure {
 		Block block = getPlaceBasket(placer) ? AWStructureBlocks.LOOT_BASKET : AWStructureBlocks.ADVANCED_LOOT_CHEST;
 		if (block.canPlaceBlockAt(world, placePos)) {
 			world.setBlockState(placePos, block.getDefaultState().withProperty(CoreProperties.FACING, player.getHorizontalFacing().getOpposite()));
-			WorldTools.getTile(world, placePos, TileAdvancedLootChest.class)
+			WorldTools.getTile(world, placePos, IUpdatableLootContainer.class)
 					.ifPresent(t -> {
 						t.setLootTable(lt.get().getFirst(), new Random(placePos.toLong()).nextLong());
 						t.setLootRolls(lt.get().getSecond());

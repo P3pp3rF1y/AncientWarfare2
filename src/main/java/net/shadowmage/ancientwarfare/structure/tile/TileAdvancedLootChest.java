@@ -15,7 +15,7 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nullable;
 
-public class TileAdvancedLootChest extends TileEntityChest {
+public class TileAdvancedLootChest extends TileEntityChest implements IUpdatableLootContainer {
 	private static final String LOOT_TABLE_TAG = "lootTable";
 	private static final String LOOT_ROLLS_TAG = "lootRolls";
 
