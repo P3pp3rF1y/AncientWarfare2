@@ -1,31 +1,37 @@
 package net.shadowmage.ancientwarfare.structure.gui;
 
-import net.minecraft.util.Tuple;
+import net.minecraft.client.Minecraft;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
-import net.shadowmage.ancientwarfare.core.gui.Listener;
+import net.shadowmage.ancientwarfare.core.gui.GuiSelectFromList;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.Checkbox;
-import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
-import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
+import net.shadowmage.ancientwarfare.core.gui.elements.ItemToggleButton;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
-import net.shadowmage.ancientwarfare.core.gui.elements.Text;
 import net.shadowmage.ancientwarfare.structure.container.ContainerLootChestPlacer;
+import net.shadowmage.ancientwarfare.structure.item.ItemLootChestPlacer;
+import net.shadowmage.ancientwarfare.structure.tile.LootSettings;
 
 import java.util.Comparator;
+import java.util.LinkedHashSet;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class GuiLootChestPlacer extends GuiContainerBase<ContainerLootChestPlacer> {
-	private static final int TOP_HEIGHT = 42;
 	private static final int FORM_WIDTH = 300;
 	private static final int FORM_HEIGHT = 200;
 
-	private CompositeScrolled selectionArea;
-	private Label selection;
-	private Text filterInput;
-	private NumberInput lootRolls;
-	private Checkbox placeBasket;
+	private Button selection;
+	private String lootTable;
+	private Checkbox setLootTable;
+	private Checkbox placeBlock;
+	private Checkbox splashPotion;
 
 	public GuiLootChestPlacer(ContainerBase container) {
 		super(container, FORM_WIDTH, FORM_HEIGHT);
@@ -33,79 +39,152 @@ public class GuiLootChestPlacer extends GuiContainerBase<ContainerLootChestPlace
 
 	@Override
 	public void initElements() {
-		addGuiElement(new Label(8, 8, "guistrings.current_selection"));
-		addGuiElement(new Label(150, 8, "guistrings.loot_rolls"));
+	}
 
-		selection = new Label(8, 20, getSelectedLootTable());
+	private void setLootSettings(Consumer<LootSettings> setLootSetting) {
+		LootSettings lootSettings = getContainer().getLootSettings().orElse(new LootSettings());
+		setLootSetting.accept(lootSettings);
+		getContainer().setLootSettings(lootSettings);
+	}
+
+	private <T> Optional<T> getLootSetting(Function<LootSettings, T> getSetting) {
+		return getContainer().getLootSettings().map(getSetting);
+	}
+
+	private int addSpawnEntityElements(int totalHeight) {
+		return totalHeight;
+	}
+
+	private int addSetLootTableElements(int totalHeight) {
+		int x = 28;
+
+		lootTable = getLootSetting(s -> s.getLootTableName().map(ResourceLocation::toString).orElse("")).orElse("");
+		selection = new Button(x, totalHeight, 250, 12, lootTable) {
+			@Override
+			protected void onPressed() {
+				Minecraft.getMinecraft().displayGuiScreen(new GuiSelectFromList<>(GuiLootChestPlacer.this, lootTable, s -> s,
+						() -> getContainer().getLootTableNames().stream().sorted(Comparator.naturalOrder()).collect(Collectors.toList()), s -> {
+					lootTable = s;
+					selection.setText(s);
+					setLootSettings(settings -> settings.setLootTableName(new ResourceLocation(s)));
+				}));
+				refreshGui();
+			}
+		};
 		addGuiElement(selection);
 
-		lootRolls = new NumberInput(205, 6, 15, getLootRolls(), this) {
+		totalHeight += 18;
+
+		addGuiElement(new Label(x, totalHeight, "guistrings.loot_rolls"));
+		NumberInput lootRolls = new NumberInput(100, totalHeight - 2, 15, getLootSetting(LootSettings::getLootRolls).orElse(1), this) {
 			@Override
 			public void onValueUpdated(float value) {
-				saveLootChestPlacerParams();
+				setLootSettings(settings -> settings.setLootRolls((int) value));
 			}
 		};
 		lootRolls.setIntegerValue();
 		addGuiElement(lootRolls);
 
-		placeBasket = new Checkbox(230, 6, 14, 14, "guistrings.loot_basket.top_inventory") {
-			@Override
-			public void onToggled() {
-				super.onToggled();
-				saveLootChestPlacerParams();
-			}
-		};
-		placeBasket.setChecked(getContainer().getPlaceBasket());
-		addGuiElement(placeBasket);
-
-		filterInput = new Text(8, 18 + 12, FORM_WIDTH - 16, "", this) {
-			//kind of dirty...should possibly implement a real onCharEntered callback for when input actually changes
-			@Override
-			protected void handleKeyInput(int keyCode, char ch) {
-				super.handleKeyInput(keyCode, ch);
-				refreshGui();
-			}
-		};
-		addGuiElement(filterInput);
-
-		selectionArea = new CompositeScrolled(this, 0, TOP_HEIGHT, FORM_WIDTH, FORM_HEIGHT - TOP_HEIGHT);
-		addGuiElement(selectionArea);
+		return totalHeight + 16;
 	}
 
-	private void saveLootChestPlacerParams() {
-		getContainer().setLootParameters(selection.getText(), (byte) lootRolls.getIntegerValue(), placeBasket.checked());
+	private int addSplashPotionElements(int totalHeight) {
+		return totalHeight;
 	}
 
-	private String getSelectedLootTable() {
-		return getContainer().getLootParameters().map(t -> t.getFirst().toString()).orElse("guistrings.none");
-	}
+	private int addPlaceBlockElements(int totalHeight) {
+		int x = 28;
+		Set<ItemToggleButton> stackToggles = new LinkedHashSet<>();
 
-	private Byte getLootRolls() {
-		return getContainer().getLootParameters().map(Tuple::getSecond).orElse((byte) 0);
+		ItemStack selectedStack = getLootSetting(LootSettings::getBlockStack).orElse(ItemStack.EMPTY);
+		for (ItemStack container : ItemLootChestPlacer.getLootContainers()) {
+			ItemToggleButton button = new ItemToggleButton(x, totalHeight, container.copy(), false) {
+				@Override
+				protected void onPressed(int mButton) {
+					if (isToggled()) {
+						setLootSettings(settings -> settings.setBlockStack(container.copy()));
+						for (ItemToggleButton btn : stackToggles) {
+							if (btn != this) {
+								btn.setToggled(false);
+							}
+						}
+					}
+				}
+			};
+			button.setToggled(ItemStack.areItemStacksEqual(container, selectedStack));
+			stackToggles.add(button);
+			addGuiElement(button);
+			x += 24;
+		}
+		if (selectedStack.isEmpty() && !stackToggles.isEmpty()) {
+			stackToggles.iterator().next().setToggled(true);
+		}
+
+		return totalHeight + 26;
 	}
 
 	@Override
 	public void setupElements() {
+		clearElements();
 		int totalHeight = 8;
+		placeBlock = new Checkbox(8, totalHeight, 16, 16, "guistrings.spawner_placer.place_block") {
+			@Override
+			public void onToggled() {
+				setLootSettings(settings -> settings.setPlaceBlock(placeBlock.checked()));
+				refreshGui();
+			}
+		};
+		placeBlock.setChecked(getLootSetting(LootSettings::getPlaceBlock).orElse(false));
+		addGuiElement(placeBlock);
+		totalHeight += 20;
 
-		selectionArea.clearElements();
-		for (String lootTableName : getContainer().getLootTableNames().stream().filter(lt -> lt.toLowerCase().contains(filterInput.getText().toLowerCase()))
-				.sorted(Comparator.naturalOrder()).collect(Collectors.toList())) {
-			Button button = new Button(8, totalHeight, 272, 12, lootTableName);
-			button.addNewListener(new Listener(Listener.MOUSE_UP) {
-				@Override
-				public boolean onEvent(GuiElement widget, ActivationEvent evt) {
-					if (evt.mButton == 0 && widget.isMouseOverElement(evt.mx, evt.my)) {
-						selection.setText(lootTableName);
-						getContainer().setLootParameters(lootTableName, (byte) lootRolls.getIntegerValue(), placeBasket.checked());
-					}
-					return true;
-				}
-			});
-			totalHeight += 12;
-			selectionArea.addGuiElement(button);
+		if (placeBlock.checked()) {
+			totalHeight = addPlaceBlockElements(totalHeight);
 		}
 
-		selectionArea.setAreaSize(totalHeight + 8);
+		setLootTable = new Checkbox(8, totalHeight, 16, 16, "guistrings.spawner_placer.set_loot_table") {
+			@Override
+			public void onToggled() {
+				setLootSettings(settings -> settings.setHasLoot(setLootTable.checked()));
+				refreshGui();
+			}
+		};
+		setLootTable.setChecked(getLootSetting(LootSettings::getHasLoot).orElse(false));
+		addGuiElement(setLootTable);
+		totalHeight += 20;
+
+		if (setLootTable.checked()) {
+			totalHeight = addSetLootTableElements(totalHeight);
+		}
+
+		splashPotion = new Checkbox(8, totalHeight, 16, 16, "guistrings.spawner_placer.splash_potion") {
+			@Override
+			public void onToggled() {
+				setLootSettings(settings -> settings.setSplashPotion(splashPotion.checked()));
+				refreshGui();
+			}
+		};
+		splashPotion.setChecked(getLootSetting(LootSettings::getSplashPotion).orElse(false));
+		addGuiElement(splashPotion);
+		totalHeight += 20;
+
+		if (splashPotion.checked()) {
+			totalHeight = addSplashPotionElements(totalHeight);
+		}
+
+		Checkbox spawnEntity = new Checkbox(8, totalHeight, 16, 16, "guistrings.spawner_placer.spawn_entity") {
+			@Override
+			public void onToggled() {
+				//TODO add setting properties
+				refreshGui();
+			}
+		};
+		spawnEntity.setChecked(true); //TODO pass real data
+		addGuiElement(spawnEntity);
+		totalHeight += 20;
+
+		if (spawnEntity.checked()) {
+			totalHeight = addSpawnEntityElements(totalHeight);
+		}
 	}
 }

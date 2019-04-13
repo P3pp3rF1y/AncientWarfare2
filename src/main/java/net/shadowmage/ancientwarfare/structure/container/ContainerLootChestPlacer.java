@@ -4,12 +4,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Tuple;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.item.ItemLootChestPlacer;
+import net.shadowmage.ancientwarfare.structure.tile.LootSettings;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,28 +30,18 @@ public class ContainerLootChestPlacer extends ContainerBase {
 
 	@Override
 	public void handlePacketData(NBTTagCompound tag) {
-		setLootParameters(tag.getString("setTable"), tag.getByte("rolls"), tag.getBoolean("basket"));
+		setLootSettings(LootSettings.deserializeNBT(tag));
 	}
 
-	public void setLootParameters(String lootTableName, byte rolls, boolean basket) {
+	public void setLootSettings(LootSettings lootSettings) {
 		if (player.world.isRemote) {
-			NBTTagCompound tag = new NBTTagCompound();
-			tag.setString("setTable", lootTableName);
-			tag.setByte("rolls", rolls);
-			tag.setBoolean("basket", basket);
-			sendDataToServer(tag);
-			return;
+			sendDataToServer(lootSettings.serializeNBT());
 		}
 
-		ItemLootChestPlacer.setLootParameters(placer, lootTableName, rolls, basket);
+		ItemLootChestPlacer.setLootSettings(placer, lootSettings);
 	}
 
-	public Optional<Tuple<ResourceLocation, Byte>> getLootParameters() {
-		return ItemLootChestPlacer.getLootParameters(placer);
+	public Optional<LootSettings> getLootSettings() {
+		return ItemLootChestPlacer.getLootSettings(placer);
 	}
-
-	public boolean getPlaceBasket() {
-		return ItemLootChestPlacer.getPlaceBasket(placer);
-	}
-
 }

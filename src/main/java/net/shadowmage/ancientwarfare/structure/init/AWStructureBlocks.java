@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.structure.init;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
@@ -43,6 +44,7 @@ import net.shadowmage.ancientwarfare.structure.item.ItemBlockFirePit;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockProtectionFlag;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockTotemPart;
+import net.shadowmage.ancientwarfare.structure.item.ItemLootChestPlacer;
 import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedLootChest;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
@@ -126,6 +128,9 @@ public class AWStructureBlocks {
 
 		registry.register(new ItemBlockBase(LOOT_BASKET));
 		registry.register(new ItemBlockCoffin(COFFIN));
+
+		ItemLootChestPlacer.registerLootContainer(new ItemStack(ADVANCED_LOOT_CHEST));
+		ItemLootChestPlacer.registerLootContainer(new ItemStack(LOOT_BASKET));
 	}
 
 	@SubscribeEvent
