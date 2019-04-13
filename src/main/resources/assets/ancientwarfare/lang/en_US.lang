@@ -568,6 +568,7 @@ guistrings.npc.damage_override=Damage Override
 guistrings.npc.armor_override=Armor Override
 guistrings.npc.allow_wander=Allow Wander
 guistrings.npc.creative_gui=Creative Gui
+guistring.npc.donotpursue=Stand Ground
 guistrings.npc.death_list=Deaths
 guistrings.npc.spawner.right_click_to_place=Use Item To Spawn NPC
 guistrings.npc.baton.add_remove=Add or Remove target NPC
