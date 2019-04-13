@@ -20,6 +20,9 @@ public class NpcAIPlayerOwnedAttackRanged extends NpcAIAttack<NpcBase> {
 
 	@Override
 	protected boolean shouldCloseOnTarget(double dist) {
+		if (npc.doNotPursue) {
+			return (dist < 0);
+		}
 		return (dist > attackDistance || !this.npc.getEntitySenses().canSee(getTarget()));
 	}
 
