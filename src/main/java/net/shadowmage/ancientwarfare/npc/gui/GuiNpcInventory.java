@@ -5,7 +5,6 @@ import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
-import net.shadowmage.ancientwarfare.core.gui.elements.Checkbox;
 import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
@@ -17,9 +16,9 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcCombat;
 import net.shadowmage.ancientwarfare.npc.init.AWNPCItems;
 
 public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
+
 	private Text nameInput;
-	Button button;
-	private Checkbox doNotPursueCheckbox;
+
 	private static int buttonX = 8 + 18 + 18 + 18 + 18 + 4;
 
 	public GuiNpcInventory(ContainerBase container) {
@@ -51,6 +50,8 @@ public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
 			}
 		};
 		addGuiElement(textureInput);
+
+		Button button;
 
 		if (getContainer().entity instanceof NpcBase) {
 
@@ -111,16 +112,6 @@ public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
 			addGuiElement(button);
 		}
 
-		if (getContainer().isArcher) {
-			doNotPursueCheckbox = new Checkbox(buttonX, 108, 12, 12, "guistrings.npc.donotpursue") {
-				@Override
-				public void onToggled() {
-					getContainer().doNotPursue = checked();
-				}
-			};
-			addGuiElement(doNotPursueCheckbox);
-		}
-
 		ItemSlot slot;
 		boolean isCombatNpc = getContainer().entity instanceof NpcCombat;
 
@@ -158,19 +149,14 @@ public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
 	}
 
 	@Override
-	public void setupElements() {
-		nameInput.setText(getContainer().entity.getCustomNameTag());
-		if (getContainer().isArcher) {
-			doNotPursueCheckbox.setChecked(getContainer().doNotPursue);
-		}
+	protected boolean onGuiCloseRequested() {
+		getContainer().setName();
+		return super.onGuiCloseRequested();
 	}
 
 	@Override
-	protected boolean onGuiCloseRequested() {
-		getContainer().sendChangesToServer();
-		getContainer().setName();
-		return super.onGuiCloseRequested();
-
+	public void setupElements() {
+		nameInput.setText(getContainer().entity.getCustomNameTag());
 	}
 
 }
