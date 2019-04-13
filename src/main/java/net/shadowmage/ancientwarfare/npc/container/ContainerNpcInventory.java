@@ -7,8 +7,7 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.inventory.NpcEquipmentHandler;
 
 public class ContainerNpcInventory extends ContainerNpcBase<NpcBase> {
-	public boolean doNotPursue; //if the npc should not pursue targets away from its position/route
-	public boolean isArcher = entity.getNpcSubType().equals("archer");
+
 	public final int guiHeight;
 	private String name;
 
@@ -25,20 +24,7 @@ public class ContainerNpcInventory extends ContainerNpcBase<NpcBase> {
 		addSlotToContainer(new SlotItemHandler(inventory, 1, 8, 8 + 18 * 1));//shield slot
 
 		guiHeight = addPlayerSlots(8 + 5 * 18 + 8 + 18) + 8;
-
 		name = entity.getCustomNameTag();
-
-		doNotPursue = entity.getDoNotPursue();
-	}
-	public void sendChangesToServer() {
-		NBTTagCompound tag = new NBTTagCompound();
-		tag.setBoolean("donotpursue", doNotPursue);
-		sendDataToServer(tag);
-	}
-	public void sendInitData() {
-		NBTTagCompound tag = new NBTTagCompound();
-		tag.setBoolean("donotpursue", doNotPursue);
-		sendDataToClient(tag);
 	}
 
 	@Override
@@ -59,14 +45,10 @@ public class ContainerNpcInventory extends ContainerNpcBase<NpcBase> {
 				else
 					entity.setFollowingEntity(player);
 			}
-			if (tag.hasKey("donotpursue")) {
-				doNotPursue = tag.getBoolean("donotpursue");
-			}
 			if (tag.hasKey("customTexture")) {
 				entity.setCustomTexRef(tag.getString("customTexture"));
 			}
 		}
-		refreshGui();
 	}
 
 	public void handleNpcNameUpdate(String newName) {
@@ -87,7 +69,6 @@ public class ContainerNpcInventory extends ContainerNpcBase<NpcBase> {
 		super.onContainerClosed(p_75134_1_);
 		entity.setCustomNameTag(name);
 		entity.updateTexture();
-		entity.setDoNotPursue(doNotPursue);
 	}
 
 	public void setName() {
