@@ -16,13 +16,14 @@ import net.shadowmage.ancientwarfare.npc.datafixes.FoodBundleDataFixer;
 import net.shadowmage.ancientwarfare.npc.datafixes.RoutingOrderFilterCountsFixer;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.init.AWNPCEntities;
+import net.shadowmage.ancientwarfare.structure.datafixes.TileLootFixer;
 
 import static net.shadowmage.ancientwarfare.core.AncientWarfareCore.MOD_ID;
 
 public class AWDataFixes {
 	private AWDataFixes() {}
 
-	private static final int DATA_FIXER_VERSION = 7;
+	private static final int DATA_FIXER_VERSION = 8;
 
 	public static void registerDataFixes() {
 		CompoundDataFixer dataFixer = FMLCommonHandler.instance().getDataFixer();
@@ -39,6 +40,7 @@ public class AWDataFixes {
 		fixes.registerFix(FixTypes.ITEM_INSTANCE, new RoutingOrderFilterCountsFixer());
 		fixes.registerFix(FixTypes.ITEM_INSTANCE, new RoutingOrderFilterCountsFixer());
 		fixes.registerFix(FixTypes.ITEM_INSTANCE, new FoodBundleDataFixer());
+		fixes.registerFix(FixTypes.BLOCK_ENTITY, new TileLootFixer());
 		dataFixer.registerWalker(FixTypes.BLOCK_ENTITY, new ItemMapDataWalker(
 				new Class<?>[] {TileWarehouseStorage.class, TileWarehouseStorageMedium.class, TileWarehouseStorageLarge.class},
 				"inventory/itemMap/entryList"));

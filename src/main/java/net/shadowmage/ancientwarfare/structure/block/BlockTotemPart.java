@@ -12,10 +12,10 @@ import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
@@ -25,12 +25,14 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.NBTBuilder;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
@@ -61,15 +63,37 @@ public class BlockTotemPart extends BlockBaseStructure {
 
 	@Override
 	public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
-		Item item = Item.getItemFromBlock(this);
 		for (Variant variant : Variant.values()) {
 			if (!variant.includeInSubBlocks()) {
 				continue;
 			}
-			ItemStack stack = new ItemStack(item);
-			stack.setTagCompound(new NBTBuilder().setByte(VARIANT_TAG, variant.getId()).build());
-			items.add(stack);
+			items.add(getVariantStack(variant));
 		}
+	}
+
+	private ItemStack getVariantStack(Variant variant) {
+		Item item = Item.getItemFromBlock(this);
+		ItemStack stack = new ItemStack(item);
+		stack.setTagCompound(new NBTBuilder().setByte(VARIANT_TAG, variant.getId()).build());
+		return stack;
+	}
+
+	@Override
+	public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack) {
+		player.addStat(StatList.getBlockStats(this));
+		player.addExhaustion(0.005F);
+
+		InventoryTools.dropItemInWorld(world, getVariantStack((te instanceof TileTotemPart ? ((TileTotemPart) te).getDropVariant() : Variant.BASE)), pos);
+	}
+
+	@Override
+	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+		//drops handled in harvest block because access to tile entity is needed
+	}
+
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+		return getVariantStack(WorldTools.getTile(world, pos, TileTotemPart.class).map(TileTotemPart::getDropVariant).orElse(Variant.BASE));
 	}
 
 	@Override
@@ -113,20 +137,6 @@ public class BlockTotemPart extends BlockBaseStructure {
 		Variant variant = ItemBlockTotemPart.getVariant(stack);
 		WorldTools.getTile(world, pos, TileTotemPart.class).ifPresent(te -> te.setVariant(variant));
 		variant.placeAdditionalParts(world, pos, placer.getHorizontalFacing());
-	}
-
-	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		//noinspection ConstantConditions
-		BlockPos mainPos = WorldTools.getTile(world, pos, TileTotemPart.class).filter(t -> t.getMainBlockPos().isPresent()).map(t -> t.getMainBlockPos().get()).orElse(pos);
-
-		if (!mainPos.equals(pos)) {
-			world.setBlockToAir(mainPos);
-		} else {
-			EnumFacing facing = state.getValue(FACING);
-			WorldTools.getTile(world, mainPos, TileTotemPart.class).ifPresent(te -> te.getVariant()
-					.getAdditionalPartPositions(mainPos, facing).forEach(additionalPos -> world.setBlockState(additionalPos, Blocks.AIR.getDefaultState())));
-		}
 	}
 
 	@Override
@@ -194,7 +204,7 @@ public class BlockTotemPart extends BlockBaseStructure {
 	public enum Variant implements IStringSerializable {
 		BASE(0) {
 			@Override
-			protected Set<BlockPos> getAdditionalPartPositions(BlockPos pos, EnumFacing facing) {
+			public Set<BlockPos> getAdditionalPartPositions(BlockPos pos, EnumFacing facing) {
 				return ImmutableSet.of(pos.up());
 			}
 
@@ -208,7 +218,7 @@ public class BlockTotemPart extends BlockBaseStructure {
 		MID_ALT(2),
 		TOP(3) {
 			@Override
-			protected Set<BlockPos> getAdditionalPartPositions(BlockPos pos, EnumFacing facing) {
+			public Set<BlockPos> getAdditionalPartPositions(BlockPos pos, EnumFacing facing) {
 				return ImmutableSet.of(pos.up(), pos.offset(facing.rotateY()), pos.offset(facing.rotateYCCW()));
 			}
 
@@ -245,7 +255,7 @@ public class BlockTotemPart extends BlockBaseStructure {
 			}
 
 			@Override
-			protected Set<BlockPos> getAdditionalPartPositions(BlockPos pos, EnumFacing facing) {
+			public Set<BlockPos> getAdditionalPartPositions(BlockPos pos, EnumFacing facing) {
 				return ImmutableSet.of(pos.offset(facing.rotateY()), pos.offset(facing.rotateYCCW()));
 			}
 
@@ -297,7 +307,7 @@ public class BlockTotemPart extends BlockBaseStructure {
 			}
 
 			@Override
-			protected Set<BlockPos> getAdditionalPartPositions(BlockPos pos, EnumFacing facing) {
+			public Set<BlockPos> getAdditionalPartPositions(BlockPos pos, EnumFacing facing) {
 				BlockPos right = pos.offset(facing.rotateY());
 				BlockPos left = pos.offset(facing.rotateYCCW());
 				return ImmutableSet.of(pos.up(), right, left, right.up(), left.up());
@@ -319,7 +329,7 @@ public class BlockTotemPart extends BlockBaseStructure {
 			}
 
 			@Override
-			protected Set<BlockPos> getAdditionalPartPositions(BlockPos pos, EnumFacing facing) {
+			public Set<BlockPos> getAdditionalPartPositions(BlockPos pos, EnumFacing facing) {
 				BlockPos right = pos.offset(facing.rotateY());
 				return ImmutableSet.of(right, right.up(), right.up().up(), pos.up(), pos.up().up());
 			}
@@ -412,7 +422,7 @@ public class BlockTotemPart extends BlockBaseStructure {
 		}
 
 		@SuppressWarnings("squid:S1172") //actually used when overridden
-		protected Set<BlockPos> getAdditionalPartPositions(BlockPos pos, EnumFacing facing) {
+		public Set<BlockPos> getAdditionalPartPositions(BlockPos pos, EnumFacing facing) {
 			return new HashSet<>();
 		}
 

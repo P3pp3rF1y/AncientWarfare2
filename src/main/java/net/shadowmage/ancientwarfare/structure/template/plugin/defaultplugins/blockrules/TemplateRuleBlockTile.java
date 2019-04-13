@@ -22,12 +22,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Optional;
 
-public class TemplateRuleBlockTile extends TemplateRuleVanillaBlocks {
+public class TemplateRuleBlockTile<T extends TileEntity> extends TemplateRuleVanillaBlocks {
 
 	public static final String PLUGIN_NAME = "blockTile";
 	public NBTTagCompound tag;
 
-	private Tuple<Integer, TileEntity> tileCache = null;
+	private Tuple<Integer, T> tileCache = null;
 
 	public TemplateRuleBlockTile(World world, BlockPos pos, IBlockState state, int turns) {
 		super(world, pos, state, turns);
@@ -47,17 +47,18 @@ public class TemplateRuleBlockTile extends TemplateRuleVanillaBlocks {
 	@Override
 	public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
 		super.handlePlacement(world, turns, pos, builder);
-		WorldTools.getTile(world, pos).ifPresent(t -> {
+		getTeClass().ifPresent(teClass -> WorldTools.getTile(world, pos, teClass).ifPresent(t -> {
 			tag.setInteger("x", pos.getX());
 			tag.setInteger("y", pos.getY());
 			tag.setInteger("z", pos.getZ());
 			try {
 				t.readFromNBT(tag);
+				rotateTe(t, turns);
 			}
 			catch (Exception e) {
 				AncientWarfareStructure.LOG.error("Error loading tile entity data from template for {}: {}", t.getClass(), e);
 			}
-		});
+		}));
 	}
 
 	@Override
@@ -84,10 +85,10 @@ public class TemplateRuleBlockTile extends TemplateRuleVanillaBlocks {
 
 	private static final Field TILE_REGISTRY = ReflectionHelper.findField(TileEntity.class, "REGISTRY", "field_190562_f");
 
-	private Optional<Class<? extends TileEntity>> getTeClass() {
+	protected Optional<Class<T>> getTeClass() {
 		try {
 			//noinspection unchecked
-			return Optional.ofNullable(((RegistryNamespaced<ResourceLocation, Class<? extends TileEntity>>) TILE_REGISTRY.get(null))
+			return Optional.ofNullable(((RegistryNamespaced<ResourceLocation, Class<T>>) TILE_REGISTRY.get(null))
 					.getObject(new ResourceLocation(tag.getString("id"))));
 		}
 		catch (IllegalAccessException e) {
@@ -105,12 +106,13 @@ public class TemplateRuleBlockTile extends TemplateRuleVanillaBlocks {
 		return tileCache.getSecond();
 	}
 
-	private TileEntity instantiateTile(Class<? extends TileEntity> teClass, int turns) {
+	private T instantiateTile(Class<T> teClass, int turns) {
 		return Arrays.stream(teClass.getConstructors()).filter(c -> c.getParameterCount() == 0).findFirst().map(c -> {
 					try {
-						TileEntity te = (TileEntity) c.newInstance();
+						T te = teClass.cast(c.newInstance());
 						te.readFromNBT(tag);
 						te.setWorld(new RuleWorld(getState(turns)));
+						rotateTe(te, turns);
 						return te;
 					}
 					catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
@@ -119,6 +121,11 @@ public class TemplateRuleBlockTile extends TemplateRuleVanillaBlocks {
 					return null;
 				}
 		).orElse(null);
+	}
+
+	@SuppressWarnings("squid:S1172") // parameters supposed to be used by overriding methods
+	protected void rotateTe(T te, int turns) {
+		//noop by default
 	}
 
 	@Override

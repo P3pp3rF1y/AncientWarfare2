@@ -14,12 +14,13 @@ public abstract class BlockBase extends Block {
 		super(material);
 		setUnlocalizedName(regName);
 		setRegistryName(new ResourceLocation(modID, regName));
+		setHardness(2);
 	}
 
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		if (hasTileEntity(state)) {
-			WorldTools.getTile(world, pos, IBlockBreakHandler.class).ifPresent(IBlockBreakHandler::onBlockBroken);
+			WorldTools.getTile(world, pos, IBlockBreakHandler.class).ifPresent(handler -> handler.onBlockBroken(state));
 		}
 		super.breakBlock(world, pos, state);
 	}

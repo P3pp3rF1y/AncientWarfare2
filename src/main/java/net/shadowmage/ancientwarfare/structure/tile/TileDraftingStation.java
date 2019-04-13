@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.tile;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagString;
@@ -208,7 +209,7 @@ public class TileDraftingStation extends TileEntity implements ITickable, IBlock
 	}
 
 	@Override
-	public void onBlockBroken() {
+	public void onBlockBroken(IBlockState state) {
 		InventoryTools.dropItemsInWorld(world, inputSlots, pos);
 		InventoryTools.dropItemsInWorld(world, outputSlot, pos);
 	}

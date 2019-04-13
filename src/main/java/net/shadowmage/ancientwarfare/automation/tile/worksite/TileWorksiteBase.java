@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
 import cofh.redstoneflux.api.IEnergyProvider;
 import cofh.redstoneflux.api.IEnergyReceiver;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -114,7 +115,7 @@ public abstract class TileWorksiteBase extends TileUpdatable
 	}
 
 	@Override
-	public void onBlockBroken() {
+	public void onBlockBroken(IBlockState state) {
 		for (WorksiteUpgrade ug : this.upgrades) {
 			InventoryTools.dropItemInWorld(world, ItemWorksiteUpgrade.getStack(ug), pos);
 		}

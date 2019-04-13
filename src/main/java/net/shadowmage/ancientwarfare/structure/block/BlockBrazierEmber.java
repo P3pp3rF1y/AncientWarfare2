@@ -16,7 +16,6 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
@@ -214,6 +213,9 @@ public class BlockBrazierEmber extends BlockBaseStructure {
 			boolean lit = tag.getBoolean(LIT_TAG);
 			return new ModelResourceLocation(baseLocation, String.format(modelPropString, lit));
 		});
+
+		ModelLoader.registerItemVariants(Item.getItemFromBlock(this),
+				new ModelResourceLocation(baseLocation, String.format(modelPropString, true)));
 	}
 
 }

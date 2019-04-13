@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityAnimal;
@@ -227,8 +228,8 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 	}
 
 	@Override
-	public void onBlockBroken() {
-		super.onBlockBroken();
+	public void onBlockBroken(IBlockState state) {
+		super.onBlockBroken(state);
 		InventoryTools.dropItemsInWorld(world, foodInventory, pos);
 		InventoryTools.dropItemsInWorld(world, toolInventory, pos);
 	}

@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.structure.init;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
@@ -17,6 +18,7 @@ import net.shadowmage.ancientwarfare.structure.block.BlockAdvancedLootChest;
 import net.shadowmage.ancientwarfare.structure.block.BlockAdvancedSpawner;
 import net.shadowmage.ancientwarfare.structure.block.BlockBrazierEmber;
 import net.shadowmage.ancientwarfare.structure.block.BlockBrazierFlame;
+import net.shadowmage.ancientwarfare.structure.block.BlockCoffin;
 import net.shadowmage.ancientwarfare.structure.block.BlockDraftingStation;
 import net.shadowmage.ancientwarfare.structure.block.BlockFirePit;
 import net.shadowmage.ancientwarfare.structure.block.BlockGateProxy;
@@ -36,15 +38,18 @@ import net.shadowmage.ancientwarfare.structure.block.altar.BlockAltarSun;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockAdvancedSpawner;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockBrazierEmber;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockBrazierFlame;
+import net.shadowmage.ancientwarfare.structure.item.ItemBlockCoffin;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockColored;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockFirePit;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockProtectionFlag;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockTotemPart;
+import net.shadowmage.ancientwarfare.structure.item.ItemLootChestPlacer;
 import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedLootChest;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
 import net.shadowmage.ancientwarfare.structure.tile.TileAltarCandle;
+import net.shadowmage.ancientwarfare.structure.tile.TileCoffin;
 import net.shadowmage.ancientwarfare.structure.tile.TileColored;
 import net.shadowmage.ancientwarfare.structure.tile.TileDraftingStation;
 import net.shadowmage.ancientwarfare.structure.tile.TileLootBasket;
@@ -87,6 +92,7 @@ public class AWStructureBlocks {
 	public static final Block LOOT_BASKET = InjectionTools.nullValue();
 	public static final Block BRAZIER_EMBER = InjectionTools.nullValue();
 	public static final Block BRAZIER_FLAME = InjectionTools.nullValue();
+	public static final Block COFFIN = InjectionTools.nullValue();
 
 	@SuppressWarnings("ConstantConditions")
 	@SubscribeEvent
@@ -121,6 +127,10 @@ public class AWStructureBlocks {
 		registry.register(new ItemBlockBase(GOBLIN_TOTEM_2_LIT));
 
 		registry.register(new ItemBlockBase(LOOT_BASKET));
+		registry.register(new ItemBlockCoffin(COFFIN));
+
+		ItemLootChestPlacer.registerLootContainer(new ItemStack(ADVANCED_LOOT_CHEST));
+		ItemLootChestPlacer.registerLootContainer(new ItemStack(LOOT_BASKET));
 	}
 
 	@SubscribeEvent
@@ -179,6 +189,8 @@ public class AWStructureBlocks {
 		registry.register(new BlockLootBasket());
 		registerTile(TileLootBasket.class, "loot_basket");
 
+		registry.register(new BlockCoffin());
+		registerTile(TileCoffin.class, "coffin");
 	}
 
 	private static void registerTile(Class<? extends TileEntity> teClass, String teId) {

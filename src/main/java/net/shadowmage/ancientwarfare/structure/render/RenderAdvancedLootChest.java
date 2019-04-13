@@ -14,9 +14,9 @@ public class RenderAdvancedLootChest extends TileEntitySpecialRenderer<TileAdvan
 	public void render(TileAdvancedLootChest te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		//noinspection ConstantConditions
 		if ((Minecraft.getMinecraft().player.capabilities.isCreativeMode || Minecraft.getMinecraft().playerController.getCurrentGameType() == GameType.SPECTATOR)
-				&& rendererDispatcher.cameraHitResult != null && te.getPos().equals(rendererDispatcher.cameraHitResult.getBlockPos()) && te.getLootTable() != null) {
+				&& rendererDispatcher.cameraHitResult != null && te.getPos().equals(rendererDispatcher.cameraHitResult.getBlockPos()) && te.getLootSettings().hasLoot()) {
 			setLightmapDisabled(true);
-			drawNameplate(te, te.getLootRolls() + " x " + te.getLootTable(), x, y, z, 12);
+			drawNameplate(te, te.getLootSettings().getLootRolls() + " x " + te.getLootSettings().getLootTableName(), x, y, z, 12);
 			setLightmapDisabled(false);
 		}
 
