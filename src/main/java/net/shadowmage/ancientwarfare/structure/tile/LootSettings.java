@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.structure.tile;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.PotionEffect;
@@ -12,9 +11,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class LootSettings {
-	private static final String BLOCK_STACK_TAG = "blockStack";
-	private boolean placeBlock = false;
-	private ItemStack blockStack = ItemStack.EMPTY;
 	private boolean hasLoot = false;
 	private ResourceLocation lootTableName = null;
 	private int lootRolls = 1;
@@ -27,10 +23,6 @@ public class LootSettings {
 	public NBTTagCompound serializeNBT() {
 		NBTTagCompound ret = new NBTTagCompound();
 
-		ret.setBoolean("placeBlock", placeBlock);
-		if (blockStack != ItemStack.EMPTY) {
-			ret.setTag(BLOCK_STACK_TAG, blockStack.writeToNBT(new NBTTagCompound()));
-		}
 		ret.setBoolean("hasLoot", hasLoot);
 		if (lootTableName != null) {
 			ret.setString("lootTableName", lootTableName.toString());
@@ -57,8 +49,6 @@ public class LootSettings {
 
 	public static LootSettings deserializeNBT(NBTTagCompound nbt) {
 		LootSettings lootSettings = new LootSettings();
-		lootSettings.placeBlock = nbt.getBoolean("placeBlock");
-		lootSettings.blockStack = nbt.hasKey(BLOCK_STACK_TAG) ? new ItemStack(nbt.getCompoundTag(BLOCK_STACK_TAG)) : ItemStack.EMPTY;
 		lootSettings.hasLoot = nbt.getBoolean("hasLoot");
 		lootSettings.lootTableName = new ResourceLocation(nbt.getString("lootTableName"));
 		lootSettings.lootRolls = nbt.getInteger("lootRolls");
@@ -72,6 +62,27 @@ public class LootSettings {
 		lootSettings.entityNBT = nbt.getCompoundTag("entityNBT");
 
 		return lootSettings;
+	}
+
+	public void transferToContainer(ISpecialLootContainer container) {
+		LootSettings applicableSettings = new LootSettings();
+
+		if (hasLoot()) {
+			applicableSettings.setHasLoot(true);
+			applicableSettings.setLootTableName(lootTableName);
+			applicableSettings.setLootRolls(lootRolls);
+		}
+		if (splashPotion) {
+			applicableSettings.setSplashPotion(true);
+			applicableSettings.setEffects(effects);
+		}
+		if (spawnEntity) {
+			applicableSettings.setSpawnEntity(true);
+			applicableSettings.setEntity(entity);
+			applicableSettings.setEntityNBT(entityNBT);
+		}
+
+		container.setLootSettings(applicableSettings);
 	}
 
 	public boolean hasLoot() {
@@ -100,14 +111,6 @@ public class LootSettings {
 		this.lootRolls = lootRolls;
 	}
 
-	public void setPlaceBlock(boolean placeBlock) {
-		this.placeBlock = placeBlock;
-	}
-
-	public boolean getPlaceBlock() {
-		return placeBlock;
-	}
-
 	public void setHasLoot(boolean hasLoot) {
 		this.hasLoot = hasLoot;
 	}
@@ -124,11 +127,19 @@ public class LootSettings {
 		return splashPotion;
 	}
 
-	public void setBlockStack(ItemStack blockStack) {
-		this.blockStack = blockStack;
+	public void setSpawnEntity(boolean spawnEntity) {
+		this.spawnEntity = spawnEntity;
 	}
 
-	public ItemStack getBlockStack() {
-		return blockStack;
+	public void setEffects(List<PotionEffect> effects) {
+		this.effects = effects;
+	}
+
+	public void setEntity(ResourceLocation entity) {
+		this.entity = entity;
+	}
+
+	public void setEntityNBT(NBTTagCompound entityNBT) {
+		this.entityNBT = entityNBT;
 	}
 }

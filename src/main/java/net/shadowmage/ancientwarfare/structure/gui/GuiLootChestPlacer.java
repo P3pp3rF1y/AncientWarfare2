@@ -30,7 +30,6 @@ public class GuiLootChestPlacer extends GuiContainerBase<ContainerLootChestPlace
 	private Button selection;
 	private String lootTable;
 	private Checkbox setLootTable;
-	private Checkbox placeBlock;
 	private Checkbox splashPotion;
 
 	public GuiLootChestPlacer(ContainerBase container) {
@@ -96,13 +95,13 @@ public class GuiLootChestPlacer extends GuiContainerBase<ContainerLootChestPlace
 		int x = 28;
 		Set<ItemToggleButton> stackToggles = new LinkedHashSet<>();
 
-		ItemStack selectedStack = getLootSetting(LootSettings::getBlockStack).orElse(ItemStack.EMPTY);
+		ItemStack selectedStack = getContainer().getBlockStack();
 		for (ItemStack container : ItemLootChestPlacer.getLootContainers()) {
 			ItemToggleButton button = new ItemToggleButton(x, totalHeight, container.copy(), false) {
 				@Override
 				protected void onPressed(int mButton) {
 					if (isToggled()) {
-						setLootSettings(settings -> settings.setBlockStack(container.copy()));
+						getContainer().setBlockStack(container.copy());
 						for (ItemToggleButton btn : stackToggles) {
 							if (btn != this) {
 								btn.setToggled(false);
@@ -127,20 +126,9 @@ public class GuiLootChestPlacer extends GuiContainerBase<ContainerLootChestPlace
 	public void setupElements() {
 		clearElements();
 		int totalHeight = 8;
-		placeBlock = new Checkbox(8, totalHeight, 16, 16, "guistrings.spawner_placer.place_block") {
-			@Override
-			public void onToggled() {
-				setLootSettings(settings -> settings.setPlaceBlock(placeBlock.checked()));
-				refreshGui();
-			}
-		};
-		placeBlock.setChecked(getLootSetting(LootSettings::getPlaceBlock).orElse(false));
-		addGuiElement(placeBlock);
+		addGuiElement(new Label(8, totalHeight, "guistrings.spawner_placer.place_block"));
 		totalHeight += 20;
-
-		if (placeBlock.checked()) {
-			totalHeight = addPlaceBlockElements(totalHeight);
-		}
+		totalHeight = addPlaceBlockElements(totalHeight);
 
 		setLootTable = new Checkbox(8, totalHeight, 16, 16, "guistrings.spawner_placer.set_loot_table") {
 			@Override

@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.structure.tile;
 
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -15,7 +16,7 @@ import net.shadowmage.ancientwarfare.structure.block.BlockCoffin;
 import java.util.Optional;
 import java.util.Set;
 
-public class TileCoffin extends TileMulti implements ITickable {
+public class TileCoffin extends TileMulti implements ITickable, ISpecialLootContainer {
 	private boolean upright = false;
 	private BlockCoffin.CoffinDirection direction = BlockCoffin.CoffinDirection.NORTH;
 	private boolean opening = false;
@@ -23,6 +24,7 @@ public class TileCoffin extends TileMulti implements ITickable {
 	private float prevLidAngle = 0;
 	private float lidAngle = 0;
 	private int openTime = 0;
+	private LootSettings lootSettings = new LootSettings();
 	private static final float OPEN_ANGLE = 15F;
 	private static final int TOTAL_OPEN_TIME = 20;
 
@@ -62,6 +64,7 @@ public class TileCoffin extends TileMulti implements ITickable {
 		if (open) {
 			lidAngle = prevLidAngle = OPEN_ANGLE;
 		}
+		lootSettings = LootSettings.deserializeNBT(compound.getCompoundTag("lootSettings"));
 	}
 
 	@Override
@@ -77,6 +80,7 @@ public class TileCoffin extends TileMulti implements ITickable {
 		compound.setInteger("variant", variant);
 		compound.setBoolean("opening", opening);
 		compound.setBoolean("open", open);
+		compound.setTag("lootSettings", lootSettings.serializeNBT());
 	}
 
 	@Override
@@ -107,13 +111,16 @@ public class TileCoffin extends TileMulti implements ITickable {
 		return upright;
 	}
 
-	public void open() {
+	public void open(EntityPlayer player) {
 		Optional<BlockPos> mainPos = getMainBlockPos();
 		if (!mainPos.isPresent() || mainPos.get().equals(pos)) {
 			opening = true;
+			if (!world.isRemote) {
+				LootPlacer.dropLoot(this, player);
+			}
 			return;
 		}
-		WorldTools.getTile(world, mainPos.get(), TileCoffin.class).ifPresent(TileCoffin::setOpening);
+		WorldTools.getTile(world, mainPos.get(), TileCoffin.class).ifPresent(te -> te.open(player));
 	}
 
 	private void setOpening() {
@@ -158,5 +165,15 @@ public class TileCoffin extends TileMulti implements ITickable {
 
 	public float getLidAngle() {
 		return lidAngle;
+	}
+
+	@Override
+	public void setLootSettings(LootSettings settings) {
+		this.lootSettings = settings;
+	}
+
+	@Override
+	public LootSettings getLootSettings() {
+		return lootSettings;
 	}
 }

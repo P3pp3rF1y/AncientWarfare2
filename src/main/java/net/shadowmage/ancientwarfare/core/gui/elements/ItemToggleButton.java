@@ -71,6 +71,7 @@ public abstract class ItemToggleButton extends GuiElement {
 			RenderTools.renderQuarteredTexture(textureSize, textureSize, startX, startY, usedWidth, usedHeight, renderX, renderY, width, height);
 
 			GlStateManager.enableRescaleNormal();
+			GlStateManager.enableDepth();
 			RenderHelper.enableGUIStandardItemLighting();
 			RENDER_ITEM.renderItemAndEffectIntoGUI(item, renderX + 2, renderY + 2);
 			RenderHelper.disableStandardItemLighting();

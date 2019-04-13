@@ -553,15 +553,9 @@ public class InventoryTools {
 
 	public static void generateLootFor(World world,
 			@Nullable EntityPlayer player, IItemHandler inventory, Random rng, ResourceLocation lootTableName, int rolls) {
-		LootContext.Builder builder = new LootContext.Builder((WorldServer) world);
-		LootTable lootTable = world.getLootTableManager().getLootTableFromLocation(lootTableName);
-		if (player != null) {
-			builder.withLuck(player.getLuck()).withPlayer(player);
-		}
-		LootContext lootContext = builder.build();
 		NonNullList<ItemStack> loot = NonNullList.create();
 		for (int i = 0; i < rolls; i++) {
-			mergeItemStacks(loot, toNonNullList(lootTable.generateLootForPools(rng, lootContext)));
+			mergeItemStacks(loot, getLootStacks(world, player, rng, lootTableName));
 		}
 
 		List<Integer> randomSlots = getEmptySlotsRandomized(inventory, rng);
@@ -577,6 +571,16 @@ public class InventoryTools {
 				inventory.insertItem(randomSlots.remove(randomSlots.size() - 1), itemstack, false);
 			}
 		}
+	}
+
+	public static NonNullList<ItemStack> getLootStacks(World world, @Nullable EntityPlayer player, Random rng, ResourceLocation lootTableName) {
+		LootContext.Builder builder = new LootContext.Builder((WorldServer) world);
+		LootTable lootTable = world.getLootTableManager().getLootTableFromLocation(lootTableName);
+		if (player != null) {
+			builder.withLuck(player.getLuck()).withPlayer(player);
+		}
+		LootContext lootContext = builder.build();
+		return toNonNullList(lootTable.generateLootForPools(rng, lootContext));
 	}
 
 	public static void emptyInventory(IItemHandler itemHandler) {

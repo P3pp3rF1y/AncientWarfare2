@@ -113,8 +113,8 @@ public class BlockCoffin extends BlockMulti<TileCoffin> {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		WorldTools.getTile(world, pos, TileCoffin.class).ifPresent(TileCoffin::open);
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		WorldTools.getTile(world, pos, TileCoffin.class).ifPresent(te -> te.open(player));
 		return true;
 	}
 

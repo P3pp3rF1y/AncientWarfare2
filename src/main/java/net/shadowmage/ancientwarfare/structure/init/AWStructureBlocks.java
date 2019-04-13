@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -131,6 +132,10 @@ public class AWStructureBlocks {
 
 		ItemLootChestPlacer.registerLootContainer(new ItemStack(ADVANCED_LOOT_CHEST));
 		ItemLootChestPlacer.registerLootContainer(new ItemStack(LOOT_BASKET));
+
+		NonNullList<ItemStack> subBlocks = NonNullList.create();
+		COFFIN.getSubBlocks(AncientWarfareStructure.TAB, subBlocks);
+		subBlocks.forEach(ItemLootChestPlacer::registerLootContainer);
 	}
 
 	@SubscribeEvent

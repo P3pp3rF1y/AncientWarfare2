@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -13,7 +14,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.util.NBTBuilder;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.gui.GuiLootChestPlacer;
 import net.shadowmage.ancientwarfare.structure.tile.ISpecialLootContainer;
@@ -27,6 +27,7 @@ public class ItemLootChestPlacer extends ItemBaseStructure {
 	private static final String LOOT_SETTINGS_TAG = "lootSettings";
 
 	private static final List<ItemStack> LOOT_CONTAINERS = new ArrayList<>();
+	public static final String BLOCK_STACK_TAG = "blockStack";
 
 	public static List<ItemStack> getLootContainers() {
 		return LOOT_CONTAINERS;
@@ -64,16 +65,26 @@ public class ItemLootChestPlacer extends ItemBaseStructure {
 		}
 
 		BlockPos placePos = pos.offset(facing);
-		ItemStack itemBlockStack = lootSettings.get().getBlockStack();
+		ItemStack itemBlockStack = getBlockStack(placer);
 		ItemBlock itemBlock = (ItemBlock) itemBlockStack.getItem();
 		Block block = itemBlock.getBlock();
 		if (block.canPlaceBlockAt(world, placePos)) {
 			itemBlock.placeBlockAt(itemBlockStack, player, world, placePos, facing, hitX, hitY, hitZ,
 					block.getStateForPlacement(world, placePos, facing, hitX, hitY, hitZ, itemBlockStack.getMetadata(), player, hand));
-			WorldTools.getTile(world, placePos, ISpecialLootContainer.class).ifPresent(t -> t.setLootSettings(lootSettings.get()));
+			WorldTools.getTile(world, placePos, ISpecialLootContainer.class).ifPresent(t -> lootSettings.get().transferToContainer(t));
 			return EnumActionResult.SUCCESS;
 		}
 		return EnumActionResult.FAIL;
+	}
+
+	@SuppressWarnings("ConstantConditions")
+	public static ItemStack getBlockStack(ItemStack placer) {
+		return placer.hasTagCompound() && placer.getTagCompound().hasKey(BLOCK_STACK_TAG) ?
+				new ItemStack(placer.getTagCompound().getCompoundTag(BLOCK_STACK_TAG)) : ItemStack.EMPTY;
+	}
+
+	public static void setBlockStack(ItemStack placer, ItemStack blockStack) {
+		placer.setTagInfo(BLOCK_STACK_TAG, blockStack.writeToNBT(new NBTTagCompound()));
 	}
 
 	public static Optional<LootSettings> getLootSettings(ItemStack placer) {
@@ -83,7 +94,7 @@ public class ItemLootChestPlacer extends ItemBaseStructure {
 	}
 
 	public static void setLootSettings(ItemStack placer, LootSettings lootSettings) {
-		placer.setTagCompound(new NBTBuilder().setTag(LOOT_SETTINGS_TAG, lootSettings.serializeNBT()).build());
+		placer.setTagInfo(LOOT_SETTINGS_TAG, lootSettings.serializeNBT());
 	}
 
 	@Override

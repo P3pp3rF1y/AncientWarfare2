@@ -8,9 +8,6 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.shadowmage.ancientwarfare.core.util.BlockTools;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nullable;
 
@@ -21,15 +18,7 @@ public class TileAdvancedLootChest extends TileEntityChest implements ISpecialLo
 
 	@Override
 	public void fillWithLoot(@Nullable EntityPlayer player) {
-		if (!world.isRemote && lootSettings.hasLoot()) {
-			lootSettings.setHasLoot(false);
-			lootSettings.getLootTableName().ifPresent(lootTable -> {
-				//noinspection ConstantConditions
-				InventoryTools.generateLootFor(world, player, getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), world.rand, lootTable, lootSettings.getLootRolls());
-				BlockTools.notifyBlockUpdate(this);
-			});
-			lootSettings.removeLoot();
-		}
+		LootPlacer.fillWithLoot(this, player);
 	}
 
 	@Override
