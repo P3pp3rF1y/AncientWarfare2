@@ -102,6 +102,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	private static final String ATTACK_DAMAGE_OVERRIDE_TAG = "attackDamageOverride";
 	private static final String ARMOR_VALUE_OVERRIDE_TAG = "armorValueOverride";
 	private static final String AI_ENABLED_TAG = "aiEnabled";
+	private static final String DO_NOT_PURSUE = "donotpursue";
 
 	private Owner owner = Owner.EMPTY;
 	private String followingPlayerName;//set/cleared onInteract from player if player.team==this.team
@@ -127,6 +128,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	public Set<Entity> nearbyHostiles = new LinkedHashSet<Entity>();
 
 	private boolean aiEnabled = true;
+	public boolean doNotPursue = false; //if the npc should not pursue targets away from its position/route
 
 	private int attackDamage = -1;//faction based only
 	private int armorValue = -1;//faction based only
@@ -945,6 +947,13 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		this.followingPlayerName = null;
 	}
 
+	public void setDoNotPursue(boolean val) {
+		this.doNotPursue = val;
+	}
+	public boolean getDoNotPursue() {
+		return doNotPursue;
+	}
+
 	@Override
 	public boolean canBeLeashedTo(EntityPlayer player) {
 		return false;
@@ -1056,6 +1065,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		if (tag.hasKey(AI_ENABLED_TAG)) {
 			setIsAIEnabled(tag.getBoolean(AI_ENABLED_TAG));
 		}
+		if (tag.hasKey(DO_NOT_PURSUE)) {
+			setDoNotPursue(tag.getBoolean(DO_NOT_PURSUE));
+		}
 		owner = Owner.deserializeFromNBT(tag);
 	}
 
@@ -1082,6 +1094,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		tag.setInteger(ARMOR_VALUE_OVERRIDE_TAG, armorValue);
 		tag.setString(CUSTOM_TEXTURE_TAG, customTexRef);
 		tag.setBoolean(AI_ENABLED_TAG, aiEnabled);
+		tag.setBoolean(DO_NOT_PURSUE, doNotPursue);
 		owner.serializeToNBT(tag);
 	}
 
