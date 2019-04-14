@@ -12,6 +12,7 @@ import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.block.BlockCoffin;
+import net.shadowmage.ancientwarfare.structure.util.LootHelper;
 
 import java.util.Optional;
 import java.util.Set;
@@ -116,7 +117,7 @@ public class TileCoffin extends TileMulti implements ITickable, ISpecialLootCont
 		if (!mainPos.isPresent() || mainPos.get().equals(pos)) {
 			opening = true;
 			if (!world.isRemote) {
-				LootPlacer.dropLoot(this, player);
+				LootHelper.dropLoot(this, player);
 			}
 			return;
 		}

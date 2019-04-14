@@ -8,6 +8,7 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.shadowmage.ancientwarfare.structure.util.LootHelper;
 
 import javax.annotation.Nullable;
 
@@ -18,7 +19,7 @@ public class TileAdvancedLootChest extends TileEntityChest implements ISpecialLo
 
 	@Override
 	public void fillWithLoot(@Nullable EntityPlayer player) {
-		LootPlacer.fillWithLoot(this, player);
+		LootHelper.fillWithLoot(this, player);
 	}
 
 	@Override

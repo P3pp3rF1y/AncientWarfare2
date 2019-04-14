@@ -8,7 +8,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.model.IModelState;
@@ -24,7 +23,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CoffinRenderer extends TileEntitySpecialRenderer<TileCoffin> implements IItemRenderer {
+public class CoffinRenderer extends RenderLootInfo<TileCoffin> implements IItemRenderer {
 	public static final ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.MOD_ID + ":structure/coffin", "normal");
 	private static final ModelCoffin COFFIN_MODEL = new ModelCoffin();
 
@@ -56,6 +55,7 @@ public class CoffinRenderer extends TileEntitySpecialRenderer<TileCoffin> implem
 
 	@Override
 	public void render(TileCoffin te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+		super.render(te, x, y, z, partialTicks, destroyStage, alpha);
 		IBlockState state = te.getWorld().getBlockState(te.getPos());
 		if (state.getValue(BlockMulti.INVISIBLE)) {
 			return;
@@ -85,6 +85,28 @@ public class CoffinRenderer extends TileEntitySpecialRenderer<TileCoffin> implem
 		COFFIN_MODEL.renderAll((float) (-lidAngle / 180F * Math.PI));
 		GlStateManager.popMatrix();
 		GlStateManager.popMatrix();
+	}
+
+	@Override
+	protected double getNameplateOffsetZ(TileCoffin te, double z) {
+		if (!te.getUpright()) {
+			return super.getNameplateOffsetZ(te, z);
+
+		}
+
+		double offSetZ = Math.max(Math.min(Minecraft.getMinecraft().player.posZ - te.getPos().getZ(), 1), -1);
+		return z + offSetZ;
+	}
+
+	@Override
+	protected double getNameplateOffsetX(TileCoffin te, double x) {
+		if (!te.getUpright()) {
+			return super.getNameplateOffsetX(te, x);
+
+		}
+
+		double offSetX = Math.max(Math.min(Minecraft.getMinecraft().player.posX - te.getPos().getX(), 1), -1);
+		return x + offSetX;
 	}
 
 	@Override

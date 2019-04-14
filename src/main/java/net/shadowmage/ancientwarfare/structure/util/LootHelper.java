@@ -1,4 +1,4 @@
-package net.shadowmage.ancientwarfare.structure.tile;
+package net.shadowmage.ancientwarfare.structure.util;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -7,10 +7,13 @@ import net.minecraft.util.math.Vec3i;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import net.shadowmage.ancientwarfare.structure.tile.ISpecialLootContainer;
+import net.shadowmage.ancientwarfare.structure.tile.LootSettings;
 
 import javax.annotation.Nullable;
 
-public class LootPlacer {
+public class LootHelper {
+	private LootHelper() {}
 
 	public static <T extends TileEntity & ISpecialLootContainer> void fillWithLoot(T te, @Nullable EntityPlayer player) {
 		processLoot(te, player, new ILootTableProcessor() {
@@ -27,7 +30,6 @@ public class LootPlacer {
 
 	public static <T extends TileEntity & ISpecialLootContainer> void dropLoot(T te, @Nullable EntityPlayer player) {
 		processLoot(te, player, new ILootTableProcessor() {
-			@SuppressWarnings("ConstantConditions")
 			@Override
 			public <U extends TileEntity & ISpecialLootContainer> void processLootTable(U te,
 					@Nullable EntityPlayer player, LootSettings lootSettings, ResourceLocation lootTable) {

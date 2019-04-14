@@ -34,6 +34,7 @@ public class ContainerLootChestPlacer extends ContainerBase {
 	public void handlePacketData(NBTTagCompound tag) {
 		if (tag.hasKey(BLOCK_STACK_TAG)) {
 			setBlockStack(new ItemStack(tag.getCompoundTag(BLOCK_STACK_TAG)));
+			return;
 		}
 
 		setLootSettings(LootSettings.deserializeNBT(tag));
