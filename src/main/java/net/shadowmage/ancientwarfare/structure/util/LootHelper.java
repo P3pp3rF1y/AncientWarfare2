@@ -8,9 +8,11 @@ import net.minecraft.potion.PotionUtils;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.structure.tile.ISpecialLootContainer;
 import net.shadowmage.ancientwarfare.structure.tile.LootSettings;
@@ -18,6 +20,7 @@ import net.shadowmage.ancientwarfare.structure.tile.LootSettings;
 import javax.annotation.Nullable;
 
 public class LootHelper {
+	public static final String FACTION_NAME_TAG = "factionName";
 	private LootHelper() {}
 
 	public static <T extends TileEntity & ISpecialLootContainer> void fillWithLoot(T te, @Nullable EntityPlayer player) {
@@ -60,6 +63,22 @@ public class LootHelper {
 	public static <T extends TileEntity & ISpecialLootContainer> void processLoot(T te, @Nullable EntityPlayer player, ILootTableProcessor lootTableProcessor) {
 		LootSettings lootSettings = te.getLootSettings();
 		if (!te.getWorld().isRemote) {
+			if (lootSettings.getSplashPotion()) {
+				lootSettings.setSplashPotion(false);
+				ItemStack potion = new ItemStack(Items.SPLASH_POTION);
+				PotionUtils.appendEffects(potion, lootSettings.getEffects());
+				BlockPos startPos = te.getPos().add(getPlayerOffset(te, player));
+				EntityPotion potionEntity = new EntityPotion(te.getWorld(), startPos.getX() + 0.5, startPos.getY() + 0.5, startPos.getZ() + 0.5, potion);
+				Vec3d playerPos = player == null ? new Vec3d(startPos.getX() + 0.5, startPos.getY() + 1.5, startPos.getZ() + 0.5) :
+						new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
+
+				potionEntity.shoot(playerPos.x - (startPos.getX() + 0.5), playerPos.y - (startPos.getY() + 0.5), playerPos.z - (startPos.getZ() + 0.5), 0.5F, 1.0F);
+				te.getWorld().spawnEntity(potionEntity);
+			}
+			if (lootSettings.getSpawnEntity()) {
+				lootSettings.setSpawnEntity(false);
+				EntityTools.spawnEntity(te.getWorld(), lootSettings.getEntity(), lootSettings.getEntityNBT(), te.getPos().add(getPlayerOffset(te, player)));
+			}
 			if (lootSettings.hasLoot()) {
 				lootSettings.setHasLoot(false);
 				lootSettings.getLootTableName().ifPresent(lootTable -> {
@@ -68,15 +87,6 @@ public class LootHelper {
 					BlockTools.notifyBlockUpdate(te);
 				});
 				lootSettings.removeLoot();
-			}
-			if (lootSettings.getSplashPotion()) {
-				lootSettings.setSplashPotion(false);
-				ItemStack potion = new ItemStack(Items.SPLASH_POTION);
-				PotionUtils.appendEffects(potion, lootSettings.getEffects());
-				BlockPos startPos = te.getPos().add(getPlayerOffset(te, player));
-				EntityPotion potionEntity = new EntityPotion(te.getWorld(), startPos.getX() + 0.5, startPos.getY() + 0.5, startPos.getZ() + 0.5, potion);
-				potionEntity.shoot(player.posX - (startPos.getX() + 0.5), player.posY + player.getEyeHeight() - (startPos.getY() + 0.5), player.posZ - (startPos.getZ() + 0.5), 0.5F, 1.0F);
-				te.getWorld().spawnEntity(potionEntity);
 			}
 		}
 	}

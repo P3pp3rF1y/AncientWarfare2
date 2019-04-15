@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.gui.GuiLootBasket;
 import net.shadowmage.ancientwarfare.structure.tile.TileLootBasket;
 
@@ -155,8 +156,9 @@ public class BlockLootBasket extends BlockBaseStructure {
 	}
 
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if (!worldIn.isRemote) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		if (!world.isRemote) {
+			WorldTools.getTile(world, pos, TileLootBasket.class).ifPresent(te -> te.fillWithLoot(player));
 			NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_LOOT_BASKET, pos);
 		}
 		return true;

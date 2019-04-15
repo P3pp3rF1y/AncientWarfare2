@@ -472,6 +472,7 @@ guistrings.loot_placer.spawn_entity=Spawn Entity
 guistrings.loot_placer.potion=Potion
 guistrings.loot_placer.strength=Strength
 guistrings.loot_placer.duration=Duration (s)
+guistring.loot_placer.entity_nbt=Entity NBT
 
 #automation
 guistrings.automation.ignore_damage=Ign. Dmg

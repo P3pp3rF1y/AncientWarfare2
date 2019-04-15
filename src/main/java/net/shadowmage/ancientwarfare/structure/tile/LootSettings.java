@@ -36,7 +36,7 @@ public class LootSettings {
 			}
 			ret.setTag("effects", effectList);
 		}
-		ret.setBoolean("spawnEntity", spawnEntity);
+		ret.setBoolean("getSpawnEntity", spawnEntity);
 		if (entity != null) {
 			ret.setString("entity", entity.toString());
 			if (!entityNBT.hasNoTags()) {
@@ -57,7 +57,7 @@ public class LootSettings {
 		for (int i = 0; i < effectList.tagCount(); i++) {
 			lootSettings.effects.add(PotionEffect.readCustomPotionEffectFromNBT(effectList.getCompoundTagAt(i)));
 		}
-		lootSettings.spawnEntity = nbt.getBoolean("spawnEntity");
+		lootSettings.spawnEntity = nbt.getBoolean("getSpawnEntity");
 		lootSettings.entity = new ResourceLocation(nbt.getString("entity"));
 		lootSettings.entityNBT = nbt.getCompoundTag("entityNBT");
 
@@ -145,5 +145,17 @@ public class LootSettings {
 
 	public List<PotionEffect> getEffects() {
 		return effects;
+	}
+
+	public boolean getSpawnEntity() {
+		return spawnEntity;
+	}
+
+	public NBTTagCompound getEntityNBT() {
+		return entityNBT;
+	}
+
+	public ResourceLocation getEntity() {
+		return entity;
 	}
 }

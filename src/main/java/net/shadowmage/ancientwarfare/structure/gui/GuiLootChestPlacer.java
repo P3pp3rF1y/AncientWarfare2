@@ -3,9 +3,13 @@ package net.shadowmage.ancientwarfare.structure.gui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.nbt.NBTException;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiSelectFromList;
@@ -15,6 +19,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Composite;
 import net.shadowmage.ancientwarfare.core.gui.elements.ItemToggleButton;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
+import net.shadowmage.ancientwarfare.core.gui.elements.Text;
 import net.shadowmage.ancientwarfare.structure.container.ContainerLootChestPlacer;
 import net.shadowmage.ancientwarfare.structure.item.ItemLootChestPlacer;
 import net.shadowmage.ancientwarfare.structure.tile.LootSettings;
@@ -55,6 +60,37 @@ public class GuiLootChestPlacer extends GuiContainerBase<ContainerLootChestPlace
 	}
 
 	private int addSpawnEntityElements(int totalHeight) {
+		int x = 28;
+		addGuiElement(new Button(x, totalHeight, 250, 12, getLootSetting(LootSettings::getEntity).map(ResourceLocation::toString).orElse("")) {
+			@Override
+			protected void onPressed() {
+				Minecraft.getMinecraft().displayGuiScreen(new GuiSelectFromList<>(GuiLootChestPlacer.this, text, s -> s,
+						this::getEntityNames, s -> {
+					setText(s);
+					setLootSettings(settings -> settings.setEntity(new ResourceLocation(s)));
+				}));
+				refreshGui();
+			}
+
+			private List<String> getEntityNames() {
+				return ForgeRegistries.ENTITIES.getKeys().stream().map(ResourceLocation::toString).sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+			}
+		});
+		totalHeight += 16;
+		addGuiElement(new Label(x, totalHeight + 2, "guistring.loot_placer.entity_nbt"));
+		addGuiElement(new Text(x + 60, totalHeight, 190, getLootSetting(s -> s.getEntityNBT().toString()).orElse(""), this) {
+			@Override
+			public void onTextUpdated(String oldText, String newText) {
+				try {
+					NBTTagCompound entityNBT = JsonToNBT.getTagFromJson(newText);
+					setLootSettings(s -> s.setEntityNBT(entityNBT));
+				}
+				catch (NBTException e) {
+					//noop
+				}
+			}
+		});
+
 		return totalHeight;
 	}
 
@@ -66,7 +102,7 @@ public class GuiLootChestPlacer extends GuiContainerBase<ContainerLootChestPlace
 			protected void onPressed() {
 				Minecraft.getMinecraft().displayGuiScreen(new GuiSelectFromList<>(GuiLootChestPlacer.this, text, s -> s,
 						() -> getContainer().getLootTableNames().stream().sorted(Comparator.naturalOrder()).collect(Collectors.toList()), s -> {
-					selection.setText(s);
+					setText(s);
 					setLootSettings(settings -> settings.setLootTableName(new ResourceLocation(s)));
 				}));
 				refreshGui();
@@ -90,7 +126,7 @@ public class GuiLootChestPlacer extends GuiContainerBase<ContainerLootChestPlace
 	}
 
 	private int addSplashPotionElements(int totalHeight) {
-		int x = 24;
+		int x = 28;
 		addGuiElement(new Label(x, totalHeight, "guistrings.loot_placer.potion"));
 		addGuiElement(new Label(x + 130, totalHeight, "guistrings.loot_placer.duration"));
 		addGuiElement(new Label(x + 200, totalHeight, "guistrings.loot_placer.strength"));
@@ -265,11 +301,11 @@ public class GuiLootChestPlacer extends GuiContainerBase<ContainerLootChestPlace
 		Checkbox spawnEntity = new Checkbox(8, totalHeight, 16, 16, "guistrings.loot_placer.spawn_entity") {
 			@Override
 			public void onToggled() {
-				//TODO add setting properties
+				setLootSettings(settings -> settings.setSpawnEntity(checked()));
 				refreshGui();
 			}
 		};
-		spawnEntity.setChecked(true); //TODO pass real data
+		spawnEntity.setChecked(getLootSetting(LootSettings::getSpawnEntity).orElse(false));
 		addGuiElement(spawnEntity);
 		totalHeight += 20;
 
