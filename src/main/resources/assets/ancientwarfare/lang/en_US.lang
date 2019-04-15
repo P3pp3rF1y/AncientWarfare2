@@ -465,10 +465,13 @@ guistrings.sound_block.play_in_random_order=Play in random order
 guistrings.sound_block.turned_off_by_protection_flag=Turned off by protection flag
 guistrings.sound_block.loop=Loop
 guistrings.sound_block.sound_range=Sound range (min 16)
-guistrings.spawner_placer.place_block=Place Block
-guistrings.spawner_placer.set_loot_table=Set Loot Table
-guistrings.spawner_placer.splash_potion=Splash Potion
-guistrings.spawner_placer.spawn_entity=Spawn Entity
+guistrings.loot_placer.place_block=Place Block
+guistrings.loot_placer.set_loot_table=Set Loot Table
+guistrings.loot_placer.splash_potion=Splash Potion
+guistrings.loot_placer.spawn_entity=Spawn Entity
+guistrings.loot_placer.potion=Potion
+guistrings.loot_placer.strength=Strength
+guistrings.loot_placer.duration=Duration (s)
 
 #automation
 guistrings.automation.ignore_damage=Ign. Dmg

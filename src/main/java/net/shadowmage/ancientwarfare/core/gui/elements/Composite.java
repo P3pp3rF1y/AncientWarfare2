@@ -82,12 +82,18 @@ public class Composite extends GuiElement {
 			mouseY = Integer.MIN_VALUE;
 		}
 		setViewport();
-		Minecraft.getMinecraft().renderEngine.bindTexture(backgroundTextureLocation);
-		RenderTools.renderQuarteredTexture(256, 256, 0, 0, 256, 240, renderX, renderY, width, height);
+		if (drawBackground()) {
+			Minecraft.getMinecraft().renderEngine.bindTexture(backgroundTextureLocation);
+			RenderTools.renderQuarteredTexture(256, 256, 0, 0, 256, 240, renderX, renderY, width, height);
+		}
 		for (GuiElement element : this.elements) {
 			element.render(mouseX, mouseY, partialTick);
 		}
 		popViewport();
+	}
+
+	protected boolean drawBackground() {
+		return true;
 	}
 
 	public void addGuiElement(GuiElement element) {
@@ -97,12 +103,19 @@ public class Composite extends GuiElement {
 	}
 
 	protected void setViewport() {
-		int x, y, w, h;
-		x = renderX + 3;
-		y = renderY + 3;
-		w = width - 6;
-		h = height - 6;
+		int x = renderX + getPaddingX();
+		int y = renderY + getPaddingY();
+		int w = width - 2 * getPaddingX();
+		int h = height - 2 * getPaddingY();
 		GuiContainerBase.pushViewport(x, y, w, h);
+	}
+
+	protected int getPaddingY() {
+		return 3;
+	}
+
+	protected int getPaddingX() {
+		return 3;
 	}
 
 	protected void popViewport() {

@@ -142,4 +142,8 @@ public class LootSettings {
 	public void setEntityNBT(NBTTagCompound entityNBT) {
 		this.entityNBT = entityNBT;
 	}
+
+	public List<PotionEffect> getEffects() {
+		return effects;
+	}
 }

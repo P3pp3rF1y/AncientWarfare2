@@ -1,13 +1,17 @@
 package net.shadowmage.ancientwarfare.structure.gui;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiSelectFromList;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.Checkbox;
+import net.shadowmage.ancientwarfare.core.gui.elements.Composite;
 import net.shadowmage.ancientwarfare.core.gui.elements.ItemToggleButton;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
@@ -17,6 +21,7 @@ import net.shadowmage.ancientwarfare.structure.tile.LootSettings;
 
 import java.util.Comparator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -25,10 +30,9 @@ import java.util.stream.Collectors;
 
 public class GuiLootChestPlacer extends GuiContainerBase<ContainerLootChestPlacer> {
 	private static final int FORM_WIDTH = 300;
-	private static final int FORM_HEIGHT = 200;
+	private static final int FORM_HEIGHT = 300;
 
 	private Button selection;
-	private String lootTable;
 	private Checkbox setLootTable;
 	private Checkbox splashPotion;
 
@@ -57,13 +61,11 @@ public class GuiLootChestPlacer extends GuiContainerBase<ContainerLootChestPlace
 	private int addSetLootTableElements(int totalHeight) {
 		int x = 28;
 
-		lootTable = getLootSetting(s -> s.getLootTableName().map(ResourceLocation::toString).orElse("")).orElse("");
-		selection = new Button(x, totalHeight, 250, 12, lootTable) {
+		selection = new Button(x, totalHeight, 250, 12, getLootSetting(s -> s.getLootTableName().map(ResourceLocation::toString).orElse("")).orElse("")) {
 			@Override
 			protected void onPressed() {
-				Minecraft.getMinecraft().displayGuiScreen(new GuiSelectFromList<>(GuiLootChestPlacer.this, lootTable, s -> s,
+				Minecraft.getMinecraft().displayGuiScreen(new GuiSelectFromList<>(GuiLootChestPlacer.this, text, s -> s,
 						() -> getContainer().getLootTableNames().stream().sorted(Comparator.naturalOrder()).collect(Collectors.toList()), s -> {
-					lootTable = s;
 					selection.setText(s);
 					setLootSettings(settings -> settings.setLootTableName(new ResourceLocation(s)));
 				}));
@@ -88,11 +90,111 @@ public class GuiLootChestPlacer extends GuiContainerBase<ContainerLootChestPlace
 	}
 
 	private int addSplashPotionElements(int totalHeight) {
+		int x = 24;
+		addGuiElement(new Label(x, totalHeight, "guistrings.loot_placer.potion"));
+		addGuiElement(new Label(x + 130, totalHeight, "guistrings.loot_placer.duration"));
+		addGuiElement(new Label(x + 200, totalHeight, "guistrings.loot_placer.strength"));
+
+		totalHeight += 16;
+
+		Optional<List<PotionEffect>> potionEffects = getLootSetting(LootSettings::getEffects);
+
+		if (potionEffects.isPresent()) {
+			List<PotionEffect> effects = potionEffects.get();
+			for (int i = 0; i < effects.size(); i++) {
+				final int effectIndex = i;
+				addGuiElement(new PotionEffectElement(x, totalHeight, effects.get(i), this, effect -> {
+					effects.set(effectIndex, effect);
+					setLootSettings(s -> s.setEffects(effects));
+				}));
+				addGuiElement(new Button(x + 230, totalHeight, 20, 12, "-") {
+					@Override
+					protected void onPressed() {
+						effects.remove(effectIndex);
+						refreshGui();
+						setLootSettings(s -> s.setEffects(effects));
+					}
+				});
+				totalHeight += 16;
+				setLootSettings(s -> s.setEffects(effects));
+			}
+			addGuiElement(new Button(x, totalHeight, 20, 12, "+") {
+				@Override
+				protected void onPressed() {
+					effects.add(new PotionEffect(MobEffects.POISON, 200, 1));
+					refreshGui();
+					setLootSettings(s -> s.setEffects(effects));
+				}
+			});
+			totalHeight += 16;
+		}
 		return totalHeight;
 	}
 
+	private static class PotionEffectElement extends Composite {
+		private PotionEffect potionEffect;
+
+		public PotionEffectElement(int topLeftX, int topLeftY, PotionEffect effect, GuiContainerBase parent, Consumer<PotionEffect> onEffectUpdated) {
+			super(parent, topLeftX, topLeftY, 230, 12);
+			potionEffect = effect;
+
+			Button selectEffect = new Button(0, 0, 160, 12, potionEffect.getPotion().getRegistryName().toString()) {
+				@Override
+				protected void onPressed() {
+					Minecraft.getMinecraft().displayGuiScreen(new GuiSelectFromList<>(parent, text, s -> s,
+							() -> getEffectNames(), s -> {
+						setText(s);
+						potionEffect = new PotionEffect(Potion.REGISTRY.getObject(new ResourceLocation(s)), potionEffect.getDuration(), potionEffect.getAmplifier());
+						onEffectUpdated.accept(potionEffect);
+						parent.refreshGui();
+					}));
+				}
+			};
+			addGuiElement(selectEffect);
+
+			NumberInput duration = new NumberInput(170, 0, 22, potionEffect.getDuration() / 20, parent) {
+				@Override
+				public void onValueUpdated(float value) {
+					potionEffect = new PotionEffect(potionEffect.getPotion(), (int) value * 20, potionEffect.getAmplifier());
+					onEffectUpdated.accept(potionEffect);
+				}
+			};
+			duration.setIntegerValue();
+			addGuiElement(duration);
+
+			NumberInput amplifier = new NumberInput(200, 0, 15, potionEffect.getAmplifier(), parent) {
+				@Override
+				public void onValueUpdated(float value) {
+					potionEffect = new PotionEffect(potionEffect.getPotion(), potionEffect.getDuration(), (int) value);
+					onEffectUpdated.accept(potionEffect);
+				}
+			};
+			amplifier.setIntegerValue();
+			addGuiElement(amplifier);
+		}
+
+		@Override
+		protected int getPaddingY() {
+			return 0;
+		}
+
+		@Override
+		protected int getPaddingX() {
+			return 0;
+		}
+
+		@Override
+		protected boolean drawBackground() {
+			return false;
+		}
+
+		private List<String> getEffectNames() {
+			return Potion.REGISTRY.getKeys().stream().map(ResourceLocation::toString).sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+		}
+	}
+
 	private int addPlaceBlockElements(int totalHeight) {
-		int x = 28;
+		int x = 8;
 		Set<ItemToggleButton> stackToggles = new LinkedHashSet<>();
 
 		ItemStack selectedStack = getContainer().getBlockStack();
@@ -119,18 +221,18 @@ public class GuiLootChestPlacer extends GuiContainerBase<ContainerLootChestPlace
 			stackToggles.iterator().next().setToggled(true);
 		}
 
-		return totalHeight + 26;
+		return totalHeight + 30;
 	}
 
 	@Override
 	public void setupElements() {
 		clearElements();
 		int totalHeight = 8;
-		addGuiElement(new Label(8, totalHeight, "guistrings.spawner_placer.place_block"));
-		totalHeight += 20;
+		addGuiElement(new Label(8, totalHeight, "guistrings.loot_placer.place_block"));
+		totalHeight += 10;
 		totalHeight = addPlaceBlockElements(totalHeight);
 
-		setLootTable = new Checkbox(8, totalHeight, 16, 16, "guistrings.spawner_placer.set_loot_table") {
+		setLootTable = new Checkbox(8, totalHeight, 16, 16, "guistrings.loot_placer.set_loot_table") {
 			@Override
 			public void onToggled() {
 				setLootSettings(settings -> settings.setHasLoot(setLootTable.checked()));
@@ -145,7 +247,7 @@ public class GuiLootChestPlacer extends GuiContainerBase<ContainerLootChestPlace
 			totalHeight = addSetLootTableElements(totalHeight);
 		}
 
-		splashPotion = new Checkbox(8, totalHeight, 16, 16, "guistrings.spawner_placer.splash_potion") {
+		splashPotion = new Checkbox(8, totalHeight, 16, 16, "guistrings.loot_placer.splash_potion") {
 			@Override
 			public void onToggled() {
 				setLootSettings(settings -> settings.setSplashPotion(splashPotion.checked()));
@@ -160,7 +262,7 @@ public class GuiLootChestPlacer extends GuiContainerBase<ContainerLootChestPlace
 			totalHeight = addSplashPotionElements(totalHeight);
 		}
 
-		Checkbox spawnEntity = new Checkbox(8, totalHeight, 16, 16, "guistrings.spawner_placer.spawn_entity") {
+		Checkbox spawnEntity = new Checkbox(8, totalHeight, 16, 16, "guistrings.loot_placer.spawn_entity") {
 			@Override
 			public void onToggled() {
 				//TODO add setting properties
