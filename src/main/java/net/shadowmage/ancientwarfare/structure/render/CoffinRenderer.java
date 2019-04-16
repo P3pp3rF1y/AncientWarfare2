@@ -15,6 +15,7 @@ import net.minecraftforge.common.model.TRSRTransformation;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 import net.shadowmage.ancientwarfare.structure.block.BlockMulti;
+import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockCoffin;
 import net.shadowmage.ancientwarfare.structure.model.ModelCoffin;
 import net.shadowmage.ancientwarfare.structure.tile.TileCoffin;
@@ -57,7 +58,7 @@ public class CoffinRenderer extends RenderLootInfo<TileCoffin> implements IItemR
 	public void render(TileCoffin te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		super.render(te, x, y, z, partialTicks, destroyStage, alpha);
 		IBlockState state = te.getWorld().getBlockState(te.getPos());
-		if (state.getValue(BlockMulti.INVISIBLE)) {
+		if (state.getBlock() != AWStructureBlocks.COFFIN || state.getValue(BlockMulti.INVISIBLE)) {
 			return;
 		}
 		float rotation = te.getDirection().getRotationAngle();

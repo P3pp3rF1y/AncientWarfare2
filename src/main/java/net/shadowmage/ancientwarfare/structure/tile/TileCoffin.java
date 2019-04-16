@@ -14,6 +14,7 @@ import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.block.BlockCoffin;
 import net.shadowmage.ancientwarfare.structure.util.LootHelper;
 
+import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.Set;
 
@@ -112,7 +113,7 @@ public class TileCoffin extends TileMulti implements ITickable, ISpecialLootCont
 		return upright;
 	}
 
-	public void open(EntityPlayer player) {
+	public void open(@Nullable EntityPlayer player) {
 		Optional<BlockPos> mainPos = getMainBlockPos();
 		if (!mainPos.isPresent() || mainPos.get().equals(pos)) {
 			opening = true;
@@ -124,8 +125,10 @@ public class TileCoffin extends TileMulti implements ITickable, ISpecialLootCont
 		WorldTools.getTile(world, mainPos.get(), TileCoffin.class).ifPresent(te -> te.open(player));
 	}
 
-	private void setOpening() {
-		opening = true;
+	@Override
+	public void onBlockBroken(IBlockState state) {
+		open(null);
+		super.onBlockBroken(state);
 	}
 
 	@Override

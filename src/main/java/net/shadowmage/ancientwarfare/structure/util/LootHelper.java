@@ -41,8 +41,9 @@ public class LootHelper {
 			@Override
 			public <U extends TileEntity & ISpecialLootContainer> void processLootTable(U te,
 					@Nullable EntityPlayer player, LootSettings lootSettings, ResourceLocation lootTable) {
-				InventoryTools.dropItemsInWorld(te.getWorld(), InventoryTools.getLootStacks(te.getWorld(), player, te.getWorld().rand, lootTable), te.getPos().add(getPlayerOffset(te, player)));
-
+				for (int roll = 0; roll < lootSettings.getLootRolls(); roll++) {
+					InventoryTools.dropItemsInWorld(te.getWorld(), InventoryTools.getLootStacks(te.getWorld(), player, te.getWorld().rand, lootTable), te.getPos().add(getPlayerOffset(te, player)));
+				}
 			}
 		});
 	}
