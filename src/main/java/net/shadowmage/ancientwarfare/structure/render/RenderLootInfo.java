@@ -52,10 +52,12 @@ public class RenderLootInfo<T extends TileEntity & ISpecialLootContainer> extend
 				}
 			}
 
-			Optional<ResourceLocation> lt = lootSettings.getLootTableName();
-			if (lt.isPresent()) {
-				String str = te.getLootSettings().getLootRolls() + " x " + lt.get().toString();
-				renderString((float) x, (float) y + verticalOffset, (float) z, f, f1, 0, str);
+			if (lootSettings.hasLoot()) {
+				Optional<ResourceLocation> lt = lootSettings.getLootTableName();
+				if (lt.isPresent()) {
+					String str = te.getLootSettings().getLootRolls() + " x " + lt.get().toString();
+					renderString((float) x, (float) y + verticalOffset, (float) z, f, f1, 0, str);
+				}
 			}
 		}
 	}

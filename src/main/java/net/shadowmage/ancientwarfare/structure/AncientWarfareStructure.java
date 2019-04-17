@@ -37,6 +37,7 @@ import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerAdvance
 import net.shadowmage.ancientwarfare.structure.container.ContainerStructureScanner;
 import net.shadowmage.ancientwarfare.structure.container.ContainerStructureSelection;
 import net.shadowmage.ancientwarfare.structure.container.ContainerTownSelection;
+import net.shadowmage.ancientwarfare.structure.datafixes.TileLootFixer;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.event.OneShotEntityDespawnListener;
 import net.shadowmage.ancientwarfare.structure.network.PacketSoundBlockPlayerSpecValues;
@@ -133,6 +134,7 @@ public class AncientWarfareStructure {
 		DataFixManager.registerRuleFixer(new RuleNameConsolidationFixer());
 		DataFixManager.registerRuleFixer(new EntityRuleNameFixer());
 		DataFixManager.registerRuleFixer(new EntityEquipmentFixer());
+		DataFixManager.registerRuleFixer(new TileLootFixer());
 	}
 
 	@EventHandler
