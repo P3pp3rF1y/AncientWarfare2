@@ -585,6 +585,8 @@ guistrings.npc.orders.open_gui=Use item to Open GUI
 guistrings.npc.orders.add_position=Press '%s' to add target position.
 guistrings.npc.orders.position_added=Position added
 guistrings.npc.inventory=Inventory
+guistrings.structure.loot_placer.copy=Copy Settings From Loot Container
+guistrings.structure.loot_placer.paste=Paste Settings To Loot Container
 
 #routing order route-types
 route.fill.upto=Fill Upto

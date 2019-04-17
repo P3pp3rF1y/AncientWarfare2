@@ -85,6 +85,35 @@ public class LootSettings {
 		container.setLootSettings(applicableSettings);
 	}
 
+	public LootSettings transferFromContainer(ISpecialLootContainer te) {
+		LootSettings lootSettings = te.getLootSettings();
+
+		if (lootSettings.hasLoot) {
+			hasLoot = true;
+			lootTableName = lootSettings.lootTableName;
+			lootRolls = lootSettings.lootRolls;
+		} else {
+			hasLoot = false;
+		}
+
+		if (lootSettings.splashPotion) {
+			splashPotion = true;
+			effects = lootSettings.effects;
+		} else {
+			splashPotion = false;
+		}
+
+		if (lootSettings.spawnEntity) {
+			spawnEntity = true;
+			entity = lootSettings.entity;
+			entityNBT = lootSettings.entityNBT;
+		} else {
+			spawnEntity = false;
+		}
+
+		return this;
+	}
+
 	public boolean hasLoot() {
 		return hasLoot;
 	}

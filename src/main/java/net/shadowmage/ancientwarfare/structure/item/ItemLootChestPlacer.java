@@ -1,6 +1,9 @@
 package net.shadowmage.ancientwarfare.structure.item;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -10,20 +13,26 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.shadowmage.ancientwarfare.core.input.InputHandler;
+import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.gui.GuiLootChestPlacer;
 import net.shadowmage.ancientwarfare.structure.tile.ISpecialLootContainer;
 import net.shadowmage.ancientwarfare.structure.tile.LootSettings;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ItemLootChestPlacer extends ItemBaseStructure {
+public class ItemLootChestPlacer extends ItemBaseStructure implements IItemKeyInterface {
 	private static final String LOOT_SETTINGS_TAG = "lootSettings";
 
 	private static final List<ItemStack> LOOT_CONTAINERS = new ArrayList<>();
@@ -47,6 +56,19 @@ public class ItemLootChestPlacer extends ItemBaseStructure {
 			NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_LOOT_CHEST_PLACER, 0, 0, 0);
 		}
 		return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		String keyText = InputHandler.ALT_ITEM_USE_1.getDisplayName();
+		String text = keyText + " = " + I18n.format("guistrings.structure.loot_placer.copy");
+		tooltip.add(text);
+
+		keyText = InputHandler.ALT_ITEM_USE_2.getDisplayName();
+		text = keyText + " = " + I18n.format("guistrings.structure.loot_placer.paste");
+		tooltip.add(text);
+
 	}
 
 	@Override
@@ -80,7 +102,7 @@ public class ItemLootChestPlacer extends ItemBaseStructure {
 	@SuppressWarnings("ConstantConditions")
 	public static ItemStack getBlockStack(ItemStack placer) {
 		return placer.hasTagCompound() && placer.getTagCompound().hasKey(BLOCK_STACK_TAG) ?
-				new ItemStack(placer.getTagCompound().getCompoundTag(BLOCK_STACK_TAG)) : ItemStack.EMPTY;
+				new ItemStack(placer.getTagCompound().getCompoundTag(BLOCK_STACK_TAG)) : LOOT_CONTAINERS.get(0);
 	}
 
 	public static void setBlockStack(ItemStack placer, ItemStack blockStack) {
@@ -103,5 +125,25 @@ public class ItemLootChestPlacer extends ItemBaseStructure {
 		super.registerClient();
 
 		NetworkHandler.registerGui(NetworkHandler.GUI_LOOT_CHEST_PLACER, GuiLootChestPlacer.class);
+	}
+
+	@Override
+	public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemAltFunction altFunction) {
+		return altFunction == ItemAltFunction.ALT_FUNCTION_1 || altFunction == ItemAltFunction.ALT_FUNCTION_2;
+	}
+
+	@Override
+	public void onKeyAction(EntityPlayer player, ItemStack placer, ItemAltFunction altFunction) {
+		BlockPos hit = BlockTools.getBlockClickedOn(player, player.world, false);
+		WorldTools.getTile(player.world, hit, ISpecialLootContainer.class).ifPresent(te -> {
+			if (altFunction == ItemAltFunction.ALT_FUNCTION_1) {
+				IBlockState state = player.world.getBlockState(hit);
+				setBlockStack(placer, state.getBlock().getPickBlock(state, new RayTraceResult(new Vec3d(0, 0, 0), EnumFacing.UP, hit), player.world, hit, player));
+				getLootSettings(placer).ifPresent(s -> setLootSettings(placer, s.transferFromContainer(te)));
+			} else if (altFunction == ItemAltFunction.ALT_FUNCTION_2) {
+				getLootSettings(placer).ifPresent(s -> s.transferToContainer(te));
+				BlockTools.notifyBlockUpdate(player.world, hit);
+			}
+		});
 	}
 }

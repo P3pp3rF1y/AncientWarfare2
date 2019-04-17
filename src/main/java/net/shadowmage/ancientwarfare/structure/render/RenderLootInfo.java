@@ -18,7 +18,7 @@ public class RenderLootInfo<T extends TileEntity & ISpecialLootContainer> extend
 	public void render(T te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		//noinspection ConstantConditions
 		if ((Minecraft.getMinecraft().player.capabilities.isCreativeMode || Minecraft.getMinecraft().playerController.getCurrentGameType() == GameType.SPECTATOR)
-				&& rendererDispatcher.cameraHitResult != null && te.getPos().equals(rendererDispatcher.cameraHitResult.getBlockPos()) && te.getLootSettings().hasLoot()) {
+				&& rendererDispatcher.cameraHitResult != null && te.getPos().equals(rendererDispatcher.cameraHitResult.getBlockPos())) {
 			setLightmapDisabled(true);
 			drawLootInfo(te, getNameplateOffsetX(te, x), y, getNameplateOffsetZ(te, z), 12);
 			setLightmapDisabled(false);

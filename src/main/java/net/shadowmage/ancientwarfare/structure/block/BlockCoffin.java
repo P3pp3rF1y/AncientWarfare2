@@ -17,6 +17,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
@@ -90,6 +91,11 @@ public class BlockCoffin extends BlockMulti<TileCoffin> {
 		}
 		WorldTools.getTile(world, pos, TileCoffin.class)
 				.ifPresent(te -> InventoryTools.dropItemInWorld(world, ItemBlockCoffin.getVariantStack(te.getVariant()), pos));
+	}
+
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+		return ItemBlockCoffin.getVariantStack(WorldTools.getTile(world, pos, TileCoffin.class).map(TileCoffin::getVariant).orElse(1));
 	}
 
 	@Override
