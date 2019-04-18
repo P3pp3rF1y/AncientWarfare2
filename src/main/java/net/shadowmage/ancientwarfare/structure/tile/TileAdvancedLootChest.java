@@ -6,6 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.structure.util.LootHelper;
@@ -75,6 +76,12 @@ public class TileAdvancedLootChest extends TileEntityChest implements ISpecialLo
 			return this.getItems().get(index);
 		}
 		return super.getStackInSlot(index);
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public AxisAlignedBB getRenderBoundingBox() {
+		return new AxisAlignedBB(pos.add(-1, 0, -1), pos.add(2, 2, 2));
 	}
 
 	@Override
