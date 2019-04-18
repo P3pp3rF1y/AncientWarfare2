@@ -12,6 +12,8 @@ import net.shadowmage.ancientwarfare.structure.tile.TileMulti;
 import javax.annotation.Nullable;
 import java.util.Optional;
 
+import static net.shadowmage.ancientwarfare.structure.block.BlockMulti.INVISIBLE;
+
 public abstract class TemplateRuleMulti<T extends TileMulti> extends TemplateRuleBlockTile<T> {
 	private final Class<T> teClass;
 	private boolean mainBlock = false;
@@ -35,9 +37,12 @@ public abstract class TemplateRuleMulti<T extends TileMulti> extends TemplateRul
 
 	@Override
 	public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
-		super.handlePlacement(world, turns, pos, builder);
 		if (mainBlock) {
-			WorldTools.getTile(world, pos, teClass).ifPresent(TileMulti::setMainPosOnAdditionalBlocks);
+			super.handlePlacement(world, turns, pos, builder);
+			WorldTools.getTile(world, pos, teClass).ifPresent(te -> {
+				te.getAdditionalPositions(state).forEach(additionalPos -> world.setBlockState(additionalPos, world.getBlockState(pos).getBlock().getDefaultState().withProperty(INVISIBLE, true)));
+				te.setMainPosOnAdditionalBlocks();
+			});
 		}
 	}
 
