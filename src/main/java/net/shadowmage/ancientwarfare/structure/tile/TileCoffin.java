@@ -11,12 +11,12 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.block.BlockCoffin;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureSounds;
 import net.shadowmage.ancientwarfare.structure.util.LootHelper;
 
-import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.Set;
 
@@ -115,7 +115,7 @@ public class TileCoffin extends TileMulti implements ITickable, ISpecialLootCont
 		return upright;
 	}
 
-	public void open(@Nullable EntityPlayer player) {
+	public void open(EntityPlayer player) {
 		Optional<BlockPos> mainPos = getMainBlockPos();
 		if (!mainPos.isPresent() || mainPos.get().equals(pos)) {
 			if (!open && !opening) {
@@ -128,7 +128,7 @@ public class TileCoffin extends TileMulti implements ITickable, ISpecialLootCont
 		WorldTools.getTile(world, mainPos.get(), TileCoffin.class).ifPresent(te -> te.open(player));
 	}
 
-	private void dropLoot(@Nullable EntityPlayer player) {
+	private void dropLoot(EntityPlayer player) {
 		if (open) {
 			return;
 		}
@@ -144,7 +144,7 @@ public class TileCoffin extends TileMulti implements ITickable, ISpecialLootCont
 
 	@Override
 	public void onBlockBroken(IBlockState state) {
-		dropLoot(null);
+		dropLoot(EntityTools.findClosestPlayer(world, pos, 100));
 		super.onBlockBroken(state);
 	}
 

@@ -9,6 +9,7 @@ import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.structure.util.LootHelper;
 
 import javax.annotation.Nullable;
@@ -20,7 +21,7 @@ public class TileAdvancedLootChest extends TileEntityChest implements ISpecialLo
 
 	@Override
 	public void fillWithLoot(@Nullable EntityPlayer player) {
-		LootHelper.fillWithLoot(this, player);
+		LootHelper.fillWithLoot(this, player != null ? player : EntityTools.findClosestPlayer(world, pos, 100));
 	}
 
 	@Override

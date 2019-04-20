@@ -89,4 +89,8 @@ public class EntityTools {
 		}
 		e.readFromNBT(temp);
 	}
+
+	public static EntityPlayer findClosestPlayer(World world, BlockPos pos, int maxSqDistance) {
+		return world.playerEntities.stream().filter(player -> player.getDistanceSq(pos) < maxSqDistance).findFirst().orElse(null);
+	}
 }
