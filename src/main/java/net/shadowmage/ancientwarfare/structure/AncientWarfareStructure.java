@@ -39,6 +39,7 @@ import net.shadowmage.ancientwarfare.structure.container.ContainerStructureSelec
 import net.shadowmage.ancientwarfare.structure.container.ContainerTownSelection;
 import net.shadowmage.ancientwarfare.structure.datafixes.TileLootFixer;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
+import net.shadowmage.ancientwarfare.structure.entity.EntitySeat;
 import net.shadowmage.ancientwarfare.structure.event.OneShotEntityDespawnListener;
 import net.shadowmage.ancientwarfare.structure.network.PacketSoundBlockPlayerSpecValues;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructure;
@@ -96,6 +97,7 @@ public class AncientWarfareStructure {
 				GameRegistry.registerWorldGenerator(WorldTownGenerator.INSTANCE, 2);
 		}
 		EntityRegistry.registerModEntity(new ResourceLocation(AncientWarfareStructure.MOD_ID, "aw_gate"), EntityGate.class, "aw_gate", 0, this, 250, 200, false);
+		EntityRegistry.registerModEntity(new ResourceLocation(AncientWarfareStructure.MOD_ID, "seat"), EntitySeat.class, "AWSeat", 1, this, 20, 10, false);
 
 		PacketBase.registerPacketType(NetworkHandler.PACKET_STRUCTURE, PacketStructure.class);
 		PacketBase.registerPacketType(NetworkHandler.PACKET_STRUCTURE_REMOVE, PacketStructureRemove.class);

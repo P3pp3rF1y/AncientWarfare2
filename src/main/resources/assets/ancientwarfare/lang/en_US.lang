@@ -223,6 +223,12 @@ tile.brazier_ember.lit.name=Ember Brazier Lit
 tile.brazier_ember.unlit.name=Ember Brazier Unlit
 tile.brazier_flame.lit.name=Flame Brazier Lit
 tile.brazier_flame.unlit.name=Flame Brazier Unlit
+tile.stool_oak.name=Oak Wood Stool
+tile.stool_spruce.name=Spruce Wood Stool
+tile.stool_birch.name=Birch Wood Stool
+tile.stool_jungle.name=Jungle Wood Stool
+tile.stool_acacia.name=Acacia Wood Stool
+tile.stool_dark_oak.name=Dark Oak Wood Stool
 
 #colors
 black=Black

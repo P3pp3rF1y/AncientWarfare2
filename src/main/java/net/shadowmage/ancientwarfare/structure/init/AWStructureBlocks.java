@@ -27,6 +27,7 @@ import net.shadowmage.ancientwarfare.structure.block.BlockGoldenIdol;
 import net.shadowmage.ancientwarfare.structure.block.BlockLootBasket;
 import net.shadowmage.ancientwarfare.structure.block.BlockProtectionFlag;
 import net.shadowmage.ancientwarfare.structure.block.BlockSoundBlock;
+import net.shadowmage.ancientwarfare.structure.block.BlockStool;
 import net.shadowmage.ancientwarfare.structure.block.BlockStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.block.BlockStructureScanner;
 import net.shadowmage.ancientwarfare.structure.block.BlockTotemCube;
@@ -94,6 +95,7 @@ public class AWStructureBlocks {
 	public static final Block BRAZIER_EMBER = InjectionTools.nullValue();
 	public static final Block BRAZIER_FLAME = InjectionTools.nullValue();
 	public static final Block COFFIN = InjectionTools.nullValue();
+	public static final Block STOOL = InjectionTools.nullValue();
 
 	@SuppressWarnings("ConstantConditions")
 	@SubscribeEvent
@@ -136,6 +138,8 @@ public class AWStructureBlocks {
 		NonNullList<ItemStack> subBlocks = NonNullList.create();
 		COFFIN.getSubBlocks(AncientWarfareStructure.TAB, subBlocks);
 		subBlocks.forEach(ItemLootChestPlacer::registerLootContainer);
+
+		registry.register(new BlockStool.Item(STOOL));
 	}
 
 	@SubscribeEvent
@@ -196,6 +200,8 @@ public class AWStructureBlocks {
 
 		registry.register(new BlockCoffin());
 		registerTile(TileCoffin.class, "coffin");
+
+		registry.register(new BlockStool());
 	}
 
 	private static void registerTile(Class<? extends TileEntity> teClass, String teId) {
