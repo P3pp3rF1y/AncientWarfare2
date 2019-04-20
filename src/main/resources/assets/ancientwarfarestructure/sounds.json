@@ -1,3 +1,4 @@
 {
-    "protection_flag_claim": {"category": "neutral", "sounds": [{"name": "ancientwarfarestructure:protection_flag_claim", "stream": false}]}
+    "protection_flag_claim": {"category": "neutral", "sounds": [{"name": "ancientwarfarestructure:protection_flag_claim", "stream": false}]},
+    "coffin_opens": {"category": "neutral", "sounds": [{"name": "ancientwarfarestructure:coffin_opens", "stream": false}]}
 }

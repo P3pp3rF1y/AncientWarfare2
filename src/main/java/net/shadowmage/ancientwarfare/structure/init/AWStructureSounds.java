@@ -14,6 +14,7 @@ import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 @Mod.EventBusSubscriber(modid = AncientWarfareStructure.MOD_ID)
 public class AWStructureSounds {
 	public static final SoundEvent PROTECTION_FLAG_CLAIM = InjectionTools.nullValue();
+	public static final SoundEvent COFFIN_OPENS = InjectionTools.nullValue();
 
 	private AWStructureSounds() {}
 
@@ -22,6 +23,7 @@ public class AWStructureSounds {
 		IForgeRegistry<SoundEvent> registry = event.getRegistry();
 
 		registry.register(createSoundEvent("protection_flag_claim"));
+		registry.register(createSoundEvent("coffin_opens"));
 	}
 
 	private static SoundEvent createSoundEvent(String soundName) {

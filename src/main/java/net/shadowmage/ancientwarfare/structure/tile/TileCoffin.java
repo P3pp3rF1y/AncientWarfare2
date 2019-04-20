@@ -6,12 +6,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.block.BlockCoffin;
+import net.shadowmage.ancientwarfare.structure.init.AWStructureSounds;
 import net.shadowmage.ancientwarfare.structure.util.LootHelper;
 
 import javax.annotation.Nullable;
@@ -116,18 +118,33 @@ public class TileCoffin extends TileMulti implements ITickable, ISpecialLootCont
 	public void open(@Nullable EntityPlayer player) {
 		Optional<BlockPos> mainPos = getMainBlockPos();
 		if (!mainPos.isPresent() || mainPos.get().equals(pos)) {
-			opening = true;
-			if (!world.isRemote) {
-				LootHelper.dropLoot(this, player);
+			if (!open && !opening) {
+				world.playSound(null, pos, AWStructureSounds.COFFIN_OPENS, SoundCategory.BLOCKS, 1, 1);
+				opening = true;
 			}
+			dropLoot(player);
 			return;
 		}
 		WorldTools.getTile(world, mainPos.get(), TileCoffin.class).ifPresent(te -> te.open(player));
 	}
 
+	private void dropLoot(@Nullable EntityPlayer player) {
+		if (open) {
+			return;
+		}
+		Optional<BlockPos> mainPos = getMainBlockPos();
+		if (!mainPos.isPresent() || mainPos.get().equals(pos)) {
+			if (!world.isRemote) {
+				LootHelper.dropLoot(this, player);
+			}
+			return;
+		}
+		WorldTools.getTile(world, mainPos.get(), TileCoffin.class).ifPresent(te -> te.dropLoot(player));
+	}
+
 	@Override
 	public void onBlockBroken(IBlockState state) {
-		open(null);
+		dropLoot(null);
 		super.onBlockBroken(state);
 	}
 
