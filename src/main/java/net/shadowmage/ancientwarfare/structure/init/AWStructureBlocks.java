@@ -32,6 +32,7 @@ import net.shadowmage.ancientwarfare.structure.block.BlockStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.block.BlockStructureScanner;
 import net.shadowmage.ancientwarfare.structure.block.BlockTotemCube;
 import net.shadowmage.ancientwarfare.structure.block.BlockTotemPart;
+import net.shadowmage.ancientwarfare.structure.block.BlockUrn;
 import net.shadowmage.ancientwarfare.structure.block.altar.BlockAltarCandle;
 import net.shadowmage.ancientwarfare.structure.block.altar.BlockAltarLectern;
 import net.shadowmage.ancientwarfare.structure.block.altar.BlockAltarLongCloth;
@@ -60,6 +61,7 @@ import net.shadowmage.ancientwarfare.structure.tile.TileSoundBlock;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureScanner;
 import net.shadowmage.ancientwarfare.structure.tile.TileTotemPart;
+import net.shadowmage.ancientwarfare.structure.tile.TileUrn;
 
 import static net.shadowmage.ancientwarfare.structure.AncientWarfareStructure.MOD_ID;
 
@@ -96,6 +98,7 @@ public class AWStructureBlocks {
 	public static final Block BRAZIER_FLAME = InjectionTools.nullValue();
 	public static final Block COFFIN = InjectionTools.nullValue();
 	public static final Block STOOL = InjectionTools.nullValue();
+	public static final Block URN = InjectionTools.nullValue();
 
 	@SuppressWarnings("ConstantConditions")
 	@SubscribeEvent
@@ -140,6 +143,9 @@ public class AWStructureBlocks {
 		subBlocks.forEach(ItemLootChestPlacer::registerLootContainer);
 
 		registry.register(new BlockStool.Item(STOOL));
+
+		registry.register(new ItemBlockBase(URN));
+		ItemLootChestPlacer.registerLootContainer(new ItemStack(URN));
 	}
 
 	@SubscribeEvent
@@ -202,6 +208,9 @@ public class AWStructureBlocks {
 		registerTile(TileCoffin.class, "coffin");
 
 		registry.register(new BlockStool());
+
+		registry.register(new BlockUrn());
+		registerTile(TileUrn.class, "urn_tile");
 	}
 
 	private static void registerTile(Class<? extends TileEntity> teClass, String teId) {

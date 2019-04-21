@@ -15,6 +15,7 @@ import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 public class AWStructureSounds {
 	public static final SoundEvent PROTECTION_FLAG_CLAIM = InjectionTools.nullValue();
 	public static final SoundEvent COFFIN_OPENS = InjectionTools.nullValue();
+	public static final SoundEvent URN_BREAK = InjectionTools.nullValue();
 
 	private AWStructureSounds() {}
 
@@ -24,6 +25,7 @@ public class AWStructureSounds {
 
 		registry.register(createSoundEvent("protection_flag_claim"));
 		registry.register(createSoundEvent("coffin_opens"));
+		registry.register(createSoundEvent("urn_break"));
 	}
 
 	private static SoundEvent createSoundEvent(String soundName) {

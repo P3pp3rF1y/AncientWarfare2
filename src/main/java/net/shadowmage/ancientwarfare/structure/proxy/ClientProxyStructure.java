@@ -26,7 +26,6 @@ import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.event.StructureBoundingBoxRenderer;
 import net.shadowmage.ancientwarfare.structure.gui.GuiGateControl;
 import net.shadowmage.ancientwarfare.structure.gui.GuiGateControlCreative;
-import net.shadowmage.ancientwarfare.structure.render.CoffinRenderer;
 import net.shadowmage.ancientwarfare.structure.render.DraftingStationRenderer;
 import net.shadowmage.ancientwarfare.structure.render.ParticleDummyModel;
 import net.shadowmage.ancientwarfare.structure.render.PreviewRenderer;
