@@ -229,6 +229,12 @@ tile.stool_birch.name=Birch Wood Stool
 tile.stool_jungle.name=Jungle Wood Stool
 tile.stool_acacia.name=Acacia Wood Stool
 tile.stool_dark_oak.name=Dark Oak Wood Stool
+tile.table_oak.name=Oak Wood Table
+tile.table_spruce.name=Spruce Wood Table
+tile.table_birch.name=Birch Wood Table
+tile.table_jungle.name=Jungle Wood Table
+tile.table_acacia.name=Acacia Wood Table
+tile.table_dark_oak.name=Dark Oak Wood Table
 tile.urn.name=Urn
 
 #colors

@@ -30,6 +30,7 @@ import net.shadowmage.ancientwarfare.structure.block.BlockSoundBlock;
 import net.shadowmage.ancientwarfare.structure.block.BlockStool;
 import net.shadowmage.ancientwarfare.structure.block.BlockStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.block.BlockStructureScanner;
+import net.shadowmage.ancientwarfare.structure.block.BlockTable;
 import net.shadowmage.ancientwarfare.structure.block.BlockTotemCube;
 import net.shadowmage.ancientwarfare.structure.block.BlockTotemPart;
 import net.shadowmage.ancientwarfare.structure.block.BlockUrn;
@@ -48,6 +49,7 @@ import net.shadowmage.ancientwarfare.structure.item.ItemBlockProtectionFlag;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockTotemPart;
 import net.shadowmage.ancientwarfare.structure.item.ItemLootChestPlacer;
+import net.shadowmage.ancientwarfare.structure.item.WoodItemBlock;
 import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedLootChest;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
@@ -99,6 +101,7 @@ public class AWStructureBlocks {
 	public static final Block COFFIN = InjectionTools.nullValue();
 	public static final Block STOOL = InjectionTools.nullValue();
 	public static final Block URN = InjectionTools.nullValue();
+	public static final Block TABLE = InjectionTools.nullValue();
 
 	@SuppressWarnings("ConstantConditions")
 	@SubscribeEvent
@@ -134,17 +137,19 @@ public class AWStructureBlocks {
 
 		registry.register(new ItemBlockBase(LOOT_BASKET));
 		registry.register(new ItemBlockCoffin(COFFIN));
+		registry.register(new WoodItemBlock(STOOL));
+		registry.register(new ItemBlockBase(URN));
+		registry.register(new WoodItemBlock(TABLE));
 
+		registerLootContainers();
+	}
+
+	private static void registerLootContainers() {
 		ItemLootChestPlacer.registerLootContainer(new ItemStack(ADVANCED_LOOT_CHEST));
 		ItemLootChestPlacer.registerLootContainer(new ItemStack(LOOT_BASKET));
-
 		NonNullList<ItemStack> subBlocks = NonNullList.create();
 		COFFIN.getSubBlocks(AncientWarfareStructure.TAB, subBlocks);
 		subBlocks.forEach(ItemLootChestPlacer::registerLootContainer);
-
-		registry.register(new BlockStool.Item(STOOL));
-
-		registry.register(new ItemBlockBase(URN));
 		ItemLootChestPlacer.registerLootContainer(new ItemStack(URN));
 	}
 
@@ -211,6 +216,8 @@ public class AWStructureBlocks {
 
 		registry.register(new BlockUrn());
 		registerTile(TileUrn.class, "urn_tile");
+
+		registry.register(new BlockTable());
 	}
 
 	private static void registerTile(Class<? extends TileEntity> teClass, String teId) {

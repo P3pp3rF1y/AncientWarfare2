@@ -1,9 +1,13 @@
 package net.shadowmage.ancientwarfare.structure.block;
 
+import codechicken.lib.raytracer.RayTracer;
+import com.google.common.collect.ImmutableList;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,15 +22,16 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.shadowmage.ancientwarfare.core.util.RayTraceUtils;
 import net.shadowmage.ancientwarfare.structure.util.BlockStateProperties;
 import net.shadowmage.ancientwarfare.structure.util.WoodVariantHelper;
 
-public class BlockStool extends BlockSeat {
-	private static final Vec3d SEAT_OFFSET = new Vec3d(0.5, 0.35, 0.5);
-	private static final AxisAlignedBB STOOL_AABB = new AxisAlignedBB(3 / 16D, 0D, 3 / 16D, 13 / 16D, 9 / 16D, 13 / 16D);
+import javax.annotation.Nullable;
+import java.util.List;
 
-	public BlockStool() {
-		super(Material.WOOD, "stool");
+public class BlockTable extends BlockBaseStructure {
+	public BlockTable() {
+		super(Material.WOOD, "table");
 	}
 
 	@Override
@@ -79,17 +84,34 @@ public class BlockStool extends BlockSeat {
 
 	@Override
 	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
-		return BlockFaceShape.UNDEFINED;
+		return face == EnumFacing.UP ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
+	}
+
+	private static final List<AxisAlignedBB> AABBs = ImmutableList.of(
+			new AxisAlignedBB(0, 14 / 16D, 0, 1, 1, 1),
+			new AxisAlignedBB(0, 0, 0, 2 / 16D, 14 / 16D, 2 / 16D),
+			new AxisAlignedBB(14 / 16D, 0, 0, 1, 14 / 16D, 2 / 16D),
+			new AxisAlignedBB(14 / 16D, 0, 14 / 16D, 1, 14 / 16D, 1),
+			new AxisAlignedBB(0, 0, 14 / 16D, 2 / 16D, 14 / 16D, 1));
+
+	@Nullable
+	@Override
+	public RayTraceResult collisionRayTrace(IBlockState blockState, World worldIn, BlockPos pos, Vec3d start, Vec3d end) {
+		return RayTraceUtils.raytraceMultiAABB(AABBs, pos, start, end, (rtr, aabb) -> rtr);
 	}
 
 	@Override
-	protected Vec3d getSeatOffset() {
-		return SEAT_OFFSET;
-	}
+	@SideOnly(Side.CLIENT)
+	public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos) {
+		EntityPlayerSP player = Minecraft.getMinecraft().player;
+		Vec3d start = RayTracer.getStartVec(player);
+		Vec3d end = RayTracer.getEndVec(player);
+		AxisAlignedBB axisAlignedBB = RayTraceUtils.raytraceMultiAABB(AABBs, pos, start, end, (rtr, aabb) -> aabb);
+		if (axisAlignedBB == null) {
+			axisAlignedBB = AABBs.get(0);
+		}
 
-	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		return STOOL_AABB;
+		return axisAlignedBB.offset(pos);
 	}
 
 	@Override
