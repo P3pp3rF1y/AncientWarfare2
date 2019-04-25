@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.structure.block;
 
-import codechicken.lib.raytracer.RayTracer;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
@@ -104,14 +103,7 @@ public class BlockTable extends BlockBaseStructure {
 	@SideOnly(Side.CLIENT)
 	public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos) {
 		EntityPlayerSP player = Minecraft.getMinecraft().player;
-		Vec3d start = RayTracer.getStartVec(player);
-		Vec3d end = RayTracer.getEndVec(player);
-		AxisAlignedBB axisAlignedBB = RayTraceUtils.raytraceMultiAABB(AABBs, pos, start, end, (rtr, aabb) -> aabb);
-		if (axisAlignedBB == null) {
-			axisAlignedBB = AABBs.get(0);
-		}
-
-		return axisAlignedBB.offset(pos);
+		return RayTraceUtils.getSelectedBoundingBox(AABBs, pos, player);
 	}
 
 	@Override

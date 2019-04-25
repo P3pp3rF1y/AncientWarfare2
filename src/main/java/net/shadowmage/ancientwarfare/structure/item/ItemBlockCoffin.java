@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.item;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -11,13 +10,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.item.ItemBlockBase;
 import net.shadowmage.ancientwarfare.core.util.NBTBuilder;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
+import net.shadowmage.ancientwarfare.structure.util.MultiBlockHelper;
 
 public class ItemBlockCoffin extends ItemBlockBase {
 	public ItemBlockCoffin(Block block) {
@@ -26,30 +25,7 @@ public class ItemBlockCoffin extends ItemBlockBase {
 
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		IBlockState state = world.getBlockState(pos);
-		Block block = state.getBlock();
-
-		if (!block.isReplaceable(world, pos)) {
-			pos = pos.offset(facing);
-		}
-
-		ItemStack itemstack = player.getHeldItem(hand);
-
-		if (!itemstack.isEmpty() && player.capabilities.allowEdit && mayPlace(world, pos, facing, player)) {
-			int i = getMetadata(itemstack.getMetadata());
-			IBlockState placementState = this.block.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, i, player, hand);
-
-			if (placeBlockAt(itemstack, player, world, pos, facing, hitX, hitY, hitZ, placementState)) {
-				placementState = world.getBlockState(pos);
-				SoundType soundtype = placementState.getBlock().getSoundType(placementState, world, pos, player);
-				world.playSound(player, pos, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
-				itemstack.shrink(1);
-			}
-
-			return EnumActionResult.SUCCESS;
-		} else {
-			return EnumActionResult.FAIL;
-		}
+		return MultiBlockHelper.onMultiBlockItemUse(this, player, world, pos, hand, facing, hitX, hitY, hitZ, this::mayPlace);
 	}
 
 	private boolean mayPlace(World world, BlockPos pos, EnumFacing sidePlacedOn, EntityPlayer placer) {

@@ -4,6 +4,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.math.BlockPos;
@@ -12,6 +13,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
@@ -26,6 +28,7 @@ public class TemplateRuleBlockTile<T extends TileEntity> extends TemplateRuleVan
 
 	public static final String PLUGIN_NAME = "blockTile";
 	public NBTTagCompound tag;
+	public EnumFacing facing;
 
 	private Tuple<Integer, T> tileCache = null;
 
@@ -37,7 +40,20 @@ public class TemplateRuleBlockTile<T extends TileEntity> extends TemplateRuleVan
 			tag.removeTag("x");
 			tag.removeTag("y");
 			tag.removeTag("z");
+			if (t instanceof BlockRotationHandler.IRotatableTile) {
+				facing = rotateFacing(turns, ((BlockRotationHandler.IRotatableTile) t).getPrimaryFacing());
+			}
 		});
+
+	}
+
+	private EnumFacing rotateFacing(int turns, EnumFacing o) {
+		if (o.getAxis() != EnumFacing.Axis.Y) {
+			for (int i = 0; i < turns; i++) {
+				o = o.rotateY();
+			}
+		}
+		return o;
 	}
 
 	public TemplateRuleBlockTile() {
@@ -70,12 +86,14 @@ public class TemplateRuleBlockTile<T extends TileEntity> extends TemplateRuleVan
 	public void writeRuleData(NBTTagCompound tag) {
 		super.writeRuleData(tag);
 		tag.setTag("teData", this.tag);
+		tag.setString("facing", facing.getName());
 	}
 
 	@Override
 	public void parseRule(NBTTagCompound tag) {
 		super.parseRule(tag);
 		this.tag = tag.getCompoundTag("teData");
+		facing = EnumFacing.byName(tag.getString("facing"));
 	}
 
 	@Override
@@ -125,7 +143,9 @@ public class TemplateRuleBlockTile<T extends TileEntity> extends TemplateRuleVan
 
 	@SuppressWarnings("squid:S1172") // parameters supposed to be used by overriding methods
 	protected void rotateTe(T te, int turns) {
-		//noop by default
+		if (te instanceof BlockRotationHandler.IRotatableTile) {
+			((BlockRotationHandler.IRotatableTile) te).setPrimaryFacing(rotateFacing(turns, facing));
+		}
 	}
 
 	@Override

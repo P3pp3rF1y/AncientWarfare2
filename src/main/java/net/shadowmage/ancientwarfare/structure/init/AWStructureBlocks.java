@@ -19,6 +19,7 @@ import net.shadowmage.ancientwarfare.structure.block.BlockAdvancedLootChest;
 import net.shadowmage.ancientwarfare.structure.block.BlockAdvancedSpawner;
 import net.shadowmage.ancientwarfare.structure.block.BlockBrazierEmber;
 import net.shadowmage.ancientwarfare.structure.block.BlockBrazierFlame;
+import net.shadowmage.ancientwarfare.structure.block.BlockChair;
 import net.shadowmage.ancientwarfare.structure.block.BlockCoffin;
 import net.shadowmage.ancientwarfare.structure.block.BlockDraftingStation;
 import net.shadowmage.ancientwarfare.structure.block.BlockFirePit;
@@ -42,6 +43,7 @@ import net.shadowmage.ancientwarfare.structure.block.altar.BlockAltarSun;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockAdvancedSpawner;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockBrazierEmber;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockBrazierFlame;
+import net.shadowmage.ancientwarfare.structure.item.ItemBlockChair;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockCoffin;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockColored;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockFirePit;
@@ -54,6 +56,7 @@ import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedLootChest;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
 import net.shadowmage.ancientwarfare.structure.tile.TileAltarCandle;
+import net.shadowmage.ancientwarfare.structure.tile.TileChair;
 import net.shadowmage.ancientwarfare.structure.tile.TileCoffin;
 import net.shadowmage.ancientwarfare.structure.tile.TileColored;
 import net.shadowmage.ancientwarfare.structure.tile.TileDraftingStation;
@@ -102,6 +105,7 @@ public class AWStructureBlocks {
 	public static final Block STOOL = InjectionTools.nullValue();
 	public static final Block URN = InjectionTools.nullValue();
 	public static final Block TABLE = InjectionTools.nullValue();
+	public static final Block CHAIR = InjectionTools.nullValue();
 
 	@SuppressWarnings("ConstantConditions")
 	@SubscribeEvent
@@ -140,6 +144,7 @@ public class AWStructureBlocks {
 		registry.register(new WoodItemBlock(STOOL));
 		registry.register(new ItemBlockBase(URN));
 		registry.register(new WoodItemBlock(TABLE));
+		registry.register(new ItemBlockChair(CHAIR));
 
 		registerLootContainers();
 	}
@@ -218,6 +223,9 @@ public class AWStructureBlocks {
 		registerTile(TileUrn.class, "urn_tile");
 
 		registry.register(new BlockTable());
+
+		registry.register(new BlockChair());
+		registerTile(TileChair.class, "chair_tile");
 	}
 
 	private static void registerTile(Class<? extends TileEntity> teClass, String teId) {

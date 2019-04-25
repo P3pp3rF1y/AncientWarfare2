@@ -15,7 +15,11 @@ import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.structure.block.WoodVariant;
 import net.shadowmage.ancientwarfare.structure.item.WoodItemBlock;
 
+import java.util.function.UnaryOperator;
+
 public class WoodVariantHelper {
+	private WoodVariantHelper() {}
+
 	private static final String VARIANT_TAG = "variant";
 
 	public static void getSubBlocks(Block block, NonNullList<ItemStack> items) {
@@ -26,11 +30,12 @@ public class WoodVariantHelper {
 		}
 	}
 
-	public static void setStackVariant(WoodVariant variant, ItemStack stack) {
+	private static void setStackVariant(WoodVariant variant, ItemStack stack) {
 		stack.setTagInfo(VARIANT_TAG, new NBTTagString(variant.getName()));
 	}
 
 	public static WoodVariant getVariant(ItemStack stack) {
+		//noinspection ConstantConditions
 		return stack.hasTagCompound() && stack.getTagCompound().hasKey(VARIANT_TAG) ? WoodVariant.byName(stack.getTagCompound().getString(VARIANT_TAG)) : WoodVariant.OAK;
 	}
 
@@ -48,6 +53,11 @@ public class WoodVariantHelper {
 
 	@SideOnly(Side.CLIENT)
 	public static void registerClient(Block block) {
+		registerClient(block, propString -> propString);
+	}
+
+	@SideOnly(Side.CLIENT)
+	public static void registerClient(Block block, UnaryOperator<String> updatePropertyString) {
 		//noinspection ConstantConditions
 		ResourceLocation baseLocation = new ResourceLocation(AncientWarfareCore.MOD_ID, "structure/" + block.getRegistryName().getResourcePath());
 
@@ -59,7 +69,7 @@ public class WoodVariantHelper {
 			}
 		});
 
-		String modelPropString = "variant=%s";
+		String modelPropString = updatePropertyString.apply("variant=%s");
 
 		ModelLoader.setCustomMeshDefinition(WoodItemBlock.getItemFromBlock(block), stack -> {
 			if (!stack.hasTagCompound()) {

@@ -1,14 +1,12 @@
 package net.shadowmage.ancientwarfare.structure.block;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -19,6 +17,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.structure.util.BlockStateProperties;
+import net.shadowmage.ancientwarfare.structure.util.RotationLimit;
 import net.shadowmage.ancientwarfare.structure.util.WoodVariantHelper;
 
 public class BlockStool extends BlockSeat {
@@ -63,28 +62,13 @@ public class BlockStool extends BlockSeat {
 	}
 
 	@Override
-	public boolean isFullCube(IBlockState state) {
-		return false;
-	}
-
-	@Override
-	public boolean isOpaqueCube(IBlockState state) {
-		return false;
-	}
-
-	@Override
-	public boolean isNormalCube(IBlockState state) {
-		return false;
-	}
-
-	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
-		return BlockFaceShape.UNDEFINED;
-	}
-
-	@Override
 	protected Vec3d getSeatOffset() {
 		return SEAT_OFFSET;
+	}
+
+	@Override
+	public RotationLimit getRotationLimit(World world, BlockPos pos, IBlockState state) {
+		return RotationLimit.NO_LIMIT;
 	}
 
 	@Override

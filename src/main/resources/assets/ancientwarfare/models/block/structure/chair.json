@@ -1,0 +1,123 @@
+{
+    "credit": "Made by WinDanesz, with Blockbench",
+    "textures": {
+        "particle": "blocks/planks_oak"
+    },
+    "elements": [
+        {
+            "name": "seat",
+            "from": [1, 9, 1],
+            "to": [15, 11, 15],
+            "faces": {
+                "north": {"uv": [0, 0, 16, 2], "texture": "#0"},
+                "east": {"uv": [0, 0, 16, 2], "texture": "#0"},
+                "south": {"uv": [0, 0, 16, 2], "texture": "#0"},
+                "west": {"uv": [0, 0, 16, 2], "texture": "#0"},
+                "up": {"uv": [0, 0, 16, 16], "texture": "#0"},
+                "down": {"uv": [0, 0, 16, 16], "texture": "#0"}
+            }
+        },
+        {
+            "name": "back",
+            "from": [1, 11, 1],
+            "to": [15, 25, 3],
+            "faces": {
+                "north": {"uv": [0, 0, 16, 16], "rotation": 90, "texture": "#0"},
+                "east": {"uv": [0, 0, 16, 2], "rotation": 90, "texture": "#0"},
+                "south": {"uv": [0, 0, 16, 16], "rotation": 90, "texture": "#0"},
+                "west": {"uv": [0, 0, 16, 2], "rotation": 270, "texture": "#0"},
+                "up": {"uv": [0, 0, 16, 2], "texture": "#0"}
+            }
+        },
+        {
+            "name": "leg",
+            "from": [1, 0, 13],
+            "to": [3, 9, 15],
+            "faces": {
+                "north": {"uv": [0, 7, 2, 16], "texture": "#0"},
+                "east": {"uv": [6, 7, 8, 16], "texture": "#0"},
+                "south": {"uv": [2, 7, 4, 16], "texture": "#0"},
+                "west": {"uv": [4, 7, 6, 16], "texture": "#0"},
+                "down": {"uv": [0, 0, 2, 2], "texture": "#0"}
+            }
+        },
+        {
+            "name": "leg",
+            "from": [13, 0, 13],
+            "to": [15, 9, 15],
+            "faces": {
+                "north": {"uv": [0, 7, 2, 16], "texture": "#0"},
+                "east": {"uv": [6, 7, 8, 16], "texture": "#0"},
+                "south": {"uv": [1, 7, 3, 16], "texture": "#0"},
+                "west": {"uv": [4, 7, 6, 16], "texture": "#0"},
+                "down": {"uv": [0, 0, 2, 2], "texture": "#0"}
+            }
+        },
+        {
+            "name": "leg",
+            "from": [13.01658, -0.01046, 0.99386],
+            "to": [15.01658, 8.98954, 2.99386],
+            "faces": {
+                "north": {"uv": [1, 7, 3, 16], "texture": "#0"},
+                "east": {"uv": [5, 7, 7, 16], "texture": "#0"},
+                "south": {"uv": [3, 7, 5, 16], "texture": "#0"},
+                "west": {"uv": [4, 7, 6, 16], "texture": "#0"},
+                "up": {"uv": [0, 0, 2, 2], "texture": "#0"},
+                "down": {"uv": [0, 0, 2, 2], "texture": "#0"}
+            }
+        },
+        {
+            "name": "leg",
+            "from": [1.01658, -0.01046, 0.99386],
+            "to": [3.01658, 8.98954, 2.99386],
+            "faces": {
+                "north": {"uv": [0, 7, 2, 16], "texture": "#0"},
+                "east": {"uv": [5, 7, 7, 16], "texture": "#0"},
+                "south": {"uv": [2, 7, 4, 16], "texture": "#0"},
+                "west": {"uv": [4, 7, 6, 16], "texture": "#0"},
+                "up": {"uv": [0, 0, 2, 2], "texture": "#0"},
+                "down": {"uv": [0, 0, 2, 2], "texture": "#0"}
+            }
+        }
+    ],
+    "display": {
+        "thirdperson_righthand": {
+            "rotation": [75, 225, 0],
+            "translation": [0, 2.5, 0],
+            "scale": [0.375, 0.375, 0.375]
+        },
+        "thirdperson_lefthand": {
+            "rotation": [75, 225, 0],
+            "translation": [0, 2.5, 0],
+            "scale": [0.375, 0.375, 0.375]
+        },
+        "firstperson_righthand": {
+            "rotation": [0, 225, 0],
+            "scale": [0.4, 0.4, 0.4]
+        },
+        "firstperson_lefthand": {
+            "rotation": [0, 225, 0],
+            "scale": [0.4, 0.4, 0.4]
+        },
+        "ground": {
+            "translation": [0, 2.5, 0],
+            "scale": [0.25, 0.25, 0.25]
+        },
+        "gui": {
+            "rotation": [30, 225, 0],
+            "translation": [0, -1.5, 0],
+            "scale": [0.5, 0.5, 0.5]
+        },
+        "fixed": {
+            "rotation": [0, 0, 0],
+            "translation": [0, -4, -3.5],
+            "scale": [0.5, 0.5, 0.5]
+        }
+    },
+    "groups": [
+        {
+            "name": "chair",
+            "children": [0, 1, 2, 3, 4, 5]
+        }
+    ]
+}

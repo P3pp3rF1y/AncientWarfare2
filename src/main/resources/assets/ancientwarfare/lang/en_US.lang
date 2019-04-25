@@ -235,6 +235,12 @@ tile.table_birch.name=Birch Wood Table
 tile.table_jungle.name=Jungle Wood Table
 tile.table_acacia.name=Acacia Wood Table
 tile.table_dark_oak.name=Dark Oak Wood Table
+tile.chair_oak.name=Oak Wood Chair
+tile.chair_spruce.name=Spruce Wood Chair
+tile.chair_birch.name=Birch Wood Chair
+tile.chair_jungle.name=Jungle Wood Chair
+tile.chair_acacia.name=Acacia Wood Chair
+tile.chair_dark_oak.name=Dark Oak Wood Chair
 tile.urn.name=Urn
 
 #colors
