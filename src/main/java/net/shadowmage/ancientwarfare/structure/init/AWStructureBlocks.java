@@ -34,6 +34,7 @@ import net.shadowmage.ancientwarfare.structure.block.BlockStructureScanner;
 import net.shadowmage.ancientwarfare.structure.block.BlockTable;
 import net.shadowmage.ancientwarfare.structure.block.BlockTotemCube;
 import net.shadowmage.ancientwarfare.structure.block.BlockTotemPart;
+import net.shadowmage.ancientwarfare.structure.block.BlockTribalStool;
 import net.shadowmage.ancientwarfare.structure.block.BlockUrn;
 import net.shadowmage.ancientwarfare.structure.block.altar.BlockAltarCandle;
 import net.shadowmage.ancientwarfare.structure.block.altar.BlockAltarLectern;
@@ -106,6 +107,7 @@ public class AWStructureBlocks {
 	public static final Block URN = InjectionTools.nullValue();
 	public static final Block TABLE = InjectionTools.nullValue();
 	public static final Block CHAIR = InjectionTools.nullValue();
+	public static final Block TRIBAL_STOOL = InjectionTools.nullValue();
 
 	@SuppressWarnings("ConstantConditions")
 	@SubscribeEvent
@@ -145,6 +147,7 @@ public class AWStructureBlocks {
 		registry.register(new ItemBlockBase(URN));
 		registry.register(new WoodItemBlock(TABLE));
 		registry.register(new ItemBlockChair(CHAIR));
+		registry.register(new ItemBlockBase(TRIBAL_STOOL));
 
 		registerLootContainers();
 	}
@@ -226,6 +229,8 @@ public class AWStructureBlocks {
 
 		registry.register(new BlockChair());
 		registerTile(TileChair.class, "chair_tile");
+
+		registry.register(new BlockTribalStool());
 	}
 
 	private static void registerTile(Class<? extends TileEntity> teClass, String teId) {

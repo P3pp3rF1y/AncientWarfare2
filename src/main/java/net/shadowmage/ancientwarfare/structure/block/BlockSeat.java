@@ -17,6 +17,8 @@ import net.shadowmage.ancientwarfare.structure.util.RotationLimit;
 import java.util.List;
 
 public abstract class BlockSeat extends BlockBaseStructure {
+	private static final Vec3d DEFAULT_SEAT_OFFSET = new Vec3d(0.5, 0.5, 0.5);
+
 	public BlockSeat(Material material, String regName) {
 		super(material, regName);
 	}
@@ -32,7 +34,7 @@ public abstract class BlockSeat extends BlockBaseStructure {
 	}
 
 	protected Vec3d getSeatOffset() {
-		return new Vec3d(0.5, 0.5, 0.5);
+		return DEFAULT_SEAT_OFFSET;
 	}
 
 	private boolean isOccupied(World world, BlockPos pos) {
