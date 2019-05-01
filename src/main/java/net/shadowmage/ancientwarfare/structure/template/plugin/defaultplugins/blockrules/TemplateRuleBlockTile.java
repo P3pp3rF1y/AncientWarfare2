@@ -25,10 +25,10 @@ import java.util.Arrays;
 import java.util.Optional;
 
 public class TemplateRuleBlockTile<T extends TileEntity> extends TemplateRuleVanillaBlocks {
-
+	private static final String FACING_TAG = "facing";
 	public static final String PLUGIN_NAME = "blockTile";
 	public NBTTagCompound tag;
-	public EnumFacing facing;
+	public EnumFacing facing = null;
 
 	private Tuple<Integer, T> tileCache = null;
 
@@ -86,14 +86,18 @@ public class TemplateRuleBlockTile<T extends TileEntity> extends TemplateRuleVan
 	public void writeRuleData(NBTTagCompound tag) {
 		super.writeRuleData(tag);
 		tag.setTag("teData", this.tag);
-		tag.setString("facing", facing.getName());
+		if (facing != null) {
+			tag.setString(FACING_TAG, facing.getName());
+		}
 	}
 
 	@Override
 	public void parseRule(NBTTagCompound tag) {
 		super.parseRule(tag);
 		this.tag = tag.getCompoundTag("teData");
-		facing = EnumFacing.byName(tag.getString("facing"));
+		if (tag.hasKey(FACING_TAG)) {
+			facing = EnumFacing.byName(tag.getString(FACING_TAG));
+		}
 	}
 
 	@Override
@@ -143,7 +147,7 @@ public class TemplateRuleBlockTile<T extends TileEntity> extends TemplateRuleVan
 
 	@SuppressWarnings("squid:S1172") // parameters supposed to be used by overriding methods
 	protected void rotateTe(T te, int turns) {
-		if (te instanceof BlockRotationHandler.IRotatableTile) {
+		if (facing != null && te instanceof BlockRotationHandler.IRotatableTile) {
 			((BlockRotationHandler.IRotatableTile) te).setPrimaryFacing(rotateFacing(turns, facing));
 		}
 	}
