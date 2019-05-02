@@ -22,6 +22,7 @@ public class NpcFactionTrader extends NpcFaction {
 
 	private FactionTradeList tradeList = new FactionTradeList();
 	private EntityPlayer trader;
+	private boolean noTradesDespawn = false;
 
 	@SuppressWarnings("unused")
 	public NpcFactionTrader(World world) {
@@ -63,6 +64,9 @@ public class NpcFactionTrader extends NpcFaction {
 	public void onUpdate() {
 		super.onUpdate();
 		if (!world.isRemote) {
+			if (noTradesDespawn && tradeList.isEmpty()) {
+				setDead();
+			}
 			tradeList.tick();
 		}
 	}
@@ -99,6 +103,7 @@ public class NpcFactionTrader extends NpcFaction {
 	public void readEntityFromNBT(NBTTagCompound tag) {
 		super.readEntityFromNBT(tag);
 		tradeList.deserializeNBT(tag.getCompoundTag("tradeList"));
+		noTradesDespawn = true;
 	}
 
 	@Override
