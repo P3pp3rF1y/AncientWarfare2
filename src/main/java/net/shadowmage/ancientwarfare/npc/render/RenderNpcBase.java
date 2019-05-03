@@ -24,8 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RenderNpcBase extends RenderBiped<NpcBase> {
-	private static ModelNpc SMALL_ARMS = new ModelNpc(true);
-	private static ModelNpc REGULAR_ARMS = new ModelNpc(false);
+	private static final ModelNpc SMALL_ARMS = new ModelNpc(true);
+	private static final ModelNpc REGULAR_ARMS = new ModelNpc(false);
 	private boolean isSleeping;
 
 	private List<Integer> renderTasks = new ArrayList<>();
