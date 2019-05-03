@@ -24,13 +24,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RenderNpcBase extends RenderBiped<NpcBase> {
-
+	private static ModelNpc SMALL_ARMS = new ModelNpc(true);
+	private static ModelNpc REGULAR_ARMS = new ModelNpc(false);
 	private boolean isSleeping;
 
 	private List<Integer> renderTasks = new ArrayList<>();
 
 	public RenderNpcBase(RenderManager renderManager) {
-		super(renderManager, new ModelNpc(), 0.6f);
+		super(renderManager, REGULAR_ARMS, 0.6f);
 		addLayer(new LayerBipedArmor(this));
 		addLayer(new LayerHeldItem(this));
 	}
@@ -53,6 +54,8 @@ public class RenderNpcBase extends RenderBiped<NpcBase> {
 
 	@Override
 	public void doRender(NpcBase npc, double x, double y, double z, float par8, float par9) {
+		mainModel = npc.isFemale() ? SMALL_ARMS : REGULAR_ARMS;
+
 		isSleeping = npc.isSleeping();
 		if (isSleeping) {
 			// render the body a bit offset because we're manually shifting the bounding box

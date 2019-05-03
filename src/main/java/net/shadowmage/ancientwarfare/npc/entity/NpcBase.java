@@ -1414,4 +1414,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	public void onStuckDetected() {
 		//noop
 	}
+
+	public boolean isFemale() {
+		return false;
+	}
 }

@@ -10,8 +10,8 @@ import net.minecraft.util.EnumHandSide;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 public class ModelNpc extends ModelPlayer {
-	public ModelNpc() {
-		super(0.0F, false);
+	public ModelNpc(boolean useSmallArms) {
+		super(0.0F, useSmallArms);
 	}
 
 	@Override
