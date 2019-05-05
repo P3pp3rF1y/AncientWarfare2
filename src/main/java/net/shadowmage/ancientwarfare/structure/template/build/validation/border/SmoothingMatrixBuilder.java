@@ -15,6 +15,7 @@ import net.shadowmage.ancientwarfare.structure.worldgen.WorldStructureGenerator;
 
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.BiFunction;
 
 public class SmoothingMatrixBuilder {
 	private final World world;
@@ -38,12 +39,10 @@ public class SmoothingMatrixBuilder {
 
 	private void convertPointsToSmoothingMatrix(int groundY, BorderMatrix borderMatrix, PointType type) {
 		for (BorderPoint point : borderMatrix.getPointsOfType(type)) {
-			SmoothingPoint smoothingPoint = addPoint(point.getX(), point.getZ(), point.getType(), groundY);
-			if (type == PointType.OUTER_BORDER || type == PointType.SMOOTHED_BORDER) {
-				BorderPoint borderPoint = point.getClosestBorderPoint();
-				smoothingMatrix.getPoint(borderPoint.getX(), borderPoint.getZ()).ifPresent(p -> smoothingPoint.setStructureBorder(p, point.getStructureBorderDistance()));
-			}
+			SmoothingPoint smoothingPoint;
 			if (type == PointType.SMOOTHED_BORDER) {
+				smoothingPoint = addPoint(point.getX(), point.getZ(), PointType.SMOOTHED_BORDER,
+						(x, z) -> getYBelowFloatingIsland(getMinPos().getX() + x, BlockTools.getTopFilledHeight(world, getMinPos().getX() + x, getMinPos().getZ() + z, false), getMinPos().getZ() + z, false));
 				BorderPoint outerBorder = point.getOuterBorderPoint();
 				BorderPoint ref = point.getReferencePoint();
 				Optional<SmoothingPoint> outerBorderPoint = smoothingMatrix.getPoint(outerBorder.getX(), outerBorder.getZ());
@@ -51,6 +50,12 @@ public class SmoothingMatrixBuilder {
 				if (outerBorderPoint.isPresent() && refPoint.isPresent()) {
 					smoothingPoint.setOuterBorderAndReferencePoint(outerBorderPoint.get(), refPoint.get());
 				}
+			} else {
+				smoothingPoint = addPoint(point.getX(), point.getZ(), point.getType(), groundY);
+			}
+			if (type == PointType.OUTER_BORDER || type == PointType.SMOOTHED_BORDER) {
+				BorderPoint borderPoint = point.getClosestBorderPoint();
+				smoothingMatrix.getPoint(borderPoint.getX(), borderPoint.getZ()).ifPresent(p -> smoothingPoint.setStructureBorder(p, point.getStructureBorderDistance()));
 			}
 		}
 	}
@@ -126,7 +131,11 @@ public class SmoothingMatrixBuilder {
 	}
 
 	private SmoothingPoint addPoint(int x, int z, PointType type, int yLevel) {
-		BlockPos pos = new BlockPos(getMinPos().getX() + x, getY(x, z, yLevel), getMinPos().getZ() + z);
+		return addPoint(x, z, type, (xCoord, zCoord) -> getY(xCoord, zCoord, yLevel));
+	}
+
+	private SmoothingPoint addPoint(int x, int z, PointType type, BiFunction<Integer, Integer, Integer> getY) {
+		BlockPos pos = new BlockPos(getMinPos().getX() + x, getY.apply(x, z), getMinPos().getZ() + z);
 		Optional<IBlockState> state = getPointBlockState(pos, type);
 		return state.map(iBlockState -> smoothingMatrix.addPoint(x, z, pos, type, iBlockState)).orElseGet(() -> smoothingMatrix.addPoint(x, z, pos, type));
 	}
