@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.gui;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
@@ -21,6 +22,7 @@ public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
 	Button button;
 	private Checkbox doNotPursueCheckbox;
 	private static int buttonX = 8 + 18 + 18 + 18 + 18 + 4;
+	private Button skinButton;
 
 	public GuiNpcInventory(ContainerBase container) {
 		super(container);
@@ -43,14 +45,14 @@ public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
 
 		label = new Label(8 + 18 + 18 + 4, 21, "guistrings.npc.npc_texture");
 		addGuiElement(label);
-		Text textureInput = new Text(75, 20, 95, getContainer().entity.getCustomTex(), this) {
+
+		skinButton = new Button(75, 20, 95, 12, getContainer().skinSettings.getDescription()) {
 			@Override
-			public void onTextUpdated(String oldText, String newText) {
-				getContainer().handleNpcTextureUpdate(newText);
-				getContainer().entity.setCustomTexRef(newText);
+			protected void onPressed() {
+				Minecraft.getMinecraft().displayGuiScreen(new GuiSkinSelection(GuiNpcInventory.this, getContainer()));
 			}
 		};
-		addGuiElement(textureInput);
+		addGuiElement(skinButton);
 
 		if (getContainer().entity instanceof NpcBase) {
 
@@ -163,6 +165,7 @@ public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
 		if (getContainer().isArcher) {
 			doNotPursueCheckbox.setChecked(getContainer().doNotPursue);
 		}
+		skinButton.setText(getContainer().skinSettings.getDescription());
 	}
 
 	@Override

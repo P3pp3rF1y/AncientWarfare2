@@ -5,12 +5,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.items.SlotItemHandler;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.inventory.NpcEquipmentHandler;
+import net.shadowmage.ancientwarfare.npc.skin.NpcSkinSettings;
 
-public class ContainerNpcInventory extends ContainerNpcBase<NpcBase> {
+public class ContainerNpcInventory extends ContainerNpcBase<NpcBase> implements ISkinSettingsContainer {
 	public boolean doNotPursue; //if the npc should not pursue targets away from its position/route
 	public boolean isArcher = entity.getNpcSubType().equals("archer");
 	public final int guiHeight;
 	private String name;
+	public NpcSkinSettings skinSettings;
 
 	public ContainerNpcInventory(EntityPlayer player, int x, int y, int z) {
 		super(player, x);
@@ -27,14 +29,16 @@ public class ContainerNpcInventory extends ContainerNpcBase<NpcBase> {
 		guiHeight = addPlayerSlots(8 + 5 * 18 + 8 + 18) + 8;
 
 		name = entity.getCustomNameTag();
-
 		doNotPursue = entity.getDoNotPursue();
+		skinSettings = entity.getSkinSettings();
 	}
+
 	public void sendChangesToServer() {
 		NBTTagCompound tag = new NBTTagCompound();
 		tag.setBoolean("donotpursue", doNotPursue);
 		sendDataToServer(tag);
 	}
+
 	public void sendInitData() {
 		NBTTagCompound tag = new NBTTagCompound();
 		tag.setBoolean("donotpursue", doNotPursue);
@@ -62,8 +66,9 @@ public class ContainerNpcInventory extends ContainerNpcBase<NpcBase> {
 			if (tag.hasKey("donotpursue")) {
 				doNotPursue = tag.getBoolean("donotpursue");
 			}
-			if (tag.hasKey("customTexture")) {
-				entity.setCustomTexRef(tag.getString("customTexture"));
+			if (tag.hasKey("skinSettings")) {
+				skinSettings = NpcSkinSettings.deserializeNBT(tag.getCompoundTag("skinSettings")).minimizeData();
+				entity.setSkinSettings(skinSettings);
 			}
 		}
 		refreshGui();
@@ -76,9 +81,10 @@ public class ContainerNpcInventory extends ContainerNpcBase<NpcBase> {
 		}
 	}
 
-	public void handleNpcTextureUpdate(String tex) {
+	@Override
+	public void handleNpcSkinUpdate() {
 		NBTTagCompound tag = new NBTTagCompound();
-		tag.setString("customTexture", tex);
+		tag.setTag("skinSettings", skinSettings.serializeNBT());
 		sendDataToServer(tag);
 	}
 
@@ -86,7 +92,7 @@ public class ContainerNpcInventory extends ContainerNpcBase<NpcBase> {
 	public void onContainerClosed(EntityPlayer p_75134_1_) {
 		super.onContainerClosed(p_75134_1_);
 		entity.setCustomNameTag(name);
-		entity.updateTexture();
+		entity.setSkinSettings(skinSettings);
 		entity.setDoNotPursue(doNotPursue);
 	}
 
@@ -94,5 +100,15 @@ public class ContainerNpcInventory extends ContainerNpcBase<NpcBase> {
 		NBTTagCompound tag = new NBTTagCompound();
 		tag.setString("customName", name);
 		sendDataToServer(tag);
+	}
+
+	@Override
+	public NpcSkinSettings getSkinSettings() {
+		return skinSettings;
+	}
+
+	@Override
+	public void setSkinSettings(NpcSkinSettings skinSettings) {
+		this.skinSettings = skinSettings;
 	}
 }

@@ -32,6 +32,10 @@ public class NpcCommonProxy extends CommonProxyBase {
 	}
 
 	public Optional<NBTTagCompound> cacheProfile(WorldServer worldServer, final String name) {
+		if (name.isEmpty()) {
+			return Optional.empty();
+		}
+
 		Optional<GameProfile> gp = getProfile(name);
 		if (!gp.isPresent()) {
 			//noinspection ConstantConditions

@@ -1301,3 +1301,15 @@ gui.ancientwarfarenpc.no_chest_access_flag_not_claimed=You can't open the chest 
 gui.ancientwarfarestructure.structure_hostile_alive=Can't conquer structure with hostile entity inside at: %s
 gui.ancientwarfarestructure.structure_spawner_present=Can't conquer structure with spawner block inside at: %s
 gui.ancientwarfarestructure.structure_conquered=You have conquered %s
+
+gui.ancientwarfarenpc.skin_info.default=Default Skin
+gui.ancientwarfarenpc.skin_info.player=Player: %s
+gui.ancientwarfarenpc.skin_info.npc_type_random=random
+
+gui.ancientwarfarenpc.skin_selection.default=Default
+gui.ancientwarfarenpc.skin_selection.player=Player
+gui.ancientwarfarenpc.skin_selection.npc_type=Npc type
+gui.ancientwarfarenpc.skin_selection.select_npc_type=Select Npc Type
+gui.ancientwarfarenpc.skin_selection.select_npc_skin=Select Npc Skin
+gui.ancientwarfarenpc.skin_selection.random=Random
+gui.ancientwarfarenpc.skin_selection.female_model=Female Model

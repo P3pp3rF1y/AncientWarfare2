@@ -3,22 +3,23 @@ package net.shadowmage.ancientwarfare.npc.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
+import net.shadowmage.ancientwarfare.npc.skin.NpcSkinSettings;
 
-public class ContainerNpcCreativeControls extends ContainerNpcBase<NpcBase> {
+public class ContainerNpcCreativeControls extends ContainerNpcBase<NpcBase> implements ISkinSettingsContainer {
 
 	public String ownerName;//allow for editing owner name for player-owned, no effect on faction-owned
 	public boolean wander;//temp flag in all npcs
 	public int maxHealth;
 	public int attackDamage;//faction based only
 	public int armorValue;//faction based only
-	public String customTexRef;//might as well allow for player-owned as well...
+	public NpcSkinSettings skinSettings;
 
 	private boolean hasChanged;//if set to true, will set all flags to entity on container close
 
 	public ContainerNpcCreativeControls(EntityPlayer player, int x, int y, int z) {
 		super(player, x);
 		ownerName = entity.getOwner().getName();
-		customTexRef = entity.getCustomTex();
+		skinSettings = entity.getSkinSettings();
 		wander = entity.getIsAIEnabled();
 		maxHealth = entity.getMaxHealthOverride();
 		attackDamage = entity.getAttackDamageOverride();
@@ -26,48 +27,33 @@ public class ContainerNpcCreativeControls extends ContainerNpcBase<NpcBase> {
 	}
 
 	public void sendChangesToServer() {
+		sendDataToServer(serializeContainerData());
+	}
+
+	private NBTTagCompound serializeContainerData() {
 		NBTTagCompound tag = new NBTTagCompound();
 		tag.setString("ownerName", ownerName);
-		tag.setString("customTex", customTexRef);
+		tag.setTag("skinSettings", skinSettings.serializeNBT());
 		tag.setBoolean("wander", wander);
 		tag.setInteger("maxHealth", maxHealth);
 		tag.setInteger("attackDamage", attackDamage);
 		tag.setInteger("armorValue", armorValue);
-		sendDataToServer(tag);
+		return tag;
 	}
 
 	@Override
 	public void sendInitData() {
-		NBTTagCompound tag = new NBTTagCompound();
-		tag.setString("ownerName", ownerName);
-		tag.setString("customTex", customTexRef);
-		tag.setBoolean("wander", wander);
-		tag.setInteger("maxHealth", maxHealth);
-		tag.setInteger("attackDamage", attackDamage);
-		tag.setInteger("armorValue", armorValue);
-		sendDataToClient(tag);
+		sendDataToClient(serializeContainerData());
 	}
 
 	@Override
 	public void handlePacketData(NBTTagCompound tag) {
-		if (tag.hasKey("ownerName")) {
-			ownerName = tag.getString("ownerName");
-		}
-		if (tag.hasKey("wander")) {
-			wander = tag.getBoolean("wander");
-		}
-		if (tag.hasKey("attackDamage")) {
-			attackDamage = tag.getInteger("attackDamage");
-		}
-		if (tag.hasKey("armorValue")) {
-			armorValue = tag.getInteger("armorValue");
-		}
-		if (tag.hasKey("maxHealth")) {
-			maxHealth = tag.getInteger("maxHealth");
-		}
-		if (tag.hasKey("customTex")) {
-			customTexRef = tag.getString("customTex");
-		}
+		ownerName = tag.getString("ownerName");
+		wander = tag.getBoolean("wander");
+		attackDamage = tag.getInteger("attackDamage");
+		armorValue = tag.getInteger("armorValue");
+		maxHealth = tag.getInteger("maxHealth");
+		skinSettings = NpcSkinSettings.deserializeNBT(tag.getCompoundTag("skinSettings"));
 		hasChanged = true;
 		refreshGui();
 	}
@@ -77,7 +63,7 @@ public class ContainerNpcCreativeControls extends ContainerNpcBase<NpcBase> {
 		if (hasChanged && !player.world.isRemote) {
 			hasChanged = false;
 			entity.setOwnerName(ownerName);
-			entity.setCustomTexRef(customTexRef);
+			entity.setSkinSettings(skinSettings.minimizeData());
 			entity.setAttackDamageOverride(attackDamage);
 			entity.setArmorValueOverride(armorValue);
 			entity.setIsAIEnabled(wander);
@@ -86,4 +72,18 @@ public class ContainerNpcCreativeControls extends ContainerNpcBase<NpcBase> {
 		super.onContainerClosed(par1EntityPlayer);
 	}
 
+	@Override
+	public void handleNpcSkinUpdate() {
+		sendDataToServer("skinSettings", skinSettings.serializeNBT());
+	}
+
+	@Override
+	public NpcSkinSettings getSkinSettings() {
+		return skinSettings;
+	}
+
+	@Override
+	public void setSkinSettings(NpcSkinSettings skinSettings) {
+		this.skinSettings = skinSettings;
+	}
 }

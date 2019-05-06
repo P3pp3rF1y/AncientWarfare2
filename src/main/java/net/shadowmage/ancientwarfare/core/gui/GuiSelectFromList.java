@@ -6,6 +6,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -21,7 +22,7 @@ public class GuiSelectFromList<T> extends GuiContainerBase {
 	private CompositeScrolled area;
 	private Text selectionLabel;
 
-	public GuiSelectFromList(GuiContainerBase parent, T entry, Function<T, String> getDisplayName, Supplier<List<T>> getList, Consumer<T> setEntry) {
+	public GuiSelectFromList(GuiContainerBase parent, @Nullable T entry, Function<T, String> getDisplayName, Supplier<List<T>> getList, Consumer<T> setEntry) {
 		super(parent.getContainer());
 		this.parent = parent;
 		this.entry = entry;

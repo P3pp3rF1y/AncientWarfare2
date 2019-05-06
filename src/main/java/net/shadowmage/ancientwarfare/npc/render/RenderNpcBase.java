@@ -54,7 +54,7 @@ public class RenderNpcBase extends RenderBiped<NpcBase> {
 
 	@Override
 	public void doRender(NpcBase npc, double x, double y, double z, float par8, float par9) {
-		mainModel = npc.isFemale() ? SMALL_ARMS : REGULAR_ARMS;
+		mainModel = npc.getSkinSettings().renderFemaleModel(npc) ? SMALL_ARMS : REGULAR_ARMS;
 
 		isSleeping = npc.isSleeping();
 		if (isSleeping) {
