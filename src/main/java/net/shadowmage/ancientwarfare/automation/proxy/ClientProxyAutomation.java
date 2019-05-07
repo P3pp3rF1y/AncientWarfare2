@@ -26,6 +26,7 @@ import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteFishFarm;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteFruitFarm;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteInventorySideSelection;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteQuarry;
+import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteQuarryBounds;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteTreeFarm;
 import net.shadowmage.ancientwarfare.automation.render.AutoCraftingRenderer;
 import net.shadowmage.ancientwarfare.automation.render.FlywheelControllerAnimationRenderer;
@@ -87,6 +88,7 @@ public class ClientProxyAutomation extends ClientProxyBase {
 		NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_FISH_CONTROL, GuiWorksiteFishControl.class);
 		NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_CONTROL, GuiWarehouseControl.class);
 		NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_QUARRY, GuiWorksiteQuarry.class);
+		NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_QUARRY_BOUNDS, GuiWorksiteQuarryBounds.class);
 		NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_TREE_FARM, GuiWorksiteTreeFarm.class);
 		NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_CROP_FARM, GuiWorksiteCropFarm.class);
 		NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_FRUIT_FARM, GuiWorksiteFruitFarm.class);

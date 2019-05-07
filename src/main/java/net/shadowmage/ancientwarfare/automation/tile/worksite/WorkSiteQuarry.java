@@ -21,6 +21,7 @@ import java.util.Set;
 public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
 	private boolean finished;
 	private boolean hasDoneInit = false;
+	public int height;
 
 	/*
 	 * Current position within work bounds.
@@ -37,10 +38,10 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
 	public boolean userAdjustableBlocks() {
 		return false;
 	}
-
 	@Override
 	protected void onBoundsSet() {
 		super.onBoundsSet();
+		height = pos.getY();
 		offsetBounds();
 	}
 
@@ -48,10 +49,9 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
 		BlockPos boundsMax = getWorkBoundsMax();
 		setWorkBoundsMax(boundsMax.up(pos.getY() - 1 - boundsMax.getY()));
 		boundsMax = getWorkBoundsMin();
-		setWorkBoundsMin(boundsMax.up(1 - boundsMax.getY()));
+		setWorkBoundsMin(boundsMax.up(pos.getY() - height - boundsMax.getY()));
 		BlockTools.notifyBlockUpdate(this);
 	}
-
 	@Override
 	public void onBoundsAdjusted() {
 		offsetBounds();
@@ -158,7 +158,7 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
 			if (current.getZ() > getWorkBoundsMax().getZ()) {
 				current = new BlockPos(current.getX(), current.getY(), getWorkBoundsMin().getZ());
 				current = current.down();
-				if (current.getY() <= 0) {
+					if (current.getY() <= (pos.getY() - (height+1))) {
 					return false;
 				}
 			}
@@ -209,7 +209,7 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
 
 	private void initWorkSite() {
 		BlockPos boundsMin = getWorkBoundsMin();
-		setWorkBoundsMin(boundsMin.up(1 - boundsMin.getY()));
+		setWorkBoundsMin(boundsMin.up(pos.getY() - height - boundsMin.getY()));
 		current = new BlockPos(getWorkBoundsMin().getX(), getWorkBoundsMax().getY(), getWorkBoundsMin().getZ());
 		validate = current;
 		BlockTools.notifyBlockUpdate(this);//resend work-bounds change
@@ -227,6 +227,7 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
 		validate = BlockPos.fromLong(tag.getLong("validate"));
 		finished = tag.getBoolean("finished");
 		hasDoneInit = tag.getBoolean("init");
+		height = tag.getInteger("height");
 	}
 
 	@Override
@@ -236,6 +237,7 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
 		tag.setLong("validate", validate.toLong());
 		tag.setBoolean("finished", finished);
 		tag.setBoolean("init", hasDoneInit);
+		tag.setInteger("height",height);
 		return tag;
 	}
 

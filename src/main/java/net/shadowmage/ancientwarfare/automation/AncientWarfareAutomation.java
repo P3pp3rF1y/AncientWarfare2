@@ -34,6 +34,7 @@ import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteFishF
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteFruitFarm;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteInventorySideSelection;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteQuarry;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteQuarryBounds;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteTreeFarm;
 import net.shadowmage.ancientwarfare.automation.proxy.RFProxy;
 import net.shadowmage.ancientwarfare.automation.registry.CropFarmRegistry;
@@ -82,6 +83,7 @@ public class AncientWarfareAutomation {
 		NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_OUTPUT, ContainerWarehouseInterface.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_CRAFTING, ContainerWarehouseCraftingStation.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_QUARRY, ContainerWorksiteQuarry.class);
+		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_QUARRY_BOUNDS, ContainerWorksiteQuarryBounds.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_TREE_FARM, ContainerWorksiteTreeFarm.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_CROP_FARM, ContainerWorksiteCropFarm.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_FRUIT_FARM, ContainerWorksiteFruitFarm.class);

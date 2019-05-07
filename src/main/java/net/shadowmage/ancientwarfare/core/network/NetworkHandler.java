@@ -90,6 +90,7 @@ public final class NetworkHandler implements IGuiHandler {
 	public static final int GUI_WORKSITE_ANIMAL_FARM = 26;
 	public static final int GUI_WORKSITE_CROP_FARM = 27;
 	public static final int GUI_WORKSITE_FISH_FARM = 29;
+	public static final int GUI_WORKSITE_QUARRY_BOUNDS = 30;
 	public static final int GUI_STIRLING_GENERATOR = 31;
 	public static final int GUI_NPC_WORK_ORDER = 34;
 	public static final int GUI_NPC_UPKEEP_ORDER = 35;
@@ -121,7 +122,6 @@ public final class NetworkHandler implements IGuiHandler {
 	public static final int GUI_GATE_CONTROL_CREATIVE = 58;
 
 	public static final int GUI_LOOT_BASKET = 59;
-
 	private FMLEventChannel channel;
 
 	private HashMap<Integer, Class<? extends ContainerBase>> containerClasses = new HashMap<>();
