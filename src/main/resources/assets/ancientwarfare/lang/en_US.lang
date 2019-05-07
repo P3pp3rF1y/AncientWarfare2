@@ -1312,4 +1312,4 @@ gui.ancientwarfarenpc.skin_selection.npc_type=Npc type
 gui.ancientwarfarenpc.skin_selection.select_npc_type=Select Npc Type
 gui.ancientwarfarenpc.skin_selection.select_npc_skin=Select Npc Skin
 gui.ancientwarfarenpc.skin_selection.random=Random
-gui.ancientwarfarenpc.skin_selection.female_model=Female Model
+gui.ancientwarfarenpc.skin_selection.alex_model=Use Alex Model

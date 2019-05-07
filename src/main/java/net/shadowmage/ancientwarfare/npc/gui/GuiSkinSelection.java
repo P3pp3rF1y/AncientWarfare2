@@ -125,16 +125,16 @@ public class GuiSkinSelection extends GuiContainerBase {
 		}
 
 		if (!defaultType.checked()) {
-			Checkbox female = new Checkbox(8, startHeight, 16, 16, "gui.ancientwarfarenpc.skin_selection.female_model") {
+			Checkbox alex = new Checkbox(8, startHeight, 16, 16, "gui.ancientwarfarenpc.skin_selection.alex_model") {
 				@Override
 				public void onToggled() {
 					super.onToggled();
-					skinSettings.setFemale(checked());
+					skinSettings.setAlexModel(checked());
 					refreshGui();
 				}
 			};
-			female.setChecked(skinSettings.isFemale());
-			addGuiElement(female);
+			alex.setChecked(skinSettings.isAlexModel());
+			addGuiElement(alex);
 
 			startHeight += 20;
 		}
@@ -306,6 +306,4 @@ public class GuiSkinSelection extends GuiContainerBase {
 	public void initElements() {
 		//noop
 	}
-
-	//TODO verify player name and type skin name is correct on close and set to default if not?
 }

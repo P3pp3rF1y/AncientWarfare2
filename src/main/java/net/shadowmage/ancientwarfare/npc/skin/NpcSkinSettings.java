@@ -28,6 +28,7 @@ public class NpcSkinSettings {
 	private static final String RANDOM_TAG = "random";
 	private static final String NPC_TYPE_NAME_TAG = "npcTypeName";
 	private static final String NPC_TYPE_SKIN_TAG = "npcTypeSkin";
+	private static final String IS_ALEX_MODEL_TAG = "isAlexModel";
 
 	private SkinType skinTypeSelected = SkinType.DEFAULT;
 	private boolean playerSkinLoaded = false;
@@ -37,22 +38,22 @@ public class NpcSkinSettings {
 	private String npcTypeName = "";
 	private ResourceLocation npcTypeSkin = null;
 
-	public boolean isFemale() {
-		return isFemale;
+	public boolean isAlexModel() {
+		return isAlexModel;
 	}
 
-	public void setFemale(boolean female) {
-		isFemale = female;
+	public void setAlexModel(boolean alexModel) {
+		isAlexModel = alexModel;
 	}
 
 	public boolean renderFemaleModel(NpcBase npc) {
 		if (skinTypeSelected == SkinType.DEFAULT) {
 			return npc.isFemale();
 		}
-		return isFemale;
+		return isAlexModel;
 	}
 
-	private boolean isFemale = false;
+	private boolean isAlexModel = false;
 
 	public ResourceLocation getTexture(NpcBase npc) {
 		switch (skinTypeSelected) {
@@ -83,6 +84,9 @@ public class NpcSkinSettings {
 		if (npcTypeSkin != null) {
 			tag.setString(NPC_TYPE_SKIN_TAG, npcTypeSkin.toString());
 		}
+		if (isAlexModel) {
+			tag.setBoolean(IS_ALEX_MODEL_TAG, true);
+		}
 
 		return tag;
 	}
@@ -94,6 +98,7 @@ public class NpcSkinSettings {
 		packetBuffer.writeBoolean(random);
 		packetBuffer.writeString(npcTypeName);
 		packetBuffer.writeString(npcTypeSkin == null ? "" : npcTypeSkin.toString());
+		packetBuffer.writeBoolean(isAlexModel);
 	}
 
 	public static NpcSkinSettings deserializeFromBuffer(ByteBuf buffer) {
@@ -117,6 +122,7 @@ public class NpcSkinSettings {
 			packetBuffer.readString(30);
 			packetBuffer.readString(60);
 		}
+		skinSettings.isAlexModel = packetBuffer.readBoolean();
 		return skinSettings;
 	}
 
@@ -137,6 +143,7 @@ public class NpcSkinSettings {
 		if (tag.hasKey(NPC_TYPE_SKIN_TAG)) {
 			skinSettings.npcTypeSkin = new ResourceLocation(tag.getString(NPC_TYPE_SKIN_TAG));
 		}
+		skinSettings.isAlexModel = tag.getBoolean(IS_ALEX_MODEL_TAG);
 		return skinSettings;
 	}
 
@@ -152,6 +159,9 @@ public class NpcSkinSettings {
 			if (!random) {
 				skinSettings.npcTypeSkin = npcTypeSkin;
 			}
+		}
+		if (skinTypeSelected != SkinType.DEFAULT) {
+			skinSettings.isAlexModel = isAlexModel;
 		}
 		return skinSettings;
 	}
