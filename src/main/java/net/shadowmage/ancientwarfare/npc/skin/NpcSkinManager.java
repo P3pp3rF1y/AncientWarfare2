@@ -74,9 +74,11 @@ public class NpcSkinManager {
 				try (InputStream stream = Files.newInputStream(file)) {
 					List<String> skinMappings = imageMap.entrySet().stream().filter(e -> e.getValue().contains(relative))
 							.map(Map.Entry::getKey).collect(Collectors.toList());
+					ResourceLocation skinRegistryName = loadSkinImage(relative, stream);
 					if (!skinMappings.isEmpty()) {
-						ResourceLocation skinRegistryName = loadSkinImage(relative, stream);
 						skinMappings.forEach(skinMapping -> addNpcSkin(skinMapping, skinRegistryName));
+					} else {
+						addNpcSkin("custom", skinRegistryName);
 					}
 
 				}
