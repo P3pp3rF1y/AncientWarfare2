@@ -31,6 +31,7 @@ import net.shadowmage.ancientwarfare.npc.registry.NpcDefaultsRegistry;
 import net.shadowmage.ancientwarfare.npc.registry.OwnedNpcDefault;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
+import net.shadowmage.ancientwarfare.structure.tile.ISpecialLootContainer;
 import net.shadowmage.ancientwarfare.structure.tile.TileProtectionFlag;
 import org.apache.commons.lang3.StringUtils;
 
@@ -137,7 +138,7 @@ public class EventHandler {
 		World world = evt.getWorld();
 		BlockPos pos = evt.getPos();
 		EntityPlayer player = evt.getEntityPlayer();
-		if (!player.capabilities.isCreativeMode && !player.isSneaking() && isChest(world, pos)) {
+		if (!player.capabilities.isCreativeMode && !player.isSneaking() && isContainer(world, pos)) {
 			AWGameData.INSTANCE.getData(world, StructureMap.class).getStructureAt(world, pos).ifPresent(structure -> {
 				Optional<TileProtectionFlag> tile = WorldTools.getTile(world, structure.getProtectionFlagPos(), TileProtectionFlag.class);
 				if (tile.isPresent() && tile.get().shouldProtectAgainst(player)) {
@@ -182,15 +183,16 @@ public class EventHandler {
 	private boolean shouldBlockSlowDownDigging(World world, BlockPos pos) {
 		IBlockState state = world.getBlockState(pos);
 		if (!state.isFullBlock()) {
-			return false;
+			return isContainer(world, pos);
 		}
 
 		Block block = state.getBlock();
 		return !(block == Blocks.MOB_SPAWNER || block == AWStructureBlocks.ADVANCED_SPAWNER);
 	}
 
-	private boolean isChest(World world, BlockPos pos) {
-		Block block = world.getBlockState(pos).getBlock();
-		return block == Blocks.CHEST || block == AWStructureBlocks.ADVANCED_LOOT_CHEST;
+	private boolean isContainer(World world, BlockPos pos) {
+		IBlockState state = world.getBlockState(pos);
+		Block block = state.getBlock();
+		return block == Blocks.CHEST || (state.getBlock().hasTileEntity(state) && WorldTools.getTile(world, pos, ISpecialLootContainer.class).isPresent());
 	}
 }
