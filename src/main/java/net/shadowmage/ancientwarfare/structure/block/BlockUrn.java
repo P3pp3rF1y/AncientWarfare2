@@ -24,6 +24,7 @@ import java.util.Random;
 public class BlockUrn extends BlockBaseStructure {
 	public BlockUrn() {
 		super(Material.CIRCUITS, "urn");
+		setHardness(0.4F);
 	}
 
 	@Override
