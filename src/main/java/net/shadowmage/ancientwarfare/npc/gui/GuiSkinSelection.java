@@ -222,11 +222,11 @@ public class GuiSkinSelection extends GuiContainerBase {
 
 		if (!skinSettings.getNpcTypeName().isEmpty() && !skinSettings.isRandom()) {
 			addGuiElement(new Button(SUBCONTROLS_INDENT, startHeight, 150, 12,
-					skinSettings.getNpcTypeSkin().map(rl -> rl.toString().replace("ancientwarfare:", "")).orElse("gui.ancientwarfarenpc.skin_selection.select_npc_skin")) {
+					skinSettings.getNpcTypeSkin().map(rl -> rl.toString().replace("ancientwarfare:skinpack/", "").replace(".png", "")).orElse("gui.ancientwarfarenpc.skin_selection.select_npc_skin")) {
 				@Override
 				protected void onPressed() {
 					Minecraft.getMinecraft().displayGuiScreen(new GuiSelectFromList<>(GuiSkinSelection.this,
-							skinSettings.getNpcTypeSkin().orElse(null), rl -> rl == null ? "" : rl.toString(),
+							skinSettings.getNpcTypeSkin().orElse(null), rl -> rl == null ? "" : rl.toString().replace("ancientwarfare:skinpack/", "").replace(".png", ""),
 							this::getNpcTypes, rl -> {
 						setText(rl.toString());
 						skinSettings.setNpcTypeSkin(rl);

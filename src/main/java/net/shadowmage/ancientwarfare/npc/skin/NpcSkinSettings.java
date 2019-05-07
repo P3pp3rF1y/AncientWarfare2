@@ -203,7 +203,7 @@ public class NpcSkinSettings {
 			case PLAYER:
 				return I18n.format("gui.ancientwarfarenpc.skin_info.player", playerName);
 			case NPC_TYPE:
-				return random || npcTypeSkin == null ? npcTypeName + " " + I18n.format("gui.ancientwarfarenpc.skin_info.npc_type_random") : npcTypeSkin.toString().replace("ancientwarfare:", "");
+				return random || npcTypeSkin == null ? npcTypeName + " " + I18n.format("gui.ancientwarfarenpc.skin_info.npc_type_random") : npcTypeSkin.toString().replace("ancientwarfare:skinpack/", "").replace(".png", "");
 			case DEFAULT:
 			default:
 				return I18n.format("gui.ancientwarfarenpc.skin_info.default");
