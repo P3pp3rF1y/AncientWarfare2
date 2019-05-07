@@ -158,7 +158,7 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
 			if (current.getZ() > getWorkBoundsMax().getZ()) {
 				current = new BlockPos(current.getX(), current.getY(), getWorkBoundsMin().getZ());
 				current = current.down();
-					if (current.getY() <= (pos.getY() - (height+1))) {
+				if (current.getY() <= (pos.getY() - (height + 1))) {
 					return false;
 				}
 			}
@@ -237,7 +237,7 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
 		tag.setLong("validate", validate.toLong());
 		tag.setBoolean("finished", finished);
 		tag.setBoolean("init", hasDoneInit);
-		tag.setInteger("height",height);
+		tag.setInteger("height", height);
 		return tag;
 	}
 

@@ -18,7 +18,6 @@ public class GuiWorksiteQuarryBounds extends GuiContainerBase<ContainerWorksiteQ
 		this.shouldCloseOnVanillaKeys = true;
 	}
 
-
 	@Override
 	public void initElements() {
 		this.clearElements();
