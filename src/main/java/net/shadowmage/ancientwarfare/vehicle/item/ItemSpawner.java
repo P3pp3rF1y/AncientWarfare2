@@ -1,6 +1,6 @@
 package net.shadowmage.ancientwarfare.vehicle.item;
 
-import codechicken.lib.model.ModelRegistryHelper;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -11,18 +11,20 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.vehicle.AncientWarfareVehicles;
 import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.entity.IVehicleType;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleType;
-import net.shadowmage.ancientwarfare.vehicle.render.RenderItemSpawner;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -147,6 +149,26 @@ public class ItemSpawner extends ItemBaseVehicle {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerClient() {
-		ModelRegistryHelper.registerItemRenderer(this, new RenderItemSpawner());
+		ResourceLocation baseLocation = new ResourceLocation(AncientWarfareCore.MOD_ID, "vehicle/" + getRegistryName().getResourcePath());
+		String modelPropString = "variant=%s";
+
+		ModelLoader.setCustomMeshDefinition(this, stack -> {
+			if (stack.hasTagCompound()) {
+				//noinspection ConstantConditions
+				int level = stack.getTagCompound().getCompoundTag(SPAWN_DATA_TAG).getInteger(LEVEL_TAG);
+				return new ModelResourceLocation(baseLocation, String.format(modelPropString, VehicleType.getVehicleType(stack.getMetadata()).getConfigName() + "_" + level));
+			}
+			return new ModelResourceLocation(baseLocation, String.format(modelPropString, "catapult_stand_0"));
+		});
+
+		for (IVehicleType type : VehicleType.vehicleTypes) {
+			if (type == null || type.getMaterialType() == null || !type.isEnabled()) {
+				continue;
+			}
+			for (int level = 0; level < type.getMaterialType().getNumOfLevels(); level++) {
+				ModelLoader.registerItemVariants(this,
+						new ModelResourceLocation(baseLocation, String.format(modelPropString, type.getConfigName() + "_" + level)));
+			}
+		}
 	}
 }

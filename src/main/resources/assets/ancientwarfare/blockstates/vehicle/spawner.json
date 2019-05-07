@@ -1,0 +1,536 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "builtin/generated",
+        "transform": "forge:default-item"
+    },
+    "variants": {
+        "variant": {
+            "ballista_mobile_0": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ballista_mobile_0"
+                }
+            },
+            "ballista_mobile_1": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ballista_mobile_1"
+                }
+            },
+            "ballista_mobile_2": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ballista_mobile_2"
+                }
+            },
+            "ballista_mobile_3": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ballista_mobile_3"
+                }
+            },
+            "ballista_mobile_4": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ballista_mobile_4"
+                }
+            },
+            "ballista_mobile_turret_0": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ballista_mobile_turret_0"
+                }
+            },
+            "ballista_mobile_turret_1": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ballista_mobile_turret_1"
+                }
+            },
+            "ballista_mobile_turret_2": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ballista_mobile_turret_2"
+                }
+            },
+            "ballista_mobile_turret_3": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ballista_mobile_turret_3"
+                }
+            },
+            "ballista_mobile_turret_4": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ballista_mobile_turret_4"
+                }
+            },
+            "ballista_stand_0": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ballista_stand_0"
+                }
+            },
+            "ballista_stand_1": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ballista_stand_1"
+                }
+            },
+            "ballista_stand_2": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ballista_stand_2"
+                }
+            },
+            "ballista_stand_3": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ballista_stand_3"
+                }
+            },
+            "ballista_stand_4": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ballista_stand_4"
+                }
+            },
+            "ballista_stand_turret_0": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ballista_stand_turret_0"
+                }
+            },
+            "ballista_stand_turret_1": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ballista_stand_turret_1"
+                }
+            },
+            "ballista_stand_turret_2": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ballista_stand_turret_2"
+                }
+            },
+            "ballista_stand_turret_3": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ballista_stand_turret_3"
+                }
+            },
+            "ballista_stand_turret_4": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ballista_stand_turret_4"
+                }
+            },
+            "battering_ram_0": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/battering_ram_0"
+                }
+            },
+            "battering_ram_1": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/battering_ram_1"
+                }
+            },
+            "battering_ram_2": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/battering_ram_2"
+                }
+            },
+            "battering_ram_3": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/battering_ram_3"
+                }
+            },
+            "battering_ram_4": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/battering_ram_4"
+                }
+            },
+            "boat_ballista_0": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/boat_ballista_0"
+                }
+            },
+            "boat_ballista_1": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/boat_ballista_1"
+                }
+            },
+            "boat_ballista_2": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/boat_ballista_2"
+                }
+            },
+            "boat_ballista_3": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/boat_ballista_3"
+                }
+            },
+            "boat_ballista_4": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/boat_ballista_4"
+                }
+            },
+            "boat_catapult_0": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/boat_catapult_0"
+                }
+            },
+            "boat_catapult_1": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/boat_catapult_1"
+                }
+            },
+            "boat_catapult_2": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/boat_catapult_2"
+                }
+            },
+            "boat_catapult_3": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/boat_catapult_3"
+                }
+            },
+            "boat_catapult_4": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/boat_catapult_4"
+                }
+            },
+            "boat_transport_0": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/boat_transport_0"
+                }
+            },
+            "boat_transport_1": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/boat_transport_1"
+                }
+            },
+            "boat_transport_2": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/boat_transport_2"
+                }
+            },
+            "boat_transport_3": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/boat_transport_3"
+                }
+            },
+            "boat_transport_4": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/boat_transport_4"
+                }
+            },
+            "cannon_mobile_0": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/cannon_mobile_0"
+                }
+            },
+            "cannon_mobile_1": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/cannon_mobile_1"
+                }
+            },
+            "cannon_mobile_2": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/cannon_mobile_2"
+                }
+            },
+            "cannon_mobile_3": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/cannon_mobile_3"
+                }
+            },
+            "cannon_mobile_4": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/cannon_mobile_4"
+                }
+            },
+            "cannon_stand_0": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/cannon_stand_0"
+                }
+            },
+            "cannon_stand_1": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/cannon_stand_1"
+                }
+            },
+            "cannon_stand_2": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/cannon_stand_2"
+                }
+            },
+            "cannon_stand_3": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/cannon_stand_3"
+                }
+            },
+            "cannon_stand_4": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/cannon_stand_4"
+                }
+            },
+            "cannon_stand_turret_0": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/cannon_stand_turret_0"
+                }
+            },
+            "cannon_stand_turret_1": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/cannon_stand_turret_1"
+                }
+            },
+            "cannon_stand_turret_2": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/cannon_stand_turret_2"
+                }
+            },
+            "cannon_stand_turret_3": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/cannon_stand_turret_3"
+                }
+            },
+            "cannon_stand_turret_4": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/cannon_stand_turret_4"
+                }
+            },
+            "catapult_mobile_0": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/catapult_mobile_0"
+                }
+            },
+            "catapult_mobile_1": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/catapult_mobile_1"
+                }
+            },
+            "catapult_mobile_2": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/catapult_mobile_2"
+                }
+            },
+            "catapult_mobile_3": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/catapult_mobile_3"
+                }
+            },
+            "catapult_mobile_4": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/catapult_mobile_4"
+                }
+            },
+            "catapult_mobile_turret_0": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/catapult_mobile_turret_0"
+                }
+            },
+            "catapult_mobile_turret_1": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/catapult_mobile_turret_1"
+                }
+            },
+            "catapult_mobile_turret_2": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/catapult_mobile_turret_2"
+                }
+            },
+            "catapult_mobile_turret_3": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/catapult_mobile_turret_3"
+                }
+            },
+            "catapult_mobile_turret_4": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/catapult_mobile_turret_4"
+                }
+            },
+            "catapult_stand_0": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/catapult_stand_0"
+                }
+            },
+            "catapult_stand_1": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/catapult_stand_1"
+                }
+            },
+            "catapult_stand_2": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/catapult_stand_2"
+                }
+            },
+            "catapult_stand_3": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/catapult_stand_3"
+                }
+            },
+            "catapult_stand_4": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/catapult_stand_4"
+                }
+            },
+            "catapult_stand_turret_0": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/catapult_stand_turret_0"
+                }
+            },
+            "catapult_stand_turret_1": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/catapult_stand_turret_1"
+                }
+            },
+            "catapult_stand_turret_2": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/catapult_stand_turret_2"
+                }
+            },
+            "catapult_stand_turret_3": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/catapult_stand_turret_3"
+                }
+            },
+            "catapult_stand_turret_4": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/catapult_stand_turret_4"
+                }
+            },
+            "chest_cart_0": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/chest_cart_0"
+                }
+            },
+            "chest_cart_1": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/chest_cart_1"
+                }
+            },
+            "chest_cart_2": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/chest_cart_2"
+                }
+            },
+            "chest_cart_3": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/chest_cart_3"
+                }
+            },
+            "chest_cart_4": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/chest_cart_4"
+                }
+            },
+            "hwacha_0": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/hwacha_0"
+                }
+            },
+            "hwacha_1": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/hwacha_1"
+                }
+            },
+            "hwacha_2": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/hwacha_2"
+                }
+            },
+            "hwacha_3": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/hwacha_3"
+                }
+            },
+            "hwacha_4": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/hwacha_4"
+                }
+            },
+            "trebuchet_giant_0": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/trebuchet_giant_0"
+                }
+            },
+            "trebuchet_giant_1": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/trebuchet_giant_1"
+                }
+            },
+            "trebuchet_giant_2": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/trebuchet_giant_2"
+                }
+            },
+            "trebuchet_giant_3": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/trebuchet_giant_3"
+                }
+            },
+            "trebuchet_giant_4": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/trebuchet_giant_4"
+                }
+            },
+            "trebuchet_mobile_0": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/trebuchet_mobile_0"
+                }
+            },
+            "trebuchet_mobile_1": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/trebuchet_mobile_1"
+                }
+            },
+            "trebuchet_mobile_2": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/trebuchet_mobile_2"
+                }
+            },
+            "trebuchet_mobile_3": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/trebuchet_mobile_3"
+                }
+            },
+            "trebuchet_mobile_4": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/trebuchet_mobile_4"
+                }
+            },
+            "trebuchet_stand_0": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/trebuchet_stand_0"
+                }
+            },
+            "trebuchet_stand_1": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/trebuchet_stand_1"
+                }
+            },
+            "trebuchet_stand_2": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/trebuchet_stand_2"
+                }
+            },
+            "trebuchet_stand_3": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/trebuchet_stand_3"
+                }
+            },
+            "trebuchet_stand_4": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/trebuchet_stand_4"
+                }
+            },
+            "trebuchet_stand_turret_0": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/trebuchet_stand_turret_0"
+                }
+            },
+            "trebuchet_stand_turret_1": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/trebuchet_stand_turret_1"
+                }
+            },
+            "trebuchet_stand_turret_2": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/trebuchet_stand_turret_2"
+                }
+            },
+            "trebuchet_stand_turret_3": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/trebuchet_stand_turret_3"
+                }
+            },
+            "trebuchet_stand_turret_4": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/trebuchet_stand_turret_4"
+                }
+            }
+        }
+    }
+}
