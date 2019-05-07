@@ -13,6 +13,7 @@ import net.shadowmage.ancientwarfare.npc.datafixes.FactionExpansionEntityFixer;
 import net.shadowmage.ancientwarfare.npc.datafixes.FactionExpansionItemFixer;
 import net.shadowmage.ancientwarfare.npc.datafixes.FactionSpawnerItemFixer;
 import net.shadowmage.ancientwarfare.npc.datafixes.FoodBundleDataFixer;
+import net.shadowmage.ancientwarfare.npc.datafixes.NpcSkinFixer;
 import net.shadowmage.ancientwarfare.npc.datafixes.RoutingOrderFilterCountsFixer;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.init.AWNPCEntities;
@@ -23,7 +24,7 @@ import static net.shadowmage.ancientwarfare.core.AncientWarfareCore.MOD_ID;
 public class AWDataFixes {
 	private AWDataFixes() {}
 
-	private static final int DATA_FIXER_VERSION = 8;
+	private static final int DATA_FIXER_VERSION = 9;
 
 	public static void registerDataFixes() {
 		CompoundDataFixer dataFixer = FMLCommonHandler.instance().getDataFixer();
@@ -41,6 +42,7 @@ public class AWDataFixes {
 		fixes.registerFix(FixTypes.ITEM_INSTANCE, new RoutingOrderFilterCountsFixer());
 		fixes.registerFix(FixTypes.ITEM_INSTANCE, new FoodBundleDataFixer());
 		fixes.registerFix(FixTypes.BLOCK_ENTITY, new TileLootFixer());
+		fixes.registerFix(FixTypes.ENTITY, new NpcSkinFixer());
 		dataFixer.registerWalker(FixTypes.BLOCK_ENTITY, new ItemMapDataWalker(
 				new Class<?>[] {TileWarehouseStorage.class, TileWarehouseStorageMedium.class, TileWarehouseStorageLarge.class},
 				"inventory/itemMap/entryList"));
