@@ -1,9 +1,13 @@
 package net.shadowmage.ancientwarfare.npc.init;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -21,6 +25,13 @@ import net.shadowmage.ancientwarfare.npc.item.ItemShield;
 import net.shadowmage.ancientwarfare.npc.item.ItemTradeOrder;
 import net.shadowmage.ancientwarfare.npc.item.ItemUpkeepOrder;
 import net.shadowmage.ancientwarfare.npc.item.ItemWorkOrder;
+import net.shadowmage.ancientwarfare.npc.registry.FactionDefinition;
+import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
+import net.shadowmage.ancientwarfare.structure.block.BlockProtectionFlag;
+import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
+import net.shadowmage.ancientwarfare.structure.item.ItemBlockColored;
+
+import java.util.Map;
 
 @ObjectHolder(AncientWarfareNPC.MOD_ID)
 @Mod.EventBusSubscriber(modid = AncientWarfareNPC.MOD_ID)
@@ -79,5 +90,25 @@ public class AWNPCItems {
 		registry.register(new ItemExtendedReachWeapon(Item.ToolMaterial.IRON, "iron_" + name, attackOffset, attackSpeed, reach));
 		registry.register(new ItemExtendedReachWeapon(Item.ToolMaterial.GOLD, "golden_" + name, attackOffset, attackSpeed, reach));
 		registry.register(new ItemExtendedReachWeapon(Item.ToolMaterial.DIAMOND, "diamond_" + name, attackOffset, attackSpeed, reach));
+	}
+
+	public static void addFactionBlocks() {
+		for (FactionDefinition definition : FactionRegistry.getFactionDefinitions()) {
+			AWStructureBlocks.PROTECTION_FLAG.addFlagDefinition(new BlockProtectionFlag.FlagDefinition(
+					definition.getName(), 0xEF5757, definition.getColor()));
+
+			for (Map.Entry<String, NBTTagCompound> blockData : definition.getThemedBlocksTags().entrySet()) {
+				Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockData.getKey()));
+				if (block == null) {
+					AncientWarfareNPC.LOG.warn("Can't find block with registry name {} in block registry, skipping...", blockData.getKey());
+					continue;
+				}
+				Item itemBlock = Item.getItemFromBlock(block);
+				if (itemBlock instanceof ItemBlockColored) {
+					blockData.getValue().setString("unlocalizedNamePart", "faction");
+					((ItemBlockColored) itemBlock).addCustomItemTag(blockData.getValue());
+				}
+			}
+		}
 	}
 }

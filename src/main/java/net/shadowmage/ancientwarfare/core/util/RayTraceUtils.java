@@ -1,12 +1,17 @@
 package net.shadowmage.ancientwarfare.core.util;
 
+import codechicken.lib.raytracer.RayTracer;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -83,4 +88,73 @@ public class RayTraceUtils {
 		return world.rayTraceBlocks(startVec, endVec);
 	}
 
+	@Nullable
+	public static RayTraceResult raytraceMultiAABB(List<AxisAlignedBB> aabbs, BlockPos pos, Vec3d start, Vec3d end) {
+		List<RayTraceResult> list = new ArrayList<>();
+
+		for (AxisAlignedBB axisalignedbb : aabbs) {
+			list.add(rayTraceAABBIntercept(pos, start, end, axisalignedbb));
+		}
+
+		RayTraceResult ret = null;
+		double closestHit = Integer.MAX_VALUE;
+
+		for (RayTraceResult raytraceresult : list) {
+			if (raytraceresult != null) {
+				double distance = raytraceresult.hitVec.squareDistanceTo(start);
+
+				if (distance < closestHit) {
+					ret = raytraceresult;
+					closestHit = distance;
+				}
+			}
+		}
+
+		return ret;
+	}
+
+	@Nullable
+	public static <T> T raytraceMultiAABB(List<AxisAlignedBB> aabbs, BlockPos pos, Vec3d start, Vec3d end, Function2<RayTraceResult, AxisAlignedBB, T> getValue) {
+		List<RayTraceResult> list = new ArrayList<>();
+
+		for (AxisAlignedBB axisalignedbb : aabbs) {
+			list.add(rayTraceAABBIntercept(pos, start, end, axisalignedbb));
+		}
+
+		T ret = null;
+		double closestHit = Integer.MAX_VALUE;
+
+		for (int i = 0; i < list.size(); i++) {
+			RayTraceResult raytraceresult = list.get(i);
+			if (raytraceresult != null) {
+				double distance = raytraceresult.hitVec.squareDistanceTo(start);
+
+				if (distance < closestHit) {
+					ret = getValue.apply(raytraceresult, aabbs.get(i));
+					closestHit = distance;
+				}
+			}
+		}
+
+		return ret;
+	}
+
+	@Nullable
+	private static RayTraceResult rayTraceAABBIntercept(BlockPos pos, Vec3d start, Vec3d end, AxisAlignedBB boundingBox) {
+		Vec3d vecA = start.subtract((double) pos.getX(), (double) pos.getY(), (double) pos.getZ());
+		Vec3d vecB = end.subtract((double) pos.getX(), (double) pos.getY(), (double) pos.getZ());
+		RayTraceResult raytraceresult = boundingBox.calculateIntercept(vecA, vecB);
+		return raytraceresult == null ? null : new RayTraceResult(raytraceresult.hitVec.addVector((double) pos.getX(), (double) pos.getY(), (double) pos.getZ()), raytraceresult.sideHit, pos);
+	}
+
+	public static AxisAlignedBB getSelectedBoundingBox(List<AxisAlignedBB> aabbs, BlockPos pos, EntityPlayerSP player) {
+		Vec3d start = RayTracer.getStartVec(player);
+		Vec3d end = RayTracer.getEndVec(player);
+		AxisAlignedBB axisAlignedBB = raytraceMultiAABB(aabbs, pos, start, end, (rtr, aabb) -> aabb);
+		if (axisAlignedBB == null) {
+			axisAlignedBB = aabbs.get(0);
+		}
+
+		return axisAlignedBB.offset(pos);
+	}
 }

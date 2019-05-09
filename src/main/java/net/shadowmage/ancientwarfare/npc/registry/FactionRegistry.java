@@ -3,10 +3,15 @@ package net.shadowmage.ancientwarfare.npc.registry;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.nbt.NBTException;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.JsonUtils;
 import net.shadowmage.ancientwarfare.core.registry.IRegistryDataParser;
 import net.shadowmage.ancientwarfare.core.util.parsing.JsonHelper;
+import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -29,10 +34,15 @@ public class FactionRegistry {
 		return factions.getOrDefault(name, EMPTY_FACTION);
 	}
 
+	public static Collection<FactionDefinition> getFactionDefinitions() {
+		return factions.values();
+	}
+
 	public static class FactionParser implements IRegistryDataParser {
 		private static final String PLAYER_DEFAULT_STANDING = "player_default_standing";
 		private static final String HOSTILE_TOWARDS_FACTIONS = "hostile_towards_factions";
 		private static final String ENTITIES_TO_TARGET = "entities_to_target";
+		private static final String THEMED_BLOCKS = "themed_blocks";
 
 		@Override
 		public String getName() {
@@ -64,9 +74,30 @@ public class FactionRegistry {
 				if (faction.has(ENTITIES_TO_TARGET)) {
 					builder.overrideTargetList(parseTargetList(faction));
 				}
+				if (faction.has(THEMED_BLOCKS)) {
+					builder.overrideThemedBlocksTags(parseThemedBLocks(faction, factionName));
+				}
 
 				factions.put(factionName, builder.build());
 			}
+		}
+
+		private Map<String, NBTTagCompound> parseThemedBLocks(JsonObject json, String factionName) {
+			return JsonHelper.mapFromJson(json, THEMED_BLOCKS, Entry::getKey, entry -> getThemedBlocksNBT(entry.getValue(), factionName));
+		}
+
+		private NBTTagCompound getThemedBlocksNBT(JsonElement json, String factionName) {
+			NBTTagCompound nbt;
+			try {
+				nbt = JsonToNBT.getTagFromJson(json.toString());
+				nbt.setString("customData", factionName);
+
+			}
+			catch (NBTException e) {
+				AncientWarfareNPC.LOG.error("Error parsing themed blocks nbt", e);
+				nbt = new NBTTagCompound();
+			}
+			return nbt;
 		}
 
 		private Map<String, Boolean> parseHostileTowards(JsonObject json) {

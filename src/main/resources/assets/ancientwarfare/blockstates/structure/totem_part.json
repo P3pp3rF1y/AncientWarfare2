@@ -40,6 +40,18 @@
             },
             "elephant_right": {
                 "model": "ancientwarfare:structure/totem_part_elephant_right"
+            },
+            "xoltec_idol_body_left": {
+                "model": "ancientwarfare:structure/xoltec_idol_body_left"
+            },
+            "xoltec_idol_body_right": {
+                "model": "ancientwarfare:structure/xoltec_idol_body_right"
+            },
+            "xoltec_idol_head_left": {
+                "model": "ancientwarfare:structure/xoltec_idol_head_left"
+            },
+            "xoltec_idol_head_right": {
+                "model": "ancientwarfare:structure/xoltec_idol_head_right"
             }
         },
         "visible": {

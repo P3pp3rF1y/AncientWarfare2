@@ -1,5 +1,7 @@
 package net.shadowmage.ancientwarfare.core.util;
 
+import net.minecraft.util.math.BlockPos;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -27,5 +29,9 @@ public class TextUtils {
 			lineLen += word.length() + 1;
 		}
 		return Arrays.asList(output.toString().split("\n"));
+	}
+
+	public static String getSimpleBlockPosString(BlockPos pos) {
+		return "x " + pos.getX() + " y " + pos.getY() + " z " + pos.getZ();
 	}
 }

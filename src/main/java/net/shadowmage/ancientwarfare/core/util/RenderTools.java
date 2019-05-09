@@ -78,6 +78,17 @@ public class RenderTools {
 		GlStateManager.glEnd();
 	}
 
+	public static void renderColoredQuad(int renderStartX, int renderStartY, int renderWidth, int renderHeight, float colorRed, float colorGreen, float colorBlue) {
+		GlStateManager.glBegin(GL11.GL_QUADS);
+		GlStateManager.color(colorRed, colorGreen, colorBlue);
+		GL11.glVertex2f(renderStartX, renderStartY);
+		GL11.glVertex2f(renderStartX, renderStartY + renderHeight);
+		GL11.glVertex2f(renderStartX + renderWidth, renderStartY + renderHeight);
+		GL11.glVertex2f(renderStartX + renderWidth, renderStartY);
+		GlStateManager.color(1, 1, 1);
+		GlStateManager.glEnd();
+	}
+
 	/*
 	 * render a BB as a set of enlarged cuboids.
 	 */

@@ -6,66 +6,42 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.shadowmage.ancientwarfare.core.util.BlockTools;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import net.shadowmage.ancientwarfare.core.util.EntityTools;
+import net.shadowmage.ancientwarfare.structure.util.LootHelper;
 
 import javax.annotation.Nullable;
 
-public class TileAdvancedLootChest extends TileEntityChest {
-	private static final String LOOT_TABLE_TAG = "lootTable";
-	private static final String LOOT_ROLLS_TAG = "lootRolls";
+public class TileAdvancedLootChest extends TileEntityChest implements ISpecialLootContainer {
+	private static final String LOOT_SETTINGS_TAG = "lootSettings";
 
-	public int getLootRolls() {
-		return lootRolls;
-	}
-
-	private int lootRolls = 0;
+	private LootSettings lootSettings = new LootSettings();
 
 	@Override
 	public void fillWithLoot(@Nullable EntityPlayer player) {
-		if (lootTable != null) {
-			ResourceLocation lt = lootTable;
-			lootTable = null;
-			//noinspection ConstantConditions
-			InventoryTools.generateLootFor(world, player, getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), world.rand, lt, lootRolls);
-			lootRolls = 0;
-			BlockTools.notifyBlockUpdate(this);
-		}
+		LootHelper.fillWithLoot(this, player != null ? player : EntityTools.findClosestPlayer(world, pos, 100));
 	}
 
 	@Override
-	protected boolean checkLootAndRead(NBTTagCompound compound) {
-		if (super.checkLootAndRead(compound)) {
-			setLootRolls(compound.getByte(LOOT_ROLLS_TAG));
-			return true;
-		}
-		return false;
+	public void readFromNBT(NBTTagCompound compound) {
+		super.readFromNBT(compound);
+		lootSettings = LootSettings.deserializeNBT(compound.getCompoundTag(LOOT_SETTINGS_TAG));
 	}
 
 	@Override
-	protected boolean checkLootAndWrite(NBTTagCompound compound) {
-		if (super.checkLootAndWrite(compound)) {
-			compound.setByte(LOOT_ROLLS_TAG, (byte) lootRolls);
-			return true;
-		}
-		return false;
-	}
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+		compound = super.writeToNBT(compound);
+		compound.setTag(LOOT_SETTINGS_TAG, lootSettings.serializeNBT());
 
-	public void setLootRolls(int lootRolls) {
-		this.lootRolls = lootRolls;
+		return compound;
 	}
 
 	@Override
 	public SPacketUpdateTileEntity getUpdatePacket() {
 		NBTTagCompound tag = new NBTTagCompound();
-		if (lootTable != null) {
-			tag.setByte(LOOT_ROLLS_TAG, (byte) lootRolls);
-			tag.setString(LOOT_TABLE_TAG, lootTable.toString());
-		}
+		tag.setTag(LOOT_SETTINGS_TAG, lootSettings.serializeNBT());
 		return new SPacketUpdateTileEntity(pos, 0, tag);
 	}
 
@@ -74,23 +50,15 @@ public class TileAdvancedLootChest extends TileEntityChest {
 	@SideOnly(Side.CLIENT)
 	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
 		NBTTagCompound tag = pkt.getNbtCompound();
-		if (tag.hasKey(LOOT_TABLE_TAG)) {
-			setLootTable(new ResourceLocation(tag.getString(LOOT_TABLE_TAG)), 0);
-			setLootRolls(tag.getByte(LOOT_ROLLS_TAG));
-		} else {
-			//noinspection ConstantConditions
-			setLootTable(null, 0);
-			setLootRolls(0);
+		if (tag.hasKey(LOOT_SETTINGS_TAG)) {
+			lootSettings = LootSettings.deserializeNBT(tag.getCompoundTag(LOOT_SETTINGS_TAG));
 		}
 	}
 
 	@Override
 	public NBTTagCompound getUpdateTag() {
 		NBTTagCompound tag = super.getUpdateTag();
-		if (lootTable != null) {
-			tag.setByte(LOOT_ROLLS_TAG, (byte) lootRolls);
-			tag.setString(LOOT_TABLE_TAG, lootTable.toString());
-		}
+		tag.setTag(LOOT_SETTINGS_TAG, lootSettings.serializeNBT());
 		return tag;
 	}
 
@@ -98,13 +66,8 @@ public class TileAdvancedLootChest extends TileEntityChest {
 	@SuppressWarnings("squid:S4449")
 	public void handleUpdateTag(NBTTagCompound tag) {
 		super.readFromNBT(tag);
-		if (tag.hasKey(LOOT_TABLE_TAG)) {
-			setLootTable(new ResourceLocation(tag.getString(LOOT_TABLE_TAG)), 0);
-			setLootRolls(tag.getByte(LOOT_ROLLS_TAG));
-		} else {
-			//noinspection ConstantConditions
-			setLootTable(null, 0);
-			setLootRolls(0);
+		if (tag.hasKey(LOOT_SETTINGS_TAG)) {
+			lootSettings = LootSettings.deserializeNBT(tag.getCompoundTag(LOOT_SETTINGS_TAG));
 		}
 	}
 
@@ -114,5 +77,21 @@ public class TileAdvancedLootChest extends TileEntityChest {
 			return this.getItems().get(index);
 		}
 		return super.getStackInSlot(index);
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public AxisAlignedBB getRenderBoundingBox() {
+		return new AxisAlignedBB(pos.add(-1, 0, -1), pos.add(2, 2, 2));
+	}
+
+	@Override
+	public void setLootSettings(LootSettings settings) {
+		this.lootSettings = settings;
+	}
+
+	@Override
+	public LootSettings getLootSettings() {
+		return lootSettings;
 	}
 }

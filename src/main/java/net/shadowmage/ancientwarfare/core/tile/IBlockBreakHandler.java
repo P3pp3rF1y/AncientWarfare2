@@ -1,5 +1,7 @@
 package net.shadowmage.ancientwarfare.core.tile;
 
+import net.minecraft.block.state.IBlockState;
+
 public interface IBlockBreakHandler {
-	void onBlockBroken();
+	void onBlockBroken(IBlockState state);
 }

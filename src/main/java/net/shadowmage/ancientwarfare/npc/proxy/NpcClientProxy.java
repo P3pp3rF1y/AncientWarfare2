@@ -113,7 +113,7 @@ public class NpcClientProxy extends NpcCommonProxy {
 
 	@Override
 	public void loadSkins() {
-		NpcSkinManager.INSTANCE.loadSkins();
+		NpcSkinManager.loadSkins();
 	}
 
 	@Override

@@ -19,7 +19,6 @@ import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTUtil;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -39,10 +38,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -55,7 +52,6 @@ import net.shadowmage.ancientwarfare.core.owner.Owner;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
-import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.ai.NpcNavigator;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
@@ -63,7 +59,7 @@ import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 import net.shadowmage.ancientwarfare.npc.item.ItemShield;
 import net.shadowmage.ancientwarfare.npc.registry.NpcDefaultsRegistry;
-import net.shadowmage.ancientwarfare.npc.skin.NpcSkinManager;
+import net.shadowmage.ancientwarfare.npc.skin.NpcSkinSettings;
 import net.shadowmage.ancientwarfare.vehicle.entity.IPathableEntity;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.pathing.Node;
@@ -86,8 +82,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	private static final DataParameter<Byte> BED_DIRECTION = EntityDataManager.createKey(NpcBase.class, DataSerializers.BYTE);
 	private static final DataParameter<Boolean> IS_SLEEPING = EntityDataManager.createKey(NpcBase.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<Boolean> SWINGING_ARMS = EntityDataManager.createKey(NpcBase.class, DataSerializers.BOOLEAN);
-	private static final String PROFILE_TEXTURE_TAG = "profileTex";
-	private static final String CUSTOM_TEXTURE_TAG = "customTex";
 	private static final String SLOT_NUM_TAG = "slotNum";
 	private static final String BED_DIRECTION_TAG = "bedDirection";
 	private static final String IS_SLEEPING_TAG = "isSleeping";
@@ -102,22 +96,19 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	private static final String ATTACK_DAMAGE_OVERRIDE_TAG = "attackDamageOverride";
 	private static final String ARMOR_VALUE_OVERRIDE_TAG = "armorValueOverride";
 	private static final String AI_ENABLED_TAG = "aiEnabled";
-
-	private Owner owner = Owner.EMPTY;
-	private String followingPlayerName;//set/cleared onInteract from player if player.team==this.team
-
-	private NpcLevelingStats levelingStats;
-
-	/*
-	 * a single base texture for ALL npcs to share, used in case other textures were not set
-	 */
-	private static final ResourceLocation baseDefaultTexture = new ResourceLocation("ancientwarfare:textures/entity/npc/npc_default.png");
-
-	private ResourceLocation currentTexture = null;
 	public static final int ORDER_SLOT = 6;
 	public static final int UPKEEP_SLOT = 7;
+
 	@Nonnull
 	public ItemStack ordersStack = ItemStack.EMPTY;
+	private static final String DO_NOT_PURSUE = "donotpursue";
+	private Owner owner = Owner.EMPTY;
+
+	private String followingPlayerName;//set/cleared onInteract from player if player.team==this.team
+	private NpcLevelingStats levelingStats;
+
+	private NpcSkinSettings skinSettings = new NpcSkinSettings();
+
 	@Nonnull
 	public ItemStack upkeepStack = ItemStack.EMPTY;
 
@@ -127,12 +118,11 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	public Set<Entity> nearbyHostiles = new LinkedHashSet<Entity>();
 
 	private boolean aiEnabled = true;
+	public boolean doNotPursue = false; //if the npc should not pursue targets away from its position/route
 
 	private int attackDamage = -1;//faction based only
 	private int armorValue = -1;//faction based only
 	private int maxHealthOverride = -1;
-	private String customTexRef = "";//might as well allow for player-owned as well...
-	private boolean usesPlayerSkin = false;
 
 	private BlockPos cachedBedPos;
 	private boolean foundBed = false;
@@ -186,34 +176,12 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		}
 	}
 
-	public void setCustomTexRef(String customTexRef) {
-		if (!world.isRemote) {
-			if (!customTexRef.equals(this.customTexRef)) {
-				PacketEntity pkt = new PacketEntity(this);
-				if (customTexRef.startsWith("Player:")) {
-					String name = customTexRef.split(":", 2)[1];
-					AncientWarfareNPC.proxy.cacheProfile((WorldServer) world, name).ifPresent(t -> pkt.packetData.setTag(PROFILE_TEXTURE_TAG, t));
-				}
-				pkt.packetData.setString(CUSTOM_TEXTURE_TAG, customTexRef);
-				NetworkHandler.sendToAllTracking(this, pkt);
-			}
-			this.customTexRef = customTexRef;
-		} else {
-			this.customTexRef = customTexRef;
-			this.updateTexture();
-		}
-	}
-
 	public void setAttackDamageOverride(int attackDamage) {
 		this.attackDamage = attackDamage;
 	}
 
 	public void setArmorValueOverride(int armorValue) {
 		this.armorValue = armorValue;
-	}
-
-	public String getCustomTex() {
-		return customTexRef;
 	}
 
 	public int getArmorValueOverride() {
@@ -782,10 +750,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		return levelingStats;
 	}
 
-	private ResourceLocation getDefaultTexture() {
-		return baseDefaultTexture;
-	}
-
 	private ItemStack getItemToSpawn() {
 		return ItemNpcSpawner.getSpawnerItemForNpc(this);
 	}
@@ -804,7 +768,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		buffer.writeLong(getUniqueID().getMostSignificantBits());
 		buffer.writeLong(getUniqueID().getLeastSignificantBits());
 		owner.serializeToBuffer(buffer);
-		ByteBufUtils.writeUTF8String(buffer, customTexRef);
+		skinSettings.serializeToBuffer(buffer);
 	}
 
 	@Override
@@ -813,8 +777,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		long l2 = buffer.readLong();
 		this.entityUniqueID = new UUID(l1, l2);
 		owner = new Owner(buffer);
-		customTexRef = ByteBufUtils.readUTF8String(buffer);
-		this.updateTexture();
+		skinSettings = NpcSkinSettings.deserializeFromBuffer(buffer);
 	}
 
 	@Override
@@ -945,6 +908,13 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		this.followingPlayerName = null;
 	}
 
+	public void setDoNotPursue(boolean val) {
+		this.doNotPursue = val;
+	}
+	public boolean getDoNotPursue() {
+		return doNotPursue;
+	}
+
 	@Override
 	public boolean canBeLeashedTo(EntityPlayer player) {
 		return false;
@@ -1050,12 +1020,13 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		if (tag.hasKey(ARMOR_VALUE_OVERRIDE_TAG)) {
 			setArmorValueOverride(tag.getInteger(ARMOR_VALUE_OVERRIDE_TAG));
 		}
-		if (tag.hasKey(CUSTOM_TEXTURE_TAG)) {
-			setCustomTexRef(tag.getString(CUSTOM_TEXTURE_TAG));
-		}
 		if (tag.hasKey(AI_ENABLED_TAG)) {
 			setIsAIEnabled(tag.getBoolean(AI_ENABLED_TAG));
 		}
+		if (tag.hasKey(DO_NOT_PURSUE)) {
+			setDoNotPursue(tag.getBoolean(DO_NOT_PURSUE));
+		}
+		setSkinSettings(NpcSkinSettings.deserializeNBT(tag.getCompoundTag("skinSettings")).minimizeData());
 		owner = Owner.deserializeFromNBT(tag);
 	}
 
@@ -1080,47 +1051,22 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		tag.setInteger("food", getFoodRemaining());
 		tag.setInteger(ATTACK_DAMAGE_OVERRIDE_TAG, attackDamage);
 		tag.setInteger(ARMOR_VALUE_OVERRIDE_TAG, armorValue);
-		tag.setString(CUSTOM_TEXTURE_TAG, customTexRef);
 		tag.setBoolean(AI_ENABLED_TAG, aiEnabled);
+		tag.setBoolean(DO_NOT_PURSUE, doNotPursue);
+		tag.setTag("skinSettings", skinSettings.serializeNBT());
 		owner.serializeToNBT(tag);
 	}
 
 	public final ResourceLocation getTexture() {
-		if (currentTexture == null) {
-			updateTexture();
-		}
-		return currentTexture == null ? getDefaultTexture() : currentTexture;
-	}
-
-	public final void updateTexture() {
-		usesPlayerSkin = false;
-		if (customTexRef.startsWith("Player:")) {
-			try {
-				AncientWarfareNPC.proxy.getPlayerSkin(customTexRef.split(":", 2)[1]).ifPresent(t -> {
-					currentTexture = t;
-					usesPlayerSkin = true;
-				});
-			}
-			catch (Throwable ignored) {
-			}
-		} else {
-			NpcSkinManager.INSTANCE.getTextureFor(this).ifPresent(t -> currentTexture = t);
-		}
+		return skinSettings.getTexture(this);
 	}
 
 	@Override
 	public void handlePacketData(NBTTagCompound tag) {
 		if (tag.hasKey("ownerName")) {
 			owner = Owner.deserializeFromNBT(tag);
-		} else if (tag.hasKey(PROFILE_TEXTURE_TAG) && tag.hasKey(CUSTOM_TEXTURE_TAG)) {
-			customTexRef = tag.getString(CUSTOM_TEXTURE_TAG);
-			NBTTagCompound tah = tag.getCompoundTag(PROFILE_TEXTURE_TAG);
-			if (world.isRemote) {
-				Optional.ofNullable(NBTUtil.readGameProfileFromNBT(tah)).ifPresent(AncientWarfareNPC.proxy::cacheProfile);
-			}
-			updateTexture();
-		} else if (tag.hasKey(CUSTOM_TEXTURE_TAG)) {
-			setCustomTexRef(tag.getString(CUSTOM_TEXTURE_TAG));
+		} else if (tag.hasKey(NpcSkinSettings.PACKET_TAG_NAME)) {
+			skinSettings.handlePacketData(tag);
 		} else if (tag.hasKey("attackTarget")) {
 			int entityId = tag.getInteger("attackTarget");
 			setAttackTarget((EntityLivingBase) world.getEntityByID(entityId));
@@ -1352,10 +1298,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		this.dataManager.set(SWINGING_ARMS, swingingArms);
 	}
 
-	public boolean getUsesPlayerSkin() {
-		return usesPlayerSkin;
-	}
-
 	//TODO refactor vehicle stuff out - perhaps capability??
 
 	@Nullable
@@ -1400,5 +1342,18 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	@Override
 	public void onStuckDetected() {
 		//noop
+	}
+
+	public boolean isFemale() {
+		return false;
+	}
+
+	public NpcSkinSettings getSkinSettings() {
+		return skinSettings;
+	}
+
+	public void setSkinSettings(NpcSkinSettings skinSettings) {
+		this.skinSettings = skinSettings;
+		this.skinSettings.onNpcSet(this);
 	}
 }

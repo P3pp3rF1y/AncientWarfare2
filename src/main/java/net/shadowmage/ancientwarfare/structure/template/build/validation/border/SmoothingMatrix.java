@@ -7,7 +7,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
-import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
+import net.shadowmage.ancientwarfare.structure.template.build.validation.border.points.PointType;
+import net.shadowmage.ancientwarfare.structure.template.build.validation.border.points.SmoothingPoint;
 import net.shadowmage.ancientwarfare.structure.worldgen.WorldStructureGenerator;
 
 import java.util.HashMap;
@@ -21,15 +22,14 @@ public class SmoothingMatrix {
 	private SmoothingPoint[][] smoothingPoints;
 	private final int fullXSize;
 	private final int fullZSize;
-	private Map<SmoothingPoint.Type, Set<SmoothingPoint>> typePoints = new HashMap<>();
+	private Map<PointType, Set<SmoothingPoint>> typePoints = new HashMap<>();
 	private final BlockPos minPos;
 
-	public SmoothingMatrix(StructureBB bb, int borderSize) {
-		fullXSize = bb.getXSize() + 2 * borderSize + 2 * 2;
-		fullZSize = bb.getZSize() + 2 * borderSize + 2 * 2;
+	public SmoothingMatrix(BorderMatrix borderMatrix, BlockPos structureMinPos, int borderSize) {
+		fullXSize = borderMatrix.getFullXSize();
+		fullZSize = borderMatrix.getFullZSize();
 		smoothingPoints = initMatrix(fullXSize, fullZSize);
-		minPos = bb.min.add(-borderSize - 2, 0, -borderSize - 2);
-
+		minPos = structureMinPos.add(-borderSize - 2, 0, -borderSize - 2);
 	}
 
 	Optional<SmoothingPoint> getPoint(HorizontalCoords coords) {
@@ -37,6 +37,10 @@ public class SmoothingMatrix {
 	}
 
 	public Optional<SmoothingPoint> getPoint(int x, int z) {
+		if (smoothingPoints.length == 0 || x < 0 || x >= smoothingPoints.length || z < 0 || z >= smoothingPoints[0].length) {
+			return Optional.empty();
+		}
+
 		return Optional.ofNullable(smoothingPoints[x][z]);
 	}
 
@@ -78,14 +82,16 @@ public class SmoothingMatrix {
 		return !getPoint(point).isPresent();
 	}
 
-	public SmoothingPoint addPoint(int x, int z, BlockPos pos, SmoothingPoint.Type type) {
+	public SmoothingPoint addPoint(int x, int z, BlockPos pos, PointType type) {
 		SmoothingPoint point = new SmoothingPoint(x, z, pos, type);
 		addPoint(point);
 		return point;
 	}
 
-	public void addPoint(int x, int z, BlockPos pos, SmoothingPoint.Type type, IBlockState state) {
-		addPoint(x, z, pos, type).setBlockState(state);
+	public SmoothingPoint addPoint(int x, int z, BlockPos pos, PointType type, IBlockState state) {
+		SmoothingPoint point = addPoint(x, z, pos, type);
+		point.setBlockState(state);
+		return point;
 	}
 
 	void addPoint(SmoothingPoint point) {
@@ -103,7 +109,7 @@ public class SmoothingMatrix {
 		return ret;
 	}
 
-	private void addTypePoint(SmoothingPoint.Type type, SmoothingPoint point) {
+	private void addTypePoint(PointType type, SmoothingPoint point) {
 		if (!typePoints.containsKey(type)) {
 			typePoints.put(type, new HashSet<>());
 		}
@@ -111,7 +117,7 @@ public class SmoothingMatrix {
 	}
 
 	public void apply(World world, Consumer<BlockPos> handleClearing) {
-		typePoints.get(SmoothingPoint.Type.SMOOTHED_BORDER).forEach(point -> levelTerrain(world, point, handleClearing));
+		typePoints.get(PointType.SMOOTHED_BORDER).forEach(point -> levelTerrain(world, point, handleClearing));
 	}
 
 	private void levelTerrain(World world, SmoothingPoint point, Consumer<BlockPos> handleClearing) {
@@ -154,15 +160,7 @@ public class SmoothingMatrix {
 		return minPos;
 	}
 
-	public int getFullXSize() {
-		return fullXSize;
-	}
-
-	public int getFullZSize() {
-		return fullZSize;
-	}
-
-	public Set<SmoothingPoint> getPointsOfType(SmoothingPoint.Type type) {
+	public Set<SmoothingPoint> getPointsOfType(PointType type) {
 		return typePoints.get(type);
 	}
 }

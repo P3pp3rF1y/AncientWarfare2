@@ -1,17 +1,19 @@
 package net.shadowmage.ancientwarfare.structure.tile;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
-import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.block.BlockTotemPart.Variant;
 
-import java.util.Optional;
+import java.util.Set;
 
-public class TileTotemPart extends TileUpdatable {
+import static net.shadowmage.ancientwarfare.core.render.property.CoreProperties.FACING;
+
+public class TileTotemPart extends TileMulti {
 	private static final String VARIANT_TAG = "variant";
-	public static final String MAIN_BLOCK_POS_TAG = "mainBlockPos";
 	private Variant variant = Variant.BASE;
-	private BlockPos mainBlockPos = null;
+	private Variant dropVariant = Variant.BASE;
 
 	public void setVariant(Variant variant) {
 		this.variant = variant;
@@ -19,6 +21,12 @@ public class TileTotemPart extends TileUpdatable {
 
 	public Variant getVariant() {
 		return variant;
+	}
+
+	@Override
+	public void setMainBlockPos(BlockPos mainBlockPos) {
+		super.setMainBlockPos(mainBlockPos);
+		getMainBlockPos().ifPresent(mainPos -> WorldTools.getTile(world, mainPos, TileTotemPart.class).ifPresent(te -> dropVariant = te.getVariant()));
 	}
 
 	@Override
@@ -37,26 +45,22 @@ public class TileTotemPart extends TileUpdatable {
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
 		variant = Variant.fromId(compound.getByte(VARIANT_TAG));
-		if (compound.hasKey(MAIN_BLOCK_POS_TAG)) {
-			mainBlockPos = BlockPos.fromLong(compound.getLong(MAIN_BLOCK_POS_TAG));
-		}
+		getMainBlockPos().ifPresent(mainPos -> WorldTools.getTile(world, mainPos, TileTotemPart.class).ifPresent(te -> dropVariant = te.getVariant()));
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound = super.writeToNBT(compound);
 		compound.setByte(VARIANT_TAG, (byte) variant.getId());
-		if (mainBlockPos != null) {
-			compound.setLong(MAIN_BLOCK_POS_TAG, mainBlockPos.toLong());
-		}
 		return compound;
 	}
 
-	public void setMainBlockPos(BlockPos mainBlockPos) {
-		this.mainBlockPos = mainBlockPos;
+	@Override
+	public Set<BlockPos> getAdditionalPositions(IBlockState state) {
+		return getVariant().getAdditionalPartPositions(pos, state.getValue(FACING));
 	}
 
-	public Optional<BlockPos> getMainBlockPos() {
-		return Optional.ofNullable(mainBlockPos);
+	public Variant getDropVariant() {
+		return dropVariant;
 	}
 }

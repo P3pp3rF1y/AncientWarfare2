@@ -139,7 +139,9 @@ public class AWCraftingManager {
 					RESEARCH_RECIPES.register(recipe);
 				}
 			} else {
-				ForgeRegistries.RECIPES.register(recipe.getCraftingRecipe());
+				if (!ForgeRegistries.RECIPES.containsKey(recipe.getRegistryName())) {
+					ForgeRegistries.RECIPES.register(recipe.getCraftingRecipe());
+				}
 			}
 		}
 	}

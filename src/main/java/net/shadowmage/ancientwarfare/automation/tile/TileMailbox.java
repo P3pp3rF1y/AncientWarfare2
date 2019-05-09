@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.tile;
 
 import com.google.common.collect.Lists;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -195,7 +196,7 @@ public class TileMailbox extends TileOwned implements IRotatableTile, ITickable,
 	}
 
 	@Override
-	public void onBlockBroken() {
+	public void onBlockBroken(IBlockState state) {
 		InventoryTools.dropItemsInWorld(world, sendInventory, pos);
 		InventoryTools.dropItemsInWorld(world, receivedInventory, pos);
 	}

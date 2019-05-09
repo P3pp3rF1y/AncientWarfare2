@@ -27,8 +27,6 @@ public class TownGenerator {
 	public final TownTemplate template;
 	public final World world;
 	public final Random rng;
-	private final int blockSize;
-	private final int plotSize;
 	public final StructureBB maximalBounds;
 	public final StructureBB exteriorBounds;//maximal, shrunk by borderSize (16 blocks), maximal area encompassing extents of exterior buffer zone
 	public final StructureBB wallsBounds;//exterior shrunk by exteriorSize (configurable), maximal area encompassing extents of walls
@@ -45,7 +43,7 @@ public class TownGenerator {
 	public TownGenerator(World world, TownBoundingArea area, TownTemplate template) {
 		this.world = world;
 		this.template = template;
-		long seed = (area.getCenterX() << 32) | area.getCenterZ();
+		long seed = (area.getCenterX() << 16) | area.getCenterZ();
 		this.rng = new Random(seed);
 
 		int y1 = area.getSurfaceY() + 1;
@@ -58,9 +56,6 @@ public class TownGenerator {
 		this.exteriorBounds = new StructureBB(area.getExteriorMinX(), y1, area.getExteriorMinZ(), area.getExteriorMaxX(), y2, area.getExteriorMaxZ());
 		this.wallsBounds = new StructureBB(area.getWallMinX(), y1, area.getWallMinZ(), area.getWallMaxX(), y2, area.getWallMaxZ());
 		this.townBounds = new StructureBB(area.getTownMinX(), y1, area.getTownMinZ(), area.getTownMaxX(), y2, area.getTownMaxZ());
-
-		this.blockSize = template.getTownBlockSize();
-		this.plotSize = template.getTownPlotSize();
 	}
 
 	/*

@@ -1,0 +1,362 @@
+{
+    "type": "manual_content",
+    "lang": "de_DE",
+    "category": "npcs",
+    "content": [
+        {
+            "content_type": "heading",
+            "text": "NPCs im Besitz des Spielers",
+            "level": 1
+        },
+        {
+            "content_type": "text",
+            "text": "Alle NPCs werden aus Spawn-Rollen erzeugt, die mit der richtigen Forschung hergestellt werden können. Verwenden Sie  für die Rezepte. Standardmäßig ist die Ausgangsposition der NPCs derselbe Block, in dem sie erzeugt wurde. Er wird immer während der Nachtzeit oder wenn er angegriffen wird, zu diesem Punkt zurückkehren. \nNPCs lassen sich in drei Hauptkategorien unterteilen: Arbeiter, Kampf und Nutz-NPCs. Arbeiter-NPCs sollen auf den Maschinen verwendet werden und fallen in konfigurierbare Rollen: Bauer, Holzfäller, Bergmann, Handwerker und Forscher. Kampf-NPCs sind für Verteidigungs- und Angriffszwecke vorgesehen und werden in konfigurierbare Rollen aufgeteilt: Soldat, Bogenschütze, Kommandant, Sanitäter, Belagerungsingenieur und Ingenieur. Nutz-NPCs erfüllen verschiedene andere Aufgaben und teilen sich in Kurier, Händler, Priester und Barde auf.\nAlle NPCs verfügen über eine Interaktions-GUI, auf die Sie mit Rechtsklick auf den NPC zugreifen können. Die anderen Schaltflächen in der grafischen Benutzeroberfläche dienen zu Hilfsprogrammen und zu logistischen Zwecken. “Toggle Follow”, lässt den NPC einem Spieler folgen. Dies kann auch durch Rechtsklick auf den NPC erreicht werden. “Set Home”, legt den Heimatpunkt der NPCs an jedem beliebigen Ort fest. “Clear Home”, entfernt den Heimatpunkt des NPC vollständig. “Neu packen”, bringt  den NPC mit jeder gespeicherten Anpassung wieder zu seinem spawning-Gegenstand zurück, um ihn dann wieder dort zu platzieren, wo der Spieler möchte. "
+        },
+        {
+            "content_type": "item",
+            "name": "minecraft:cooked_beef"
+        },
+        {
+            "content_type": "heading",
+            "text": "Wartungsmechanik",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Alle NPCs die sich im Besitz des Spielers befinden, müssen in Form von Nahrungsmitteln gepflegt werden. Wenn sie nicht ernährt werden, stellen sie ihre Pflichten ein. Arbeiter und Nutz-NPCs werden umherirren und Kampf-NPCs greifen nur in Notwehr an. Sie werden auch nicht mehr automatisch heilen solange sie hungrig sind. Wenn Sie einen Wartungspunkt haben, warten Sie in der Nähe dieses Punktes, bis sie gefüttert werden. Die üblichen Lebensmittelwerte werden durch die Position Wartungsaufträge konfiguriert. Wenn keine Unterhaltsaufträge vorhanden sind, versucht der NPC fünf Minuten lang (in Echtzeit) ausreichend Nahrung abzuziehen. Die üblichen Lebensmittelwerte, die als Lebensmittel gelten, sind in der Konfigurationsdatei “AncientWarfareNpcFood.cfg” vollständig konfigurierbar. NPCs die nicht über einen Unterhaltsauftrag verfügen, versuchen ihren Unterhalt vom nächsten Rathausblock abzuziehen. Ein Spieler kann den Versorgungsstandort für einen NPC auch manuell durch den Befehlsstocks festlegen."
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfarenpc:upkeep_order"
+        },
+        {
+            "content_type": "heading",
+            "text": "Wartungsaufträge",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Um die Wartungsauftäge zu verwenden, drücken Sie die “z” Taste mit dem Wartungsauftrag in der Hand, während der Inventarblock betrachtet wird. Sie können nur einen Inventar pro Instandhaltungsauftrag auswählen. Sobald Sie das Inventar erhalten haben, klicken Sie bitte mit der rechten Maustaste, um die Bestellung zu öffnen. Die GUI zeigt, was es ist, wo es ist und eine seitenspezifische Inventaroption (für Truhen ist dies nicht wichtig). Neben diesen Optionen wird ein Eintrag für die minimale Zeit zwischen den Essensaufnahmen in Minuten angezeigt. "
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfarenpc:town_hall"
+        },
+        {
+            "content_type": "heading",
+            "text": "Rathäuser",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Der Rathausblock fungiert als automatisch zuweisbarer Versorgungspunkt für die NPCs des Besitzers. NPCs in Reichweite wählen automatisch das nächstgelegene Rathaus als Wartungspunkt aus, wenn keine Wartungsaufträge vorliegen. Dies schränkt auch einen Wartungspunkt ein. Das Rathaus hat ein Inventar zur Aufbewahrung von Lebensmitteln für den Unterhalt von NPCs. \nDas Rathaus dient außerdem als Todesanzeige für alle NPCs, die innerhalb seiner Reichweite gestorben sind. Die Spieler können diese Liste einsehen. Die Liste kann manuell gelöscht werden. Priester verwenden diese Todesliste, um mögliche Wiederauferstehungsziele zu verfolgen. Löschen Sie daher nicht die Liste, wenn Sie einen der NPCs wiederbeleben möchten."
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfarenpc:diamond_command_baton"
+        },
+        {
+            "content_type": "heading",
+            "text": "Befehlsstäbe",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Der Befehlsstab gibt einem Spieler die Möglichkeit, Befehle oder NPCs zu erteilen. Jeder Befehlsstab speichert eine eigene Liste von NPC-Zielen. Für ‘Befehlsgruppen’ können mehrere Befehlsstäbe verwendet werden. Das aktuelle Ziel wird oben auf dem Bildschirm angezeigt. Um einen NPC zur Liste der befohlenen NPCs zu finden oder daraus zu entfernen, klicken Sie mit der rechten Maustaste. Über die Element-Interaktions-Schnelltasten werden Befehle an die NPCs von einem Befehlsstab erteilt. Aufträge werden mit dem aktuell hervorgehobenen Block oder der ausgewählten Entität als Ziel ausgegeben. Bestellungen werden an die gesamte Liste der befohlenen NPCs für diesen Befehlsstab erteilt. Um einen Auftrag zu erteilen, drücken Sie die entsprechende Auftragstaste. Die aktuellen verfügbaren Tasten Befehle sind: Z -Aktuelle Befehle löschen, X -Ziel angreifen oder Zielposition ansteuern, während gesuchte Feinde angegriffen werden, C -Ziel Wachziel folgen Zielposition ansteuern Zielpferd besteigen, V -Als Startpunkt festlegen, der Punkt wird gelöscht, wenn bei der Erteilung der Bestellung Schleichen gehalten wird. \nB-Setzt den Wartungspunkt, wenn Sie bei der Auftragerteilung schleichen."
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfarenpc:npc_spawner",
+            "nbt": "{npcSubtype:\"\",npcType:\"worker\"}"
+        },
+        {
+            "content_type": "heading",
+            "text": "Arbeiter-NPC",
+            "level": 1
+        },
+        {
+            "content_type": "text",
+            "text": "Der Arbeiter-NPC ist der generische Überlebens-NPC. Ohne ausgerüstete Werkzeuge hat der NPC keine Rolle/Job. Sie müssen ihnen ein Werkzeug geben um ihnen einen Job zu geben, damit sie an den entsprechenden Maschinen arbeiten zu können. Das einzige, was ein NPC sonst noch braucht, ist Essen. Stelle sicher, dass du ihnen so schnell wie möglich einen Job gibst. Die Materialqualität der Ausrüstung trägt zur Effektivität und zur Arbeitsleistung der Arbeiter bei. Die Arbeiter kehren nachts oder bei Regen automatisch zu ihrem Heimatpunkt zurück. Wenn ein Arbeiter-NPC eine feindliche Entität entdeckt, geht eine Warnung aus und er bewegt sich in Richtung des nächstgelegenen Rathauses oder Heimatpunkts, während er versucht dem Feind auszuweichen. Wenn kein Rathaus vorhanden ist, ist der Heimatpunkt festgelegt. Andere NPCs in der Nähe können auf diese Weise verschiedene Arbeiten in der Nähe beginnen, während in der Nähe befindliche Kampf-NPCs den Feind angreifen können."
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfarenpc:work_order"
+        },
+        {
+            "content_type": "heading",
+            "text": "Arbeitsanweisungen",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "NPC-Arbeiter suchen automatisch nach der nächstgelegenen aktiven Baustelle, an der gearbeitet werden kann. Wenn keine Baustelle vorhanden ist, werden sie umherwandern. Die automatische Auswahl der Baustelle kann überschrieben werden, indem ein ordnungsgemäß konfigurierter Arbeitsauftrag in den Arbeitsbereich der Arbeiter platziert wird. Um einen Arbeitsauftrag zu verwenden, drücken Sie die “z” Taste mit dem Arbeitsauftrag in der Hand. Sie können dies für mehrere Maschinen tun. Nachdem Sie die Maschine ausgewählt haben, klicken Sie mit der rechten Maustaste, um die Bestellung zu öffnen. Die sich öffnende GUI enthält eine Liste der Punkte und wo sie sich befinden, ein Pluszeichen, um sie in der Liste anzuheben, ein Minuszeichen, um sie in der Liste abzusenken und eine Schaltfläche zum Entfernen. Neben diesen Optionen wird ein Eintrag für die Mindestzeit angezeigt. In den meisten Fällen kann dies tatsächlich auf Null belassen werden. Dies bedeutet, dass der NPC so viel Zeit braucht, wie er zu diesem Zeitpunkt arbeiten muss. Oberhalb der Liste befinden sich zwei Schaltflächen, mit denen Sie den NPC konfigurieren können. \n \n \n \n"
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfarenpc:npc_spawner",
+            "nbt": "{npcSubtype:\"farmer\",npcType:\"worker\"}"
+        },
+        {
+            "content_type": "heading",
+            "text": "Landwirt",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Der Farmer arbeitet auf der Pflanzen Farm, der Obst Farm, der Tier Farm und der Fisch Farm. Der Arbeiter-NPC benötigt eine Hacke aus beliebigem Material in der Haupthand, um Farmer zu werden. Dadurch ändert sich der Skin des Arbeiters in den Farmerskin. Wenn diese Änderung nicht auftritt, ist der Arbeiter kein Farmer. Nebenhand, Rüstungsslots und Orderslots können beliebig eingerichtet werden. \n \n \n \n"
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfarenpc:npc_spawner",
+            "nbt": "{npcSubtype:\"lumberjack\",npcType:\"worker\"}"
+        },
+        {
+            "content_type": "heading",
+            "text": "Holzfäller",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Der Holzfäller arbeitet in der Baum Farm. Der Arbeiter-NPC benötigt eine Axt in der Haupthand, um ein Holzfäller zu werden. Sie sollten sehen, dass sich der Skin des Arbeiters in den Holzfäller-Skin ändert. Wenn diese Änderung nicht auftritt, ist der Arbeiter kein Holzfäller. Nebenhand, Rüstungsslots und Orderslots können beliebig eingerichtet werden. \n \n \n \n"
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfarenpc:npc_spawner",
+            "nbt": "{npcSubtype:\"miner\",npcType:\"worker\"}"
+        },
+        {
+            "content_type": "heading",
+            "text": "Bergmann",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Der Bergmann arbeitet an den Steinbruch. Der Arbeiter-NPC benötigt eine Spitzhacke in der Haupthand, um ein Bergmann zu werden. Sie sollten sehen, dass sich der Skin des Arbeiters in den Bergmann-Skin ändert. Wenn diese Änderung nicht auftritt, ist der Arbeiter kein Bergmann. Nebenhand, Rüstungsslots und Orderslots können beliebig eingerichtet werden. \n \n \n \n"
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfarenpc:npc_spawner",
+            "nbt": "{npcSubtype:\"craftsman\",npcType:\"worker\"}"
+        },
+        {
+            "content_type": "heading",
+            "text": "Handwerker",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Der Handwerker arbeitet am Autocrafting-Tisch und im Lager sowie am Generator mit Handkurbel und einem beliebigen Survival Structure Builder. Der Arbeiter-NPC benötigt einen Hammer in der Haupthand, um Handwerker zu werden. Sie sollten feststellen, dass der Skin des Arbeiters in den Handwerker-Skin geändert wird. Wenn diese Änderung nicht auftritt, ist der Arbeiter kein Handwerker. \n \n \n"
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfarenpc:npc_spawner",
+            "nbt": "{npcSubtype:\"researcher\",npcType:\"worker\"}"
+        },
+        {
+            "content_type": "heading",
+            "text": "Forscher",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Der Forscher arbeitet an Forschungsstationen, um einen kontinuierlichen Forschungsfortschritt ohne Interaktion der Spieler zu ermöglichen. Erforderliche Ausrüstung ist ein Federkiel jeglichen Materialniveaus in der Haupthand. Hand und Rüstung können beliebig konfiguriert werden, da die Forschung keine großen Mengen an Energie erfordert und der Spieler sie schnell bereitstellen kann. Es gibt jedoch Konfigurationsoptionen um den Stromverbrauch der Forschungen zu erhöhen, sodass sich der Forscher lohnt."
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfarenpc:npc_spawner",
+            "nbt": "{npcSubtype:\"\",npcType:\"combat\"}"
+        },
+        {
+            "content_type": "heading",
+            "text": "Kampf-NPC",
+            "level": 1
+        },
+        {
+            "content_type": "text",
+            "text": "Die Kampf-NPCs haben wie die Arbeiter keinen Job. Sie müssen sie für jede geplante Arbeit richtig ausrüsten. Die Schadensleistung wird vom NPC-Level und dem Materialstand der ausgerüsteten Gegenstände bestimmt. Die Erfahrung und das Level steigen pro Rolle. Wenn ein Kampf-NPC eine feindliche Entität entdeckt, sendet sie eine Warnung aus und bewegt sich in Richtung der Angriffsentfernung von diesem Feind. Andere NPCs in der Nähe können die Übertragung auf verschiedene Weise ändern. In der Nähe befindliche Arbeiter und Nutz-NPCs flüchten, während in der Nähe befindliche Kampf-NPCs den Feind angreifen. Wenn ein Kampf-NPC über einen Heimatpunkt verfügt, wird er in der Nähe von diesem Heimatpunkt bleiben, selbst wenn er Feinden nachgeht. Wenn er zu weit streift, wird er von seinem Heimatpunkt zurückbewegen. Kampf-NPCs können Patrouillenrouten laufen, die in ihrem Order-Slot mit einem ordnungsgemäß eingerichteten Kampf-Order-Gegenstand versehen sind."
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfarenpc:combat_order"
+        },
+        {
+            "content_type": "heading",
+            "text": "Kampf Aufträge",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Kampf Aufträge funktionieren genauso wie Arbeitsaufträge, wenn Sie Punkte auswählen. Halten Sie einfach den Kampfauftrag in der Haupthand und drücken Sie die Taste “z”. Öffnen Sie den Kampfauftrag durch Rechtsklick. Dadurch wird eine GUI angezeigt, die der Arbeitsreihenfolge ähnelt. In der Kampfreihenfolge gibt es die Koordinaten der Punkte. Ein Pluszeichen für das Aufwärtsbewegen von Punkten, ein Minuszeichen für das Abwärtsbewegen von Punkten und ein X zum Entfernen der Punkte an. Platzieren Sie den Kampfauftrag eines Kampf-NPC im dafür vorgesehenen Slot."
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfarenpc:npc_spawner",
+            "nbt": "{npcSubtype:\"soldier\",npcType:\"combat\"}"
+        },
+        {
+            "content_type": "heading",
+            "text": "Soldat",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Wenn Sie einen Kampf-NPC mit einem Schwert ausrüsten, wird er zum Soldat. Der Skin des Kampf-NPC ändert sich in den Skin eines Soldaten. Wenn dies nicht der Fall ist, ist der Kampf-NPC kein Soldat. Seine Schadensleistung wird vom Materialstand des Schwertes bestimmt. Wenn Sie ein anderes Schwert in die Nebenhand des Soldaten legen, kann der Soldat mit beiden Waffen gleichzeitig kämpfen, aber das Nebenhandschwert verursacht nur halb so viel Schaden wie das Schwert in der Haupthand."
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfarenpc:npc_spawner",
+            "nbt": "{npcSubtype:\"archer\",npcType:\"combat\"}"
+        },
+        {
+            "content_type": "heading",
+            "text": "Bogenschütze",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Wenn Sie einen Kampf-NPC mit einem Bogen ausrüsten, wird er zum Bogenschützen. Der Skin des Kampf-NPC ändert sich in den Skin eines Bogenschützen. Wenn dies nicht der Fall ist, ist der Kampf-NPC kein Bogenschütze. Sein Sortiment ist das gleiche wie von einem Skelettmob.\n \n \n \n \n \n"
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfarenpc:npc_spawner",
+            "nbt": "{npcSubtype:\"commander\",npcType:\"combat\"}"
+        },
+        {
+            "content_type": "heading",
+            "text": "Kommandant",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Wenn Sie einen Kampf-NPC mit einem Befehlsstab aus beliebigem Material ausrüsten, wird er zum Kommandant. Der Skin des Kampf-NPC ändert sich in den Skin des Kommandanten. Wenn dies nicht der Fall ist, ist der Kampf-NPC kein Kommandant. Seine Schadensleistung wird vom Materialstand des ausgerüsteten Befehlsstabs bestimmt. Der Kommandant bietet Schadenserhöhungen und Rüstungen für nahe gelegene Team-NPCs. Wenn Sie einen weiteren Befehlsstab in der Nebenhand des Kommandanten platzieren, kann er zwei Waffen gleichzeitig einsetzen."
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfarenpc:npc_spawner",
+            "nbt": "{npcSubtype:\"medic\",npcType:\"combat\"}"
+        },
+        {
+            "content_type": "heading",
+            "text": "Mediziner",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Wenn Sie einen Kampf-NPC mit einer Axt eines beliebigen Materialniveaus ausrüsten, wird er zum Mediziner. Der Skin des Kampf-NPC ändert sich in den Skin des Mediziners. Wenn das nicht der Fall ist, ist der Kampf-NPC kein Mediziner. Seine Schadensleistung wird durch den Materialstand der ausgerüsteten Axt bestimmt. Der Mediziner versucht, Spieler und nahe gelegene Team-NPCs zu heilen.\n \n \n"
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfarenpc:npc_spawner",
+            "nbt": "{npcSubtype:\"\",npcType:\"siege_engineer\"}"
+        },
+        {
+            "content_type": "heading",
+            "text": "Ingenieur",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Der Belagerungsingenieur wird aus einer eigenen Art von Spawn-Gegenstand erzeugt, der in der Maschinenbau Station hergestellt werden kann. Der Belagerungsingenieur steuert automatisch in der Nähe befindliche Belagerungsfahrzeuge. Es benötigt nichts in seiner Haupthand, um seine Funktion auszuführen."
+        },
+        {
+            "content_type": "heading",
+            "text": "Nutz-NPCs",
+            "level": 1
+        },
+        {
+            "content_type": "text",
+            "text": "Jeder der Nutz-NPCs hat seinen eigenen individuellen Spawn-Gegenstand, die alle mit der richtigen Forschung an der Maschinenbau Station hergestellt werden können. Die Rolle dieser einzelnen NPCs kann nicht geändert werden."
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfarenpc:npc_spawner",
+            "nbt": "{npcSubtype:\"\",npcType:\"courier\"}"
+        },
+        {
+            "content_type": "heading",
+            "text": "Bote",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Der Bote bietet eine automatisierte Möglichkeit, Items zwischen Inventaren zu transportieren. Der Bote muss mit einem Rucksack in der Haupthand ausgestattet sein um Platz zu haben. Die Art des Rucksacks bestimmt, wie viel Platz der Bote zur Aufbewahrung von Gegenständen hat. Gegenstände die der Bote bewegt, werden im Rucksack gespeichert. Sie können den Rucksack jederzeit entfernen und den Inhalt anzeigen oder bearbeiten. Ein Bote muss außerdem mit einer Versandvorschrift in seinem Order Slot ausgestattet sein. Die Versandreihenfolge gibt an, von welchen und an welche Blöcke der Bote Objekte übertragen soll und welche Elemente er an jeder Haltestelle bewegen soll. Weitere Informationen zur Einrichtung und Funktionsweise der Versandvorschrift finden Sie im Abschnitt Versandvorschriften."
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfarenpc:routing_order"
+        },
+        {
+            "content_type": "heading",
+            "text": "Versandvorschriften",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Die Versandvorschriften werden von Boten-NPCs verwendet. Ähnlich wie bei der Arbeitsreihenfolge und der Kampfreihenfolge wird das Hinzufügen von Punkten zur Versandreihenfolge erreicht, indem Sie die Versandvorschrift in der Hand halten und die Taste “z” drücken. Erinnern Sie sich an Maschinen, die ihre Inventare seitenspezifisch sind. Hier ist es sehr wichtig, auf der rechten Seite nach dem Inventar zu suchen, wenn Sie Punkte zum Auftrag hinzufügen. Klicken Sie mit der rechten Maustaste auf die Versandvorschrift, um die zu übertragenden Elemente oder die Reihenfolge der Routenpunkte fest zu legen. Um die Zielseite zu ändern, öffnen Sie die GUI für Versandvorschriften und klicken Sie auf die Schaltfläche mit der aktuellen Seite (es heißt: Nord, Süd, Ost, West oder Hoch oder Runter). Die ausgewählte Seite wird bei jedem Tastendruck durch die Seitenliste gescrollt. Für jeden Punkt auf der Route ist eine einzelne Art der Elementübertragung zulässig. Derselbe Block / Inventar kann für komplexere Interaktionen mehrfach angegeben werden. Fügen Sie der Filterleiste hinzu, wenn Sie einen Steckplatz in einer Truhe haben. Sie können Zahlen angeben, die größer als ein Stack sind. Um den Betrag zu verkleinern, klicken Sie mit der linken Maustaste auf den Gegenstand in der Hand. Unterschiedliche Stackgrößen werden entsprechend reduziert. Folgende Arten von Itemübertragungen stehen zur Verfügung: Der Bote versucht und füllt das Zielinventar auf diese Beträge. Der Bote zahlt nichts, wenn das Inventar bereits über diese Stackgrößen oder mehr verfügt. Aufnahme: Der Bote sucht und nimmt diese Menge aus dem Zielinventar. Der Bote nimmt nichts mit, wenn die angegebene Menge bereits in ihrem Inventar ist. Alle ausgeben: Der Bote versucht Übereinstimmungen in der Filterleiste in das Zielinventar aufzunehmen. Stackgrößen werden ignoriert, bis das Inventar vollständig ist oder nicht. Abnehmen: Der Bote versucht Übereinstimmungen in der Filterleiste aus dem Zielinventar zu übernehmen. Die Stackgrößen werden ignoriert, der Bote nimmt alle Übereinstimmungen mit dem Rucksack vor. Ausnahme: Der Bote sucht und bringt alle Items mit Ausnahme der Übereinstimmungen in der Filterleiste in das Zielinventar. Die Größe der Stacks wird nicht berücksichtigt. Ausnahme annehmen: Der Bote versucht, alle Unterschiede mit Ausnahme der Übereinstimmungen in der Filterleiste aus dem Zielinventar zu nehmen. Stackgrößen werden ignoriert, der Bote nimmt alle Nichtübereinstimmungen in Anspruch. Ausgabeverhältnis: Der Bote versucht, ein bestimmtes Verhältnis von Items in das Zielinventar zu setzen. Die Elementstackgröße in der Filterleiste bestimmt das Verhältnis, bei der eine Stackgröße von 2 die Hälfte, 3 ein Drittel usw. ist. Aufnahmeverhältnis: Der Bote sucht das Verhältnis des Zielinventars. Die Elementstackgröße in der Filterleiste bestimmt das Verhältnis, bei der eine Stackgröße von 2 die Hälfte, 3 ein Drittel usw. ist. Exakt: Der Bote versucht, die in der Filterleiste angegebene EXACT-Menge in das Zielinventar zu legen. Wenn der Bote nicht GENAU die korrekte Menge hat oder NICHT VOLLSTÄNDIG in das Ziel passt, wird er nicht übertragen. Abnahme: Der Bote versucht, die in der Filterleiste angegebene EXACT-Menge aus dem Zielinventar zu entnehmen. Wenn das Inventar nicht genau die richtige Menge hat oder der Bote NICHT VOLLSTÄNDIG ist, wird es nicht übertragen. Füllminimum: Der Bote sucht und füllt mindestens die in der Filterleiste angegebene Menge in das Zielinventar. Dies ist das Gleiche wie bei “Fill Upto”, aber es werden nur Items übertragen, wenn das Ziel mindestens MINDESTENS diese Menge hat. Mindesteinnahme: Der Bote versucht, ein Minimum der Menge in der Filterleiste des Zielinventars zu übernehmen. Dies ist dasselbe wie “Take Upto”, es werden also nur Items übertragen, wenn der Bote diese Menge hat. \n \n \n"
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfarenpc:npc_spawner",
+            "nbt": "{npcSubtype:\"\",npcType:\"trader\"}"
+        },
+        {
+            "content_type": "heading",
+            "text": "Händler",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Der Händler ist eine vom Spieler konfigurierbare mobile Tauschstation. Der Händler muss mit einem Rucksack in seiner Haupthand für die Aufbewahrung von Gegenständen ausgestattet sein. Alle Items werden in diesem Rucksack gespeichert. Ein Händler muss außerdem mit einem Handelsauftrag in seinem Order Slot ausgestattet sein. Dadurch können Sie einen Abzugs- und Einzahlungspunkt für seine gehandelten Waren festlegen, die zur Verfügung stehen. Der Händler sucht nachts oder bei Regen Schutz bei dem nächstgelegenen Wegpunkt, der in seinem Handelsauftrag angegeben ist. Wenn ein Händler nicht mit einem Handelsauftrag ausgestattet ist, steht er still. Wenn Sie als Besitzer des NPC Rechtsklick auf den Händler machen, wird seine gewöhnliche GUI geöffnet. Wenn Sie auch das Angebot eines Händlers als ein anderer Spieler sehen möchten, verwenden Sie die Option “Adv. Options”-Taste."
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfarenpc:trade_order"
+        },
+        {
+            "content_type": "heading",
+            "text": "Handelsaufträge",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Der Handelsauftrag wird vom Händler-NPC zur Bestimmung seiner Route, seiner Händler und seiner Auffüll-Optionen verwendet. Ähnlich wie bei vorherigen Aufträgen können Sie die Route des Handelsauftrags hinzufügen. Das Hinzufügen von Punkten zur Einzahlungs- / Auszahlungsliste beim Lager auffüllen kann mit der Taste x bzw. der Taste c erfolgen. Um diese Punkte richtig einzustellen, klicken Sie mit der rechten Maustaste, um die GUI zu öffnen. Am oberen Rand dieser GUI befinden sich die drei Schaltflächen: Handel, Route und Lager auffüllen. Um auf der Liste Handel zu beginnen, klicken Sie auf Neuen Handel hinzufügen. Nun werden zwei 3x3-Gitter von links nach rechts angezeigt und Abwärtsschaltflächen, mit denen der Ort des Handels in der Bestellung geändert oder entfernt werden kann. Um den Handel einzurichten, platzieren Sie das was Sie verkaufen, im rechten Raster und was für den Handel getauscht werden soll im linken. Auf der rechten Seite können Sie alle Punkte sehen, die mit der Taste z hinzugefügt wurden, sowie die Schaltflächen. Neben diesen Schaltflächen befinden sich ein Kontrollkästchen für die Wartung und ein Eingabefeld für die Verzögerungszeit. Dies sollte für die erste oder letzte Bestellung in der Liste verwendet werden. Das Eingabefeld ist die Anzahl der Sekunden. Der Beste der Besten des Handels aus den Besten der Items des Handels; Für diese Optionen kann es nur einen Punkt geben, und der seitliche Abzug kann hier geändert werden. Um ein Element zu wählen, klicken Sie auf die Schaltfläche. Neben diesem Slot befindet sich die Art der Übertragung. Daneben befindet sich die Schaltfläche Löschen um den Elementfilter zu entfernen. Um weitere Elemente hinzuzufügen, fügen Sie einfach weitere Einträge hinzu."
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfarenpc:npc_spawner",
+            "nbt": "{npcSubtype:\"\",npcType:\"priest\"}"
+        },
+        {
+            "content_type": "heading",
+            "text": "Priester",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Der Priester-NPC wird verwendet um NPCs wiederzubeleben, die gestorben sind. Um die Wiederbelebung zu gewährleisten, muss der getötete NSC in Reichweite eines Rathauses gestorben sein. \n \n \n \n"
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfarenpc:npc_spawner",
+            "nbt": "{npcSubtype:\"\",npcType:\"bard\"}"
+        },
+        {
+            "content_type": "heading",
+            "text": "Barde",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Der Barde ist ein Künstler-NPC, er hat keinen wirklichen Nutzen außer Musik zu spielen. Die abzuspielende Musik, die Wiedergabefrequenz und die Lautstärke können alle über die GUI für erweiterte Steuerelemente konfiguriert werden. Auf diese Steuerelemente können Sie durch Klicken auf die Schaltfläche Erweiterte Steuerelemente in der Inventar-/ Interaktions-GUI zugreifen. Um einen neuen Titel zur Playliste hinzufügen, klicken Sie auf die Schaltfläche Tune hinzufügen. Am Ende der Liste wird ein leerer Eintrag erstellt. Geben Sie die Länge des Songs (in Minuten, Dezimalformat) in das Längenfeld ein. Alle in Minecraft geladenen und registrierten Sounds können über den Barden abgespielt werden. Ein Barde kann so konfiguriert sein, dass er erst zu spielen beginnt, wenn ein Spieler zum ersten Mal in seine Reichweite kommt. Aktivieren Sie das Kontrollkästchen Auf Spielereintrag spielen. Einmal aktiviert, spielt er nur ein einzelnes Lied, wenn der erste Spieler in seiner Reichweite kommt. Er spielt nicht mehr, wenn ein zweiter Spieler in Reichweite kommt. Der Barde spielt solange Songs wie Spieler in seiner Reichweite sind. Die Reihenfolge der Songs kann zufällig festgelegt werden, indem Sie das Kontrollkästchen Random oben in der GUI aktivieren. Die Einstellungen für die minimale und maximale Länge der Benutzeroberfläche bestimmen die zufällige Pause, die zwischen den einzelnen Songs auftreten. Diese Einstellung wird in Spiel-Ticks (20 Ticks pro Sekunde) angegeben."
+        },
+        {
+            "content_type": "heading",
+            "text": "NPC-Erfahrung, Level und Sonstiges",
+            "level": 1
+        },
+        {
+            "content_type": "text",
+            "text": "Alle NPC-Typen pflegen Erfahrungswerte und Stufenwerte. NPC-Typen, die sich im Besitz des Spielers befinden, erfassen Level und Erfahrung getrennt nach verfügbaren Rollen. Höhere Werte führen zu höherem Schaden, Arbeitsaufwand und einem höheren maximalen Gesundheit. Erfahrung wird durch das Ergreifen der für den NPC angemessenen Maßnahmen gewonnen. Arbeiter sammeln Erfahrung indem sie arbeiten, Soldaten sammeln Erfahrung indem sie Feinde angreifen und töten, und NPCs für Nutzdienste sammeln Erfahrung, indem sie ihre spezifischen Rollen ausüben. Die NPC-Stufen werden unabhängig von der Rolle verfolgt. Eine Änderung der Rolle führt dazu, dass der NPC sein Level für die neue Rolle für Effizienzberechnungen verwendet, die gesammelten Erfahrungen werden nur für diese Rolle zu seinem Level beitragen. Der NPC-Level wird durch die Anzahl der gesammelten Erfahrungen bestimmt. Nachdem der NPC eine bestimmte Menge Erfahrung gesammelt hat (Wert steigt pro Ebene), erhält er eine Stufe in seiner aktuellen Rolle."
+        }
+    ]
+}

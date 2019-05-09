@@ -1,0 +1,20 @@
+{
+    "credit": "Made by WinDanesz, with Blockbench",
+    "textures": {
+        "particle": "#0"
+    },
+    "elements": [
+        {
+            "name": "leg",
+            "from": [14, 0, 0],
+            "to": [16, 14, 2],
+            "faces": {
+                "north": {"uv": [0, 2, 2, 16], "texture": "#0"},
+                "east": {"uv": [4, 2, 6, 16], "texture": "#0"},
+                "south": {"uv": [0, 2, 2, 16], "texture": "#0"},
+                "west": {"uv": [8, 2, 10, 16], "texture": "#0"},
+                "down": {"uv": [2, 0, 0, 2], "texture": "#0"}
+            }
+        }
+    ]
+}

@@ -8,18 +8,18 @@ import net.minecraft.world.chunk.Chunk;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
+import net.shadowmage.ancientwarfare.structure.gamedata.StructureEntry;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
 import net.shadowmage.ancientwarfare.structure.gamedata.TownMap;
-import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
-import net.shadowmage.ancientwarfare.structure.worldgen.StructureEntry;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 public class TownPlacementValidator {
 	private TownPlacementValidator() {}
 
 	private static int maxSize = 21;
+	private static final int MIN_STRUCTURE_DISTANCE = 16;
 
 	/*
 	 * input a single X, Y, Z coordinate to examine the nearby area for potential town generation.<br>
@@ -35,15 +35,10 @@ public class TownPlacementValidator {
 			return null;
 		}
 
-		TownMap tm = AWGameData.INSTANCE.getPerWorldData(world, TownMap.class);
-		if (tm == null) {
+		if (isTownClose(world, x, z)) {
 			return null;
 		}
-		int minDist = AWStructureStatics.townClosestDistance * 16;
-		float dist = tm.getClosestTown(x, z, minDist * 2);
-		if (dist < minDist) {
-			return null;
-		}
+
 		int cx = x >> 4;
 		int cz = z >> 4;
 
@@ -61,7 +56,15 @@ public class TownPlacementValidator {
 		area.chunkMaxX = cx;
 		area.chunkMinZ = cz;
 		area.chunkMaxZ = cz;
-		expandBoundingArea(world, area);
+
+		StructureMap sm = AWGameData.INSTANCE.getPerWorldData(world, StructureMap.class);
+		Collection<StructureEntry> structureList = sm.getEntriesNear(world, x, z, maxSize + 2, true, new ArrayList<>());
+
+		if (isStructureInside(structureList, x, z, area.minY, area.maxY)) {
+			return null;
+		}
+
+		expandBoundingArea(world, area, structureList);
 
         /*
 		 * Shrink town along x or z axis if ratio of sizes is > 2:1
@@ -93,29 +96,28 @@ public class TownPlacementValidator {
 		return area;
 	}
 
-	static boolean validateAreaForPlacement(World world, TownBoundingArea area) {
-		return validateStructureCollision(world, area);
-	}
-
-	private static boolean validateStructureCollision(World world, TownBoundingArea area) {
-		StructureMap map = AWGameData.INSTANCE.getData(world, StructureMap.class);
-		if (map == null) {
-			return true;
-		}
-		StructureBB bb = new StructureBB(new BlockPos(area.getBlockMinX(), area.getMinY(), area.getBlockMaxX()), new BlockPos(area.getBlockMaxX(), area.getMaxY(), area.getBlockMaxZ()));
-		int size = Math.max(area.getChunkWidth(), area.getChunkLength());
-		List<StructureEntry> entries = new ArrayList<>();
-		map.getEntriesNear(world, area.getCenterX(), area.getCenterZ(), size, true, entries);
-		for (StructureEntry e : entries) {
-			if (e.getBB().crossWith(bb)) {
-				AncientWarfareStructure.LOG.debug("Skipping town generation at: " + area + " for intersection with existing structure at: " + e.getBB());
-				return false;
+	private static boolean isStructureInside(Collection<StructureEntry> structureList, int chunkX, int chunkZ, int minY, int maxY) {
+		for (StructureEntry structure : structureList) {
+			if (structure.getBB().crossWith((chunkX >> 16) - MIN_STRUCTURE_DISTANCE, minY, (chunkZ >> 16) - MIN_STRUCTURE_DISTANCE,
+					((chunkX + 1) >> 16) + MIN_STRUCTURE_DISTANCE, maxY, ((chunkZ + 1) >> 16) + MIN_STRUCTURE_DISTANCE)) {
+				return true;
 			}
 		}
-		return true;
+
+		return false;
 	}
 
-	private static void expandBoundingArea(World world, TownBoundingArea area) {
+	private static boolean isTownClose(World world, int x, int z) {
+		TownMap tm = AWGameData.INSTANCE.getPerWorldData(world, TownMap.class);
+		if (tm == null) {
+			return false;
+		}
+		int minDist = AWStructureStatics.townClosestDistance * 16;
+		float dist = tm.getClosestTown(x, z, minDist * 2);
+		return dist < minDist;
+	}
+
+	private static void expandBoundingArea(World world, TownBoundingArea area, Collection<StructureEntry> structureList) {
 		boolean xneg = true;//if should try and expand on this direction next pass, once set to false it never checks that direction again
 		boolean xpos = true;
 		boolean zneg = true;
@@ -124,28 +126,28 @@ public class TownPlacementValidator {
 		do {
 			didExpand = false;
 			if (xneg && area.getChunkWidth() <= maxSize) {
-				xneg = tryExpandXNeg(world, area);
+				xneg = tryExpandXNeg(world, area, structureList);
 				didExpand = didExpand || xneg;
 			}
 			if (xpos && area.getChunkWidth() <= maxSize) {
-				xpos = tryExpandXPos(world, area);
+				xpos = tryExpandXPos(world, area, structureList);
 				didExpand = didExpand || xpos;
 			}
 			if (zneg && area.getChunkLength() <= maxSize) {
-				zneg = tryExpandZNeg(world, area);
+				zneg = tryExpandZNeg(world, area, structureList);
 				didExpand = didExpand || zneg;
 			}
 			if (zpos && area.getChunkLength() <= maxSize) {
-				zpos = tryExpandZPos(world, area);
+				zpos = tryExpandZPos(world, area, structureList);
 				didExpand = didExpand || zpos;
 			}
 		} while (didExpand && (area.getChunkWidth() <= maxSize || area.getChunkLength() <= maxSize));
 	}
 
-	private static boolean tryExpandXNeg(World world, TownBoundingArea area) {
+	private static boolean tryExpandXNeg(World world, TownBoundingArea area, Collection<StructureEntry> structureList) {
 		int cx = area.chunkMinX - 1;
 		for (int z = area.chunkMinZ; z <= area.chunkMaxZ; z++) {
-			if (!isAverageHeightWithin(world, cx, z, area.minY, area.maxY)) {
+			if (!isAverageHeightWithin(world, cx, z, area.minY, area.maxY) || isStructureInside(structureList, cx, z, area.minY, area.maxY)) {
 				return false;
 			}
 		}
@@ -153,10 +155,10 @@ public class TownPlacementValidator {
 		return true;
 	}
 
-	private static boolean tryExpandXPos(World world, TownBoundingArea area) {
+	private static boolean tryExpandXPos(World world, TownBoundingArea area, Collection<StructureEntry> structureList) {
 		int cx = area.chunkMaxX + 1;
 		for (int z = area.chunkMinZ; z <= area.chunkMaxZ; z++) {
-			if (!isAverageHeightWithin(world, cx, z, area.minY, area.maxY)) {
+			if (!isAverageHeightWithin(world, cx, z, area.minY, area.maxY) || isStructureInside(structureList, cx, z, area.minY, area.maxY)) {
 				return false;
 			}
 		}
@@ -164,10 +166,10 @@ public class TownPlacementValidator {
 		return true;
 	}
 
-	private static boolean tryExpandZNeg(World world, TownBoundingArea area) {
+	private static boolean tryExpandZNeg(World world, TownBoundingArea area, Collection<StructureEntry> structureList) {
 		int cz = area.chunkMinZ - 1;
 		for (int x = area.chunkMinX; x <= area.chunkMaxX; x++) {
-			if (!isAverageHeightWithin(world, x, cz, area.minY, area.maxY)) {
+			if (!isAverageHeightWithin(world, x, cz, area.minY, area.maxY) || isStructureInside(structureList, x, cz, area.minY, area.maxY)) {
 				return false;
 			}
 		}
@@ -175,10 +177,10 @@ public class TownPlacementValidator {
 		return true;
 	}
 
-	private static boolean tryExpandZPos(World world, TownBoundingArea area) {
+	private static boolean tryExpandZPos(World world, TownBoundingArea area, Collection<StructureEntry> structureList) {
 		int cz = area.chunkMaxZ + 1;
 		for (int x = area.chunkMinX; x <= area.chunkMaxX; x++) {
-			if (!isAverageHeightWithin(world, x, cz, area.minY, area.maxY)) {
+			if (!isAverageHeightWithin(world, x, cz, area.minY, area.maxY) || isStructureInside(structureList, x, cz, area.minY, area.maxY)) {
 				return false;
 			}
 		}

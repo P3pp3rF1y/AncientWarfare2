@@ -5,15 +5,21 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.JsonUtils;
+import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.registry.IRegistryDataParser;
+import net.shadowmage.ancientwarfare.core.util.ItemTools;
 import net.shadowmage.ancientwarfare.core.util.parsing.JsonHelper;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class FactionTradeListRegistry {
+	private static final String DEFAULT_REGISTRY_LOCATION = "npc/faction_trade_lists.json";
+
 	private FactionTradeListRegistry() {}
 
 	private static Map<String, FactionTradeListTemplate> defaultTemplates;
@@ -25,6 +31,78 @@ public class FactionTradeListRegistry {
 
 	public static Map<String, FactionTradeListTemplate> getDefaults() {
 		return defaultTemplates;
+	}
+
+	public static void saveTradeList(FactionTradeListTemplate list) {
+		defaultTemplates.put(list.getName(), list);
+		saveTradeLists();
+	}
+
+	private static void saveTradeLists() {
+		JsonObject parent = new JsonObject();
+		parent.add("defaults", serializeTradeLists(defaultTemplates.values()));
+		parent.add("faction_defaults", serializeFactionsTradeLists());
+
+		File file = new File(AWCoreStatics.configPathForFiles + "registry/" + DEFAULT_REGISTRY_LOCATION);
+		JsonHelper.saveJsonFile(parent, file);
+	}
+
+	private static JsonObject serializeFactionsTradeLists() {
+		JsonObject factionTradeLists = new JsonObject();
+		for (Map.Entry<String, Map<String, FactionTradeListTemplate>> entry : factionTemplates.entrySet()) {
+			factionTradeLists.add(entry.getKey(), serializeTradeLists(entry.getValue().values()));
+		}
+		return factionTradeLists;
+	}
+
+	private static JsonArray serializeTradeLists(Collection<FactionTradeListTemplate> templateLists) {
+		JsonArray tradeLists = new JsonArray();
+		for (FactionTradeListTemplate templateList : templateLists) {
+			tradeLists.add(serializeTradeList(templateList));
+		}
+		return tradeLists;
+	}
+
+	private static JsonObject serializeTradeList(FactionTradeListTemplate templateList) {
+		JsonObject tradeList = new JsonObject();
+		tradeList.addProperty("name", templateList.getName());
+		tradeList.add("trades", serializeTrades(templateList));
+		return tradeList;
+	}
+
+	private static JsonArray serializeTrades(FactionTradeListTemplate templateList) {
+		JsonArray trades = new JsonArray();
+		for (FactionTradeTemplate template : templateList.getTrades()) {
+			trades.add(serializeTrade(template));
+		}
+		return trades;
+	}
+
+	private static JsonObject serializeTrade(FactionTradeTemplate template) {
+		JsonObject trade = new JsonObject();
+		trade.add("input", serializeStacks(template.getInput()));
+		trade.add("output", serializeStacks(template.getOutput()));
+		trade.addProperty("refill_frequency", template.getRefillFrequency());
+		trade.addProperty("max_trades", template.getMaxTrades());
+		return trade;
+	}
+
+	private static JsonArray serializeStacks(List<ItemStack> stacks) {
+		JsonArray ret = new JsonArray();
+		for (ItemStack stack : stacks) {
+			if (!stack.isEmpty()) {
+				ret.add(ItemTools.serializeToJson(stack));
+			}
+		}
+		return ret;
+	}
+
+	public static void saveFactionTradeList(FactionTradeListTemplate list, String faction) {
+		if (!factionTemplates.containsKey(faction)) {
+			factionTemplates.put(faction, new HashMap<>());
+		}
+		factionTemplates.get(faction).put(list.getName(), list);
+		saveTradeLists();
 	}
 
 	@SuppressWarnings("squid:S2696") //updating static maps above in a single on startup only so this is cool

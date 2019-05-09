@@ -1,0 +1,55 @@
+{
+    "type": "manual_content",
+    "lang": "de_DE",
+    "category": "research",
+    "content": [
+        {
+            "content_type": "heading",
+            "text": "Forschungssystem",
+            "level": 1
+        },
+        {
+            "content_type": "text",
+            "text": "AW verfügt über ein tiefgreifendes Forschungssystem, das erst nach Abschluss der Forschung den Zugriff auf Blöcke und Gegenstände ermöglicht. Das Forschungsbuch ist an einen Spieler gebunden."
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfare:research_book"
+        },
+        {
+            "content_type": "heading",
+            "text": "Forschungsbuch",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Das Forschungsbuch kann mit Rechtsklick an den Spieler gebunden werden. Es erscheint eine Textnachricht, die besagt, dass der Spieler an das Buch gebunden ist. Klicken Sie erneut mit der rechten Maustaste, um das Forschungsbuch zu öffnen.\nWenn das Forschungsbuch angezeigt wird, wird eine Liste aller Recherchen angezeigt. Wenn eine Recherche angeklickt wird, sieht man was durch diese Recherche freigeschaltet werden kann. Dies kann in ein Rezept geändert werden. In der Elementliste werden alle Elemente in Ancient Warfare angezeigt. Wenn Sie auf das Element klicken, wird die entsprechende Recherche angezeigt. \n \n \n \n \n"
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfare:research_station"
+        },
+        {
+            "content_type": "heading",
+            "text": "Forschungsstation",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Um mit einer Recherche zu beginnen, platzieren Sie Ihr Forschungsbuch in einer Forschungsstation in der oberen linken Ecke. Sobald das Buch platziert wurde, sollte “Kein Forscher” in das Spielbuch aufgenommen werden. Die Info-Schaltfläche direkt neben diesem Steckplatz öffnet das Forschungsbuch. \nWeiterhin klicken Sie auf die Schaltfläche “Research Queue”. Direkt auf der rechten Seite des Buches wird ein Menü angezeigt. Sie können beliebig viele Recherchen zu der Warteschlange hinzufügen. Wenn Sie Recherchen hinzufügen, werden andere Recherchen angezeigt. \nWenn Sie Ihre Forschungen in die Warteschlange gestellt haben, drücken Sie die ESC-Taste, um zum Forschungsstation-Menü zurückzukehren, und Sie können sehen, die Elemente zum Abschließen der ersten Recherche in der Warteschlange werden angezeigt. Legen Sie die Items in das Eingabe-Raster, um mit den Recherchen zu beginnen, sobald alle minimalen Items im Raster platziert sind. Der Fortschritt der Forschung wird durch einen grünen Fortschrittsbalken angezeigt. Die Elemente, in denen sich das Raster befindet, müssen nicht gefunden werden. \nDer niedrigere Lagerbestand dient nur zum Speichern weiterer Items, während das Ankreuzfeld die Verwendung eines angrenzenden Inventars (z. B. einer Truhe) ermöglicht, um Items direkt in das Eingabe-Raster einzugeben. Mit den beiden Schaltflächen direkt unter der Fortschrittsleiste wird die Position des aktuellen Inventars bestimmt. Die linke Taste kann in die vier Himmelsrichtungen und die neuen Forschungsstationen gehen. Die rechte Taste sollte in Ruhe gelassen werden. "
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfare:engineering_station"
+        },
+        {
+            "content_type": "heading",
+            "text": "Maschinenbau Station",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "Aufgrund der Forschungssysteme können Sie keine Gegenstände und Blöcke der Kriegsführung herstellen. Dafür wird die Maschinenbau Station benötigt. \nLegen Sie Ihr Forschungsbuch in die Maschinenbau Station, nun können Gegenstände, die durch Recherchen freigeschaltet wurden, dort erstellt werden. \nDas Craftraster der Maschinenbau Station funktioniert wie eine Vorlage. Das bedeutet, dass Sie nur das Rezept für den Gegenstand /Block in das Raster einfügen müssen. Die Tabelle zieht Items aus dem Lagerraum, während Sie sie aus dem Ausgabeschlitz entnehmen."
+        }
+    ]
+}

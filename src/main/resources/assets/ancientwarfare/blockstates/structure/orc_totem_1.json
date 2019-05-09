@@ -1,0 +1,31 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "cube",
+        "textures": {
+            "particle": "ancientwarfare:blocks/structure/orc_totem_front_1",
+            "down": "ancientwarfare:blocks/structure/totem_bottom",
+            "up": "ancientwarfare:blocks/structure/totem_top_1",
+            "north": "ancientwarfare:blocks/structure/orc_totem_front_1",
+            "west": "ancientwarfare:blocks/structure/totem_side_1",
+            "south": "ancientwarfare:blocks/structure/orc_totem_front_1",
+            "east": "ancientwarfare:blocks/structure/totem_side_1"
+        },
+        "transform": "forge:default-block"
+    },
+    "variants": {
+        "normal": [{}],
+        "facing": {
+            "north": {},
+            "south": {
+                "y": 180
+            },
+            "west": {
+                "y": 270
+            },
+            "east": {
+                "y": 90
+            }
+        }
+    }
+}

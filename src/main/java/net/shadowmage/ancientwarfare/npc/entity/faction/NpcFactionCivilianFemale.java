@@ -17,4 +17,9 @@ public class NpcFactionCivilianFemale extends NpcFactionCivilian {
 	public String getNpcType() {
 		return "civilian.female";
 	}
+
+	@Override
+	public boolean isFemale() {
+		return true;
+	}
 }

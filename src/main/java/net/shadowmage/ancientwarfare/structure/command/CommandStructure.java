@@ -17,6 +17,7 @@ import net.shadowmage.ancientwarfare.core.command.ParentCommand;
 import net.shadowmage.ancientwarfare.core.command.SimpleSubCommand;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
+import net.shadowmage.ancientwarfare.structure.gamedata.StructureEntry;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
 import net.shadowmage.ancientwarfare.structure.item.ItemStructureScanner;
 import net.shadowmage.ancientwarfare.structure.item.ItemStructureSettings;
@@ -26,7 +27,6 @@ import net.shadowmage.ancientwarfare.structure.template.WorldGenStructureManager
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
 import net.shadowmage.ancientwarfare.structure.template.load.TemplateLoader;
 import net.shadowmage.ancientwarfare.structure.tile.ScannerTracker;
-import net.shadowmage.ancientwarfare.structure.worldgen.StructureEntry;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

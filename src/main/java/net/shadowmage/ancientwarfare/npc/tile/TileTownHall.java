@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.tile;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -158,7 +159,7 @@ public class TileTownHall extends TileOwned implements IInteractableTile, ITicka
 	}
 
 	@Override
-	public void onBlockBroken() {
+	public void onBlockBroken(IBlockState state) {
 		InventoryTools.dropItemsInWorld(world, inventory, pos);
 	}
 

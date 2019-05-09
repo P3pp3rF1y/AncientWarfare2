@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.npc.event;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
@@ -12,12 +13,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
+import net.shadowmage.ancientwarfare.core.util.TextUtils;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.npc.ai.AIHelper;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
@@ -27,10 +31,13 @@ import net.shadowmage.ancientwarfare.npc.registry.NpcDefaultsRegistry;
 import net.shadowmage.ancientwarfare.npc.registry.OwnedNpcDefault;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
+import net.shadowmage.ancientwarfare.structure.tile.ISpecialLootContainer;
+import net.shadowmage.ancientwarfare.structure.tile.TileProtectionFlag;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -131,22 +138,61 @@ public class EventHandler {
 		World world = evt.getWorld();
 		BlockPos pos = evt.getPos();
 		EntityPlayer player = evt.getEntityPlayer();
-		if (!player.capabilities.isCreativeMode && !player.isSneaking() && isChest(world, pos)) {
+		if (!player.capabilities.isCreativeMode && !player.isSneaking() && isContainer(world, pos)) {
 			AWGameData.INSTANCE.getData(world, StructureMap.class).getStructureAt(world, pos).ifPresent(structure -> {
-				for (NpcFaction factionNpc : world.getEntitiesWithinAABB(NpcFaction.class, structure.getBB().getAABB())) {
-					if (!factionNpc.isPassive()) {
-						evt.setCanceled(true);
-						evt.setCancellationResult(EnumActionResult.FAIL);
-						player.sendStatusMessage(new TextComponentTranslation("gui.ancientwarfarenpc.no_chest_access",
-								StringUtils.capitalize(factionNpc.getFaction())), true);
+				Optional<TileProtectionFlag> tile = WorldTools.getTile(world, structure.getProtectionFlagPos(), TileProtectionFlag.class);
+				if (tile.isPresent() && tile.get().shouldProtectAgainst(player)) {
+					evt.setCanceled(true);
+					evt.setCancellationResult(EnumActionResult.FAIL);
+					if (world.isRemote) {
+						player.sendStatusMessage(new TextComponentTranslation("gui.ancientwarfarenpc.no_chest_access_flag_not_claimed",
+								TextUtils.getSimpleBlockPosString(structure.getProtectionFlagPos())), true);
+					}
+				} else {
+					for (NpcFaction factionNpc : world.getEntitiesWithinAABB(NpcFaction.class, structure.getBB().getAABB())) {
+						if (!factionNpc.isPassive()) {
+							evt.setCanceled(true);
+							evt.setCancellationResult(EnumActionResult.FAIL);
+							if (world.isRemote) {
+								player.sendStatusMessage(new TextComponentTranslation("gui.ancientwarfarenpc.no_chest_access",
+										StringUtils.capitalize(factionNpc.getFaction())), true);
+							}
+						}
 					}
 				}
 			});
 		}
 	}
 
-	private boolean isChest(World world, BlockPos pos) {
-		Block block = world.getBlockState(pos).getBlock();
-		return block == Blocks.CHEST || block == AWStructureBlocks.ADVANCED_LOOT_CHEST;
+	@SubscribeEvent
+	public void playerDigSpeed(PlayerEvent.BreakSpeed evt) {
+		if (evt.getEntityPlayer().isCreative() || evt.getEntityPlayer().isSpectator()) {
+			return;
+		}
+
+		World world = evt.getEntityPlayer().world;
+		AWGameData.INSTANCE.getData(world, StructureMap.class).getStructureAt(world, evt.getPos()).ifPresent(
+				structureEntry -> WorldTools.getTile(world, structureEntry.getProtectionFlagPos(), TileProtectionFlag.class).ifPresent(tile -> {
+					if (tile.shouldProtectAgainst(evt.getEntityPlayer()) && shouldBlockSlowDownDigging(world, evt.getPos())) {
+						evt.setNewSpeed(evt.getOriginalSpeed() * 0.01f);
+					}
+				})
+		);
+	}
+
+	private boolean shouldBlockSlowDownDigging(World world, BlockPos pos) {
+		IBlockState state = world.getBlockState(pos);
+		if (!state.isFullBlock()) {
+			return isContainer(world, pos);
+		}
+
+		Block block = state.getBlock();
+		return !(block == Blocks.MOB_SPAWNER || block == AWStructureBlocks.ADVANCED_SPAWNER);
+	}
+
+	private boolean isContainer(World world, BlockPos pos) {
+		IBlockState state = world.getBlockState(pos);
+		Block block = state.getBlock();
+		return block == Blocks.CHEST || (state.getBlock().hasTileEntity(state) && WorldTools.getTile(world, pos, ISpecialLootContainer.class).isPresent());
 	}
 }

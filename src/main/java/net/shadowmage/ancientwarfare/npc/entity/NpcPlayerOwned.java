@@ -198,7 +198,7 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 
 	@Override
 	public void onWeaponInventoryChanged() {
-		updateTexture();
+		//TODO do we need to do anything to update skin info on client here?
 	}
 
 	@Override

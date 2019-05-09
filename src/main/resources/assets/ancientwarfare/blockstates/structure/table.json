@@ -1,0 +1,85 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "ancientwarfare:structure/table_top",
+        "textures": {
+            "0": "minecraft:blocks/planks_oak"
+        },
+        "transform": "forge:default-block"
+    },
+    "variants": {
+        "normal": [{}],
+        "variant": {
+            "oak": {},
+            "spruce": {
+                "textures": {
+                    "0": "minecraft:blocks/planks_spruce"
+                }
+            },
+            "birch": {
+                "textures": {
+                    "0": "minecraft:blocks/planks_birch"
+                }
+            },
+            "jungle": {
+                "textures": {
+                    "0": "minecraft:blocks/planks_jungle"
+                }
+            },
+            "acacia": {
+                "textures": {
+                    "0": "minecraft:blocks/planks_acacia"
+                }
+            },
+            "dark_oak": {
+                "textures": {
+                    "0": "minecraft:blocks/planks_big_oak"
+                }
+            }
+        },
+        "leg_northeast": {
+            "true": {
+                "submodel": {
+                    "leg_northeast": {
+                        "model": "ancientwarfare:structure/table_leg",
+                        "y": 0
+                    }
+                }
+            },
+            "false": {}
+        },
+        "leg_northwest": {
+            "true": {
+                "submodel": {
+                    "leg_northwest": {
+                        "model": "ancientwarfare:structure/table_leg",
+                        "y": 270
+                    }
+                }
+            },
+            "false": {}
+        },
+        "leg_southeast": {
+            "true": {
+                "submodel": {
+                    "leg_southeast": {
+                        "model": "ancientwarfare:structure/table_leg",
+                        "y": 90
+                    }
+                }
+            },
+            "false": {}
+        },
+        "leg_southwest": {
+            "true": {
+                "submodel": {
+                    "leg_southwest": {
+                        "model": "ancientwarfare:structure/table_leg",
+                        "y": 180
+                    }
+                }
+            },
+            "false": {}
+        }
+    }
+}

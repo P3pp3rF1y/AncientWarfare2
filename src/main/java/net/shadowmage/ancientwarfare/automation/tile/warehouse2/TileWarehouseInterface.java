@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -163,7 +164,7 @@ public class TileWarehouseInterface extends TileControlled implements IInteracta
 	}
 
 	@Override
-	public void onBlockBroken() {
+	public void onBlockBroken(IBlockState state) {
 		InventoryTools.dropItemsInWorld(world, inventory, pos);
 	}
 

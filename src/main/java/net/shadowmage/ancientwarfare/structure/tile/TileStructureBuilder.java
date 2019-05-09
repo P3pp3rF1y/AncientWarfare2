@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.tile;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -186,7 +187,7 @@ public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IO
 		this.builder = builder;
 	}
 
-	public void onBlockBroken() {
+	public void onBlockBroken(IBlockState state) {
 		if (!world.isRemote && !isStarted && builder != null && builder.getTemplate() != null) {
 			isStarted = true;//to prevent further drops
 			@Nonnull ItemStack item = new ItemStack(AWStructureBlocks.STRUCTURE_BUILDER_TICKED);

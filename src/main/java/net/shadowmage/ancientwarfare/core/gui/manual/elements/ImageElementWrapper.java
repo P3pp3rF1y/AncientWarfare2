@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.core.gui.manual.elements;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.gui.manual.GuiManual;
 import net.shadowmage.ancientwarfare.core.gui.manual.IElementWrapperCreator;
@@ -31,6 +32,7 @@ public class ImageElementWrapper extends BaseElementWrapper<ImageElement> {
 		int scaledWidth = (int) (scale * textureWidth);
 		int padding = Math.min(0, (width - scaledWidth) / 2);
 
+		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		Gui.drawScaledCustomSizeModalRect(renderX + padding, renderY, 0, 0, textureWidth, textureHeight, scaledWidth, (int) (textureHeight * scale),
 				textureWidth, textureHeight);
 	}

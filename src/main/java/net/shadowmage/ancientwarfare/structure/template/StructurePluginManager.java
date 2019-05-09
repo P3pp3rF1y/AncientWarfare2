@@ -258,7 +258,7 @@ public class StructurePluginManager implements IStructurePluginRegister {
 		TemplateRuleEntityBase create(World world, Entity entity, int turns, int x, int y, int z);
 	}
 
-	private interface IBlockDataMatcher {
+	public interface IBlockDataMatcher {
 		boolean matches(World world, BlockPos pos, IBlockState state);
 	}
 

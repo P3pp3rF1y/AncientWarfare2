@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile.torque;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
@@ -116,7 +117,7 @@ public class TileHandCrankedGenerator extends TileTorqueSingleCell implements IW
 	}
 
 	@Override
-	public void onBlockBroken() {
+	public void onBlockBroken(IBlockState state) {
 		//NOOP
 	}
 

@@ -4,6 +4,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.math.BlockPos;
@@ -12,6 +13,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
@@ -22,12 +24,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Optional;
 
-public class TemplateRuleBlockTile extends TemplateRuleVanillaBlocks {
-
+public class TemplateRuleBlockTile<T extends TileEntity> extends TemplateRuleVanillaBlocks {
+	private static final String FACING_TAG = "facing";
 	public static final String PLUGIN_NAME = "blockTile";
 	public NBTTagCompound tag;
+	public EnumFacing facing = null;
 
-	private Tuple<Integer, TileEntity> tileCache = null;
+	private Tuple<Integer, T> tileCache = null;
 
 	public TemplateRuleBlockTile(World world, BlockPos pos, IBlockState state, int turns) {
 		super(world, pos, state, turns);
@@ -37,7 +40,20 @@ public class TemplateRuleBlockTile extends TemplateRuleVanillaBlocks {
 			tag.removeTag("x");
 			tag.removeTag("y");
 			tag.removeTag("z");
+			if (t instanceof BlockRotationHandler.IRotatableTile) {
+				facing = rotateFacing(turns, ((BlockRotationHandler.IRotatableTile) t).getPrimaryFacing());
+			}
 		});
+
+	}
+
+	private EnumFacing rotateFacing(int turns, EnumFacing o) {
+		if (o.getAxis() != EnumFacing.Axis.Y) {
+			for (int i = 0; i < turns; i++) {
+				o = o.rotateY();
+			}
+		}
+		return o;
 	}
 
 	public TemplateRuleBlockTile() {
@@ -47,17 +63,18 @@ public class TemplateRuleBlockTile extends TemplateRuleVanillaBlocks {
 	@Override
 	public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
 		super.handlePlacement(world, turns, pos, builder);
-		WorldTools.getTile(world, pos).ifPresent(t -> {
+		getTeClass().ifPresent(teClass -> WorldTools.getTile(world, pos, teClass).ifPresent(t -> {
 			tag.setInteger("x", pos.getX());
 			tag.setInteger("y", pos.getY());
 			tag.setInteger("z", pos.getZ());
 			try {
 				t.readFromNBT(tag);
+				rotateTe(t, turns);
 			}
 			catch (Exception e) {
 				AncientWarfareStructure.LOG.error("Error loading tile entity data from template for {}: {}", t.getClass(), e);
 			}
-		});
+		}));
 	}
 
 	@Override
@@ -69,12 +86,18 @@ public class TemplateRuleBlockTile extends TemplateRuleVanillaBlocks {
 	public void writeRuleData(NBTTagCompound tag) {
 		super.writeRuleData(tag);
 		tag.setTag("teData", this.tag);
+		if (facing != null) {
+			tag.setString(FACING_TAG, facing.getName());
+		}
 	}
 
 	@Override
 	public void parseRule(NBTTagCompound tag) {
 		super.parseRule(tag);
 		this.tag = tag.getCompoundTag("teData");
+		if (tag.hasKey(FACING_TAG)) {
+			facing = EnumFacing.byName(tag.getString(FACING_TAG));
+		}
 	}
 
 	@Override
@@ -82,12 +105,12 @@ public class TemplateRuleBlockTile extends TemplateRuleVanillaBlocks {
 		return PLUGIN_NAME;
 	}
 
-	private static final Field TILE_REGISTRY = ReflectionHelper.findField(TileEntity.class, "field_190562_f", "REGISTRY");
+	private static final Field TILE_REGISTRY = ReflectionHelper.findField(TileEntity.class, "REGISTRY", "field_190562_f");
 
-	private Optional<Class<? extends TileEntity>> getTeClass() {
+	protected Optional<Class<T>> getTeClass() {
 		try {
 			//noinspection unchecked
-			return Optional.ofNullable(((RegistryNamespaced<ResourceLocation, Class<? extends TileEntity>>) TILE_REGISTRY.get(null))
+			return Optional.ofNullable(((RegistryNamespaced<ResourceLocation, Class<T>>) TILE_REGISTRY.get(null))
 					.getObject(new ResourceLocation(tag.getString("id"))));
 		}
 		catch (IllegalAccessException e) {
@@ -105,12 +128,13 @@ public class TemplateRuleBlockTile extends TemplateRuleVanillaBlocks {
 		return tileCache.getSecond();
 	}
 
-	private TileEntity instantiateTile(Class<? extends TileEntity> teClass, int turns) {
+	private T instantiateTile(Class<T> teClass, int turns) {
 		return Arrays.stream(teClass.getConstructors()).filter(c -> c.getParameterCount() == 0).findFirst().map(c -> {
 					try {
-						TileEntity te = (TileEntity) c.newInstance();
+						T te = teClass.cast(c.newInstance());
 						te.readFromNBT(tag);
 						te.setWorld(new RuleWorld(getState(turns)));
+						rotateTe(te, turns);
 						return te;
 					}
 					catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
@@ -119,6 +143,13 @@ public class TemplateRuleBlockTile extends TemplateRuleVanillaBlocks {
 					return null;
 				}
 		).orElse(null);
+	}
+
+	@SuppressWarnings("squid:S1172") // parameters supposed to be used by overriding methods
+	protected void rotateTe(T te, int turns) {
+		if (facing != null && te instanceof BlockRotationHandler.IRotatableTile) {
+			((BlockRotationHandler.IRotatableTile) te).setPrimaryFacing(rotateFacing(turns, facing));
+		}
 	}
 
 	@Override

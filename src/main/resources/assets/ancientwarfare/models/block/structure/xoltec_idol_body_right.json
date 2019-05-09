@@ -1,0 +1,79 @@
+{
+    "credit": "Made by Silentine, with Blockbench",
+    "textures": {
+        "1": "ancientwarfare:blocks/structure/xoltec_idol_body",
+        "particle": "ancientwarfare:blocks/structure/xoltec_idol_body"
+    },
+    "elements": [
+        {
+            "name": "neckleft",
+            "from": [-1, 8, 0],
+            "to": [3, 16, 8],
+            "faces": {
+                "north": {"uv": [6, 2, 7, 4], "texture": "#1"},
+                "east": {"uv": [2, 2, 0, 4], "texture": "#1"},
+                "south": {"uv": [3, 2, 4, 4], "texture": "#1"},
+                "west": {"uv": [4, 2, 6, 4], "texture": "#1"},
+                "up": {"uv": [2, 0, 4, 2], "texture": "#1"},
+                "down": {"uv": [4, 0, 6, 2], "texture": "#1"}
+            }
+        },
+        {
+            "name": "bodyleft",
+            "from": [0, 0, 0],
+            "to": [15, 15, 4],
+            "faces": {
+                "north": {"uv": [9.5, 5, 5.75, 8.75], "texture": "#1"},
+                "east": {"uv": [0, 5, 1, 8.75], "texture": "#1"},
+                "south": {"uv": [4.75, 5, 1, 8.75], "texture": "#1"},
+                "west": {"uv": [4.75, 5, 5.75, 8.75], "texture": "#1"},
+                "up": {"uv": [4.75, 4, 1, 5], "texture": "#1"},
+                "down": {"uv": [4.75, 4, 8.5, 5], "texture": "#1"}
+            }
+        }
+    ],
+    "display": {
+        "thirdperson_righthand": {
+            "rotation": [75, -135, 0],
+            "translation": [0, 2.5, 0],
+            "scale": [0.375, 0.375, 0.375]
+        },
+        "thirdperson_lefthand": {
+            "rotation": [75, -135, 0],
+            "translation": [0, 2.5, 0],
+            "scale": [0.375, 0.375, 0.375]
+        },
+        "firstperson_righthand": {
+            "rotation": [0, -90, 0],
+            "scale": [0.4, 0.4, 0.4]
+        },
+        "firstperson_lefthand": {
+            "rotation": [0, -90, 0],
+            "scale": [0.4, 0.4, 0.4]
+        },
+        "ground": {
+            "translation": [0, 3, 0],
+            "scale": [0.25, 0.25, 0.25]
+        },
+        "gui": {
+            "rotation": [30, 45, 0],
+            "scale": [0.625, 0.625, 0.625]
+        },
+        "fixed": {
+            "rotation": [0, 180, 0],
+            "translation": [0, 0, -4],
+            "scale": [0.5, 0.5, 0.5]
+        }
+    },
+    "groups": [
+        {
+            "name": "body",
+            "children": [
+                {
+                    "name": "left",
+                    "children": [0, 1]
+                }
+            ]
+        }
+    ]
+}

@@ -127,7 +127,7 @@
         },
         "trader": {
             "attributes": {
-                "generic.movementSpeed": 0.2,
+                "generic.movementSpeed": 0,
                 "generic.attackDamage": 0
             },
             "equipment": {
@@ -795,7 +795,10 @@
                 "attributes": {
                     "generic.maxHealth": 30
                 },
-                "experience_drop": 30
+                "experience_drop": 30,
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:golden_spear"
+                }
             },
             "soldier.elite": {
                 "attributes": {
@@ -1019,6 +1022,44 @@
                     "mainhand": "minecraft:iron_axe",
                     "offhand": "ancientwarfarenpc:wooden_shield"
                 }
+            },
+            "leader.elite": {
+                "enabled": false
+            },
+            "siege_engineer": {
+                "enabled": false
+            },
+            "priest": {
+                "enabled": false
+            },
+            "bard": {
+                "enabled": false
+            },
+            "trader": {
+                "enabled": false
+            },
+            "civilian.female": {
+                "enabled": false
+            },
+            "civilian.male": {
+                "enabled": false
+            }
+        },
+        "smingol": {
+            "soldier": {
+                "enabled": false
+            },
+            "soldier.elite": {
+                "enabled": false
+            },
+            "archer": {
+                "enabled": false
+            },
+            "archer.elite": {
+                "enabled": false
+            },
+            "leader": {
+                "enabled": false
             },
             "leader.elite": {
                 "enabled": false

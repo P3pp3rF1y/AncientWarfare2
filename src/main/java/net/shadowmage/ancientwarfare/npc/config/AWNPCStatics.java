@@ -157,7 +157,7 @@ public class AWNPCStatics extends ModConfiguration {
 		if (foodValues.containsKey(name)) {
 			return foodValues.get(name);
 		} else if (stack.getItem() instanceof ItemFood) {
-			return ((ItemFood) stack.getItem()).getHealAmount(stack) * foodMultiplier;
+			return (((ItemFood) stack.getItem()).getHealAmount(stack) + (int)((ItemFood) stack.getItem()).getSaturationModifier(stack)) * foodMultiplier;
 		}
 		return 0;
 	}

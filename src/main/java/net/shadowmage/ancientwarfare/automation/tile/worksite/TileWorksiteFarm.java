@@ -104,8 +104,8 @@ public abstract class TileWorksiteFarm extends TileWorksiteBoundedInventory {
 	}
 
 	@Override
-	public void onBlockBroken() {
-		super.onBlockBroken();
+	public void onBlockBroken(IBlockState state) {
+		super.onBlockBroken(state);
 		InventoryTools.dropItemsInWorld(world, plantableInventory, pos);
 		InventoryTools.dropItemsInWorld(world, miscInventory, pos);
 	}

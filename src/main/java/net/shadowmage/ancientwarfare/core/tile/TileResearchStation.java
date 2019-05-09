@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.core.tile;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -73,7 +74,7 @@ public class TileResearchStation extends TileOwned implements IWorkSite, ITorque
 	}
 
 	@Override
-	public void onBlockBroken() {
+	public void onBlockBroken(IBlockState state) {
 		InventoryTools.dropItemsInWorld(world, bookInventory, pos);
 		InventoryTools.dropItemsInWorld(world, resourceInventory, pos);
 	}

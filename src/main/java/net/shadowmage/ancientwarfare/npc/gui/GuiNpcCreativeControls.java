@@ -1,7 +1,9 @@
 package net.shadowmage.ancientwarfare.npc.gui;
 
+import net.minecraft.client.Minecraft;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
+import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.Checkbox;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
@@ -9,9 +11,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Text;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcCreativeControls;
 
 public class GuiNpcCreativeControls extends GuiContainerBase<ContainerNpcCreativeControls> {
-
 	private Text ownerNameInput;
-	private Text customTexInput;
 	private NumberInput attackDamageOverrideInput;
 	private NumberInput armorValueOverrideInput;
 	private NumberInput maxHealthOverrideInput;
@@ -44,14 +44,14 @@ public class GuiNpcCreativeControls extends GuiContainerBase<ContainerNpcCreativ
 		label = new Label(8, totalHeight + 1, "guistrings.npc.custom_texture");
 		addGuiElement(label);
 
-		customTexInput = new Text(100, totalHeight, 256 - 16 - 100, "", this) {
+		Button skinButton = new Button(100, totalHeight, 256 - 16 - 100, 12, getContainer().skinSettings.getDescription()) {
 			@Override
-			public void onTextUpdated(String oldText, String newText) {
-				getContainer().customTexRef = newText;
-				hasChanged = true;
+			protected void onPressed() {
+				Minecraft.getMinecraft().displayGuiScreen(new GuiSkinSelection(GuiNpcCreativeControls.this, getContainer()));
 			}
 		};
-		addGuiElement(customTexInput);
+		addGuiElement(skinButton);
+
 		totalHeight += 12;
 
 		label = new Label(8, totalHeight + 1, "guistrings.npc.health_override");
@@ -112,7 +112,6 @@ public class GuiNpcCreativeControls extends GuiContainerBase<ContainerNpcCreativ
 	@Override
 	public void setupElements() {
 		ownerNameInput.setText(getContainer().ownerName);
-		customTexInput.setText(getContainer().customTexRef);
 		attackDamageOverrideInput.setValue(getContainer().attackDamage);
 		armorValueOverrideInput.setValue(getContainer().armorValue);
 		maxHealthOverrideInput.setValue(getContainer().maxHealth);

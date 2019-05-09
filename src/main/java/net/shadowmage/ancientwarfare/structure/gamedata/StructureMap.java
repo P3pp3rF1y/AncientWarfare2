@@ -8,7 +8,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
-import net.shadowmage.ancientwarfare.structure.worldgen.StructureEntry;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.structure.network.PacketStructureEntry;
+import net.shadowmage.ancientwarfare.structure.network.PacketStructureMap;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,6 +34,7 @@ public class StructureMap extends WorldSavedData {
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		NBTTagCompound mapTag = nbttagcompound.getCompoundTag("map");
 		map.readFromNBT(mapTag);
+		NetworkHandler.sendToAllPlayers(new PacketStructureMap(mapTag));
 	}
 
 	@Override
@@ -39,7 +42,7 @@ public class StructureMap extends WorldSavedData {
 		NBTTagCompound mapTag = new NBTTagCompound();
 		map.writeToNBT(mapTag);
 		nbttagcompound.setTag("map", mapTag);
-		return mapTag;
+		return nbttagcompound;
 	}
 
 	public Collection<StructureEntry> getEntriesNear(World world, int worldX, int worldZ, int chunkRadius, boolean expandBySize, Collection<StructureEntry> list) {
@@ -61,12 +64,22 @@ public class StructureMap extends WorldSavedData {
 	public void setGeneratedAt(World world, int worldX, int worldY, int worldZ, EnumFacing face, StructureEntry entry, boolean unique) {
 		int cx = worldX >> 4;
 		int cz = worldZ >> 4;
-		map.setGeneratedAt(world.provider.getDimension(), cx, cz, entry, unique);
-		this.markDirty();
+		int dimension = world.provider.getDimension();
+		setGeneratedAt(dimension, cx, cz, entry, unique);
+	}
+
+	public void setGeneratedAt(int dimension, int cx, int cz, StructureEntry entry, boolean unique) {
+		map.setGeneratedAt(dimension, cx, cz, entry, unique);
+		markDirty();
+		NetworkHandler.sendToAllPlayers(new PacketStructureEntry(dimension, cx, cz, entry, unique));
 	}
 
 	public boolean isGeneratedUnique(String name) {
 		return this.map.generatedUniques.contains(name);
+	}
+
+	public void synchronizeFromNBT(NBTTagCompound mapTag) {
+		map.readFromNBT(mapTag);
 	}
 
 	private class StructureDimensionMap {
@@ -92,7 +105,7 @@ public class StructureMap extends WorldSavedData {
 
 		public void readFromNBT(NBTTagCompound nbttagcompound) {
 			NBTTagList uniquesList = nbttagcompound.getTagList("uniques", Constants.NBT.TAG_STRING);
-			NBTTagList dimensionList = nbttagcompound.getTagList("dimensions", Constants.NBT.TAG_STRING);
+			NBTTagList dimensionList = nbttagcompound.getTagList("dimensions", Constants.NBT.TAG_COMPOUND);
 
 			NBTTagCompound dimensionTag;
 			int dim;
@@ -132,7 +145,7 @@ public class StructureMap extends WorldSavedData {
 		}
 	}//end structure dimension map
 
-	private class StructureWorldMap {
+	public class StructureWorldMap {
 
 		private HashMap<Integer, HashMap<Integer, StructureEntry>> worldMap = new HashMap<>();
 		private int largestGeneratedX;

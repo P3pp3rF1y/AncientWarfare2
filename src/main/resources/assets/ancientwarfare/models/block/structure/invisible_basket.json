@@ -1,0 +1,14 @@
+{
+    "textures": {
+        "particle": "ancientwarfare:blocks/structure/loot_basket"
+    },
+    "elements": [
+        {
+            "from": [0, 0, 0],
+            "to": [0, 0, 0],
+            "faces": {
+                "up": {"uv": [0, 0, 0, 0], "texture": "nevergetsrendered"}
+            }
+        }
+    ]
+}

@@ -4,15 +4,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.shadowmage.ancientwarfare.npc.item.ItemTradeOrder;
+import net.shadowmage.ancientwarfare.npc.trade.POTradeList;
 import net.shadowmage.ancientwarfare.npc.trade.POTradeRestockData;
 import net.shadowmage.ancientwarfare.npc.trade.POTradeRoute;
-import net.shadowmage.ancientwarfare.npc.trade.TradeList;
 
 public class TradeOrder implements INBTSerializable<NBTTagCompound> {
 
 	private POTradeRoute tradeRoute = new POTradeRoute();
 	private POTradeRestockData restockEntry = new POTradeRestockData();
-	private TradeList tradeList = new TradeList();
+	private POTradeList tradeList = new POTradeList();
 
 	public TradeOrder() {
 	}
@@ -34,7 +34,7 @@ public class TradeOrder implements INBTSerializable<NBTTagCompound> {
 		}
 	}
 
-	public TradeList getTradeList() {
+	public POTradeList getTradeList() {
 		return tradeList;
 	}
 
@@ -57,7 +57,7 @@ public class TradeOrder implements INBTSerializable<NBTTagCompound> {
 
 	@Override
 	public void deserializeNBT(NBTTagCompound tag) {
-		tradeList = new TradeList();
+		tradeList = new POTradeList();
 		tradeRoute = new POTradeRoute();
 		restockEntry = new POTradeRestockData();
 		tradeList.deserializeNBT(tag.getCompoundTag("tradeList"));

@@ -1,0 +1,41 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "ancientwarfare:structure/stool",
+        "textures": {
+            "0": "minecraft:blocks/planks_oak"
+        },
+        "transform": "forge:default-block"
+    },
+    "variants": {
+        "normal": [{}],
+        "variant": {
+            "oak": {},
+            "spruce": {
+                "textures": {
+                    "0": "minecraft:blocks/planks_spruce"
+                }
+            },
+            "birch": {
+                "textures": {
+                    "0": "minecraft:blocks/planks_birch"
+                }
+            },
+            "jungle": {
+                "textures": {
+                    "0": "minecraft:blocks/planks_jungle"
+                }
+            },
+            "acacia": {
+                "textures": {
+                    "0": "minecraft:blocks/planks_acacia"
+                }
+            },
+            "dark_oak": {
+                "textures": {
+                    "0": "minecraft:blocks/planks_big_oak"
+                }
+            }
+        }
+    }
+}

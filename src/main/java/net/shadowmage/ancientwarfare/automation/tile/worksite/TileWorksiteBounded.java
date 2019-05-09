@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -44,8 +45,8 @@ public abstract class TileWorksiteBounded extends TileWorksiteBase implements IB
 	}
 
 	@Override
-	public void onBlockBroken() {
-		super.onBlockBroken();
+	public void onBlockBroken(IBlockState state) {
+		super.onBlockBroken(state);
 		if (this.chunkTicket != null) {
 			ForgeChunkManager.releaseTicket(chunkTicket);
 			this.chunkTicket = null;

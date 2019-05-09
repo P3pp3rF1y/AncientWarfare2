@@ -1,10 +1,12 @@
 package net.shadowmage.ancientwarfare.npc.gui;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
+import net.shadowmage.ancientwarfare.core.gui.elements.Checkbox;
 import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
@@ -16,10 +18,11 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcCombat;
 import net.shadowmage.ancientwarfare.npc.init.AWNPCItems;
 
 public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
-
 	private Text nameInput;
-
+	Button button;
+	private Checkbox doNotPursueCheckbox;
 	private static int buttonX = 8 + 18 + 18 + 18 + 18 + 4;
+	private Button skinButton;
 
 	public GuiNpcInventory(ContainerBase container) {
 		super(container);
@@ -42,16 +45,14 @@ public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
 
 		label = new Label(8 + 18 + 18 + 4, 21, "guistrings.npc.npc_texture");
 		addGuiElement(label);
-		Text textureInput = new Text(75, 20, 95, getContainer().entity.getCustomTex(), this) {
+
+		skinButton = new Button(75, 20, 95, 12, getContainer().skinSettings.getDescription()) {
 			@Override
-			public void onTextUpdated(String oldText, String newText) {
-				getContainer().handleNpcTextureUpdate(newText);
-				getContainer().entity.setCustomTexRef(newText);
+			protected void onPressed() {
+				Minecraft.getMinecraft().displayGuiScreen(new GuiSkinSelection(GuiNpcInventory.this, getContainer()));
 			}
 		};
-		addGuiElement(textureInput);
-
-		Button button;
+		addGuiElement(skinButton);
 
 		if (getContainer().entity instanceof NpcBase) {
 
@@ -112,6 +113,16 @@ public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
 			addGuiElement(button);
 		}
 
+		if (getContainer().isArcher) {
+			doNotPursueCheckbox = new Checkbox(buttonX, 108, 12, 12, "guistrings.npc.donotpursue") {
+				@Override
+				public void onToggled() {
+					getContainer().doNotPursue = checked();
+				}
+			};
+			addGuiElement(doNotPursueCheckbox);
+		}
+
 		ItemSlot slot;
 		boolean isCombatNpc = getContainer().entity instanceof NpcCombat;
 
@@ -149,14 +160,20 @@ public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
 	}
 
 	@Override
-	protected boolean onGuiCloseRequested() {
-		getContainer().setName();
-		return super.onGuiCloseRequested();
+	public void setupElements() {
+		nameInput.setText(getContainer().entity.getCustomNameTag());
+		if (getContainer().isArcher) {
+			doNotPursueCheckbox.setChecked(getContainer().doNotPursue);
+		}
+		skinButton.setText(getContainer().skinSettings.getDescription());
 	}
 
 	@Override
-	public void setupElements() {
-		nameInput.setText(getContainer().entity.getCustomNameTag());
+	protected boolean onGuiCloseRequested() {
+		getContainer().sendChangesToServer();
+		getContainer().setName();
+		return super.onGuiCloseRequested();
+
 	}
 
 }
