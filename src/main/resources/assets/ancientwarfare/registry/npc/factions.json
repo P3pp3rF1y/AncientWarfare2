@@ -3848,7 +3848,7 @@
         },
         {
             "name": "coven",
-            "color": "",
+            "color": "FFC0CB",
             "player_default_standing": -5000,
             "hostile_towards_factions": {
                 "xoltec": false,
@@ -4785,7 +4785,7 @@
         },
         {
             "name": "lizardman",
-            "color": "",
+            "color": "FFC0CB",
             "player_default_standing": -5000,
             "hostile_towards_factions": {
                 "coven": false,
@@ -4946,7 +4946,7 @@
         },
         {
             "name": "rakshasa",
-            "color": "",
+            "color": "FFC0CB",
             "player_default_standing": -5000,
             "hostile_towards_factions": {
                 "evil": false,
@@ -5109,7 +5109,7 @@
         },
         {
             "name": "klown",
-            "color": "",
+            "color": "FFC0CB",
             "player_default_standing": -5000,
             "hostile_towards_factions": {
                 "evil": false,
@@ -5275,7 +5275,7 @@
         },
         {
             "name": "ishtari",
-            "color": "",
+            "color": "FFC0CB",
             "player_default_standing": -5000,
             "hostile_towards_factions": {
                 "evil": false,
@@ -5441,7 +5441,7 @@
         },
         {
             "name": "icelord",
-            "color": "",
+            "color": "FFC0CB",
             "player_default_standing": -5000,
             "hostile_towards_factions": {
                 "evil": false,
@@ -5608,7 +5608,7 @@
         },
         {
             "name": "guild",
-            "color": "",
+            "color": "FFC0CB",
             "player_default_standing": 50,
             "hostile_towards_factions": {
                 "norska": false,
@@ -5940,7 +5940,7 @@
         },
         {
             "name": "amazon",
-            "color": "",
+            "color": "FFC0CB",
             "player_default_standing": -50,
             "hostile_towards_factions": {
                 "nogg": false,
@@ -6266,7 +6266,7 @@
         },
         {
             "name": "minossian",
-            "color": "",
+            "color": "FFC0CB",
             "player_default_standing": -5000,
             "hostile_towards_factions": {
                 "evil": false,
