@@ -272,7 +272,7 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
 		BlockPos min = getWorkBoundsMin();
 		List<TileEntity> tiles = WorldTools.getTileEntitiesInArea(world, min.getX() - 1, min.getY(), min.getZ() - 1, max.getX() + 1, max.getY(), max.getZ() + 1);
 		for (TileEntity te : tiles) {
-			if (te instanceof IControlledTile && ((IControlledTile) te).getController() == null && ((IControlledTile) te).isValidController(this)) {
+			if (te instanceof IControlledTile && !((IControlledTile) te).getController().isPresent() && ((IControlledTile) te).isValidController(this)) {
 				addControlledTile((IControlledTile) te);
 			}
 		}
