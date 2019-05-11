@@ -1082,6 +1082,15 @@
             "civilian.male": {
                 "enabled": false
             }
-        }
+        },
+        "rakshasa": {},
+        "guild": {},
+        "klown": {},
+        "coven": {},
+        "minossian": {},
+        "icelord": {},
+        "lizardman": {},
+        "amazon": {},
+        "ishtari": {}
     }
 }
