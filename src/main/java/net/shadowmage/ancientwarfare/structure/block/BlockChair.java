@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.structure.block;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -36,11 +35,11 @@ import java.util.List;
 import java.util.Map;
 
 import static net.shadowmage.ancientwarfare.core.render.property.CoreProperties.FACING;
+import static net.shadowmage.ancientwarfare.core.render.property.CoreProperties.VISIBLE;
 import static net.shadowmage.ancientwarfare.structure.util.BlockStateProperties.VARIANT;
 
 public class BlockChair extends BlockSeat {
 	private static final Vec3d SEAT_OFFSET = new Vec3d(0.5, 0.47, 0.5);
-	private static final PropertyBool VISIBLE = PropertyBool.create("visible");
 
 	public BlockChair() {
 		super(Material.WOOD, "chair");

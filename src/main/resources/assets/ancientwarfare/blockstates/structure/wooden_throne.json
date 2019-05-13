@@ -1,0 +1,26 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "ancientwarfare:structure/wooden_throne"
+    },
+    "variants": {
+        "normal": [{}],
+        "facing": {
+            "north": {
+                "y": 180
+            },
+            "south": {
+            },
+            "west": {
+                "y": 90
+            },
+            "east": {
+                "y": 270
+            }
+        },
+        "visible": {
+            "true": {},
+            "false": {}
+        }
+    }
+}

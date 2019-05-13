@@ -39,4 +39,10 @@ public class RotationLimit {
 			super(facing.getHorizontalAngle() - 135, facing.getHorizontalAngle() + 135);
 		}
 	}
+
+	public static class FacingQuarter extends RotationLimit {
+		public FacingQuarter(EnumFacing facing) {
+			super(facing.getHorizontalAngle() - 45, facing.getHorizontalAngle() + 45);
+		}
+	}
 }
