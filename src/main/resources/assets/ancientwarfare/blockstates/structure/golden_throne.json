@@ -26,11 +26,7 @@
             }
         },
         "inventory": {
-            "model": "builtin/generated",
-            "transform": "forge:default-item",
-            "textures": {
-                "layer0": "ancientwarfare:items/structure/golden_throne"
-            }
+            "model": "ancientwarfare:structure/golden_throne"
         }
     }
 }
