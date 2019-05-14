@@ -25,6 +25,7 @@ import net.shadowmage.ancientwarfare.structure.block.BlockDraftingStation;
 import net.shadowmage.ancientwarfare.structure.block.BlockFirePit;
 import net.shadowmage.ancientwarfare.structure.block.BlockGateProxy;
 import net.shadowmage.ancientwarfare.structure.block.BlockGoldenIdol;
+import net.shadowmage.ancientwarfare.structure.block.BlockGoldenThrone;
 import net.shadowmage.ancientwarfare.structure.block.BlockLootBasket;
 import net.shadowmage.ancientwarfare.structure.block.BlockProtectionFlag;
 import net.shadowmage.ancientwarfare.structure.block.BlockSoundBlock;
@@ -110,6 +111,7 @@ public class AWStructureBlocks {
 	public static final Block CHAIR = InjectionTools.nullValue();
 	public static final Block TRIBAL_STOOL = InjectionTools.nullValue();
 	public static final Block WOODEN_THRONE = InjectionTools.nullValue();
+	public static final Block GOLDEN_THRONE = InjectionTools.nullValue();
 
 	@SuppressWarnings("ConstantConditions")
 	@SubscribeEvent
@@ -151,6 +153,7 @@ public class AWStructureBlocks {
 		registry.register(new ItemBlockChair(CHAIR));
 		registry.register(new ItemBlockBase(TRIBAL_STOOL));
 		registry.register(new ItemBlockBase(WOODEN_THRONE));
+		registry.register(new ItemBlockBase(GOLDEN_THRONE));
 
 		registerLootContainers();
 	}
@@ -236,6 +239,7 @@ public class AWStructureBlocks {
 		registry.register(new BlockTribalStool());
 
 		registry.register(new BlockWoodenThrone());
+		registry.register(new BlockGoldenThrone());
 	}
 
 	private static void registerTile(Class<? extends TileEntity> teClass, String teId) {
