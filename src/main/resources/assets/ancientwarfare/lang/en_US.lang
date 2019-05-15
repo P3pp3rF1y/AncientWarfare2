@@ -245,6 +245,7 @@ tile.tribal_stool.name=Tribal Stool
 tile.urn.name=Urn
 tile.wooden_throne.name=Wooden Throne
 tile.golden_throne.name=Golden Throne
+tile.wooden_post.name=Wooden Post
 
 #colors
 black=Black
