@@ -25,8 +25,8 @@ public class EntitySpawnNBTRegistry {
 	static {
 		entityNBT.put(EntityVillager.class, ImmutableSet.of("Offers", "Profession", "ProfessionName", "Career", "CareerLevel"));
 		entityNBT.put(EntityHorse.class, Collections.singleton("Variant"));
-		entityNBT.put(EntityLiving.class, ImmutableSet.of("HandItems", "HandDropChances", "ArmorItems", "ArmorDropChances"));
-
+		entityNBT.put(EntityLiving.class, ImmutableSet.of("HandItems", "HandDropChances", "ArmorItems", "ArmorDropChances", "CustomName"));
+		entityNBT.put(Entity.class, Collections.singleton("CustomName"));
 	}
 
 	public static NBTTagCompound getEntitySpawnNBT(Entity entity, NBTTagCompound entityTag) {

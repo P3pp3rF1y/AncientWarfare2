@@ -57,9 +57,10 @@ minecraft{
     replaceIn "automation/AncientWarfareAutomation.java"
     replaceIn "core/AncientWarfareCore.java"
     replaceIn "npc/AncientWarfareNPC.java"
-    replaceIn "structure/AncientWarfareStructures.java"
+    replaceIn "structure/AncientWarfareStructure.java"
     replaceIn "vehicle/AncientWarfareVehicles.java"
     replace "@VERSION@", "${project.minecraft.version}-${project.major}.${project.minor}.${project.patch}." + getBuildNumber() + getStable()
+    replace "0.000.000.001", "$forge_version"
 }
 version = minecraft.version + "-" + project.major +"."+ project.minor +"."+ project.patch +"."+ getBuildNumber() + getStable()
 group = "shadowmage"
