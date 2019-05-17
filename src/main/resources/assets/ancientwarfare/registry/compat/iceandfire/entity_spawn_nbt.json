@@ -1,0 +1,17 @@
+{
+    "mod": "iceandfire",
+    "entity_nbt": {
+        "com.github.alexthe666.iceandfire.entity.EntityDragonBase": [
+            "AgeTicks",
+            "Gender",
+            "Variant",
+            "ArmorHead",
+            "ArmorNeck",
+            "ArmorBody",
+            "ArmorTail",
+            "ModelDead",
+            "Items",
+            "AgingDisabled"
+        ]
+    }
+}
