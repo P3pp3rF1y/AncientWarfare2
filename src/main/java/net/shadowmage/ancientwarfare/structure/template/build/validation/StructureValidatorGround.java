@@ -5,7 +5,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
@@ -68,8 +67,7 @@ public class StructureValidatorGround extends StructureValidator {
 		if (!isPreserveBlocks()) {
 			smoothoutBorder(world, bb, template);
 		}
-		Biome biome = world.provider.getBiomeForCoords(origin);
-		if (biome.getEnableSnow()) {
+		if (world.canSnowAt(origin.up(), false)) {
 			WorldStructureGenerator.sprinkleSnow(world, bb, getBorderSize());
 		}
 	}
