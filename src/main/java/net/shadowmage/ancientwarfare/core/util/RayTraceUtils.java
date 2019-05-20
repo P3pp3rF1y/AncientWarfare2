@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.core.util;
 
 import codechicken.lib.raytracer.RayTracer;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -147,7 +146,7 @@ public class RayTraceUtils {
 		return raytraceresult == null ? null : new RayTraceResult(raytraceresult.hitVec.addVector((double) pos.getX(), (double) pos.getY(), (double) pos.getZ()), raytraceresult.sideHit, pos);
 	}
 
-	public static AxisAlignedBB getSelectedBoundingBox(List<AxisAlignedBB> aabbs, BlockPos pos, EntityPlayerSP player) {
+	public static AxisAlignedBB getSelectedBoundingBox(List<AxisAlignedBB> aabbs, BlockPos pos, EntityPlayer player) {
 		Vec3d start = RayTracer.getStartVec(player);
 		Vec3d end = RayTracer.getEndVec(player);
 		AxisAlignedBB axisAlignedBB = raytraceMultiAABB(aabbs, pos, start, end, (rtr, aabb) -> aabb);
