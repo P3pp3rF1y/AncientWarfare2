@@ -13,7 +13,8 @@
         "additional_attributes": {
             "burns_in_sun": false,
             "horse_entity": "net.minecraft.entity.passive.EntityHorse"
-        }
+        },
+        "loot_table": "ancientwarfare:entities/faction_npc"
     },
     "npc_subtypes": {
         "soldier": {

@@ -12,6 +12,7 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.I18n;
@@ -34,13 +35,14 @@ import net.shadowmage.ancientwarfare.structure.util.CapabilityRespawnData;
 import net.shadowmage.ancientwarfare.structure.util.IRespawnData;
 import net.shadowmage.ancientwarfare.structure.util.SpawnerHelper;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-@SuppressWarnings({"squid:MaximumInheritanceDepth","squid:S2160"})
+@SuppressWarnings({"squid:MaximumInheritanceDepth", "squid:S2160"})
 public abstract class NpcFaction extends NpcBase {
 	private static final int DEATH_REVENGE_TICKS = 6000;
 	private static final int HIT_REVENGE_TICKS = DEATH_REVENGE_TICKS / 20;
@@ -212,7 +214,7 @@ public abstract class NpcFaction extends NpcBase {
 		super.onEntityUpdate();
 		if (world.getWorldTime() % REVENGE_LIST_VALIDATION_TICKS == 0) {
 			Iterator<Map.Entry<String, Long>> it = revengePlayers.entrySet().iterator();
-			while(it.hasNext()) {
+			while (it.hasNext()) {
 				Map.Entry<String, Long> playerRevengeTime = it.next();
 				if (world.getTotalWorldTime() > playerRevengeTime.getValue()) {
 					it.remove();
@@ -268,6 +270,12 @@ public abstract class NpcFaction extends NpcBase {
 		}
 	}
 
+	@Nullable
+	@Override
+	protected ResourceLocation getLootTable() {
+		return NpcDefaultsRegistry.getFactionNpcDefault(this).getLootTable();
+	}
+
 	@Override
 	public String getNpcSubType() {
 		return "";
@@ -301,8 +309,8 @@ public abstract class NpcFaction extends NpcBase {
 		applyFactionNpcSettings(NpcDefaultsRegistry.getFactionNpcDefault(this));
 		canDespawn = tag.getBoolean("canDespawn");
 		revengePlayers = NBTHelper.getMap(tag.getTagList("revengePlayers", Constants.NBT.TAG_COMPOUND),
-				t -> t.getString("playerName"), t -> t.getLong("time") );
-}
+				t -> t.getString("playerName"), t -> t.getLong("time"));
+	}
 
 	@Override
 	public void writeEntityToNBT(NBTTagCompound tag) {
