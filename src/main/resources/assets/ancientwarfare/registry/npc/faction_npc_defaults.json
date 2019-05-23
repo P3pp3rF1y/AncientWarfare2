@@ -1154,9 +1154,6 @@
             "archer": {
                 "enabled": false
             },
-            "archer.elite": {
-                "enabled": false
-            },
             "cavalry": {
                 "enabled": false
             },
