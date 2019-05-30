@@ -122,6 +122,8 @@ public final class NetworkHandler implements IGuiHandler {
 	public static final int GUI_GATE_CONTROL_CREATIVE = 58;
 
 	public static final int GUI_LOOT_BASKET = 59;
+	public static final int GUI_STAKE = 60;
+
 	private FMLEventChannel channel;
 
 	private HashMap<Integer, Class<? extends ContainerBase>> containerClasses = new HashMap<>();

@@ -498,6 +498,9 @@ guistrings.loot_placer.potion=Potion
 guistrings.loot_placer.strength=Strength
 guistrings.loot_placer.duration=Duration (s)
 guistring.loot_placer.entity_nbt=Entity NBT
+guistrings.stake.show_entity=Show Entity
+guistrings.stake.entity_on_fire=Entity On Fire
+guistrings.stake.burns=Burns
 
 #automation
 guistrings.automation.ignore_damage=Ign. Dmg

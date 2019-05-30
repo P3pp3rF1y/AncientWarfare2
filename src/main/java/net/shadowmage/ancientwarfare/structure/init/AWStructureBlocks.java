@@ -29,6 +29,7 @@ import net.shadowmage.ancientwarfare.structure.block.BlockGoldenThrone;
 import net.shadowmage.ancientwarfare.structure.block.BlockLootBasket;
 import net.shadowmage.ancientwarfare.structure.block.BlockProtectionFlag;
 import net.shadowmage.ancientwarfare.structure.block.BlockSoundBlock;
+import net.shadowmage.ancientwarfare.structure.block.BlockStake;
 import net.shadowmage.ancientwarfare.structure.block.BlockStool;
 import net.shadowmage.ancientwarfare.structure.block.BlockStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.block.BlockStructureScanner;
@@ -67,6 +68,7 @@ import net.shadowmage.ancientwarfare.structure.tile.TileDraftingStation;
 import net.shadowmage.ancientwarfare.structure.tile.TileLootBasket;
 import net.shadowmage.ancientwarfare.structure.tile.TileProtectionFlag;
 import net.shadowmage.ancientwarfare.structure.tile.TileSoundBlock;
+import net.shadowmage.ancientwarfare.structure.tile.TileStake;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureScanner;
 import net.shadowmage.ancientwarfare.structure.tile.TileTotemPart;
@@ -114,7 +116,7 @@ public class AWStructureBlocks {
 	public static final Block WOODEN_THRONE = InjectionTools.nullValue();
 	public static final Block GOLDEN_THRONE = InjectionTools.nullValue();
 	public static final Block WOODEN_POST = InjectionTools.nullValue();
-
+	public static final Block STAKE = InjectionTools.nullValue();
 
 	@SuppressWarnings("ConstantConditions")
 	@SubscribeEvent
@@ -158,6 +160,7 @@ public class AWStructureBlocks {
 		registry.register(new ItemBlockBase(WOODEN_THRONE));
 		registry.register(new ItemBlockBase(GOLDEN_THRONE));
 		registry.register(new ItemBlockBase(WOODEN_POST));
+		registry.register(new ItemBlockBase(STAKE));
 
 		registerLootContainers();
 	}
@@ -245,6 +248,8 @@ public class AWStructureBlocks {
 		registry.register(new BlockWoodenThrone());
 		registry.register(new BlockGoldenThrone());
 		registry.register(new BlockWoodenPost());
+		registry.register(new BlockStake());
+		registerTile(TileStake.class, "stake_tile");
 	}
 
 	private static void registerTile(Class<? extends TileEntity> teClass, String teId) {

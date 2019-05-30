@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.structure.block;
 
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -12,7 +11,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -23,32 +21,32 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
+import net.shadowmage.ancientwarfare.structure.render.property.TopBottomPart;
 import net.shadowmage.ancientwarfare.structure.util.RotationLimit;
 
 import java.util.Map;
 
 import static net.shadowmage.ancientwarfare.core.render.property.CoreProperties.FACING;
+import static net.shadowmage.ancientwarfare.structure.render.property.StructureProperties.TOP_BOTTOM_PART;
 
 public class BlockGoldenThrone extends BlockSeat {
-	private static final PropertyEnum<Part> PART = PropertyEnum.create("part", Part.class);
-
 	public BlockGoldenThrone() {
 		super(Material.IRON, "golden_throne");
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, FACING, PART);
+		return new BlockStateContainer(this, FACING, TOP_BOTTOM_PART);
 	}
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta & 3)).withProperty(PART, Part.byMeta((meta >> 2) & 1));
+		return getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta & 3)).withProperty(TOP_BOTTOM_PART, TopBottomPart.byMeta((meta >> 2) & 1));
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return state.getValue(FACING).getHorizontalIndex() | state.getValue(PART).getMeta() << 2;
+		return state.getValue(FACING).getHorizontalIndex() | state.getValue(TOP_BOTTOM_PART).getMeta() << 2;
 	}
 
 	private static final Map<EnumFacing, AxisAlignedBB> TOP_AABBs = ImmutableMap.of(
@@ -67,18 +65,18 @@ public class BlockGoldenThrone extends BlockSeat {
 
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		return state.getValue(PART) == Part.BOTTOM ? BOTTOM_AABBs.get(state.getValue(FACING)) : TOP_AABBs.get(state.getValue(FACING));
+		return state.getValue(TOP_BOTTOM_PART) == TopBottomPart.BOTTOM ? BOTTOM_AABBs.get(state.getValue(FACING)) : TOP_AABBs.get(state.getValue(FACING));
 	}
 
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		world.setBlockState(pos.up(), state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(PART, Part.TOP));
-		world.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(PART, Part.BOTTOM));
+		world.setBlockState(pos.up(), state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(TOP_BOTTOM_PART, TopBottomPart.TOP));
+		world.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(TOP_BOTTOM_PART, TopBottomPart.BOTTOM));
 	}
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if (state.getValue(PART) == Part.BOTTOM) {
+		if (state.getValue(TOP_BOTTOM_PART) == TopBottomPart.BOTTOM) {
 			return super.onBlockActivated(world, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
 		}
 		IBlockState stateDown = world.getBlockState(pos.down());
@@ -92,7 +90,7 @@ public class BlockGoldenThrone extends BlockSeat {
 
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		BlockPos otherPos = state.getValue(PART) == Part.BOTTOM ? pos.up() : pos.down();
+		BlockPos otherPos = state.getValue(TOP_BOTTOM_PART) == TopBottomPart.BOTTOM ? pos.up() : pos.down();
 		if (!world.isAirBlock(otherPos)) {
 			world.setBlockToAir(otherPos);
 		}
@@ -112,41 +110,5 @@ public class BlockGoldenThrone extends BlockSeat {
 		});
 
 		ModelLoaderHelper.registerItem(this, "structure", "inventory");
-	}
-
-	public enum Part implements IStringSerializable {
-		TOP("top", 0),
-		BOTTOM("bottom", 1);
-
-		private String name;
-		private int meta;
-
-		Part(String name, int meta) {
-			this.name = name;
-			this.meta = meta;
-		}
-
-		@Override
-		public String getName() {
-			return name;
-		}
-
-		public int getMeta() {
-			return meta;
-		}
-
-		private static final Map<Integer, Part> META_TO_PART;
-
-		static {
-			ImmutableMap.Builder<Integer, Part> builder = new ImmutableMap.Builder<>();
-			for (Part part : values()) {
-				builder.put(part.getMeta(), part);
-			}
-			META_TO_PART = builder.build();
-		}
-
-		public static Part byMeta(int meta) {
-			return META_TO_PART.get(meta);
-		}
 	}
 }
