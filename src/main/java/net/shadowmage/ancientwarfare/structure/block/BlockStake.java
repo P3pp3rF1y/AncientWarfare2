@@ -179,6 +179,7 @@ public class BlockStake extends BlockBaseStructure {
 		world.setBlockToAir(pos.up());
 		world.setBlockToAir(pos);
 		super.breakBlock(world, pos, state);
+		world.checkLight(pos);
 	}
 
 	@Override

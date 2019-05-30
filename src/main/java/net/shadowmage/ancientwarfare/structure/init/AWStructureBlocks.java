@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.Vec3i;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -56,6 +57,7 @@ import net.shadowmage.ancientwarfare.structure.item.ItemBlockProtectionFlag;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockTotemPart;
 import net.shadowmage.ancientwarfare.structure.item.ItemLootChestPlacer;
+import net.shadowmage.ancientwarfare.structure.item.ItemMultiBlock;
 import net.shadowmage.ancientwarfare.structure.item.WoodItemBlock;
 import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedLootChest;
@@ -160,7 +162,7 @@ public class AWStructureBlocks {
 		registry.register(new ItemBlockBase(WOODEN_THRONE));
 		registry.register(new ItemBlockBase(GOLDEN_THRONE));
 		registry.register(new ItemBlockBase(WOODEN_POST));
-		registry.register(new ItemBlockBase(STAKE));
+		registry.register(new ItemMultiBlock(STAKE, new Vec3i(0, 0, 0), new Vec3i(0, 2, 0)));
 
 		registerLootContainers();
 	}
