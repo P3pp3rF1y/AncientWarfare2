@@ -744,15 +744,15 @@ public class SpawnerSettings {
 		private void setDataFromTag(Entity e) {
 			if (customTag != null) {
 				NBTTagCompound temp = new NBTTagCompound();
-				if (e instanceof NpcFaction && customTag.hasKey(FACTION_NAME_TAG)) {
-					((NpcFaction) e).setFactionNameAndDefaults(customTag.getString(FACTION_NAME_TAG));
-				}
 				e.writeToNBT(temp);
 				Set<String> keys = customTag.getKeySet();
 				for (String key : keys) {
 					temp.setTag(key, customTag.getTag(key));
 				}
 				e.readFromNBT(temp);
+				if (e instanceof NpcFaction && customTag.hasKey(FACTION_NAME_TAG)) {
+					((NpcFaction) e).setFactionNameAndDefaults(customTag.getString(FACTION_NAME_TAG));
+				}
 			}
 		}
 	}

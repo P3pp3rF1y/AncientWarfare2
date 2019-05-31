@@ -2,7 +2,7 @@
     "defaults": {
         "attributes": {
             "generic.maxHealth": 50,
-            "generic.movementSpeed": 0.325,
+            "generic.movementSpeed": 0.3,
             "generic.followRange": 16,
             "generic.attackDamage": 1
         },
@@ -13,7 +13,8 @@
         "additional_attributes": {
             "burns_in_sun": false,
             "horse_entity": "net.minecraft.entity.passive.EntityHorse"
-        }
+        },
+        "loot_table": "ancientwarfare:entities/faction_npc"
     },
     "npc_subtypes": {
         "soldier": {
@@ -27,11 +28,11 @@
         },
         "soldier.elite": {
             "attributes": {
-                "generic.maxHealth": 20,
-                "generic.movementSpeed": 0.395,
+                "generic.maxHealth": 30,
+                "generic.movementSpeed": 0.325,
                 "generic.attackDamage": 2
             },
-            "experience_drop": 20,
+            "experience_drop": 30,
             "equipment": {
                 "mainhand": "minecraft:iron_sword"
             }
@@ -77,20 +78,20 @@
         },
         "leader": {
             "attributes": {
-                "generic.maxHealth": 60,
+                "generic.maxHealth": 50,
                 "generic.attackDamage": 3
             },
-            "experience_drop": 60,
+            "experience_drop": 50,
             "equipment": {
                 "mainhand": "minecraft:diamond_sword"
             }
         },
         "leader.elite": {
             "attributes": {
-                "generic.maxHealth": 80,
+                "generic.maxHealth": 60,
                 "generic.attackDamage": 4
             },
-            "experience_drop": 80,
+            "experience_drop": 60,
             "equipment": {
                 "mainhand": "minecraft:diamond_sword"
             }
@@ -1002,7 +1003,8 @@
         "barbarian": {
             "soldier": {
                 "equipment": {
-                    "mainhand": "minecraft:stone_axe"
+                    "mainhand": "minecraft:stone_axe",
+                    "offhand": "ancientwarfarenpc:wooden_shield"
                 }
             },
             "soldier.elite": {
@@ -1020,7 +1022,7 @@
             "leader": {
                 "equipment": {
                     "mainhand": "minecraft:iron_axe",
-                    "offhand": "ancientwarfarenpc:wooden_shield"
+                    "offhand": "ancientwarfarenpc:iron_shield"
                 }
             },
             "leader.elite": {
@@ -1030,7 +1032,9 @@
                 "enabled": false
             },
             "priest": {
-                "enabled": false
+                "equipment": {
+                    "mainhand": "minecraft:skull"
+                }
             },
             "bard": {
                 "enabled": false
@@ -1063,6 +1067,540 @@
             },
             "leader.elite": {
                 "enabled": false
+            },
+            "siege_engineer": {
+                "enabled": false
+            },
+            "priest": {
+                "enabled": false
+            },
+            "bard": {
+                "enabled": false
+            },
+            "trader": {
+                "enabled": false
+            },
+            "civilian.female": {
+                "enabled": false
+            },
+            "civilian.male": {
+                "enabled": false
+            }
+        },
+        "rakshasa": {
+            "soldier": {
+                "enabled": false
+            },
+            "soldier.elite": {
+                "equipment": {
+                    "mainhand": "minecraft:golden_sword",
+                    "offhand": "ancientwarfarenpc:gold_shield"
+                }
+            },
+            "archer": {
+                "enabled": false
+            },
+            "archer.elite": {
+                "enabled": false
+            },
+            "cavalry": {
+                "enabled": false
+            },
+            "mounted_archer": {
+                "enabled": false
+            },
+            "leader": {
+                "enabled": false
+            },
+            "leader.elite": {
+                "attributes": {
+                    "generic.maxHealth": 75,
+                    "generic.movementSpeed": 0.355,
+                    "generic.attackDamage": 3
+                },
+                "equipment": {
+                    "mainhand": "minecraft:golden_sword"
+                }
+            },
+            "siege_engineer": {
+                "enabled": false
+            },
+            "priest": {
+                "enabled": false
+            },
+            "bard": {
+                "enabled": false
+            },
+            "trader": {
+                "enabled": false
+            },
+            "civilian.female": {
+                "enabled": false
+            },
+            "civilian.male": {
+                "enabled": false
+            }
+        },
+        "guild": {
+            "soldier": {
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:iron_spear",
+                    "offhand": "ancientwarfarenpc:iron_shield"
+                }
+            },
+            "soldier.elite": {
+                "enabled": false
+            },
+            "archer": {
+                "enabled": false
+            },
+            "cavalry": {
+                "enabled": false
+            },
+            "mounted_archer": {
+                "enabled": false
+            },
+            "leader": {
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:iron_halberd"
+                }
+            },
+            "leader.elite": {
+                "enabled": false
+            },
+            "siege_engineer": {
+                "enabled": false
+            },
+            "priest": {
+                "enabled": false
+            },
+            "bard": {
+                "enabled": false
+            },
+            "trader": {
+                "enabled": false
+            },
+            "civilian.female": {
+                "enabled": false
+            },
+            "civilian.male": {
+                "enabled": false
+            }
+        },
+        "klown": {
+            "soldier": {
+                "enabled": false
+            },
+            "soldier.elite": {
+                "equipment": {
+                    "mainhand": "minecraft:iron_axe"
+                }
+            },
+            "archer": {
+                "enabled": false
+            },
+            "archer.elite": {
+                "enabled": false
+            },
+            "cavalry": {
+                "enabled": false
+            },
+            "mounted_archer": {
+                "enabled": false
+            },
+            "leader": {
+                "enabled": false
+            },
+            "leader.elite": {
+                "attributes": {
+                    "generic.maxHealth": 120,
+                    "generic.movementSpeed": 0.3,
+                    "generic.attackDamage": 3
+                },
+                "equipment": {
+                    "mainhand": "minecraft:diamond_axe"
+                }
+            },
+            "siege_engineer": {
+                "enabled": false
+            },
+            "priest": {
+                "enabled": false
+            },
+            "bard": {
+                "enabled": false
+            },
+            "trader": {
+                "enabled": false
+            },
+            "civilian.female": {
+                "enabled": false
+            },
+            "civilian.male": {
+                "enabled": false
+            }
+        },
+        "coven": {
+            "soldier": {
+                "equipment": {
+                    "mainhand": "minecraft:air"
+                }
+            },
+            "soldier.elite": {
+                "attributes": {
+                    "generic.maxHealth": 55,
+                    "generic.movementSpeed": 0.2,
+                    "generic.attackDamage": 4
+                },
+                "equipment": {
+                    "mainhand": "minecraft:air"
+                }
+            },
+            "cavalry": {
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:diamond_halberd"
+                },
+                "additional_attributes": {
+                    "horse_entity": "net.minecraft.entity.passive.EntitySkeletonHorse"
+                }
+            },
+            "mounted_archer": {
+                "enabled": false
+            },
+            "leader": {
+                "attributes": {
+                    "generic.maxHealth": 45,
+                    "generic.movementSpeed": 0.355,
+                    "generic.attackDamage": 3
+                },
+                "equipment": {
+                    "mainhand": "minecraft:air"
+                }
+            },
+            "leader.elite": {
+                "attributes": {
+                    "generic.maxHealth": 75,
+                    "generic.movementSpeed": 0.2,
+                    "generic.attackDamage": 5
+                },
+                "equipment": {
+                    "mainhand": "minecraft:air"
+                },
+                "siege_engineer": {
+                    "enabled": false
+                },
+                "bard": {
+                    "enabled": false
+                },
+                "civilian.female": {
+                    "enabled": false
+                },
+                "civilian.male": {
+                    "enabled": false
+                }
+            }
+        },
+        "minossian": {
+            "soldier": {
+                "equipment": {
+                    "mainhand": "minecraft:iron_axe"
+                }
+            },
+            "soldier.elite": {
+                "enabled": false
+            },
+            "archer": {
+                "enabled": false
+            },
+            "archer.elite": {
+                "enabled": false
+            },
+            "cavalry": {
+                "enabled": false
+            },
+            "mounted_archer": {
+                "enabled": false
+            },
+            "leader": {
+                "attributes": {
+                    "generic.maxHealth": 65,
+                    "generic.movementSpeed": 0.325,
+                    "generic.attackDamage": 4
+                },
+                "equipment": {
+                    "mainhand": "minecraft:air"
+                }
+            },
+            "leader.elite": {
+                "equipment": {
+                    "mainhand": "minecraft:diamond_axe"
+                },
+                "siege_engineer": {
+                    "enabled": false
+                },
+                "priest": {
+                    "enabled": false
+                },
+                "bard": {
+                    "enabled": false
+                },
+                "trader": {
+                    "enabled": false
+                },
+                "civilian.female": {
+                    "enabled": false
+                },
+                "civilian.male": {
+                    "enabled": false
+                }
+            }
+        },
+        "icelord": {
+            "soldier": {
+                "equipment": {
+                    "mainhand": "minecraft:air"
+                }
+            },
+            "soldier.elite": {
+                "attributes": {
+                    "generic.maxHealth": 45,
+                    "generic.movementSpeed": 0.325,
+                    "generic.attackDamage": 3
+                },
+                "equipment": {
+                    "mainhand": "minecraft:air"
+                }
+            },
+            "cavalry": {
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:iron_spear",
+                    "offhand": "ancientwarfarenpc:iron_shield"
+                },
+                "additional_attributes": {
+                    "horse_entity": "net.minecraft.entity.passive.EntitySkeletonHorse"
+                }
+            },
+            "mounted_archer": {
+                "enabled": false
+            },
+            "leader": {
+                "attributes": {
+                    "generic.maxHealth": 55,
+                    "generic.movementSpeed": 0.3,
+                    "generic.attackDamage": 4
+                },
+                "equipment": {
+                    "mainhand": "minecraft:air"
+                }
+            },
+            "leader.elite": {
+                "equipment": {
+                    "mainhand": "minecraft:diamond_axe"
+                }
+            },
+            "siege_engineer": {
+                "enabled": false
+            },
+            "priest": {
+                "equipment": {
+                    "mainhand": "minecraft:air"
+                },
+                "bard": {
+                    "enabled": false
+                },
+                "trader": {
+                    "enabled": false
+                },
+                "civilian.female": {
+                    "enabled": false
+                },
+                "civilian.male": {
+                    "enabled": false
+                }
+            }
+        },
+        "lizardman": {
+            "soldier": {
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:stone_spear"
+                }
+            },
+            "soldier.elite": {
+                "attributes": {
+                    "generic.maxHealth": 65,
+                    "generic.movementSpeed": 0.325,
+                    "generic.attackDamage": 4
+                },
+                "equipment": {
+                    "mainhand": "minecraft:air"
+                }
+            },
+            "archer.elite": {
+                "enabled": false
+            },
+            "cavalry": {
+                "enabled": false
+            },
+            "mounted_archer": {
+                "enabled": false
+            },
+            "leader": {
+                "equipment": {
+                    "mainhand": "minecraft:stone_axe"
+                },
+                "leader.elite": {
+                    "enabled": false
+                },
+                "siege_engineer": {
+                    "enabled": false
+                },
+                "priest": {
+                    "enabled": false
+                },
+                "bard": {
+                    "enabled": false
+                },
+                "trader": {
+                    "enabled": false
+                },
+                "civilian.female": {
+                    "enabled": false
+                },
+                "civilian.male": {
+                    "enabled": false
+                }
+            }
+        },
+        "amazon": {
+            "soldier": {
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:golden_spear",
+                    "offhand": "ancientwarfarenpc:gold_shield"
+                }
+            },
+            "soldier.elite": {
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:golden_halberd"
+                }
+            },
+            "cavalry": {
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:golden_spear",
+                    "offhand": "ancientwarfarenpc:gold_shield"
+                }
+            },
+            "leader": {
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:golden_halberd"
+                }
+            },
+            "leader.elite": {
+                "equipment": {
+                    "mainhand": "minecraft:golden_sword"
+                }
+            }
+        },
+        "ishtari": {
+            "soldier": {
+                "equipment": {
+                    "mainhand": "minecraft:air"
+                }
+            },
+            "soldier.elite": {
+                "equipment": {
+                    "mainhand": "minecraft:golden_sword"
+                }
+            },
+            "archer.elite": {
+                "enabled": false
+            },
+            "cavalry": {
+                "enabled": false
+            },
+            "mounted_archer": {
+                "enabled": false
+            },
+            "leader": {
+                "equipment": {
+                    "mainhand": "ancientwarfarenpc:golden_halberd"
+                }
+            },
+            "leader.elite": {
+                "equipment": {
+                    "mainhand": "minecraft:diamond_sword"
+                },
+                "siege_engineer": {
+                    "enabled": false
+                },
+                "priest": {
+                    "enabled": false
+                },
+                "bard": {
+                    "enabled": false
+                },
+                "trader": {
+                    "enabled": false
+                },
+                "civilian.female": {
+                    "enabled": false
+                },
+                "civilian.male": {
+                    "enabled": false
+                }
+            }
+        },
+        "monster": {
+            "soldier": {
+                "attributes": {
+                    "generic.maxHealth": 65,
+                    "generic.movementSpeed": 0.355,
+                    "generic.attackDamage": 3
+                },
+                "equipment": {
+                    "mainhand": "minecraft:air"
+                }
+            },
+            "soldier.elite": {
+                "attributes": {
+                    "generic.maxHealth": 85,
+                    "generic.movementSpeed": 0.3,
+                    "generic.attackDamage": 4
+                },
+                "equipment": {
+                    "mainhand": "minecraft:air"
+                }
+            },
+            "archer": {
+                "enabled": false
+            },
+            "archer.elite": {
+                "enabled": false
+            },
+            "cavalry": {
+                "enabled": false
+            },
+            "mounted_archer": {
+                "enabled": false
+            },
+            "leader": {
+                "attributes": {
+                    "generic.maxHealth": 100,
+                    "generic.movementSpeed": 0.3,
+                    "generic.attackDamage": 5
+                },
+                "equipment": {
+                    "mainhand": "minecraft:air"
+                }
+            },
+            "leader.elite": {
+                "attributes": {
+                    "generic.maxHealth": 150,
+                    "generic.movementSpeed": 0.3,
+                    "generic.attackDamage": 6
+                },
+                "equipment": {
+                    "mainhand": "minecraft:air"
+                }
             },
             "siege_engineer": {
                 "enabled": false

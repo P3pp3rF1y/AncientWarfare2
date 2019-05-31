@@ -7,6 +7,7 @@ import com.google.gson.JsonParseException;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.util.JsonUtils;
+import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.registry.IRegistryDataParser;
 import net.shadowmage.ancientwarfare.core.util.RegistryTools;
 import net.shadowmage.ancientwarfare.core.util.parsing.JsonHelper;
@@ -175,7 +176,7 @@ public class NpcDefaultsRegistry {
 			JsonObject defaults = JsonUtils.getJsonObject(json, "defaults");
 			return new FactionNpcDefault(getAttributes(defaults), getExperienceDrop(defaults).orElse(0),
 					getCanSwim(defaults).orElse(true), getCanBreakDoors(defaults).orElse(true), getEquipment(defaults),
-					getAdditionalAttributes(defaults), getEnabled(defaults).orElse(true));
+					getAdditionalAttributes(defaults), getEnabled(defaults).orElse(true), getLootTable(defaults).orElse(null));
 		}
 
 		private Map<IAdditionalAttribute<?>, Object> getAdditionalAttributes(JsonObject json) {
@@ -206,11 +207,16 @@ public class NpcDefaultsRegistry {
 			npcSubtypeDefault = npcSubtypeDefault.setEquipment(getEquipment(data));
 			npcSubtypeDefault = npcSubtypeDefault.setAdditionalAttributes(getAdditionalAttributes(data));
 			npcSubtypeDefault = getEnabled(data).map(npcSubtypeDefault::setEnabled).orElse(npcSubtypeDefault);
+			npcSubtypeDefault = getLootTable(data).map(npcSubtypeDefault::setLootTable).orElse(npcSubtypeDefault);
 			return npcSubtypeDefault;
 		}
 
 		private Optional<Boolean> getEnabled(JsonObject data) {
 			return data.has("enabled") ? Optional.of(JsonUtils.getBoolean(data, "enabled")) : Optional.empty();
+		}
+
+		private Optional<ResourceLocation> getLootTable(JsonObject data) {
+			return data.has("loot_table") ? Optional.of(new ResourceLocation(JsonUtils.getString(data, "loot_table"))) : Optional.empty();
 		}
 
 		private Map<String, FactionNpcDefault> parseSubtypes(JsonObject json, FactionNpcDefault overallDefault) {

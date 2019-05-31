@@ -41,9 +41,8 @@ import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-@Mod(name = "Ancient Warfare Core", modid = AncientWarfareCore.MOD_ID, version = "@VERSION@", guiFactory = "net.shadowmage.ancientwarfare.core.gui.options.OptionsGuiFactory", dependencies = CodeChickenLib.MOD_VERSION_DEP)
+@Mod(name = "Ancient Warfare Core", modid = AncientWarfareCore.MOD_ID, version = "@VERSION@", guiFactory = "net.shadowmage.ancientwarfare.core.gui.options.OptionsGuiFactory", dependencies = "required:forge@[0.000.000.001,);" + CodeChickenLib.MOD_VERSION_DEP)
 public class AncientWarfareCore {
-
 	public static final String MOD_ID = "ancientwarfare";
 
 	public static final CreativeTabs TAB = new AWCoreTab();

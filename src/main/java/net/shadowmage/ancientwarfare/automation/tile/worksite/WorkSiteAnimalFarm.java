@@ -47,6 +47,8 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 	private int wheatCount;
 	private int bucketCount;
 	private int carrotCount;
+	private int potatoCount;
+	private int beetrootCount;
 	private int seedCount;
 	private int shearsSlot = -1;
 
@@ -100,7 +102,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 	}
 
 	private boolean isFood(Item item) {
-		return item == Items.WHEAT_SEEDS || item == Items.WHEAT || item == Items.CARROT;
+		return item == Items.WHEAT_SEEDS || item == Items.WHEAT || item == Items.CARROT || item == Items.POTATO || item == Items.BEETROOT;
 	}
 
 	private boolean isTool(Item item) {
@@ -133,7 +135,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 	}
 
 	private boolean canBreedPigs() {
-		return carrotCount > 1 && !pigsToBreed.isEmpty();
+		return (carrotCount > 1 && !pigsToBreed.isEmpty()) || (potatoCount > 1 && !pigsToBreed.isEmpty()) || (beetrootCount > 1 && !pigsToBreed.isEmpty());
 	}
 
 	private boolean canCull() {
@@ -197,10 +199,22 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 				return true;
 			}
 		} else if (action == BREED_PIGS_ACTION) {
-			if (tryBreeding(pigsToBreed)) {
-				carrotCount -= 2;
-				InventoryTools.removeItems(foodInventory, new ItemStack(Items.CARROT), 2);
-				return true;
+			if (tryBreeding(pigsToBreed)){
+				if (carrotCount > 1) {
+					carrotCount -= 2;
+					InventoryTools.removeItems(foodInventory, new ItemStack(Items.CARROT), 2);
+					return true;
+				}
+				else if (potatoCount > 1) {
+					potatoCount -= 2;
+					InventoryTools.removeItems(foodInventory, new ItemStack(Items.POTATO), 2);
+					return true;
+				}
+				else if (beetrootCount > 1) {
+					beetrootCount -= 2;
+					InventoryTools.removeItems(foodInventory, new ItemStack(Items.BEETROOT), 2);
+					return true;
+				}
 			}
 		} else if (action == CULL_ACTION) {
 			return tryCulling();
@@ -236,6 +250,8 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 
 	private void countResources() {
 		carrotCount = InventoryTools.getCountOf(foodInventory, s -> s.getItem() == Items.CARROT);
+		potatoCount = InventoryTools.getCountOf(foodInventory, s -> s.getItem() == Items.POTATO);
+		beetrootCount = InventoryTools.getCountOf(foodInventory, s -> s.getItem() == Items.BEETROOT);
 		seedCount = InventoryTools.getCountOf(foodInventory, s -> s.getItem() == Items.WHEAT_SEEDS);
 		wheatCount = InventoryTools.getCountOf(foodInventory, s -> s.getItem() == Items.WHEAT);
 		bucketCount = InventoryTools.getCountOf(toolInventory, s -> s.getItem() == Items.BUCKET);

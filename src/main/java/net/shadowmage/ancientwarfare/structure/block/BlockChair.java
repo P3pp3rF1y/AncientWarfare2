@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.structure.block;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -15,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -35,11 +35,11 @@ import java.util.List;
 import java.util.Map;
 
 import static net.shadowmage.ancientwarfare.core.render.property.CoreProperties.FACING;
+import static net.shadowmage.ancientwarfare.core.render.property.CoreProperties.VISIBLE;
 import static net.shadowmage.ancientwarfare.structure.util.BlockStateProperties.VARIANT;
 
 public class BlockChair extends BlockSeat {
 	private static final Vec3d SEAT_OFFSET = new Vec3d(0.5, 0.47, 0.5);
-	private static final PropertyBool VISIBLE = PropertyBool.create("visible");
 
 	public BlockChair() {
 		super(Material.WOOD, "chair");
@@ -128,6 +128,15 @@ public class BlockChair extends BlockSeat {
 	@Override
 	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return state.getValue(VISIBLE) ? EnumBlockRenderType.MODEL : EnumBlockRenderType.INVISIBLE;
+	}
+
+	@Override
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		if (state.getValue(VISIBLE)) {
+			return super.onBlockActivated(world, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
+		}
+		IBlockState stateDown = world.getBlockState(pos.down());
+		return stateDown.getBlock().onBlockActivated(world, pos.down(), stateDown, playerIn, hand, facing, hitX, hitY, hitZ);
 	}
 
 	@Nullable

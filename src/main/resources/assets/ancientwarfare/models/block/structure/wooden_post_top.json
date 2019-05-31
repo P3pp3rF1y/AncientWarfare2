@@ -1,0 +1,100 @@
+{
+    "credit": "Made by Silentine, with Blockbench",
+    "textures": {
+        "0": "ancientwarfare:blocks/structure/wooden_post",
+        "particle": "ancientwarfare:blocks/structure/wooden_post"
+    },
+    "elements": [
+        {
+            "name": "topwood01",
+            "from": [6, 26, 10],
+            "to": [10, 30, 16],
+            "faces": {
+                "north": {"uv": [8, 1, 9, 2], "texture": "#0"},
+                "east": {"uv": [8, 1, 9.5, 2], "texture": "#0"},
+                "south": {"uv": [12, 1, 13, 2], "texture": "#0"},
+                "west": {"uv": [8, 1, 9.5, 2], "texture": "#0"},
+                "up": {"uv": [8, 1, 9.5, 0], "rotation": 270, "texture": "#0"},
+                "down": {"uv": [12, 0, 13.5, 1], "rotation": 90, "texture": "#0"}
+            }
+        },
+        {
+            "name": "topwood02",
+            "from": [6, 16, 6],
+            "to": [10, 32, 10],
+            "faces": {
+                "north": {"uv": [8, 3, 12, 4], "rotation": 90, "texture": "#0"},
+                "east": {"uv": [8, 3, 12, 4], "rotation": 90, "texture": "#0"},
+                "south": {"uv": [12, 2, 16, 3], "rotation": 90, "texture": "#0"},
+                "west": {"uv": [8, 3, 12, 4], "rotation": 90, "texture": "#0"},
+                "up": {"uv": [12, 1, 13, 2], "texture": "#0"},
+                "down": {"uv": [12, 1, 13, 2], "rotation": 180, "texture": "#0"}
+            }
+        },
+        {
+            "name": "topwoodcornerdiagonal",
+            "from": [7, 16, 14],
+            "to": [9, 26, 16],
+            "rotation": {"angle": 45, "axis": "x", "origin": [8, 26, 16]},
+            "faces": {
+                "north": {"uv": [12, 2.5, 14.5, 3], "rotation": 270, "texture": "#0"},
+                "east": {"uv": [12, 0.5, 14.5, 1], "rotation": 270, "texture": "#0"},
+                "south": {"uv": [12, 0.5, 14.5, 1], "rotation": 270, "texture": "#0"},
+                "west": {"uv": [12, 0.5, 14.5, 1], "rotation": 270, "texture": "#0"}
+            }
+        },
+        {
+            "name": "middlewood01",
+            "from": [6, 0, 6],
+            "to": [10, 16, 10],
+            "faces": {
+                "north": {"uv": [8, 0, 12, 1], "rotation": 90, "texture": "#0"},
+                "east": {"uv": [8, 0, 12, 1], "rotation": 90, "texture": "#0"},
+                "south": {"uv": [12, 0, 16, 1], "rotation": 90, "texture": "#0"},
+                "west": {"uv": [8, 0, 12, 1], "rotation": 90, "texture": "#0"},
+                "up": {"uv": [12, 1, 13, 2], "texture": "#0"},
+                "down": {"uv": [12, 1, 13, 2], "rotation": 180, "texture": "#0"}
+            }
+        }
+    ],
+    "display": {
+        "thirdperson_righthand": {
+            "rotation": [75, -135, 0],
+            "translation": [0, 2.5, 0],
+            "scale": [0.275, 0.275, 0.275]
+        },
+        "thirdperson_lefthand": {
+            "rotation": [75, -135, 0],
+            "translation": [0, 2.5, 0],
+            "scale": [0.275, 0.275, 0.275]
+        },
+        "firstperson_righthand": {
+            "rotation": [0, -45, 0],
+            "scale": [0.4, 0.4, 0.4]
+        },
+        "firstperson_lefthand": {
+            "rotation": [0, -45, 0],
+            "scale": [0.4, 0.4, 0.4]
+        },
+        "ground": {
+            "translation": [0, 3, 0],
+            "scale": [0.25, 0.25, 0.25]
+        },
+        "gui": {
+            "rotation": [30, -45, 0],
+            "translation": [0, -2.75, 0],
+            "scale": [0.4, 0.4, 0.4]
+        },
+        "fixed": {
+            "rotation": [0, -180, 0],
+            "translation": [0, -4, 0],
+            "scale": [0.5, 0.5, 0.5]
+        }
+    },
+    "groups": [
+        {
+            "name": "standsidetop",
+            "children": [0, 1, 2, 3]
+        }
+    ]
+}

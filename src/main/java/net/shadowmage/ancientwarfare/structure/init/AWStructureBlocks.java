@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.Vec3i;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -25,9 +26,11 @@ import net.shadowmage.ancientwarfare.structure.block.BlockDraftingStation;
 import net.shadowmage.ancientwarfare.structure.block.BlockFirePit;
 import net.shadowmage.ancientwarfare.structure.block.BlockGateProxy;
 import net.shadowmage.ancientwarfare.structure.block.BlockGoldenIdol;
+import net.shadowmage.ancientwarfare.structure.block.BlockGoldenThrone;
 import net.shadowmage.ancientwarfare.structure.block.BlockLootBasket;
 import net.shadowmage.ancientwarfare.structure.block.BlockProtectionFlag;
 import net.shadowmage.ancientwarfare.structure.block.BlockSoundBlock;
+import net.shadowmage.ancientwarfare.structure.block.BlockStake;
 import net.shadowmage.ancientwarfare.structure.block.BlockStool;
 import net.shadowmage.ancientwarfare.structure.block.BlockStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.block.BlockStructureScanner;
@@ -36,6 +39,8 @@ import net.shadowmage.ancientwarfare.structure.block.BlockTotemCube;
 import net.shadowmage.ancientwarfare.structure.block.BlockTotemPart;
 import net.shadowmage.ancientwarfare.structure.block.BlockTribalStool;
 import net.shadowmage.ancientwarfare.structure.block.BlockUrn;
+import net.shadowmage.ancientwarfare.structure.block.BlockWoodenPost;
+import net.shadowmage.ancientwarfare.structure.block.BlockWoodenThrone;
 import net.shadowmage.ancientwarfare.structure.block.altar.BlockAltarCandle;
 import net.shadowmage.ancientwarfare.structure.block.altar.BlockAltarLectern;
 import net.shadowmage.ancientwarfare.structure.block.altar.BlockAltarLongCloth;
@@ -52,6 +57,7 @@ import net.shadowmage.ancientwarfare.structure.item.ItemBlockProtectionFlag;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockTotemPart;
 import net.shadowmage.ancientwarfare.structure.item.ItemLootChestPlacer;
+import net.shadowmage.ancientwarfare.structure.item.ItemMultiBlock;
 import net.shadowmage.ancientwarfare.structure.item.WoodItemBlock;
 import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedLootChest;
@@ -64,6 +70,7 @@ import net.shadowmage.ancientwarfare.structure.tile.TileDraftingStation;
 import net.shadowmage.ancientwarfare.structure.tile.TileLootBasket;
 import net.shadowmage.ancientwarfare.structure.tile.TileProtectionFlag;
 import net.shadowmage.ancientwarfare.structure.tile.TileSoundBlock;
+import net.shadowmage.ancientwarfare.structure.tile.TileStake;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureScanner;
 import net.shadowmage.ancientwarfare.structure.tile.TileTotemPart;
@@ -108,6 +115,10 @@ public class AWStructureBlocks {
 	public static final Block TABLE = InjectionTools.nullValue();
 	public static final Block CHAIR = InjectionTools.nullValue();
 	public static final Block TRIBAL_STOOL = InjectionTools.nullValue();
+	public static final Block WOODEN_THRONE = InjectionTools.nullValue();
+	public static final Block GOLDEN_THRONE = InjectionTools.nullValue();
+	public static final Block WOODEN_POST = InjectionTools.nullValue();
+	public static final Block STAKE = InjectionTools.nullValue();
 
 	@SuppressWarnings("ConstantConditions")
 	@SubscribeEvent
@@ -148,6 +159,10 @@ public class AWStructureBlocks {
 		registry.register(new WoodItemBlock(TABLE));
 		registry.register(new ItemBlockChair(CHAIR));
 		registry.register(new ItemBlockBase(TRIBAL_STOOL));
+		registry.register(new ItemBlockBase(WOODEN_THRONE));
+		registry.register(new ItemBlockBase(GOLDEN_THRONE));
+		registry.register(new ItemBlockBase(WOODEN_POST));
+		registry.register(new ItemMultiBlock(STAKE, new Vec3i(0, 0, 0), new Vec3i(0, 2, 0)));
 
 		registerLootContainers();
 	}
@@ -231,6 +246,12 @@ public class AWStructureBlocks {
 		registerTile(TileChair.class, "chair_tile");
 
 		registry.register(new BlockTribalStool());
+
+		registry.register(new BlockWoodenThrone());
+		registry.register(new BlockGoldenThrone());
+		registry.register(new BlockWoodenPost());
+		registry.register(new BlockStake());
+		registerTile(TileStake.class, "stake_tile");
 	}
 
 	private static void registerTile(Class<? extends TileEntity> teClass, String teId) {
