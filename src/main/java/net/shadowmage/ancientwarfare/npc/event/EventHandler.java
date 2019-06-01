@@ -17,18 +17,14 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.EntityEntry;
-import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.util.TextUtils;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
-import net.shadowmage.ancientwarfare.npc.ai.AIHelper;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
 import net.shadowmage.ancientwarfare.npc.registry.NpcDefaultsRegistry;
-import net.shadowmage.ancientwarfare.npc.registry.OwnedNpcDefault;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
 import net.shadowmage.ancientwarfare.structure.tile.ISpecialLootContainer;
@@ -43,7 +39,6 @@ import java.util.function.Predicate;
 
 public class EventHandler {
 	private Set<Predicate<EntityAIBase>> additionalHostileAIChecks = new HashSet<>();
-	private Set<String> modsCoveredByTargetLists = new HashSet<>();
 	public static final EventHandler INSTANCE = new EventHandler();
 
 	private EventHandler() {
@@ -74,20 +69,6 @@ public class EventHandler {
 		return false;
 	}
 
-	public void initModsCoveredByTargets() {
-		for (String factionName : FactionRegistry.getFactionNames()) {
-			FactionRegistry.getFaction(factionName).getTargetList().forEach(this::addTargetModToList);
-		}
-
-		for (OwnedNpcDefault npcDefault : NpcDefaultsRegistry.getOwnedNpcDefaults()) {
-			npcDefault.getTargetList().forEach(this::addTargetModToList);
-		}
-	}
-
-	private boolean addTargetModToList(String target) {
-		return modsCoveredByTargetLists.add(target.split(":")[0]);
-	}
-
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void onEntityJoinWorld(EntityJoinWorldEvent event) {
 		if (event.getEntity() instanceof NpcBase)
@@ -115,22 +96,8 @@ public class EventHandler {
 			return true;
 		}
 
-		if ((e instanceof NpcPlayerOwned) && NpcDefaultsRegistry.getOwnedNpcDefault((NpcPlayerOwned) e).isTarget(entity)) {
-			return true;
-		}
+		return (e instanceof NpcPlayerOwned) && NpcDefaultsRegistry.getOwnedNpcDefault((NpcPlayerOwned) e).isTarget(entity);
 
-		EntityEntry entityEntry = EntityRegistry.getEntry(entity.getClass());
-		if (entityEntry == null) {
-			return false;
-		}
-
-		//noinspection ConstantConditions
-		if (!modsCoveredByTargetLists.contains(entityEntry.getRegistryName().getResourceDomain())) {
-			AIHelper.addHostileEntityToTarget(entity);
-			return true;
-		}
-
-		return false;
 	}
 
 	@SubscribeEvent
