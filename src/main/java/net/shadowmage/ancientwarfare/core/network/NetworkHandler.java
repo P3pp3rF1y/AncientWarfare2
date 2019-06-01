@@ -12,6 +12,7 @@ import net.minecraftforge.fml.common.network.FMLEventChannel;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
+import net.minecraftforge.fml.relauncher.Side;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.compat.jei.PacketTransferRecipe;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
@@ -157,7 +158,7 @@ public final class NetworkHandler implements IGuiHandler {
 
 	public static void sendToAllPlayers(PacketBase pkt) {
 		//noinspection ConstantConditions
-		if (FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList() != null) {
+		if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER && FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList() != null) {
 			INSTANCE.channel.sendToAll(pkt.getFMLPacket());
 		}
 	}
