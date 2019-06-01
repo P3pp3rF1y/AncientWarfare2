@@ -206,6 +206,9 @@ public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IO
 	@Override
 	protected void writeUpdateNBT(NBTTagCompound tag) {
 		super.writeUpdateNBT(tag);
+		if (builder == null) {
+			return;
+		}
 		StructureBB bb = builder.getBoundingBox();
 		if (bb != null) {
 			tag.setLong(BB_MIN_TAG, bb.min.toLong());
