@@ -33,14 +33,6 @@ public class GuiSelectFromList<T> extends GuiContainerBase {
 
 	@Override
 	public void initElements() {
-		Button button = new Button(256 - 8 - 55, 8, 55, 12, "guistrings.done") {
-			@Override
-			protected void onPressed() {
-				Minecraft.getMinecraft().displayGuiScreen(parent);
-				parent.refreshGui();
-			}
-		};
-		addGuiElement(button);
 		selectionLabel = new Text(8, 30, 240, getDisplayName.apply(entry), this) {
 			@Override
 			protected void handleKeyInput(int keyCode, char ch) {
@@ -79,8 +71,8 @@ public class GuiSelectFromList<T> extends GuiContainerBase {
 				@Override
 				protected void onPressed() {
 					setEntry.accept(listEntry);
-					selectionLabel.setText(getDisplayName.apply(listEntry));
-					refreshGui();
+					Minecraft.getMinecraft().displayGuiScreen(parent);
+					parent.refreshGui();
 				}
 			};
 			area.addGuiElement(button);

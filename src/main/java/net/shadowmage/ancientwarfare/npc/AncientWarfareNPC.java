@@ -119,7 +119,6 @@ public class AncientWarfareNPC {
 
 		statics.save();
 
-		net.shadowmage.ancientwarfare.npc.event.EventHandler.INSTANCE.initModsCoveredByTargets();
 		AWNPCItems.addFactionBlocks();
 	}
 

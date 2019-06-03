@@ -54,14 +54,6 @@ public class GuiSkinSelection extends GuiContainerBase {
 		guiTop = (this.height - this.ySize) / 2;
 
 		int startHeight = 8;
-		Button button = new Button(xSize - 8 - 55, startHeight, 55, 12, "guistrings.done") {
-			@Override
-			protected void onPressed() {
-				closeGui();
-			}
-		};
-		addGuiElement(button);
-
 		defaultType = new Checkbox(8, startHeight, 12, 12, "gui.ancientwarfarenpc.skin_selection.default") {
 			@Override
 			public void onToggled() {

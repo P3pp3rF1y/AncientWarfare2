@@ -4,6 +4,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
+import net.shadowmage.ancientwarfare.core.owner.Owner;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcWorker;
@@ -70,7 +71,7 @@ public class NpcAIPlayerOwnedFindWorksite extends NpcAI<NpcWorker> {
 		for (TileEntity te : tiles) {
 			if (te instanceof IWorkSite) {
 				site = (IWorkSite) te;
-				if (!npc.hasCommandPermissions(site.getOwner()))
+				if (site.getOwner() != Owner.EMPTY && !npc.hasCommandPermissions(site.getOwner()))
 					continue;
 				if (npc.canWorkAt(site.getWorkType()) && site.hasWork()) {
 					dist = npc.getDistanceSq(te.getPos().getX() + 0.5d, te.getPos().getY(), te.getPos().getZ() + 0.5d);

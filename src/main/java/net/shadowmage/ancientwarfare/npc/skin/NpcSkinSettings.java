@@ -35,7 +35,7 @@ public class NpcSkinSettings {
 	private ResourceLocation playerSkin = null;
 	private String playerName = "";
 	private boolean random = true;
-	private String npcTypeName = "";
+	private String npcTypeName = "custom";
 	private ResourceLocation npcTypeSkin = null;
 
 	public boolean isAlexModel() {
