@@ -12,11 +12,11 @@ import java.util.Map;
 
 @Immutable
 public abstract class NpcDefault {
-	protected final Map<String, Double> attributes;
-	protected final int experienceDrop;
-	protected final boolean canSwim;
-	protected final boolean canBreakDoors;
-	protected final Map<Integer, Item> equipment;
+	protected Map<String, Double> attributes;
+	protected int experienceDrop;
+	protected boolean canSwim;
+	protected boolean canBreakDoors;
+	protected Map<Integer, Item> equipment;
 
 	public NpcDefault(Map<String, Double> attributes, int experienceDrop, boolean canSwim, boolean canBreakDoors, Map<Integer, Item> equipment) {
 		this.attributes = attributes;

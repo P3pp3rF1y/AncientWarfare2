@@ -15,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
+import net.shadowmage.ancientwarfare.core.util.MathUtils;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
@@ -50,6 +51,15 @@ public class RenderNpcBase extends RenderBiped<NpcBase> {
 			isSleeping = false;
 		}
 		super.applyRotations(npc, parFloat1, parFloat2, parFloat3);
+	}
+
+	@Override
+	protected void preRenderCallback(NpcBase npc, float partialTickTime) {
+		float scale = npc.getRenderSizeModifier();
+		if (MathUtils.epsilonEquals(scale, 1.0f)) {
+			return;
+		}
+		GlStateManager.scale(scale, scale, scale);
 	}
 
 	@Override

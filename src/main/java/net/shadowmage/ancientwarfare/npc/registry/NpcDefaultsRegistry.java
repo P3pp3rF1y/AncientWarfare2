@@ -17,9 +17,9 @@ import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 import net.shadowmage.ancientwarfare.npc.entity.faction.attributes.AdditionalAttributes;
 import net.shadowmage.ancientwarfare.npc.entity.faction.attributes.IAdditionalAttribute;
 import net.shadowmage.ancientwarfare.npc.init.AWNPCEntities;
+import org.apache.commons.lang3.Range;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -49,10 +49,6 @@ public class NpcDefaultsRegistry {
 	}
 
 	private static final String FACTION_NPC_PREFIX = "faction.";
-
-	public static Collection<OwnedNpcDefault> getOwnedNpcDefaults() {
-		return ownedNpcDefaults.values();
-	}
 
 	public static class OwnedNpcDefaultsParser extends NpcDefaultsParserBase {
 		@Override
@@ -158,6 +154,8 @@ public class NpcDefaultsRegistry {
 	}
 
 	public static class FactionNpcDefaultsParser extends NpcDefaultsParserBase {
+		private static final String HEIGHT_ELEMENT = "height";
+
 		@Override
 		public String getName() {
 			return "faction_npc_defaults";
@@ -176,7 +174,8 @@ public class NpcDefaultsRegistry {
 			JsonObject defaults = JsonUtils.getJsonObject(json, "defaults");
 			return new FactionNpcDefault(getAttributes(defaults), getExperienceDrop(defaults).orElse(0),
 					getCanSwim(defaults).orElse(true), getCanBreakDoors(defaults).orElse(true), getEquipment(defaults),
-					getAdditionalAttributes(defaults), getEnabled(defaults).orElse(true), getLootTable(defaults).orElse(null));
+					getAdditionalAttributes(defaults), getEnabled(defaults).orElse(true), getLootTable(defaults).orElse(null),
+					getHeightRange(defaults).orElse(Range.between(1.8f, 1.8f)));
 		}
 
 		private Map<IAdditionalAttribute<?>, Object> getAdditionalAttributes(JsonObject json) {
@@ -213,6 +212,19 @@ public class NpcDefaultsRegistry {
 
 		private Optional<Boolean> getEnabled(JsonObject data) {
 			return data.has("enabled") ? Optional.of(JsonUtils.getBoolean(data, "enabled")) : Optional.empty();
+		}
+
+		private Optional<Range<Float>> getHeightRange(JsonObject data) {
+			if (!data.has(HEIGHT_ELEMENT)) {
+				return Optional.empty();
+			}
+
+			if (JsonUtils.isJsonPrimitive(data, HEIGHT_ELEMENT)) {
+				return Optional.of(Range.between(JsonUtils.getFloat(data, HEIGHT_ELEMENT), JsonUtils.getFloat(data, HEIGHT_ELEMENT)));
+			} else {
+				JsonObject range = JsonUtils.getJsonObject(data, HEIGHT_ELEMENT);
+				return Optional.of(Range.between(JsonUtils.getFloat(range, "min"), JsonUtils.getFloat(range, "max")));
+			}
 		}
 
 		private Optional<ResourceLocation> getLootTable(JsonObject data) {

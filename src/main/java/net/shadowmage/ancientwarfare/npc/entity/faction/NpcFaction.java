@@ -34,6 +34,7 @@ import net.shadowmage.ancientwarfare.npc.registry.NpcDefaultsRegistry;
 import net.shadowmage.ancientwarfare.structure.util.CapabilityRespawnData;
 import net.shadowmage.ancientwarfare.structure.util.IRespawnData;
 import net.shadowmage.ancientwarfare.structure.util.SpawnerHelper;
+import org.apache.commons.lang3.Range;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -146,6 +147,10 @@ public abstract class NpcFaction extends NpcBase {
 		FactionNpcDefault npcDefault = NpcDefaultsRegistry.getFactionNpcDefault(this);
 		applyFactionNpcSettings(npcDefault);
 		npcDefault.applyEquipment(this);
+
+		Range<Float> heightRange = NpcDefaultsRegistry.getFactionNpcDefault(this).getHeightRange();
+		float newHeight = heightRange.getMinimum() + world.rand.nextFloat() * (heightRange.getMaximum() - heightRange.getMinimum());
+		setSize((newHeight / 1.8f) * 0.6f, newHeight);
 	}
 
 	private void applyFactionNpcSettings(FactionNpcDefault npcDefault) {
@@ -294,12 +299,16 @@ public abstract class NpcFaction extends NpcBase {
 	public void writeSpawnData(ByteBuf buffer) {
 		super.writeSpawnData(buffer);
 		new PacketBuffer(buffer).writeString(factionName);
+		buffer.writeFloat(height);
+		buffer.writeFloat(width);
 	}
 
 	@Override
 	public void readSpawnData(ByteBuf buffer) {
 		super.readSpawnData(buffer);
 		factionName = new PacketBuffer(buffer).readString(20);
+		height = buffer.readFloat();
+		width = buffer.readFloat();
 	}
 
 	@Override
@@ -310,6 +319,8 @@ public abstract class NpcFaction extends NpcBase {
 		canDespawn = tag.getBoolean("canDespawn");
 		revengePlayers = NBTHelper.getMap(tag.getTagList("revengePlayers", Constants.NBT.TAG_COMPOUND),
 				t -> t.getString("playerName"), t -> t.getLong("time"));
+		height = tag.getFloat("height");
+		width = tag.getFloat("width");
 	}
 
 	@Override
@@ -321,5 +332,12 @@ public abstract class NpcFaction extends NpcBase {
 		tag.setBoolean("canDespawn", canDespawn);
 		tag.setTag("revengePlayers", NBTHelper.mapToCompoundList(revengePlayers,
 				(t, playerName) -> t.setString("playerName", playerName), (t, time) -> t.setLong("time", time)));
+		tag.setFloat("height", height);
+		tag.setFloat("width", width);
+	}
+
+	@Override
+	public float getRenderSizeModifier() {
+		return height / 1.8f;
 	}
 }
