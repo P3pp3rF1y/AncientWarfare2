@@ -527,25 +527,17 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	}
 
 	@Override
-	protected final void dropEquipment(boolean par1, int par2) {
-		if (!world.isRemote) {
-			for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
-				ItemStack itemstack = this.getItemStackFromSlot(slot);
-				if (!itemstack.isEmpty()) {
-					this.entityDropItem(itemstack, 0.0F);
-				}
-				setItemStackToSlot(slot, ItemStack.EMPTY);
+	protected final void dropEquipment(boolean wasRecentlyHit, int lootingModifier) {
+		super.dropEquipment(wasRecentlyHit, lootingModifier);
+		if (!AWNPCStatics.persistOrdersOnDeath) {
+			if (!ordersStack.isEmpty()) {
+				entityDropItem(ordersStack, 0.f);
 			}
-			if (!AWNPCStatics.persistOrdersOnDeath) {
-				if (!ordersStack.isEmpty()) {
-					entityDropItem(ordersStack, 0.f);
-				}
-				if (!upkeepStack.isEmpty()) {
-					entityDropItem(upkeepStack, 0.f);
-				}
-				ordersStack = ItemStack.EMPTY;
-				upkeepStack = ItemStack.EMPTY;
+			if (!upkeepStack.isEmpty()) {
+				entityDropItem(upkeepStack, 0.f);
 			}
+			ordersStack = ItemStack.EMPTY;
+			upkeepStack = ItemStack.EMPTY;
 		}
 	}
 
