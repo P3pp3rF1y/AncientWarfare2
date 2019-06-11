@@ -303,17 +303,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		return world.getLightBrightness(pos);
 	}
 
-	@Override
-	public void onEntityUpdate() {
-		/*
-		 * need to test how well it works for an npc (perhaps drop sand on their head?)
-         */
-		if (!world.isRemote && !isSleeping()) {
-			this.pushOutOfBlocks(this.posX, (this.getEntityBoundingBox().minY + this.getEntityBoundingBox().maxY) / 2.0D, this.posZ);
-		}
-		super.onEntityUpdate();
-	}
-
 	public double getDistanceSqFromHome() {
 		if (!hasHome()) {
 			return 0;
@@ -903,6 +892,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	public void setDoNotPursue(boolean val) {
 		this.doNotPursue = val;
 	}
+
 	public boolean getDoNotPursue() {
 		return doNotPursue;
 	}
