@@ -8,6 +8,9 @@
         ],
         "net.shadowmage.ancientwarfare.npc.entity.NpcTrader": [
             "tradeAI"
+        ],
+        "net.shadowmage.ancientwarfare.npc.entity.NpcBase": [
+            "skinSettings"
         ]
     }
 }
