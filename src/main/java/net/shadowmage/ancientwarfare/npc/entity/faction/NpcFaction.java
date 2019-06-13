@@ -49,6 +49,7 @@ public abstract class NpcFaction extends NpcBase {
 	private static final int HIT_REVENGE_TICKS = DEATH_REVENGE_TICKS / 20;
 	private static final int REVENGE_LIST_VALIDATION_TICKS = DEATH_REVENGE_TICKS / 100;
 	private static final double REVENGE_SET_RANGE = 50D;
+	private static final String HEIGHT_TAG = "height";
 
 	protected String factionName;
 	private Map<String, Long> revengePlayers = new HashMap<>();
@@ -319,8 +320,12 @@ public abstract class NpcFaction extends NpcBase {
 		canDespawn = tag.getBoolean("canDespawn");
 		revengePlayers = NBTHelper.getMap(tag.getTagList("revengePlayers", Constants.NBT.TAG_COMPOUND),
 				t -> t.getString("playerName"), t -> t.getLong("time"));
-		height = tag.getFloat("height");
-		width = tag.getFloat("width");
+		if (tag.hasKey(HEIGHT_TAG)) {
+			height = tag.getFloat(HEIGHT_TAG);
+			width = tag.getFloat("width");
+		} else {
+			setFactionNameAndDefaults(factionName);
+		}
 	}
 
 	@Override
@@ -332,7 +337,7 @@ public abstract class NpcFaction extends NpcBase {
 		tag.setBoolean("canDespawn", canDespawn);
 		tag.setTag("revengePlayers", NBTHelper.mapToCompoundList(revengePlayers,
 				(t, playerName) -> t.setString("playerName", playerName), (t, time) -> t.setLong("time", time)));
-		tag.setFloat("height", height);
+		tag.setFloat(HEIGHT_TAG, height);
 		tag.setFloat("width", width);
 	}
 
