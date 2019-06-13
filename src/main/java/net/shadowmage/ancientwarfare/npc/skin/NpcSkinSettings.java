@@ -97,7 +97,7 @@ public class NpcSkinSettings {
 		packetBuffer.writeString(playerName);
 		packetBuffer.writeBoolean(random);
 		packetBuffer.writeString(npcTypeName);
-		packetBuffer.writeString(npcTypeSkin == null ? "" : npcTypeSkin.toString());
+		packetBuffer.writeString(npcTypeSkin == null ? "" : npcTypeSkin.toString().substring(0, Math.min(npcTypeSkin.toString().length(), 100)));
 		packetBuffer.writeBoolean(isAlexModel);
 	}
 
@@ -114,7 +114,7 @@ public class NpcSkinSettings {
 			skinSettings.random = packetBuffer.readBoolean();
 			skinSettings.npcTypeName = packetBuffer.readString(30);
 			if (!skinSettings.random) {
-				String skin = packetBuffer.readString(60);
+				String skin = packetBuffer.readString(100);
 				skinSettings.npcTypeSkin = skin.isEmpty() ? null : new ResourceLocation(skin);
 			}
 		} else {
