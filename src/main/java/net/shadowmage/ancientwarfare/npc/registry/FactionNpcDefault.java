@@ -19,22 +19,24 @@ public class FactionNpcDefault extends NpcDefault {
 	private boolean enabled;
 	private ResourceLocation lootTable;
 	private Range<Float> heightRange;
+	private float thinness;
 
 	public FactionNpcDefault(Map<String, Double> attributes, int experienceDrop, boolean canSwim, boolean canBreakDoors, Map<Integer, Item> equipment,
 			Map<IAdditionalAttribute<?>, Object> additionaAttributes, boolean enabled,
-			@Nullable ResourceLocation lootTable, Range<Float> heightRange) {
+			@Nullable ResourceLocation lootTable, Range<Float> heightRange, float thinness) {
 		super(attributes, experienceDrop, canSwim, canBreakDoors, equipment);
 		this.additionaAttributes = additionaAttributes;
 		this.enabled = enabled;
 		this.lootTable = lootTable;
 		this.heightRange = heightRange;
+		this.thinness = thinness;
 		if (!LootTableList.getAll().contains(lootTable)) {
 			LootTableList.register(lootTable);
 		}
 	}
 
 	private FactionNpcDefault copy() {
-		return new FactionNpcDefault(new HashMap<>(attributes), experienceDrop, canSwim, canBreakDoors, new HashMap<>(equipment), new HashMap<>(additionaAttributes), enabled, lootTable, heightRange);
+		return new FactionNpcDefault(new HashMap<>(attributes), experienceDrop, canSwim, canBreakDoors, new HashMap<>(equipment), new HashMap<>(additionaAttributes), enabled, lootTable, heightRange, thinness);
 	}
 
 	private FactionNpcDefault change(Consumer<FactionNpcDefault> makeChange) {
@@ -84,6 +86,10 @@ public class FactionNpcDefault extends NpcDefault {
 		return change(def -> def.heightRange = heightRange);
 	}
 
+	public FactionNpcDefault setThinness(float thinness) {
+		return change(def -> def.thinness = thinness);
+	}
+
 	public void applyAdditionalAttributes(NpcFaction npc) {
 		additionaAttributes.forEach(npc::setAdditionalAttribute);
 	}
@@ -98,5 +104,9 @@ public class FactionNpcDefault extends NpcDefault {
 
 	public Range<Float> getHeightRange() {
 		return heightRange;
+	}
+
+	public float getThinness() {
+		return thinness;
 	}
 }

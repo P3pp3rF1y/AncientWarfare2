@@ -149,9 +149,9 @@ public abstract class NpcFaction extends NpcBase {
 		applyFactionNpcSettings(npcDefault);
 		npcDefault.applyEquipment(this);
 
-		Range<Float> heightRange = NpcDefaultsRegistry.getFactionNpcDefault(this).getHeightRange();
+		Range<Float> heightRange = npcDefault.getHeightRange();
 		float newHeight = heightRange.getMinimum() + world.rand.nextFloat() * (heightRange.getMaximum() - heightRange.getMinimum());
-		setSize((newHeight / 1.8f) * 0.6f, newHeight);
+		setSize((newHeight / 1.8f) * 0.6f * npcDefault.getThinness(), newHeight);
 	}
 
 	private void applyFactionNpcSettings(FactionNpcDefault npcDefault) {
@@ -344,5 +344,9 @@ public abstract class NpcFaction extends NpcBase {
 	@Override
 	public float getRenderSizeModifier() {
 		return height / 1.8f;
+	}
+
+	public float getWidthModifier() {
+		return width / ((height / 1.8f) * 0.6f);
 	}
 }

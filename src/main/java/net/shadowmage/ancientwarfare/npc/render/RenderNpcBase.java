@@ -15,7 +15,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
-import net.shadowmage.ancientwarfare.core.util.MathUtils;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
@@ -24,7 +23,7 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RenderNpcBase extends RenderBiped<NpcBase> {
+public class RenderNpcBase<T extends NpcBase> extends RenderBiped<T> {
 	private static final ModelNpc SMALL_ARMS = new ModelNpc(true);
 	private static final ModelNpc REGULAR_ARMS = new ModelNpc(false);
 	private boolean isSleeping;
@@ -38,7 +37,7 @@ public class RenderNpcBase extends RenderBiped<NpcBase> {
 	}
 
 	@Override
-	protected void applyRotations(NpcBase npc, float parFloat1, float parFloat2, float parFloat3) {
+	protected void applyRotations(T npc, float parFloat1, float parFloat2, float parFloat3) {
 		isSleeping = npc.isSleeping();
 		if (isSleeping) {
 			float bedDirection = npc.getBedOrientationInDegrees();
@@ -54,16 +53,7 @@ public class RenderNpcBase extends RenderBiped<NpcBase> {
 	}
 
 	@Override
-	protected void preRenderCallback(NpcBase npc, float partialTickTime) {
-		float scale = npc.getRenderSizeModifier();
-		if (MathUtils.epsilonEquals(scale, 1.0f)) {
-			return;
-		}
-		GlStateManager.scale(scale, scale, scale);
-	}
-
-	@Override
-	public void doRender(NpcBase npc, double x, double y, double z, float par8, float par9) {
+	public void doRender(T npc, double x, double y, double z, float par8, float par9) {
 		mainModel = npc.getSkinSettings().renderFemaleModel(npc) ? SMALL_ARMS : REGULAR_ARMS;
 
 		isSleeping = npc.isSleeping();
