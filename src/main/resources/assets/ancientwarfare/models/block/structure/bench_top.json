@@ -1,0 +1,33 @@
+{
+    "credit": "Made by WinDanesz, with Blockbench",
+    "textures": {
+        "0": "blocks/planks_oak",
+        "particle": "blocks/planks_oak"
+    },
+    "elements": [
+        {
+            "name": "topPart",
+            "from": [0, 8, 3],
+            "to": [16, 9, 8],
+            "faces": {
+                "north": {"uv": [0, 3, 16, 4], "texture": "#0"},
+                "east": {"uv": [9, 3, 14, 4], "texture": "#0"},
+                "west": {"uv": [9, 3, 14, 4], "texture": "#0"},
+                "up": {"uv": [0, 5, 16, 10], "rotation": 180, "texture": "#0"},
+                "down": {"uv": [0, 5, 16, 10], "texture": "#0"}
+            }
+        },
+        {
+            "name": "topPart",
+            "from": [0, 8, 8],
+            "to": [16, 9, 13],
+            "faces": {
+                "east": {"uv": [0, 3, 5, 4], "texture": "#0"},
+                "south": {"uv": [0, 3, 16, 4], "texture": "#0"},
+                "west": {"uv": [0, 3, 5, 4], "texture": "#0"},
+                "up": {"uv": [0, 5, 16, 10], "texture": "#0"},
+                "down": {"uv": [0, 5, 16, 10], "rotation": 180, "texture": "#0"}
+            }
+        }
+    ]
+}

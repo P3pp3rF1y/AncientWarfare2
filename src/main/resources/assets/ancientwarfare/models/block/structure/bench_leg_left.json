@@ -1,0 +1,20 @@
+{
+    "credit": "Made by WinDanesz, with Blockbench",
+    "textures": {
+        "0": "blocks/planks_oak"
+    },
+    "elements": [
+        {
+            "name": "legPart",
+            "from": [13, 0, 5],
+            "to": [14, 8, 11],
+            "faces": {
+                "north": {"uv": [0, 0, 1, 8], "texture": "#0"},
+                "east": {"uv": [0, 0, 6, 8], "texture": "#0"},
+                "south": {"uv": [0, 0, 1, 8], "texture": "#0"},
+                "west": {"uv": [0, 0, 6, 8], "texture": "#0"},
+                "down": {"uv": [0, 0, 6, 1], "rotation": 270, "texture": "#0"}
+            }
+        }
+    ]
+}

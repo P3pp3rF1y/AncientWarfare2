@@ -18,6 +18,7 @@ import net.shadowmage.ancientwarfare.core.util.InjectionTools;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.block.BlockAdvancedLootChest;
 import net.shadowmage.ancientwarfare.structure.block.BlockAdvancedSpawner;
+import net.shadowmage.ancientwarfare.structure.block.BlockBench;
 import net.shadowmage.ancientwarfare.structure.block.BlockBrazierEmber;
 import net.shadowmage.ancientwarfare.structure.block.BlockBrazierFlame;
 import net.shadowmage.ancientwarfare.structure.block.BlockChair;
@@ -119,6 +120,7 @@ public class AWStructureBlocks {
 	public static final Block GOLDEN_THRONE = InjectionTools.nullValue();
 	public static final Block WOODEN_POST = InjectionTools.nullValue();
 	public static final Block STAKE = InjectionTools.nullValue();
+	public static final Block BENCH = InjectionTools.nullValue();
 
 	@SuppressWarnings("ConstantConditions")
 	@SubscribeEvent
@@ -163,6 +165,7 @@ public class AWStructureBlocks {
 		registry.register(new ItemBlockBase(GOLDEN_THRONE));
 		registry.register(new ItemBlockBase(WOODEN_POST));
 		registry.register(new ItemMultiBlock(STAKE, new Vec3i(0, 0, 0), new Vec3i(0, 2, 0)));
+		registry.register(new WoodItemBlock(BENCH));
 
 		registerLootContainers();
 	}
@@ -252,6 +255,8 @@ public class AWStructureBlocks {
 		registry.register(new BlockWoodenPost());
 		registry.register(new BlockStake());
 		registerTile(TileStake.class, "stake_tile");
+
+		registry.register(new BlockBench());
 	}
 
 	private static void registerTile(Class<? extends TileEntity> teClass, String teId) {

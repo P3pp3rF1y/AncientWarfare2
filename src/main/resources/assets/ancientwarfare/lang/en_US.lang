@@ -248,6 +248,12 @@ tile.loot_basket.name=Basket
 tile.wooden_throne.name=Wooden Throne
 tile.golden_throne.name=Golden Throne
 tile.wooden_post.name=Wooden Post
+tile.bench_oak.name=Oak Wood Bench
+tile.bench_spruce.name=Spruce Wood Bench
+tile.bench_birch.name=Birch Wood Bench
+tile.bench_jungle.name=Jungle Wood Bench
+tile.bench_acacia.name=Acacia Wood Bench
+tile.bench_dark_oak.name=Dark Oak Wood Bench
 
 #colors
 black=Black
