@@ -347,6 +347,6 @@ public abstract class NpcFaction extends NpcBase {
 	}
 
 	public float getWidthModifier() {
-		return width / ((height / 1.8f) * 0.6f);
+		return width / 0.6f;
 	}
 }

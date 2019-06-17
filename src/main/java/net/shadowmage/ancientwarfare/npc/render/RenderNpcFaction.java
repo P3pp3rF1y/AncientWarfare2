@@ -14,7 +14,7 @@ public class RenderNpcFaction extends RenderNpcBase<NpcFaction> {
 	protected void preRenderCallback(NpcFaction npc, float partialTickTime) {
 		float scale = npc.getRenderSizeModifier();
 		float widthScale = npc.getWidthModifier();
-		if (MathUtils.epsilonEquals(scale, 1.0f) || MathUtils.epsilonEquals(widthScale, 1.0f)) {
+		if (MathUtils.epsilonEquals(scale, 1.0f) && MathUtils.epsilonEquals(widthScale, 1.0f)) {
 			return;
 		}
 		GlStateManager.scale(widthScale, scale, widthScale);
