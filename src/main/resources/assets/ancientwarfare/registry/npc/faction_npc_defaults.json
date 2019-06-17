@@ -872,7 +872,7 @@
         },
         "elf": {
             "height": {
-                "min": 1.8,
+                "min": 1.9,
                 "max": 2.1
             },
             "thinness": 0.9,
@@ -890,7 +890,8 @@
                 "soldier.elite": {
                     "attributes": {
                         "generic.maxHealth": 70
-                    }, "equipment": {
+                    },
+                    "equipment": {
                         "mainhand": "minecraft:golden_sword",
                         "offhand": "ancientwarfarenpc:gold_shield"
                     },
@@ -985,13 +986,76 @@
                     "experience_drop": 100,
                     "equipment": {
                         "mainhand": "minecraft:diamond_axe"
-                    },
-                    "priest": {
-                        "attributes": {
-                            "generic.maxHealth": 50
-                        },
-                        "experience_drop": 50
                     }
+                },
+                "priest": {
+                    "attributes": {
+                        "generic.maxHealth": 50
+                    },
+                    "experience_drop": 50
+                }
+            }
+        },
+        "hobbit": {
+            "height": {
+                "min": 1.1,
+                "max": 1.4
+            },
+            "npc_subtypes": {
+                "archer": {
+                    "attributes": {
+                        "generic.maxHealth": 30
+                    },
+                    "experience_drop": 30
+                },
+                "archer.elite": {
+                    "enabled": false
+                },
+                "soldier": {
+                    "attributes": {
+                        "generic.maxHealth": 50
+                    },
+                    "experience_drop": 50,
+                    "equipment": {
+                        "mainhand": "ancientwarfarenpc:iron_spear"
+                    }
+                },
+                "soldier.elite": {
+                    "attributes": {
+                        "generic.maxHealth": 60
+                    },
+                    "experience_drop": 60,
+                    "equipment": {
+                        "mainhand": "minecraft:iron_axe"
+                    }
+                },
+                "cavalry": {
+                    "enabled": false
+                },
+                "mounted_archer": {
+                    "enabled": false
+                },
+                "leader": {
+                    "attributes": {
+                        "generic.maxHealth": 70,
+                        "generic.attackDamage": 4
+                    },
+                    "experience_drop": 70,
+                    "equipment": {
+                        "mainhand": "minecraft:iron_sword"
+                    }
+                },
+                "leader.elite": {
+                    "enabled": false
+                },
+                "priest": {
+                    "attributes": {
+                        "generic.maxHealth": 50
+                    },
+                    "experience_drop": 50
+                },
+                "siege_engineer": {
+                    "enabled": false
                 }
             }
         },
@@ -1584,6 +1648,11 @@
             }
         },
         "minossian": {
+            "height": {
+                "min": 2.0,
+                "max": 2.2
+            },
+            "thinness": 1.5,
             "npc_subtypes": {
                 "soldier": {
                     "equipment": {
@@ -1707,6 +1776,11 @@
             }
         },
         "lizardman": {
+            "height": {
+                "min": 1.9,
+                "max": 2.1
+            },
+            "thinness": 1.4,
             "npc_subtypes": {
                 "soldier": {
                     "equipment": {
@@ -1843,6 +1917,11 @@
             }
         },
         "monster": {
+            "height": {
+                "min": 1.9,
+                "max": 2.2
+            },
+            "thinness": 1.5,
             "npc_subtypes": {
                 "soldier": {
                     "attributes": {
