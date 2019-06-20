@@ -210,6 +210,11 @@
                     "experience_drop": 30
                 },
                 "soldier.elite": {
+                    "height": {
+                        "min": 1.9,
+                        "max": 1.9
+                    },
+                    "thinness": 1.0,
                     "attributes": {
                         "generic.maxHealth": 50
                     },
@@ -617,8 +622,17 @@
                     "experience_drop": 15
                 },
                 "soldier.elite": {
+                    "height": {
+                        "min": 1.9,
+                        "max": 1.9
+                    },
+                    "thinness": 1.1,
                     "attributes": {
                         "generic.maxHealth": 50
+                    },
+                    "equipment": {
+                        "mainhand": "minecraft:iron_axe",
+                        "offhand": "minecraft:iron_axe"
                     },
                     "experience_drop": 50
                 },
@@ -775,12 +789,17 @@
                     }
                 },
                 "soldier.elite": {
+                    "height": {
+                        "min": 1.9,
+                        "max": 1.9
+                    },
+                    "thinness": 1.0,
                     "attributes": {
                         "generic.maxHealth": 60
                     },
                     "equipment": {
                         "mainhand": "minecraft:iron_axe",
-                        "offhand": "minecraft:iron_axe"
+                        "offhand": "minecraft:iron_sword"
                     },
                     "experience_drop": 60
                 },
@@ -834,10 +853,18 @@
                     }
                 },
                 "soldier.elite": {
-                    "attributes": {
-                        "generic.maxHealth": 30
+                    "height": {
+                        "min": 2.0,
+                        "max": 2.5
                     },
-                    "experience_drop": 30
+                    "thinness": 1.1,
+                    "attributes": {
+                        "generic.maxHealth": 70
+                    },
+                    "equipment": {
+                        "mainhand": "minecraft:air"
+                    },
+                    "experience_drop": 70
                 },
                 "archer": {
                     "attributes": {
@@ -875,7 +902,7 @@
                 "min": 1.9,
                 "max": 2.1
             },
-            "thinness": 0.9,
+            "thinness": 0.8,
             "npc_subtypes": {
                 "soldier": {
                     "attributes": {
@@ -1001,7 +1028,7 @@
                 "min": 1.2,
                 "max": 1.3
             },
-            "thinness": 1.3,
+            "thinness": 1.2,
             "npc_subtypes": {
                 "archer": {
                     "attributes": {
@@ -1160,13 +1187,18 @@
                     "experience_drop": 35
                 },
                 "soldier.elite": {
+                    "height": {
+                        "min": 2.0,
+                        "max": 2.2
+                    },
+                    "thinness": 1.1,
                     "attributes": {
-                        "generic.maxHealth": 35
+                        "generic.maxHealth": 60
                     },
                     "equipment": {
                         "mainhand": "ancientwarfarenpc:golden_halberd"
                     },
-                    "experience_drop": 35
+                    "experience_drop": 60
                 },
                 "cavalry": {
                     "attributes": {
@@ -1184,12 +1216,22 @@
                     "experience_drop": 45
                 },
                 "leader": {
+                    "height": {
+                        "min": 2.1,
+                        "max": 2.4
+                    },
+                    "thinness": 1.1,
                     "attributes": {
                         "generic.maxHealth": 75
                     },
                     "experience_drop": 75
                 },
                 "leader.elite": {
+                    "height": {
+                        "min": 2.4,
+                        "max": 2.8
+                    },
+                    "thinness": 1.1,
                     "attributes": {
                         "generic.maxHealth": 150,
                         "generic.movementSpeed": 0.4,
@@ -1214,12 +1256,12 @@
                 },
                 "civilian.female": {
                     "attributes": {
-                        "generic.maxHealth": 20
+                        "generic.maxHealth": 10
                     }
                 },
                 "civilian.male": {
                     "attributes": {
-                        "generic.maxHealth": 20
+                        "generic.maxHealth": 10
                     }
                 }
             }
@@ -1245,10 +1287,19 @@
                     "enabled": false
                 },
                 "leader": {
+                    "height": {
+                        "min": 1.9,
+                        "max": 2.0
+                    },
+                    "thinness": 1.1,
+                    "attributes": {
+                        "generic.maxHealth": 60
+                    },
                     "equipment": {
                         "mainhand": "minecraft:iron_axe",
                         "offhand": "ancientwarfarenpc:iron_shield"
-                    }
+                    },
+                    "experience_drop": 60
                 },
                 "leader.elite": {
                     "enabled": false
@@ -1402,6 +1453,11 @@
                     "enabled": false
                 },
                 "leader": {
+                    "height": {
+                        "min": 2.0,
+                        "max": 2.2
+                    },
+                    "thinness": 1.0,
                     "attributes": {
                         "generic.maxHealth": 80,
                         "generic.attackDamage": 4
@@ -1463,14 +1519,19 @@
                     "experience_drop": 80
                 },
                 "leader.elite": {
+                    "height": {
+                        "min": 0.5,
+                        "max": 0.5
+                    },
+                    "thinness": 0.8,
                     "attributes": {
-                        "generic.maxHealth": 90,
-                        "generic.attackDamage": 4
+                        "generic.maxHealth": 40,
+                        "generic.attackDamage": 2
                     },
                     "equipment": {
                         "mainhand": "minecraft:air"
                     },
-                    "experience_drop": 90
+                    "experience_drop": 40
                 },
                 "priest": {
                     "attributes": {
@@ -1554,6 +1615,11 @@
                     "enabled": false
                 },
                 "leader.elite": {
+                    "height": {
+                        "min": 2.0,
+                        "max": 2.0
+                    },
+                    "thinness": 1.1,
                     "attributes": {
                         "generic.maxHealth": 120,
                         "generic.movementSpeed": 0.3,
@@ -1591,6 +1657,11 @@
                     }
                 },
                 "soldier.elite": {
+                    "height": {
+                        "min": 1.9,
+                        "max": 2.2
+                    },
+                    "thinness": 1.1,
                     "attributes": {
                         "generic.maxHealth": 55,
                         "generic.movementSpeed": 0.2,
@@ -1612,6 +1683,11 @@
                     "enabled": false
                 },
                 "leader": {
+                    "height": {
+                        "min": 0.5,
+                        "max": 0.5
+                    },
+                    "thinness": 1.0,
                     "attributes": {
                         "generic.maxHealth": 45,
                         "generic.movementSpeed": 0.355,
@@ -1648,9 +1724,9 @@
         "minossian": {
             "height": {
                 "min": 2.1,
-                "max": 2.4
+                "max": 2.3
             },
-            "thinness": 1.4,
+            "thinness": 1.2,
             "npc_subtypes": {
                 "soldier": {
                     "equipment": {
@@ -1673,8 +1749,13 @@
                     "enabled": false
                 },
                 "leader": {
+                    "height": {
+                        "min": 2.0,
+                        "max": 2.6
+                    },
+                    "thinness": 1.2,
                     "attributes": {
-                        "generic.maxHealth": 65,
+                        "generic.maxHealth": 75,
                         "generic.movementSpeed": 0.325,
                         "generic.attackDamage": 4
                     },
@@ -1683,6 +1764,16 @@
                     }
                 },
                 "leader.elite": {
+                    "height": {
+                        "min": 2.3,
+                        "max": 2.4
+                    },
+                    "thinness": 1.2,
+                    "attributes": {
+                        "generic.maxHealth": 65,
+                        "generic.movementSpeed": 0.325,
+                        "generic.attackDamage": 3
+                    },
                     "equipment": {
                         "mainhand": "minecraft:diamond_axe"
                     }
@@ -1737,6 +1828,11 @@
                     "enabled": false
                 },
                 "leader": {
+                    "height": {
+                        "min": 2.2,
+                        "max": 2.8
+                    },
+                    "thinness": 1.2,
                     "attributes": {
                         "generic.maxHealth": 55,
                         "generic.movementSpeed": 0.3,
@@ -1775,8 +1871,8 @@
         },
         "lizardman": {
             "height": {
-                "min": 1.9,
-                "max": 2.1
+                "min": 2.0,
+                "max": 2.2
             },
             "thinness": 1.2,
             "npc_subtypes": {
@@ -1786,6 +1882,11 @@
                     }
                 },
                 "soldier.elite": {
+                    "height": {
+                        "min": 2.0,
+                        "max": 2.8
+                    },
+                    "thinness": 1.2,
                     "attributes": {
                         "generic.maxHealth": 80,
                         "generic.movementSpeed": 0.325,
@@ -1885,6 +1986,16 @@
                     "enabled": false
                 },
                 "leader": {
+                    "height": {
+                        "min": 2.0,
+                        "max": 2.8
+                    },
+                    "thinness": 1.0,
+                    "attributes": {
+                        "generic.maxHealth": 80,
+                        "generic.movementSpeed": 0.325,
+                        "generic.attackDamage": 3
+                    },
                     "equipment": {
                         "mainhand": "ancientwarfarenpc:golden_halberd"
                     }
@@ -1916,10 +2027,10 @@
         },
         "monster": {
             "height": {
-                "min": 1.9,
-                "max": 2.2
+                "min": 2.0,
+                "max": 2.1
             },
-            "thinness": 1.5,
+            "thinness": 1.1,
             "npc_subtypes": {
                 "soldier": {
                     "attributes": {
@@ -1932,6 +2043,11 @@
                     }
                 },
                 "soldier.elite": {
+                    "height": {
+                        "min": 2.2,
+                        "max": 2.6
+                    },
+                    "thinness": 1.2,
                     "attributes": {
                         "generic.maxHealth": 85,
                         "generic.movementSpeed": 0.3,
@@ -1954,6 +2070,11 @@
                     "enabled": false
                 },
                 "leader": {
+                    "height": {
+                        "min": 2.7,
+                        "max": 3.0
+                    },
+                    "thinness": 1.2,
                     "attributes": {
                         "generic.maxHealth": 100,
                         "generic.movementSpeed": 0.3,
@@ -1964,6 +2085,11 @@
                     }
                 },
                 "leader.elite": {
+                    "height": {
+                        "min": 3.0,
+                        "max": 3.6
+                    },
+                    "thinness": 1.2,
                     "attributes": {
                         "generic.maxHealth": 150,
                         "generic.movementSpeed": 0.3,
@@ -1983,6 +2109,94 @@
                     "enabled": false
                 },
                 "trader": {
+                    "enabled": false
+                },
+                "civilian.female": {
+                    "enabled": false
+                },
+                "civilian.male": {
+                    "enabled": false
+                }
+            }
+        },
+        "ents": {
+            "height": {
+                "min": 2.0,
+                "max": 2.1
+            },
+            "thinness": 1.1,
+            "npc_subtypes": {
+                "soldier": {
+                    "attributes": {
+                        "generic.maxHealth": 35,
+                        "generic.movementSpeed": 0.355,
+                        "generic.attackDamage": 2
+                    },
+                    "equipment": {
+                        "mainhand": "minecraft:air"
+                    }
+                },
+                "soldier.elite": {
+                    "height": {
+                        "min": 3.2,
+                        "max": 3.6
+                    },
+                    "thinness": 1.2,
+                    "attributes": {
+                        "generic.maxHealth": 85,
+                        "generic.movementSpeed": 0.3,
+                        "generic.attackDamage": 4
+                    },
+                    "equipment": {
+                        "mainhand": "minecraft:air"
+                    }
+                },
+                "archer.elite": {
+                    "enabled": false
+                },
+                "cavalry": {
+                    "enabled": false
+                },
+                "mounted_archer": {
+                    "enabled": false
+                },
+                "leader": {
+                    "height": {
+                        "min": 3.7,
+                        "max": 4.0
+                    },
+                    "thinness": 1.2,
+                    "attributes": {
+                        "generic.maxHealth": 100,
+                        "generic.movementSpeed": 0.3,
+                        "generic.attackDamage": 5
+                    },
+                    "equipment": {
+                        "mainhand": "minecraft:air"
+                    }
+                },
+                "leader.elite": {
+                    "height": {
+                        "min": 4.0,
+                        "max": 4.6
+                    },
+                    "thinness": 1.2,
+                    "attributes": {
+                        "generic.maxHealth": 150,
+                        "generic.movementSpeed": 0.3,
+                        "generic.attackDamage": 6
+                    },
+                    "equipment": {
+                        "mainhand": "minecraft:air"
+                    }
+                },
+                "siege_engineer": {
+                    "enabled": false
+                },
+                "priest": {
+                    "enabled": false
+                },
+                "bard": {
                     "enabled": false
                 },
                 "civilian.female": {
