@@ -790,8 +790,8 @@
                 },
                 "soldier.elite": {
                     "height": {
-                        "min": 1.9,
-                        "max": 1.9
+                        "min": 2.0,
+                        "max": 2.1
                     },
                     "thinness": 1.0,
                     "attributes": {
@@ -1520,10 +1520,10 @@
                 },
                 "leader.elite": {
                     "height": {
-                        "min": 0.5,
-                        "max": 0.5
+                        "min": 1.3,
+                        "max": 1.3
                     },
-                    "thinness": 0.8,
+                    "thinness": 0.9,
                     "attributes": {
                         "generic.maxHealth": 40,
                         "generic.attackDamage": 2
@@ -1684,14 +1684,14 @@
                 },
                 "leader": {
                     "height": {
-                        "min": 0.5,
-                        "max": 0.5
+                        "min": 1.1,
+                        "max": 1.1
                     },
-                    "thinness": 1.0,
+                    "thinness": 0.8,
                     "attributes": {
                         "generic.maxHealth": 45,
                         "generic.movementSpeed": 0.355,
-                        "generic.attackDamage": 3
+                        "generic.attackDamage": 2
                     },
                     "equipment": {
                         "mainhand": "minecraft:air"
@@ -2072,7 +2072,7 @@
                 "leader": {
                     "height": {
                         "min": 2.7,
-                        "max": 3.0
+                        "max": 3.2
                     },
                     "thinness": 1.2,
                     "attributes": {
@@ -2119,12 +2119,12 @@
                 }
             }
         },
-        "ents": {
+        "ent": {
             "height": {
-                "min": 2.0,
-                "max": 2.1
+                "min": 1.8,
+                "max": 1.9
             },
-            "thinness": 1.1,
+            "thinness": 1.0,
             "npc_subtypes": {
                 "soldier": {
                     "attributes": {
@@ -2138,10 +2138,10 @@
                 },
                 "soldier.elite": {
                     "height": {
-                        "min": 3.2,
-                        "max": 3.6
+                        "min": 3.5,
+                        "max": 3.8
                     },
-                    "thinness": 1.2,
+                    "thinness": 0.6,
                     "attributes": {
                         "generic.maxHealth": 85,
                         "generic.movementSpeed": 0.3,
@@ -2162,10 +2162,10 @@
                 },
                 "leader": {
                     "height": {
-                        "min": 3.7,
-                        "max": 4.0
+                        "min": 3.9,
+                        "max": 4.5
                     },
-                    "thinness": 1.2,
+                    "thinness": 0.6,
                     "attributes": {
                         "generic.maxHealth": 100,
                         "generic.movementSpeed": 0.3,
@@ -2177,10 +2177,10 @@
                 },
                 "leader.elite": {
                     "height": {
-                        "min": 4.0,
-                        "max": 4.6
+                        "min": 4.6,
+                        "max": 5.0
                     },
-                    "thinness": 1.2,
+                    "thinness": 0.6,
                     "attributes": {
                         "generic.maxHealth": 150,
                         "generic.movementSpeed": 0.3,
@@ -2191,9 +2191,6 @@
                     }
                 },
                 "siege_engineer": {
-                    "enabled": false
-                },
-                "priest": {
                     "enabled": false
                 },
                 "bard": {
