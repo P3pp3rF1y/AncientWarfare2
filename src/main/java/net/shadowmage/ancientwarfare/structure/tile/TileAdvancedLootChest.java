@@ -73,7 +73,7 @@ public class TileAdvancedLootChest extends TileEntityChest implements ISpecialLo
 
 	@Override
 	public ItemStack getStackInSlot(int index) {
-		if (world.isRemote) {
+		if (world == null || world.isRemote) {
 			return this.getItems().get(index);
 		}
 		return super.getStackInSlot(index);
