@@ -566,25 +566,25 @@
                     "experience_drop": 20
                 },
                 "cavalry": {
-                    "attributes": {
-                        "generic.maxHealth": 50
-                    },
-                    "equipment": {
-                        "mainhand": "ancientwarfarenpc:golden_lance"
-                    },
-                    "experience_drop": 50
+                    "enabled": false
                 },
                 "mounted_archer": {
-                    "attributes": {
-                        "generic.maxHealth": 50
-                    },
-                    "experience_drop": 50
+                    "enabled": false
                 },
                 "leader": {
-                    "attributes": {
-                        "generic.maxHealth": 40
+                    "height": {
+                        "min": 2.7,
+                        "max": 3.2
                     },
-                    "experience_drop": 40
+                    "thinness": 1.2,
+                    "attributes": {
+                        "generic.maxHealth": 100,
+                        "generic.movementSpeed": 0.3,
+                        "generic.attackDamage": 5
+                    },
+                    "equipment": {
+                        "mainhand": "minecraft:air"
+                    }
                 },
                 "leader.elite": {
                     "attributes": {
@@ -593,15 +593,15 @@
                     "experience_drop": 60
                 },
                 "siege_engineer": {
-                    "attributes": {
-                        "generic.maxHealth": 50
-                    },
-                    "experience_drop": 50
+                    "enabled": false
                 },
                 "priest": {
                     "equipment": {
                         "mainhand": "minecraft:rotten_flesh"
                     }
+                },
+                "bard": {
+                    "enabled": false
                 },
                 "trader": {
                     "equipment": {
@@ -2362,7 +2362,7 @@
                 "min": 3.6,
                 "max": 4.0
             },
-            "thinness": 1.0,
+            "thinness": 0.9,
             "npc_subtypes": {
                 "soldier": {
                     "attributes": {
@@ -2406,7 +2406,7 @@
                         "min": 5.6,
                         "max": 6.4
                     },
-                    "thinness": 0.8,
+                    "thinness": 0.7,
                     "attributes": {
                         "generic.maxHealth": 150,
                         "generic.movementSpeed": 0.3,
@@ -2421,7 +2421,7 @@
                         "min": 6.6,
                         "max": 7.0
                     },
-                    "thinness": 0.8,
+                    "thinness": 0.6,
                     "attributes": {
                         "generic.maxHealth": 250,
                         "generic.movementSpeed": 0.3,
