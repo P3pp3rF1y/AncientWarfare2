@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.npc.registry;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
@@ -29,7 +28,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 public class NpcDefaultsRegistry {
 	private static final String NPC_SUBTYPES_ELEMENT = "npc_subtypes";
@@ -68,7 +66,7 @@ public class NpcDefaultsRegistry {
 
 		private OwnedNpcDefault parseDefaults(JsonObject json) {
 			JsonObject defaults = JsonUtils.getJsonObject(json, "defaults");
-			return new OwnedNpcDefault(getTargetList(defaults), getAttributes(defaults), getExperienceDrop(defaults).orElse(0),
+			return new OwnedNpcDefault(TargetRegistry.parseTargets(defaults).orElse(new HashSet<>()), getAttributes(defaults), getExperienceDrop(defaults).orElse(0),
 					getCanSwim(defaults).orElse(true), getCanBreakDoors(defaults).orElse(true), getEquipment(defaults));
 		}
 
@@ -86,20 +84,11 @@ public class NpcDefaultsRegistry {
 			npcSubtypeDefault = getCanSwim(data).map(npcSubtypeDefault::setCanSwim).orElse(npcSubtypeDefault);
 			npcSubtypeDefault = getCanBreakDoors(data).map(npcSubtypeDefault::setCanBreakDoors).orElse(npcSubtypeDefault);
 			npcSubtypeDefault = npcSubtypeDefault.setEquipment(getEquipment(data));
-			Set<String> overrideTargetList = getTargetList(data);
-			if (!overrideTargetList.isEmpty()) {
-				npcSubtypeDefault = npcSubtypeDefault.overrideTargets(overrideTargetList);
+			Optional<Set<String>> targets = TargetRegistry.parseTargets(data);
+			if (targets.isPresent()) {
+				npcSubtypeDefault = npcSubtypeDefault.overrideTargets(targets.get());
 			}
 			return npcSubtypeDefault;
-		}
-
-		private Set<String> getTargetList(JsonObject json) {
-			if (!json.has("entities_to_target")) {
-				return Collections.emptySet();
-			}
-			JsonArray targets = JsonUtils.getJsonArray(json, "entities_to_target");
-			return StreamSupport.stream(targets.spliterator(), false).map(e -> JsonUtils.getString(e, ""))
-					.collect(Collectors.toCollection(HashSet::new));
 		}
 
 		private void fillRemainingSubtypeDefaults(OwnedNpcDefault overallDefault, Map<String, OwnedNpcDefault> npcSubtypeDefaults) {

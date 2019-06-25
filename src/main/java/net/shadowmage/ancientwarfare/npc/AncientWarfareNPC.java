@@ -47,6 +47,7 @@ import net.shadowmage.ancientwarfare.npc.proxy.NpcCommonProxy;
 import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
 import net.shadowmage.ancientwarfare.npc.registry.FactionTradeListRegistry;
 import net.shadowmage.ancientwarfare.npc.registry.NpcDefaultsRegistry;
+import net.shadowmage.ancientwarfare.npc.registry.TargetRegistry;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructureEntry;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructureMap;
 import org.apache.logging.log4j.LogManager;
@@ -101,7 +102,7 @@ public class AncientWarfareNPC {
 		CompatLoader.registerCompat(new TwilightForestCompat());
 
 		RegistryLoader.registerParser(new FactionRegistry.FactionParser());
-		RegistryLoader.registerParser(new FactionRegistry.TargetListParser());
+		RegistryLoader.registerParser(new TargetRegistry.TargetListParser());
 		RegistryLoader.registerParser(new NpcDefaultsRegistry.FactionNpcDefaultsParser());
 		RegistryLoader.registerParser(new NpcDefaultsRegistry.OwnedNpcDefaultsParser());
 		RegistryLoader.registerParser(new FactionTradeListRegistry.Parser());

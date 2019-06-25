@@ -7,13 +7,11 @@ import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.JsonUtils;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.registry.IRegistryDataParser;
 import net.shadowmage.ancientwarfare.core.util.parsing.JsonHelper;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -25,8 +23,6 @@ public class FactionRegistry {
 	private FactionRegistry() {}
 
 	private static Map<String, FactionDefinition> factions = new HashMap<>();
-
-	private static Map<String, Set<String>> targetLists = new HashMap<>();
 
 	public static Set<String> getFactionNames() {
 		return factions.keySet();
@@ -43,10 +39,6 @@ public class FactionRegistry {
 	public static class FactionParser implements IRegistryDataParser {
 		private static final String PLAYER_DEFAULT_STANDING = "player_default_standing";
 		private static final String HOSTILE_TOWARDS_FACTIONS = "hostile_towards_factions";
-		private static final String TARGETS = "targets";
-		private static final String TARGET_LISTS = "lists";
-		private static final String TARGETS_INCLUDE = "include";
-		private static final String TARGETS_EXCLUDE = "exclude";
 		private static final String THEMED_BLOCKS = "themed_blocks";
 
 		@Override
@@ -59,7 +51,7 @@ public class FactionRegistry {
 			JsonObject defaults = JsonUtils.getJsonObject(json, "defaults");
 			FactionDefinition defaultDefinition = new FactionDefinition(JsonUtils.getInt(defaults, PLAYER_DEFAULT_STANDING),
 					parseHostileTowards(defaults).entrySet().stream().filter(Entry::getValue).map(Entry::getKey).collect(Collectors.toCollection(HashSet::new)),
-					parseTargets(defaults));
+					TargetRegistry.parseTargets(defaults).orElse(new HashSet<>()));
 
 			JsonArray factionsArray = JsonUtils.getJsonArray(json, "factions");
 
@@ -76,9 +68,9 @@ public class FactionRegistry {
 					hostileTowards.entrySet().stream().filter(Entry::getValue).map(Entry::getKey).forEach(builder::addHostileTowards);
 					hostileTowards.entrySet().stream().filter(entry -> !entry.getValue()).map(Entry::getKey).forEach(builder::removeHostileTowards);
 				}
-				if (faction.has(TARGETS)) {
-					builder.overrideTargetList(parseTargets(faction));
-				}
+
+				TargetRegistry.parseTargets(faction).ifPresent(builder::overrideTargetList);
+
 				if (faction.has(THEMED_BLOCKS)) {
 					builder.overrideThemedBlocksTags(parseThemedBLocks(faction, factionName));
 				}
@@ -109,48 +101,6 @@ public class FactionRegistry {
 			return JsonHelper.mapFromJson(json, HOSTILE_TOWARDS_FACTIONS, Entry::getKey, entry -> JsonUtils.getBoolean(entry.getValue(), ""));
 		}
 
-		private Set<String> parseTargets(JsonObject json) {
-			if (!json.has(TARGETS)) {
-				return Collections.emptySet();
-			}
-
-			JsonObject targets = JsonUtils.getJsonObject(json, TARGETS);
-			Set<String> entitiesToTarget = new HashSet<>();
-			if (targets.has(TARGET_LISTS)) {
-				Set<String> lists = JsonHelper.setFromJson(targets.get(TARGET_LISTS), e -> JsonUtils.getString(e, ""));
-
-				for (String list : lists) {
-					if (targetLists.containsKey(list)) {
-						entitiesToTarget.addAll(targetLists.get(list));
-					} else {
-						AncientWarfareCore.LOG.error("Skipping unknown target list - {}", list);
-					}
-				}
-			}
-
-			if (targets.has(TARGETS_INCLUDE)) {
-				entitiesToTarget.addAll(JsonHelper.setFromJson(targets.get(TARGETS_INCLUDE), e -> JsonUtils.getString(e, "")));
-			}
-
-			if (targets.has(TARGETS_EXCLUDE)) {
-				entitiesToTarget.removeAll(JsonHelper.setFromJson(targets.get(TARGETS_EXCLUDE), e -> JsonUtils.getString(e, "")));
-			}
-
-			return entitiesToTarget;
-		}
-	}
-
-	public static class TargetListParser implements IRegistryDataParser {
-		@Override
-		public String getName() {
-			return "target_lists";
-		}
-
-		@SuppressWarnings("squid:S2696")
-		@Override
-		public void parse(JsonObject json) {
-			targetLists = JsonHelper.mapFromJson(json, Map.Entry::getKey, entry -> JsonHelper.setFromJson(entry.getValue(), e -> JsonUtils.getString(e, "")));
-		}
 	}
 
 	private static final FactionDefinition EMPTY_FACTION = new FactionDefinition(0, new HashSet<>(), new HashSet<>()).copy("", -1).build();
