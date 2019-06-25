@@ -101,6 +101,7 @@ public class AncientWarfareNPC {
 		CompatLoader.registerCompat(new TwilightForestCompat());
 
 		RegistryLoader.registerParser(new FactionRegistry.FactionParser());
+		RegistryLoader.registerParser(new FactionRegistry.TargetListParser());
 		RegistryLoader.registerParser(new NpcDefaultsRegistry.FactionNpcDefaultsParser());
 		RegistryLoader.registerParser(new NpcDefaultsRegistry.OwnedNpcDefaultsParser());
 		RegistryLoader.registerParser(new FactionTradeListRegistry.Parser());
