@@ -1,33 +1,21 @@
 package net.shadowmage.ancientwarfare.structure.block;
 
-import codechicken.lib.model.ModelRegistryHelper;
-import codechicken.lib.model.bakery.CCBakeryModel;
-import codechicken.lib.model.bakery.IBakeryProvider;
-import codechicken.lib.model.bakery.generation.IBakery;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.block.statemap.StateMapperBase;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
-import net.shadowmage.ancientwarfare.structure.gui.GuiDraftingStation;
-import net.shadowmage.ancientwarfare.structure.render.BlankExtendedBlockStateContainer;
-import net.shadowmage.ancientwarfare.structure.render.DraftingStationRenderer;
 import net.shadowmage.ancientwarfare.structure.tile.TileDraftingStation;
 
-public class BlockDraftingStation extends BlockBaseStructure implements IBakeryProvider {
+import static net.shadowmage.ancientwarfare.core.render.property.CoreProperties.FACING;
+
+public class BlockDraftingStation extends BlockBaseStructure {
 
 	public BlockDraftingStation() {
 		super(Material.ROCK, "drafting_station");
@@ -36,13 +24,17 @@ public class BlockDraftingStation extends BlockBaseStructure implements IBakeryP
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlankExtendedBlockStateContainer(this);
+		return new BlockStateContainer(this, FACING);
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess world, BlockPos pos, EnumFacing side) {
-		return false;
+	public IBlockState getStateFromMeta(int meta) {
+		return getDefaultState().withProperty(FACING, EnumFacing.HORIZONTALS[meta & 3]);
+	}
+
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return state.getValue(FACING).getHorizontalIndex();
 	}
 
 	@Override
@@ -79,32 +71,7 @@ public class BlockDraftingStation extends BlockBaseStructure implements IBakeryP
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerClient() {
-		NetworkHandler.registerGui(NetworkHandler.GUI_DRAFTING_STATION, GuiDraftingStation.class);
-
-		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
-			@Override
-			@SideOnly(Side.CLIENT)
-			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-				return DraftingStationRenderer.MODEL_LOCATION;
-			}
-		});
-
-		ModelRegistryHelper.register(DraftingStationRenderer.MODEL_LOCATION, new CCBakeryModel() {
-			@Override
-			@SideOnly(Side.CLIENT)
-			public TextureAtlasSprite getParticleTexture() {
-				return DraftingStationRenderer.INSTANCE.sprite;
-			}
-		});
-
-		ModelLoaderHelper.registerItem(this, DraftingStationRenderer.MODEL_LOCATION);
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public IBakery getBakery() {
-		return DraftingStationRenderer.INSTANCE;
+	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
 	}
 }
