@@ -254,6 +254,7 @@ tile.bench_birch.name=Birch Wood Bench
 tile.bench_jungle.name=Jungle Wood Bench
 tile.bench_acacia.name=Acacia Wood Bench
 tile.bench_dark_oak.name=Dark Oak Wood Bench
+tile.tribal_chair.name=Tribal Chair
 
 #colors
 black=Black

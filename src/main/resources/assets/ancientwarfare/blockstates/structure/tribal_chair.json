@@ -1,0 +1,24 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "ancientwarfare:structure/tribal_chair"
+    },
+    "variants": {
+        "normal": [{}],
+        "facing": {
+            "north": {"y": 180},
+            "south": {
+            },
+            "west": {
+                "y": 90
+            },
+            "east": {
+                "y": 270
+            }
+        },
+        "visible": {
+            "true": {},
+            "false": {}
+        }
+    }
+}
