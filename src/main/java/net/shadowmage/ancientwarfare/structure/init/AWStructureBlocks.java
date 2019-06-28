@@ -30,6 +30,7 @@ import net.shadowmage.ancientwarfare.structure.block.BlockGoldenIdol;
 import net.shadowmage.ancientwarfare.structure.block.BlockGoldenThrone;
 import net.shadowmage.ancientwarfare.structure.block.BlockLootBasket;
 import net.shadowmage.ancientwarfare.structure.block.BlockProtectionFlag;
+import net.shadowmage.ancientwarfare.structure.block.BlockScissorSeat;
 import net.shadowmage.ancientwarfare.structure.block.BlockSoundBlock;
 import net.shadowmage.ancientwarfare.structure.block.BlockStake;
 import net.shadowmage.ancientwarfare.structure.block.BlockStool;
@@ -123,6 +124,7 @@ public class AWStructureBlocks {
 	public static final Block STAKE = InjectionTools.nullValue();
 	public static final Block BENCH = InjectionTools.nullValue();
 	public static final Block TRIBAL_CHAIR = InjectionTools.nullValue();
+	public static final Block SCISSOR_SEAT = InjectionTools.nullValue();
 
 	@SuppressWarnings("ConstantConditions")
 	@SubscribeEvent
@@ -169,6 +171,7 @@ public class AWStructureBlocks {
 		registry.register(new ItemMultiBlock(STAKE, new Vec3i(0, 0, 0), new Vec3i(0, 2, 0)));
 		registry.register(new WoodItemBlock(BENCH));
 		registry.register(new ItemMultiBlock(TRIBAL_CHAIR, new Vec3i(0, 0, 0), new Vec3i(0, 1, 0)));
+		registry.register(new ItemMultiBlock(SCISSOR_SEAT, new Vec3i(0, 0, 0), new Vec3i(0, 1, 0)));
 
 		registerLootContainers();
 	}
@@ -262,6 +265,7 @@ public class AWStructureBlocks {
 		registry.register(new BlockBench());
 
 		registry.register(new BlockTribalChair());
+		registry.register(new BlockScissorSeat());
 	}
 
 	private static void registerTile(Class<? extends TileEntity> teClass, String teId) {
