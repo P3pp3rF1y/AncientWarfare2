@@ -9,6 +9,7 @@ import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.registry.IRegistryDataParser;
 import net.shadowmage.ancientwarfare.core.util.ItemTools;
 import net.shadowmage.ancientwarfare.core.util.parsing.JsonHelper;
+import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.MissingResourceException;
 
 public class FactionTradeListRegistry {
 	private static final String DEFAULT_REGISTRY_LOCATION = "npc/faction_trade_lists.json";
@@ -142,8 +144,16 @@ public class FactionTradeListRegistry {
 				JsonObject trade = JsonUtils.getJsonObject(tradeElement, "trade");
 				int refillFrequency = JsonUtils.getInt(trade, "refill_frequency");
 				int maxTrades = JsonUtils.getInt(trade, "max_trades");
-				List<ItemStack> input = JsonHelper.getItemStacks(JsonUtils.getJsonArray(trade, "input"));
-				List<ItemStack> output = JsonHelper.getItemStacks(JsonUtils.getJsonArray(trade, "output"));
+				List<ItemStack> input;
+				List<ItemStack> output;
+				try {
+					input = JsonHelper.getItemStacks(JsonUtils.getJsonArray(trade, "input"));
+					output = JsonHelper.getItemStacks(JsonUtils.getJsonArray(trade, "output"));
+				}
+				catch (MissingResourceException ex) {
+					AncientWarfareNPC.LOG.error("Error parsing trade: ", ex);
+					continue;
+				}
 
 				ret.add(new FactionTradeTemplate(input, output, refillFrequency, maxTrades));
 			}
