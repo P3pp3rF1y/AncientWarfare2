@@ -1164,14 +1164,10 @@
                     }
                 },
                 "civilian.female": {
-                    "additional_attributes": {
-                        "burns_in_sun": true
-                    }
+                    "enabled": false
                 },
                 "civilian.male": {
-                    "additional_attributes": {
-                        "burns_in_sun": true
-                    }
+                    "enabled": false
                 }
             }
         },
@@ -2233,16 +2229,52 @@
                     "enabled": false
                 },
                 "cavalry": {
-                    "enabled": false
+                    "attributes": {
+                        "generic.maxHealth": 20
+                    },
+                    "equipment": {
+                        "mainhand": "ancientwarfarenpc:iron_spear",
+                        "offhand": "ancientwarfarenpc:iron_shield"
+                    },
+                    "experience_drop": 20,
+                    "additional_attributes": {
+                        "horse_entity": "net.minecraft.entity.passive.EntityChicken"
+                    }
                 },
                 "mounted_archer": {
-                    "enabled": false
+                    "additional_attributes": {
+                        "horse_entity": "net.minecraft.entity.passive.EntityChicken"
+                    }
                 },
                 "leader": {
-                    "enabled": false
+                    "height": {
+                        "min": 3.2,
+                        "max": 4.0
+                    },
+                    "thinness": 0.8,
+                    "attributes": {
+                        "generic.maxHealth": 100,
+                        "generic.movementSpeed": 0.3,
+                        "generic.attackDamage": 3
+                    },
+                    "equipment": {
+                        "mainhand": "minecraft:air"
+                    }
                 },
                 "leader.elite": {
-                    "enabled": false
+                    "height": {
+                        "min": 2.0,
+                        "max": 2.8
+                    },
+                    "thinness": 0.8,
+                    "attributes": {
+                        "generic.maxHealth": 60,
+                        "generic.movementSpeed": 0.3,
+                        "generic.attackDamage": 2
+                    },
+                    "equipment": {
+                        "mainhand": "minecraft:air"
+                    }
                 },
                 "trader": {
                     "attributes": {
@@ -2448,6 +2480,93 @@
                 },
                 "civilian.male": {
                     "enabled": false
+                }
+            }
+        },
+        "vampire": {
+            "npc_subtypes": {
+                "soldier": {
+                    "additional_attributes": {
+                        "burns_in_sun": false
+                    }
+                },
+                "soldier.elite": {
+                    "equipment": {
+                        "mainhand": "minecraft:air"
+                    },
+                    "additional_attributes": {
+                        "burns_in_sun": true
+                    }
+                },
+                "archer": {
+                    "additional_attributes": {
+                        "burns_in_sun": false
+                    }
+                },
+                "archer.elite": {
+                    "additional_attributes": {
+                        "burns_in_sun": false
+                    }
+                },
+                "cavalry": {
+                    "additional_attributes": {
+                        "burns_in_sun": false
+                    }
+                },
+                "mounted_archer": {
+                    "additional_attributes": {
+                        "burns_in_sun": false
+                    }
+                },
+                "leader": {
+                    "additional_attributes": {
+                        "burns_in_sun": true
+                    }
+                },
+                "leader.elite": {
+                    "attributes": {
+                        "generic.attackDamage": 5
+                    },
+                    "equipment": {
+                        "mainhand": "minecraft:diamond_sword"
+                    },
+                    "additional_attributes": {
+                        "burns_in_sun": true
+                    }
+                },
+                "siege_engineer": {
+                    "additional_attributes": {
+                        "burns_in_sun": false
+                    }
+                },
+                "priest": {
+                    "equipment": {
+                        "mainhand": "minecraft:skull"
+                    },
+                    "additional_attributes": {
+                        "burns_in_sun": true
+                    }
+                },
+                "bard": {
+                    "enabled": false
+                }
+            },
+            "trader": {
+                "equipment": {
+                    "mainhand": "minecraft:bone"
+                },
+                "additional_attributes": {
+                    "burns_in_sun": true
+                }
+            },
+            "civilian.female": {
+                "additional_attributes": {
+                    "burns_in_sun": false
+                }
+            },
+            "civilian.male": {
+                "additional_attributes": {
+                    "burns_in_sun": false
                 }
             }
         }
