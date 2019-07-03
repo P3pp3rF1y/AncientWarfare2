@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.npc.ai.faction;
 
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.passive.AbstractHorse;
-import net.minecraft.entity.passive.EntityHorse;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIRideHorse;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.faction.IHorseMountedNpc;
@@ -20,8 +19,8 @@ public class NpcAIFactionRideHorse<T extends NpcBase & IHorseMountedNpc> extends
 	@Override
 	public void startExecuting() {
 		if (horse == null && npc.isHorseAlive()) {
-			if (npc.getRidingEntity() instanceof EntityHorse) {
-				horse = (EntityHorse) npc.getRidingEntity();
+			if (npc.getRidingEntity() instanceof EntityLiving) {
+				horse = (EntityLiving) npc.getRidingEntity();
 			} else {
 				spawnHorse();
 			}
