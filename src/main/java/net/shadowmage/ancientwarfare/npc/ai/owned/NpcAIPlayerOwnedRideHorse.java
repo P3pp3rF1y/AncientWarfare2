@@ -1,12 +1,13 @@
 package net.shadowmage.ancientwarfare.npc.ai.owned;
 
+import net.minecraft.entity.passive.AbstractHorse;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIRideHorse;
-import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
+import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 
-public class NpcAIPlayerOwnedRideHorse extends NpcAIRideHorse {
+public class NpcAIPlayerOwnedRideHorse extends NpcAIRideHorse<NpcPlayerOwned> {
 	private boolean saddled = false;
 
-	public NpcAIPlayerOwnedRideHorse(NpcBase npc) {
+	public NpcAIPlayerOwnedRideHorse(NpcPlayerOwned npc) {
 		super(npc, 1.0);
 	}
 
@@ -33,13 +34,17 @@ public class NpcAIPlayerOwnedRideHorse extends NpcAIRideHorse {
 
 	@Override
 	protected void onMountHorse() {
-		this.saddled = horse.isHorseSaddled();
+		if (horse instanceof AbstractHorse) {
+			this.saddled = ((AbstractHorse) horse).isHorseSaddled();
+		}
 		super.onMountHorse();
 	}
 
 	@Override
 	protected void onDismountHorse() {
 		super.onDismountHorse();
-		horse.setHorseSaddled(saddled);
+		if (horse instanceof AbstractHorse) {
+			((AbstractHorse) horse).setHorseSaddled(saddled);
+		}
 	}
 }

@@ -1,11 +1,11 @@
 package net.shadowmage.ancientwarfare.npc.entity.faction;
 
-import net.minecraft.entity.passive.AbstractHorse;
+import net.minecraft.entity.EntityLiving;
 
 public interface IHorseMountedNpc {
 	boolean isHorseAlive();
 
 	void setHorseKilled();
 
-	AbstractHorse instantiateHorseEntity();
+	EntityLiving instantiateMountedEntity();
 }

@@ -2549,24 +2549,24 @@
                 },
                 "bard": {
                     "enabled": false
-                }
-            },
-            "trader": {
-                "equipment": {
-                    "mainhand": "minecraft:bone"
                 },
-                "additional_attributes": {
-                    "burns_in_sun": true
-                }
-            },
-            "civilian.female": {
-                "additional_attributes": {
-                    "burns_in_sun": false
-                }
-            },
-            "civilian.male": {
-                "additional_attributes": {
-                    "burns_in_sun": false
+                "trader": {
+                    "equipment": {
+                        "mainhand": "minecraft:bone"
+                    },
+                    "additional_attributes": {
+                        "burns_in_sun": true
+                    }
+                },
+                "civilian.female": {
+                    "additional_attributes": {
+                        "burns_in_sun": false
+                    }
+                },
+                "civilian.male": {
+                    "additional_attributes": {
+                        "burns_in_sun": false
+                    }
                 }
             }
         }
