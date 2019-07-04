@@ -173,10 +173,11 @@ public class RenderNpcBase<T extends NpcBase> extends RenderBiped<T> {
 
 		if (d3 <= (double) (64 * 64) && entity.canEntityBeSeen(renderManager.renderViewEntity)) {
 			FontRenderer fontrenderer = this.getFontRendererFromRenderManager();
-			float f = 1.6F;
+			float f = 0.8F;
 			float f1 = 0.016666668F * f;
 			GlStateManager.pushMatrix();
-			GlStateManager.translate((float) x + 0.0F, (float) y + entity.height + 0.5F, (float) z);
+			float heightScalingOffset = entity.height / 6 - 0.3F;
+			GlStateManager.translate((float) x + 0.0F, (float) y + entity.height + heightScalingOffset + 0.5F, (float) z);
 			GlStateManager.glNormal3f(0.0F, 1.0F, 0.0F);
 			GlStateManager.rotate(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
 			GlStateManager.rotate(this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
