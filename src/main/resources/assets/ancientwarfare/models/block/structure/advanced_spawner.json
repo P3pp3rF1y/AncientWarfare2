@@ -1,0 +1,147 @@
+{
+    "credit": "Made by Silentine,  with Blockbench", 
+    "textures": {
+        "main": "ancientwarfare:blocks/structure/advanced_spawner"
+    }, 
+    "elements": [
+        {
+            "name": "body", 
+            "from": [ 0, 0, 0 ], 
+            "to":   [ 16, 16, 16 ], 
+            "faces": {
+                "north": { "uv": [ 0, 0, 4, 4 ], "texture": "#main" }, 
+                "east":  { "uv": [ 0, 0, 4, 4 ], "texture": "#main" }, 
+                "south": { "uv": [ 0, 0, 4, 4 ], "texture": "#main" }, 
+                "west":  { "uv": [ 0, 0, 4, 4 ], "texture": "#main" }, 
+                "up":    { "uv": [ 0, 0, 4, 4 ], "texture": "#main" }, 
+                "down":  { "uv": [ 0, 0, 4, 4 ], "texture": "#main" }
+            }
+        }, 
+        {
+            "name": "inside", 
+            "from": [ 5, 5, 5 ], 
+            "to":   [ 11, 11, 11 ], 
+            "rotation": { "angle": 45, "axis": "x", "origin": [8, 8, 8] }, 
+            "faces": {
+                "north": { "uv": [ 4, 0, 5.5, 1.5 ], "rotation":180, "texture": "#main" }, 
+                "east":  { "uv": [ 4, 0, 5.5, 1.5 ], "rotation":90, "texture": "#main" }, 
+                "south": { "uv": [ 4, 0, 5.5, 1.5 ], "texture": "#main" }, 
+                "west":  { "uv": [ 4, 0, 5.5, 1.5 ], "rotation":270, "texture": "#main" }, 
+                "up":    { "uv": [ 4, 0, 5.5, 1.5 ], "texture": "#main" }, 
+                "down":  { "uv": [ 4, 0, 5.5, 1.5 ], "rotation":180, "texture": "#main" }
+            }
+        }, 
+        {
+            "name": "body", 
+            "from": [ 0, 0, 0 ], 
+            "to":   [ 16, 16, 16 ], 
+            "faces": {
+                "north": { "uv": [ 8, 0, 12, 4 ], "texture": "#main" }, 
+                "east":  { "uv": [ 8, 0, 12, 4 ], "texture": "#main" }, 
+                "south": { "uv": [ 8, 0, 12, 4 ], "texture": "#main" }, 
+                "west":  { "uv": [ 8, 0, 12, 4 ], "texture": "#main" }, 
+                "up":    { "uv": [ 8, 0, 12, 4 ], "texture": "#main" }, 
+                "down":  { "uv": [ 8, 0, 12, 4 ], "texture": "#main" }
+            }
+        }, 
+        {
+            "name": "inside", 
+            "from": [ 5, 5, 5 ], 
+            "to":   [ 11, 11, 11 ], 
+            "rotation": { "angle": -22.5, "axis": "x", "origin": [8, 8, 8] }, 
+            "faces": {
+                "north": { "uv": [ 12, 0, 13.5, 1.5 ], "texture": "#main" }, 
+                "east":  { "uv": [ 12, 0, 13.5, 1.5 ], "texture": "#main" }, 
+                "south": { "uv": [ 12, 0, 13.5, 1.5 ], "texture": "#main" }, 
+                "west":  { "uv": [ 12, 0, 13.5, 1.5 ], "texture": "#main" }, 
+                "up":    { "uv": [ 12, 0, 13.5, 1.5 ], "texture": "#main" }, 
+                "down":  { "uv": [ 12, 0, 13.5, 1.5 ], "texture": "#main" }
+            }
+        }, 
+        {
+            "name": "body", 
+            "from": [ 0, 0, 0 ], 
+            "to":   [ 16, 16, 16 ], 
+            "faces": {
+                "north": { "uv": [ 0, 8, 4, 12 ], "texture": "#main" }, 
+                "east":  { "uv": [ 0, 8, 4, 12 ], "texture": "#main" }, 
+                "south": { "uv": [ 0, 8, 4, 12 ], "texture": "#main" }, 
+                "west":  { "uv": [ 0, 8, 4, 12 ], "texture": "#main" }, 
+                "up":    { "uv": [ 0, 8, 4, 12 ], "texture": "#main" }, 
+                "down":  { "uv": [ 0, 8, 4, 12 ], "texture": "#main" }
+            }
+        }, 
+        {
+            "name": "inside", 
+            "from": [ 5, 5, 5 ], 
+            "to":   [ 11, 11, 11 ], 
+            "faces": {
+                "north": { "uv": [ 4, 8, 5.5, 9.5 ], "texture": "#main" }, 
+                "east":  { "uv": [ 4, 8, 5.5, 9.5 ], "texture": "#main" }, 
+                "south": { "uv": [ 4, 8, 5.5, 9.5 ], "texture": "#main" }, 
+                "west":  { "uv": [ 4, 8, 5.5, 9.5 ], "texture": "#main" }, 
+                "up":    { "uv": [ 4, 8, 5.5, 9.5 ], "texture": "#main" }, 
+                "down":  { "uv": [ 4, 8, 5.5, 9.5 ], "texture": "#main" }
+            }
+        }, 
+        {
+            "name": "body", 
+            "from": [ 0, 0, 0 ], 
+            "to":   [ 16, 16, 16 ], 
+            "faces": {
+                "north": { "uv": [ 8, 8, 12, 12 ], "texture": "#main" }, 
+                "east":  { "uv": [ 8, 8, 12, 12 ], "texture": "#main" }, 
+                "south": { "uv": [ 8, 8, 12, 12 ], "texture": "#main" }, 
+                "west":  { "uv": [ 8, 8, 12, 12 ], "texture": "#main" }, 
+                "up":    { "uv": [ 8, 8, 12, 12 ], "texture": "#main" }, 
+                "down":  { "uv": [ 8, 8, 12, 12 ], "texture": "#main" }
+            }
+        }, 
+        {
+            "name": "inside", 
+            "from": [ 5, 5, 5 ], 
+            "to":   [ 11, 11, 11 ], 
+            "rotation": { "angle": 22.5, "axis": "x", "origin": [8, 8, 8] }, 
+            "faces": {
+                "north": { "uv": [ 12, 8, 13.5, 9.5 ], "texture": "#main" }, 
+                "east":  { "uv": [ 12, 8, 13.5, 9.5 ], "texture": "#main" }, 
+                "south": { "uv": [ 12, 8, 13.5, 9.5 ], "texture": "#main" }, 
+                "west":  { "uv": [ 12, 8, 13.5, 9.5 ], "texture": "#main" }, 
+                "up":    { "uv": [ 12, 8, 13.5, 9.5 ], "texture": "#main" }, 
+                "down":  { "uv": [ 12, 8, 13.5, 9.5 ], "texture": "#main" }
+            }
+        }
+    ], 
+    "display": {
+        "thirdperson_righthand": {
+            "rotation": [ 75, 45, 0 ], 
+            "translation": [ 0, 2.5, 0 ], 
+            "scale": [ 0.375, 0.375, 0.375 ]
+        }, 
+        "thirdperson_lefthand": {
+            "rotation": [ 75, 45, 0 ], 
+            "translation": [ 0, 2.5, 0 ], 
+            "scale": [ 0.375, 0.375, 0.375 ]
+        }, 
+        "firstperson_righthand": {
+            "rotation": [ 0, 45, 0 ], 
+            "scale": [ 0.4, 0.4, 0.4 ]
+        }, 
+        "firstperson_lefthand": {
+            "rotation": [ 0, 225, 0 ], 
+            "scale": [ 0.4, 0.4, 0.4 ]
+        }, 
+        "ground": {
+            "translation": [ 0, 3, 0 ], 
+            "scale": [ 0.25, 0.25, 0.25 ]
+        }, 
+        "gui": {
+            "rotation": [ 30, -45, 0 ], 
+            "scale": [ 0.625, 0.625, 0.625 ]
+        }, 
+        "fixed": {
+            "scale": [ 0.5, 0.5, 0.5 ]
+        }
+    }, 
+    "__comment": "Model animated using Fizzy's model animator - http://fizzy81.github.io/animated-models/"
+}
