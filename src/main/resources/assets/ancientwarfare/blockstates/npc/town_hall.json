@@ -1,11 +1,10 @@
 {
     "forge_marker": 1,
     "defaults": {
-        "model": "cube_bottom_top",
+        "model": "ancientwarfare:npc/town_hall",
         "textures": {
-            "bottom": "ancientwarfare:blocks/npc/town_hall_bottom",
-            "top": "ancientwarfare:blocks/npc/town_hall_top",
-            "side": "ancientwarfare:blocks/npc/town_hall_side"
+            "particle": "ancientwarfare:blocks/npc/town_hall",
+            "main": "ancientwarfare:blocks/npc/town_hall"
         },
         "transform": "forge:default-block"
     },
