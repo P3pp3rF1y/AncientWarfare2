@@ -33,6 +33,7 @@ import net.shadowmage.ancientwarfare.structure.block.BlockProtectionFlag;
 import net.shadowmage.ancientwarfare.structure.block.BlockScissorSeat;
 import net.shadowmage.ancientwarfare.structure.block.BlockSoundBlock;
 import net.shadowmage.ancientwarfare.structure.block.BlockStake;
+import net.shadowmage.ancientwarfare.structure.block.BlockStatue;
 import net.shadowmage.ancientwarfare.structure.block.BlockStool;
 import net.shadowmage.ancientwarfare.structure.block.BlockStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.block.BlockStructureScanner;
@@ -74,6 +75,7 @@ import net.shadowmage.ancientwarfare.structure.tile.TileLootBasket;
 import net.shadowmage.ancientwarfare.structure.tile.TileProtectionFlag;
 import net.shadowmage.ancientwarfare.structure.tile.TileSoundBlock;
 import net.shadowmage.ancientwarfare.structure.tile.TileStake;
+import net.shadowmage.ancientwarfare.structure.tile.TileStatue;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureScanner;
 import net.shadowmage.ancientwarfare.structure.tile.TileTotemPart;
@@ -125,6 +127,7 @@ public class AWStructureBlocks {
 	public static final Block BENCH = InjectionTools.nullValue();
 	public static final Block TRIBAL_CHAIR = InjectionTools.nullValue();
 	public static final Block SCISSOR_SEAT = InjectionTools.nullValue();
+	public static final Block STATUE = InjectionTools.nullValue();
 
 	@SuppressWarnings("ConstantConditions")
 	@SubscribeEvent
@@ -172,6 +175,7 @@ public class AWStructureBlocks {
 		registry.register(new WoodItemBlock(BENCH));
 		registry.register(new ItemMultiBlock(TRIBAL_CHAIR, new Vec3i(0, 0, 0), new Vec3i(0, 1, 0)));
 		registry.register(new ItemMultiBlock(SCISSOR_SEAT, new Vec3i(0, 0, 0), new Vec3i(0, 1, 0)));
+		registry.register(new ItemBlockBase(STATUE));
 
 		registerLootContainers();
 	}
@@ -266,6 +270,9 @@ public class AWStructureBlocks {
 
 		registry.register(new BlockTribalChair());
 		registry.register(new BlockScissorSeat());
+
+		registry.register(new BlockStatue());
+		registerTile(TileStatue.class, "statue_tile");
 	}
 
 	private static void registerTile(Class<? extends TileEntity> teClass, String teId) {
