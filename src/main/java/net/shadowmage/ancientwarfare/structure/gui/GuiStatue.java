@@ -9,6 +9,7 @@ import net.shadowmage.ancientwarfare.core.gui.GuiSelectFromList;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
+import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.structure.container.ContainerStatue;
 import net.shadowmage.ancientwarfare.structure.render.statue.StatueEntityRegistry;
 import net.shadowmage.ancientwarfare.structure.tile.EntityStatueInfo;
@@ -210,9 +211,9 @@ public class GuiStatue extends GuiContainerBase<ContainerStatue> {
 		addXYZLabels(topY, leftOffset);
 		topY += 12;
 
-		addRotationInput(topY, leftOffset, () -> getPartTransformValue(Transform::getRotationX), val -> updatePartTransform(t -> t.setRotationX(val)));
-		addRotationInput(topY, leftOffset + 35, () -> getPartTransformValue(Transform::getRotationY), val -> updatePartTransform(t -> t.setRotationY(val)));
-		addRotationInput(topY, leftOffset + 70, () -> getPartTransformValue(Transform::getRotationZ), val -> updatePartTransform(t -> t.setRotationZ(val)));
+		addRotationInput(topY, leftOffset, () -> getPartTransformValue(t -> Trig.toDegrees(t.getRotationX())), val -> updatePartTransform(t -> t.setRotationX(Trig.toRadians(val))));
+		addRotationInput(topY, leftOffset + 35, () -> getPartTransformValue(t -> Trig.toDegrees(t.getRotationY())), val -> updatePartTransform(t -> t.setRotationY(Trig.toRadians(val))));
+		addRotationInput(topY, leftOffset + 70, () -> getPartTransformValue(t -> Trig.toDegrees(t.getRotationZ())), val -> updatePartTransform(t -> t.setRotationZ(Trig.toRadians(val))));
 
 		addGuiElement(new Label(leftOffset + 120, height - 32, "Press ESC to exit this screen"));
 		addGuiElement(new Label(leftOffset + 120, height - 16, "HINT: Use mouse wheel over values to change them quickly"));

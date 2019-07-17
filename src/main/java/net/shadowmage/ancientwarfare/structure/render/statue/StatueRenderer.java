@@ -45,16 +45,17 @@ public class StatueRenderer extends TileEntitySpecialRenderer<TileStatue> {
 	}
 
 	private void applyPartTransforms(IStatueModel statueModel, Map<String, EntityStatueInfo.Transform> partTransforms) {
-		for(Map.Entry<String, EntityStatueInfo.Transform> entry : partTransforms.entrySet()) {
-			ModelRenderer part = statueModel.getModelPart(entry.getKey());
-			EntityStatueInfo.Transform transform = entry.getValue();
-			part.offsetX = transform.getOffsetX();
-			part.offsetY = transform.getOffsetY();
-			part.offsetZ = transform.getOffsetZ();
+		for(String partName : statueModel.getModelPartNames()) {
+			ModelRenderer part = statueModel.getModelPart(partName);
+			EntityStatueInfo.Transform transform = partTransforms.getOrDefault(partName, new EntityStatueInfo.Transform());
+			EntityStatueInfo.Transform baseTransform = statueModel.getBaseTransforms().getOrDefault(partName, new EntityStatueInfo.Transform());
+			part.offsetX = baseTransform.getOffsetX() + transform.getOffsetX();
+			part.offsetY = baseTransform.getOffsetY() + transform.getOffsetY();
+			part.offsetZ = baseTransform.getOffsetZ() + transform.getOffsetZ();
 
-			part.rotateAngleX = Trig.toRadians(transform.getRotationX());
-			part.rotateAngleY = Trig.toRadians(transform.getRotationY());
-			part.rotateAngleZ = Trig.toRadians(transform.getRotationZ());
+			part.rotateAngleX = baseTransform.getRotationX() + transform.getRotationX();
+			part.rotateAngleY = baseTransform.getRotationY() + transform.getRotationY();
+			part.rotateAngleZ = baseTransform.getRotationZ() + transform.getRotationZ();
 		}
 	}
 
@@ -128,7 +129,9 @@ public class StatueRenderer extends TileEntitySpecialRenderer<TileStatue> {
 		if (!bindEntityTexture(entityTexture)) {
 			return;
 		}
+		GlStateManager.pushMatrix();
 		model.render(scale);
+		GlStateManager.popMatrix();
 	}
 
 	private boolean bindEntityTexture(@Nullable ResourceLocation resourcelocation) {
