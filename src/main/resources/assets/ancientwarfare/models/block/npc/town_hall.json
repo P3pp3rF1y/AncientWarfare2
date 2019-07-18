@@ -1,7 +1,8 @@
 {
     "credit": "Made by Silentine,  with Blockbench", 
     "textures": {
-        "main": "block/npc/town_hall"
+        "main": "ancientwarfare:blocks/npc/town_hall",
+        "particle": "ancientwarfare:blocks/npc/town_hall"
     }, 
     "elements": [
         {
