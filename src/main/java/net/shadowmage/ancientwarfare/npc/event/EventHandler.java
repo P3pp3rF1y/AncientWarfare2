@@ -105,7 +105,7 @@ public class EventHandler {
 		World world = evt.getWorld();
 		BlockPos pos = evt.getPos();
 		EntityPlayer player = evt.getEntityPlayer();
-		if (!player.capabilities.isCreativeMode && !player.isSneaking() && isContainer(world, pos)) {
+		if (!player.capabilities.isCreativeMode && isContainer(world, pos)) {
 			AWGameData.INSTANCE.getData(world, StructureMap.class).getStructureAt(world, pos).ifPresent(structure -> {
 				Optional<TileProtectionFlag> tile = WorldTools.getTile(world, structure.getProtectionFlagPos(), TileProtectionFlag.class);
 				if (tile.isPresent() && tile.get().shouldProtectAgainst(player)) {
