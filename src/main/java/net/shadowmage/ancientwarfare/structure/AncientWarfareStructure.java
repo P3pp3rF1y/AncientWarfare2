@@ -91,6 +91,8 @@ public class AncientWarfareStructure {
 		statics = new AWStructureStatics("AncientWarfareStructures");
 
 		MinecraftForge.EVENT_BUS.register(this);
+		MinecraftForge.EVENT_BUS.register(net.shadowmage.ancientwarfare.structure.event.EventHandler.INSTANCE);
+
 		if (AWStructureStatics.enableWorldGen) {
 			MinecraftForge.EVENT_BUS.register(WorldGenTickHandler.INSTANCE);
 			if (AWStructureStatics.enableStructureGeneration)
