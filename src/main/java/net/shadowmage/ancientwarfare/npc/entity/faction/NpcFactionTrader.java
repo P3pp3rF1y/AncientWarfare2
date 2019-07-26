@@ -67,7 +67,7 @@ public class NpcFactionTrader extends NpcFaction {
 			if (noTradesDespawn && tradeList.isEmpty()) {
 				setDead();
 			}
-			tradeList.tick();
+			tradeList.tick(world);
 		}
 	}
 

@@ -62,7 +62,7 @@ public class GuiNpcFactionTradeView extends GuiContainerBase<ContainerNpcFaction
 			area.addGuiElement(new Label(8, 8, "guistrings.trader.no_trade"));
 		} else {
 			for (int i = 0; i < getContainer().tradeList.size(); i++) {
-				totalHeight = addTrade((FactionTrade) getContainer().tradeList.get(i), i, totalHeight);
+				totalHeight = addTrade(getContainer().tradeList.get(i), i, totalHeight);
 			}
 		}
 
@@ -70,13 +70,11 @@ public class GuiNpcFactionTradeView extends GuiContainerBase<ContainerNpcFaction
 	}
 
 	private int addTrade(final FactionTrade trade, final int tradeNum, int startHeight) {
-		if (trade.getCurrentAvailable() <= 0) {
-			return startHeight;
-		}
-		int gridX = 0, gridY = 0, slotX, slotY;
+		int gridX = 0;
+		int gridY = 0;
 		for (int i = 0; i < trade.size(); i++) {
-			slotX = gridX * 18 + 8;
-			slotY = gridY * 18 + startHeight;
+			int slotX = gridX * 18 + 8;
+			int slotY = gridY * 18 + startHeight;
 			addTradeInputSlot(trade, slotX, slotY, i);
 			slotX += 3 * 18 + 9;
 			addTradeOutputSlot(trade, slotX, slotY, i);
@@ -93,18 +91,37 @@ public class GuiNpcFactionTradeView extends GuiContainerBase<ContainerNpcFaction
 		area.addGuiElement(new Label(startWidth + 1, startHeight + (gridY + 1) * 5, ">"));
 		startWidth *= 2;
 		startWidth += 9;
-		Button tradeButton = new Button(startWidth, startHeight + 17, 70, 20, "guistrings.trade") {
-			@Override
-			protected void onPressed() {
-				trade.performTrade(player, null);
-				getContainer().doTrade(tradeNum);
-				refreshGui();
-			}
-		};
-		area.addGuiElement(tradeButton);
 
-		Label available = new Label(startWidth, startHeight, I18n.format("guistrings.trades_available", trade.getCurrentAvailable()));
-		area.addGuiElement(available);
+		if (trade.getCurrentAvailable() <= 0) {
+			Label unavailable = new Label(startWidth, startHeight, I18n.format("guistrings.trade_unavailable"));
+			area.addGuiElement(unavailable);
+			long refillsIn = trade.getRefillTime() - getContainer().getWorld().getTotalWorldTime();
+			if (refillsIn < 0) {
+				refillsIn = 0;
+			}
+			long seconds = (refillsIn / 20) % 60;
+			long minutes = (refillsIn / (60 * 20)) % 60;
+			long hours = (refillsIn / (60 * 60 * 20)) % 24;
+			long days = (refillsIn / (24 * 60 * 60 * 20));
+
+			Label refillLabel = new Label(startWidth, startHeight + 12, I18n.format("guistrings.trade_refills_in"));
+			area.addGuiElement(refillLabel);
+			Label refillTime = new Label(startWidth, startHeight + 24, I18n.format("guistrings.trade_refill_time", days, hours, minutes, seconds));
+			area.addGuiElement(refillTime);
+		} else {
+			Button tradeButton = new Button(startWidth, startHeight + 17, 70, 20, "guistrings.trade") {
+				@Override
+				protected void onPressed() {
+					trade.performTrade(player, null);
+					getContainer().doTrade(tradeNum);
+					refreshGui();
+				}
+			};
+			area.addGuiElement(tradeButton);
+
+			Label available = new Label(startWidth, startHeight, I18n.format("guistrings.trades_available", trade.getCurrentAvailable()));
+			area.addGuiElement(available);
+		}
 
 		startHeight += 18 * gridY;//input/output grid size
 		area.addGuiElement(new Line(0, startHeight + 1, xSize, startHeight + 1, 1, 0x000000ff));

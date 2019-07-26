@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.npc.container;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionTrader;
 import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
@@ -49,5 +50,9 @@ public class ContainerNpcFactionTradeView extends ContainerNpcBase<NpcFactionTra
 		NBTTagCompound tag = new NBTTagCompound();
 		tag.setInteger(DO_TRADE_TAG, tradeNum);
 		sendDataToServer(tag);
+	}
+
+	public World getWorld() {
+		return player.world;
 	}
 }
