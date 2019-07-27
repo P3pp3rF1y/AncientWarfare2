@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.core.gui;
 
 import net.minecraft.client.Minecraft;
+import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
@@ -28,7 +29,11 @@ public class GuiSelectFromList<T> extends GuiContainerBase {
 	}
 
 	public GuiSelectFromList(GuiContainerBase parent, @Nullable T entry, Function<T, String> getDisplayName, Supplier<List<T>> getList, Consumer<T> setEntry, boolean showFilter) {
-		super(parent.getContainer());
+		this(parent, entry, getDisplayName, getList, setEntry, showFilter, parent.getContainer());
+	}
+
+	public GuiSelectFromList(GuiContainerBase parent, @Nullable T entry, Function<T, String> getDisplayName, Supplier<List<T>> getList, Consumer<T> setEntry, boolean showFilter, ContainerBase container) {
+		super(container);
 		this.parent = parent;
 		this.entry = entry;
 		this.getDisplayName = getDisplayName;
