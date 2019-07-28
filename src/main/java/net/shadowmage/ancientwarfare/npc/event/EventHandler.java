@@ -8,6 +8,8 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAITasks.EntityAITaskEntry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.MobEffects;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -120,10 +122,12 @@ public class EventHandler {
 						if (!factionNpc.isPassive()) {
 							evt.setCanceled(true);
 							evt.setCancellationResult(EnumActionResult.FAIL);
+							factionNpc.addPotionEffect(new PotionEffect(MobEffects.GLOWING, 100));
 							if (world.isRemote) {
 								player.sendStatusMessage(new TextComponentTranslation("gui.ancientwarfarenpc.no_chest_access",
 										StringUtils.capitalize(factionNpc.getFaction())), true);
 							}
+							return;
 						}
 					}
 				}
