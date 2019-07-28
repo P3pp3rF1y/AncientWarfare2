@@ -2,9 +2,7 @@ package net.shadowmage.ancientwarfare.structure.tile;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagString;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -21,11 +19,9 @@ import net.shadowmage.ancientwarfare.core.owner.IOwnable;
 import net.shadowmage.ancientwarfare.core.owner.Owner;
 import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
-import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilderTicked;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.Set;
@@ -188,19 +184,21 @@ public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IO
 	}
 
 	public void onBlockBroken(IBlockState state) {
-		if (!world.isRemote && !isStarted && builder != null && builder.getTemplate() != null) {
-			isStarted = true;//to prevent further drops
-			@Nonnull ItemStack item = new ItemStack(AWStructureBlocks.STRUCTURE_BUILDER_TICKED);
-			item.setTagInfo("structureName", new NBTTagString(builder.getTemplate().name));
-		}
+		//noop
 	}
 
 	public void onBlockClicked(EntityPlayer player) {
-		int pass = builder.getPass() + 1;
-		int max = builder.getMaxPasses();
-		float percent = builder.getPercentDoneWithPass() * 100.f;
-		String perc = String.format("%.2f", percent) + "%";
-		player.sendMessage(new TextComponentTranslation("guistrings.structure.builder.state", perc, pass, max));
+		if (builder.hasClearedArea()) {
+			int pass = builder.getPass() + 1;
+			int max = builder.getMaxPasses();
+			float percent = builder.getPercentDoneWithPass() * 100.f;
+			String perc = String.format("%.2f", percent) + "%";
+			player.sendMessage(new TextComponentTranslation("guistrings.structure.builder.state", perc, pass, max));
+		} else {
+			float percent = builder.getPercentDoneClearing() * 100.f;
+			String perc = String.format("%.2f", percent) + "%";
+			player.sendMessage(new TextComponentTranslation("guistrings.structure.builder.clear_state", perc));
+		}
 	}
 
 	@Override
@@ -210,10 +208,8 @@ public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IO
 			return;
 		}
 		StructureBB bb = builder.getBoundingBox();
-		if (bb != null) {
-			tag.setLong(BB_MIN_TAG, bb.min.toLong());
-			tag.setLong(BB_MAX_TAG, bb.max.toLong());
-		}
+		tag.setLong(BB_MIN_TAG, bb.min.toLong());
+		tag.setLong(BB_MAX_TAG, bb.max.toLong());
 	}
 
 	@Override

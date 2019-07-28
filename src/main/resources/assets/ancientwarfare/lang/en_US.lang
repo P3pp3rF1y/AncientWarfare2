@@ -440,6 +440,7 @@ guistrings.structure.scanner.set_second_pos=Set Second Position (2/4)
 guistrings.structure.scanner.set_offset_pos=Set Offset/Orientation, Right click to Process (3/4)
 guistrings.structure.scanner.exporting=Initiating Scan (4/4)
 guistrings.structure.builder.state=%s done with build pass: %d of %d
+guistrings.structure.builder.clear_state=%s done with clearing
 guistrings.construction.mode=Mode
 guistrings.construction.fill_block=Fill Block
 guistrings.construction.do_action=Do Selected Action

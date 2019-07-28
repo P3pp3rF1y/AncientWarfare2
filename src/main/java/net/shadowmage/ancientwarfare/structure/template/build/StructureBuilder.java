@@ -40,7 +40,7 @@ public class StructureBuilder implements IStructureBuilder {
 	protected StructureTemplate template;
 	protected World world;
 	BlockPos buildOrigin;
-	protected EnumFacing buildFace;
+	EnumFacing buildFace;
 	protected int turns;
 	int maxPriority = 3;
 	int currentPriority;//current build priority...may not be needed anymore?
@@ -209,8 +209,12 @@ public class StructureBuilder implements IStructureBuilder {
 		return isFinished;
 	}
 
+	float getTotalBlocks() {
+		return (float) template.getSize().getX() * template.getSize().getZ() * template.getSize().getY();
+	}
+
 	public float getPercentDoneWithPass() {
-		float max = (float) template.getSize().getX() * template.getSize().getZ() * template.getSize().getY();
+		float max = getTotalBlocks();
 		float current = (float) curTempPos.getY() * (template.getSize().getX() * template.getSize().getZ());//add layers done
 		current += curTempPos.getZ() * template.getSize().getX();//add rows done
 		current += curTempPos.getX();//add blocks done
