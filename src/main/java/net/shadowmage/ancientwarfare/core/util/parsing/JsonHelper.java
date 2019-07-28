@@ -251,7 +251,9 @@ public class JsonHelper {
 			AncientWarfareCore.LOG.error("Error creating file", e);
 		}
 		try (BufferedWriter writer = Files.newBufferedWriter(file.toPath(),
-				StandardOpenOption.WRITE, StandardOpenOption.CREATE); JsonWriter jsonWriter = new JsonWriter(writer)) {
+				StandardOpenOption.WRITE, StandardOpenOption.CREATE);
+				JsonWriter jsonWriter = new JsonWriter(writer)) {
+			jsonWriter.setIndent("    ");
 			Streams.write(parent, jsonWriter);
 		}
 		catch (IOException e) {
