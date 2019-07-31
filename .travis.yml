@@ -5,8 +5,8 @@ addons:
     organization: "p3pp3rf1y-github"
     token: $SONAR_TOKEN
 
-jdk:
-- oraclejdk8
+dist: trusty
+jdk: oraclejdk8
 
 jobs:
   include:
