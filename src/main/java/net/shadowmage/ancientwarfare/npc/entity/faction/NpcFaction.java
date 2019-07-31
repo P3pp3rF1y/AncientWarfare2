@@ -79,9 +79,11 @@ public abstract class NpcFaction extends NpcBase {
 
 	@Override
 	protected void despawnEntity() {
+		boolean deadPreDespawn = isDead;
+
 		super.despawnEntity();
 
-		if (isDead && hasCapability(CapabilityRespawnData.RESPAWN_DATA_CAPABILITY, null)) {
+		if (!deadPreDespawn && isDead && hasCapability(CapabilityRespawnData.RESPAWN_DATA_CAPABILITY, null)) {
 			IRespawnData respawnData = getCapability(CapabilityRespawnData.RESPAWN_DATA_CAPABILITY, null);
 			if (respawnData != null) {
 				SpawnerHelper.createSpawner(respawnData, world);
