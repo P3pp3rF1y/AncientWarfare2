@@ -1,0 +1,8 @@
+{
+    "mod": "rustic",
+    "soils": [
+        {
+            "name": "rustic:fertile_soil"
+        }
+    ]
+}
