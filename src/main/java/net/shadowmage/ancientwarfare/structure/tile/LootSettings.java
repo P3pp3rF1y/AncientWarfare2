@@ -187,4 +187,8 @@ public class LootSettings {
 	public ResourceLocation getEntity() {
 		return entity;
 	}
+
+	public boolean hasLootToSpawn() {
+		return spawnEntity || splashPotion || hasLoot;
+	}
 }
