@@ -15,6 +15,7 @@ import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntityBase;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidationType;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
+import net.shadowmage.ancientwarfare.structure.template.datafixes.DataFixManager;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -24,8 +25,6 @@ import java.util.Optional;
 import java.util.Set;
 
 public class StructureTemplate {
-	public static final Version CURRENT_VERSION = new Version(2, 8);
-
 	/*
 	 * base datas
 	 */
@@ -50,7 +49,7 @@ public class StructureTemplate {
 	private StructureValidator validator = StructureValidationType.GROUND.getValidator();
 
 	public StructureTemplate(String name, Set<String> modDependencies, Vec3i size, Vec3i offset) {
-		this(name, modDependencies, CURRENT_VERSION, size, offset);
+		this(name, modDependencies, DataFixManager.getCurrentVersion(), size, offset);
 	}
 
 	public StructureTemplate(String name, Set<String> modDependencies, Version version, Vec3i size, Vec3i offset) {

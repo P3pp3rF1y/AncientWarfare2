@@ -111,7 +111,12 @@ public class ContainerStructureScanner extends ContainerBase {
 	private void saveScannerData(EntityPlayer player) {
 		if (!getScannerTile().isPresent()) {
 			player.setHeldItem(hand, scanner);
+			return;
 		}
+		getScannerTile().ifPresent(tile -> {
+			tile.getScannerInventory().setStackInSlot(0, scanner);
+			tile.markDirty();
+		});
 	}
 
 	public void export() {
