@@ -36,7 +36,7 @@ public abstract class TileWorksiteBounded extends TileWorksiteBase implements IB
 	 */
 	private BlockPos bbMax = BlockPos.ORIGIN;
 
-	private ForgeChunkManager.Ticket chunkTicket = null;
+	ForgeChunkManager.Ticket chunkTicket = null;
 
 	@Override
 	public Set<WorksiteUpgrade> getValidUpgrades() {
@@ -93,7 +93,15 @@ public abstract class TileWorksiteBounded extends TileWorksiteBase implements IB
 
 	@Override
 	public int getBoundsMaxWidth() {
-		return getUpgrades().contains(WorksiteUpgrade.SIZE_LARGE) ? 16 : getUpgrades().contains(WorksiteUpgrade.SIZE_MEDIUM) ? 9 : 5;
+		if (getUpgrades().contains(WorksiteUpgrade.SIZE_LARGE)) {
+			return 16;
+		}
+		else if (getUpgrades().contains(WorksiteUpgrade.SIZE_MEDIUM)) {
+			return 9;
+		}
+		else {
+			return 5;
+		}
 	}
 
 	@Override
@@ -115,15 +123,19 @@ public abstract class TileWorksiteBounded extends TileWorksiteBase implements IB
 		ChunkPos ccip = new ChunkPos(pos);
 		ForgeChunkManager.forceChunk(chunkTicket, ccip);
 		if (hasWorkBounds()) {
-			int minX = getWorkBoundsMin().getX() >> 4;
-			int minZ = getWorkBoundsMin().getZ() >> 4;
-			int maxX = getWorkBoundsMax().getX() >> 4;
-			int maxZ = getWorkBoundsMax().getZ() >> 4;
-			for (int x = minX; x <= maxX; x++) {
-				for (int z = minZ; z <= maxZ; z++) {
-					ccip = new ChunkPos(x, z);
-					ForgeChunkManager.forceChunk(chunkTicket, ccip);
-				}
+			chunkLoadWorkBounds();
+		}
+	}
+
+	protected void chunkLoadWorkBounds() {
+		int minX = getWorkBoundsMin().getX() >> 4;
+		int minZ = getWorkBoundsMin().getZ() >> 4;
+		int maxX = getWorkBoundsMax().getX() >> 4;
+		int maxZ = getWorkBoundsMax().getZ() >> 4;
+		for (int x = minX; x <= maxX; x++) {
+			for (int z = minZ; z <= maxZ; z++) {
+				ChunkPos ccip = new ChunkPos(x, z);
+				ForgeChunkManager.forceChunk(chunkTicket, ccip);
 			}
 		}
 	}
@@ -132,9 +144,13 @@ public abstract class TileWorksiteBounded extends TileWorksiteBase implements IB
 		if (chunkTicket != null) {
 			ForgeChunkManager.releaseTicket(chunkTicket);
 		}
-		if (getUpgrades().contains(WorksiteUpgrade.BASIC_CHUNK_LOADER) || getUpgrades().contains(WorksiteUpgrade.QUARRY_CHUNK_LOADER)) {
+		if (hasChunkLoaderUpgrade()) {
 			setTicket(ForgeChunkManager.requestTicket(AncientWarfareAutomation.instance, world, ForgeChunkManager.Type.NORMAL));
 		}
+	}
+
+	boolean hasChunkLoaderUpgrade() {
+		return getUpgrades().contains(WorksiteUpgrade.BASIC_CHUNK_LOADER) || getUpgrades().contains(WorksiteUpgrade.QUARRY_CHUNK_LOADER);
 	}
 
 	/*
@@ -146,7 +162,7 @@ public abstract class TileWorksiteBounded extends TileWorksiteBase implements IB
 
 	@Override
 	public void onBoundsAdjusted() {
-		//TODO implement to check target blocks, clear invalid ones
+		//implement in subclasses to check target blocks, clear invalid ones
 	}
 
 	@Override
@@ -154,6 +170,7 @@ public abstract class TileWorksiteBounded extends TileWorksiteBase implements IB
 		setupInitialTicket();
 	}
 
+	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	boolean isInBounds(BlockPos pos) {
 		return pos.getX() >= bbMin.getX() && pos.getX() <= bbMax.getX() && pos.getZ() >= bbMin.getZ() && pos.getZ() <= bbMax.getZ();
 	}
