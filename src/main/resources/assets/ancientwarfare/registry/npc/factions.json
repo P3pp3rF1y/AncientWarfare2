@@ -40,6 +40,8 @@
             "undead": true,
             "monster": true,
             "vampire": true,
+            "beast": true,
+            "wizardly": false,
             "demon": true
         },
         "targets": {
@@ -92,6 +94,8 @@
                 "undead": true,
                 "monster": true,
                 "vampire": true,
+                "beast": true,
+                "wizardly": false,
                 "demon": true
             },
             "themed_blocks": {
@@ -145,6 +149,8 @@
                 "good": false,
                 "undead": true,
                 "monster": true,
+                "beast": true,
+                "wizardly": false,
                 "vampire": true,
                 "demon": true
             }
@@ -188,13 +194,15 @@
                 "good": false,
                 "undead": true,
                 "monster": true,
+                "beast": true,
+                "wizardly": false,
                 "vampire": true,
                 "demon": true
             }
         }, {
             "name": "xoltec",
             "color": "ffa500",
-            "player_default_standing": -1000,
+            "player_default_standing": -3000,
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -231,8 +239,13 @@
                 "good": true,
                 "undead": false,
                 "monster": false,
+                "beast": false,
+                "wizardly": true,
                 "vampire": false,
                 "demon": false
+            },
+            "targets": {
+                "lists": ["friendly"]
             }
         }, {
             "name": "witchbane",
@@ -274,6 +287,8 @@
                 "good": true,
                 "undead": true,
                 "monster": true,
+                "beast": true,
+                "wizardly": false,
                 "vampire": true,
                 "demon": true
             },
@@ -329,6 +344,8 @@
                 "good": false,
                 "undead": true,
                 "monster": true,
+                "beast": true,
+                "wizardly": false,
                 "vampire": true,
                 "demon": true
             },
@@ -383,6 +400,8 @@
                 "good": false,
                 "undead": true,
                 "monster": true,
+                "beast": true,
+                "wizardly": false,
                 "vampire": true,
                 "demon": true
             }
@@ -426,13 +445,15 @@
                 "good": false,
                 "undead": true,
                 "monster": true,
+                "beast": true,
+                "wizardly": false,
                 "vampire": true,
                 "demon": true
             }
         }, {
             "name": "kong",
             "color": "004000",
-            "player_default_standing": -1000,
+            "player_default_standing": -3000,
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -470,6 +491,8 @@
                 "good": true,
                 "undead": false,
                 "monster": false,
+                "beast": false,
+                "wizardly": true,
                 "vampire": false,
                 "demon": false
             },
@@ -479,7 +502,7 @@
         }, {
             "name": "orc",
             "color": "404040",
-            "player_default_standing": -1000,
+            "player_default_standing": -9000,
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -516,6 +539,8 @@
                 "good": true,
                 "undead": false,
                 "monster": false,
+                "beast": false,
+                "wizardly": true,
                 "vampire": false,
                 "demon": false
             },
@@ -525,7 +550,7 @@
         }, {
             "name": "brigand",
             "color": "964b00",
-            "player_default_standing": -1000,
+            "player_default_standing": -9000,
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -562,6 +587,8 @@
                 "good": true,
                 "undead": false,
                 "monster": false,
+                "beast": false,
+                "wizardly": true,
                 "vampire": true,
                 "demon": false
             },
@@ -571,7 +598,7 @@
         }, {
             "name": "pirate",
             "color": "cc7722",
-            "player_default_standing": -1000,
+            "player_default_standing": -9000,
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -609,6 +636,8 @@
                 "good": true,
                 "undead": false,
                 "monster": false,
+                "beast": false,
+                "wizardly": true,
                 "vampire": true,
                 "demon": false
             },
@@ -618,7 +647,7 @@
         }, {
             "name": "evil",
             "color": "000000",
-            "player_default_standing": -1000,
+            "player_default_standing": -9000,
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -656,6 +685,8 @@
                 "good": true,
                 "undead": false,
                 "monster": false,
+                "beast": false,
+                "wizardly": true,
                 "vampire": false,
                 "demon": false
             },
@@ -714,6 +745,8 @@
                 "hobbit": false,
                 "undead": true,
                 "monster": true,
+                "beast": true,
+                "wizardly": false,
                 "vampire": true,
                 "demon": true
             },
@@ -732,7 +765,7 @@
         }, {
             "name": "undead",
             "color": "b2b2b2",
-            "player_default_standing": -2000,
+            "player_default_standing": -9000,
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -770,6 +803,8 @@
                 "good": true,
                 "undead": false,
                 "monster": false,
+                "beast": false,
+                "wizardly": true,
                 "vampire": false,
                 "demon": false
             },
@@ -791,7 +826,7 @@
         }, {
             "name": "demon",
             "color": "ff2400",
-            "player_default_standing": -5000,
+            "player_default_standing": -9000,
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -829,6 +864,8 @@
                 "good": true,
                 "undead": false,
                 "monster": false,
+                "beast": false,
+                "wizardly": true,
                 "vampire": false,
                 "demon": false
             },
@@ -850,7 +887,7 @@
         }, {
             "name": "coven",
             "color": "FFC0CB",
-            "player_default_standing": -5000,
+            "player_default_standing": -9000,
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -888,6 +925,8 @@
                 "good": true,
                 "undead": false,
                 "monster": false,
+                "beast": false,
+                "wizardly": true,
                 "vampire": false,
                 "demon": false
             },
@@ -934,6 +973,8 @@
                 "good": false,
                 "undead": true,
                 "monster": true,
+                "beast": true,
+                "wizardly": false,
                 "vampire": true,
                 "demon": true
             }
@@ -977,6 +1018,8 @@
                 "good": true,
                 "undead": true,
                 "monster": true,
+                "beast": true,
+                "wizardly": true,
                 "vampire": true,
                 "demon": false
             }
@@ -1020,6 +1063,8 @@
                 "good": false,
                 "undead": true,
                 "monster": true,
+                "beast": true,
+                "wizardly": false,
                 "vampire": true,
                 "demon": true
             }
@@ -1063,13 +1108,18 @@
                 "good": true,
                 "undead": true,
                 "monster": true,
+                "beast": true,
+                "wizardly": true,
                 "vampire": true,
                 "demon": true
+            },
+            "targets": {
+                "lists": ["friendly"]
             }
         }, {
             "name": "lizardman",
             "color": "FFC0CB",
-            "player_default_standing": -5000,
+            "player_default_standing": -9000,
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -1106,6 +1156,8 @@
                 "good": true,
                 "undead": false,
                 "monster": false,
+                "beast": false,
+                "wizardly": true,
                 "vampire": false,
                 "demon": false
             },
@@ -1115,7 +1167,7 @@
         }, {
             "name": "rakshasa",
             "color": "FFC0CB",
-            "player_default_standing": -5000,
+            "player_default_standing": -9000,
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -1152,6 +1204,8 @@
                 "good": true,
                 "undead": false,
                 "monster": false,
+                "beast": false,
+                "wizardly": true,
                 "vampire": false,
                 "demon": false
             },
@@ -1161,7 +1215,7 @@
         }, {
             "name": "klown",
             "color": "FFC0CB",
-            "player_default_standing": -5000,
+            "player_default_standing": -9000,
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -1198,6 +1252,8 @@
                 "good": true,
                 "undead": false,
                 "monster": false,
+                "beast": false,
+                "wizardly": true,
                 "vampire": false,
                 "demon": false
             },
@@ -1207,7 +1263,7 @@
         }, {
             "name": "ishtari",
             "color": "FFC0CB",
-            "player_default_standing": -5000,
+            "player_default_standing": -9000,
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -1244,6 +1300,8 @@
                 "good": true,
                 "undead": false,
                 "monster": false,
+                "beast": false,
+                "wizardly": true,
                 "vampire": false,
                 "demon": false
             },
@@ -1253,7 +1311,7 @@
         }, {
             "name": "icelord",
             "color": "FFC0CB",
-            "player_default_standing": -5000,
+            "player_default_standing": -9000,
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -1290,6 +1348,8 @@
                 "good": true,
                 "undead": false,
                 "monster": false,
+                "beast": false,
+                "wizardly": true,
                 "vampire": false,
                 "demon": false
             },
@@ -1336,6 +1396,53 @@
                 "good": false,
                 "undead": true,
                 "monster": true,
+                "beast": true,
+                "wizardly": false,
+                "vampire": true,
+                "demon": true
+            }
+        }, {
+            "name": "wizardly",
+            "color": "FFC0CB",
+            "player_default_standing": 50,
+            "hostile_towards_factions": {
+                "empire": false,
+                "norska": false,
+                "sarkonid": false,
+                "xoltec": true,
+                "witchbane": false,
+                "nogg": false,
+                "buffloka": false,
+                "zimba": false,
+                "kong": true,
+                "orc": true,
+                "brigand": true,
+                "pirate": true,
+                "elf": false,
+                "dwarf": false,
+                "ent": false,
+                "gnome": false,
+                "gremlin": true,
+                "giant": true,
+                "smingol": true,
+                "minossian": true,
+                "hobbit": false,
+                "sealsker": false,
+                "vyncan": false,
+                "lizardmen": true,
+                "coven": true,
+                "rakshasa": true,
+                "icelord": true,
+                "amazon": false,
+                "ishtari": true,
+                "barbarian": false,
+                "klown": true,
+                "evil": true,
+                "good": false,
+                "undead": true,
+                "monster": true,
+                "beast": true,
+                "guild": false,
                 "vampire": true,
                 "demon": true
             }
@@ -1379,13 +1486,15 @@
                 "good": false,
                 "undead": true,
                 "monster": true,
+                "beast": true,
+                "wizardly": false,
                 "vampire": true,
                 "demon": true
             }
         }, {
             "name": "minossian",
             "color": "FFC0CB",
-            "player_default_standing": -5000,
+            "player_default_standing": -9000,
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -1422,6 +1531,8 @@
                 "good": true,
                 "undead": false,
                 "monster": false,
+                "beast": false,
+                "wizardly": true,
                 "vampire": false,
                 "demon": false
             },
@@ -1468,6 +1579,8 @@
                 "good": false,
                 "undead": true,
                 "monster": true,
+                "beast": true,
+                "wizardly": false,
                 "vampire": true,
                 "demon": true
             }
@@ -1511,6 +1624,8 @@
                 "good": false,
                 "undead": true,
                 "monster": true,
+                "beast": true,
+                "wizardly": false,
                 "vampire": true,
                 "demon": true
             }
@@ -1554,13 +1669,15 @@
                 "good": false,
                 "undead": true,
                 "monster": true,
+                "beast": true,
+                "wizardly": false,
                 "vampire": true,
                 "demon": true
             }
         }, {
             "name": "monster",
             "color": "FFC0CB",
-            "player_default_standing": -5000,
+            "player_default_standing": -9000,
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -1598,6 +1715,56 @@
                 "good": true,
                 "undead": false,
                 "vampire": false,
+                "beast": false,
+                "wizardly": true,
+                "demon": false
+            },
+            "targets": {
+                "lists": ["friendly"]
+            }
+        }, {
+            "name": "beast",
+            "color": "FFC0CB",
+            "player_default_standing": -9000,
+            "hostile_towards_factions": {
+                "empire": true,
+                "norska": true,
+                "sarkonid": true,
+                "xoltec": false,
+                "witchbane": true,
+                "nogg": true,
+                "buffloka": true,
+                "zimba": true,
+                "kong": false,
+                "orc": false,
+                "brigand": false,
+                "pirate": false,
+                "elf": true,
+                "dwarf": true,
+                "hobbit": true,
+                "ent": true,
+                "gnome": true,
+                "gremlin": false,
+                "giant": true,
+                "smingol": true,
+                "minossian": false,
+                "guild": true,
+                "sealsker": true,
+                "vyncan": true,
+                "lizardmen": false,
+                "coven": false,
+                "rakshasa": false,
+                "icelord": false,
+                "amazon": true,
+                "ishtari": false,
+                "barbarian": true,
+                "klown": false,
+                "evil": false,
+                "good": true,
+                "undead": false,
+                "vampire": false,
+                "monster": false,
+                "wizardly": true,
                 "demon": false
             },
             "targets": {
@@ -1643,6 +1810,8 @@
                 "good": false,
                 "undead": true,
                 "monster": true,
+                "beast": true,
+                "wizardly": false,
                 "vampire": true,
                 "demon": true
             }
@@ -1686,13 +1855,15 @@
                 "good": false,
                 "undead": true,
                 "monster": true,
+                "beast": true,
+                "wizardly": false,
                 "vampire": true,
                 "demon": true
             }
         }, {
             "name": "gremlin",
             "color": "FFC0CB",
-            "player_default_standing": -5000,
+            "player_default_standing": -9000,
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -1728,6 +1899,8 @@
                 "good": true,
                 "undead": false,
                 "monster": false,
+                "beast": false,
+                "wizardly": true,
                 "vampire": false,
                 "demon": false
             },
@@ -1737,7 +1910,7 @@
         }, {
             "name": "vampire",
             "color": "FFC0CB",
-            "player_default_standing": -5000,
+            "player_default_standing": -9000,
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -1773,6 +1946,8 @@
                 "good": true,
                 "undead": false,
                 "monster": false,
+                "beast": false,
+                "wizardly": true,
                 "gremlin": false,
                 "demon": false
             },
@@ -1782,7 +1957,7 @@
         }, {
             "name": "giant",
             "color": "FFC0CB",
-            "player_default_standing": -5000,
+            "player_default_standing": -9000,
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -1820,6 +1995,8 @@
                 "good": true,
                 "undead": true,
                 "vampire": true,
+                "beast": true,
+                "wizardly": true,
                 "demon": true
             },
             "targets": {
