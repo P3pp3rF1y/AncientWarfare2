@@ -46,7 +46,7 @@ public class AWNPCStatics extends ModConfiguration {
 	private Configuration foodConfig;
 	private static final String foodSettings = "01_food_settings";
 	private HashMap<String, Integer> foodValues;
-	private int foodMultiplier = 750;
+	private int foodMultiplier;
 
 	/* ********************************************FACTION STARTING VALUE SETTINGS************************************************ */
 	private Configuration factionConfig;
@@ -128,7 +128,7 @@ public class AWNPCStatics extends ModConfiguration {
 	}
 
 	private void loadFoodValues() {
-		foodMultiplier = foodConfig.getInt("Food Multiplier", "Default", foodMultiplier, 0, Integer.MAX_VALUE / 10, "Food items which don't have a custom duration time set will have their nourishing amount multiplied by this number, to get the number of ticks feeding the npc.");
+		foodMultiplier = foodConfig.getInt("Food Multiplier", "Default", 350, 0, Integer.MAX_VALUE / 10, "Food items which don't have a custom duration time set will have their nourishing amount multiplied by this number, to get the number of ticks feeding the npc.");
 		foodConfig.get(foodSettings, "minecraft:apple", 3000, "Example of a food usual tick duration. Default food multiplier included.");
 		foodConfig.get(foodSettings, "minecraft:mushroom_stew", 4500, "Example of a food usual tick duration. Default food multiplier included.");
 		foodConfig.get(foodSettings, "minecraft:rotten_flesh", 0, "Rotten flesh is a rejected food by default.");
@@ -157,7 +157,7 @@ public class AWNPCStatics extends ModConfiguration {
 		if (foodValues.containsKey(name)) {
 			return foodValues.get(name);
 		} else if (stack.getItem() instanceof ItemFood) {
-			return (((ItemFood) stack.getItem()).getHealAmount(stack) + (int)((ItemFood) stack.getItem()).getSaturationModifier(stack)) * foodMultiplier;
+			return ((((ItemFood) stack.getItem()).getHealAmount(stack)) + ((int)((((ItemFood) stack.getItem()).getSaturationModifier(stack))) * 10)) * foodMultiplier;
 		}
 		return 0;
 	}
