@@ -35,9 +35,8 @@ import java.util.stream.Collectors;
 
 public class GuiLootChestPlacer extends GuiContainerBase<ContainerLootChestPlacer> {
 	private static final int FORM_WIDTH = 300;
-	private static final int FORM_HEIGHT = 300;
+	private static final int FORM_HEIGHT = 240;
 
-	private Button selection;
 	private Checkbox setLootTable;
 	private Checkbox splashPotion;
 
@@ -47,6 +46,7 @@ public class GuiLootChestPlacer extends GuiContainerBase<ContainerLootChestPlace
 
 	@Override
 	public void initElements() {
+		//nothing to add here
 	}
 
 	private void setLootSettings(Consumer<LootSettings> setLootSetting) {
@@ -97,7 +97,7 @@ public class GuiLootChestPlacer extends GuiContainerBase<ContainerLootChestPlace
 	private int addSetLootTableElements(int totalHeight) {
 		int x = 28;
 
-		selection = new Button(x, totalHeight, 250, 12, getLootSetting(s -> s.getLootTableName().map(ResourceLocation::toString).orElse("")).orElse("")) {
+		Button selection = new Button(x, totalHeight, 250, 12, getLootSetting(s -> s.getLootTableName().map(ResourceLocation::toString).orElse("")).orElse("")) {
 			@Override
 			protected void onPressed() {
 				Minecraft.getMinecraft().displayGuiScreen(new GuiSelectFromList<>(GuiLootChestPlacer.this, text, s -> s,
@@ -174,12 +174,14 @@ public class GuiLootChestPlacer extends GuiContainerBase<ContainerLootChestPlace
 			super(parent, topLeftX, topLeftY, 230, 12);
 			potionEffect = effect;
 
+			//noinspection ConstantConditions
 			Button selectEffect = new Button(0, 0, 160, 12, potionEffect.getPotion().getRegistryName().toString()) {
 				@Override
 				protected void onPressed() {
 					Minecraft.getMinecraft().displayGuiScreen(new GuiSelectFromList<>(parent, text, s -> s,
-							() -> getEffectNames(), s -> {
+							PotionEffectElement.this::getEffectNames, s -> {
 						setText(s);
+						//noinspection ConstantConditions
 						potionEffect = new PotionEffect(Potion.REGISTRY.getObject(new ResourceLocation(s)), potionEffect.getDuration(), potionEffect.getAmplifier());
 						onEffectUpdated.accept(potionEffect);
 						parent.refreshGui();
@@ -188,7 +190,8 @@ public class GuiLootChestPlacer extends GuiContainerBase<ContainerLootChestPlace
 			};
 			addGuiElement(selectEffect);
 
-			NumberInput duration = new NumberInput(170, 0, 22, potionEffect.getDuration() / 20, parent) {
+			@SuppressWarnings("squid:S2184") //really just want to floor the value so no need to cast to float
+					NumberInput duration = new NumberInput(170, 0, 22, potionEffect.getDuration() / 20, parent) {
 				@Override
 				public void onValueUpdated(float value) {
 					potionEffect = new PotionEffect(potionEffect.getPotion(), (int) value * 20, potionEffect.getAmplifier());
