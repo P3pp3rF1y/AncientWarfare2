@@ -46,7 +46,9 @@ public class AWNPCStatics extends ModConfiguration {
 	private Configuration foodConfig;
 	private static final String foodSettings = "01_food_settings";
 	private HashMap<String, Integer> foodValues;
-	private int foodMultiplier;
+	private static int foodMultiplier;
+	private static int healAmount;
+	private static float saturationModifier;
 
 	/* ********************************************FACTION STARTING VALUE SETTINGS************************************************ */
 	private Configuration factionConfig;
@@ -157,7 +159,9 @@ public class AWNPCStatics extends ModConfiguration {
 		if (foodValues.containsKey(name)) {
 			return foodValues.get(name);
 		} else if (stack.getItem() instanceof ItemFood) {
-			return ((((ItemFood) stack.getItem()).getHealAmount(stack)) + ((int)((((ItemFood) stack.getItem()).getSaturationModifier(stack))) * 10)) * foodMultiplier;
+			healAmount = ((ItemFood) stack.getItem()).getHealAmount(stack);
+			saturationModifier = ((ItemFood) stack.getItem()).getSaturationModifier(stack);
+			return (healAmount *(int)(saturationModifier * 2F)) * foodMultiplier;
 		}
 		return 0;
 	}
