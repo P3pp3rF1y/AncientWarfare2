@@ -31,7 +31,7 @@ public class TemplateRuleBlockInventory extends TemplateRuleBlockTile {
 	private static final String LEGACY_FEATURES_TAG = "legacyFeatures";
 	private boolean legacyFeatures;
 	private int randomLootLevel;
-	private Map<EnumFacing, NonNullList<ItemStack>> inventoryStacks;
+	private Map<EnumFacing, NonNullList<ItemStack>> inventoryStacks = new HashMap<>();
 
 	public TemplateRuleBlockInventory() {
 		super();
@@ -189,9 +189,6 @@ public class TemplateRuleBlockInventory extends TemplateRuleBlockTile {
 
 	@SuppressWarnings("squid:S1640") //need to use a null key as well which is not supported in EnumMap
 	private void putInInventoryStacks(@Nullable EnumFacing side, NonNullList<ItemStack> stacks) {
-		if (inventoryStacks == null) {
-			inventoryStacks = new HashMap<>();
-		}
 		inventoryStacks.put(side, stacks);
 	}
 
