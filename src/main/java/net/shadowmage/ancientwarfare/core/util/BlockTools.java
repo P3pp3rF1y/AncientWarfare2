@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockHugeMushroom;
 import net.minecraft.block.BlockLever.EnumOrientation;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockRailBase.EnumRailDirection;
@@ -457,6 +458,39 @@ public class BlockTools {
 						case NORTH_EAST:
 						default:
 							return SOUTH_EAST;
+					}
+				}
+			})
+			.put(BlockHugeMushroom.EnumType.class, new IRotator<BlockHugeMushroom.EnumType>() {
+				@Override
+				public BlockHugeMushroom.EnumType rotateY(BlockHugeMushroom.EnumType facing, int turns) {
+					BlockHugeMushroom.EnumType rotatedFacing = facing;
+					for (int i = 0; i < turns; i++) {
+						rotatedFacing = rotateOnce(rotatedFacing);
+					}
+					return rotatedFacing;
+				}
+
+				private BlockHugeMushroom.EnumType rotateOnce(BlockHugeMushroom.EnumType rotatedFacing) {
+					switch (rotatedFacing) {
+						case NORTH_WEST:
+							return BlockHugeMushroom.EnumType.NORTH_EAST;
+						case NORTH_EAST:
+							return BlockHugeMushroom.EnumType.SOUTH_EAST;
+						case SOUTH_EAST:
+							return BlockHugeMushroom.EnumType.SOUTH_WEST;
+						case SOUTH_WEST:
+							return BlockHugeMushroom.EnumType.NORTH_WEST;
+						case NORTH:
+							return BlockHugeMushroom.EnumType.EAST;
+						case EAST:
+							return BlockHugeMushroom.EnumType.SOUTH;
+						case SOUTH:
+							return BlockHugeMushroom.EnumType.WEST;
+						case WEST:
+							return BlockHugeMushroom.EnumType.NORTH;
+						default:
+							return rotatedFacing;
 					}
 				}
 			})
