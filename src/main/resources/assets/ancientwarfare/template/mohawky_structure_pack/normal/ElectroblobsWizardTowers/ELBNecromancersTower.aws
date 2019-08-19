@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 12/22/2018 at: 8:36:50
+# Auto-generated structure template file. created on: 8/19/2019 at: 10:23:17
 # Lines beginning with # denote comments
 
 header:
-version=2.8
+version=2.9
 name=ELBNecromancersTower
 mods=ebwizardry
 size=41,110,43
@@ -20,8 +20,8 @@ preserveBlocks=false
 selectionWeight=50
 clusterValue=50
 minDuplicateDistance=1000
-dimensionWhiteList=false
-dimensionList=
+dimensionWhiteList=true
+dimensionList=0
 biomeWhiteList=true
 biomeList=minecraft:swampland,minecraft:roofed_forest,biomesoplenty:grove,biomesoplenty:bayou,biomesoplenty:dead_swamp,biomesoplenty:dead_forest,biomesoplenty:moor,biomesoplenty:ominous_woods,biomesoplenty:gravel_beach,minecraft:smaller_extreme_hills,biomesoplenty:mangrove
 leveling=12
@@ -5451,7 +5451,7 @@ rule:
 plugin=blockTile
 number=59
 data:
-JSON:{blockState:{blockName:"eplus:advanced_table"},teData:{InvList:[],id:"minecraft:eplus.advanced.table"}}
+JSON:{blockState:{blockName:"minecraft:air"},teData:{InvList:[],id:"minecraft:eplus.advanced.table"}}
 :enddata
 :endrule
 
@@ -5627,7 +5627,7 @@ rule:
 plugin=inventory
 number=81
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},lootLevel:0,teData:{ForgeData:{},Items:[{Slot:1b,id:"birdsnests:birdsnest",Count:1b,Damage:0s},{Slot:3b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},Damage:0s},{Slot:5b,id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"copper"},Damage:0s},{Slot:9b,id:"birdsnests:birdsnest",Count:1b,Damage:0s},{Slot:10b,id:"birdsnests:birdsnest",Count:1b,Damage:0s},{Slot:11b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},Damage:0s},{Slot:12b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"silver"},Damage:0s},{Slot:13b,id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"copper"},Damage:0s},{Slot:14b,id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"copper"},Damage:0s},{Slot:15b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"copper"},Damage:0s},{Slot:16b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},Damage:0s},{Slot:17b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},Damage:0s},{Slot:18b,id:"birdsnests:birdsnest",Count:1b,Damage:0s},{Slot:20b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},Damage:0s},{Slot:21b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},Damage:0s},{Slot:23b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:16,inventoryContents:[{id:"birdsnests:birdsnest",Count:1b,slot:0,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},slot:1,Damage:0s},{id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"copper"},slot:2,Damage:0s},{id:"birdsnests:birdsnest",Count:1b,slot:3,Damage:0s},{id:"birdsnests:birdsnest",Count:1b,slot:4,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},slot:5,Damage:0s},{id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"silver"},slot:6,Damage:0s},{id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"copper"},slot:7,Damage:0s},{id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"copper"},slot:8,Damage:0s},{id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"copper"},slot:9,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},slot:10,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},slot:11,Damage:0s},{id:"birdsnests:birdsnest",Count:1b,slot:12,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},slot:13,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},slot:14,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},slot:15,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},lootLevel:0,teData:{ForgeData:{},Items:[{Slot:1b,id:"birdsnests:birdsnest",Count:1b,Damage:0s},{Slot:3b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},Damage:0s},{Slot:5b,id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"copper"},Damage:0s},{Slot:9b,id:"birdsnests:birdsnest",Count:1b,Damage:0s},{Slot:10b,id:"birdsnests:birdsnest",Count:1b,Damage:0s},{Slot:11b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},Damage:0s},{Slot:12b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"silver"},Damage:0s},{Slot:13b,id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"copper"},Damage:0s},{Slot:14b,id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"copper"},Damage:0s},{Slot:15b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"copper"},Damage:0s},{Slot:16b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},Damage:0s},{Slot:17b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},Damage:0s},{Slot:18b,id:"birdsnests:birdsnest",Count:1b,Damage:0s},{Slot:20b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},Damage:0s},{Slot:21b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},Damage:0s},{Slot:23b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:16,inventoryContents:[{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},slot:1,Damage:0s},{id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"copper"},slot:2,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},slot:5,Damage:0s},{id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"silver"},slot:6,Damage:0s},{id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"copper"},slot:7,Damage:0s},{id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"copper"},slot:8,Damage:0s},{id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"copper"},slot:9,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},slot:10,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},slot:11,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},slot:13,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},slot:14,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},slot:15,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -5891,7 +5891,7 @@ rule:
 plugin=blockTile
 number=114
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"ebwizardry:chests/wizard_tower",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-4237286463312554042L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"ebwizardry:chests/wizard_tower",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"ebwizardry:chests/wizard_tower",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-4237286463312554042L}}
 :enddata
 :endrule
 
@@ -5899,7 +5899,7 @@ rule:
 plugin=blockTile
 number=115
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{ForgeData:{},Items:[{Slot:3b,id:"ebwizardry:scroll",Count:1b,Damage:12s},{Slot:10b,id:"ebwizardry:spell_book",Count:1b,Damage:113s},{Slot:16b,id:"ebwizardry:arcane_tome",Count:1b,Damage:2s},{Slot:18b,id:"ebwizardry:identification_scroll",Count:1b,Damage:0s},{Slot:19b,id:"ebwizardry:spell_book",Count:1b,Damage:47s},{Slot:23b,id:"ebwizardry:cooldown_upgrade",Count:1b,Damage:0s},{Slot:25b,id:"ebwizardry:spell_book",Count:1b,Damage:90s}],id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:""}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{ForgeData:{},lootSettings:{lootRolls:0,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:",spawnEntity:0b},Items:[{Slot:3b,id:"ebwizardry:scroll",Count:1b,Damage:12s},{Slot:10b,id:"ebwizardry:spell_book",Count:1b,Damage:113s},{Slot:16b,id:"ebwizardry:arcane_tome",Count:1b,Damage:2s},{Slot:18b,id:"ebwizardry:identification_scroll",Count:1b,Damage:0s},{Slot:19b,id:"ebwizardry:spell_book",Count:1b,Damage:47s},{Slot:23b,id:"ebwizardry:cooldown_upgrade",Count:1b,Damage:0s},{Slot:25b,id:"ebwizardry:spell_book",Count:1b,Damage:90s}],id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:""}}
 :enddata
 :endrule
 

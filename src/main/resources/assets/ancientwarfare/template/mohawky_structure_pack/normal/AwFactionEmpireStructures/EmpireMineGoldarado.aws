@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 1/4/2019 at: 11:46:33
+# Auto-generated structure template file. created on: 8/19/2019 at: 10:23:10
 # Lines beginning with # denote comments
 
 header:
-version=2.8
+version=2.9
 name=EmpireMineGoldarado
 mods=
 size=47,67,37
@@ -3482,7 +3482,7 @@ rule:
 plugin=vanillaSign
 number=105
 data:
-JSON:{signContents0:"Prison§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"Askyerdad§r",signContents1:"of§r",signContents3:"",rotation:0}
+JSON:{signContents0:"Prison§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"Askyerdad§r§r",signContents1:"of§r§r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -4138,7 +4138,7 @@ rule:
 plugin=vanillaSign
 number=187
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"Mine§r",signContents1:"Goldorado§r",signContents3:"",rotation:0}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"Mine§r§r",signContents1:"Goldorado§r§r",signContents3:"",rotation:0}
 :enddata
 :endrule
 

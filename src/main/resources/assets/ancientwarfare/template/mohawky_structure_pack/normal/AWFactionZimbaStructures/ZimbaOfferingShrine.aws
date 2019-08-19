@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 11/23/2018 at: 8:54:49
+# Auto-generated structure template file. created on: 8/19/2019 at: 10:23:17
 # Lines beginning with # denote comments
 
 header:
-version=2.7
+version=2.9
 name=ZimbaOfferingShrine
 mods=
 size=6,19,7
@@ -20,16 +20,14 @@ preserveBlocks=false
 selectionWeight=30
 clusterValue=10
 minDuplicateDistance=900
-dimensionWhiteList=false
-dimensionList=
+dimensionWhiteList=true
+dimensionList=0
 biomeWhiteList=true
 biomeList=minecraft:savanna
 leveling=2
 fill=2
 border=2
 blockSwap=false
-data:
-:enddata
 :endvalidation
 
 #### LAYERS ####
@@ -210,7 +208,7 @@ rule:
 plugin=vanillaBlocks
 number=1
 data:
-JSON:{blockState:{blockName:"minecraft:cobblestone",properties:{}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:cobblestone"}}
 :enddata
 :endrule
 
@@ -218,7 +216,7 @@ rule:
 plugin=vanillaBlocks
 number=2
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"west"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"west"}}}
 :enddata
 :endrule
 
@@ -226,7 +224,7 @@ rule:
 plugin=vanillaBlocks
 number=3
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"north"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"north"}}}
 :enddata
 :endrule
 
@@ -234,7 +232,7 @@ rule:
 plugin=vanillaBlocks
 number=4
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"south"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"south"}}}
 :enddata
 :endrule
 
@@ -242,7 +240,7 @@ rule:
 plugin=vanillaBlocks
 number=5
 data:
-JSON:{blockState:{blockName:"minecraft:stonebrick",properties:{variant:"stonebrick"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stonebrick",properties:{variant:"stonebrick"}}}
 :enddata
 :endrule
 
@@ -250,7 +248,7 @@ rule:
 plugin=vanillaBlocks
 number=6
 data:
-JSON:{blockState:{blockName:"minecraft:obsidian",properties:{}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:obsidian"}}
 :enddata
 :endrule
 
@@ -258,7 +256,7 @@ rule:
 plugin=vanillaBlocks
 number=7
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"east"}}}
 :enddata
 :endrule
 
@@ -266,7 +264,7 @@ rule:
 plugin=vanillaBlocks
 number=8
 data:
-JSON:{blockState:{blockName:"minecraft:acacia_stairs",properties:{half:"bottom",shape:"straight",facing:"north"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:acacia_stairs",properties:{half:"bottom",shape:"straight",facing:"north"}}}
 :enddata
 :endrule
 
@@ -274,7 +272,7 @@ rule:
 plugin=blockTile
 number=9
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:9,spawnDelay:121,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"zimba"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.mounted_archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:12,transparent:0b,maxDelay:900,xpToDrop:50,mobRange:16,debugMode:0b,maxNearbyMonsters:16}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:9,spawnDelay:121,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"zimba"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.mounted_archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:12,transparent:0b,maxDelay:900,xpToDrop:50,mobRange:16,debugMode:0b,maxNearbyMonsters:16}}}
 :enddata
 :endrule
 
@@ -282,7 +280,7 @@ rule:
 plugin=blockTile
 number=10
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:9,spawnDelay:203,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"zimba"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.cavalry",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:12,transparent:0b,maxDelay:900,xpToDrop:60,mobRange:16,debugMode:0b,maxNearbyMonsters:16}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:9,spawnDelay:203,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"zimba"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.cavalry",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:12,transparent:0b,maxDelay:900,xpToDrop:60,mobRange:16,debugMode:0b,maxNearbyMonsters:16}}}
 :enddata
 :endrule
 
@@ -290,7 +288,7 @@ rule:
 plugin=inventory
 number=11
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{Items:[{Slot:0b,id:"minecraft:wheat",Count:2b,Damage:0s},{Slot:2b,id:"minecraft:leather",Count:1b,Damage:0s},{Slot:3b,id:"minecraft:leather",Count:1b,Damage:0s},{Slot:4b,id:"minecraft:leather",Count:1b,Damage:0s},{Slot:7b,id:"minecraft:leather",Count:1b,Damage:0s},{Slot:9b,id:"minecraft:wheat",Count:2b,Damage:0s},{Slot:10b,id:"minecraft:leather",Count:2b,Damage:0s},{Slot:11b,id:"minecraft:leather",Count:2b,Damage:0s},{Slot:13b,id:"minecraft:leather",Count:1b,Damage:0s},{Slot:14b,id:"minecraft:leather",Count:1b,Damage:0s},{Slot:15b,id:"minecraft:leather",Count:1b,Damage:0s},{Slot:17b,id:"minecraft:wheat",Count:3b,Damage:0s},{Slot:18b,id:"minecraft:wheat",Count:2b,Damage:0s},{Slot:19b,id:"minecraft:leather",Count:1b,Damage:0s},{Slot:21b,id:"minecraft:beef",Count:1b,Damage:0s},{Slot:22b,id:"minecraft:beef",Count:1b,Damage:0s},{Slot:23b,id:"minecraft:beef",Count:1b,Damage:0s},{Slot:24b,id:"minecraft:beef",Count:1b,Damage:0s},{Slot:26b,id:"minecraft:wheat",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:19,inventoryContents:[{id:"minecraft:wheat",Count:2b,slot:0,Damage:0s},{id:"minecraft:leather",Count:1b,slot:1,Damage:0s},{id:"minecraft:leather",Count:1b,slot:2,Damage:0s},{id:"minecraft:leather",Count:1b,slot:3,Damage:0s},{id:"minecraft:leather",Count:1b,slot:4,Damage:0s},{id:"minecraft:wheat",Count:2b,slot:5,Damage:0s},{id:"minecraft:leather",Count:2b,slot:6,Damage:0s},{id:"minecraft:leather",Count:2b,slot:7,Damage:0s},{id:"minecraft:leather",Count:1b,slot:8,Damage:0s},{id:"minecraft:leather",Count:1b,slot:9,Damage:0s},{id:"minecraft:leather",Count:1b,slot:10,Damage:0s},{id:"minecraft:wheat",Count:3b,slot:11,Damage:0s},{id:"minecraft:wheat",Count:2b,slot:12,Damage:0s},{id:"minecraft:leather",Count:1b,slot:13,Damage:0s},{id:"minecraft:beef",Count:1b,slot:14,Damage:0s},{id:"minecraft:beef",Count:1b,slot:15,Damage:0s},{id:"minecraft:beef",Count:1b,slot:16,Damage:0s},{id:"minecraft:beef",Count:1b,slot:17,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:18,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},lootLevel:0,teData:{Items:[{Slot:0b,id:"minecraft:wheat",Count:2b,Damage:0s},{Slot:2b,id:"minecraft:leather",Count:1b,Damage:0s},{Slot:3b,id:"minecraft:leather",Count:1b,Damage:0s},{Slot:4b,id:"minecraft:leather",Count:1b,Damage:0s},{Slot:7b,id:"minecraft:leather",Count:1b,Damage:0s},{Slot:9b,id:"minecraft:wheat",Count:2b,Damage:0s},{Slot:10b,id:"minecraft:leather",Count:2b,Damage:0s},{Slot:11b,id:"minecraft:leather",Count:2b,Damage:0s},{Slot:13b,id:"minecraft:leather",Count:1b,Damage:0s},{Slot:14b,id:"minecraft:leather",Count:1b,Damage:0s},{Slot:15b,id:"minecraft:leather",Count:1b,Damage:0s},{Slot:17b,id:"minecraft:wheat",Count:3b,Damage:0s},{Slot:18b,id:"minecraft:wheat",Count:2b,Damage:0s},{Slot:19b,id:"minecraft:leather",Count:1b,Damage:0s},{Slot:21b,id:"minecraft:beef",Count:1b,Damage:0s},{Slot:22b,id:"minecraft:beef",Count:1b,Damage:0s},{Slot:23b,id:"minecraft:beef",Count:1b,Damage:0s},{Slot:24b,id:"minecraft:beef",Count:1b,Damage:0s},{Slot:26b,id:"minecraft:wheat",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:19,inventoryContents:[{id:"minecraft:wheat",Count:2b,slot:0,Damage:0s},{id:"minecraft:leather",Count:1b,slot:1,Damage:0s},{id:"minecraft:leather",Count:1b,slot:2,Damage:0s},{id:"minecraft:leather",Count:1b,slot:3,Damage:0s},{id:"minecraft:leather",Count:1b,slot:4,Damage:0s},{id:"minecraft:wheat",Count:2b,slot:5,Damage:0s},{id:"minecraft:leather",Count:2b,slot:6,Damage:0s},{id:"minecraft:leather",Count:2b,slot:7,Damage:0s},{id:"minecraft:leather",Count:1b,slot:8,Damage:0s},{id:"minecraft:leather",Count:1b,slot:9,Damage:0s},{id:"minecraft:leather",Count:1b,slot:10,Damage:0s},{id:"minecraft:wheat",Count:3b,slot:11,Damage:0s},{id:"minecraft:wheat",Count:2b,slot:12,Damage:0s},{id:"minecraft:leather",Count:1b,slot:13,Damage:0s},{id:"minecraft:beef",Count:1b,slot:14,Damage:0s},{id:"minecraft:beef",Count:1b,slot:15,Damage:0s},{id:"minecraft:beef",Count:1b,slot:16,Damage:0s},{id:"minecraft:beef",Count:1b,slot:17,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:18,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -298,7 +296,7 @@ rule:
 plugin=inventory
 number=12
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{ForgeData:{},Items:[{Slot:0b,id:"minecraft:wheat",Count:2b,Damage:0s},{Slot:1b,id:"minecraft:wheat",Count:1b,Damage:0s},{Slot:3b,id:"minecraft:beef",Count:1b,Damage:0s},{Slot:4b,id:"minecraft:beef",Count:1b,Damage:0s},{Slot:5b,id:"minecraft:beef",Count:1b,Damage:0s},{Slot:6b,id:"minecraft:beef",Count:1b,Damage:0s},{Slot:7b,id:"minecraft:wheat",Count:2b,Damage:0s},{Slot:9b,id:"minecraft:wheat",Count:1b,Damage:0s},{Slot:10b,id:"minecraft:wheat",Count:2b,Damage:0s},{Slot:11b,id:"minecraft:beef",Count:1b,Damage:0s},{Slot:12b,id:"minecraft:beef",Count:1b,Damage:0s},{Slot:13b,id:"minecraft:beef",Count:2b,Damage:0s},{Slot:16b,id:"minecraft:wheat",Count:2b,Damage:0s},{Slot:18b,id:"minecraft:wheat",Count:1b,Damage:0s},{Slot:19b,id:"minecraft:wheat",Count:1b,Damage:0s},{Slot:20b,id:"minecraft:beef",Count:1b,Damage:0s},{Slot:22b,id:"minecraft:beef",Count:1b,Damage:0s},{Slot:24b,id:"minecraft:wheat",Count:1b,Damage:0s},{Slot:25b,id:"minecraft:wheat",Count:1b,Damage:0s},{Slot:26b,id:"minecraft:wheat",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:20,inventoryContents:[{id:"minecraft:wheat",Count:2b,slot:0,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:1,Damage:0s},{id:"minecraft:beef",Count:1b,slot:2,Damage:0s},{id:"minecraft:beef",Count:1b,slot:3,Damage:0s},{id:"minecraft:beef",Count:1b,slot:4,Damage:0s},{id:"minecraft:beef",Count:1b,slot:5,Damage:0s},{id:"minecraft:wheat",Count:2b,slot:6,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:7,Damage:0s},{id:"minecraft:wheat",Count:2b,slot:8,Damage:0s},{id:"minecraft:beef",Count:1b,slot:9,Damage:0s},{id:"minecraft:beef",Count:1b,slot:10,Damage:0s},{id:"minecraft:beef",Count:2b,slot:11,Damage:0s},{id:"minecraft:wheat",Count:2b,slot:12,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:13,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:14,Damage:0s},{id:"minecraft:beef",Count:1b,slot:15,Damage:0s},{id:"minecraft:beef",Count:1b,slot:16,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:17,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:18,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:19,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},lootLevel:0,teData:{ForgeData:{},Items:[{Slot:0b,id:"minecraft:wheat",Count:2b,Damage:0s},{Slot:1b,id:"minecraft:wheat",Count:1b,Damage:0s},{Slot:3b,id:"minecraft:beef",Count:1b,Damage:0s},{Slot:4b,id:"minecraft:beef",Count:1b,Damage:0s},{Slot:5b,id:"minecraft:beef",Count:1b,Damage:0s},{Slot:6b,id:"minecraft:beef",Count:1b,Damage:0s},{Slot:7b,id:"minecraft:wheat",Count:2b,Damage:0s},{Slot:9b,id:"minecraft:wheat",Count:1b,Damage:0s},{Slot:10b,id:"minecraft:wheat",Count:2b,Damage:0s},{Slot:11b,id:"minecraft:beef",Count:1b,Damage:0s},{Slot:12b,id:"minecraft:beef",Count:1b,Damage:0s},{Slot:13b,id:"minecraft:beef",Count:2b,Damage:0s},{Slot:16b,id:"minecraft:wheat",Count:2b,Damage:0s},{Slot:18b,id:"minecraft:wheat",Count:1b,Damage:0s},{Slot:19b,id:"minecraft:wheat",Count:1b,Damage:0s},{Slot:20b,id:"minecraft:beef",Count:1b,Damage:0s},{Slot:22b,id:"minecraft:beef",Count:1b,Damage:0s},{Slot:24b,id:"minecraft:wheat",Count:1b,Damage:0s},{Slot:25b,id:"minecraft:wheat",Count:1b,Damage:0s},{Slot:26b,id:"minecraft:wheat",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:20,inventoryContents:[{id:"minecraft:wheat",Count:2b,slot:0,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:1,Damage:0s},{id:"minecraft:beef",Count:1b,slot:2,Damage:0s},{id:"minecraft:beef",Count:1b,slot:3,Damage:0s},{id:"minecraft:beef",Count:1b,slot:4,Damage:0s},{id:"minecraft:beef",Count:1b,slot:5,Damage:0s},{id:"minecraft:wheat",Count:2b,slot:6,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:7,Damage:0s},{id:"minecraft:wheat",Count:2b,slot:8,Damage:0s},{id:"minecraft:beef",Count:1b,slot:9,Damage:0s},{id:"minecraft:beef",Count:1b,slot:10,Damage:0s},{id:"minecraft:beef",Count:2b,slot:11,Damage:0s},{id:"minecraft:wheat",Count:2b,slot:12,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:13,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:14,Damage:0s},{id:"minecraft:beef",Count:1b,slot:15,Damage:0s},{id:"minecraft:beef",Count:1b,slot:16,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:17,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:18,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:19,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -306,7 +304,7 @@ rule:
 plugin=vanillaBlocks
 number=13
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"south"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"south"}}}
 :enddata
 :endrule
 
@@ -314,7 +312,7 @@ rule:
 plugin=vanillaBlocks
 number=14
 data:
-JSON:{blockState:{blockName:"minecraft:stone_slab",properties:{half:"bottom",variant:"stone_brick"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_slab",properties:{half:"bottom",variant:"stone_brick"}}}
 :enddata
 :endrule
 
@@ -322,7 +320,7 @@ rule:
 plugin=vanillaBlocks
 number=15
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"west"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"west"}}}
 :enddata
 :endrule
 
@@ -330,7 +328,7 @@ rule:
 plugin=vanillaBlocks
 number=16
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"east"}}}
 :enddata
 :endrule
 
@@ -338,7 +336,7 @@ rule:
 plugin=vanillaBlocks
 number=17
 data:
-JSON:{blockState:{blockName:"minecraft:stone_slab",properties:{half:"top",variant:"stone_brick"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_slab",properties:{half:"top",variant:"stone_brick"}}}
 :enddata
 :endrule
 
@@ -346,7 +344,7 @@ rule:
 plugin=vanillaBlocks
 number=18
 data:
-JSON:{blockState:{blockName:"minecraft:acacia_stairs",properties:{half:"top",shape:"straight",facing:"north"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:acacia_stairs",properties:{half:"top",shape:"straight",facing:"north"}}}
 :enddata
 :endrule
 
@@ -354,7 +352,7 @@ rule:
 plugin=vanillaBlocks
 number=19
 data:
-JSON:{blockState:{blockName:"minecraft:stone_stairs",properties:{half:"top",shape:"straight",facing:"west"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_stairs",properties:{half:"top",shape:"straight",facing:"west"}}}
 :enddata
 :endrule
 
@@ -362,7 +360,7 @@ rule:
 plugin=vanillaBlocks
 number=20
 data:
-JSON:{blockState:{blockName:"minecraft:stone_stairs",properties:{half:"top",shape:"straight",facing:"north"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_stairs",properties:{half:"top",shape:"straight",facing:"north"}}}
 :enddata
 :endrule
 
@@ -370,7 +368,7 @@ rule:
 plugin=vanillaBlocks
 number=21
 data:
-JSON:{blockState:{blockName:"minecraft:stone_stairs",properties:{half:"top",shape:"straight",facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_stairs",properties:{half:"top",shape:"straight",facing:"east"}}}
 :enddata
 :endrule
 
@@ -378,7 +376,7 @@ rule:
 plugin=vanillaBlocks
 number=22
 data:
-JSON:{blockState:{blockName:"minecraft:wooden_button",properties:{powered:"false",facing:"south"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:wooden_button",properties:{powered:"false",facing:"south"}}}
 :enddata
 :endrule
 
@@ -386,7 +384,7 @@ rule:
 plugin=vanillaBlocks
 number=23
 data:
-JSON:{blockState:{blockName:"minecraft:wooden_slab",properties:{half:"bottom",variant:"acacia"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:wooden_slab",properties:{half:"bottom",variant:"acacia"}}}
 :enddata
 :endrule
 

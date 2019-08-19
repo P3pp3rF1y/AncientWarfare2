@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 11/21/2018 at: 14:58:23
+# Auto-generated structure template file. created on: 8/19/2019 at: 10:23:18
 # Lines beginning with # denote comments
 
 header:
-version=2.7
+version=2.9
 name=GOGMinotaurLair
 mods=grimoireofgaia
 size=42,38,42
@@ -20,16 +20,14 @@ preserveBlocks=false
 selectionWeight=30
 clusterValue=50
 minDuplicateDistance=1000
-dimensionWhiteList=false
-dimensionList=
+dimensionWhiteList=true
+dimensionList=0
 biomeWhiteList=true
-biomeList=traverse:badlands,minecraft:swampland,biomesoplenty:meadow,biomesoplenty:shrubland,minecraft:roofed_forest,biomesoplenty:bayou,biomesoplenty:dead_forest,traverse:woodlands,minecraft:forest,traverse:badlands,minecraft:mutated_swampland,biomesoplenty:lavender_fields,biomesoplenty:dead_swamp,biomesoplenty:tropical_island,traverse:rocky_plains,minecraft:ice_flats,minecraft:savanna,biomesoplenty:steppe,minecraft:plains
+biomeList=minecraft:swampland,biomesoplenty:meadow,biomesoplenty:shrubland,minecraft:roofed_forest,biomesoplenty:bayou,biomesoplenty:dead_forest,traverse:woodlands,minecraft:forest,traverse:badlands,minecraft:mutated_swampland,biomesoplenty:lavender_fields,biomesoplenty:dead_swamp,biomesoplenty:tropical_island,traverse:rocky_plains,minecraft:ice_flats,minecraft:savanna,biomesoplenty:steppe,minecraft:plains
 leveling=5
 fill=2
 border=5
 blockSwap=true
-data:
-:enddata
 :endvalidation
 
 #### LAYERS ####
@@ -1711,7 +1709,7 @@ rule:
 plugin=vanillaBlocks
 number=1
 data:
-JSON:{blockState:{blockName:"minecraft:stonebrick",properties:{variant:"stonebrick"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stonebrick",properties:{variant:"stonebrick"}}}
 :enddata
 :endrule
 
@@ -1719,7 +1717,7 @@ rule:
 plugin=blockTile
 number=2
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:skeleton",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:skeleton",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -1727,7 +1725,7 @@ rule:
 plugin=vanillaBlocks
 number=3
 data:
-JSON:{blockState:{blockName:"minecraft:stonebrick",properties:{variant:"cracked_stonebrick"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stonebrick",properties:{variant:"cracked_stonebrick"}}}
 :enddata
 :endrule
 
@@ -1735,7 +1733,7 @@ rule:
 plugin=vanillaBlocks
 number=4
 data:
-JSON:{blockState:{blockName:"minecraft:stonebrick",properties:{variant:"mossy_stonebrick"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stonebrick",properties:{variant:"mossy_stonebrick"}}}
 :enddata
 :endrule
 
@@ -1743,7 +1741,7 @@ rule:
 plugin=inventory
 number=5
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{ForgeData:{},Items:[{Slot:1b,id:"ancientwarfarenpc:coin",Count:6b,tag:{metal:"gold"},Damage:0s},{Slot:2b,id:"minecraft:gunpowder",Count:4b,Damage:0s},{Slot:4b,id:"minecraft:bone",Count:3b,Damage:0s},{Slot:5b,id:"minecraft:bone",Count:1b,Damage:0s},{Slot:7b,id:"minecraft:gunpowder",Count:4b,Damage:0s},{Slot:8b,id:"minecraft:spider_eye",Count:4b,Damage:0s},{Slot:9b,id:"minecraft:redstone",Count:2b,Damage:0s},{Slot:12b,id:"minecraft:brown_mushroom",Count:4b,Damage:0s},{Slot:14b,id:"minecraft:bone",Count:2b,Damage:0s},{Slot:15b,id:"minecraft:bone",Count:2b,Damage:0s},{Slot:16b,id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"silver"},Damage:0s},{Slot:18b,id:"minecraft:saddle",Count:1b,Damage:0s},{Slot:20b,id:"minecraft:bread",Count:1b,Damage:0s},{Slot:21b,id:"minecraft:string",Count:13b,Damage:0s},{Slot:22b,id:"minecraft:slime_ball",Count:4b,Damage:0s},{Slot:24b,id:"minecraft:bone",Count:3b,Damage:0s},{Slot:25b,id:"minecraft:coal",Count:2b,Damage:0s},{Slot:26b,id:"minecraft:red_mushroom",Count:4b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:18,inventoryContents:[{id:"ancientwarfarenpc:coin",Count:6b,tag:{metal:"gold"},slot:0,Damage:0s},{id:"minecraft:gunpowder",Count:4b,slot:1,Damage:0s},{id:"minecraft:bone",Count:3b,slot:2,Damage:0s},{id:"minecraft:bone",Count:1b,slot:3,Damage:0s},{id:"minecraft:gunpowder",Count:4b,slot:4,Damage:0s},{id:"minecraft:spider_eye",Count:4b,slot:5,Damage:0s},{id:"minecraft:redstone",Count:2b,slot:6,Damage:0s},{id:"minecraft:brown_mushroom",Count:4b,slot:7,Damage:0s},{id:"minecraft:bone",Count:2b,slot:8,Damage:0s},{id:"minecraft:bone",Count:2b,slot:9,Damage:0s},{id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"silver"},slot:10,Damage:0s},{id:"minecraft:saddle",Count:1b,slot:11,Damage:0s},{id:"minecraft:bread",Count:1b,slot:12,Damage:0s},{id:"minecraft:string",Count:13b,slot:13,Damage:0s},{id:"minecraft:slime_ball",Count:4b,slot:14,Damage:0s},{id:"minecraft:bone",Count:3b,slot:15,Damage:0s},{id:"minecraft:coal",Count:2b,slot:16,Damage:0s},{id:"minecraft:red_mushroom",Count:4b,slot:17,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},lootLevel:0,teData:{ForgeData:{},Items:[{Slot:1b,id:"ancientwarfarenpc:coin",Count:6b,tag:{metal:"gold"},Damage:0s},{Slot:2b,id:"minecraft:gunpowder",Count:4b,Damage:0s},{Slot:4b,id:"minecraft:bone",Count:3b,Damage:0s},{Slot:5b,id:"minecraft:bone",Count:1b,Damage:0s},{Slot:7b,id:"minecraft:gunpowder",Count:4b,Damage:0s},{Slot:8b,id:"minecraft:spider_eye",Count:4b,Damage:0s},{Slot:9b,id:"minecraft:redstone",Count:2b,Damage:0s},{Slot:12b,id:"minecraft:brown_mushroom",Count:4b,Damage:0s},{Slot:14b,id:"minecraft:bone",Count:2b,Damage:0s},{Slot:15b,id:"minecraft:bone",Count:2b,Damage:0s},{Slot:16b,id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"silver"},Damage:0s},{Slot:18b,id:"minecraft:saddle",Count:1b,Damage:0s},{Slot:20b,id:"minecraft:bread",Count:1b,Damage:0s},{Slot:21b,id:"minecraft:string",Count:13b,Damage:0s},{Slot:22b,id:"minecraft:slime_ball",Count:4b,Damage:0s},{Slot:24b,id:"minecraft:bone",Count:3b,Damage:0s},{Slot:25b,id:"minecraft:coal",Count:2b,Damage:0s},{Slot:26b,id:"minecraft:red_mushroom",Count:4b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:18,inventoryContents:[{id:"ancientwarfarenpc:coin",Count:6b,tag:{metal:"gold"},slot:0,Damage:0s},{id:"minecraft:gunpowder",Count:4b,slot:1,Damage:0s},{id:"minecraft:bone",Count:3b,slot:2,Damage:0s},{id:"minecraft:bone",Count:1b,slot:3,Damage:0s},{id:"minecraft:gunpowder",Count:4b,slot:4,Damage:0s},{id:"minecraft:spider_eye",Count:4b,slot:5,Damage:0s},{id:"minecraft:redstone",Count:2b,slot:6,Damage:0s},{id:"minecraft:brown_mushroom",Count:4b,slot:7,Damage:0s},{id:"minecraft:bone",Count:2b,slot:8,Damage:0s},{id:"minecraft:bone",Count:2b,slot:9,Damage:0s},{id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"silver"},slot:10,Damage:0s},{id:"minecraft:saddle",Count:1b,slot:11,Damage:0s},{id:"minecraft:bread",Count:1b,slot:12,Damage:0s},{id:"minecraft:string",Count:13b,slot:13,Damage:0s},{id:"minecraft:slime_ball",Count:4b,slot:14,Damage:0s},{id:"minecraft:bone",Count:3b,slot:15,Damage:0s},{id:"minecraft:coal",Count:2b,slot:16,Damage:0s},{id:"minecraft:red_mushroom",Count:4b,slot:17,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -1751,7 +1749,7 @@ rule:
 plugin=inventory
 number=6
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{ForgeData:{},Items:[{Slot:0b,id:"minecraft:bone",Count:1b,Damage:0s},{Slot:1b,id:"minecraft:bone",Count:1b,Damage:0s},{Slot:2b,id:"minecraft:bone",Count:2b,Damage:0s},{Slot:3b,id:"minecraft:bone",Count:1b,Damage:0s},{Slot:5b,id:"minecraft:slime_ball",Count:4b,Damage:0s},{Slot:7b,id:"minecraft:redstone",Count:3b,Damage:0s},{Slot:9b,id:"minecraft:bone",Count:1b,Damage:0s},{Slot:10b,id:"minecraft:bone",Count:2b,Damage:0s},{Slot:11b,id:"minecraft:bone",Count:3b,Damage:0s},{Slot:12b,id:"minecraft:bone",Count:2b,Damage:0s},{Slot:13b,id:"minecraft:bone",Count:2b,Damage:0s},{Slot:14b,id:"minecraft:gunpowder",Count:1b,Damage:0s},{Slot:15b,id:"ancientwarfarenpc:coin",Count:7b,tag:{metal:"silver"},Damage:0s},{Slot:16b,id:"minecraft:red_mushroom",Count:4b,Damage:0s},{Slot:17b,id:"ancientwarfarenpc:coin",Count:7b,tag:{metal:"gold"},Damage:0s},{Slot:18b,id:"minecraft:brown_mushroom",Count:3b,Damage:0s},{Slot:19b,id:"minecraft:wheat",Count:2b,Damage:0s},{Slot:20b,id:"minecraft:bone",Count:1b,Damage:0s},{Slot:21b,id:"minecraft:bone",Count:3b,Damage:0s},{Slot:22b,id:"minecraft:bone",Count:3b,Damage:0s},{Slot:24b,id:"minecraft:bread",Count:1b,Damage:0s},{Slot:26b,id:"minecraft:spider_eye",Count:5b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:22,inventoryContents:[{id:"minecraft:bone",Count:1b,slot:0,Damage:0s},{id:"minecraft:bone",Count:1b,slot:1,Damage:0s},{id:"minecraft:bone",Count:2b,slot:2,Damage:0s},{id:"minecraft:bone",Count:1b,slot:3,Damage:0s},{id:"minecraft:slime_ball",Count:4b,slot:4,Damage:0s},{id:"minecraft:redstone",Count:3b,slot:5,Damage:0s},{id:"minecraft:bone",Count:1b,slot:6,Damage:0s},{id:"minecraft:bone",Count:2b,slot:7,Damage:0s},{id:"minecraft:bone",Count:3b,slot:8,Damage:0s},{id:"minecraft:bone",Count:2b,slot:9,Damage:0s},{id:"minecraft:bone",Count:2b,slot:10,Damage:0s},{id:"minecraft:gunpowder",Count:1b,slot:11,Damage:0s},{id:"ancientwarfarenpc:coin",Count:7b,tag:{metal:"silver"},slot:12,Damage:0s},{id:"minecraft:red_mushroom",Count:4b,slot:13,Damage:0s},{id:"ancientwarfarenpc:coin",Count:7b,tag:{metal:"gold"},slot:14,Damage:0s},{id:"minecraft:brown_mushroom",Count:3b,slot:15,Damage:0s},{id:"minecraft:wheat",Count:2b,slot:16,Damage:0s},{id:"minecraft:bone",Count:1b,slot:17,Damage:0s},{id:"minecraft:bone",Count:3b,slot:18,Damage:0s},{id:"minecraft:bone",Count:3b,slot:19,Damage:0s},{id:"minecraft:bread",Count:1b,slot:20,Damage:0s},{id:"minecraft:spider_eye",Count:5b,slot:21,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},lootLevel:0,teData:{ForgeData:{},Items:[{Slot:0b,id:"minecraft:bone",Count:1b,Damage:0s},{Slot:1b,id:"minecraft:bone",Count:1b,Damage:0s},{Slot:2b,id:"minecraft:bone",Count:2b,Damage:0s},{Slot:3b,id:"minecraft:bone",Count:1b,Damage:0s},{Slot:5b,id:"minecraft:slime_ball",Count:4b,Damage:0s},{Slot:7b,id:"minecraft:redstone",Count:3b,Damage:0s},{Slot:9b,id:"minecraft:bone",Count:1b,Damage:0s},{Slot:10b,id:"minecraft:bone",Count:2b,Damage:0s},{Slot:11b,id:"minecraft:bone",Count:3b,Damage:0s},{Slot:12b,id:"minecraft:bone",Count:2b,Damage:0s},{Slot:13b,id:"minecraft:bone",Count:2b,Damage:0s},{Slot:14b,id:"minecraft:gunpowder",Count:1b,Damage:0s},{Slot:15b,id:"ancientwarfarenpc:coin",Count:7b,tag:{metal:"silver"},Damage:0s},{Slot:16b,id:"minecraft:red_mushroom",Count:4b,Damage:0s},{Slot:17b,id:"ancientwarfarenpc:coin",Count:7b,tag:{metal:"gold"},Damage:0s},{Slot:18b,id:"minecraft:brown_mushroom",Count:3b,Damage:0s},{Slot:19b,id:"minecraft:wheat",Count:2b,Damage:0s},{Slot:20b,id:"minecraft:bone",Count:1b,Damage:0s},{Slot:21b,id:"minecraft:bone",Count:3b,Damage:0s},{Slot:22b,id:"minecraft:bone",Count:3b,Damage:0s},{Slot:24b,id:"minecraft:bread",Count:1b,Damage:0s},{Slot:26b,id:"minecraft:spider_eye",Count:5b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:22,inventoryContents:[{id:"minecraft:bone",Count:1b,slot:0,Damage:0s},{id:"minecraft:bone",Count:1b,slot:1,Damage:0s},{id:"minecraft:bone",Count:2b,slot:2,Damage:0s},{id:"minecraft:bone",Count:1b,slot:3,Damage:0s},{id:"minecraft:slime_ball",Count:4b,slot:4,Damage:0s},{id:"minecraft:redstone",Count:3b,slot:5,Damage:0s},{id:"minecraft:bone",Count:1b,slot:6,Damage:0s},{id:"minecraft:bone",Count:2b,slot:7,Damage:0s},{id:"minecraft:bone",Count:3b,slot:8,Damage:0s},{id:"minecraft:bone",Count:2b,slot:9,Damage:0s},{id:"minecraft:bone",Count:2b,slot:10,Damage:0s},{id:"minecraft:gunpowder",Count:1b,slot:11,Damage:0s},{id:"ancientwarfarenpc:coin",Count:7b,tag:{metal:"silver"},slot:12,Damage:0s},{id:"minecraft:red_mushroom",Count:4b,slot:13,Damage:0s},{id:"ancientwarfarenpc:coin",Count:7b,tag:{metal:"gold"},slot:14,Damage:0s},{id:"minecraft:brown_mushroom",Count:3b,slot:15,Damage:0s},{id:"minecraft:wheat",Count:2b,slot:16,Damage:0s},{id:"minecraft:bone",Count:1b,slot:17,Damage:0s},{id:"minecraft:bone",Count:3b,slot:18,Damage:0s},{id:"minecraft:bone",Count:3b,slot:19,Damage:0s},{id:"minecraft:bread",Count:1b,slot:20,Damage:0s},{id:"minecraft:spider_eye",Count:5b,slot:21,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -1759,7 +1757,7 @@ rule:
 plugin=blockTile
 number=7
 data:
-JSON:{blockState:{blockName:"minecraft:mob_spawner",properties:{}},buildPass:0,teData:{MaxNearbyEntities:6s,RequiredPlayerRange:16s,SpawnCount:4s,SpawnData:{id:"minecraft:projectzulu|core.haunted armor"},MaxSpawnDelay:800s,Delay:0s,id:"minecraft:mob_spawner",SpawnRange:4s,MinSpawnDelay:200s,SpawnPotentials:[{Entity:{id:"minecraft:projectzulu|core.haunted armor"},Weight:1}]}}
+JSON:{blockState:{blockName:"minecraft:mob_spawner"},teData:{MaxNearbyEntities:6s,RequiredPlayerRange:16s,SpawnCount:4s,SpawnData:{id:"minecraft:projectzulu|core.haunted armor"},MaxSpawnDelay:800s,id:"minecraft:mob_spawner",SpawnRange:4s,Delay:0s,MinSpawnDelay:200s,SpawnPotentials:[{Entity:{id:"minecraft:projectzulu|core.haunted armor"},Weight:1}]}}
 :enddata
 :endrule
 
@@ -1767,7 +1765,7 @@ rule:
 plugin=vanillaBlocks
 number=8
 data:
-JSON:{blockState:{blockName:"gravestone-extended:gspileofbones",properties:{variant:"pile_of_bones",facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:air"}}
 :enddata
 :endrule
 
@@ -1775,7 +1773,7 @@ rule:
 plugin=blockTile
 number=9
 data:
-JSON:{blockState:{blockName:"minecraft:mob_spawner",properties:{}},buildPass:0,teData:{MaxNearbyEntities:6s,RequiredPlayerRange:16s,SpawnCount:4s,SpawnData:{id:"ProjectZulu|Core.Haunted Armor"},MaxSpawnDelay:800s,Delay:0s,id:"minecraft:mob_spawner",SpawnRange:4s,MinSpawnDelay:200s,SpawnPotentials:[{Entity:{id:"minecraft:projectzulu|core.haunted armor"},Weight:1}]}}
+JSON:{blockState:{blockName:"minecraft:mob_spawner"},teData:{MaxNearbyEntities:6s,RequiredPlayerRange:16s,SpawnCount:4s,SpawnData:{id:"ProjectZulu|Core.Haunted Armor"},MaxSpawnDelay:800s,id:"minecraft:mob_spawner",SpawnRange:4s,Delay:0s,MinSpawnDelay:200s,SpawnPotentials:[{Entity:{id:"minecraft:projectzulu|core.haunted armor"},Weight:1}]}}
 :enddata
 :endrule
 
@@ -1783,7 +1781,7 @@ rule:
 plugin=blockTile
 number=10
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:skeleton",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:skeleton",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -1791,7 +1789,7 @@ rule:
 plugin=blockTile
 number=11
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:skeleton",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:skeleton",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -1799,7 +1797,7 @@ rule:
 plugin=inventory
 number=12
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{Items:[{Slot:1b,id:"minecraft:saddle",Count:1b,Damage:0s},{Slot:8b,id:"minecraft:iron_ingot",Count:2b,Damage:0s},{Slot:11b,id:"minecraft:dye",Count:1b,Damage:3s}],id:"minecraft:chest",Lock:""},inventoryData:{length:3,inventoryContents:[{id:"minecraft:saddle",Count:1b,slot:0,Damage:0s},{id:"minecraft:iron_ingot",Count:2b,slot:1,Damage:0s},{id:"minecraft:dye",Count:1b,slot:2,Damage:3s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},lootLevel:0,teData:{Items:[{Slot:1b,id:"minecraft:saddle",Count:1b,Damage:0s},{Slot:8b,id:"minecraft:iron_ingot",Count:2b,Damage:0s},{Slot:11b,id:"minecraft:dye",Count:1b,Damage:3s}],id:"minecraft:chest",Lock:""},inventoryData:{length:3,inventoryContents:[{id:"minecraft:saddle",Count:1b,slot:0,Damage:0s},{id:"minecraft:iron_ingot",Count:2b,slot:1,Damage:0s},{id:"minecraft:dye",Count:1b,slot:2,Damage:3s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -1807,7 +1805,7 @@ rule:
 plugin=vanillaBlocks
 number=13
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"west"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"west"}}}
 :enddata
 :endrule
 
@@ -1815,7 +1813,7 @@ rule:
 plugin=blockTile
 number=14
 data:
-JSON:{blockState:{blockName:"minecraft:mob_spawner",properties:{}},buildPass:0,teData:{MaxNearbyEntities:6s,RequiredPlayerRange:16s,SpawnCount:4s,SpawnData:{id:"minecraft:projectzulu|core.haunted armor"},MaxSpawnDelay:800s,Delay:0s,id:"minecraft:mob_spawner",SpawnRange:4s,MinSpawnDelay:200s,SpawnPotentials:[{Entity:{id:"minecraft:projectzulu|core.haunted armor"},Weight:1}]}}
+JSON:{blockState:{blockName:"minecraft:mob_spawner"},teData:{MaxNearbyEntities:6s,RequiredPlayerRange:16s,SpawnCount:4s,SpawnData:{id:"minecraft:projectzulu|core.haunted armor"},MaxSpawnDelay:800s,id:"minecraft:mob_spawner",SpawnRange:4s,Delay:0s,MinSpawnDelay:200s,SpawnPotentials:[{Entity:{id:"minecraft:projectzulu|core.haunted armor"},Weight:1}]}}
 :enddata
 :endrule
 
@@ -1823,7 +1821,7 @@ rule:
 plugin=blockTile
 number=15
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:skeleton",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:skeleton",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -1831,7 +1829,7 @@ rule:
 plugin=blockTile
 number=16
 data:
-JSON:{blockState:{blockName:"minecraft:mob_spawner",properties:{}},buildPass:0,teData:{MaxNearbyEntities:6s,RequiredPlayerRange:16s,SpawnCount:4s,SpawnData:{id:"minecraft:projectzulu|core.haunted armor"},MaxSpawnDelay:800s,Delay:0s,id:"minecraft:mob_spawner",SpawnRange:4s,MinSpawnDelay:200s,SpawnPotentials:[{Entity:{id:"minecraft:projectzulu|core.haunted armor"},Weight:1}]}}
+JSON:{blockState:{blockName:"minecraft:mob_spawner"},teData:{MaxNearbyEntities:6s,RequiredPlayerRange:16s,SpawnCount:4s,SpawnData:{id:"minecraft:projectzulu|core.haunted armor"},MaxSpawnDelay:800s,id:"minecraft:mob_spawner",SpawnRange:4s,Delay:0s,MinSpawnDelay:200s,SpawnPotentials:[{Entity:{id:"minecraft:projectzulu|core.haunted armor"},Weight:1}]}}
 :enddata
 :endrule
 
@@ -1839,7 +1837,7 @@ rule:
 plugin=blockTile
 number=17
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:skeleton",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:skeleton",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -1847,7 +1845,7 @@ rule:
 plugin=blockTile
 number=18
 data:
-JSON:{blockState:{blockName:"minecraft:mob_spawner",properties:{}},buildPass:0,teData:{MaxNearbyEntities:6s,RequiredPlayerRange:16s,SpawnCount:4s,SpawnData:{id:"ProjectZulu|Core.Haunted Armor"},MaxSpawnDelay:800s,Delay:0s,id:"minecraft:mob_spawner",SpawnRange:4s,MinSpawnDelay:200s,SpawnPotentials:[{Entity:{id:"minecraft:projectzulu|core.haunted armor"},Weight:1}]}}
+JSON:{blockState:{blockName:"minecraft:mob_spawner"},teData:{MaxNearbyEntities:6s,RequiredPlayerRange:16s,SpawnCount:4s,SpawnData:{id:"ProjectZulu|Core.Haunted Armor"},MaxSpawnDelay:800s,id:"minecraft:mob_spawner",SpawnRange:4s,Delay:0s,MinSpawnDelay:200s,SpawnPotentials:[{Entity:{id:"minecraft:projectzulu|core.haunted armor"},Weight:1}]}}
 :enddata
 :endrule
 
@@ -1855,7 +1853,7 @@ rule:
 plugin=blockTile
 number=19
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:skeleton",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:skeleton",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -1863,7 +1861,7 @@ rule:
 plugin=blockTile
 number=20
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:skeleton",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:skeleton",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -1871,7 +1869,7 @@ rule:
 plugin=blockTile
 number=21
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:skeleton",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:skeleton",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -1879,7 +1877,7 @@ rule:
 plugin=blockTile
 number=22
 data:
-JSON:{blockState:{blockName:"minecraft:mob_spawner",properties:{}},buildPass:0,teData:{MaxNearbyEntities:6s,RequiredPlayerRange:16s,SpawnCount:4s,SpawnData:{id:"ProjectZulu|Core.Haunted Armor"},MaxSpawnDelay:800s,Delay:0s,id:"minecraft:mob_spawner",SpawnRange:4s,MinSpawnDelay:200s,SpawnPotentials:[{Entity:{id:"minecraft:projectzulu|core.haunted armor"},Weight:1}]}}
+JSON:{blockState:{blockName:"minecraft:mob_spawner"},teData:{MaxNearbyEntities:6s,RequiredPlayerRange:16s,SpawnCount:4s,SpawnData:{id:"ProjectZulu|Core.Haunted Armor"},MaxSpawnDelay:800s,id:"minecraft:mob_spawner",SpawnRange:4s,Delay:0s,MinSpawnDelay:200s,SpawnPotentials:[{Entity:{id:"minecraft:projectzulu|core.haunted armor"},Weight:1}]}}
 :enddata
 :endrule
 
@@ -1887,7 +1885,7 @@ rule:
 plugin=inventory
 number=23
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{ForgeData:{},Items:[{Slot:2b,id:"minecraft:red_mushroom",Count:3b,Damage:0s},{Slot:3b,id:"minecraft:red_mushroom",Count:2b,Damage:0s},{Slot:4b,id:"minecraft:rotten_flesh",Count:21b,Damage:0s},{Slot:6b,id:"minecraft:spider_eye",Count:5b,Damage:0s},{Slot:10b,id:"ancientwarfarenpc:coin",Count:11b,tag:{metal:"gold"},Damage:0s},{Slot:12b,id:"minecraft:red_mushroom",Count:3b,Damage:0s},{Slot:15b,id:"minecraft:poisonous_potato",Count:15b,Damage:0s},{Slot:20b,id:"minecraft:dye",Count:1b,Damage:3s},{Slot:21b,id:"minecraft:red_mushroom",Count:1b,Damage:0s},{Slot:22b,id:"minecraft:red_mushroom",Count:3b,Damage:0s},{Slot:23b,id:"minecraft:slime_ball",Count:4b,Damage:0s},{Slot:26b,id:"minecraft:torch",Count:11b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:12,inventoryContents:[{id:"minecraft:red_mushroom",Count:3b,slot:0,Damage:0s},{id:"minecraft:red_mushroom",Count:2b,slot:1,Damage:0s},{id:"minecraft:rotten_flesh",Count:21b,slot:2,Damage:0s},{id:"minecraft:spider_eye",Count:5b,slot:3,Damage:0s},{id:"ancientwarfarenpc:coin",Count:11b,tag:{metal:"gold"},slot:4,Damage:0s},{id:"minecraft:red_mushroom",Count:3b,slot:5,Damage:0s},{id:"minecraft:poisonous_potato",Count:15b,slot:6,Damage:0s},{id:"minecraft:dye",Count:1b,slot:7,Damage:3s},{id:"minecraft:red_mushroom",Count:1b,slot:8,Damage:0s},{id:"minecraft:red_mushroom",Count:3b,slot:9,Damage:0s},{id:"minecraft:slime_ball",Count:4b,slot:10,Damage:0s},{id:"minecraft:torch",Count:11b,slot:11,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},lootLevel:0,teData:{ForgeData:{},Items:[{Slot:2b,id:"minecraft:red_mushroom",Count:3b,Damage:0s},{Slot:3b,id:"minecraft:red_mushroom",Count:2b,Damage:0s},{Slot:4b,id:"minecraft:rotten_flesh",Count:21b,Damage:0s},{Slot:6b,id:"minecraft:spider_eye",Count:5b,Damage:0s},{Slot:10b,id:"ancientwarfarenpc:coin",Count:11b,tag:{metal:"gold"},Damage:0s},{Slot:12b,id:"minecraft:red_mushroom",Count:3b,Damage:0s},{Slot:15b,id:"minecraft:poisonous_potato",Count:15b,Damage:0s},{Slot:20b,id:"minecraft:dye",Count:1b,Damage:3s},{Slot:21b,id:"minecraft:red_mushroom",Count:1b,Damage:0s},{Slot:22b,id:"minecraft:red_mushroom",Count:3b,Damage:0s},{Slot:23b,id:"minecraft:slime_ball",Count:4b,Damage:0s},{Slot:26b,id:"minecraft:torch",Count:11b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:12,inventoryContents:[{id:"minecraft:red_mushroom",Count:3b,slot:0,Damage:0s},{id:"minecraft:red_mushroom",Count:2b,slot:1,Damage:0s},{id:"minecraft:rotten_flesh",Count:21b,slot:2,Damage:0s},{id:"minecraft:spider_eye",Count:5b,slot:3,Damage:0s},{id:"ancientwarfarenpc:coin",Count:11b,tag:{metal:"gold"},slot:4,Damage:0s},{id:"minecraft:red_mushroom",Count:3b,slot:5,Damage:0s},{id:"minecraft:poisonous_potato",Count:15b,slot:6,Damage:0s},{id:"minecraft:dye",Count:1b,slot:7,Damage:3s},{id:"minecraft:red_mushroom",Count:1b,slot:8,Damage:0s},{id:"minecraft:red_mushroom",Count:3b,slot:9,Damage:0s},{id:"minecraft:slime_ball",Count:4b,slot:10,Damage:0s},{id:"minecraft:torch",Count:11b,slot:11,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -1895,7 +1893,7 @@ rule:
 plugin=blockTile
 number=24
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:skeleton",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:skeleton",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -1903,7 +1901,7 @@ rule:
 plugin=blockTile
 number=25
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:skeleton",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:skeleton",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -1911,7 +1909,7 @@ rule:
 plugin=blockTile
 number=26
 data:
-JSON:{blockState:{blockName:"minecraft:mob_spawner",properties:{}},buildPass:0,teData:{MaxNearbyEntities:6s,RequiredPlayerRange:16s,SpawnCount:4s,SpawnData:{id:"ProjectZulu|Core.Haunted Armor"},MaxSpawnDelay:800s,Delay:0s,id:"minecraft:mob_spawner",SpawnRange:4s,MinSpawnDelay:200s,SpawnPotentials:[{Entity:{id:"minecraft:projectzulu|core.haunted armor"},Weight:1}]}}
+JSON:{blockState:{blockName:"minecraft:mob_spawner"},teData:{MaxNearbyEntities:6s,RequiredPlayerRange:16s,SpawnCount:4s,SpawnData:{id:"ProjectZulu|Core.Haunted Armor"},MaxSpawnDelay:800s,id:"minecraft:mob_spawner",SpawnRange:4s,Delay:0s,MinSpawnDelay:200s,SpawnPotentials:[{Entity:{id:"minecraft:projectzulu|core.haunted armor"},Weight:1}]}}
 :enddata
 :endrule
 
@@ -1919,7 +1917,7 @@ rule:
 plugin=blockTile
 number=27
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:skeleton",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:skeleton",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -1927,7 +1925,7 @@ rule:
 plugin=blockTile
 number=28
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:skeleton",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:skeleton",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -1935,7 +1933,7 @@ rule:
 plugin=blockTile
 number=29
 data:
-JSON:{blockState:{blockName:"minecraft:mob_spawner",properties:{}},buildPass:0,teData:{MaxNearbyEntities:6s,RequiredPlayerRange:16s,SpawnCount:4s,SpawnData:{id:"ProjectZulu|Core.Minotaur"},MaxSpawnDelay:800s,Delay:0s,id:"minecraft:mob_spawner",SpawnRange:4s,MinSpawnDelay:200s,SpawnPotentials:[{Entity:{id:"minecraft:projectzulu|core.minotaur"},Weight:1}]}}
+JSON:{blockState:{blockName:"minecraft:mob_spawner"},teData:{MaxNearbyEntities:6s,RequiredPlayerRange:16s,SpawnCount:4s,SpawnData:{id:"ProjectZulu|Core.Minotaur"},MaxSpawnDelay:800s,id:"minecraft:mob_spawner",SpawnRange:4s,Delay:0s,MinSpawnDelay:200s,SpawnPotentials:[{Entity:{id:"minecraft:projectzulu|core.minotaur"},Weight:1}]}}
 :enddata
 :endrule
 
@@ -1943,7 +1941,7 @@ rule:
 plugin=blockTile
 number=30
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:skeleton",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:skeleton",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -1951,7 +1949,7 @@ rule:
 plugin=blockTile
 number=31
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:skeleton",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:skeleton",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -1959,7 +1957,7 @@ rule:
 plugin=blockTile
 number=32
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:skeleton",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:skeleton",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -1967,7 +1965,7 @@ rule:
 plugin=blockTile
 number=33
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:skeleton",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:skeleton",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -1975,7 +1973,7 @@ rule:
 plugin=blockTile
 number=34
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:skeleton",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:skeleton",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -1983,7 +1981,7 @@ rule:
 plugin=blockTile
 number=35
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:skeleton",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:skeleton",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -1991,7 +1989,7 @@ rule:
 plugin=blockTile
 number=36
 data:
-JSON:{blockState:{blockName:"minecraft:mob_spawner",properties:{}},buildPass:0,teData:{MaxNearbyEntities:6s,RequiredPlayerRange:16s,SpawnCount:4s,SpawnData:{id:"ProjectZulu|Core.Haunted Armor"},MaxSpawnDelay:800s,Delay:0s,id:"minecraft:mob_spawner",SpawnRange:4s,MinSpawnDelay:200s,SpawnPotentials:[{Entity:{id:"minecraft:projectzulu|core.haunted armor"},Weight:1}]}}
+JSON:{blockState:{blockName:"minecraft:mob_spawner"},teData:{MaxNearbyEntities:6s,RequiredPlayerRange:16s,SpawnCount:4s,SpawnData:{id:"ProjectZulu|Core.Haunted Armor"},MaxSpawnDelay:800s,id:"minecraft:mob_spawner",SpawnRange:4s,Delay:0s,MinSpawnDelay:200s,SpawnPotentials:[{Entity:{id:"minecraft:projectzulu|core.haunted armor"},Weight:1}]}}
 :enddata
 :endrule
 
@@ -1999,7 +1997,7 @@ rule:
 plugin=blockTile
 number=37
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:skeleton",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:skeleton",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -2007,7 +2005,7 @@ rule:
 plugin=inventory
 number=38
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{Items:[{Slot:1b,id:"minecraft:wheat",Count:2b,Damage:0s},{Slot:5b,id:"minecraft:dye",Count:1b,Damage:3s},{Slot:9b,id:"minecraft:iron_ingot",Count:2b,Damage:0s},{Slot:12b,id:"minecraft:string",Count:2b,Damage:0s},{Slot:22b,id:"minecraft:bucket",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:5,inventoryContents:[{id:"minecraft:wheat",Count:2b,slot:0,Damage:0s},{id:"minecraft:dye",Count:1b,slot:1,Damage:3s},{id:"minecraft:iron_ingot",Count:2b,slot:2,Damage:0s},{id:"minecraft:string",Count:2b,slot:3,Damage:0s},{id:"minecraft:bucket",Count:1b,slot:4,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},lootLevel:0,teData:{Items:[{Slot:1b,id:"minecraft:wheat",Count:2b,Damage:0s},{Slot:5b,id:"minecraft:dye",Count:1b,Damage:3s},{Slot:9b,id:"minecraft:iron_ingot",Count:2b,Damage:0s},{Slot:12b,id:"minecraft:string",Count:2b,Damage:0s},{Slot:22b,id:"minecraft:bucket",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:5,inventoryContents:[{id:"minecraft:wheat",Count:2b,slot:0,Damage:0s},{id:"minecraft:dye",Count:1b,slot:1,Damage:3s},{id:"minecraft:iron_ingot",Count:2b,slot:2,Damage:0s},{id:"minecraft:string",Count:2b,slot:3,Damage:0s},{id:"minecraft:bucket",Count:1b,slot:4,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -2015,7 +2013,7 @@ rule:
 plugin=inventory
 number=39
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{Items:[{Slot:0b,id:"minecraft:dye",Count:1b,Damage:3s},{Slot:3b,id:"minecraft:string",Count:1b,Damage:0s},{Slot:13b,id:"minecraft:wheat",Count:1b,Damage:0s},{Slot:21b,id:"minecraft:bread",Count:1b,Damage:0s},{Slot:22b,id:"minecraft:wheat",Count:4b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:5,inventoryContents:[{id:"minecraft:dye",Count:1b,slot:0,Damage:3s},{id:"minecraft:string",Count:1b,slot:1,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:2,Damage:0s},{id:"minecraft:bread",Count:1b,slot:3,Damage:0s},{id:"minecraft:wheat",Count:4b,slot:4,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},lootLevel:0,teData:{Items:[{Slot:0b,id:"minecraft:dye",Count:1b,Damage:3s},{Slot:3b,id:"minecraft:string",Count:1b,Damage:0s},{Slot:13b,id:"minecraft:wheat",Count:1b,Damage:0s},{Slot:21b,id:"minecraft:bread",Count:1b,Damage:0s},{Slot:22b,id:"minecraft:wheat",Count:4b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:5,inventoryContents:[{id:"minecraft:dye",Count:1b,slot:0,Damage:3s},{id:"minecraft:string",Count:1b,slot:1,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:2,Damage:0s},{id:"minecraft:bread",Count:1b,slot:3,Damage:0s},{id:"minecraft:wheat",Count:4b,slot:4,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -2023,7 +2021,7 @@ rule:
 plugin=blockTile
 number=40
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:skeleton",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:skeleton",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -2031,7 +2029,7 @@ rule:
 plugin=inventory
 number=41
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{ForgeData:{},Items:[{Slot:1b,id:"minecraft:slime_ball",Count:3b,Damage:0s},{Slot:2b,id:"ancientwarfarenpc:coin",Count:6b,tag:{metal:"gold"},Damage:0s},{Slot:3b,id:"ancientwarfarenpc:coin",Count:5b,tag:{metal:"gold"},Damage:0s},{Slot:4b,id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"silver"},Damage:0s},{Slot:5b,id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"silver"},Damage:0s},{Slot:6b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"silver"},Damage:0s},{Slot:8b,id:"minecraft:dye",Count:1b,Damage:3s},{Slot:10b,id:"minecraft:red_mushroom",Count:5b,Damage:0s},{Slot:11b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"gold"},Damage:0s},{Slot:12b,id:"ancientwarfarenpc:coin",Count:7b,tag:{metal:"gold"},Damage:0s},{Slot:13b,id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"silver"},Damage:0s},{Slot:14b,id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"silver"},Damage:0s},{Slot:15b,id:"minecraft:rotten_flesh",Count:2b,Damage:0s},{Slot:16b,id:"minecraft:brown_mushroom",Count:4b,Damage:0s},{Slot:19b,id:"minecraft:wheat",Count:1b,Damage:0s},{Slot:20b,id:"minecraft:bread",Count:1b,Damage:0s},{Slot:22b,id:"minecraft:bread",Count:1b,Damage:0s},{Slot:24b,id:"minecraft:rotten_flesh",Count:8b,Damage:0s},{Slot:25b,id:"minecraft:gunpowder",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:19,inventoryContents:[{id:"minecraft:slime_ball",Count:3b,slot:0,Damage:0s},{id:"ancientwarfarenpc:coin",Count:6b,tag:{metal:"gold"},slot:1,Damage:0s},{id:"ancientwarfarenpc:coin",Count:5b,tag:{metal:"gold"},slot:2,Damage:0s},{id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"silver"},slot:3,Damage:0s},{id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"silver"},slot:4,Damage:0s},{id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"silver"},slot:5,Damage:0s},{id:"minecraft:dye",Count:1b,slot:6,Damage:3s},{id:"minecraft:red_mushroom",Count:5b,slot:7,Damage:0s},{id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"gold"},slot:8,Damage:0s},{id:"ancientwarfarenpc:coin",Count:7b,tag:{metal:"gold"},slot:9,Damage:0s},{id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"silver"},slot:10,Damage:0s},{id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"silver"},slot:11,Damage:0s},{id:"minecraft:rotten_flesh",Count:2b,slot:12,Damage:0s},{id:"minecraft:brown_mushroom",Count:4b,slot:13,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:14,Damage:0s},{id:"minecraft:bread",Count:1b,slot:15,Damage:0s},{id:"minecraft:bread",Count:1b,slot:16,Damage:0s},{id:"minecraft:rotten_flesh",Count:8b,slot:17,Damage:0s},{id:"minecraft:gunpowder",Count:1b,slot:18,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},lootLevel:0,teData:{ForgeData:{},Items:[{Slot:1b,id:"minecraft:slime_ball",Count:3b,Damage:0s},{Slot:2b,id:"ancientwarfarenpc:coin",Count:6b,tag:{metal:"gold"},Damage:0s},{Slot:3b,id:"ancientwarfarenpc:coin",Count:5b,tag:{metal:"gold"},Damage:0s},{Slot:4b,id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"silver"},Damage:0s},{Slot:5b,id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"silver"},Damage:0s},{Slot:6b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"silver"},Damage:0s},{Slot:8b,id:"minecraft:dye",Count:1b,Damage:3s},{Slot:10b,id:"minecraft:red_mushroom",Count:5b,Damage:0s},{Slot:11b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"gold"},Damage:0s},{Slot:12b,id:"ancientwarfarenpc:coin",Count:7b,tag:{metal:"gold"},Damage:0s},{Slot:13b,id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"silver"},Damage:0s},{Slot:14b,id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"silver"},Damage:0s},{Slot:15b,id:"minecraft:rotten_flesh",Count:2b,Damage:0s},{Slot:16b,id:"minecraft:brown_mushroom",Count:4b,Damage:0s},{Slot:19b,id:"minecraft:wheat",Count:1b,Damage:0s},{Slot:20b,id:"minecraft:bread",Count:1b,Damage:0s},{Slot:22b,id:"minecraft:bread",Count:1b,Damage:0s},{Slot:24b,id:"minecraft:rotten_flesh",Count:8b,Damage:0s},{Slot:25b,id:"minecraft:gunpowder",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:19,inventoryContents:[{id:"minecraft:slime_ball",Count:3b,slot:0,Damage:0s},{id:"ancientwarfarenpc:coin",Count:6b,tag:{metal:"gold"},slot:1,Damage:0s},{id:"ancientwarfarenpc:coin",Count:5b,tag:{metal:"gold"},slot:2,Damage:0s},{id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"silver"},slot:3,Damage:0s},{id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"silver"},slot:4,Damage:0s},{id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"silver"},slot:5,Damage:0s},{id:"minecraft:dye",Count:1b,slot:6,Damage:3s},{id:"minecraft:red_mushroom",Count:5b,slot:7,Damage:0s},{id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"gold"},slot:8,Damage:0s},{id:"ancientwarfarenpc:coin",Count:7b,tag:{metal:"gold"},slot:9,Damage:0s},{id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"silver"},slot:10,Damage:0s},{id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"silver"},slot:11,Damage:0s},{id:"minecraft:rotten_flesh",Count:2b,slot:12,Damage:0s},{id:"minecraft:brown_mushroom",Count:4b,slot:13,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:14,Damage:0s},{id:"minecraft:bread",Count:1b,slot:15,Damage:0s},{id:"minecraft:bread",Count:1b,slot:16,Damage:0s},{id:"minecraft:rotten_flesh",Count:8b,slot:17,Damage:0s},{id:"minecraft:gunpowder",Count:1b,slot:18,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -2039,7 +2037,7 @@ rule:
 plugin=inventory
 number=42
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{Items:[{Slot:5b,id:"minecraft:rotten_flesh",Count:1b,Damage:0s},{Slot:6b,id:"minecraft:rotten_flesh",Count:1b,Damage:0s},{Slot:7b,id:"minecraft:rotten_flesh",Count:3b,Damage:0s},{Slot:8b,id:"minecraft:rotten_flesh",Count:2b,Damage:0s},{Slot:10b,id:"minecraft:gunpowder",Count:2b,Damage:0s},{Slot:12b,id:"minecraft:poisonous_potato",Count:5b,Damage:0s},{Slot:14b,id:"minecraft:rotten_flesh",Count:2b,Damage:0s},{Slot:16b,id:"minecraft:rotten_flesh",Count:2b,Damage:0s},{Slot:17b,id:"minecraft:rotten_flesh",Count:1b,Damage:0s},{Slot:20b,id:"ancientwarfarenpc:coin",Count:11b,tag:{metal:"gold"},Damage:0s},{Slot:21b,id:"minecraft:poisonous_potato",Count:2b,Damage:0s},{Slot:22b,id:"minecraft:poisonous_potato",Count:2b,Damage:0s},{Slot:24b,id:"minecraft:iron_ingot",Count:4b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:13,inventoryContents:[{id:"minecraft:rotten_flesh",Count:1b,slot:0,Damage:0s},{id:"minecraft:rotten_flesh",Count:1b,slot:1,Damage:0s},{id:"minecraft:rotten_flesh",Count:3b,slot:2,Damage:0s},{id:"minecraft:rotten_flesh",Count:2b,slot:3,Damage:0s},{id:"minecraft:gunpowder",Count:2b,slot:4,Damage:0s},{id:"minecraft:poisonous_potato",Count:5b,slot:5,Damage:0s},{id:"minecraft:rotten_flesh",Count:2b,slot:6,Damage:0s},{id:"minecraft:rotten_flesh",Count:2b,slot:7,Damage:0s},{id:"minecraft:rotten_flesh",Count:1b,slot:8,Damage:0s},{id:"ancientwarfarenpc:coin",Count:11b,tag:{metal:"gold"},slot:9,Damage:0s},{id:"minecraft:poisonous_potato",Count:2b,slot:10,Damage:0s},{id:"minecraft:poisonous_potato",Count:2b,slot:11,Damage:0s},{id:"minecraft:iron_ingot",Count:4b,slot:12,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},lootLevel:0,teData:{Items:[{Slot:5b,id:"minecraft:rotten_flesh",Count:1b,Damage:0s},{Slot:6b,id:"minecraft:rotten_flesh",Count:1b,Damage:0s},{Slot:7b,id:"minecraft:rotten_flesh",Count:3b,Damage:0s},{Slot:8b,id:"minecraft:rotten_flesh",Count:2b,Damage:0s},{Slot:10b,id:"minecraft:gunpowder",Count:2b,Damage:0s},{Slot:12b,id:"minecraft:poisonous_potato",Count:5b,Damage:0s},{Slot:14b,id:"minecraft:rotten_flesh",Count:2b,Damage:0s},{Slot:16b,id:"minecraft:rotten_flesh",Count:2b,Damage:0s},{Slot:17b,id:"minecraft:rotten_flesh",Count:1b,Damage:0s},{Slot:20b,id:"ancientwarfarenpc:coin",Count:11b,tag:{metal:"gold"},Damage:0s},{Slot:21b,id:"minecraft:poisonous_potato",Count:2b,Damage:0s},{Slot:22b,id:"minecraft:poisonous_potato",Count:2b,Damage:0s},{Slot:24b,id:"minecraft:iron_ingot",Count:4b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:13,inventoryContents:[{id:"minecraft:rotten_flesh",Count:1b,slot:0,Damage:0s},{id:"minecraft:rotten_flesh",Count:1b,slot:1,Damage:0s},{id:"minecraft:rotten_flesh",Count:3b,slot:2,Damage:0s},{id:"minecraft:rotten_flesh",Count:2b,slot:3,Damage:0s},{id:"minecraft:gunpowder",Count:2b,slot:4,Damage:0s},{id:"minecraft:poisonous_potato",Count:5b,slot:5,Damage:0s},{id:"minecraft:rotten_flesh",Count:2b,slot:6,Damage:0s},{id:"minecraft:rotten_flesh",Count:2b,slot:7,Damage:0s},{id:"minecraft:rotten_flesh",Count:1b,slot:8,Damage:0s},{id:"ancientwarfarenpc:coin",Count:11b,tag:{metal:"gold"},slot:9,Damage:0s},{id:"minecraft:poisonous_potato",Count:2b,slot:10,Damage:0s},{id:"minecraft:poisonous_potato",Count:2b,slot:11,Damage:0s},{id:"minecraft:iron_ingot",Count:4b,slot:12,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -2047,7 +2045,7 @@ rule:
 plugin=inventory
 number=43
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{ForgeData:{},Items:[{Slot:0b,id:"minecraft:redstone",Count:4b,Damage:0s},{Slot:2b,id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"silver"},Damage:0s},{Slot:3b,id:"minecraft:poisonous_potato",Count:2b,Damage:0s},{Slot:4b,id:"minecraft:poisonous_potato",Count:5b,Damage:0s},{Slot:10b,id:"minecraft:red_mushroom",Count:9b,Damage:0s},{Slot:13b,id:"minecraft:spider_eye",Count:3b,Damage:0s},{Slot:15b,id:"minecraft:wheat",Count:2b,Damage:0s},{Slot:16b,id:"minecraft:wheat",Count:4b,Damage:0s},{Slot:17b,id:"minecraft:torch",Count:11b,Damage:0s},{Slot:20b,id:"minecraft:bread",Count:1b,Damage:0s},{Slot:21b,id:"minecraft:brown_mushroom",Count:3b,Damage:0s},{Slot:23b,id:"minecraft:wheat",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:12,inventoryContents:[{id:"minecraft:redstone",Count:4b,slot:0,Damage:0s},{id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"silver"},slot:1,Damage:0s},{id:"minecraft:poisonous_potato",Count:2b,slot:2,Damage:0s},{id:"minecraft:poisonous_potato",Count:5b,slot:3,Damage:0s},{id:"minecraft:red_mushroom",Count:9b,slot:4,Damage:0s},{id:"minecraft:spider_eye",Count:3b,slot:5,Damage:0s},{id:"minecraft:wheat",Count:2b,slot:6,Damage:0s},{id:"minecraft:wheat",Count:4b,slot:7,Damage:0s},{id:"minecraft:torch",Count:11b,slot:8,Damage:0s},{id:"minecraft:bread",Count:1b,slot:9,Damage:0s},{id:"minecraft:brown_mushroom",Count:3b,slot:10,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:11,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},lootLevel:0,teData:{ForgeData:{},Items:[{Slot:0b,id:"minecraft:redstone",Count:4b,Damage:0s},{Slot:2b,id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"silver"},Damage:0s},{Slot:3b,id:"minecraft:poisonous_potato",Count:2b,Damage:0s},{Slot:4b,id:"minecraft:poisonous_potato",Count:5b,Damage:0s},{Slot:10b,id:"minecraft:red_mushroom",Count:9b,Damage:0s},{Slot:13b,id:"minecraft:spider_eye",Count:3b,Damage:0s},{Slot:15b,id:"minecraft:wheat",Count:2b,Damage:0s},{Slot:16b,id:"minecraft:wheat",Count:4b,Damage:0s},{Slot:17b,id:"minecraft:torch",Count:11b,Damage:0s},{Slot:20b,id:"minecraft:bread",Count:1b,Damage:0s},{Slot:21b,id:"minecraft:brown_mushroom",Count:3b,Damage:0s},{Slot:23b,id:"minecraft:wheat",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:12,inventoryContents:[{id:"minecraft:redstone",Count:4b,slot:0,Damage:0s},{id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"silver"},slot:1,Damage:0s},{id:"minecraft:poisonous_potato",Count:2b,slot:2,Damage:0s},{id:"minecraft:poisonous_potato",Count:5b,slot:3,Damage:0s},{id:"minecraft:red_mushroom",Count:9b,slot:4,Damage:0s},{id:"minecraft:spider_eye",Count:3b,slot:5,Damage:0s},{id:"minecraft:wheat",Count:2b,slot:6,Damage:0s},{id:"minecraft:wheat",Count:4b,slot:7,Damage:0s},{id:"minecraft:torch",Count:11b,slot:8,Damage:0s},{id:"minecraft:bread",Count:1b,slot:9,Damage:0s},{id:"minecraft:brown_mushroom",Count:3b,slot:10,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:11,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -2055,7 +2053,7 @@ rule:
 plugin=blockTile
 number=44
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"grimoireofgaia:minotaur",minToSpawn:1}],groupWeight:1}],playerRange:5,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"grimoireofgaia:minotaur",minToSpawn:1}],groupWeight:1}],playerRange:5,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -2063,7 +2061,7 @@ rule:
 plugin=inventory
 number=45
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{Items:[{Slot:12b,id:"minecraft:gunpowder",Count:1b,Damage:0s},{Slot:14b,id:"minecraft:wheat",Count:4b,Damage:0s},{Slot:16b,id:"minecraft:gunpowder",Count:1b,Damage:0s},{Slot:25b,id:"minecraft:dye",Count:1b,Damage:3s}],id:"minecraft:chest",Lock:""},inventoryData:{length:4,inventoryContents:[{id:"minecraft:gunpowder",Count:1b,slot:0,Damage:0s},{id:"minecraft:wheat",Count:4b,slot:1,Damage:0s},{id:"minecraft:gunpowder",Count:1b,slot:2,Damage:0s},{id:"minecraft:dye",Count:1b,slot:3,Damage:3s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},lootLevel:0,teData:{Items:[{Slot:12b,id:"minecraft:gunpowder",Count:1b,Damage:0s},{Slot:14b,id:"minecraft:wheat",Count:4b,Damage:0s},{Slot:16b,id:"minecraft:gunpowder",Count:1b,Damage:0s},{Slot:25b,id:"minecraft:dye",Count:1b,Damage:3s}],id:"minecraft:chest",Lock:""},inventoryData:{length:4,inventoryContents:[{id:"minecraft:gunpowder",Count:1b,slot:0,Damage:0s},{id:"minecraft:wheat",Count:4b,slot:1,Damage:0s},{id:"minecraft:gunpowder",Count:1b,slot:2,Damage:0s},{id:"minecraft:dye",Count:1b,slot:3,Damage:3s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -2071,7 +2069,7 @@ rule:
 plugin=inventory
 number=46
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{ForgeData:{},Items:[{Slot:0b,id:"minecraft:rotten_flesh",Count:1b,Damage:0s},{Slot:1b,id:"minecraft:rotten_flesh",Count:2b,Damage:0s},{Slot:3b,id:"ancientwarfarenpc:coin",Count:5b,tag:{metal:"silver"},Damage:0s},{Slot:4b,id:"minecraft:dye",Count:1b,Damage:3s},{Slot:5b,id:"minecraft:gunpowder",Count:4b,Damage:0s},{Slot:7b,id:"minecraft:spider_eye",Count:4b,Damage:0s},{Slot:8b,id:"minecraft:bone",Count:14b,Damage:0s},{Slot:9b,id:"minecraft:rotten_flesh",Count:2b,Damage:0s},{Slot:10b,id:"minecraft:rotten_flesh",Count:1b,Damage:0s},{Slot:11b,id:"minecraft:brown_mushroom",Count:3b,Damage:0s},{Slot:12b,id:"minecraft:poisonous_potato",Count:6b,Damage:0s},{Slot:14b,id:"ancientwarfarenpc:coin",Count:11b,tag:{metal:"gold"},Damage:0s},{Slot:15b,id:"minecraft:saddle",Count:1b,Damage:0s},{Slot:16b,id:"minecraft:bucket",Count:1b,Damage:0s},{Slot:17b,id:"minecraft:bone",Count:1b,Damage:0s},{Slot:18b,id:"minecraft:rotten_flesh",Count:2b,Damage:0s},{Slot:19b,id:"minecraft:rotten_flesh",Count:1b,Damage:0s},{Slot:20b,id:"minecraft:bucket",Count:1b,Damage:0s},{Slot:22b,id:"minecraft:bucket",Count:1b,Damage:0s},{Slot:23b,id:"minecraft:saddle",Count:1b,Damage:0s},{Slot:26b,id:"minecraft:wheat",Count:4b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:21,inventoryContents:[{id:"minecraft:rotten_flesh",Count:1b,slot:0,Damage:0s},{id:"minecraft:rotten_flesh",Count:2b,slot:1,Damage:0s},{id:"ancientwarfarenpc:coin",Count:5b,tag:{metal:"silver"},slot:2,Damage:0s},{id:"minecraft:dye",Count:1b,slot:3,Damage:3s},{id:"minecraft:gunpowder",Count:4b,slot:4,Damage:0s},{id:"minecraft:spider_eye",Count:4b,slot:5,Damage:0s},{id:"minecraft:bone",Count:14b,slot:6,Damage:0s},{id:"minecraft:rotten_flesh",Count:2b,slot:7,Damage:0s},{id:"minecraft:rotten_flesh",Count:1b,slot:8,Damage:0s},{id:"minecraft:brown_mushroom",Count:3b,slot:9,Damage:0s},{id:"minecraft:poisonous_potato",Count:6b,slot:10,Damage:0s},{id:"ancientwarfarenpc:coin",Count:11b,tag:{metal:"gold"},slot:11,Damage:0s},{id:"minecraft:saddle",Count:1b,slot:12,Damage:0s},{id:"minecraft:bucket",Count:1b,slot:13,Damage:0s},{id:"minecraft:bone",Count:1b,slot:14,Damage:0s},{id:"minecraft:rotten_flesh",Count:2b,slot:15,Damage:0s},{id:"minecraft:rotten_flesh",Count:1b,slot:16,Damage:0s},{id:"minecraft:bucket",Count:1b,slot:17,Damage:0s},{id:"minecraft:bucket",Count:1b,slot:18,Damage:0s},{id:"minecraft:saddle",Count:1b,slot:19,Damage:0s},{id:"minecraft:wheat",Count:4b,slot:20,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},lootLevel:0,teData:{ForgeData:{},Items:[{Slot:0b,id:"minecraft:rotten_flesh",Count:1b,Damage:0s},{Slot:1b,id:"minecraft:rotten_flesh",Count:2b,Damage:0s},{Slot:3b,id:"ancientwarfarenpc:coin",Count:5b,tag:{metal:"silver"},Damage:0s},{Slot:4b,id:"minecraft:dye",Count:1b,Damage:3s},{Slot:5b,id:"minecraft:gunpowder",Count:4b,Damage:0s},{Slot:7b,id:"minecraft:spider_eye",Count:4b,Damage:0s},{Slot:8b,id:"minecraft:bone",Count:14b,Damage:0s},{Slot:9b,id:"minecraft:rotten_flesh",Count:2b,Damage:0s},{Slot:10b,id:"minecraft:rotten_flesh",Count:1b,Damage:0s},{Slot:11b,id:"minecraft:brown_mushroom",Count:3b,Damage:0s},{Slot:12b,id:"minecraft:poisonous_potato",Count:6b,Damage:0s},{Slot:14b,id:"ancientwarfarenpc:coin",Count:11b,tag:{metal:"gold"},Damage:0s},{Slot:15b,id:"minecraft:saddle",Count:1b,Damage:0s},{Slot:16b,id:"minecraft:bucket",Count:1b,Damage:0s},{Slot:17b,id:"minecraft:bone",Count:1b,Damage:0s},{Slot:18b,id:"minecraft:rotten_flesh",Count:2b,Damage:0s},{Slot:19b,id:"minecraft:rotten_flesh",Count:1b,Damage:0s},{Slot:20b,id:"minecraft:bucket",Count:1b,Damage:0s},{Slot:22b,id:"minecraft:bucket",Count:1b,Damage:0s},{Slot:23b,id:"minecraft:saddle",Count:1b,Damage:0s},{Slot:26b,id:"minecraft:wheat",Count:4b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:21,inventoryContents:[{id:"minecraft:rotten_flesh",Count:1b,slot:0,Damage:0s},{id:"minecraft:rotten_flesh",Count:2b,slot:1,Damage:0s},{id:"ancientwarfarenpc:coin",Count:5b,tag:{metal:"silver"},slot:2,Damage:0s},{id:"minecraft:dye",Count:1b,slot:3,Damage:3s},{id:"minecraft:gunpowder",Count:4b,slot:4,Damage:0s},{id:"minecraft:spider_eye",Count:4b,slot:5,Damage:0s},{id:"minecraft:bone",Count:14b,slot:6,Damage:0s},{id:"minecraft:rotten_flesh",Count:2b,slot:7,Damage:0s},{id:"minecraft:rotten_flesh",Count:1b,slot:8,Damage:0s},{id:"minecraft:brown_mushroom",Count:3b,slot:9,Damage:0s},{id:"minecraft:poisonous_potato",Count:6b,slot:10,Damage:0s},{id:"ancientwarfarenpc:coin",Count:11b,tag:{metal:"gold"},slot:11,Damage:0s},{id:"minecraft:saddle",Count:1b,slot:12,Damage:0s},{id:"minecraft:bucket",Count:1b,slot:13,Damage:0s},{id:"minecraft:bone",Count:1b,slot:14,Damage:0s},{id:"minecraft:rotten_flesh",Count:2b,slot:15,Damage:0s},{id:"minecraft:rotten_flesh",Count:1b,slot:16,Damage:0s},{id:"minecraft:bucket",Count:1b,slot:17,Damage:0s},{id:"minecraft:bucket",Count:1b,slot:18,Damage:0s},{id:"minecraft:saddle",Count:1b,slot:19,Damage:0s},{id:"minecraft:wheat",Count:4b,slot:20,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -2079,7 +2077,7 @@ rule:
 plugin=blockTile
 number=47
 data:
-JSON:{blockState:{blockName:"minecraft:mob_spawner",properties:{}},buildPass:0,teData:{MaxNearbyEntities:6s,RequiredPlayerRange:16s,SpawnCount:4s,SpawnData:{id:"ProjectZulu|Core.Minotaur"},MaxSpawnDelay:800s,Delay:0s,id:"minecraft:mob_spawner",SpawnRange:4s,MinSpawnDelay:200s,SpawnPotentials:[{Entity:{id:"minecraft:projectzulu|core.minotaur"},Weight:1}]}}
+JSON:{blockState:{blockName:"minecraft:mob_spawner"},teData:{MaxNearbyEntities:6s,RequiredPlayerRange:16s,SpawnCount:4s,SpawnData:{id:"ProjectZulu|Core.Minotaur"},MaxSpawnDelay:800s,id:"minecraft:mob_spawner",SpawnRange:4s,Delay:0s,MinSpawnDelay:200s,SpawnPotentials:[{Entity:{id:"minecraft:projectzulu|core.minotaur"},Weight:1}]}}
 :enddata
 :endrule
 
@@ -2087,7 +2085,7 @@ rule:
 plugin=inventory
 number=48
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{ForgeData:{},Items:[{Slot:1b,id:"minecraft:rotten_flesh",Count:20b,Damage:0s},{Slot:7b,id:"minecraft:poisonous_potato",Count:14b,Damage:0s},{Slot:15b,id:"minecraft:spider_eye",Count:9b,Damage:0s},{Slot:17b,id:"minecraft:torch",Count:11b,Damage:0s},{Slot:21b,id:"ancientwarfarenpc:coin",Count:11b,tag:{metal:"gold"},Damage:0s},{Slot:24b,id:"minecraft:red_mushroom",Count:10b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:6,inventoryContents:[{id:"minecraft:rotten_flesh",Count:20b,slot:0,Damage:0s},{id:"minecraft:poisonous_potato",Count:14b,slot:1,Damage:0s},{id:"minecraft:spider_eye",Count:9b,slot:2,Damage:0s},{id:"minecraft:torch",Count:11b,slot:3,Damage:0s},{id:"ancientwarfarenpc:coin",Count:11b,tag:{metal:"gold"},slot:4,Damage:0s},{id:"minecraft:red_mushroom",Count:10b,slot:5,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},lootLevel:0,teData:{ForgeData:{},Items:[{Slot:1b,id:"minecraft:rotten_flesh",Count:20b,Damage:0s},{Slot:7b,id:"minecraft:poisonous_potato",Count:14b,Damage:0s},{Slot:15b,id:"minecraft:spider_eye",Count:9b,Damage:0s},{Slot:17b,id:"minecraft:torch",Count:11b,Damage:0s},{Slot:21b,id:"ancientwarfarenpc:coin",Count:11b,tag:{metal:"gold"},Damage:0s},{Slot:24b,id:"minecraft:red_mushroom",Count:10b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:6,inventoryContents:[{id:"minecraft:rotten_flesh",Count:20b,slot:0,Damage:0s},{id:"minecraft:poisonous_potato",Count:14b,slot:1,Damage:0s},{id:"minecraft:spider_eye",Count:9b,slot:2,Damage:0s},{id:"minecraft:torch",Count:11b,slot:3,Damage:0s},{id:"ancientwarfarenpc:coin",Count:11b,tag:{metal:"gold"},slot:4,Damage:0s},{id:"minecraft:red_mushroom",Count:10b,slot:5,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -2095,7 +2093,7 @@ rule:
 plugin=inventory
 number=49
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{ForgeData:{},Items:[{Slot:3b,id:"minecraft:red_mushroom",Count:5b,Damage:0s},{Slot:5b,id:"minecraft:poisonous_potato",Count:1b,Damage:0s},{Slot:6b,id:"minecraft:poisonous_potato",Count:3b,Damage:0s},{Slot:7b,id:"minecraft:poisonous_potato",Count:1b,Damage:0s},{Slot:8b,id:"minecraft:bucket",Count:1b,Damage:0s},{Slot:9b,id:"minecraft:gunpowder",Count:1b,Damage:0s},{Slot:10b,id:"minecraft:brown_mushroom",Count:5b,Damage:0s},{Slot:13b,id:"minecraft:iron_ingot",Count:3b,Damage:0s},{Slot:15b,id:"minecraft:poisonous_potato",Count:2b,Damage:0s},{Slot:16b,id:"minecraft:poisonous_potato",Count:5b,Damage:0s},{Slot:20b,id:"minecraft:dye",Count:1b,Damage:3s},{Slot:23b,id:"minecraft:slime_ball",Count:3b,Damage:0s},{Slot:25b,id:"minecraft:poisonous_potato",Count:1b,Damage:0s},{Slot:26b,id:"minecraft:torch",Count:12b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:14,inventoryContents:[{id:"minecraft:red_mushroom",Count:5b,slot:0,Damage:0s},{id:"minecraft:poisonous_potato",Count:1b,slot:1,Damage:0s},{id:"minecraft:poisonous_potato",Count:3b,slot:2,Damage:0s},{id:"minecraft:poisonous_potato",Count:1b,slot:3,Damage:0s},{id:"minecraft:bucket",Count:1b,slot:4,Damage:0s},{id:"minecraft:gunpowder",Count:1b,slot:5,Damage:0s},{id:"minecraft:brown_mushroom",Count:5b,slot:6,Damage:0s},{id:"minecraft:iron_ingot",Count:3b,slot:7,Damage:0s},{id:"minecraft:poisonous_potato",Count:2b,slot:8,Damage:0s},{id:"minecraft:poisonous_potato",Count:5b,slot:9,Damage:0s},{id:"minecraft:dye",Count:1b,slot:10,Damage:3s},{id:"minecraft:slime_ball",Count:3b,slot:11,Damage:0s},{id:"minecraft:poisonous_potato",Count:1b,slot:12,Damage:0s},{id:"minecraft:torch",Count:12b,slot:13,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},lootLevel:0,teData:{ForgeData:{},Items:[{Slot:3b,id:"minecraft:red_mushroom",Count:5b,Damage:0s},{Slot:5b,id:"minecraft:poisonous_potato",Count:1b,Damage:0s},{Slot:6b,id:"minecraft:poisonous_potato",Count:3b,Damage:0s},{Slot:7b,id:"minecraft:poisonous_potato",Count:1b,Damage:0s},{Slot:8b,id:"minecraft:bucket",Count:1b,Damage:0s},{Slot:9b,id:"minecraft:gunpowder",Count:1b,Damage:0s},{Slot:10b,id:"minecraft:brown_mushroom",Count:5b,Damage:0s},{Slot:13b,id:"minecraft:iron_ingot",Count:3b,Damage:0s},{Slot:15b,id:"minecraft:poisonous_potato",Count:2b,Damage:0s},{Slot:16b,id:"minecraft:poisonous_potato",Count:5b,Damage:0s},{Slot:20b,id:"minecraft:dye",Count:1b,Damage:3s},{Slot:23b,id:"minecraft:slime_ball",Count:3b,Damage:0s},{Slot:25b,id:"minecraft:poisonous_potato",Count:1b,Damage:0s},{Slot:26b,id:"minecraft:torch",Count:12b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:14,inventoryContents:[{id:"minecraft:red_mushroom",Count:5b,slot:0,Damage:0s},{id:"minecraft:poisonous_potato",Count:1b,slot:1,Damage:0s},{id:"minecraft:poisonous_potato",Count:3b,slot:2,Damage:0s},{id:"minecraft:poisonous_potato",Count:1b,slot:3,Damage:0s},{id:"minecraft:bucket",Count:1b,slot:4,Damage:0s},{id:"minecraft:gunpowder",Count:1b,slot:5,Damage:0s},{id:"minecraft:brown_mushroom",Count:5b,slot:6,Damage:0s},{id:"minecraft:iron_ingot",Count:3b,slot:7,Damage:0s},{id:"minecraft:poisonous_potato",Count:2b,slot:8,Damage:0s},{id:"minecraft:poisonous_potato",Count:5b,slot:9,Damage:0s},{id:"minecraft:dye",Count:1b,slot:10,Damage:3s},{id:"minecraft:slime_ball",Count:3b,slot:11,Damage:0s},{id:"minecraft:poisonous_potato",Count:1b,slot:12,Damage:0s},{id:"minecraft:torch",Count:12b,slot:13,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -2103,7 +2101,7 @@ rule:
 plugin=inventory
 number=50
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{Items:[{Slot:2b,id:"minecraft:gunpowder",Count:3b,Damage:0s},{Slot:7b,id:"minecraft:bread",Count:1b,Damage:0s},{Slot:13b,id:"minecraft:wheat",Count:1b,Damage:0s},{Slot:20b,id:"minecraft:string",Count:2b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:4,inventoryContents:[{id:"minecraft:gunpowder",Count:3b,slot:0,Damage:0s},{id:"minecraft:bread",Count:1b,slot:1,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:2,Damage:0s},{id:"minecraft:string",Count:2b,slot:3,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},lootLevel:0,teData:{Items:[{Slot:2b,id:"minecraft:gunpowder",Count:3b,Damage:0s},{Slot:7b,id:"minecraft:bread",Count:1b,Damage:0s},{Slot:13b,id:"minecraft:wheat",Count:1b,Damage:0s},{Slot:20b,id:"minecraft:string",Count:2b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:4,inventoryContents:[{id:"minecraft:gunpowder",Count:3b,slot:0,Damage:0s},{id:"minecraft:bread",Count:1b,slot:1,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:2,Damage:0s},{id:"minecraft:string",Count:2b,slot:3,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -2111,7 +2109,7 @@ rule:
 plugin=inventory
 number=51
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{Items:[{Slot:1b,id:"minecraft:bread",Count:1b,Damage:0s},{Slot:3b,id:"minecraft:redstone",Count:1b,Damage:0s},{Slot:9b,id:"minecraft:iron_ingot",Count:1b,Damage:0s},{Slot:13b,id:"minecraft:redstone",Count:1b,Damage:0s},{Slot:14b,id:"minecraft:enchanted_book",Count:1b,tag:{StoredEnchantments:[{lvl:2s,id:34s}]},Damage:0s},{Slot:17b,id:"minecraft:record_cat",Count:1b,Damage:0s},{Slot:18b,id:"minecraft:gunpowder",Count:4b,Damage:0s},{Slot:22b,id:"minecraft:gunpowder",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:8,inventoryContents:[{id:"minecraft:bread",Count:1b,slot:0,Damage:0s},{id:"minecraft:redstone",Count:1b,slot:1,Damage:0s},{id:"minecraft:iron_ingot",Count:1b,slot:2,Damage:0s},{id:"minecraft:redstone",Count:1b,slot:3,Damage:0s},{id:"minecraft:enchanted_book",Count:1b,tag:{StoredEnchantments:[{lvl:2s,id:34s}]},slot:4,Damage:0s},{id:"minecraft:record_cat",Count:1b,slot:5,Damage:0s},{id:"minecraft:gunpowder",Count:4b,slot:6,Damage:0s},{id:"minecraft:gunpowder",Count:1b,slot:7,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},lootLevel:0,teData:{Items:[{Slot:1b,id:"minecraft:bread",Count:1b,Damage:0s},{Slot:3b,id:"minecraft:redstone",Count:1b,Damage:0s},{Slot:9b,id:"minecraft:iron_ingot",Count:1b,Damage:0s},{Slot:13b,id:"minecraft:redstone",Count:1b,Damage:0s},{Slot:14b,id:"minecraft:enchanted_book",Count:1b,tag:{StoredEnchantments:[{lvl:2s,id:34s}]},Damage:0s},{Slot:17b,id:"minecraft:record_cat",Count:1b,Damage:0s},{Slot:18b,id:"minecraft:gunpowder",Count:4b,Damage:0s},{Slot:22b,id:"minecraft:gunpowder",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:8,inventoryContents:[{id:"minecraft:bread",Count:1b,slot:0,Damage:0s},{id:"minecraft:redstone",Count:1b,slot:1,Damage:0s},{id:"minecraft:iron_ingot",Count:1b,slot:2,Damage:0s},{id:"minecraft:redstone",Count:1b,slot:3,Damage:0s},{id:"minecraft:enchanted_book",Count:1b,tag:{StoredEnchantments:[{lvl:2s,id:34s}]},slot:4,Damage:0s},{id:"minecraft:record_cat",Count:1b,slot:5,Damage:0s},{id:"minecraft:gunpowder",Count:4b,slot:6,Damage:0s},{id:"minecraft:gunpowder",Count:1b,slot:7,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -2119,7 +2117,7 @@ rule:
 plugin=inventory
 number=52
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{Items:[{Slot:7b,id:"minecraft:dye",Count:1b,Damage:3s}],id:"minecraft:chest",Lock:""},inventoryData:{length:1,inventoryContents:[{id:"minecraft:dye",Count:1b,slot:0,Damage:3s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},lootLevel:0,teData:{Items:[{Slot:7b,id:"minecraft:dye",Count:1b,Damage:3s}],id:"minecraft:chest",Lock:""},inventoryData:{length:1,inventoryContents:[{id:"minecraft:dye",Count:1b,slot:0,Damage:3s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -2127,7 +2125,7 @@ rule:
 plugin=inventory
 number=53
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{Items:[{Slot:2b,id:"minecraft:dye",Count:1b,Damage:3s},{Slot:5b,id:"minecraft:iron_ingot",Count:4b,Damage:0s},{Slot:9b,id:"minecraft:dye",Count:1b,Damage:3s},{Slot:11b,id:"minecraft:enchanted_book",Count:1b,tag:{StoredEnchantments:[{lvl:1s,id:18s}]},Damage:0s},{Slot:13b,id:"minecraft:redstone",Count:1b,Damage:0s},{Slot:18b,id:"minecraft:enchanted_book",Count:1b,tag:{StoredEnchantments:[{lvl:3s,id:21s}]},Damage:0s},{Slot:19b,id:"minecraft:saddle",Count:1b,Damage:0s},{Slot:22b,id:"minecraft:iron_ingot",Count:3b,Damage:0s},{Slot:24b,id:"minecraft:bucket",Count:1b,Damage:0s},{Slot:25b,id:"minecraft:saddle",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:10,inventoryContents:[{id:"minecraft:dye",Count:1b,slot:0,Damage:3s},{id:"minecraft:iron_ingot",Count:4b,slot:1,Damage:0s},{id:"minecraft:dye",Count:1b,slot:2,Damage:3s},{id:"minecraft:enchanted_book",Count:1b,tag:{StoredEnchantments:[{lvl:1s,id:18s}]},slot:3,Damage:0s},{id:"minecraft:redstone",Count:1b,slot:4,Damage:0s},{id:"minecraft:enchanted_book",Count:1b,tag:{StoredEnchantments:[{lvl:3s,id:21s}]},slot:5,Damage:0s},{id:"minecraft:saddle",Count:1b,slot:6,Damage:0s},{id:"minecraft:iron_ingot",Count:3b,slot:7,Damage:0s},{id:"minecraft:bucket",Count:1b,slot:8,Damage:0s},{id:"minecraft:saddle",Count:1b,slot:9,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},lootLevel:0,teData:{Items:[{Slot:2b,id:"minecraft:dye",Count:1b,Damage:3s},{Slot:5b,id:"minecraft:iron_ingot",Count:4b,Damage:0s},{Slot:9b,id:"minecraft:dye",Count:1b,Damage:3s},{Slot:11b,id:"minecraft:enchanted_book",Count:1b,tag:{StoredEnchantments:[{lvl:1s,id:18s}]},Damage:0s},{Slot:13b,id:"minecraft:redstone",Count:1b,Damage:0s},{Slot:18b,id:"minecraft:enchanted_book",Count:1b,tag:{StoredEnchantments:[{lvl:3s,id:21s}]},Damage:0s},{Slot:19b,id:"minecraft:saddle",Count:1b,Damage:0s},{Slot:22b,id:"minecraft:iron_ingot",Count:3b,Damage:0s},{Slot:24b,id:"minecraft:bucket",Count:1b,Damage:0s},{Slot:25b,id:"minecraft:saddle",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:10,inventoryContents:[{id:"minecraft:dye",Count:1b,slot:0,Damage:3s},{id:"minecraft:iron_ingot",Count:4b,slot:1,Damage:0s},{id:"minecraft:dye",Count:1b,slot:2,Damage:3s},{id:"minecraft:enchanted_book",Count:1b,tag:{StoredEnchantments:[{lvl:1s,id:18s}]},slot:3,Damage:0s},{id:"minecraft:redstone",Count:1b,slot:4,Damage:0s},{id:"minecraft:enchanted_book",Count:1b,tag:{StoredEnchantments:[{lvl:3s,id:21s}]},slot:5,Damage:0s},{id:"minecraft:saddle",Count:1b,slot:6,Damage:0s},{id:"minecraft:iron_ingot",Count:3b,slot:7,Damage:0s},{id:"minecraft:bucket",Count:1b,slot:8,Damage:0s},{id:"minecraft:saddle",Count:1b,slot:9,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -2135,7 +2133,7 @@ rule:
 plugin=inventory
 number=54
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{ForgeData:{},Items:[{Slot:0b,id:"minecraft:saddle",Count:1b,Damage:0s},{Slot:8b,id:"minecraft:gunpowder",Count:2b,Damage:0s},{Slot:11b,id:"minecraft:redstone",Count:2b,Damage:0s},{Slot:23b,id:"minecraft:rotten_flesh",Count:21b,Damage:0s},{Slot:26b,id:"minecraft:bread",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:5,inventoryContents:[{id:"minecraft:saddle",Count:1b,slot:0,Damage:0s},{id:"minecraft:gunpowder",Count:2b,slot:1,Damage:0s},{id:"minecraft:redstone",Count:2b,slot:2,Damage:0s},{id:"minecraft:rotten_flesh",Count:21b,slot:3,Damage:0s},{id:"minecraft:bread",Count:1b,slot:4,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},lootLevel:0,teData:{ForgeData:{},Items:[{Slot:0b,id:"minecraft:saddle",Count:1b,Damage:0s},{Slot:8b,id:"minecraft:gunpowder",Count:2b,Damage:0s},{Slot:11b,id:"minecraft:redstone",Count:2b,Damage:0s},{Slot:23b,id:"minecraft:rotten_flesh",Count:21b,Damage:0s},{Slot:26b,id:"minecraft:bread",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:5,inventoryContents:[{id:"minecraft:saddle",Count:1b,slot:0,Damage:0s},{id:"minecraft:gunpowder",Count:2b,slot:1,Damage:0s},{id:"minecraft:redstone",Count:2b,slot:2,Damage:0s},{id:"minecraft:rotten_flesh",Count:21b,slot:3,Damage:0s},{id:"minecraft:bread",Count:1b,slot:4,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -2143,7 +2141,7 @@ rule:
 plugin=inventory
 number=55
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{Items:[{Slot:6b,id:"minecraft:bread",Count:1b,Damage:0s},{Slot:16b,id:"minecraft:dye",Count:1b,Damage:3s},{Slot:18b,id:"minecraft:wheat",Count:1b,Damage:0s},{Slot:21b,id:"minecraft:redstone",Count:4b,Damage:0s},{Slot:25b,id:"minecraft:dye",Count:1b,Damage:3s}],id:"minecraft:chest",Lock:""},inventoryData:{length:5,inventoryContents:[{id:"minecraft:bread",Count:1b,slot:0,Damage:0s},{id:"minecraft:dye",Count:1b,slot:1,Damage:3s},{id:"minecraft:wheat",Count:1b,slot:2,Damage:0s},{id:"minecraft:redstone",Count:4b,slot:3,Damage:0s},{id:"minecraft:dye",Count:1b,slot:4,Damage:3s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},lootLevel:0,teData:{Items:[{Slot:6b,id:"minecraft:bread",Count:1b,Damage:0s},{Slot:16b,id:"minecraft:dye",Count:1b,Damage:3s},{Slot:18b,id:"minecraft:wheat",Count:1b,Damage:0s},{Slot:21b,id:"minecraft:redstone",Count:4b,Damage:0s},{Slot:25b,id:"minecraft:dye",Count:1b,Damage:3s}],id:"minecraft:chest",Lock:""},inventoryData:{length:5,inventoryContents:[{id:"minecraft:bread",Count:1b,slot:0,Damage:0s},{id:"minecraft:dye",Count:1b,slot:1,Damage:3s},{id:"minecraft:wheat",Count:1b,slot:2,Damage:0s},{id:"minecraft:redstone",Count:4b,slot:3,Damage:0s},{id:"minecraft:dye",Count:1b,slot:4,Damage:3s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -2151,7 +2149,7 @@ rule:
 plugin=inventory
 number=56
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{Items:[{Slot:0b,id:"minecraft:dye",Count:1b,Damage:3s},{Slot:8b,id:"minecraft:string",Count:4b,Damage:0s},{Slot:14b,id:"minecraft:saddle",Count:1b,Damage:0s},{Slot:17b,id:"minecraft:saddle",Count:1b,Damage:0s},{Slot:19b,id:"minecraft:bread",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:5,inventoryContents:[{id:"minecraft:dye",Count:1b,slot:0,Damage:3s},{id:"minecraft:string",Count:4b,slot:1,Damage:0s},{id:"minecraft:saddle",Count:1b,slot:2,Damage:0s},{id:"minecraft:saddle",Count:1b,slot:3,Damage:0s},{id:"minecraft:bread",Count:1b,slot:4,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},lootLevel:0,teData:{Items:[{Slot:0b,id:"minecraft:dye",Count:1b,Damage:3s},{Slot:8b,id:"minecraft:string",Count:4b,Damage:0s},{Slot:14b,id:"minecraft:saddle",Count:1b,Damage:0s},{Slot:17b,id:"minecraft:saddle",Count:1b,Damage:0s},{Slot:19b,id:"minecraft:bread",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:5,inventoryContents:[{id:"minecraft:dye",Count:1b,slot:0,Damage:3s},{id:"minecraft:string",Count:4b,slot:1,Damage:0s},{id:"minecraft:saddle",Count:1b,slot:2,Damage:0s},{id:"minecraft:saddle",Count:1b,slot:3,Damage:0s},{id:"minecraft:bread",Count:1b,slot:4,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -2159,7 +2157,7 @@ rule:
 plugin=inventory
 number=57
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{Items:[{Slot:21b,id:"minecraft:bread",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:1,inventoryContents:[{id:"minecraft:bread",Count:1b,slot:0,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},lootLevel:0,teData:{Items:[{Slot:21b,id:"minecraft:bread",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:1,inventoryContents:[{id:"minecraft:bread",Count:1b,slot:0,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -2167,7 +2165,7 @@ rule:
 plugin=inventory
 number=58
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{Items:[{Slot:0b,id:"minecraft:enchanted_book",Count:1b,tag:{StoredEnchantments:[{lvl:2s,id:7s}]},Damage:0s},{Slot:3b,id:"minecraft:iron_ingot",Count:1b,Damage:0s},{Slot:8b,id:"minecraft:iron_ingot",Count:3b,Damage:0s},{Slot:13b,id:"minecraft:wheat",Count:2b,Damage:0s},{Slot:18b,id:"minecraft:iron_ingot",Count:3b,Damage:0s},{Slot:21b,id:"minecraft:enchanted_book",Count:1b,tag:{StoredEnchantments:[{lvl:1s,id:50s}]},Damage:0s},{Slot:24b,id:"minecraft:saddle",Count:1b,Damage:0s},{Slot:25b,id:"minecraft:gunpowder",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:8,inventoryContents:[{id:"minecraft:enchanted_book",Count:1b,tag:{StoredEnchantments:[{lvl:2s,id:7s}]},slot:0,Damage:0s},{id:"minecraft:iron_ingot",Count:1b,slot:1,Damage:0s},{id:"minecraft:iron_ingot",Count:3b,slot:2,Damage:0s},{id:"minecraft:wheat",Count:2b,slot:3,Damage:0s},{id:"minecraft:iron_ingot",Count:3b,slot:4,Damage:0s},{id:"minecraft:enchanted_book",Count:1b,tag:{StoredEnchantments:[{lvl:1s,id:50s}]},slot:5,Damage:0s},{id:"minecraft:saddle",Count:1b,slot:6,Damage:0s},{id:"minecraft:gunpowder",Count:1b,slot:7,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},lootLevel:0,teData:{Items:[{Slot:0b,id:"minecraft:enchanted_book",Count:1b,tag:{StoredEnchantments:[{lvl:2s,id:7s}]},Damage:0s},{Slot:3b,id:"minecraft:iron_ingot",Count:1b,Damage:0s},{Slot:8b,id:"minecraft:iron_ingot",Count:3b,Damage:0s},{Slot:13b,id:"minecraft:wheat",Count:2b,Damage:0s},{Slot:18b,id:"minecraft:iron_ingot",Count:3b,Damage:0s},{Slot:21b,id:"minecraft:enchanted_book",Count:1b,tag:{StoredEnchantments:[{lvl:1s,id:50s}]},Damage:0s},{Slot:24b,id:"minecraft:saddle",Count:1b,Damage:0s},{Slot:25b,id:"minecraft:gunpowder",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:8,inventoryContents:[{id:"minecraft:enchanted_book",Count:1b,tag:{StoredEnchantments:[{lvl:2s,id:7s}]},slot:0,Damage:0s},{id:"minecraft:iron_ingot",Count:1b,slot:1,Damage:0s},{id:"minecraft:iron_ingot",Count:3b,slot:2,Damage:0s},{id:"minecraft:wheat",Count:2b,slot:3,Damage:0s},{id:"minecraft:iron_ingot",Count:3b,slot:4,Damage:0s},{id:"minecraft:enchanted_book",Count:1b,tag:{StoredEnchantments:[{lvl:1s,id:50s}]},slot:5,Damage:0s},{id:"minecraft:saddle",Count:1b,slot:6,Damage:0s},{id:"minecraft:gunpowder",Count:1b,slot:7,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -2175,7 +2173,7 @@ rule:
 plugin=inventory
 number=59
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{Items:[{Slot:8b,id:"minecraft:bread",Count:1b,Damage:0s},{Slot:9b,id:"minecraft:redstone",Count:3b,Damage:0s},{Slot:19b,id:"minecraft:redstone",Count:3b,Damage:0s},{Slot:23b,id:"minecraft:dye",Count:1b,Damage:3s}],id:"minecraft:chest",Lock:""},inventoryData:{length:4,inventoryContents:[{id:"minecraft:bread",Count:1b,slot:0,Damage:0s},{id:"minecraft:redstone",Count:3b,slot:1,Damage:0s},{id:"minecraft:redstone",Count:3b,slot:2,Damage:0s},{id:"minecraft:dye",Count:1b,slot:3,Damage:3s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},lootLevel:0,teData:{Items:[{Slot:8b,id:"minecraft:bread",Count:1b,Damage:0s},{Slot:9b,id:"minecraft:redstone",Count:3b,Damage:0s},{Slot:19b,id:"minecraft:redstone",Count:3b,Damage:0s},{Slot:23b,id:"minecraft:dye",Count:1b,Damage:3s}],id:"minecraft:chest",Lock:""},inventoryData:{length:4,inventoryContents:[{id:"minecraft:bread",Count:1b,slot:0,Damage:0s},{id:"minecraft:redstone",Count:3b,slot:1,Damage:0s},{id:"minecraft:redstone",Count:3b,slot:2,Damage:0s},{id:"minecraft:dye",Count:1b,slot:3,Damage:3s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -2183,7 +2181,7 @@ rule:
 plugin=inventory
 number=60
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{Items:[{Slot:12b,id:"minecraft:string",Count:3b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:1,inventoryContents:[{id:"minecraft:string",Count:3b,slot:0,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},lootLevel:0,teData:{Items:[{Slot:12b,id:"minecraft:string",Count:3b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:1,inventoryContents:[{id:"minecraft:string",Count:3b,slot:0,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -2191,7 +2189,7 @@ rule:
 plugin=inventory
 number=61
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{Items:[{Slot:1b,id:"minecraft:iron_ingot",Count:4b,Damage:0s},{Slot:5b,id:"minecraft:wheat",Count:4b,Damage:0s},{Slot:10b,id:"minecraft:string",Count:2b,Damage:0s},{Slot:12b,id:"minecraft:saddle",Count:1b,Damage:0s},{Slot:16b,id:"minecraft:string",Count:2b,Damage:0s},{Slot:21b,id:"minecraft:string",Count:3b,Damage:0s},{Slot:24b,id:"minecraft:bucket",Count:1b,Damage:0s},{Slot:26b,id:"minecraft:enchanted_book",Count:1b,tag:{StoredEnchantments:[{lvl:1s,id:51s}]},Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:8,inventoryContents:[{id:"minecraft:iron_ingot",Count:4b,slot:0,Damage:0s},{id:"minecraft:wheat",Count:4b,slot:1,Damage:0s},{id:"minecraft:string",Count:2b,slot:2,Damage:0s},{id:"minecraft:saddle",Count:1b,slot:3,Damage:0s},{id:"minecraft:string",Count:2b,slot:4,Damage:0s},{id:"minecraft:string",Count:3b,slot:5,Damage:0s},{id:"minecraft:bucket",Count:1b,slot:6,Damage:0s},{id:"minecraft:enchanted_book",Count:1b,tag:{StoredEnchantments:[{lvl:1s,id:51s}]},slot:7,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},lootLevel:0,teData:{Items:[{Slot:1b,id:"minecraft:iron_ingot",Count:4b,Damage:0s},{Slot:5b,id:"minecraft:wheat",Count:4b,Damage:0s},{Slot:10b,id:"minecraft:string",Count:2b,Damage:0s},{Slot:12b,id:"minecraft:saddle",Count:1b,Damage:0s},{Slot:16b,id:"minecraft:string",Count:2b,Damage:0s},{Slot:21b,id:"minecraft:string",Count:3b,Damage:0s},{Slot:24b,id:"minecraft:bucket",Count:1b,Damage:0s},{Slot:26b,id:"minecraft:enchanted_book",Count:1b,tag:{StoredEnchantments:[{lvl:1s,id:51s}]},Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:8,inventoryContents:[{id:"minecraft:iron_ingot",Count:4b,slot:0,Damage:0s},{id:"minecraft:wheat",Count:4b,slot:1,Damage:0s},{id:"minecraft:string",Count:2b,slot:2,Damage:0s},{id:"minecraft:saddle",Count:1b,slot:3,Damage:0s},{id:"minecraft:string",Count:2b,slot:4,Damage:0s},{id:"minecraft:string",Count:3b,slot:5,Damage:0s},{id:"minecraft:bucket",Count:1b,slot:6,Damage:0s},{id:"minecraft:enchanted_book",Count:1b,tag:{StoredEnchantments:[{lvl:1s,id:51s}]},slot:7,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -2199,7 +2197,7 @@ rule:
 plugin=inventory
 number=62
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{Items:[{Slot:7b,id:"minecraft:gunpowder",Count:3b,Damage:0s},{Slot:9b,id:"minecraft:enchanted_book",Count:1b,tag:{StoredEnchantments:[{lvl:2s,id:16s}]},Damage:0s},{Slot:11b,id:"minecraft:gunpowder",Count:2b,Damage:0s},{Slot:14b,id:"minecraft:gunpowder",Count:2b,Damage:0s},{Slot:18b,id:"minecraft:string",Count:4b,Damage:0s},{Slot:24b,id:"minecraft:bread",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:6,inventoryContents:[{id:"minecraft:gunpowder",Count:3b,slot:0,Damage:0s},{id:"minecraft:enchanted_book",Count:1b,tag:{StoredEnchantments:[{lvl:2s,id:16s}]},slot:1,Damage:0s},{id:"minecraft:gunpowder",Count:2b,slot:2,Damage:0s},{id:"minecraft:gunpowder",Count:2b,slot:3,Damage:0s},{id:"minecraft:string",Count:4b,slot:4,Damage:0s},{id:"minecraft:bread",Count:1b,slot:5,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},lootLevel:0,teData:{Items:[{Slot:7b,id:"minecraft:gunpowder",Count:3b,Damage:0s},{Slot:9b,id:"minecraft:enchanted_book",Count:1b,tag:{StoredEnchantments:[{lvl:2s,id:16s}]},Damage:0s},{Slot:11b,id:"minecraft:gunpowder",Count:2b,Damage:0s},{Slot:14b,id:"minecraft:gunpowder",Count:2b,Damage:0s},{Slot:18b,id:"minecraft:string",Count:4b,Damage:0s},{Slot:24b,id:"minecraft:bread",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:6,inventoryContents:[{id:"minecraft:gunpowder",Count:3b,slot:0,Damage:0s},{id:"minecraft:enchanted_book",Count:1b,tag:{StoredEnchantments:[{lvl:2s,id:16s}]},slot:1,Damage:0s},{id:"minecraft:gunpowder",Count:2b,slot:2,Damage:0s},{id:"minecraft:gunpowder",Count:2b,slot:3,Damage:0s},{id:"minecraft:string",Count:4b,slot:4,Damage:0s},{id:"minecraft:bread",Count:1b,slot:5,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -2207,7 +2205,7 @@ rule:
 plugin=inventory
 number=63
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{Items:[{Slot:8b,id:"minecraft:enchanted_book",Count:1b,tag:{StoredEnchantments:[{lvl:3s,id:7s}]},Damage:0s},{Slot:11b,id:"minecraft:gunpowder",Count:3b,Damage:0s},{Slot:20b,id:"minecraft:gunpowder",Count:4b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:3,inventoryContents:[{id:"minecraft:enchanted_book",Count:1b,tag:{StoredEnchantments:[{lvl:3s,id:7s}]},slot:0,Damage:0s},{id:"minecraft:gunpowder",Count:3b,slot:1,Damage:0s},{id:"minecraft:gunpowder",Count:4b,slot:2,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},lootLevel:0,teData:{Items:[{Slot:8b,id:"minecraft:enchanted_book",Count:1b,tag:{StoredEnchantments:[{lvl:3s,id:7s}]},Damage:0s},{Slot:11b,id:"minecraft:gunpowder",Count:3b,Damage:0s},{Slot:20b,id:"minecraft:gunpowder",Count:4b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:3,inventoryContents:[{id:"minecraft:enchanted_book",Count:1b,tag:{StoredEnchantments:[{lvl:3s,id:7s}]},slot:0,Damage:0s},{id:"minecraft:gunpowder",Count:3b,slot:1,Damage:0s},{id:"minecraft:gunpowder",Count:4b,slot:2,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -2215,7 +2213,7 @@ rule:
 plugin=inventory
 number=64
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{Items:[],id:"minecraft:chest",Lock:""},inventoryData:{length:0,inventoryContents:[]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},lootLevel:0,teData:{Items:[],id:"minecraft:chest",Lock:""},inventoryData:{length:0,inventoryContents:[]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -2223,7 +2221,7 @@ rule:
 plugin=inventory
 number=65
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{Items:[{Slot:7b,id:"minecraft:dye",Count:1b,Damage:3s},{Slot:15b,id:"minecraft:enchanted_book",Count:1b,tag:{StoredEnchantments:[{lvl:2s,id:16s}]},Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:2,inventoryContents:[{id:"minecraft:dye",Count:1b,slot:0,Damage:3s},{id:"minecraft:enchanted_book",Count:1b,tag:{StoredEnchantments:[{lvl:2s,id:16s}]},slot:1,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},lootLevel:0,teData:{Items:[{Slot:7b,id:"minecraft:dye",Count:1b,Damage:3s},{Slot:15b,id:"minecraft:enchanted_book",Count:1b,tag:{StoredEnchantments:[{lvl:2s,id:16s}]},Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:2,inventoryContents:[{id:"minecraft:dye",Count:1b,slot:0,Damage:3s},{id:"minecraft:enchanted_book",Count:1b,tag:{StoredEnchantments:[{lvl:2s,id:16s}]},slot:1,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -2231,7 +2229,7 @@ rule:
 plugin=inventory
 number=66
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{Items:[{Slot:12b,id:"minecraft:gunpowder",Count:3b,Damage:0s},{Slot:15b,id:"minecraft:saddle",Count:1b,Damage:0s},{Slot:20b,id:"minecraft:bread",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:3,inventoryContents:[{id:"minecraft:gunpowder",Count:3b,slot:0,Damage:0s},{id:"minecraft:saddle",Count:1b,slot:1,Damage:0s},{id:"minecraft:bread",Count:1b,slot:2,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},lootLevel:0,teData:{Items:[{Slot:12b,id:"minecraft:gunpowder",Count:3b,Damage:0s},{Slot:15b,id:"minecraft:saddle",Count:1b,Damage:0s},{Slot:20b,id:"minecraft:bread",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:3,inventoryContents:[{id:"minecraft:gunpowder",Count:3b,slot:0,Damage:0s},{id:"minecraft:saddle",Count:1b,slot:1,Damage:0s},{id:"minecraft:bread",Count:1b,slot:2,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -2239,7 +2237,7 @@ rule:
 plugin=inventory
 number=67
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{Items:[{Slot:2b,id:"minecraft:saddle",Count:1b,Damage:0s},{Slot:5b,id:"minecraft:wheat",Count:4b,Damage:0s},{Slot:9b,id:"minecraft:enchanted_book",Count:1b,tag:{StoredEnchantments:[{lvl:4s,id:32s}]},Damage:0s},{Slot:15b,id:"minecraft:redstone",Count:1b,Damage:0s},{Slot:18b,id:"minecraft:iron_ingot",Count:2b,Damage:0s},{Slot:23b,id:"minecraft:saddle",Count:1b,Damage:0s},{Slot:25b,id:"minecraft:saddle",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:7,inventoryContents:[{id:"minecraft:saddle",Count:1b,slot:0,Damage:0s},{id:"minecraft:wheat",Count:4b,slot:1,Damage:0s},{id:"minecraft:enchanted_book",Count:1b,tag:{StoredEnchantments:[{lvl:4s,id:32s}]},slot:2,Damage:0s},{id:"minecraft:redstone",Count:1b,slot:3,Damage:0s},{id:"minecraft:iron_ingot",Count:2b,slot:4,Damage:0s},{id:"minecraft:saddle",Count:1b,slot:5,Damage:0s},{id:"minecraft:saddle",Count:1b,slot:6,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},lootLevel:0,teData:{Items:[{Slot:2b,id:"minecraft:saddle",Count:1b,Damage:0s},{Slot:5b,id:"minecraft:wheat",Count:4b,Damage:0s},{Slot:9b,id:"minecraft:enchanted_book",Count:1b,tag:{StoredEnchantments:[{lvl:4s,id:32s}]},Damage:0s},{Slot:15b,id:"minecraft:redstone",Count:1b,Damage:0s},{Slot:18b,id:"minecraft:iron_ingot",Count:2b,Damage:0s},{Slot:23b,id:"minecraft:saddle",Count:1b,Damage:0s},{Slot:25b,id:"minecraft:saddle",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:7,inventoryContents:[{id:"minecraft:saddle",Count:1b,slot:0,Damage:0s},{id:"minecraft:wheat",Count:4b,slot:1,Damage:0s},{id:"minecraft:enchanted_book",Count:1b,tag:{StoredEnchantments:[{lvl:4s,id:32s}]},slot:2,Damage:0s},{id:"minecraft:redstone",Count:1b,slot:3,Damage:0s},{id:"minecraft:iron_ingot",Count:2b,slot:4,Damage:0s},{id:"minecraft:saddle",Count:1b,slot:5,Damage:0s},{id:"minecraft:saddle",Count:1b,slot:6,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -2247,7 +2245,7 @@ rule:
 plugin=inventory
 number=68
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{Items:[{Slot:1b,id:"minecraft:bread",Count:1b,Damage:0s},{Slot:2b,id:"minecraft:wheat",Count:1b,Damage:0s},{Slot:3b,id:"minecraft:wheat",Count:2b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:3,inventoryContents:[{id:"minecraft:bread",Count:1b,slot:0,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:1,Damage:0s},{id:"minecraft:wheat",Count:2b,slot:2,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},lootLevel:0,teData:{Items:[{Slot:1b,id:"minecraft:bread",Count:1b,Damage:0s},{Slot:2b,id:"minecraft:wheat",Count:1b,Damage:0s},{Slot:3b,id:"minecraft:wheat",Count:2b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:3,inventoryContents:[{id:"minecraft:bread",Count:1b,slot:0,Damage:0s},{id:"minecraft:wheat",Count:1b,slot:1,Damage:0s},{id:"minecraft:wheat",Count:2b,slot:2,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -2255,7 +2253,7 @@ rule:
 plugin=vanillaBlocks
 number=69
 data:
-JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"dirt",snowy:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"dirt",snowy:"false"}}}
 :enddata
 :endrule
 
@@ -2263,7 +2261,7 @@ rule:
 plugin=vanillaBlocks
 number=70
 data:
-JSON:{blockState:{blockName:"minecraft:stone",properties:{variant:"stone"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone",properties:{variant:"stone"}}}
 :enddata
 :endrule
 
@@ -2271,7 +2269,7 @@ rule:
 plugin=vanillaBlocks
 number=71
 data:
-JSON:{blockState:{blockName:"minecraft:coal_ore",properties:{}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:coal_ore"}}
 :enddata
 :endrule
 
@@ -2279,7 +2277,7 @@ rule:
 plugin=vanillaBlocks
 number=72
 data:
-JSON:{blockState:{blockName:"minecraft:grass",properties:{snowy:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:grass",properties:{snowy:"false"}}}
 :enddata
 :endrule
 
@@ -2287,7 +2285,7 @@ rule:
 plugin=vanillaBlocks
 number=73
 data:
-JSON:{blockState:{blockName:"minecraft:red_flower",properties:{type:"oxeye_daisy"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:red_flower",properties:{type:"oxeye_daisy"}}}
 :enddata
 :endrule
 
@@ -2295,7 +2293,7 @@ rule:
 plugin=vanillaBlocks
 number=74
 data:
-JSON:{blockState:{blockName:"minecraft:tallgrass",properties:{type:"tall_grass"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:tallgrass",properties:{type:"tall_grass"}}}
 :enddata
 :endrule
 
@@ -2303,7 +2301,7 @@ rule:
 plugin=vanillaBlocks
 number=75
 data:
-JSON:{blockState:{blockName:"minecraft:red_flower",properties:{type:"houstonia"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:red_flower",properties:{type:"houstonia"}}}
 :enddata
 :endrule
 
@@ -2311,7 +2309,7 @@ rule:
 plugin=vanillaBlocks
 number=76
 data:
-JSON:{blockState:{blockName:"minecraft:yellow_flower",properties:{type:"dandelion"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:yellow_flower",properties:{type:"dandelion"}}}
 :enddata
 :endrule
 
@@ -2319,7 +2317,7 @@ rule:
 plugin=vanillaBlocks
 number=77
 data:
-JSON:{blockState:{blockName:"minecraft:red_flower",properties:{type:"poppy"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:red_flower",properties:{type:"poppy"}}}
 :enddata
 :endrule
 
@@ -2327,7 +2325,7 @@ rule:
 plugin=vanillaBlocks
 number=78
 data:
-JSON:{blockState:{blockName:"minecraft:red_flower",properties:{type:"orange_tulip"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:red_flower",properties:{type:"orange_tulip"}}}
 :enddata
 :endrule
 
@@ -2335,7 +2333,7 @@ rule:
 plugin=vanillaBlocks
 number=79
 data:
-JSON:{blockState:{blockName:"minecraft:red_flower",properties:{type:"white_tulip"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:red_flower",properties:{type:"white_tulip"}}}
 :enddata
 :endrule
 
@@ -2343,7 +2341,7 @@ rule:
 plugin=vanillaBlocks
 number=80
 data:
-JSON:{blockState:{blockName:"minecraft:red_flower",properties:{type:"pink_tulip"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:red_flower",properties:{type:"pink_tulip"}}}
 :enddata
 :endrule
 
@@ -2351,7 +2349,7 @@ rule:
 plugin=vanillaBlocks
 number=81
 data:
-JSON:{blockState:{blockName:"minecraft:red_flower",properties:{type:"red_tulip"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:red_flower",properties:{type:"red_tulip"}}}
 :enddata
 :endrule
 
@@ -2359,7 +2357,7 @@ rule:
 plugin=vanillaBlocks
 number=82
 data:
-JSON:{blockState:{blockName:"minecraft:double_plant",properties:{half:"lower",variant:"double_grass",facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:double_plant",properties:{half:"lower",variant:"double_grass",facing:"east"}}}
 :enddata
 :endrule
 
@@ -2367,7 +2365,7 @@ rule:
 plugin=vanillaBlocks
 number=83
 data:
-JSON:{blockState:{blockName:"minecraft:double_plant",properties:{half:"upper",variant:"sunflower",facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:double_plant",properties:{half:"upper",variant:"sunflower",facing:"east"}}}
 :enddata
 :endrule
 
@@ -2375,7 +2373,7 @@ rule:
 plugin=vanillaBlocks
 number=84
 data:
-JSON:{blockState:{blockName:"minecraft:stone_slab",properties:{half:"bottom",variant:"stone_brick"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_slab",properties:{half:"bottom",variant:"stone_brick"}}}
 :enddata
 :endrule
 
@@ -2383,7 +2381,7 @@ rule:
 plugin=vanillaBlocks
 number=85
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"south"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"south"}}}
 :enddata
 :endrule
 
@@ -2391,7 +2389,7 @@ rule:
 plugin=vanillaBlocks
 number=86
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"north"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"north"}}}
 :enddata
 :endrule
 
@@ -2399,7 +2397,7 @@ rule:
 plugin=vanillaBlocks
 number=87
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"east"}}}
 :enddata
 :endrule
 

@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 12/10/2018 at: 14:22:14
+# Auto-generated structure template file. created on: 8/19/2019 at: 10:23:16
 # Lines beginning with # denote comments
 
 header:
-version=2.8
+version=2.9
 name=XoltecBallGameArena
 mods=
 size=55,58,38
@@ -20,10 +20,10 @@ preserveBlocks=false
 selectionWeight=60
 clusterValue=50
 minDuplicateDistance=1000
-dimensionWhiteList=false
-dimensionList=
+dimensionWhiteList=true
+dimensionList=0
 biomeWhiteList=true
-biomeList=traverse:red_desert,minecraft:mesa,minecraft:mutated_mesa_clear_rock,minecraft:mesa_clear_rock,minecraft:mesa_rock,minecraft:mutated_mesa,minecraft:mutated_mesa_rock
+biomeList=minecraft:mesa,traverse:red_desert,minecraft:mutated_mesa_clear_rock,minecraft:mesa_clear_rock,minecraft:mesa_rock,minecraft:mutated_mesa,minecraft:mutated_mesa_rock
 leveling=40
 fill=20
 border=6
@@ -2461,7 +2461,7 @@ rule:
 plugin=blockTile
 number=14
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"east"}},teData:{LootTable:"ancientwarfare:inject/chests/jungle_temple",lootRolls:2b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:2044400288663623361L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"east"}},teData:{LootTable:"ancientwarfare:inject/chests/jungle_temple",lootRolls:2b,lootSettings:{lootRolls:2,splashPotion:0b,hasLoot:1b,lootTableName:"ancientwarfare:inject/chests/jungle_temple",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:2044400288663623361L}}
 :enddata
 :endrule
 

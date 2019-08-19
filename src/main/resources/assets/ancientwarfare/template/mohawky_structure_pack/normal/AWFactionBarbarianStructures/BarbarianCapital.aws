@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 1/4/2019 at: 21:5:9
+# Auto-generated structure template file. created on: 8/19/2019 at: 10:23:8
 # Lines beginning with # denote comments
 
 header:
-version=2.8
+version=2.9
 name=BarbarianCapital
 mods=
 size=99,45,75
@@ -3846,7 +3846,7 @@ rule:
 plugin=blockTile
 number=44
 data:
-JSON:{blockState:{blockName:"minecraft:command_block",properties:{conditional:"false",facing:"down"}},teData:{auto:0b,powered:0b,SuccessCount:1,UpdateLastExecution:1b,conditionMet:0b,CustomName:"@",Command:"/tp @p ~0 ~14 ~0",id:"minecraft:command_block",LastOutput:"{\"extra\":[{\"translate\":\"commands.tp.success.coordinates\",\"with\":[\"gg\",\"3.6191520815396108\",\"237.0\",\"10.633000707029288\"]}],\"text\":\"[13:10:14] \"}",TrackOutput:1b}}
+JSON:{blockState:{blockName:"minecraft:command_block",properties:{conditional:"false",facing:"down"}},teData:{conditionMet:0b,auto:0b,powered:0b,CustomName:"@",Command:"/tp @p ~0 ~14 ~0",id:"minecraft:command_block",SuccessCount:1,LastOutput:"{\"extra\":[{\"translate\":\"commands.tp.success.coordinates\",\"with\":[\"gg\",\"3.6191520815396108\",\"237.0\",\"10.633000707029288\"]}],\"text\":\"[13:10:14] \"}",TrackOutput:1b,UpdateLastExecution:1b}}
 :enddata
 :endrule
 
@@ -3862,7 +3862,7 @@ rule:
 plugin=vanillaSign
 number=46
 data:
-JSON:{signContents0:"up§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"",signContents1:"",signContents3:"",rotation:0}
+JSON:{signContents0:"up§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"",signContents1:"",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -4022,7 +4022,7 @@ rule:
 plugin=blockTile
 number=66
 data:
-JSON:{blockState:{blockName:"minecraft:command_block",properties:{conditional:"false",facing:"down"}},teData:{auto:0b,powered:0b,SuccessCount:1,UpdateLastExecution:1b,conditionMet:0b,CustomName:"@",Command:"/tp @p ~0 ~-14 ~0",id:"minecraft:command_block",LastOutput:"{\"extra\":[{\"translate\":\"commands.tp.success.coordinates\",\"with\":[\"gg\",\"3.583088241681261\",\"223.0\",\"9.865574333513916\"]}],\"text\":\"[13:12:25] \"}",TrackOutput:1b}}
+JSON:{blockState:{blockName:"minecraft:command_block",properties:{conditional:"false",facing:"down"}},teData:{conditionMet:0b,auto:0b,powered:0b,CustomName:"@",Command:"/tp @p ~0 ~-14 ~0",id:"minecraft:command_block",SuccessCount:1,LastOutput:"{\"extra\":[{\"translate\":\"commands.tp.success.coordinates\",\"with\":[\"gg\",\"3.583088241681261\",\"223.0\",\"9.865574333513916\"]}],\"text\":\"[13:12:25] \"}",TrackOutput:1b,UpdateLastExecution:1b}}
 :enddata
 :endrule
 
@@ -4214,7 +4214,7 @@ rule:
 plugin=blockTile
 number=90
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"east"}},teData:{LootTable:"minecraft:chests/village_blacksmith",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-6817626014874752537L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"east"}},teData:{LootTable:"minecraft:chests/village_blacksmith",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/village_blacksmith",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-6817626014874752537L}}
 :enddata
 :endrule
 
@@ -4342,7 +4342,7 @@ rule:
 plugin=blockTile
 number=106
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"minecraft:chests/village_blacksmith",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:430609199341812551L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"minecraft:chests/village_blacksmith",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/village_blacksmith",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:430609199341812551L}}
 :enddata
 :endrule
 
@@ -4630,7 +4630,7 @@ rule:
 plugin=vanillaSign
 number=142
 data:
-JSON:{signContents0:"push§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"",signContents1:"",signContents3:"",rotation:0}
+JSON:{signContents0:"push§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"",signContents1:"",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -4638,7 +4638,7 @@ rule:
 plugin=vanillaSign
 number=143
 data:
-JSON:{signContents0:"push§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"",signContents1:"",signContents3:"",rotation:0}
+JSON:{signContents0:"push§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"",signContents1:"",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -5062,7 +5062,7 @@ rule:
 plugin=blockTile
 number=196
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"east"}},teData:{LootTable:"minecraft:chests/village_blacksmith",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-681551739862508959L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"east"}},teData:{LootTable:"minecraft:chests/village_blacksmith",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/village_blacksmith",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-681551739862508959L}}
 :enddata
 :endrule
 
@@ -5110,7 +5110,7 @@ rule:
 plugin=blockTile
 number=202
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"east"}},teData:{LootTable:"minecraft:chests/village_blacksmith",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-674941806995772447L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"east"}},teData:{LootTable:"minecraft:chests/village_blacksmith",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/village_blacksmith",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-674941806995772447L}}
 :enddata
 :endrule
 
@@ -5302,7 +5302,7 @@ rule:
 plugin=blockTile
 number=226
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{LootTable:"minecraft:chests/village_blacksmith",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-9014152297472107512L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{LootTable:"minecraft:chests/village_blacksmith",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/village_blacksmith",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-9014152297472107512L}}
 :enddata
 :endrule
 

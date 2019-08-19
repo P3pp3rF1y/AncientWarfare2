@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 1/3/2019 at: 3:46:5
+# Auto-generated structure template file. created on: 8/19/2019 at: 10:23:10
 # Lines beginning with # denote comments
 
 header:
-version=2.8
+version=2.9
 name=EmpireFarmChickenSmall
 mods=
 size=12,10,15
@@ -487,7 +487,7 @@ rule:
 plugin=vanillaSign
 number=36
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"east"}},signContents2:"Chicken Farm§r",signContents1:"Peasant§r",signContents3:"",rotation:0}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"east"}},signContents2:"Chicken Farm§r§r",signContents1:"Peasant§r§r",signContents3:"",rotation:0}
 :enddata
 :endrule
 

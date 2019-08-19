@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 1/2/2019 at: 21:52:27
+# Auto-generated structure template file. created on: 8/19/2019 at: 10:23:13
 # Lines beginning with # denote comments
 
 header:
-version=2.8
+version=2.9
 name=NorskaTempleOfOdin
 mods=
 size=36,56,27
@@ -1861,7 +1861,7 @@ rule:
 plugin=vanillaSign
 number=26
 data:
-JSON:{signContents0:"Test 4§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"east"}},signContents2:"",signContents1:"",signContents3:"",rotation:0}
+JSON:{signContents0:"Test 4§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"east"}},signContents2:"",signContents1:"",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -1869,7 +1869,7 @@ rule:
 plugin=vanillaSign
 number=27
 data:
-JSON:{signContents0:"Test 5§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"east"}},signContents2:"",signContents1:"",signContents3:"",rotation:0}
+JSON:{signContents0:"Test 5§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"east"}},signContents2:"",signContents1:"",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -1877,7 +1877,7 @@ rule:
 plugin=vanillaSign
 number=28
 data:
-JSON:{signContents0:"Test 3§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"north"}},signContents2:"",signContents1:"",signContents3:"",rotation:0}
+JSON:{signContents0:"Test 3§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"north"}},signContents2:"",signContents1:"",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -1885,7 +1885,7 @@ rule:
 plugin=vanillaSign
 number=29
 data:
-JSON:{signContents0:"Test 6§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"",signContents1:"",signContents3:"",rotation:0}
+JSON:{signContents0:"Test 6§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"",signContents1:"",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -1893,7 +1893,7 @@ rule:
 plugin=vanillaSign
 number=30
 data:
-JSON:{signContents0:"Test 2§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"",signContents1:"",signContents3:"",rotation:0}
+JSON:{signContents0:"Test 2§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"",signContents1:"",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -1901,7 +1901,7 @@ rule:
 plugin=vanillaSign
 number=31
 data:
-JSON:{signContents0:"Test 1§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"",signContents1:"",signContents3:"",rotation:0}
+JSON:{signContents0:"Test 1§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"",signContents1:"",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -1909,7 +1909,7 @@ rule:
 plugin=vanillaSign
 number=32
 data:
-JSON:{signContents0:"Test 7§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"",signContents1:"",signContents3:"",rotation:0}
+JSON:{signContents0:"Test 7§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"",signContents1:"",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -1917,7 +1917,7 @@ rule:
 plugin=vanillaSign
 number=33
 data:
-JSON:{signContents0:"The Final§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"",signContents1:"Test§r",signContents3:"",rotation:0}
+JSON:{signContents0:"The Final§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"",signContents1:"Test§r§r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -2013,7 +2013,7 @@ rule:
 plugin=vanillaSign
 number=45
 data:
-JSON:{signContents0:"Defeat the§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"north"}},signContents2:"of each room§r",signContents1:"Guardians§r",signContents3:"",rotation:0}
+JSON:{signContents0:"Defeat the§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"north"}},signContents2:"of each room§r§r",signContents1:"Guardians§r§r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -2077,7 +2077,7 @@ rule:
 plugin=vanillaSign
 number=53
 data:
-JSON:{signContents0:"Test of§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"north"}},signContents2:"Warriors§r",signContents1:"the§r",signContents3:"",rotation:0}
+JSON:{signContents0:"Test of§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"north"}},signContents2:"Warriors§r§r",signContents1:"the§r§r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -2101,7 +2101,7 @@ rule:
 plugin=vanillaSign
 number=56
 data:
-JSON:{signContents0:"Norska§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"east"}},signContents2:"Odin§r",signContents1:"temple of§r",signContents3:"",rotation:0}
+JSON:{signContents0:"Norska§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"east"}},signContents2:"Odin§r§r",signContents1:"temple of§r§r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -2317,7 +2317,7 @@ rule:
 plugin=blockTile
 number=83
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"west"}},teData:{LootTable:"ebwizardry:chests/dungeon_additions",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:""}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"west"}},teData:{LootTable:"ebwizardry:chests/dungeon_additions",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"ebwizardry:chests/dungeon_additions",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:""}}
 :enddata
 :endrule
 
@@ -2341,7 +2341,7 @@ rule:
 plugin=blockTile
 number=86
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"west"}},teData:{LootTable:"ebwizardry:chests/dungeon_additions",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:""}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"west"}},teData:{LootTable:"ebwizardry:chests/dungeon_additions",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"ebwizardry:chests/dungeon_additions",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:""}}
 :enddata
 :endrule
 

@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 12/2/2018 at: 17:40:3
+# Auto-generated structure template file. created on: 8/19/2019 at: 10:23:18
 # Lines beginning with # denote comments
 
 header:
-version=2.8
+version=2.9
 name=RuinsInSwampLarge
 mods=
 size=59,31,67
@@ -20,8 +20,8 @@ preserveBlocks=true
 selectionWeight=60
 clusterValue=30
 minDuplicateDistance=250
-dimensionWhiteList=false
-dimensionList=
+dimensionWhiteList=true
+dimensionList=0
 biomeWhiteList=true
 biomeList=minecraft:swampland,minecraft:jungle_edge,biomesoplenty:bayou,biomesoplenty:dead_swamp,biomesoplenty:dead_forest,biomesoplenty:ominous_woods,minecraft:ice_flats
 leveling=0
