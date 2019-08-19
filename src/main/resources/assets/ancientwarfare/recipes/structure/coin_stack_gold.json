@@ -1,0 +1,20 @@
+{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "GGG",
+        "G G",
+        "GGG"
+    ],
+    "key": {
+        "G": {
+            "type": "minecraft:item_nbt",
+            "item": "ancientwarfarenpc:coin",
+            "nbt": "{metal:\"gold\"}"
+        }
+    },
+    "result": {
+        "type": "minecraft:item_nbt",
+        "item": "ancientwarfarestructure:coin_stack_gold",
+        "nbt": "{size:0}"
+    }
+}

@@ -1,0 +1,74 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"particle": "#0"
+	},
+	"elements": [
+		{
+			"name": "coin1",
+			"from": [2, 0, 11],
+			"to": [5, 6, 14],
+			"faces": {
+				"north": {"uv": [4, 4, 7, 10], "texture": "#0"},
+				"east": {"uv": [13, 4, 16, 10], "texture": "#0"},
+				"south": {"uv": [7, 4, 10, 10], "texture": "#0"},
+				"west": {"uv": [10, 4, 13, 10], "texture": "#0"},
+				"up": {"uv": [0, 0, 3, 3], "texture": "#0"},
+				"down": {"uv": [0, 0, 3, 3], "texture": "#0"}
+			}
+		},
+		{
+			"name": "coin2",
+			"from": [11, 0, 10],
+			"to": [14, 2, 13],
+			"faces": {
+				"north": {"uv": [4, 0, 7, 2], "texture": "#0"},
+				"east": {"uv": [13, 0, 16, 2], "texture": "#0"},
+				"south": {"uv": [7, 0, 10, 2], "texture": "#0"},
+				"west": {"uv": [10, 0, 13, 2], "texture": "#0"},
+				"up": {"uv": [0, 0, 3, 3], "texture": "#0"},
+				"down": {"uv": [0, 0, 3, 3], "texture": "#0"}
+			}
+		},
+		{
+			"name": "coin5",
+			"from": [7, 0, 6],
+			"to": [10, 4, 9],
+			"faces": {
+				"north": {"uv": [4, 4, 7, 8], "texture": "#0"},
+				"east": {"uv": [13, 4, 16, 8], "texture": "#0"},
+				"south": {"uv": [7, 4, 10, 8], "texture": "#0"},
+				"west": {"uv": [10, 4, 13, 8], "texture": "#0"},
+				"up": {"uv": [0, 0, 3, 3], "texture": "#0"},
+				"down": {"uv": [0, 0, 3, 3], "texture": "#0"}
+			}
+		},
+		{
+			"name": "coin3",
+			"from": [3, 0, 2],
+			"to": [6, 3, 5],
+			"faces": {
+				"north": {"uv": [4, 0, 7, 3], "texture": "#0"},
+				"east": {"uv": [13, 0, 16, 3], "texture": "#0"},
+				"south": {"uv": [7, 0, 10, 3], "texture": "#0"},
+				"west": {"uv": [10, 0, 13, 3], "texture": "#0"},
+				"up": {"uv": [0, 0, 3, 3], "texture": "#0"},
+				"down": {"uv": [0, 0, 3, 3], "texture": "#0"}
+			}
+		},
+		{
+			"name": "coin4",
+			"from": [10, 0, 2],
+			"to": [13, 1, 5],
+			"faces": {
+				"north": {"uv": [4, 0, 7, 1], "texture": "#0"},
+				"east": {"uv": [13, 0, 16, 1], "texture": "#0"},
+				"south": {"uv": [7, 0, 10, 1], "texture": "#0"},
+				"west": {"uv": [10, 0, 13, 1], "texture": "#0"},
+				"up": {"uv": [0, 0, 3, 3], "texture": "#0"},
+				"down": {"uv": [0, 0, 3, 3], "texture": "#0"}
+			}
+		}
+	],
+	"display": {}
+}

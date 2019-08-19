@@ -1,0 +1,20 @@
+{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "CCC",
+        "C C",
+        "CCC"
+    ],
+    "key": {
+        "C": {
+            "type": "minecraft:item_nbt",
+            "item": "ancientwarfarenpc:coin",
+            "nbt": "{metal:\"copper\"}"
+        }
+    },
+    "result": {
+        "type": "minecraft:item_nbt",
+        "item": "ancientwarfarestructure:coin_stack_copper",
+        "nbt": "{size:0}"
+    }
+}

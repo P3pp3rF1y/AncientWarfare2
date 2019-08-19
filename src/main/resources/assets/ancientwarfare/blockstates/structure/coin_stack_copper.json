@@ -1,0 +1,35 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "transform": "forge:default-block",
+        "textures": {
+            "0": "ancientwarfare:blocks/structure/owl_stack"
+        }
+    },
+    "variants": {
+        "size=0": {
+            "model": "ancientwarfare:structure/coin_stack0"
+        },
+        "size=1": {
+            "model": "ancientwarfare:structure/coin_stack1"
+        },
+        "size=2": {
+            "model": "ancientwarfare:structure/coin_stack2"
+        },
+        "size=3": {
+            "model": "ancientwarfare:structure/coin_stack3"
+        },
+        "size=4": {
+            "model": "ancientwarfare:structure/coin_stack4"
+        },
+        "size=5": {
+            "model": "ancientwarfare:structure/coin_stack5"
+        },
+        "size=6": {
+            "model": "ancientwarfare:structure/coin_stack6"
+        },
+        "size=7": {
+            "model": "ancientwarfare:structure/coin_stack7"
+        }
+    }
+}

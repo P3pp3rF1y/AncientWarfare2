@@ -256,6 +256,9 @@ tile.bench_acacia.name=Acacia Wood Bench
 tile.bench_dark_oak.name=Dark Oak Wood Bench
 tile.tribal_chair.name=Tribal Chair
 tile.scissor_seat.name=Scissor Seat
+tile.coin_stack_copper.name=Copper Owl Stack
+tile.coin_stack_silver.name=Silver Stag Stack
+tile.coin_stack_gold.name=Gold Dragon Stack
 
 #colors
 black=Black
@@ -629,6 +632,7 @@ guistrings.npc.orders.position_added=Position added
 guistrings.npc.inventory=Inventory
 guistrings.structure.loot_placer.copy=Copy Settings From Loot Container
 guistrings.structure.loot_placer.paste=Paste Settings To Loot Container
+guistrings.structure.coins=Coins
 
 #routing order route-types
 route.fill.upto=Fill Upto
