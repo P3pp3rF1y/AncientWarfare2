@@ -17,6 +17,7 @@ public class TileTotemPart extends TileMulti {
 
 	public void setVariant(Variant variant) {
 		this.variant = variant;
+		this.dropVariant = variant;
 	}
 
 	public Variant getVariant() {
