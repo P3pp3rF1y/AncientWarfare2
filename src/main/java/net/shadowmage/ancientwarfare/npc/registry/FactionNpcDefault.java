@@ -6,72 +6,88 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 import net.shadowmage.ancientwarfare.npc.entity.faction.attributes.IAdditionalAttribute;
+import org.apache.commons.lang3.Range;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 @Immutable
 public class FactionNpcDefault extends NpcDefault {
-	private final Map<IAdditionalAttribute<?>, Object> additionaAttributes;
-	private final boolean enabled;
+	private Map<IAdditionalAttribute<?>, Object> additionaAttributes;
+	private boolean enabled;
 	private ResourceLocation lootTable;
+	private Range<Float> heightRange;
+	private float thinness;
 
 	public FactionNpcDefault(Map<String, Double> attributes, int experienceDrop, boolean canSwim, boolean canBreakDoors, Map<Integer, Item> equipment,
-			Map<IAdditionalAttribute<?>, Object> additionaAttributes, boolean enabled, @Nullable ResourceLocation lootTable) {
+			Map<IAdditionalAttribute<?>, Object> additionaAttributes, boolean enabled,
+			@Nullable ResourceLocation lootTable, Range<Float> heightRange, float thinness) {
 		super(attributes, experienceDrop, canSwim, canBreakDoors, equipment);
 		this.additionaAttributes = additionaAttributes;
 		this.enabled = enabled;
 		this.lootTable = lootTable;
+		this.heightRange = heightRange;
+		this.thinness = thinness;
 		if (!LootTableList.getAll().contains(lootTable)) {
 			LootTableList.register(lootTable);
 		}
 	}
 
+	private FactionNpcDefault copy() {
+		return new FactionNpcDefault(new HashMap<>(attributes), experienceDrop, canSwim, canBreakDoors, new HashMap<>(equipment), new HashMap<>(additionaAttributes), enabled, lootTable, heightRange, thinness);
+	}
+
+	private FactionNpcDefault change(Consumer<FactionNpcDefault> makeChange) {
+		FactionNpcDefault copy = copy();
+		makeChange.accept(copy);
+		return copy;
+	}
+
 	@Override
 	public FactionNpcDefault setExperienceDrop(int experienceDrop) {
-		return new FactionNpcDefault(attributes, experienceDrop, canSwim, canBreakDoors, equipment, additionaAttributes, enabled, lootTable);
+		return change(def -> def.experienceDrop = experienceDrop);
 	}
 
 	@Override
 	public FactionNpcDefault setCanSwim(boolean canSwim) {
-		return new FactionNpcDefault(attributes, experienceDrop, canSwim, canBreakDoors, equipment, additionaAttributes, enabled, lootTable);
+		return change(def -> def.canSwim = canSwim);
 	}
 
 	@Override
 	public FactionNpcDefault setCanBreakDoors(boolean canBreakDoors) {
-		return new FactionNpcDefault(attributes, experienceDrop, canSwim, canBreakDoors, equipment, additionaAttributes, enabled, lootTable);
+		return change(def -> def.canBreakDoors = canBreakDoors);
 	}
 
 	public FactionNpcDefault setEnabled(boolean enabled) {
-		return new FactionNpcDefault(attributes, experienceDrop, canSwim, canBreakDoors, equipment, additionaAttributes, enabled, lootTable);
+		return change(def -> def.enabled = enabled);
 	}
 
 	@Override
 	public FactionNpcDefault setAttributes(Map<String, Double> additionalAttributes) {
-		Map<String, Double> newAttributes = new HashMap<>();
-		newAttributes.putAll(this.attributes);
-		newAttributes.putAll(additionalAttributes);
-		return new FactionNpcDefault(newAttributes, experienceDrop, canSwim, canBreakDoors, equipment, additionaAttributes, enabled, lootTable);
+		return change(def -> def.attributes.putAll(additionalAttributes));
 	}
 
 	@Override
 	public FactionNpcDefault setEquipment(Map<Integer, Item> additionalEquipment) {
-		Map<Integer, Item> newEquipment = new HashMap<>();
-		newEquipment.putAll(equipment);
-		newEquipment.putAll(additionalEquipment);
-		return new FactionNpcDefault(attributes, experienceDrop, canSwim, canBreakDoors, newEquipment, additionaAttributes, enabled, lootTable);
+		return change(def -> def.equipment.putAll(additionalEquipment));
 	}
 
 	public FactionNpcDefault setAdditionalAttributes(Map<IAdditionalAttribute<?>, Object> overrides) {
-		Map<IAdditionalAttribute<?>, Object> newAdditionalAttributes = new HashMap<>();
-		newAdditionalAttributes.putAll(additionaAttributes);
-		newAdditionalAttributes.putAll(overrides);
-		return new FactionNpcDefault(attributes, experienceDrop, canSwim, canBreakDoors, equipment, newAdditionalAttributes, enabled, lootTable);
+		return change(def -> def.additionaAttributes.putAll(overrides));
 	}
 
 	public FactionNpcDefault setLootTable(ResourceLocation lootTable) {
-		return new FactionNpcDefault(attributes, experienceDrop, canSwim, canBreakDoors, equipment, additionaAttributes, enabled, lootTable);
+		return change(def -> def.lootTable = lootTable);
+	}
+
+	public FactionNpcDefault setHeightRange(Range<Float> heightRange) {
+		return change(def -> def.heightRange = heightRange);
+	}
+
+	public FactionNpcDefault setThinness(float thinness) {
+		return change(def -> def.thinness = thinness);
 	}
 
 	public void applyAdditionalAttributes(NpcFaction npc) {
@@ -84,5 +100,13 @@ public class FactionNpcDefault extends NpcDefault {
 
 	public ResourceLocation getLootTable() {
 		return lootTable;
+	}
+
+	public Range<Float> getHeightRange() {
+		return heightRange;
+	}
+
+	public float getThinness() {
+		return thinness;
 	}
 }

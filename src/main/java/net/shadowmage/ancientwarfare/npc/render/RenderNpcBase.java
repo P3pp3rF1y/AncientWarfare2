@@ -23,7 +23,7 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RenderNpcBase extends RenderBiped<NpcBase> {
+public class RenderNpcBase<T extends NpcBase> extends RenderBiped<T> {
 	private static final ModelNpc SMALL_ARMS = new ModelNpc(true);
 	private static final ModelNpc REGULAR_ARMS = new ModelNpc(false);
 	private boolean isSleeping;
@@ -37,7 +37,7 @@ public class RenderNpcBase extends RenderBiped<NpcBase> {
 	}
 
 	@Override
-	protected void applyRotations(NpcBase npc, float parFloat1, float parFloat2, float parFloat3) {
+	protected void applyRotations(T npc, float parFloat1, float parFloat2, float parFloat3) {
 		isSleeping = npc.isSleeping();
 		if (isSleeping) {
 			float bedDirection = npc.getBedOrientationInDegrees();
@@ -53,7 +53,7 @@ public class RenderNpcBase extends RenderBiped<NpcBase> {
 	}
 
 	@Override
-	public void doRender(NpcBase npc, double x, double y, double z, float par8, float par9) {
+	public void doRender(T npc, double x, double y, double z, float par8, float par9) {
 		mainModel = npc.getSkinSettings().renderFemaleModel(npc) ? SMALL_ARMS : REGULAR_ARMS;
 
 		isSleeping = npc.isSleeping();
@@ -173,10 +173,11 @@ public class RenderNpcBase extends RenderBiped<NpcBase> {
 
 		if (d3 <= (double) (64 * 64) && entity.canEntityBeSeen(renderManager.renderViewEntity)) {
 			FontRenderer fontrenderer = this.getFontRendererFromRenderManager();
-			float f = 1.6F;
+			float f = 0.8F;
 			float f1 = 0.016666668F * f;
 			GlStateManager.pushMatrix();
-			GlStateManager.translate((float) x + 0.0F, (float) y + entity.height + 0.5F, (float) z);
+			float heightScalingOffset = entity.height / 6 - 0.3F;
+			GlStateManager.translate((float) x + 0.0F, (float) y + entity.height + heightScalingOffset + 0.5F, (float) z);
 			GlStateManager.glNormal3f(0.0F, 1.0F, 0.0F);
 			GlStateManager.rotate(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
 			GlStateManager.rotate(this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);

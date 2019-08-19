@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 11/28/2018 at: 7:37:13
+# Auto-generated structure template file. created on: 8/19/2019 at: 10:23:19
 # Lines beginning with # denote comments
 
 header:
-version=2.7
+version=2.9
 name=NorskaTownHenHouse
 mods=
 size=8,33,7
@@ -20,8 +20,8 @@ preserveBlocks=false
 selectionWeight=1
 clusterValue=1
 minDuplicateDistance=1
-dimensionWhiteList=false
-dimensionList=
+dimensionWhiteList=true
+dimensionList=0
 biomeWhiteList=false
 biomeList=
 leveling=0
@@ -334,7 +334,7 @@ rule:
 plugin=vanillaBlocks
 number=1
 data:
-JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"dirt",snowy:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"dirt",snowy:"false"}}}
 :enddata
 :endrule
 
@@ -342,7 +342,7 @@ rule:
 plugin=vanillaBlocks
 number=2
 data:
-JSON:{blockState:{blockName:"minecraft:grass",properties:{snowy:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:grass",properties:{snowy:"false"}}}
 :enddata
 :endrule
 
@@ -350,7 +350,7 @@ rule:
 plugin=vanillaBlocks
 number=3
 data:
-JSON:{blockState:{blockName:"minecraft:clay"},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:clay"}}
 :enddata
 :endrule
 
@@ -358,7 +358,7 @@ rule:
 plugin=vanillaBlocks
 number=4
 data:
-JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"coarse_dirt",snowy:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"coarse_dirt",snowy:"false"}}}
 :enddata
 :endrule
 
@@ -366,7 +366,7 @@ rule:
 plugin=vanillaBlocks
 number=5
 data:
-JSON:{blockState:{blockName:"minecraft:snow_layer",properties:{layers:"1"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:snow_layer",properties:{layers:"1"}}}
 :enddata
 :endrule
 
@@ -374,7 +374,7 @@ rule:
 plugin=vanillaBlocks
 number=6
 data:
-JSON:{blockState:{blockName:"minecraft:fence",properties:{east:"false",south:"false",north:"false",west:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:fence",properties:{east:"false",south:"false",north:"false",west:"false"}}}
 :enddata
 :endrule
 
@@ -382,7 +382,7 @@ rule:
 plugin=vanillaBlocks
 number=7
 data:
-JSON:{blockState:{blockName:"minecraft:fence_gate",properties:{in_wall:"false",powered:"false",facing:"south",open:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:fence_gate",properties:{in_wall:"false",powered:"false",facing:"south",open:"false"}}}
 :enddata
 :endrule
 
@@ -390,7 +390,7 @@ rule:
 plugin=vanillaBlocks
 number=8
 data:
-JSON:{blockState:{blockName:"minecraft:tallgrass",properties:{type:"tall_grass"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:tallgrass",properties:{type:"tall_grass"}}}
 :enddata
 :endrule
 
@@ -398,7 +398,7 @@ rule:
 plugin=blockTile
 number=9
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:0b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:chicken",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:0b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:chicken",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -406,7 +406,7 @@ rule:
 plugin=vanillaBlocks
 number=10
 data:
-JSON:{blockState:{blockName:"minecraft:planks",properties:{variant:"oak"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:planks",properties:{variant:"oak"}}}
 :enddata
 :endrule
 
@@ -414,7 +414,7 @@ rule:
 plugin=blockTile
 number=11
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:0b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:chicken",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:0b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:chicken",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -422,7 +422,7 @@ rule:
 plugin=blockTile
 number=12
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:0b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:chicken",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:0b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:chicken",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -430,7 +430,7 @@ rule:
 plugin=blockTile
 number=13
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:0b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:chicken",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:0b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:chicken",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -438,7 +438,7 @@ rule:
 plugin=vanillaBlocks
 number=14
 data:
-JSON:{blockState:{blockName:"minecraft:spruce_fence_gate",properties:{in_wall:"false",powered:"false",facing:"south",open:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:spruce_fence_gate",properties:{in_wall:"false",powered:"false",facing:"south",open:"false"}}}
 :enddata
 :endrule
 
@@ -446,7 +446,7 @@ rule:
 plugin=vanillaBlocks
 number=15
 data:
-JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"up"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"up"}}}
 :enddata
 :endrule
 
@@ -454,7 +454,7 @@ rule:
 plugin=vanillaBlocks
 number=16
 data:
-JSON:{blockState:{blockName:"minecraft:wooden_slab",properties:{half:"top",variant:"dark_oak"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:wooden_slab",properties:{half:"top",variant:"dark_oak"}}}
 :enddata
 :endrule
 
@@ -462,7 +462,7 @@ rule:
 plugin=vanillaBlocks
 number=17
 data:
-JSON:{blockState:{blockName:"minecraft:dark_oak_stairs",properties:{half:"bottom",shape:"straight",facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:dark_oak_stairs",properties:{half:"bottom",shape:"straight",facing:"east"}}}
 :enddata
 :endrule
 
@@ -470,7 +470,7 @@ rule:
 plugin=vanillaBlocks
 number=18
 data:
-JSON:{blockState:{blockName:"minecraft:wooden_slab",properties:{half:"bottom",variant:"dark_oak"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:wooden_slab",properties:{half:"bottom",variant:"dark_oak"}}}
 :enddata
 :endrule
 

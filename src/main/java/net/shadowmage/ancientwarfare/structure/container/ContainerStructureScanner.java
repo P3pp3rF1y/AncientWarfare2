@@ -42,7 +42,7 @@ public class ContainerStructureScanner extends ContainerBase {
 		if (y > 0) {
 			scannerTile = WorldTools.getTile(player.world, new BlockPos(x, y, z), TileStructureScanner.class).orElse(null);
 			//noinspection ConstantConditions
-			scanner = scannerTile.getScannerInventory().getStackInSlot(0);
+			scanner = scannerTile.getScannerInventory().getStackInSlot(0).copy();
 			Slot slot = new SlotItemHandler(scannerTile.getScannerInventory(), 0, 8, 8) {
 				@Override
 				public void onSlotChanged() {
@@ -111,7 +111,12 @@ public class ContainerStructureScanner extends ContainerBase {
 	private void saveScannerData(EntityPlayer player) {
 		if (!getScannerTile().isPresent()) {
 			player.setHeldItem(hand, scanner);
+			return;
 		}
+		getScannerTile().ifPresent(tile -> {
+			tile.getScannerInventory().setStackInSlot(0, scanner);
+			tile.markDirty();
+		});
 	}
 
 	public void export() {
@@ -121,12 +126,12 @@ public class ContainerStructureScanner extends ContainerBase {
 	}
 
 	public void updateName(String name) {
+		//noinspection ConstantConditions
+		ItemStructureScanner.setStructureName(scanner, name);
 		if (player.world.isRemote) {
 			sendUpdateData("name", new NBTTagString(name));
 			return;
 		}
-		//noinspection ConstantConditions
-		ItemStructureScanner.setStructureName(scanner, name);
 		saveScannerData(player);
 	}
 
@@ -143,11 +148,11 @@ public class ContainerStructureScanner extends ContainerBase {
 	}
 
 	public void setIncludeImmediately(boolean checked) {
+		ItemStructureScanner.setIncludeImmediately(scanner, checked);
 		if (player.world.isRemote) {
 			sendUpdateData(INCLUDE_TAG, new NBTTagByte((byte) (checked ? 1 : 0)));
 			return;
 		}
-		ItemStructureScanner.setIncludeImmediately(scanner, checked);
 		saveScannerData(player);
 	}
 
@@ -160,10 +165,11 @@ public class ContainerStructureScanner extends ContainerBase {
 	}
 
 	public void setValidator(StructureValidator validator) {
+		ItemStructureScanner.setValidator(scanner, validator);
 		if (player.world.isRemote) {
 			sendUpdateData(VALIDATOR_TAG, validator.serializeToNBT());
+			return;
 		}
-		ItemStructureScanner.setValidator(scanner, validator);
 		saveScannerData(player);
 	}
 
@@ -200,11 +206,12 @@ public class ContainerStructureScanner extends ContainerBase {
 	}
 
 	public void updateModDependencies(Set<String> mods) {
-		if (player.world.isRemote) {
-			sendUpdateData("mods", NBTHelper.getNBTStringList(mods));
-		}
 		//noinspection ConstantConditions
 		ItemStructureScanner.setModDependencies(scanner, mods);
+		if (player.world.isRemote) {
+			sendUpdateData("mods", NBTHelper.getNBTStringList(mods));
+			return;
+		}
 		saveScannerData(player);
 	}
 }

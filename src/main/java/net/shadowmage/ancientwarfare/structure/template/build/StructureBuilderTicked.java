@@ -23,7 +23,7 @@ public class StructureBuilderTicked extends StructureBuilder {
 
 	public StructureBuilderTicked(World world, StructureTemplate template, EnumFacing face, BlockPos pos) {
 		super(world, template, face, pos);
-		clearPos = bb.min;
+		clearPos = new BlockPos(bb.min.getX(), bb.max.getY(), bb.min.getZ());
 	}
 
 	public StructureBuilderTicked()//nbt-constructor
@@ -44,31 +44,38 @@ public class StructureBuilderTicked extends StructureBuilder {
 			}
 		} else if (!this.isFinished()) {
 			while (!this.isFinished()) {
-				Optional<TemplateRule> rule = template.getRuleAt(curTempPos);
-				if (!rule.isPresent() || !rule.get().placeInSurvival() || !rule.get().shouldPlaceOnBuildPass(world, turns, destination, currentPriority)) {
-					increment();//skip that position, was either air/null rule, or could not be placed on current pass, auto-increment to next
-				} else//place it...
-				{
-					rule.ifPresent(this::placeRule);
+				if (placeAtCurrentPos())
 					break;
-				}
 			}
 			increment();//finally, increment to next position (will trigger isFinished if actually done, has no problems if already finished)
 		}
+	}
+
+	private boolean placeAtCurrentPos() {
+		Optional<TemplateRule> rule = template.getRuleAt(curTempPos);
+		if (!rule.isPresent() || !rule.get().placeInSurvival() || !rule.get().shouldPlaceOnBuildPass(world, turns, destination, currentPriority)) {
+			increment();//skip that position, was either air/null rule, or could not be placed on current pass, auto-increment to next
+		} else//place it...
+		{
+			rule.ifPresent(this::placeRule);
+			return true;
+		}
+		return false;
 	}
 
 	private boolean breakClearTargetBlock() {
 		return BlockTools.breakBlockAndDrop(world, clearPos);
 	}
 
+	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	private boolean incrementClear() {
 		clearPos = clearPos.east();
 		if (clearPos.getX() > bb.max.getX()) {
 			clearPos = new BlockPos(bb.min.getX(), clearPos.getY(), clearPos.getZ());
 			clearPos = clearPos.south();
 			if (clearPos.getZ() > bb.max.getZ()) {
-				clearPos = new BlockPos(bb.min.getX(), clearPos.up().getY(), bb.min.getZ());
-				return clearPos.getY() <= bb.max.getY();
+				clearPos = new BlockPos(bb.min.getX(), clearPos.down().getY(), bb.min.getZ());
+				return clearPos.getY() >= bb.min.getY();
 			}
 		}
 		return true;
@@ -143,5 +150,18 @@ public class StructureBuilderTicked extends StructureBuilder {
 		clearPos = BlockPos.fromLong(tag.getLong(CLEAR_POS_TAG));
 		hasClearedArea = tag.getBoolean(CLEARED_TAG);
 		destination = BlockPos.fromLong(tag.getLong(DESTINATION_TAG));
+	}
+
+	public float getPercentDoneClearing() {
+		float max = getTotalBlocks();
+		BlockPos relativeClearPos = clearPos.add(-bb.min.getX(), -bb.max.getY(), -bb.min.getZ());
+		float current = (float) -relativeClearPos.getY() * (bb.getXSize() * bb.getZSize());//add layers done
+		current += relativeClearPos.getZ() * bb.getXSize();//add rows done
+		current += relativeClearPos.getX();//add blocks done
+		return current / max;
+	}
+
+	public boolean hasClearedArea() {
+		return hasClearedArea;
 	}
 }

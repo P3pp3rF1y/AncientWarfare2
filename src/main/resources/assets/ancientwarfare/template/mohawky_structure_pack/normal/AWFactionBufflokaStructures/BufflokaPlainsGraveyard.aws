@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 1/2/2019 at: 23:32:35
+# Auto-generated structure template file. created on: 8/19/2019 at: 10:23:9
 # Lines beginning with # denote comments
 
 header:
-version=2.8
+version=2.9
 name=BufflokaPlainsGraveyard
 mods=
 size=13,16,16

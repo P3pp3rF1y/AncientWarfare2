@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 1/5/2019 at: 23:22:48
+# Auto-generated structure template file. created on: 8/19/2019 at: 10:23:14
 # Lines beginning with # denote comments
 
 header:
-version=2.8
+version=2.9
 name=OrcTraderRoofedForest
 mods=
 size=15,18,13
@@ -435,7 +435,7 @@ rule:
 plugin=vanillaSign
 number=17
 data:
-JSON:{signContents0:"Or§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"or§r",signContents1:"Dwarves§r",signContents3:"Hobbits!§r",rotation:0}
+JSON:{signContents0:"Or§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"or§r§r",signContents1:"Dwarves§r§r",signContents3:"Hobbits!§r§r",rotation:0}
 :enddata
 :endrule
 
@@ -451,7 +451,7 @@ rule:
 plugin=vanillaSign
 number=19
 data:
-JSON:{signContents0:"Orc Trader§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"Well, almost all§r",signContents1:"All Welcome!§r",signContents3:"No Bloody Elfs!§r",rotation:0}
+JSON:{signContents0:"Orc Trader§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"Well, almost all§r§r",signContents1:"All Welcome!§r§r",signContents3:"No Bloody Elfs!§r§r",rotation:0}
 :enddata
 :endrule
 

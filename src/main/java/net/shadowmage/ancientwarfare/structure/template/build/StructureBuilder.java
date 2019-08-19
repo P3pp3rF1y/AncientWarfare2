@@ -40,7 +40,7 @@ public class StructureBuilder implements IStructureBuilder {
 	protected StructureTemplate template;
 	protected World world;
 	BlockPos buildOrigin;
-	protected EnumFacing buildFace;
+	EnumFacing buildFace;
 	protected int turns;
 	int maxPriority = 3;
 	int currentPriority;//current build priority...may not be needed anymore?
@@ -52,6 +52,7 @@ public class StructureBuilder implements IStructureBuilder {
 	private boolean isFinished = false;
 	private Biome biome;
 	private Map<BlockPos, IBlockState> statesToSetAgain = new HashMap<>();
+	private Map<BlockPos, IBlockState> positionsToUpdate = new HashMap<>();
 
 	public StructureBuilder(World world, StructureTemplate template, EnumFacing face, BlockPos pos) {
 		this(world, template, face, pos, new StructureBB(pos, face, template));
@@ -99,8 +100,21 @@ public class StructureBuilder implements IStructureBuilder {
 			increment();
 		}
 		setStateAgainForSpecialBlocks();
+		updateNeighbors();
 
 		this.placeEntities();
+	}
+
+	private void updateNeighbors() {
+		for (Map.Entry<BlockPos, IBlockState> entry : positionsToUpdate.entrySet()) {
+			world.notifyNeighborsRespectDebug(entry.getKey(), entry.getValue().getBlock(), true);
+
+			if (entry.getValue().hasComparatorInputOverride()) {
+				world.updateComparatorOutputLevel(entry.getKey(), entry.getValue().getBlock());
+			}
+			//schedule update spread in the next 40 ticks in case we have a lot of redstone somewhere
+			world.scheduleUpdate(entry.getKey(), entry.getValue().getBlock(), world.rand.nextInt(40));
+		}
 	}
 
 	private void setStateAgainForSpecialBlocks() {
@@ -132,10 +146,14 @@ public class StructureBuilder implements IStructureBuilder {
 			adjustedState = getBiomeSpecificBlockState(biome, state);
 		}
 
-		int updateFlag = state.canProvidePower() ? 3 : 2;
-		boolean result = world.setBlockState(pos, adjustedState, updateFlag);
-		if (result && DOUBLE_SET_BLOCKS.contains(adjustedState.getBlock())) {
-			statesToSetAgain.put(pos, adjustedState);
+		boolean result = world.setBlockState(pos, adjustedState, 2);
+		if (result) {
+			if (DOUBLE_SET_BLOCKS.contains(adjustedState.getBlock())) {
+				statesToSetAgain.put(pos, adjustedState);
+			}
+			if (state.canProvidePower()) {
+				positionsToUpdate.put(pos, adjustedState);
+			}
 		}
 
 		return result;
@@ -209,8 +227,12 @@ public class StructureBuilder implements IStructureBuilder {
 		return isFinished;
 	}
 
+	float getTotalBlocks() {
+		return (float) template.getSize().getX() * template.getSize().getZ() * template.getSize().getY();
+	}
+
 	public float getPercentDoneWithPass() {
-		float max = (float) template.getSize().getX() * template.getSize().getZ() * template.getSize().getY();
+		float max = getTotalBlocks();
 		float current = (float) curTempPos.getY() * (template.getSize().getX() * template.getSize().getZ());//add layers done
 		current += curTempPos.getZ() * template.getSize().getX();//add rows done
 		current += curTempPos.getX();//add blocks done

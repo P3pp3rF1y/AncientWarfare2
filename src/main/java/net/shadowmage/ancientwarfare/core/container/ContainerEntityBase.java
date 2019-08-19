@@ -11,6 +11,7 @@ public class ContainerEntityBase<T extends Entity> extends ContainerBase {
 
 	public ContainerEntityBase(EntityPlayer player, int id) {
 		super(player);
+		//noinspection unchecked
 		entity = (T) player.world.getEntityByID(id);
 		if (entity == null) {
 			throw new IllegalArgumentException("Id wasn't a valid entity");
@@ -19,6 +20,10 @@ public class ContainerEntityBase<T extends Entity> extends ContainerBase {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer var1) {
-		return entity != null && entity.isEntityAlive();
+		return entity.isEntityAlive();
+	}
+
+	public T getEntity() {
+		return entity;
 	}
 }

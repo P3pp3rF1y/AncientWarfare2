@@ -16,6 +16,7 @@ import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
+import net.shadowmage.ancientwarfare.structure.tile.ISpecialLootContainer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -30,7 +31,7 @@ public class TemplateRuleBlockInventory extends TemplateRuleBlockTile {
 	private static final String LEGACY_FEATURES_TAG = "legacyFeatures";
 	private boolean legacyFeatures;
 	private int randomLootLevel;
-	private Map<EnumFacing, NonNullList<ItemStack>> inventoryStacks;
+	private Map<EnumFacing, NonNullList<ItemStack>> inventoryStacks = new HashMap<>();
 
 	public TemplateRuleBlockInventory() {
 		super();
@@ -45,6 +46,10 @@ public class TemplateRuleBlockInventory extends TemplateRuleBlockTile {
 		this.legacyFeatures = legacyFeatures;
 		WorldTools.getTile(world, pos, TileEntity.class)
 				.ifPresent(te -> {
+					if (te instanceof ISpecialLootContainer && ((ISpecialLootContainer) te).getLootSettings().hasLootToSpawn()) {
+						return;
+					}
+
 					if (te instanceof TileEntityChest) {
 						putInInventoryStacks(null, InventoryTools.getItems(((TileEntityChest) te).getSingleChestHandler()));
 						setLegacyRandomLoot(legacyFeatures, null);
@@ -184,9 +189,6 @@ public class TemplateRuleBlockInventory extends TemplateRuleBlockTile {
 
 	@SuppressWarnings("squid:S1640") //need to use a null key as well which is not supported in EnumMap
 	private void putInInventoryStacks(@Nullable EnumFacing side, NonNullList<ItemStack> stacks) {
-		if (inventoryStacks == null) {
-			inventoryStacks = new HashMap<>();
-		}
 		inventoryStacks.put(side, stacks);
 	}
 

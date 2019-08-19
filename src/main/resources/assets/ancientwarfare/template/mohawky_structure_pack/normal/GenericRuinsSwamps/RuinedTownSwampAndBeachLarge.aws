@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 12/7/2018 at: 13:31:15
+# Auto-generated structure template file. created on: 8/19/2019 at: 10:23:18
 # Lines beginning with # denote comments
 
 header:
-version=2.8
+version=2.9
 name=RuinedTownSwampAndBeachLarge
 mods=
 size=59,61,67
@@ -20,8 +20,8 @@ preserveBlocks=true
 selectionWeight=80
 clusterValue=60
 minDuplicateDistance=1000
-dimensionWhiteList=false
-dimensionList=
+dimensionWhiteList=true
+dimensionList=0
 biomeWhiteList=true
 biomeList=minecraft:swampland,biomesoplenty:dead_swamp,biomesoplenty:marsh,minecraft:river,minecraft:beaches,biomesoplenty:gravel_beach,minecraft:stone_beach,minecraft:cold_beach
 leveling=0

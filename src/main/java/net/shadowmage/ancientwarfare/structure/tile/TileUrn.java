@@ -44,6 +44,7 @@ public class TileUrn extends TileUpdatable implements ISpecialLootContainer, IBl
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
+		readNBT(compound);
 	}
 
 	@Override

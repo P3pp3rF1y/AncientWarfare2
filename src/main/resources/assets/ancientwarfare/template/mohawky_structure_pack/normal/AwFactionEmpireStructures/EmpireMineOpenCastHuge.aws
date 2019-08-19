@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 1/4/2019 at: 11:42:8
+# Auto-generated structure template file. created on: 8/19/2019 at: 10:23:10
 # Lines beginning with # denote comments
 
 header:
-version=2.8
+version=2.9
 name=EmpireMineOpenCastHuge
 mods=
 size=54,106,54
@@ -6397,7 +6397,7 @@ rule:
 plugin=blockTile
 number=54
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:6062546505317800824L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/simple_dungeon",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:6062546505317800824L}}
 :enddata
 :endrule
 
@@ -6405,7 +6405,7 @@ rule:
 plugin=blockTile
 number=55
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"east"}},teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-9053186326527989992L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"east"}},teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/simple_dungeon",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-9053186326527989992L}}
 :enddata
 :endrule
 
@@ -6461,7 +6461,7 @@ rule:
 plugin=blockTile
 number=62
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-2750939807522147883L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/simple_dungeon",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-2750939807522147883L}}
 :enddata
 :endrule
 
@@ -6493,7 +6493,7 @@ rule:
 plugin=blockTile
 number=66
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-1171255040717864395L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/simple_dungeon",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-1171255040717864395L}}
 :enddata
 :endrule
 
@@ -6541,7 +6541,7 @@ rule:
 plugin=blockTile
 number=72
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-7689760336304208265L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/simple_dungeon",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-7689760336304208265L}}
 :enddata
 :endrule
 
@@ -6549,7 +6549,7 @@ rule:
 plugin=blockTile
 number=73
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:3497181136377022071L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/simple_dungeon",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:3497181136377022071L}}
 :enddata
 :endrule
 

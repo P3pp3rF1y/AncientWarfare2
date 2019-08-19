@@ -1,7 +1,7 @@
 package net.shadowmage.ancientwarfare.npc.entity.faction.attributes;
 
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.entity.passive.AbstractHorse;
+import net.minecraft.entity.EntityLiving;
 
 import java.util.Map;
 import java.util.Optional;
@@ -9,7 +9,7 @@ import java.util.Optional;
 public class AdditionalAttributes {
 	private AdditionalAttributes() {}
 
-	public static final ClassAttribute HORSE_ENTITY = new ClassAttribute("horse_entity", AbstractHorse.class);
+	public static final ClassAttribute HORSE_ENTITY = new ClassAttribute("horse_entity", EntityLiving.class);
 	public static final BoolAttribute BURNS_IN_SUN = new BoolAttribute("burns_in_sun");
 	private static final Map<String, IAdditionalAttribute<?>> ALL_ATTRIBUTES =
 			ImmutableMap.of(HORSE_ENTITY.getName(), HORSE_ENTITY, BURNS_IN_SUN.getName(), BURNS_IN_SUN);

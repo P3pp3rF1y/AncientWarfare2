@@ -14,7 +14,16 @@ public class DataFixManager {
 
 	private static List<IRuleFixer> fixes = new ArrayList<>();
 
+	private static Version currentVersion = new Version(1, 0);
+
+	public static Version getCurrentVersion() {
+		return currentVersion;
+	}
+
 	public static void registerRuleFixer(IRuleFixer fixer) {
+		if (fixer.getVersion().isGreaterThan(currentVersion)) {
+			currentVersion = fixer.getVersion();
+		}
 		fixes.add(fixer);
 	}
 

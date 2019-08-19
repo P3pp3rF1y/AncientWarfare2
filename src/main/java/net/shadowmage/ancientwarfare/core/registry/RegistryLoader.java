@@ -10,6 +10,7 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
+import net.shadowmage.ancientwarfare.core.util.parsing.JsonHelper;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 
@@ -25,12 +26,13 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Predicate;
 
 public class RegistryLoader {
 	private RegistryLoader() {}
 
-	public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
 	private static final Map<String, IRegistryDataParser> parsers = new HashMap<>();
 
@@ -39,6 +41,8 @@ public class RegistryLoader {
 	}
 
 	private static final Map<ResourceLocation, String> loadedRegistries = new HashMap<>();
+
+	private static final Map<Path, Set<String>> loadLater = new HashMap<>();
 
 	public static void load() {
 		load(p -> true);
@@ -102,11 +106,38 @@ public class RegistryLoader {
 			return;
 		}
 		while (itr != null && itr.hasNext()) {
-			loadFile(mod, root, itr.next(), include);
+			loadFile(mod, root, itr.next(), include, true);
+		}
+
+		loadDependents(mod, root, include);
+	}
+
+	private static void loadDependents(ModContainer mod, Path root, Predicate<IRegistryDataParser> include) {
+		int lastCountLoadLater = loadLater.size();
+		while (!loadLater.isEmpty()) {
+			Iterator<Map.Entry<Path, Set<String>>> iterator = loadLater.entrySet().iterator();
+			while (iterator.hasNext()) {
+				Map.Entry<Path, Set<String>> entry = iterator.next();
+				if (areDependenciesLoaded(entry.getValue())) {
+					loadFile(mod, root, entry.getKey(), include, false);
+					iterator.remove();
+				}
+			}
+			if (lastCountLoadLater <= loadLater.size()) {
+				logIncorrectDependencies();
+				break;
+			}
+			lastCountLoadLater = loadLater.size();
 		}
 	}
 
-	private static void loadFile(ModContainer mod, Path root, Path file, Predicate<IRegistryDataParser> include) {
+	private static void logIncorrectDependencies() {
+		for (Map.Entry<Path, Set<String>> entry : loadLater.entrySet()) {
+			AncientWarfareCore.LOG.error("Non existent or circular load after dependencies in {} - {}", entry.getKey().toString(), String.join(",", entry.getValue()));
+		}
+	}
+
+	private static void loadFile(ModContainer mod, Path root, Path file, Predicate<IRegistryDataParser> include, boolean checkDependencies) {
 		Loader.instance().setActiveModContainer(mod);
 
 		String relative = root.relativize(file).toString();
@@ -123,11 +154,26 @@ public class RegistryLoader {
 		try {
 			reader = Files.newBufferedReader(file);
 			JsonObject json = JsonUtils.fromJson(GSON, reader, JsonObject.class);
+
+			if (json == null) {
+				return;
+			}
+
+
 			Optional<IRegistryDataParser> parser = getParser(shortName, json);
 
 			if (!parser.isPresent()) {
 				AncientWarfareCore.LOG.error("No parser defined for file name {}", shortName);
 				return;
+			}
+
+			if (checkDependencies && json.has("load_after")) {
+				Set<String> dependencies = JsonHelper.setFromJson(json.get("load_after"), e -> JsonUtils.getString(e, ""));
+				if (!areDependenciesLoaded(dependencies)) {
+
+					loadLater.put(file, dependencies);
+					return;
+				}
 			}
 
 			if (loadedRegistries.containsKey(registryName)) {
@@ -136,7 +182,7 @@ public class RegistryLoader {
 			}
 			loadedRegistries.put(registryName, parser.get().getName());
 
-			if (json == null || !include.test(parser.get()) || isDisabled(json) || !isModLoaded(json)) {
+			if (!include.test(parser.get()) || isDisabled(json) || !isModLoaded(json)) {
 				return;
 			}
 
@@ -154,6 +200,15 @@ public class RegistryLoader {
 		finally {
 			IOUtils.closeQuietly(reader);
 		}
+	}
+
+	private static boolean areDependenciesLoaded(Set<String> dependencies) {
+		for (String dependency : dependencies) {
+			if (!loadedRegistries.containsValue(dependency)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	private static boolean isModLoaded(JsonObject json) {

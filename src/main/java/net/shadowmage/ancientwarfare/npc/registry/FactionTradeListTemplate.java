@@ -2,10 +2,12 @@ package net.shadowmage.ancientwarfare.npc.registry;
 
 import net.shadowmage.ancientwarfare.npc.trade.FactionTradeList;
 
+import java.util.Collections;
 import java.util.List;
 
 public class FactionTradeListTemplate {
 	private final String name;
+	public static final FactionTradeListTemplate EMPTY = new FactionTradeListTemplate("empty", Collections.emptyList());
 
 	private final List<FactionTradeTemplate> trades;
 

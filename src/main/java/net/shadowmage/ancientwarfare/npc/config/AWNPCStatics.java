@@ -107,8 +107,8 @@ public class AWNPCStatics extends ModConfiguration {
 
 		renderAI = config.get(clientOptions, "render_npc_ai", true);
 		renderWorkPoints = config.get(clientOptions, "render_work_points", true);
-		renderFriendlyNames = config.get(clientOptions, "render_friendly_nameplates", true);
-		renderHostileNames = config.get(clientOptions, "render_hostile_nameplates", true);
+		renderFriendlyNames = config.get(clientOptions, "render_friendly_nameplates", false);
+		renderHostileNames = config.get(clientOptions, "render_hostile_nameplates", false);
 		renderFriendlyHealth = config.get(clientOptions, "render_friendly_health", true);
 		renderHostileHealth = config.get(clientOptions, "render_hostile_health", true);
 		renderTeamColors = config.get(clientOptions, "render_team_colors", true);

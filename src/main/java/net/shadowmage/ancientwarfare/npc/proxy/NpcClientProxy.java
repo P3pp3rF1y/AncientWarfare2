@@ -23,6 +23,7 @@ import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.client.NPCItemColors;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 import net.shadowmage.ancientwarfare.npc.gui.GuiCombatOrder;
 import net.shadowmage.ancientwarfare.npc.gui.GuiNpcBard;
 import net.shadowmage.ancientwarfare.npc.gui.GuiNpcCreativeControls;
@@ -39,6 +40,7 @@ import net.shadowmage.ancientwarfare.npc.gui.GuiWorkOrder;
 import net.shadowmage.ancientwarfare.npc.item.IExtendedReachWeapon;
 import net.shadowmage.ancientwarfare.npc.render.RenderCommandOverlay;
 import net.shadowmage.ancientwarfare.npc.render.RenderNpcBase;
+import net.shadowmage.ancientwarfare.npc.render.RenderNpcFaction;
 import net.shadowmage.ancientwarfare.npc.render.RenderWorkLines;
 import net.shadowmage.ancientwarfare.npc.skin.NpcSkinManager;
 
@@ -92,6 +94,7 @@ public class NpcClientProxy extends NpcCommonProxy {
 		NetworkHandler.registerGui(NetworkHandler.GUI_NPC_FACTION_BARD, GuiNpcFactionBard.class);
 
 		RenderingRegistry.registerEntityRenderingHandler(NpcBase.class, RenderNpcBase::new);
+		RenderingRegistry.registerEntityRenderingHandler(NpcFaction.class, RenderNpcFaction::new);
 
 		MinecraftForge.EVENT_BUS.register(RenderWorkLines.INSTANCE);
 		MinecraftForge.EVENT_BUS.register(RenderCommandOverlay.INSTANCE);

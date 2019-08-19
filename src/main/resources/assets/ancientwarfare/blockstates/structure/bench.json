@@ -1,0 +1,96 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "ancientwarfare:structure/bench_top",
+        "textures": {
+            "0": "minecraft:blocks/planks_oak"
+        },
+        "transform": "forge:default-block"
+    },
+    "variants": {
+        "normal": [{}],
+        "variant": {
+            "oak": {},
+            "spruce": {
+                "textures": {
+                    "0": "minecraft:blocks/planks_spruce",
+                    "particle": "blocks/planks_spruce"
+                }
+            },
+            "birch": {
+                "textures": {
+                    "0": "minecraft:blocks/planks_birch",
+                    "particle": "blocks/planks_birch"
+                }
+            },
+            "jungle": {
+                "textures": {
+                    "0": "minecraft:blocks/planks_jungle",
+                    "particle": "blocks/planks_jungle"
+                }
+            },
+            "acacia": {
+                "textures": {
+                    "0": "minecraft:blocks/planks_big_oak",
+                    "particle": "blocks/planks_big_oak"
+                }
+            },
+            "dark_oak": {
+                "textures": {
+                    "0": "minecraft:blocks/planks_big_oak",
+                    "particle": "blocks/planks_big_oak"
+                }
+            }
+        },
+        "axis": {
+            "x": {},
+            "y": {},
+            "z": {
+                "y": 270
+            }
+        },
+        "legs": {
+            "none": {
+                "submodel": {
+                    "bench_support_middle": {
+                        "model": "ancientwarfare:structure/bench_support_middle"
+                    }
+                }
+            },
+            "both": {
+                "submodel": {
+                    "leg_east": {
+                        "model": "ancientwarfare:structure/bench_leg_left"
+                    },
+                    "leg_west": {
+                        "model": "ancientwarfare:structure/bench_leg_right"
+                    },
+                    "bench_support_two_side": {
+                        "model": "ancientwarfare:structure/bench_support_two_side"
+                    }
+                }
+            },
+            "left": {
+                "submodel": {
+                    "leg": {
+                        "model": "ancientwarfare:structure/bench_leg_left"
+                    },
+                    "bench_support_one_side": {
+                        "model": "ancientwarfare:structure/bench_support_one_side"
+                    }
+                }
+            },
+            "right": {
+                "submodel": {
+                    "leg": {
+                        "model": "ancientwarfare:structure/bench_leg_right"
+                    },
+                    "bench_support_one_side": {
+                        "model": "ancientwarfare:structure/bench_support_one_side",
+                        "y": 180
+                    }
+                }
+            }
+        }
+    }
+}

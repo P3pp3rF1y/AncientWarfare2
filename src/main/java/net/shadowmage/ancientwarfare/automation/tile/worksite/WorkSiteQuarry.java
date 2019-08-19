@@ -8,6 +8,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraftforge.common.ForgeChunkManager;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -38,6 +40,7 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
 	public boolean userAdjustableBlocks() {
 		return false;
 	}
+
 	@Override
 	protected void onBoundsSet() {
 		super.onBoundsSet();
@@ -52,6 +55,7 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
 		setWorkBoundsMin(boundsMax.up(pos.getY() - height - boundsMax.getY()));
 		BlockTools.notifyBlockUpdate(this);
 	}
+
 	@Override
 	public void onBoundsAdjusted() {
 		offsetBounds();
@@ -78,14 +82,6 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
 			initWorkSite();
 			hasDoneInit = true;
 		}
-		world.profiler.startSection("Incremental Scan");
-		if (canHarvest(validate)) {
-			current = validate;
-			finished = false;
-		} else {
-			incrementValidationPosition();
-		}
-		world.profiler.endSection();
 	}
 
 	@Override
@@ -97,6 +93,7 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
 	}
 
 	private static final IWorksiteAction DIG_ACTION = WorksiteImplementation::getEnergyPerActivation;
+
 	@Override
 	protected Optional<IWorksiteAction> getNextAction() {
 		return !finished ? Optional.of(DIG_ACTION) : Optional.empty();
@@ -110,20 +107,20 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
 		}
 		/*
 		 * while the current position is invalid, increment to a valid one. generally the incremental scan
-         * should have take care of this prior to processWork being called, but just in case...
-         */
+		 * should have take care of this prior to processWork being called, but just in case...
+		 */
 		while (!canHarvest(current)) {
 			if (!incrementPosition()) {
 				/*
 				 * if no valid position was found, set finished, exit
-                 */
+				 */
 				finished = true;
 				return false;
 			}
 		}
 		/*
 		 * if made it this far, a valid position was found, break it and add blocks to inventory
-         */
+		 */
 		return harvestBlock(current);
 	}
 
@@ -151,40 +148,77 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
 		if (finished) {
 			return false;
 		}
-		current = current.east();
-		if (current.getX() > getWorkBoundsMax().getX()) {
-			current = new BlockPos(getWorkBoundsMin().getX(), current.getY(), current.getZ());
-			current = current.south();
-			if (current.getZ() > getWorkBoundsMax().getZ()) {
-				current = new BlockPos(current.getX(), current.getY(), getWorkBoundsMin().getZ());
-				current = current.down();
+		if (isMaxInChunk(current.getX()) || current.getX() >= getWorkBoundsMax().getX()) {
+			int startX = Math.max(getWorkBoundsMin().getX(), getMinChunkX());
+			if (isMaxInChunk(current.getZ()) || current.getZ() >= getWorkBoundsMax().getZ()) {
 				if (current.getY() <= (pos.getY() - (height + 1))) {
-					return false;
+					return moveToStartOfNextChunk();
+				} else {
+					int startZ = Math.max(getWorkBoundsMin().getZ(), getMinChunkZ());
+					current = new BlockPos(startX, current.getY() - 1, startZ);
 				}
+			} else {
+				current = new BlockPos(startX, current.getY(), current.getZ() + 1);
 			}
+		} else {
+			current = current.east();
 		}
 		return true;
 	}
 
-	private void incrementValidationPosition() {
-		validate = validate.east();
-		if (validate.getY() >= current.getY() && validate.getZ() >= current.getZ() && validate.getX() >= current.getX()) {//dont let validation pass current position
-			validate = new BlockPos(getWorkBoundsMin().getX(), getWorkBoundsMax().getY(), getWorkBoundsMin().getZ());
-		} else if (validate.getX() > getWorkBoundsMax().getX()) {
-			validate = new BlockPos(getWorkBoundsMin().getX(), validate.getY(), validate.getZ());
-			validate = validate.south();
-			if (validate.getZ() > getWorkBoundsMax().getZ()) {
-				validate = new BlockPos(validate.getX(), validate.getY(), getWorkBoundsMin().getZ());
-				validate = validate.down();
-				if (validate.getY() <= 0) {
-					validate = new BlockPos(getWorkBoundsMin().getX(), getWorkBoundsMax().getY(), getWorkBoundsMin().getZ());
-				}
+	private int getMinChunkZ() {
+		return (current.getZ() >> 4) * 16;
+	}
+
+	private boolean moveToStartOfNextChunk() {
+		unforceNonMachineChunk();
+
+		int x = getMinChunkX() + 16;
+		int z = Math.max(getWorkBoundsMin().getZ(), getMinChunkZ());
+		if (x > getWorkBoundsMax().getX()) {
+			x = getWorkBoundsMin().getX();
+			z = getMinChunkZ() + 16;
+			if (z > getWorkBoundsMax().getZ()) {
+				return false;
 			}
+		}
+		current = new BlockPos(x, getWorkBoundsMax().getY(), z);
+
+		chunkLoadWorkBounds();
+
+		return true;
+	}
+
+	private void unforceNonMachineChunk() {
+		if(!hasChunkLoaderUpgrade()) {
+			return;
+		}
+
+		ChunkPos currentChunk = new ChunkPos(current);
+		//unload chunk only if not same as machine chunk
+		if (!currentChunk.equals(new ChunkPos(pos))) {
+			ForgeChunkManager.unforceChunk(chunkTicket, new ChunkPos(current));
 		}
 	}
 
+	@Override
+	protected void chunkLoadWorkBounds() {
+		if(!hasChunkLoaderUpgrade()) {
+			return;
+		}
+
+		ForgeChunkManager.forceChunk(chunkTicket, new ChunkPos(current));
+	}
+
+	private int getMinChunkX() {
+		return (current.getX() >> 4) * 16;
+	}
+
+	private boolean isMaxInChunk(int coord) {
+		return (coord & 15) == 15;
+	}
+
 	private boolean canHarvest(BlockPos harvestPos) {
-		//TODO add block-breaking exclusion list to config
 		IBlockState state = world.getBlockState(harvestPos);
 		Block block = state.getBlock();
 		if (world.isAirBlock(harvestPos) || state.getMaterial().isLiquid()) {

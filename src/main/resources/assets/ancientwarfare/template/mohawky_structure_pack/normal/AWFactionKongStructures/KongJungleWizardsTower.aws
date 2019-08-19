@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 1/5/2019 at: 21:37:55
+# Auto-generated structure template file. created on: 8/19/2019 at: 10:23:11
 # Lines beginning with # denote comments
 
 header:
-version=2.8
+version=2.9
 name=KongJungleWizardsTower
 mods=
 size=24,57,37
@@ -2940,7 +2940,7 @@ rule:
 plugin=blockTile
 number=86
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"ancientwarfare:inject/chests/jungle_temple",lootRolls:2b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:659573930658495851L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"ancientwarfare:inject/chests/jungle_temple",lootRolls:2b,lootSettings:{lootRolls:2,splashPotion:0b,hasLoot:1b,lootTableName:"ancientwarfare:inject/chests/jungle_temple",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:659573930658495851L}}
 :enddata
 :endrule
 
@@ -2996,7 +2996,7 @@ rule:
 plugin=blockTile
 number=93
 data:
-JSON:{blockState:{blockName:"eplus:advanced_table"},teData:{InvList:[],id:"minecraft:eplus.advanced.table"}}
+JSON:{blockState:{blockName:"minecraft:air"},teData:{InvList:[],id:"minecraft:eplus.advanced.table"}}
 :enddata
 :endrule
 
@@ -3068,7 +3068,7 @@ rule:
 plugin=blockTile
 number=102
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{LootTable:"ebwizardry:chests/wizard_tower",lootRolls:2b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-2141639833194559029L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{LootTable:"ebwizardry:chests/wizard_tower",lootRolls:2b,lootSettings:{lootRolls:2,splashPotion:0b,hasLoot:1b,lootTableName:"ebwizardry:chests/wizard_tower",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-2141639833194559029L}}
 :enddata
 :endrule
 
@@ -3084,7 +3084,7 @@ rule:
 plugin=blockTile
 number=104
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"ebwizardry:chests/wizard_tower",lootRolls:2b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-3327285168496053621L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"ebwizardry:chests/wizard_tower",lootRolls:2b,lootSettings:{lootRolls:2,splashPotion:0b,hasLoot:1b,lootTableName:"ebwizardry:chests/wizard_tower",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-3327285168496053621L}}
 :enddata
 :endrule
 

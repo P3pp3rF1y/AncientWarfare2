@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 12/22/2018 at: 8:40:29
+# Auto-generated structure template file. created on: 8/19/2019 at: 10:23:17
 # Lines beginning with # denote comments
 
 header:
-version=2.8
+version=2.9
 name=ELBSorcerorsSpireBirch
 mods=ebwizardry
 size=40,87,35
@@ -20,8 +20,8 @@ preserveBlocks=false
 selectionWeight=50
 clusterValue=50
 minDuplicateDistance=1000
-dimensionWhiteList=false
-dimensionList=
+dimensionWhiteList=true
+dimensionList=0
 biomeWhiteList=true
 biomeList=minecraft:birch_forest,minecraft:birch_forest_hills
 leveling=8
@@ -3632,7 +3632,7 @@ rule:
 plugin=blockTile
 number=48
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"west"}},teData:{LootTable:"minecraft:chests/abandoned_mineshaft",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-6934045706402574875L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"west"}},teData:{LootTable:"minecraft:chests/abandoned_mineshaft",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/abandoned_mineshaft",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-6934045706402574875L}}
 :enddata
 :endrule
 
@@ -3656,7 +3656,7 @@ rule:
 plugin=blockTile
 number=51
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"east"}},teData:{LootTable:"minecraft:chests/abandoned_mineshaft",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-6334613101590123771L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"east"}},teData:{LootTable:"minecraft:chests/abandoned_mineshaft",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/abandoned_mineshaft",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-6334613101590123771L}}
 :enddata
 :endrule
 
@@ -6032,7 +6032,7 @@ rule:
 plugin=blockTile
 number=348
 data:
-JSON:{blockState:{blockName:"eplus:advanced_table"},teData:{InvList:[],id:"minecraft:eplus.advanced.table"}}
+JSON:{blockState:{blockName:"minecraft:air"},teData:{InvList:[],id:"minecraft:eplus.advanced.table"}}
 :enddata
 :endrule
 
@@ -7160,7 +7160,7 @@ rule:
 plugin=blockTile
 number=489
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"ebwizardry:chests/wizard_tower",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-7600159783251752187L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"ebwizardry:chests/wizard_tower",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"ebwizardry:chests/wizard_tower",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-7600159783251752187L}}
 :enddata
 :endrule
 

@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 1/2/2019 at: 23:32:30
+# Auto-generated structure template file. created on: 8/19/2019 at: 10:23:9
 # Lines beginning with # denote comments
 
 header:
-version=2.8
+version=2.9
 name=EmpireBallistaeTower
 mods=
 size=11,20,13
@@ -569,7 +569,7 @@ rule:
 plugin=vanillaSign
 number=30
 data:
-JSON:{signContents0:"Empire§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"Tower§r",signContents1:"Ballistae§r",signContents3:"",rotation:0}
+JSON:{signContents0:"Empire§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"Tower§r§r",signContents1:"Ballistae§r§r",signContents3:"",rotation:0}
 :enddata
 :endrule
 

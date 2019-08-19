@@ -179,7 +179,12 @@ public class JsonHelper {
 
 	public static <K, V> Map<K, V> mapFromJson(JsonElement json, Function<Entry<String, JsonElement>, K> parseKey,
 			Function<Entry<String, JsonElement>, V> parseValue) {
-		return mapFromObjectProperties(JsonUtils.getJsonObject(json, ""), new HashMap<>(), parseKey, parseValue);
+		return mapFromJson(JsonUtils.getJsonObject(json, ""), parseKey, parseValue);
+	}
+
+	public static <K, V> Map<K, V> mapFromJson(JsonObject json, Function<Entry<String, JsonElement>, K> parseKey,
+			Function<Entry<String, JsonElement>, V> parseValue) {
+		return mapFromObjectProperties(json, new HashMap<>(), parseKey, parseValue);
 	}
 
 	public static <K, V> void mapFromJson(JsonObject json, String propertyName, Map<K, V> ret, Function<Entry<String, JsonElement>, K> parseKey,
@@ -246,7 +251,9 @@ public class JsonHelper {
 			AncientWarfareCore.LOG.error("Error creating file", e);
 		}
 		try (BufferedWriter writer = Files.newBufferedWriter(file.toPath(),
-				StandardOpenOption.WRITE, StandardOpenOption.CREATE); JsonWriter jsonWriter = new JsonWriter(writer)) {
+				StandardOpenOption.WRITE, StandardOpenOption.CREATE);
+				JsonWriter jsonWriter = new JsonWriter(writer)) {
+			jsonWriter.setIndent("    ");
 			Streams.write(parent, jsonWriter);
 		}
 		catch (IOException e) {

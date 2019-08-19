@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -14,7 +15,7 @@ public class NpcAIRideHorse<T extends NpcBase> extends NpcAI<T> {
 	private final AttributeModifier followRangeModifier;
 	private final AttributeModifier moveSpeedModifier;
 
-	protected AbstractHorse horse;
+	protected EntityLiving horse;
 	private List<EntityAITasks.EntityAITaskEntry> horseAI = new ArrayList<>();
 
 	public NpcAIRideHorse(T npc, double speedFactor) {
@@ -28,7 +29,7 @@ public class NpcAIRideHorse<T extends NpcBase> extends NpcAI<T> {
 	@Override
 	public boolean shouldExecute() {
 		if (horse == null && npc.getRidingEntity() instanceof EntityHorse) {
-			horse = (EntityHorse) npc.getRidingEntity();
+			horse = (EntityLiving) npc.getRidingEntity();
 			onMountHorse();
 			return true;
 		}
@@ -37,9 +38,12 @@ public class NpcAIRideHorse<T extends NpcBase> extends NpcAI<T> {
 
 	protected void onMountHorse() {
 		removeHorseAI();
-		horse.setHorseSaddled(true);
-		horse.setEatingHaystack(false);
-		horse.setRearing(false);
+		if (horse instanceof AbstractHorse) {
+			AbstractHorse h = (AbstractHorse) horse;
+			h.setHorseSaddled(true);
+			h.setEatingHaystack(false);
+			h.setRearing(false);
+		}
 		applyModifiers();
 	}
 
@@ -52,14 +56,18 @@ public class NpcAIRideHorse<T extends NpcBase> extends NpcAI<T> {
 
 	protected void onDismountHorse() {
 		addHorseAI();
-		horse.setHorseSaddled(true);
-		removeModifiers();
+		if (horse instanceof AbstractHorse) {
+			((AbstractHorse) horse).setHorseSaddled(true);
+			removeModifiers();
+		}
 	}
 
 	private void applyModifiers() {
-		removeModifiers();
-		horse.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(moveSpeedModifier);
-		horse.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).applyModifier(followRangeModifier);
+		if (horse instanceof AbstractHorse) {
+			removeModifiers();
+			horse.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(moveSpeedModifier);
+			horse.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).applyModifier(followRangeModifier);
+		}
 	}
 
 	private void removeModifiers() {

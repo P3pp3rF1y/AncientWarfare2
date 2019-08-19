@@ -18,6 +18,7 @@ import net.shadowmage.ancientwarfare.core.util.InjectionTools;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.block.BlockAdvancedLootChest;
 import net.shadowmage.ancientwarfare.structure.block.BlockAdvancedSpawner;
+import net.shadowmage.ancientwarfare.structure.block.BlockBench;
 import net.shadowmage.ancientwarfare.structure.block.BlockBrazierEmber;
 import net.shadowmage.ancientwarfare.structure.block.BlockBrazierFlame;
 import net.shadowmage.ancientwarfare.structure.block.BlockChair;
@@ -29,14 +30,17 @@ import net.shadowmage.ancientwarfare.structure.block.BlockGoldenIdol;
 import net.shadowmage.ancientwarfare.structure.block.BlockGoldenThrone;
 import net.shadowmage.ancientwarfare.structure.block.BlockLootBasket;
 import net.shadowmage.ancientwarfare.structure.block.BlockProtectionFlag;
+import net.shadowmage.ancientwarfare.structure.block.BlockScissorSeat;
 import net.shadowmage.ancientwarfare.structure.block.BlockSoundBlock;
 import net.shadowmage.ancientwarfare.structure.block.BlockStake;
+import net.shadowmage.ancientwarfare.structure.block.BlockStatue;
 import net.shadowmage.ancientwarfare.structure.block.BlockStool;
 import net.shadowmage.ancientwarfare.structure.block.BlockStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.block.BlockStructureScanner;
 import net.shadowmage.ancientwarfare.structure.block.BlockTable;
 import net.shadowmage.ancientwarfare.structure.block.BlockTotemCube;
 import net.shadowmage.ancientwarfare.structure.block.BlockTotemPart;
+import net.shadowmage.ancientwarfare.structure.block.BlockTribalChair;
 import net.shadowmage.ancientwarfare.structure.block.BlockTribalStool;
 import net.shadowmage.ancientwarfare.structure.block.BlockUrn;
 import net.shadowmage.ancientwarfare.structure.block.BlockWoodenPost;
@@ -71,6 +75,7 @@ import net.shadowmage.ancientwarfare.structure.tile.TileLootBasket;
 import net.shadowmage.ancientwarfare.structure.tile.TileProtectionFlag;
 import net.shadowmage.ancientwarfare.structure.tile.TileSoundBlock;
 import net.shadowmage.ancientwarfare.structure.tile.TileStake;
+import net.shadowmage.ancientwarfare.structure.tile.TileStatue;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureScanner;
 import net.shadowmage.ancientwarfare.structure.tile.TileTotemPart;
@@ -119,6 +124,10 @@ public class AWStructureBlocks {
 	public static final Block GOLDEN_THRONE = InjectionTools.nullValue();
 	public static final Block WOODEN_POST = InjectionTools.nullValue();
 	public static final Block STAKE = InjectionTools.nullValue();
+	public static final Block BENCH = InjectionTools.nullValue();
+	public static final Block TRIBAL_CHAIR = InjectionTools.nullValue();
+	public static final Block SCISSOR_SEAT = InjectionTools.nullValue();
+	public static final Block STATUE = InjectionTools.nullValue();
 
 	@SuppressWarnings("ConstantConditions")
 	@SubscribeEvent
@@ -163,6 +172,10 @@ public class AWStructureBlocks {
 		registry.register(new ItemBlockBase(GOLDEN_THRONE));
 		registry.register(new ItemBlockBase(WOODEN_POST));
 		registry.register(new ItemMultiBlock(STAKE, new Vec3i(0, 0, 0), new Vec3i(0, 2, 0)));
+		registry.register(new WoodItemBlock(BENCH));
+		registry.register(new ItemMultiBlock(TRIBAL_CHAIR, new Vec3i(0, 0, 0), new Vec3i(0, 1, 0)));
+		registry.register(new ItemMultiBlock(SCISSOR_SEAT, new Vec3i(0, 0, 0), new Vec3i(0, 1, 0)));
+		registry.register(new ItemBlockBase(STATUE));
 
 		registerLootContainers();
 	}
@@ -252,6 +265,14 @@ public class AWStructureBlocks {
 		registry.register(new BlockWoodenPost());
 		registry.register(new BlockStake());
 		registerTile(TileStake.class, "stake_tile");
+
+		registry.register(new BlockBench());
+
+		registry.register(new BlockTribalChair());
+		registry.register(new BlockScissorSeat());
+
+		registry.register(new BlockStatue());
+		registerTile(TileStatue.class, "statue_tile");
 	}
 
 	private static void registerTile(Class<? extends TileEntity> teClass, String teId) {

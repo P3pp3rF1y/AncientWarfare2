@@ -58,8 +58,4 @@ public class OwnedNpcDefault extends NpcDefault {
 		newEquipment.putAll(additionalEquipment);
 		return new OwnedNpcDefault(targetList, attributes, experienceDrop, canSwim, canBreakDoors, newEquipment);
 	}
-
-	public Set<String> getTargetList() {
-		return targetList;
-	}
 }

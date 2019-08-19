@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.core.gui;
 
 import net.minecraft.client.Minecraft;
+import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
@@ -21,42 +22,55 @@ public class GuiSelectFromList<T> extends GuiContainerBase {
 	private Consumer<T> setEntry;
 	private CompositeScrolled area;
 	private Text selectionLabel;
+	private boolean showFilter;
 
 	public GuiSelectFromList(GuiContainerBase parent, @Nullable T entry, Function<T, String> getDisplayName, Supplier<List<T>> getList, Consumer<T> setEntry) {
-		super(parent.getContainer());
+		this(parent, entry, getDisplayName, getList, setEntry, true);
+	}
+
+	public GuiSelectFromList(GuiContainerBase parent, @Nullable T entry, Function<T, String> getDisplayName, Supplier<List<T>> getList, Consumer<T> setEntry, boolean showFilter) {
+		this(parent, entry, getDisplayName, getList, setEntry, showFilter, parent.getContainer());
+	}
+
+	public GuiSelectFromList(GuiContainerBase parent, @Nullable T entry, Function<T, String> getDisplayName, Supplier<List<T>> getList, Consumer<T> setEntry, boolean showFilter, ContainerBase container) {
+		super(container);
 		this.parent = parent;
 		this.entry = entry;
 		this.getDisplayName = getDisplayName;
 		this.getList = getList;
 		this.setEntry = setEntry;
+		this.showFilter = showFilter;
 	}
 
 	@Override
 	public void initElements() {
-		selectionLabel = new Text(8, 30, 240, getDisplayName.apply(entry), this) {
-			@Override
-			protected void handleKeyInput(int keyCode, char ch) {
-				String old = getText();
-				super.handleKeyInput(keyCode, ch);
-				String text = getText();
-				if (!text.equals(old)) {
-					refreshGui();
+		if (showFilter) {
+			selectionLabel = new Text(8, 30, 240, getDisplayName.apply(entry), this) {
+				@Override
+				protected void handleKeyInput(int keyCode, char ch) {
+					String old = getText();
+					super.handleKeyInput(keyCode, ch);
+					String text = getText();
+					if (!text.equals(old)) {
+						refreshGui();
+					}
 				}
-			}
-		};
-		Listener l = new Listener(Listener.MOUSE_UP) {
-			@Override
-			public boolean onEvent(GuiElement widget, GuiContainerBase.ActivationEvent evt) {
-				if (evt.mButton == 1 && widget.isMouseOverElement(evt.mx, evt.my)) {
-					((Text) widget).setText("");
-					refreshGui();
-				}
+			};
+			Listener l = new Listener(Listener.MOUSE_UP) {
+				@Override
+				public boolean onEvent(GuiElement widget, GuiContainerBase.ActivationEvent evt) {
+					if (evt.mButton == 1 && widget.isMouseOverElement(evt.mx, evt.my)) {
+						((Text) widget).setText("");
+						refreshGui();
+					}
 
-				return false;
-			}
-		};
-		selectionLabel.addNewListener(l);
-		addGuiElement(selectionLabel);
+					return false;
+				}
+			};
+			selectionLabel.addNewListener(l);
+			addGuiElement(selectionLabel);
+		}
+
 		area = new CompositeScrolled(this, 0, 40, 256, 200);
 		addGuiElement(area);
 	}
@@ -66,7 +80,7 @@ public class GuiSelectFromList<T> extends GuiContainerBase {
 		area.clearElements();
 		int totalHeight = 8;
 		Button button;
-		for (T listEntry : getList.get().stream().filter(input -> input.toString().contains(selectionLabel.getText())).collect(Collectors.toList())) {
+		for (T listEntry : getFilteredList()) {
 			button = new Button(8, totalHeight, 256 - 8 - 16, 12, getDisplayName.apply(listEntry)) {
 				@Override
 				protected void onPressed() {
@@ -79,6 +93,14 @@ public class GuiSelectFromList<T> extends GuiContainerBase {
 			totalHeight += 12;
 		}
 		area.setAreaSize(totalHeight);
+	}
+
+	private List<T> getFilteredList() {
+		if (!showFilter) {
+			return getList.get();
+		}
+
+		return getList.get().stream().filter(input -> input.toString().contains(selectionLabel.getText())).collect(Collectors.toList());
 	}
 
 	@Override

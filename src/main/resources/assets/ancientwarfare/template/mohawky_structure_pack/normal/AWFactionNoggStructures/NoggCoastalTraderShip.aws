@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 1/4/2019 at: 23:25:40
+# Auto-generated structure template file. created on: 8/19/2019 at: 10:23:12
 # Lines beginning with # denote comments
 
 header:
-version=2.8
+version=2.9
 name=NoggCoastalTraderShip
 mods=
 size=45,33,15
@@ -990,7 +990,7 @@ rule:
 plugin=blockTile
 number=50
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"west"}},teData:{LootTable:"minecraft:chests/village_blacksmith",lootRolls:2b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-1415469963782674190L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"west"}},teData:{LootTable:"minecraft:chests/village_blacksmith",lootRolls:2b,lootSettings:{lootRolls:2,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/village_blacksmith",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-1415469963782674190L}}
 :enddata
 :endrule
 
@@ -1014,7 +1014,7 @@ rule:
 plugin=blockTile
 number=53
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"minecraft:chests/village_blacksmith",lootRolls:2b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:9165428966924401234L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"minecraft:chests/village_blacksmith",lootRolls:2b,lootSettings:{lootRolls:2,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/village_blacksmith",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:9165428966924401234L}}
 :enddata
 :endrule
 

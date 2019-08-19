@@ -6,6 +6,7 @@ import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
+import net.shadowmage.ancientwarfare.structure.template.datafixes.DataFixManager;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -77,7 +78,7 @@ public class TemplateExporter {
 		writer.newLine();
 		writer.write("header:");
 		writer.newLine();
-		writer.write("version=" + StructureTemplate.CURRENT_VERSION.getMajor() + "." + StructureTemplate.CURRENT_VERSION.getMinor());
+		writer.write("version=" + DataFixManager.getCurrentVersion().getMajor() + "." + DataFixManager.getCurrentVersion().getMinor());
 		writer.newLine();
 		writer.write("name=" + template.name);
 		writer.newLine();

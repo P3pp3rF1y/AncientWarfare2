@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 1/5/2019 at: 22:58:3
+# Auto-generated structure template file. created on: 8/19/2019 at: 10:23:14
 # Lines beginning with # denote comments
 
 header:
-version=2.8
+version=2.9
 name=OrcAbandonedOpenCastMineHuge
 mods=
 size=63,84,63
@@ -6537,7 +6537,7 @@ rule:
 plugin=blockTile
 number=131
 data:
-JSON:{blockState:{blockName:"minecraft:mob_spawner"},teData:{MaxNearbyEntities:10s,RequiredPlayerRange:12s,SpawnCount:0s,SpawnData:{id:"minecraft:zombie"},MaxSpawnDelay:40s,Delay:0s,id:"minecraft:mob_spawner",SpawnRange:4s,MinSpawnDelay:20s,SpawnPotentials:[{Entity:{id:"minecraft:zombie"},Weight:1}]}}
+JSON:{blockState:{blockName:"minecraft:mob_spawner"},teData:{MaxNearbyEntities:10s,RequiredPlayerRange:12s,SpawnCount:0s,SpawnData:{id:"minecraft:zombie"},MaxSpawnDelay:40s,id:"minecraft:mob_spawner",SpawnRange:4s,Delay:0s,MinSpawnDelay:20s,SpawnPotentials:[{Entity:{id:"minecraft:zombie"},Weight:1}]}}
 :enddata
 :endrule
 
@@ -6857,7 +6857,7 @@ rule:
 plugin=blockTile
 number=171
 data:
-JSON:{blockState:{blockName:"minecraft:mob_spawner"},teData:{MaxNearbyEntities:10s,RequiredPlayerRange:12s,SpawnCount:0s,SpawnData:{id:"minecraft:zombie"},MaxSpawnDelay:40s,Delay:0s,id:"minecraft:mob_spawner",SpawnRange:4s,MinSpawnDelay:20s,SpawnPotentials:[{Entity:{id:"minecraft:zombie"},Weight:1}]}}
+JSON:{blockState:{blockName:"minecraft:mob_spawner"},teData:{MaxNearbyEntities:10s,RequiredPlayerRange:12s,SpawnCount:0s,SpawnData:{id:"minecraft:zombie"},MaxSpawnDelay:40s,id:"minecraft:mob_spawner",SpawnRange:4s,Delay:0s,MinSpawnDelay:20s,SpawnPotentials:[{Entity:{id:"minecraft:zombie"},Weight:1}]}}
 :enddata
 :endrule
 
@@ -7249,7 +7249,7 @@ rule:
 plugin=blockTile
 number=220
 data:
-JSON:{blockState:{blockName:"minecraft:mob_spawner"},teData:{MaxNearbyEntities:10s,RequiredPlayerRange:12s,SpawnCount:0s,SpawnData:{id:"minecraft:zombie"},MaxSpawnDelay:40s,Delay:0s,id:"minecraft:mob_spawner",SpawnRange:4s,MinSpawnDelay:20s,SpawnPotentials:[{Entity:{id:"minecraft:zombie"},Weight:1}]}}
+JSON:{blockState:{blockName:"minecraft:mob_spawner"},teData:{MaxNearbyEntities:10s,RequiredPlayerRange:12s,SpawnCount:0s,SpawnData:{id:"minecraft:zombie"},MaxSpawnDelay:40s,id:"minecraft:mob_spawner",SpawnRange:4s,Delay:0s,MinSpawnDelay:20s,SpawnPotentials:[{Entity:{id:"minecraft:zombie"},Weight:1}]}}
 :enddata
 :endrule
 
@@ -7281,7 +7281,7 @@ rule:
 plugin=blockTile
 number=224
 data:
-JSON:{blockState:{blockName:"minecraft:mob_spawner"},teData:{MaxNearbyEntities:10s,RequiredPlayerRange:12s,SpawnCount:0s,SpawnData:{id:"minecraft:skeleton"},MaxSpawnDelay:40s,Delay:0s,id:"minecraft:mob_spawner",SpawnRange:4s,MinSpawnDelay:20s,SpawnPotentials:[{Entity:{id:"minecraft:skeleton"},Weight:1}]}}
+JSON:{blockState:{blockName:"minecraft:mob_spawner"},teData:{MaxNearbyEntities:10s,RequiredPlayerRange:12s,SpawnCount:0s,SpawnData:{id:"minecraft:skeleton"},MaxSpawnDelay:40s,id:"minecraft:mob_spawner",SpawnRange:4s,Delay:0s,MinSpawnDelay:20s,SpawnPotentials:[{Entity:{id:"minecraft:skeleton"},Weight:1}]}}
 :enddata
 :endrule
 
@@ -7289,7 +7289,7 @@ rule:
 plugin=blockTile
 number=225
 data:
-JSON:{blockState:{blockName:"minecraft:mob_spawner"},teData:{MaxNearbyEntities:10s,RequiredPlayerRange:12s,SpawnCount:0s,SpawnData:{id:"minecraft:zombie"},MaxSpawnDelay:40s,Delay:0s,id:"minecraft:mob_spawner",SpawnRange:4s,MinSpawnDelay:20s,SpawnPotentials:[{Entity:{id:"minecraft:zombie"},Weight:1}]}}
+JSON:{blockState:{blockName:"minecraft:mob_spawner"},teData:{MaxNearbyEntities:10s,RequiredPlayerRange:12s,SpawnCount:0s,SpawnData:{id:"minecraft:zombie"},MaxSpawnDelay:40s,id:"minecraft:mob_spawner",SpawnRange:4s,Delay:0s,MinSpawnDelay:20s,SpawnPotentials:[{Entity:{id:"minecraft:zombie"},Weight:1}]}}
 :enddata
 :endrule
 

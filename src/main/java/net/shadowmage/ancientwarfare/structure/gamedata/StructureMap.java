@@ -10,7 +10,6 @@ import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructureEntry;
-import net.shadowmage.ancientwarfare.structure.network.PacketStructureMap;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,7 +19,6 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-//TODO world capability
 public class StructureMap extends WorldSavedData {
 
 	private StructureDimensionMap map;
@@ -34,7 +32,6 @@ public class StructureMap extends WorldSavedData {
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		NBTTagCompound mapTag = nbttagcompound.getCompoundTag("map");
 		map.readFromNBT(mapTag);
-		NetworkHandler.sendToAllPlayers(new PacketStructureMap(mapTag));
 	}
 
 	@Override

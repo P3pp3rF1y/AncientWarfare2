@@ -12,14 +12,12 @@ import net.shadowmage.ancientwarfare.core.util.parsing.JsonHelper;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 public class FactionRegistry {
 	private FactionRegistry() {}
@@ -41,7 +39,6 @@ public class FactionRegistry {
 	public static class FactionParser implements IRegistryDataParser {
 		private static final String PLAYER_DEFAULT_STANDING = "player_default_standing";
 		private static final String HOSTILE_TOWARDS_FACTIONS = "hostile_towards_factions";
-		private static final String ENTITIES_TO_TARGET = "entities_to_target";
 		private static final String THEMED_BLOCKS = "themed_blocks";
 
 		@Override
@@ -54,7 +51,7 @@ public class FactionRegistry {
 			JsonObject defaults = JsonUtils.getJsonObject(json, "defaults");
 			FactionDefinition defaultDefinition = new FactionDefinition(JsonUtils.getInt(defaults, PLAYER_DEFAULT_STANDING),
 					parseHostileTowards(defaults).entrySet().stream().filter(Entry::getValue).map(Entry::getKey).collect(Collectors.toCollection(HashSet::new)),
-					parseTargetList(defaults));
+					TargetRegistry.parseTargets(defaults).orElse(new HashSet<>()));
 
 			JsonArray factionsArray = JsonUtils.getJsonArray(json, "factions");
 
@@ -71,9 +68,9 @@ public class FactionRegistry {
 					hostileTowards.entrySet().stream().filter(Entry::getValue).map(Entry::getKey).forEach(builder::addHostileTowards);
 					hostileTowards.entrySet().stream().filter(entry -> !entry.getValue()).map(Entry::getKey).forEach(builder::removeHostileTowards);
 				}
-				if (faction.has(ENTITIES_TO_TARGET)) {
-					builder.overrideTargetList(parseTargetList(faction));
-				}
+
+				TargetRegistry.parseTargets(faction).ifPresent(builder::overrideTargetList);
+
 				if (faction.has(THEMED_BLOCKS)) {
 					builder.overrideThemedBlocksTags(parseThemedBLocks(faction, factionName));
 				}
@@ -104,14 +101,6 @@ public class FactionRegistry {
 			return JsonHelper.mapFromJson(json, HOSTILE_TOWARDS_FACTIONS, Entry::getKey, entry -> JsonUtils.getBoolean(entry.getValue(), ""));
 		}
 
-		private Set<String> parseTargetList(JsonObject json) {
-			if (!json.has(ENTITIES_TO_TARGET)) {
-				return Collections.emptySet();
-			}
-			JsonArray targets = JsonUtils.getJsonArray(json, ENTITIES_TO_TARGET);
-			return StreamSupport.stream(targets.spliterator(), false).map(e -> JsonUtils.getString(e, ""))
-					.collect(Collectors.toCollection(HashSet::new));
-		}
 	}
 
 	private static final FactionDefinition EMPTY_FACTION = new FactionDefinition(0, new HashSet<>(), new HashSet<>()).copy("", -1).build();

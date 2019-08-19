@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 1/4/2019 at: 21:55:54
+# Auto-generated structure template file. created on: 8/19/2019 at: 10:23:9
 # Lines beginning with # denote comments
 
 header:
-version=2.8
+version=2.9
 name=BufflokaForestTrader
 mods=
 size=33,45,25
@@ -1548,7 +1548,7 @@ rule:
 plugin=vanillaSign
 number=38
 data:
-JSON:{signContents0:"Buffloka§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"All§r",signContents1:"Trader§r",signContents3:"Welcome!§r",rotation:0}
+JSON:{signContents0:"Buffloka§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"All§r§r",signContents1:"Trader§r§r",signContents3:"Welcome!§r§r",rotation:0}
 :enddata
 :endrule
 
@@ -1556,7 +1556,7 @@ rule:
 plugin=vanillaSign
 number=39
 data:
-JSON:{signContents0:"Buffloka§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"All§r",signContents1:"Trader§r",signContents3:"Welcome§r",rotation:0}
+JSON:{signContents0:"Buffloka§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"All§r§r",signContents1:"Trader§r§r",signContents3:"Welcome§r§r",rotation:0}
 :enddata
 :endrule
 

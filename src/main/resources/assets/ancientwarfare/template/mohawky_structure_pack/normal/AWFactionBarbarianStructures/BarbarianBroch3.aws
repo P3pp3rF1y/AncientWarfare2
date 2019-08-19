@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 1/4/2019 at: 21:14:25
+# Auto-generated structure template file. created on: 8/19/2019 at: 10:23:8
 # Lines beginning with # denote comments
 
 header:
-version=2.8
+version=2.9
 name=BarbarianBroch3
 mods=
 size=23,19,26
@@ -1057,7 +1057,7 @@ rule:
 plugin=blockTile
 number=62
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"west"}},teData:{LootTable:"minecraft:chests/village_blacksmith",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-6020492753228944248L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"west"}},teData:{LootTable:"minecraft:chests/village_blacksmith",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/village_blacksmith",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-6020492753228944248L}}
 :enddata
 :endrule
 

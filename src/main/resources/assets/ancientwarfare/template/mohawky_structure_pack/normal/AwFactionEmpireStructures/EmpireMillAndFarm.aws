@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 1/4/2019 at: 9:47:21
+# Auto-generated structure template file. created on: 8/19/2019 at: 10:23:10
 # Lines beginning with # denote comments
 
 header:
-version=2.8
+version=2.9
 name=EmpireMillAndFarm
 mods=
 size=32,26,34

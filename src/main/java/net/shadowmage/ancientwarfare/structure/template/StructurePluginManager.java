@@ -183,7 +183,7 @@ public class StructurePluginManager implements IStructurePluginRegister {
 
 		FixResult.Builder<T> resultBuilder = new FixResult.Builder<>();
 
-		if (StructureTemplate.CURRENT_VERSION.isGreaterThan(version)) {
+		if (DataFixManager.getCurrentVersion().isGreaterThan(version)) {
 			Tuple<String, List<String>> fixResult = resultBuilder.updateAndGetData(DataFixManager.fixRuleData(version, name, ruleDataPackage));
 			name = fixResult.getFirst();
 			ruleDataPackage = fixResult.getSecond();

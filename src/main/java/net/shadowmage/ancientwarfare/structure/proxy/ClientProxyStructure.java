@@ -6,18 +6,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.IClientRegister;
 import net.shadowmage.ancientwarfare.structure.client.AWStructureBlockColors;
@@ -26,7 +23,6 @@ import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.event.StructureBoundingBoxRenderer;
 import net.shadowmage.ancientwarfare.structure.gui.GuiGateControl;
 import net.shadowmage.ancientwarfare.structure.gui.GuiGateControlCreative;
-import net.shadowmage.ancientwarfare.structure.render.DraftingStationRenderer;
 import net.shadowmage.ancientwarfare.structure.render.ParticleDummyModel;
 import net.shadowmage.ancientwarfare.structure.render.PreviewRenderer;
 import net.shadowmage.ancientwarfare.structure.render.RenderGateInvisible;
@@ -81,11 +77,6 @@ public class ClientProxyStructure extends CommonProxyStructure {
 
 		AWStructureBlockColors.init();
 		AWStructureItemColors.init();
-	}
-
-	@SubscribeEvent
-	public void onPreTextureStitch(TextureStitchEvent.Pre evt) {
-		DraftingStationRenderer.INSTANCE.setSprite(evt.getMap().registerSprite(new ResourceLocation(AncientWarfareCore.MOD_ID + ":model/structure/tile_drafting_station")));
 	}
 
 	@Override

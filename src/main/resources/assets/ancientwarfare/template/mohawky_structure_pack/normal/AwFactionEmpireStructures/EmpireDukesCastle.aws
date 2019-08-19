@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 1/3/2019 at: 3:45:57
+# Auto-generated structure template file. created on: 8/19/2019 at: 10:23:10
 # Lines beginning with # denote comments
 
 header:
-version=2.8
+version=2.9
 name=EmpireDukesCastle
 mods=
 size=69,65,71
@@ -5366,7 +5366,7 @@ rule:
 plugin=blockTile
 number=74
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-6079883437784068325L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/simple_dungeon",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-6079883437784068325L}}
 :enddata
 :endrule
 
@@ -5406,7 +5406,7 @@ rule:
 plugin=blockTile
 number=79
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-6149287762949572775L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/simple_dungeon",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-6149287762949572775L}}
 :enddata
 :endrule
 
@@ -5414,7 +5414,7 @@ rule:
 plugin=vanillaSign
 number=80
 data:
-JSON:{signContents0:"The Dukes§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"",signContents1:"Castle§r",signContents3:"",rotation:0}
+JSON:{signContents0:"The Dukes§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"",signContents1:"Castle§r§r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -5430,7 +5430,7 @@ rule:
 plugin=blockTile
 number=82
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{LootTable:"minecraft:chests/village_blacksmith",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-7173940369677346275L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{LootTable:"minecraft:chests/village_blacksmith",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/village_blacksmith",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-7173940369677346275L}}
 :enddata
 :endrule
 
@@ -5438,7 +5438,7 @@ rule:
 plugin=blockTile
 number=83
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{LootTable:"minecraft:chests/village_blacksmith",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:4004738682625496124L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{LootTable:"minecraft:chests/village_blacksmith",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/village_blacksmith",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:4004738682625496124L}}
 :enddata
 :endrule
 
@@ -5446,7 +5446,7 @@ rule:
 plugin=blockTile
 number=84
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{ForgeData:{},Items:[{Slot:8b,id:"minecraft:iron_chestplate",Count:1b,Damage:0s},{Slot:10b,id:"minecraft:apple",Count:2b,Damage:0s},{Slot:12b,id:"minecraft:iron_horse_armor",Count:1b,Damage:0s},{Slot:13b,id:"minecraft:iron_ingot",Count:2b,Damage:0s},{Slot:16b,id:"dungeontactics:iron_ring",Count:1b,Damage:0s},{Slot:17b,id:"minecraft:iron_ingot",Count:1b,Damage:0s},{Slot:18b,id:"minecraft:bread",Count:1b,Damage:0s},{Slot:19b,id:"minecraft:iron_ingot",Count:2b,Damage:0s},{Slot:20b,id:"minecraft:apple",Count:2b,Damage:0s},{Slot:26b,id:"minecraft:bread",Count:2b,Damage:0s}],id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:""}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{ForgeData:{},lootSettings:{lootRolls:0,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:",spawnEntity:0b},Items:[{Slot:8b,id:"minecraft:iron_chestplate",Count:1b,Damage:0s},{Slot:10b,id:"minecraft:apple",Count:2b,Damage:0s},{Slot:12b,id:"minecraft:iron_horse_armor",Count:1b,Damage:0s},{Slot:13b,id:"minecraft:iron_ingot",Count:2b,Damage:0s},{Slot:16b,id:"dungeontactics:iron_ring",Count:1b,Damage:0s},{Slot:17b,id:"minecraft:iron_ingot",Count:1b,Damage:0s},{Slot:18b,id:"minecraft:bread",Count:1b,Damage:0s},{Slot:19b,id:"minecraft:iron_ingot",Count:2b,Damage:0s},{Slot:20b,id:"minecraft:apple",Count:2b,Damage:0s},{Slot:26b,id:"minecraft:bread",Count:2b,Damage:0s}],id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:""}}
 :enddata
 :endrule
 
@@ -6046,7 +6046,7 @@ rule:
 plugin=inventory
 number=159
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},lootLevel:0,teData:{ForgeData:{},Items:[{Slot:0b,id:"minecraft:rotten_flesh",Count:1b,Damage:0s},{Slot:1b,id:"ebwizardry:spell_book",Count:1b,Damage:4s},{Slot:2b,id:"ebwizardry:spell_book",Count:1b,Damage:8s},{Slot:5b,id:"minecraft:bone",Count:2b,Damage:0s},{Slot:6b,id:"ebwizardry:basic_fire_wand",Count:1b,Damage:0s},{Slot:7b,id:"dungeontactics:heart_jar",Count:1b,Damage:0s},{Slot:8b,id:"minecraft:gunpowder",Count:1b,Damage:0s},{Slot:10b,id:"minecraft:bread",Count:1b,Damage:0s},{Slot:11b,id:"minecraft:golden_horse_armor",Count:1b,Damage:0s},{Slot:12b,id:"minecraft:rotten_flesh",Count:1b,Damage:0s},{Slot:13b,id:"ebwizardry:poison_bomb",Count:1b,Damage:0s},{Slot:14b,id:"ebwizardry:spell_book",Count:1b,Damage:7s},{Slot:15b,id:"minecraft:gunpowder",Count:2b,Damage:0s},{Slot:16b,id:"minecraft:gunpowder",Count:1b,Damage:0s},{Slot:17b,id:"minecraft:gunpowder",Count:2b,Damage:0s},{Slot:18b,id:"minecraft:rotten_flesh",Count:2b,Damage:0s},{Slot:19b,id:"minecraft:iron_horse_armor",Count:1b,Damage:0s},{Slot:20b,id:"ebwizardry:spell_book",Count:1b,Damage:10s},{Slot:21b,id:"minecraft:bone",Count:1b,Damage:0s},{Slot:22b,id:"minecraft:bone",Count:1b,Damage:0s},{Slot:23b,id:"minecraft:rotten_flesh",Count:2b,Damage:0s},{Slot:24b,id:"minecraft:gunpowder",Count:1b,Damage:0s},{Slot:25b,id:"minecraft:bone",Count:2b,Damage:0s},{Slot:26b,id:"ebwizardry:spell_book",Count:1b,Damage:109s}],id:"minecraft:chest",Lock:""},inventoryData:{length:24,inventoryContents:[{id:"minecraft:rotten_flesh",Count:1b,slot:0,Damage:0s},{id:"ebwizardry:spell_book",Count:1b,slot:1,Damage:4s},{id:"ebwizardry:spell_book",Count:1b,slot:2,Damage:8s},{id:"minecraft:bone",Count:2b,slot:3,Damage:0s},{id:"ebwizardry:basic_fire_wand",Count:1b,slot:4,Damage:0s},{id:"dungeontactics:heart_jar",Count:1b,slot:5,Damage:0s},{id:"minecraft:gunpowder",Count:1b,slot:6,Damage:0s},{id:"minecraft:bread",Count:1b,slot:7,Damage:0s},{id:"minecraft:golden_horse_armor",Count:1b,slot:8,Damage:0s},{id:"minecraft:rotten_flesh",Count:1b,slot:9,Damage:0s},{id:"ebwizardry:poison_bomb",Count:1b,slot:10,Damage:0s},{id:"ebwizardry:spell_book",Count:1b,slot:11,Damage:7s},{id:"minecraft:gunpowder",Count:2b,slot:12,Damage:0s},{id:"minecraft:gunpowder",Count:1b,slot:13,Damage:0s},{id:"minecraft:gunpowder",Count:2b,slot:14,Damage:0s},{id:"minecraft:rotten_flesh",Count:2b,slot:15,Damage:0s},{id:"minecraft:iron_horse_armor",Count:1b,slot:16,Damage:0s},{id:"ebwizardry:spell_book",Count:1b,slot:17,Damage:10s},{id:"minecraft:bone",Count:1b,slot:18,Damage:0s},{id:"minecraft:bone",Count:1b,slot:19,Damage:0s},{id:"minecraft:rotten_flesh",Count:2b,slot:20,Damage:0s},{id:"minecraft:gunpowder",Count:1b,slot:21,Damage:0s},{id:"minecraft:bone",Count:2b,slot:22,Damage:0s},{id:"ebwizardry:spell_book",Count:1b,slot:23,Damage:109s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},lootLevel:0,teData:{ForgeData:{},Items:[{Slot:0b,id:"minecraft:rotten_flesh",Count:1b,Damage:0s},{Slot:1b,id:"ebwizardry:spell_book",Count:1b,Damage:4s},{Slot:2b,id:"ebwizardry:spell_book",Count:1b,Damage:8s},{Slot:5b,id:"minecraft:bone",Count:2b,Damage:0s},{Slot:6b,id:"ebwizardry:basic_fire_wand",Count:1b,Damage:0s},{Slot:7b,id:"dungeontactics:heart_jar",Count:1b,Damage:0s},{Slot:8b,id:"minecraft:gunpowder",Count:1b,Damage:0s},{Slot:10b,id:"minecraft:bread",Count:1b,Damage:0s},{Slot:11b,id:"minecraft:golden_horse_armor",Count:1b,Damage:0s},{Slot:12b,id:"minecraft:rotten_flesh",Count:1b,Damage:0s},{Slot:13b,id:"ebwizardry:poison_bomb",Count:1b,Damage:0s},{Slot:14b,id:"ebwizardry:spell_book",Count:1b,Damage:7s},{Slot:15b,id:"minecraft:gunpowder",Count:2b,Damage:0s},{Slot:16b,id:"minecraft:gunpowder",Count:1b,Damage:0s},{Slot:17b,id:"minecraft:gunpowder",Count:2b,Damage:0s},{Slot:18b,id:"minecraft:rotten_flesh",Count:2b,Damage:0s},{Slot:19b,id:"minecraft:iron_horse_armor",Count:1b,Damage:0s},{Slot:20b,id:"ebwizardry:spell_book",Count:1b,Damage:10s},{Slot:21b,id:"minecraft:bone",Count:1b,Damage:0s},{Slot:22b,id:"minecraft:bone",Count:1b,Damage:0s},{Slot:23b,id:"minecraft:rotten_flesh",Count:2b,Damage:0s},{Slot:24b,id:"minecraft:gunpowder",Count:1b,Damage:0s},{Slot:25b,id:"minecraft:bone",Count:2b,Damage:0s},{Slot:26b,id:"ebwizardry:spell_book",Count:1b,Damage:109s}],id:"minecraft:chest",Lock:""},inventoryData:{length:24,inventoryContents:[{id:"minecraft:rotten_flesh",Count:1b,slot:0,Damage:0s},{id:"ebwizardry:spell_book",Count:1b,slot:1,Damage:4s},{id:"ebwizardry:spell_book",Count:1b,slot:2,Damage:8s},{id:"minecraft:bone",Count:2b,slot:3,Damage:0s},{id:"ebwizardry:basic_fire_wand",Count:1b,slot:4,Damage:0s},{id:"minecraft:gunpowder",Count:1b,slot:6,Damage:0s},{id:"minecraft:bread",Count:1b,slot:7,Damage:0s},{id:"minecraft:golden_horse_armor",Count:1b,slot:8,Damage:0s},{id:"minecraft:rotten_flesh",Count:1b,slot:9,Damage:0s},{id:"ebwizardry:poison_bomb",Count:1b,slot:10,Damage:0s},{id:"ebwizardry:spell_book",Count:1b,slot:11,Damage:7s},{id:"minecraft:gunpowder",Count:2b,slot:12,Damage:0s},{id:"minecraft:gunpowder",Count:1b,slot:13,Damage:0s},{id:"minecraft:gunpowder",Count:2b,slot:14,Damage:0s},{id:"minecraft:rotten_flesh",Count:2b,slot:15,Damage:0s},{id:"minecraft:iron_horse_armor",Count:1b,slot:16,Damage:0s},{id:"ebwizardry:spell_book",Count:1b,slot:17,Damage:10s},{id:"minecraft:bone",Count:1b,slot:18,Damage:0s},{id:"minecraft:bone",Count:1b,slot:19,Damage:0s},{id:"minecraft:rotten_flesh",Count:2b,slot:20,Damage:0s},{id:"minecraft:gunpowder",Count:1b,slot:21,Damage:0s},{id:"minecraft:bone",Count:2b,slot:22,Damage:0s},{id:"ebwizardry:spell_book",Count:1b,slot:23,Damage:109s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -6070,7 +6070,7 @@ rule:
 plugin=blockTile
 number=162
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"west"}},teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-5016305292762407236L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"west"}},teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/simple_dungeon",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-5016305292762407236L}}
 :enddata
 :endrule
 
@@ -6094,7 +6094,7 @@ rule:
 plugin=blockTile
 number=165
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"east"}},teData:{LootTable:"minecraft:chests/village_blacksmith",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:1589532731533082939L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"east"}},teData:{LootTable:"minecraft:chests/village_blacksmith",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/village_blacksmith",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:1589532731533082939L}}
 :enddata
 :endrule
 
@@ -6102,7 +6102,7 @@ rule:
 plugin=blockTile
 number=166
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"west"}},teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-5077447201844491045L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"west"}},teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/simple_dungeon",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-5077447201844491045L}}
 :enddata
 :endrule
 
@@ -6118,7 +6118,7 @@ rule:
 plugin=blockTile
 number=168
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-1741478510330677861L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/simple_dungeon",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-1741478510330677861L}}
 :enddata
 :endrule
 
@@ -6134,7 +6134,7 @@ rule:
 plugin=vanillaSign
 number=170
 data:
-JSON:{signContents0:"Kitchen§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"",signContents1:"",signContents3:"",rotation:0}
+JSON:{signContents0:"Kitchen§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"",signContents1:"",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -6230,7 +6230,7 @@ rule:
 plugin=blockTile
 number=182
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"west"}},teData:{LootTable:"minecraft:chests/village_blacksmith",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:420412236988364219L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"west"}},teData:{LootTable:"minecraft:chests/village_blacksmith",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/village_blacksmith",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:420412236988364219L}}
 :enddata
 :endrule
 
@@ -7078,7 +7078,7 @@ rule:
 plugin=vanillaSign
 number=288
 data:
-JSON:{signContents0:"Barracks,§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"north"}},signContents2:"Balcony§r",signContents1:"Great Hall§r",signContents3:"",rotation:0}
+JSON:{signContents0:"Barracks,§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"north"}},signContents2:"Balcony§r§r",signContents1:"Great Hall§r§r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -7526,7 +7526,7 @@ rule:
 plugin=blockTile
 number=344
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"east"}},teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-5042307007700711238L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"east"}},teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/simple_dungeon",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-5042307007700711238L}}
 :enddata
 :endrule
 
@@ -7646,7 +7646,7 @@ rule:
 plugin=vanillaSign
 number=359
 data:
-JSON:{signContents0:"Lord's§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"north"}},signContents2:"",signContents1:"Quarters§r",signContents3:"",rotation:0}
+JSON:{signContents0:"Lord's§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"north"}},signContents2:"",signContents1:"Quarters§r§r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -7846,7 +7846,7 @@ rule:
 plugin=blockTile
 number=384
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"east"}},teData:{LootTable:"minecraft:chests/village_blacksmith",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:1268169639138034778L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"east"}},teData:{LootTable:"minecraft:chests/village_blacksmith",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/village_blacksmith",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:1268169639138034778L}}
 :enddata
 :endrule
 
@@ -8062,7 +8062,7 @@ rule:
 plugin=vanillaSign
 number=411
 data:
-JSON:{signContents0:"Guest Room§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"",signContents1:"",signContents3:"",rotation:0}
+JSON:{signContents0:"Guest Room§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"",signContents1:"",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -8070,7 +8070,7 @@ rule:
 plugin=vanillaSign
 number=412
 data:
-JSON:{signContents0:"Balcony§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"",signContents1:"",signContents3:"",rotation:0}
+JSON:{signContents0:"Balcony§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"",signContents1:"",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -8086,7 +8086,7 @@ rule:
 plugin=vanillaSign
 number=414
 data:
-JSON:{signContents0:"Guard Room§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"east"}},signContents2:"",signContents1:" §r",signContents3:"",rotation:0}
+JSON:{signContents0:"Guard Room§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"east"}},signContents2:"",signContents1:" §r§r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -8110,7 +8110,7 @@ rule:
 plugin=vanillaSign
 number=417
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"north"}},signContents2:"",signContents1:"Treasury§r",signContents3:"",rotation:0}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"north"}},signContents2:"",signContents1:"Treasury§r§r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -8246,7 +8246,7 @@ rule:
 plugin=blockTile
 number=434
 data:
-JSON:{blockState:{blockName:"eplus:advanced_table"},teData:{InvList:[],id:"minecraft:eplus.advanced.table"}}
+JSON:{blockState:{blockName:"minecraft:air"},teData:{InvList:[],id:"minecraft:eplus.advanced.table"}}
 :enddata
 :endrule
 
@@ -8286,7 +8286,7 @@ rule:
 plugin=blockTile
 number=439
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"west"}},teData:{LootTable:"ebwizardry:chests/wizard_tower",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:7471946000410717883L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"west"}},teData:{LootTable:"ebwizardry:chests/wizard_tower",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"ebwizardry:chests/wizard_tower",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:7471946000410717883L}}
 :enddata
 :endrule
 
@@ -8302,7 +8302,7 @@ rule:
 plugin=blockTile
 number=441
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"ebwizardry:chests/wizard_tower",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-3711690501542176901L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"ebwizardry:chests/wizard_tower",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"ebwizardry:chests/wizard_tower",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-3711690501542176901L}}
 :enddata
 :endrule
 
@@ -8310,7 +8310,7 @@ rule:
 plugin=vanillaSign
 number=442
 data:
-JSON:{signContents0:"Archive§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"till§r",signContents1:"I§r",signContents3:"XX§r",rotation:0}
+JSON:{signContents0:"Archive§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"till§r§r",signContents1:"I§r§r",signContents3:"XX§r§r",rotation:0}
 :enddata
 :endrule
 
@@ -8326,7 +8326,7 @@ rule:
 plugin=vanillaSign
 number=444
 data:
-JSON:{signContents0:"PRAY FOR YOUR§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"east"}},signContents2:"CREEPERS SHALL§r",signContents1:"LIGHT AND§r",signContents3:"BE NO MORE§r",rotation:0}
+JSON:{signContents0:"PRAY FOR YOUR§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"east"}},signContents2:"CREEPERS SHALL§r§r",signContents1:"LIGHT AND§r§r",signContents3:"BE NO MORE§r§r",rotation:0}
 :enddata
 :endrule
 
@@ -8334,7 +8334,7 @@ rule:
 plugin=vanillaSign
 number=445
 data:
-JSON:{signContents0:"Temple of Light§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"east"}},signContents2:"",signContents1:"Welcome's you§r",signContents3:"",rotation:0}
+JSON:{signContents0:"Temple of Light§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"east"}},signContents2:"",signContents1:"Welcome's you§r§r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -8342,7 +8342,7 @@ rule:
 plugin=vanillaSign
 number=446
 data:
-JSON:{signContents0:"Legends,§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"Folktales§r",signContents1:"Myth and§r",signContents3:"",rotation:0}
+JSON:{signContents0:"Legends,§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"Folktales§r§r",signContents1:"Myth and§r§r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -8350,7 +8350,7 @@ rule:
 plugin=vanillaSign
 number=447
 data:
-JSON:{signContents0:"Archive§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"till§r",signContents1:"XX§r",signContents3:"XL§r",rotation:0}
+JSON:{signContents0:"Archive§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"till§r§r",signContents1:"XX§r§r",signContents3:"XL§r§r",rotation:0}
 :enddata
 :endrule
 
@@ -8358,7 +8358,7 @@ rule:
 plugin=vanillaSign
 number=448
 data:
-JSON:{signContents0:"Archive§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"till§r",signContents1:"LXXX§r",signContents3:"XCIX§r",rotation:0}
+JSON:{signContents0:"Archive§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"till§r§r",signContents1:"LXXX§r§r",signContents3:"XCIX§r§r",rotation:0}
 :enddata
 :endrule
 
@@ -8366,7 +8366,7 @@ rule:
 plugin=blockTile
 number=449
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"east"}},teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:2577303850594773562L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"east"}},teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/simple_dungeon",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:2577303850594773562L}}
 :enddata
 :endrule
 
@@ -8374,7 +8374,7 @@ rule:
 plugin=blockTile
 number=450
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"west"}},teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-167494660779943750L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"west"}},teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/simple_dungeon",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-167494660779943750L}}
 :enddata
 :endrule
 
@@ -8446,7 +8446,7 @@ rule:
 plugin=vanillaSign
 number=459
 data:
-JSON:{signContents0:"Lookout§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"",signContents1:"Tower§r",signContents3:"",rotation:0}
+JSON:{signContents0:"Lookout§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"",signContents1:"Tower§r§r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -8462,7 +8462,7 @@ rule:
 plugin=vanillaSign
 number=461
 data:
-JSON:{signContents0:"Storage§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"north"}},signContents2:"",signContents1:"Attic§r",signContents3:"",rotation:0}
+JSON:{signContents0:"Storage§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"north"}},signContents2:"",signContents1:"Attic§r§r",signContents3:"",rotation:0}
 :enddata
 :endrule
 

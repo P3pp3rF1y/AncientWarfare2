@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 1/2/2019 at: 21:48:41
+# Auto-generated structure template file. created on: 8/19/2019 at: 10:23:13
 # Lines beginning with # denote comments
 
 header:
-version=2.8
+version=2.9
 name=NorskaWarriorsTrainingHall
 mods=
 size=19,18,21
@@ -803,7 +803,7 @@ rule:
 plugin=vanillaSign
 number=45
 data:
-JSON:{signContents0:"Norska§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"Training §r",signContents1:"Warriors§r",signContents3:"Hall§r",rotation:0}
+JSON:{signContents0:"Norska§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"Training §r§r",signContents1:"Warriors§r§r",signContents3:"Hall§r§r",rotation:0}
 :enddata
 :endrule
 

@@ -13,7 +13,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
-import net.shadowmage.ancientwarfare.core.util.RenderTools;
 import net.shadowmage.ancientwarfare.structure.block.BlockMulti;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockCoffin;
@@ -64,7 +63,6 @@ public class CoffinRenderer extends RenderLootInfo<TileCoffin> implements IItemR
 		float rotation = te.getDirection().getRotationAngle();
 		boolean upright = te.getUpright();
 
-		RenderTools.setFullColorLightmap();
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x + 0.5F, y + 2.16F, z + 0.5F);
 		GlStateManager.rotate(-rotation, 0, 1, 0); //passing in negative value because of the flipping of the model below

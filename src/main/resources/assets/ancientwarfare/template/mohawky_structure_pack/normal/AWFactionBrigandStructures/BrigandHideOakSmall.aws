@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 12/25/2018 at: 22:43:5
+# Auto-generated structure template file. created on: 8/19/2019 at: 10:23:9
 # Lines beginning with # denote comments
 
 header:
-version=2.8
+version=2.9
 name=BrigandHideOakSmall
 mods=
 size=23,19,20
@@ -591,7 +591,7 @@ rule:
 plugin=blockTile
 number=18
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{LootTable:"ancientwarfare:inject/chests/simple_dungeon",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-3690245904559431258L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{LootTable:"ancientwarfare:inject/chests/simple_dungeon",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"ancientwarfare:inject/chests/simple_dungeon",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-3690245904559431258L}}
 :enddata
 :endrule
 

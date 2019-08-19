@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
+import net.shadowmage.ancientwarfare.core.gui.GuiSelectFromList;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
@@ -11,11 +12,17 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.Line;
 import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcFactionTradeSetup;
+import net.shadowmage.ancientwarfare.npc.registry.FactionTradeListRegistry;
+import net.shadowmage.ancientwarfare.npc.registry.FactionTradeListTemplate;
 import net.shadowmage.ancientwarfare.npc.trade.FactionTrade;
 import net.shadowmage.ancientwarfare.npc.trade.FactionTradeList;
 import net.shadowmage.ancientwarfare.npc.trade.Trade;
 
 import javax.annotation.Nonnull;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class GuiNpcFactionTradeSetup extends GuiContainerBase<ContainerNpcFactionTradeSetup> {
 
@@ -34,8 +41,25 @@ public class GuiNpcFactionTradeSetup extends GuiContainerBase<ContainerNpcFactio
 		Button templateButton = new Button(170, ySize - 85, xSize - 174, 12, "guistrings.select_trade_template") {
 			@Override
 			protected void onPressed() {
-				Minecraft.getMinecraft().displayGuiScreen(new GuiTradeTemplateSelect(GuiNpcFactionTradeSetup.this, getContainer().entity.getFaction()));
-				refreshGui();
+				Minecraft.getMinecraft().displayGuiScreen(new GuiSelectFromList<>(GuiNpcFactionTradeSetup.this, "",
+						s -> s, () -> getTemplateList(getContainer().getEntity().getFaction()), s -> {
+					setTradeListFromTemplate(s, getContainer().getEntity().getFaction());
+					refreshGui();
+				}, true, new ContainerBase(player)));
+			}
+
+			private void setTradeListFromTemplate(String templateName, String factionName) {
+				GuiNpcFactionTradeSetup.this.getContainer().setTradeList(
+						FactionTradeListRegistry.getDefaults().getOrDefault(templateName,
+								FactionTradeListRegistry.getFactionDefaults(factionName).getOrDefault(templateName, FactionTradeListTemplate.EMPTY))
+								.toTradeList()
+				);
+			}
+
+			private List<String> getTemplateList(String factionName) {
+				HashSet<String> templates = new HashSet<>(FactionTradeListRegistry.getDefaults().keySet());
+				templates.addAll(FactionTradeListRegistry.getFactionDefaults(factionName).keySet());
+				return templates.stream().sorted(Comparator.naturalOrder()).collect(Collectors.toList());
 			}
 		};
 
@@ -79,10 +103,11 @@ public class GuiNpcFactionTradeSetup extends GuiContainerBase<ContainerNpcFactio
 	}
 
 	private int addTrade(final Trade trade, int startHeight, final int tradeNum) {
-		int gridX = 0, gridY = 0, slotX, slotY;
+		int gridX = 0;
+		int gridY = 0;
 		for (int i = 0; i < trade.size(); i++) {
-			slotX = gridX * 18 + 8;
-			slotY = gridY * 18 + startHeight;
+			int slotX = gridX * 18 + 8;
+			int slotY = gridY * 18 + startHeight;
 			addTradeInputSlot(trade, slotX, slotY, i);
 			slotX += 3 * 18 + 9;
 			addTradeOutputSlot(trade, slotX, slotY, i);

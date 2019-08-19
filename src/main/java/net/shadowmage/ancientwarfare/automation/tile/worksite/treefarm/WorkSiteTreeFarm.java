@@ -284,10 +284,10 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
 			return Optional.of(CHOP_LEAF_ACTION);
 		} else if (!trunkBlocksToChop.isEmpty()) {
 			return Optional.of(CHOP_TRUNK_ACTION);
-		} else if (bonemealCount > 0 && !blocksToFertilize.isEmpty()) {
-			return Optional.of(BONEMEAL_ACTION);
 		} else if (plantableCount > 0 && !blocksToPlant.isEmpty()) {
 			return Optional.of(PLANT_ACTION);
+		} else if (bonemealCount > 0 && !blocksToFertilize.isEmpty()) {
+			return Optional.of(BONEMEAL_ACTION);
 		}
 		return Optional.empty();
 	}

@@ -1,13 +1,13 @@
 package net.shadowmage.ancientwarfare.npc.trade;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 
 import java.util.Iterator;
 
 public final class FactionTradeList extends TradeList<FactionTrade> {
 
-	private int ticks = 0;
+	private long totalWorldTime = 0;
 
 	@Override
 	protected FactionTrade getNewTrade() {
@@ -17,8 +17,8 @@ public final class FactionTradeList extends TradeList<FactionTrade> {
 	/*
 	 * MUST be called from owning entity once per update tick.
 	 */
-	public void tick() {
-		ticks++;
+	public void tick(World world) {
+		totalWorldTime = world.getTotalWorldTime();
 	}
 
 	/*
@@ -26,10 +26,9 @@ public final class FactionTradeList extends TradeList<FactionTrade> {
 	 * Will use the internal stored tick number value for updating the trades list.<br>
 	 */
 	public void updateTradesForView() {
-		for (Trade aTrade : points) {
-			((FactionTrade) aTrade).updateTrade(ticks);
+		for (FactionTrade aTrade : points) {
+			aTrade.updateTrade(totalWorldTime);
 		}
-		ticks = 0;
 	}
 
 	/*
@@ -48,18 +47,5 @@ public final class FactionTradeList extends TradeList<FactionTrade> {
 
 	public boolean performTrade(EntityPlayer player, int tradeNum) {
 		return get(tradeNum).performTrade(player, null);
-	}
-
-	@Override
-	public NBTTagCompound serializeNBT() {
-		NBTTagCompound tag = super.serializeNBT();
-		tag.setInteger("ticks", ticks);
-		return tag;
-	}
-
-	@Override
-	public void deserializeNBT(NBTTagCompound tag) {
-		ticks = tag.getInteger("ticks");
-		super.deserializeNBT(tag);
 	}
 }

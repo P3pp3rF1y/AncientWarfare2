@@ -4,38 +4,21 @@ import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraftforge.fml.common.registry.EntityEntry;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
 import java.util.Optional;
 
 public class TileStake extends TileUpdatable {
-	private static final String ENTITY_NAME_TAG = "entityName";
-	private Entity entity = null;
-	private ResourceLocation entityName = null;
-	private boolean entityOnFire = false;
+	private final EntityStatueInfo entityStatueInfo = new EntityStatueInfo();
 	private boolean burns = true;
 
 	public Optional<Entity> getRenderEntity() {
-		if (entity != null) {
-			return Optional.of(entity);
-		}
-		if (entityName != null && world.isRemote) {
-			EntityEntry entityEntry = ForgeRegistries.ENTITIES.getValue(entityName);
-			if (entityEntry == null) {
-				entityName = null;
-				return Optional.empty();
-			}
-			entity = entityEntry.newInstance(world);
-			return Optional.of(entity);
-		}
-		return Optional.empty();
+		return entityStatueInfo.getRenderEntity(world);
 	}
 
 	public boolean isEntityOnFire() {
-		return entityOnFire;
+		return entityStatueInfo.isEntityOnFire();
 	}
 
 	public boolean burns() {
@@ -50,12 +33,7 @@ public class TileStake extends TileUpdatable {
 	}
 
 	private void readNBT(NBTTagCompound compound) {
-		if (compound.hasKey(ENTITY_NAME_TAG)) {
-			entityName = new ResourceLocation(compound.getString(ENTITY_NAME_TAG));
-			entityOnFire = compound.getBoolean("entityOnFire");
-		} else {
-			entityName = null;
-		}
+		entityStatueInfo.deserializeNBT(compound);
 		burns = compound.getBoolean("burns");
 	}
 
@@ -77,32 +55,27 @@ public class TileStake extends TileUpdatable {
 	}
 
 	private NBTTagCompound writeNBT(NBTTagCompound compound) {
-		if (entityName != null) {
-			compound.setString(ENTITY_NAME_TAG, entityName.toString());
-			compound.setBoolean("entityOnFire", entityOnFire);
-		}
+		compound = entityStatueInfo.serializeNBT(compound);
 		compound.setBoolean("burns", burns);
 		return compound;
 	}
 
 	public void resetEntityName() {
-		entityName = null;
-		entity = null;
+		entityStatueInfo.resetEntityName();
 		markDirty();
 	}
 
 	public ResourceLocation getEntityName() {
-		return entityName;
+		return entityStatueInfo.getEntityName();
 	}
 
 	public void setEntityName(ResourceLocation entityName) {
-		this.entityName = entityName;
-		entity = null;
+		entityStatueInfo.setEntityName(entityName);
 		markDirty();
 	}
 
 	public void setEntityOnFire(boolean entityOnFire) {
-		this.entityOnFire = entityOnFire;
+		entityStatueInfo.setEntityOnFire(entityOnFire);
 		markDirty();
 	}
 

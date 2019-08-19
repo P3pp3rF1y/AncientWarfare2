@@ -32,7 +32,6 @@ public class TileStructureScanner extends TileUpdatable implements IBlockBreakHa
 	private static final String SCANNER_INVENTORY_TAG = "scannerInventory";
 	private static final String BOUNDS_ACTIVE_TAG = "boundsActive";
 	private static final String FACING_TAG = "facing";
-	private static final int MAX_COMMAND_EXECUTION_ERRORS = 5;
 
 	private ItemStackHandler scannerInventory = new ItemStackHandler(1) {
 		@Nonnull
@@ -54,7 +53,6 @@ public class TileStructureScanner extends TileUpdatable implements IBlockBreakHa
 	private boolean boundsActive = true;
 	private EnumFacing facing = EnumFacing.NORTH;
 	private EnumFacing renderFacing = EnumFacing.NORTH;
-	private int commandExecutionErrorCount = 0;
 
 	public ItemStackHandler getScannerInventory() {
 		return scannerInventory;
@@ -171,9 +169,9 @@ public class TileStructureScanner extends TileUpdatable implements IBlockBreakHa
 
 	private void saveToScannerItemAndRestoreTemplate(String name, ItemStack scanner, StructureTemplate template, ItemStructureSettings settings) {
 		EnumFacing placementFacing = facing.getOpposite();
-		BlockPos key = pos.offset(placementFacing, template.getSize().getZ() - template.getOffset().getZ()).offset(EnumFacing.DOWN, 1);
+		BlockPos key = pos.offset(placementFacing, template.getSize().getZ() - template.getOffset().getZ());
 		StructureBB bb = new StructureBB(key, placementFacing, template);
-		settings.setBuildKey(key, placementFacing);
+		settings.setBuildKey(key.down(), placementFacing);
 		settings.setName(name);
 		settings.setPos1(bb.min);
 		settings.setPos2(bb.max);
@@ -181,7 +179,7 @@ public class TileStructureScanner extends TileUpdatable implements IBlockBreakHa
 		ItemStructureSettings.setSettingsFor(scanner, settings);
 
 		//TODO fix incorrect y buildkey offset in structure builder remove this offset up 1
-		restoreTemplate(template, settings.getBoundingBox(), key.offset(EnumFacing.UP, 1), placementFacing);
+		restoreTemplate(template, settings.getBoundingBox(), key, placementFacing);
 	}
 
 	private void restoreTemplate(StructureTemplate template, AxisAlignedBB boundingBox, BlockPos buildPos, EnumFacing face) {
@@ -241,7 +239,7 @@ public class TileStructureScanner extends TileUpdatable implements IBlockBreakHa
 		getScanner().ifPresent(scanner -> ItemStructureScanner.scanStructure(world, scanner));
 	}
 
-	public void reloadMainSettings() {
+	void reloadMainSettings() {
 		getScanner().ifPresent(scanner -> {
 					String name = ItemStructureScanner.getStructureName(scanner);
 			StructureTemplateManager.getTemplate(name).ifPresent(template -> setMainTemplateSettings(name, scanner, template));

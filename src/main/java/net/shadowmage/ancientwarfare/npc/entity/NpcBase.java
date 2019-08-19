@@ -303,17 +303,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		return world.getLightBrightness(pos);
 	}
 
-	@Override
-	public void onEntityUpdate() {
-		/*
-		 * need to test how well it works for an npc (perhaps drop sand on their head?)
-         */
-		if (!world.isRemote && !isSleeping()) {
-			this.pushOutOfBlocks(this.posX, (this.getEntityBoundingBox().minY + this.getEntityBoundingBox().maxY) / 2.0D, this.posZ);
-		}
-		super.onEntityUpdate();
-	}
-
 	public double getDistanceSqFromHome() {
 		if (!hasHome()) {
 			return 0;
@@ -527,25 +516,17 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	}
 
 	@Override
-	protected final void dropEquipment(boolean par1, int par2) {
-		if (!world.isRemote) {
-			for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
-				ItemStack itemstack = this.getItemStackFromSlot(slot);
-				if (!itemstack.isEmpty()) {
-					this.entityDropItem(itemstack, 0.0F);
-				}
-				setItemStackToSlot(slot, ItemStack.EMPTY);
+	protected final void dropEquipment(boolean wasRecentlyHit, int lootingModifier) {
+		super.dropEquipment(wasRecentlyHit, lootingModifier);
+		if (!AWNPCStatics.persistOrdersOnDeath) {
+			if (!ordersStack.isEmpty()) {
+				entityDropItem(ordersStack, 0.f);
 			}
-			if (!AWNPCStatics.persistOrdersOnDeath) {
-				if (!ordersStack.isEmpty()) {
-					entityDropItem(ordersStack, 0.f);
-				}
-				if (!upkeepStack.isEmpty()) {
-					entityDropItem(upkeepStack, 0.f);
-				}
-				ordersStack = ItemStack.EMPTY;
-				upkeepStack = ItemStack.EMPTY;
+			if (!upkeepStack.isEmpty()) {
+				entityDropItem(upkeepStack, 0.f);
 			}
+			ordersStack = ItemStack.EMPTY;
+			upkeepStack = ItemStack.EMPTY;
 		}
 	}
 
@@ -911,6 +892,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	public void setDoNotPursue(boolean val) {
 		this.doNotPursue = val;
 	}
+
 	public boolean getDoNotPursue() {
 		return doNotPursue;
 	}

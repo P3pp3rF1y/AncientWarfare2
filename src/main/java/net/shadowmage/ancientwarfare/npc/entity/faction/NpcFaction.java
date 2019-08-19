@@ -34,6 +34,7 @@ import net.shadowmage.ancientwarfare.npc.registry.NpcDefaultsRegistry;
 import net.shadowmage.ancientwarfare.structure.util.CapabilityRespawnData;
 import net.shadowmage.ancientwarfare.structure.util.IRespawnData;
 import net.shadowmage.ancientwarfare.structure.util.SpawnerHelper;
+import org.apache.commons.lang3.Range;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -48,6 +49,7 @@ public abstract class NpcFaction extends NpcBase {
 	private static final int HIT_REVENGE_TICKS = DEATH_REVENGE_TICKS / 20;
 	private static final int REVENGE_LIST_VALIDATION_TICKS = DEATH_REVENGE_TICKS / 100;
 	private static final double REVENGE_SET_RANGE = 50D;
+	private static final String HEIGHT_TAG = "height";
 
 	protected String factionName;
 	private Map<String, Long> revengePlayers = new HashMap<>();
@@ -77,9 +79,11 @@ public abstract class NpcFaction extends NpcBase {
 
 	@Override
 	protected void despawnEntity() {
+		boolean deadPreDespawn = isDead;
+
 		super.despawnEntity();
 
-		if (isDead && hasCapability(CapabilityRespawnData.RESPAWN_DATA_CAPABILITY, null)) {
+		if (!deadPreDespawn && isDead && hasCapability(CapabilityRespawnData.RESPAWN_DATA_CAPABILITY, null)) {
 			IRespawnData respawnData = getCapability(CapabilityRespawnData.RESPAWN_DATA_CAPABILITY, null);
 			if (respawnData != null) {
 				SpawnerHelper.createSpawner(respawnData, world);
@@ -146,6 +150,10 @@ public abstract class NpcFaction extends NpcBase {
 		FactionNpcDefault npcDefault = NpcDefaultsRegistry.getFactionNpcDefault(this);
 		applyFactionNpcSettings(npcDefault);
 		npcDefault.applyEquipment(this);
+
+		Range<Float> heightRange = npcDefault.getHeightRange();
+		float newHeight = heightRange.getMinimum() + world.rand.nextFloat() * (heightRange.getMaximum() - heightRange.getMinimum());
+		setSize((newHeight / 1.8f) * 0.6f * npcDefault.getThinness(), newHeight);
 	}
 
 	private void applyFactionNpcSettings(FactionNpcDefault npcDefault) {
@@ -294,12 +302,16 @@ public abstract class NpcFaction extends NpcBase {
 	public void writeSpawnData(ByteBuf buffer) {
 		super.writeSpawnData(buffer);
 		new PacketBuffer(buffer).writeString(factionName);
+		buffer.writeFloat(height);
+		buffer.writeFloat(width);
 	}
 
 	@Override
 	public void readSpawnData(ByteBuf buffer) {
 		super.readSpawnData(buffer);
 		factionName = new PacketBuffer(buffer).readString(20);
+		height = buffer.readFloat();
+		width = buffer.readFloat();
 	}
 
 	@Override
@@ -310,6 +322,12 @@ public abstract class NpcFaction extends NpcBase {
 		canDespawn = tag.getBoolean("canDespawn");
 		revengePlayers = NBTHelper.getMap(tag.getTagList("revengePlayers", Constants.NBT.TAG_COMPOUND),
 				t -> t.getString("playerName"), t -> t.getLong("time"));
+		if (tag.hasKey(HEIGHT_TAG)) {
+			height = tag.getFloat(HEIGHT_TAG);
+			width = tag.getFloat("width");
+		} else {
+			setFactionNameAndDefaults(factionName);
+		}
 	}
 
 	@Override
@@ -321,5 +339,16 @@ public abstract class NpcFaction extends NpcBase {
 		tag.setBoolean("canDespawn", canDespawn);
 		tag.setTag("revengePlayers", NBTHelper.mapToCompoundList(revengePlayers,
 				(t, playerName) -> t.setString("playerName", playerName), (t, time) -> t.setLong("time", time)));
+		tag.setFloat(HEIGHT_TAG, height);
+		tag.setFloat("width", width);
+	}
+
+	@Override
+	public float getRenderSizeModifier() {
+		return height / 1.8f;
+	}
+
+	public float getWidthModifier() {
+		return width / 0.6f;
 	}
 }

@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 1/2/2019 at: 21:48:41
+# Auto-generated structure template file. created on: 8/19/2019 at: 10:23:13
 # Lines beginning with # denote comments
 
 header:
-version=2.8
+version=2.9
 name=NorskaSwordsmithsHall
 mods=
 size=37,17,15
@@ -422,7 +422,7 @@ rule:
 plugin=blockTile
 number=13
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"ancientwarfare:inject/chests/village_blacksmith",lootRolls:2b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:2587972172570032365L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"ancientwarfare:inject/chests/village_blacksmith",lootRolls:2b,lootSettings:{lootRolls:2,splashPotion:0b,hasLoot:1b,lootTableName:"ancientwarfare:inject/chests/village_blacksmith",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:2587972172570032365L}}
 :enddata
 :endrule
 
@@ -638,7 +638,7 @@ rule:
 plugin=blockTile
 number=40
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{Items:[{Slot:0b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"silver"},Damage:0s},{Slot:1b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"silver"},Damage:0s},{Slot:3b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"silver"},Damage:0s},{Slot:7b,id:"ancientwarfarenpc:diamond_halberd",Count:1b,Damage:0s},{Slot:9b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},Damage:0s},{Slot:10b,id:"ancientwarfarenpc:coin",Count:10b,tag:{metal:"silver"},Damage:0s},{Slot:11b,id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"silver"},Damage:0s},{Slot:12b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},Damage:0s},{Slot:13b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},Damage:0s},{Slot:14b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},Damage:0s},{Slot:15b,id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"gold"},Damage:0s},{Slot:18b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"silver"},Damage:0s},{Slot:19b,id:"ancientwarfarenpc:coin",Count:9b,tag:{metal:"silver"},Damage:0s},{Slot:20b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"silver"},Damage:0s},{Slot:21b,id:"ancientwarfarenpc:iron_spear",Count:1b,Damage:0s},{Slot:23b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"gold"},Damage:0s},{Slot:24b,id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"gold"},Damage:0s},{Slot:25b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"gold"},Damage:0s}],id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:""}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{lootSettings:{lootRolls:0,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:",spawnEntity:0b},Items:[{Slot:0b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"silver"},Damage:0s},{Slot:1b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"silver"},Damage:0s},{Slot:3b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"silver"},Damage:0s},{Slot:7b,id:"ancientwarfarenpc:diamond_halberd",Count:1b,Damage:0s},{Slot:9b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},Damage:0s},{Slot:10b,id:"ancientwarfarenpc:coin",Count:10b,tag:{metal:"silver"},Damage:0s},{Slot:11b,id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"silver"},Damage:0s},{Slot:12b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},Damage:0s},{Slot:13b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},Damage:0s},{Slot:14b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},Damage:0s},{Slot:15b,id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"gold"},Damage:0s},{Slot:18b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"silver"},Damage:0s},{Slot:19b,id:"ancientwarfarenpc:coin",Count:9b,tag:{metal:"silver"},Damage:0s},{Slot:20b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"silver"},Damage:0s},{Slot:21b,id:"ancientwarfarenpc:iron_spear",Count:1b,Damage:0s},{Slot:23b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"gold"},Damage:0s},{Slot:24b,id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"gold"},Damage:0s},{Slot:25b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"gold"},Damage:0s}],id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:""}}
 :enddata
 :endrule
 
@@ -646,7 +646,7 @@ rule:
 plugin=blockTile
 number=41
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{ForgeData:{},Items:[{Slot:1b,id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"silver"},Damage:0s},{Slot:4b,id:"ancientwarfarenpc:golden_halberd",Count:1b,Damage:0s},{Slot:6b,id:"ancientwarfarenpc:coin",Count:6b,tag:{metal:"gold"},Damage:0s},{Slot:9b,id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"copper"},Damage:0s},{Slot:10b,id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"copper"},Damage:0s},{Slot:11b,id:"ancientwarfarenpc:coin",Count:45b,tag:{metal:"copper"},Damage:0s},{Slot:15b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},Damage:0s},{Slot:16b,id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"gold"},Damage:0s},{Slot:17b,id:"ancientwarfarenpc:iron_halberd",Count:1b,Damage:0s},{Slot:18b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},Damage:0s},{Slot:19b,id:"ancientwarfarenpc:coin",Count:7b,tag:{metal:"copper"},Damage:0s},{Slot:20b,id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"copper"},Damage:0s},{Slot:21b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},Damage:0s},{Slot:22b,id:"ancientwarfarenpc:iron_lance",Count:1b,Damage:0s}],id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:""}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{ForgeData:{},lootSettings:{lootRolls:0,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:",spawnEntity:0b},Items:[{Slot:1b,id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"silver"},Damage:0s},{Slot:4b,id:"ancientwarfarenpc:golden_halberd",Count:1b,Damage:0s},{Slot:6b,id:"ancientwarfarenpc:coin",Count:6b,tag:{metal:"gold"},Damage:0s},{Slot:9b,id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"copper"},Damage:0s},{Slot:10b,id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"copper"},Damage:0s},{Slot:11b,id:"ancientwarfarenpc:coin",Count:45b,tag:{metal:"copper"},Damage:0s},{Slot:15b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},Damage:0s},{Slot:16b,id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"gold"},Damage:0s},{Slot:17b,id:"ancientwarfarenpc:iron_halberd",Count:1b,Damage:0s},{Slot:18b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},Damage:0s},{Slot:19b,id:"ancientwarfarenpc:coin",Count:7b,tag:{metal:"copper"},Damage:0s},{Slot:20b,id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"copper"},Damage:0s},{Slot:21b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},Damage:0s},{Slot:22b,id:"ancientwarfarenpc:iron_lance",Count:1b,Damage:0s}],id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:""}}
 :enddata
 :endrule
 
@@ -670,7 +670,7 @@ rule:
 plugin=blockTile
 number=44
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{LootTable:"ancientwarfare:inject/chests/village_blacksmith",lootRolls:2b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:2627631791245287918L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{LootTable:"ancientwarfare:inject/chests/village_blacksmith",lootRolls:2b,lootSettings:{lootRolls:2,splashPotion:0b,hasLoot:1b,lootTableName:"ancientwarfare:inject/chests/village_blacksmith",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:2627631791245287918L}}
 :enddata
 :endrule
 
@@ -766,7 +766,7 @@ rule:
 plugin=vanillaSign
 number=56
 data:
-JSON:{signContents0:"Norska§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"east"}},signContents2:"",signContents1:"Swordsmith§r",signContents3:"",rotation:0}
+JSON:{signContents0:"Norska§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"east"}},signContents2:"",signContents1:"Swordsmith§r§r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -782,7 +782,7 @@ rule:
 plugin=vanillaSign
 number=58
 data:
-JSON:{signContents0:"Norska§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"",signContents1:"Swordsmith§r",signContents3:"",rotation:0}
+JSON:{signContents0:"Norska§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"",signContents1:"Swordsmith§r§r",signContents3:"",rotation:0}
 :enddata
 :endrule
 

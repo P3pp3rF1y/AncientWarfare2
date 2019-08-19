@@ -124,6 +124,7 @@ public final class NetworkHandler implements IGuiHandler {
 
 	public static final int GUI_LOOT_BASKET = 59;
 	public static final int GUI_STAKE = 60;
+	public static final int GUI_STATUE = 61;
 
 	private FMLEventChannel channel;
 

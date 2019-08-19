@@ -86,8 +86,8 @@ public class BlockAdvancedSpawner extends BlockBaseStructure {
 	}
 
 	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
-		return face == EnumFacing.UP ? BlockFaceShape.UNDEFINED : super.getBlockFaceShape(worldIn, state, pos, face);
+	public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
 	}
 
 	@Override

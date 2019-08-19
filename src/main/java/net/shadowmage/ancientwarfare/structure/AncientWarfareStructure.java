@@ -35,6 +35,7 @@ import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerAdvance
 import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerAdvancedInventoryBlock;
 import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerAdvancedInventoryItem;
 import net.shadowmage.ancientwarfare.structure.container.ContainerStake;
+import net.shadowmage.ancientwarfare.structure.container.ContainerStatue;
 import net.shadowmage.ancientwarfare.structure.container.ContainerStructureScanner;
 import net.shadowmage.ancientwarfare.structure.container.ContainerStructureSelection;
 import net.shadowmage.ancientwarfare.structure.container.ContainerTownSelection;
@@ -90,6 +91,8 @@ public class AncientWarfareStructure {
 		statics = new AWStructureStatics("AncientWarfareStructures");
 
 		MinecraftForge.EVENT_BUS.register(this);
+		MinecraftForge.EVENT_BUS.register(net.shadowmage.ancientwarfare.structure.event.EventHandler.INSTANCE);
+
 		if (AWStructureStatics.enableWorldGen) {
 			MinecraftForge.EVENT_BUS.register(WorldGenTickHandler.INSTANCE);
 			if (AWStructureStatics.enableStructureGeneration)
@@ -117,6 +120,7 @@ public class AncientWarfareStructure {
 		NetworkHandler.registerContainer(NetworkHandler.GUI_LOOT_CHEST_PLACER, ContainerLootChestPlacer.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_LOOT_BASKET, ContainerLootBasket.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_STAKE, ContainerStake.class);
+		NetworkHandler.registerContainer(NetworkHandler.GUI_STATUE, ContainerStatue.class);
 
 		proxy.preInit();
 

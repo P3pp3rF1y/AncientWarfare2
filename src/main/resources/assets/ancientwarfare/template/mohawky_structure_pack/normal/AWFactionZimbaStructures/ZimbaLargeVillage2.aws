@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 11/14/2018 at: 1:58:39
+# Auto-generated structure template file. created on: 8/19/2019 at: 10:23:17
 # Lines beginning with # denote comments
 
 header:
-version=2.7
+version=2.9
 name=ZimbaLargeVillage2
 mods=
 size=51,93,60
@@ -20,16 +20,14 @@ preserveBlocks=false
 selectionWeight=100
 clusterValue=50
 minDuplicateDistance=1000
-dimensionWhiteList=false
-dimensionList=
+dimensionWhiteList=true
+dimensionList=0
 biomeWhiteList=true
 biomeList=minecraft:savanna
 leveling=6
 fill=6
 border=6
 blockSwap=false
-data:
-:enddata
 :endvalidation
 
 #### LAYERS ####
@@ -5805,7 +5803,7 @@ rule:
 plugin=vanillaBlocks
 number=1
 data:
-JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"dirt",snowy:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"dirt",snowy:"false"}}}
 :enddata
 :endrule
 
@@ -5813,7 +5811,7 @@ rule:
 plugin=vanillaBlocks
 number=2
 data:
-JSON:{blockState:{blockName:"minecraft:grass",properties:{snowy:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:grass",properties:{snowy:"false"}}}
 :enddata
 :endrule
 
@@ -5821,7 +5819,7 @@ rule:
 plugin=vanillaBlocks
 number=3
 data:
-JSON:{blockState:{blockName:"minecraft:sand",properties:{variant:"sand"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:sand",properties:{variant:"sand"}}}
 :enddata
 :endrule
 
@@ -5829,7 +5827,7 @@ rule:
 plugin=vanillaBlocks
 number=4
 data:
-JSON:{blockState:{blockName:"minecraft:stained_hardened_clay",properties:{color:"brown"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stained_hardened_clay",properties:{color:"brown"}}}
 :enddata
 :endrule
 
@@ -5837,7 +5835,7 @@ rule:
 plugin=vanillaBlocks
 number=5
 data:
-JSON:{blockState:{blockName:"minecraft:water",properties:{level:"0"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:water",properties:{level:"0"}}}
 :enddata
 :endrule
 
@@ -5845,7 +5843,7 @@ rule:
 plugin=vanillaBlocks
 number=6
 data:
-JSON:{blockState:{blockName:"minecraft:cobblestone",properties:{}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:cobblestone"}}
 :enddata
 :endrule
 
@@ -5853,7 +5851,7 @@ rule:
 plugin=vanillaBlocks
 number=7
 data:
-JSON:{blockState:{blockName:"minecraft:monster_egg",properties:{variant:"mossy_brick"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:monster_egg",properties:{variant:"mossy_brick"}}}
 :enddata
 :endrule
 
@@ -5861,7 +5859,7 @@ rule:
 plugin=vanillaBlocks
 number=8
 data:
-JSON:{blockState:{blockName:"minecraft:log2",properties:{variant:"acacia",axis:"z"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:log2",properties:{variant:"acacia",axis:"z"}}}
 :enddata
 :endrule
 
@@ -5869,7 +5867,7 @@ rule:
 plugin=vanillaBlocks
 number=9
 data:
-JSON:{blockState:{blockName:"minecraft:gravel",properties:{}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:gravel"}}
 :enddata
 :endrule
 
@@ -5877,7 +5875,7 @@ rule:
 plugin=vanillaBlocks
 number=10
 data:
-JSON:{blockState:{blockName:"minecraft:netherrack",properties:{}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:netherrack"}}
 :enddata
 :endrule
 
@@ -5885,7 +5883,7 @@ rule:
 plugin=vanillaBlocks
 number=11
 data:
-JSON:{blockState:{blockName:"minecraft:log2",properties:{variant:"acacia",axis:"x"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:log2",properties:{variant:"acacia",axis:"x"}}}
 :enddata
 :endrule
 
@@ -5893,7 +5891,7 @@ rule:
 plugin=vanillaBlocks
 number=12
 data:
-JSON:{blockState:{blockName:"minecraft:tallgrass",properties:{type:"tall_grass"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:tallgrass",properties:{type:"tall_grass"}}}
 :enddata
 :endrule
 
@@ -5901,7 +5899,7 @@ rule:
 plugin=vanillaSign
 number=13
 data:
-JSON:{signContents0:"zimba§r§r",blockState:{blockName:"minecraft:standing_sign",properties:{rotation:"12"}},signContents2:"",buildPass:2,signContents1:"",signContents3:""}
+JSON:{signContents0:"zimba§r§r§r",blockState:{blockName:"minecraft:standing_sign",properties:{rotation:"12"}},signContents2:"",signContents1:"",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -5909,7 +5907,7 @@ rule:
 plugin=vanillaBlocks
 number=14
 data:
-JSON:{blockState:{blockName:"minecraft:log2",properties:{variant:"acacia",axis:"y"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:log2",properties:{variant:"acacia",axis:"y"}}}
 :enddata
 :endrule
 
@@ -5917,7 +5915,7 @@ rule:
 plugin=blockTile
 number=15
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:bow",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer.elite",minToSpawn:1}],groupWeight:1}],playerRange:32,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:bow",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer.elite",minToSpawn:1}],groupWeight:1}],playerRange:32,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -5925,7 +5923,7 @@ rule:
 plugin=vanillaBlocks
 number=16
 data:
-JSON:{blockState:{blockName:"minecraft:fence",properties:{east:"false",south:"false",north:"false",west:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:fence",properties:{east:"false",south:"false",north:"false",west:"false"}}}
 :enddata
 :endrule
 
@@ -5933,7 +5931,7 @@ rule:
 plugin=blockTile
 number=17
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"mocreatures:elephant",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"mocreatures:elephant",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -5941,7 +5939,7 @@ rule:
 plugin=blockTile
 number=18
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"minecraft:cow",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:0b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"minecraft:cow",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:0b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -5949,7 +5947,7 @@ rule:
 plugin=blockTile
 number=19
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"minecraft:cow",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:0b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"minecraft:cow",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:0b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -5957,7 +5955,7 @@ rule:
 plugin=blockTile
 number=20
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:bow",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer.elite",minToSpawn:1}],groupWeight:1}],playerRange:32,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:bow",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer.elite",minToSpawn:1}],groupWeight:1}],playerRange:32,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -5965,7 +5963,7 @@ rule:
 plugin=blockTile
 number=21
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"minecraft:cow",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:0b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"minecraft:cow",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:0b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -5973,7 +5971,7 @@ rule:
 plugin=blockTile
 number=22
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"minecraft:cow",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:0b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"minecraft:cow",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:0b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -5981,7 +5979,7 @@ rule:
 plugin=blockTile
 number=23
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"minecraft:cow",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:0b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"minecraft:cow",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:0b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -5989,7 +5987,7 @@ rule:
 plugin=blockTile
 number=24
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"minecraft:cow",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:0b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"minecraft:cow",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:0b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -5997,7 +5995,7 @@ rule:
 plugin=vanillaBlocks
 number=25
 data:
-JSON:{blockState:{blockName:"minecraft:red_flower",properties:{type:"poppy"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:red_flower",properties:{type:"poppy"}}}
 :enddata
 :endrule
 
@@ -6005,7 +6003,7 @@ rule:
 plugin=vanillaBlocks
 number=26
 data:
-JSON:{blockState:{blockName:"minecraft:reeds",properties:{age:"0"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:reeds",properties:{age:"0"}}}
 :enddata
 :endrule
 
@@ -6013,7 +6011,7 @@ rule:
 plugin=blockTile
 number=27
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"familiarfauna:familiarfauna.deer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"familiarfauna:familiarfauna.deer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6021,7 +6019,7 @@ rule:
 plugin=vanillaBlocks
 number=28
 data:
-JSON:{blockState:{blockName:"minecraft:fence_gate",properties:{in_wall:"false",powered:"false",facing:"north",open:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:fence_gate",properties:{in_wall:"false",powered:"false",facing:"north",open:"false"}}}
 :enddata
 :endrule
 
@@ -6029,7 +6027,7 @@ rule:
 plugin=vanillaBlocks
 number=29
 data:
-JSON:{blockState:{blockName:"minecraft:reeds",properties:{age:"1"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:reeds",properties:{age:"1"}}}
 :enddata
 :endrule
 
@@ -6037,7 +6035,7 @@ rule:
 plugin=vanillaBlocks
 number=30
 data:
-JSON:{blockState:{blockName:"minecraft:waterlily",properties:{}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:waterlily"}}
 :enddata
 :endrule
 
@@ -6045,7 +6043,7 @@ rule:
 plugin=blockTile
 number=31
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"familiarfauna:familiarfauna.deer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"familiarfauna:familiarfauna.deer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6053,7 +6051,7 @@ rule:
 plugin=vanillaBlocks
 number=32
 data:
-JSON:{blockState:{blockName:"minecraft:acacia_stairs",properties:{half:"bottom",shape:"straight",facing:"north"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:acacia_stairs",properties:{half:"bottom",shape:"straight",facing:"north"}}}
 :enddata
 :endrule
 
@@ -6061,7 +6059,7 @@ rule:
 plugin=vanillaBlocks
 number=33
 data:
-JSON:{blockState:{blockName:"minecraft:acacia_stairs",properties:{half:"bottom",shape:"straight",facing:"west"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:acacia_stairs",properties:{half:"bottom",shape:"straight",facing:"west"}}}
 :enddata
 :endrule
 
@@ -6069,7 +6067,7 @@ rule:
 plugin=vanillaBlocks
 number=34
 data:
-JSON:{blockState:{blockName:"minecraft:hay_block",properties:{axis:"y"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:hay_block",properties:{axis:"y"}}}
 :enddata
 :endrule
 
@@ -6077,7 +6075,7 @@ rule:
 plugin=blockTile
 number=35
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"mocreatures:goat",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"mocreatures:goat",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6085,7 +6083,7 @@ rule:
 plugin=blockTile
 number=36
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"familiarfauna:familiarfauna.deer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"familiarfauna:familiarfauna.deer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6093,7 +6091,7 @@ rule:
 plugin=vanillaBlocks
 number=37
 data:
-JSON:{blockState:{blockName:"minecraft:hay_block",properties:{axis:"x"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:hay_block",properties:{axis:"x"}}}
 :enddata
 :endrule
 
@@ -6101,7 +6099,7 @@ rule:
 plugin=blockTile
 number=38
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:bow",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer.elite",minToSpawn:1}],groupWeight:1}],playerRange:32,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:bow",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer.elite",minToSpawn:1}],groupWeight:1}],playerRange:32,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6109,7 +6107,7 @@ rule:
 plugin=vanillaBlocks
 number=39
 data:
-JSON:{blockState:{blockName:"minecraft:stone_stairs",properties:{half:"bottom",shape:"straight",facing:"north"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_stairs",properties:{half:"bottom",shape:"straight",facing:"north"}}}
 :enddata
 :endrule
 
@@ -6117,7 +6115,7 @@ rule:
 plugin=blockTile
 number=40
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"mocreatures:goat",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"mocreatures:goat",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6125,7 +6123,7 @@ rule:
 plugin=blockTile
 number=41
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"mocreatures:goat",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"mocreatures:goat",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6133,7 +6131,7 @@ rule:
 plugin=blockTile
 number=42
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},buildPass:0,teData:{LootTable:"minecraft:chests/village_blacksmith",lootRolls:2b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-2969157624930939706L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{LootTable:"minecraft:chests/village_blacksmith",lootRolls:2b,lootSettings:{lootRolls:2,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/village_blacksmith",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-2969157624930939706L}}
 :enddata
 :endrule
 
@@ -6141,7 +6139,7 @@ rule:
 plugin=blockTile
 number=43
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:book",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.trader",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:book",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.trader",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6149,7 +6147,7 @@ rule:
 plugin=blockTile
 number=44
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"familiarfauna:familiarfauna.deer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"familiarfauna:familiarfauna.deer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6157,7 +6155,7 @@ rule:
 plugin=vanillaBlocks
 number=45
 data:
-JSON:{blockState:{blockName:"minecraft:anvil",properties:{damage:"0",facing:"west"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:anvil",properties:{damage:"0",facing:"west"}}}
 :enddata
 :endrule
 
@@ -6165,7 +6163,7 @@ rule:
 plugin=blockTile
 number=46
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:bow",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:bow",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6173,7 +6171,7 @@ rule:
 plugin=blockTile
 number=47
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"mocreatures:goat",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"mocreatures:goat",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6181,7 +6179,7 @@ rule:
 plugin=blockTile
 number=48
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.civilian.female",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.civilian.female",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6189,7 +6187,7 @@ rule:
 plugin=blockTile
 number=49
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:bow",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:bow",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6197,7 +6195,7 @@ rule:
 plugin=blockTile
 number=50
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6205,7 +6203,7 @@ rule:
 plugin=blockTile
 number=51
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:bow",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:bow",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6213,7 +6211,7 @@ rule:
 plugin=blockTile
 number=52
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:bow",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:bow",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6221,7 +6219,7 @@ rule:
 plugin=vanillaBlocks
 number=53
 data:
-JSON:{blockState:{blockName:"minecraft:stone_stairs",properties:{half:"bottom",shape:"straight",facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_stairs",properties:{half:"bottom",shape:"straight",facing:"east"}}}
 :enddata
 :endrule
 
@@ -6229,7 +6227,7 @@ rule:
 plugin=vanillaBlocks
 number=54
 data:
-JSON:{blockState:{blockName:"minecraft:stonebrick",properties:{variant:"cracked_stonebrick"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stonebrick",properties:{variant:"cracked_stonebrick"}}}
 :enddata
 :endrule
 
@@ -6237,7 +6235,7 @@ rule:
 plugin=blockTile
 number=55
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6245,7 +6243,7 @@ rule:
 plugin=blockTile
 number=56
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6253,7 +6251,7 @@ rule:
 plugin=vanillaBlocks
 number=57
 data:
-JSON:{blockState:{blockName:"minecraft:fire",properties:{east:"false",south:"false",north:"false",west:"false",up:"false",age:"15"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:fire",properties:{east:"false",south:"false",north:"false",west:"false",up:"false",age:"15"}}}
 :enddata
 :endrule
 
@@ -6261,7 +6259,7 @@ rule:
 plugin=vanillaBlocks
 number=58
 data:
-JSON:{blockState:{blockName:"minecraft:nether_brick_fence",properties:{east:"false",south:"false",north:"false",west:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:nether_brick_fence",properties:{east:"false",south:"false",north:"false",west:"false"}}}
 :enddata
 :endrule
 
@@ -6269,7 +6267,7 @@ rule:
 plugin=vanillaBlocks
 number=59
 data:
-JSON:{blockState:{blockName:"minecraft:acacia_stairs",properties:{half:"bottom",shape:"straight",facing:"south"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:acacia_stairs",properties:{half:"bottom",shape:"straight",facing:"south"}}}
 :enddata
 :endrule
 
@@ -6277,7 +6275,7 @@ rule:
 plugin=blockTile
 number=60
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:bow",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:bow",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6285,7 +6283,7 @@ rule:
 plugin=blockTile
 number=61
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:bow",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:bow",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6293,7 +6291,7 @@ rule:
 plugin=blockTile
 number=62
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier.elite",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier.elite",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6301,7 +6299,7 @@ rule:
 plugin=blockTile
 number=63
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6309,7 +6307,7 @@ rule:
 plugin=blockTile
 number=64
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.civilian.female",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.civilian.female",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6317,7 +6315,7 @@ rule:
 plugin=blockTile
 number=65
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.civilian.female",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.civilian.female",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6325,7 +6323,7 @@ rule:
 plugin=blockTile
 number=66
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6333,7 +6331,7 @@ rule:
 plugin=blockTile
 number=67
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:bow",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:bow",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6341,7 +6339,7 @@ rule:
 plugin=vanillaBlocks
 number=68
 data:
-JSON:{blockState:{blockName:"minecraft:acacia_stairs",properties:{half:"bottom",shape:"straight",facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:acacia_stairs",properties:{half:"bottom",shape:"straight",facing:"east"}}}
 :enddata
 :endrule
 
@@ -6349,7 +6347,7 @@ rule:
 plugin=blockTile
 number=69
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:bow",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:bow",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6357,7 +6355,7 @@ rule:
 plugin=vanillaBlocks
 number=70
 data:
-JSON:{blockState:{blockName:"minecraft:planks",properties:{variant:"acacia"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:planks",properties:{variant:"acacia"}}}
 :enddata
 :endrule
 
@@ -6365,7 +6363,7 @@ rule:
 plugin=vanillaBlocks
 number=71
 data:
-JSON:{blockState:{blockName:"minecraft:stained_hardened_clay",properties:{color:"red"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stained_hardened_clay",properties:{color:"red"}}}
 :enddata
 :endrule
 
@@ -6373,7 +6371,7 @@ rule:
 plugin=blockTile
 number=72
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"mocreatures:goat",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"mocreatures:goat",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6381,7 +6379,7 @@ rule:
 plugin=blockTile
 number=73
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"mocreatures:goat",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"mocreatures:goat",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6389,7 +6387,7 @@ rule:
 plugin=blockTile
 number=74
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:bow",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer.elite",minToSpawn:1}],groupWeight:1}],playerRange:32,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:bow",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer.elite",minToSpawn:1}],groupWeight:1}],playerRange:32,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6397,7 +6395,7 @@ rule:
 plugin=blockTile
 number=75
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"mocreatures:goat",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"mocreatures:goat",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6405,7 +6403,7 @@ rule:
 plugin=blockTile
 number=76
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:bow",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer.elite",minToSpawn:1}],groupWeight:1}],playerRange:32,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:bow",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer.elite",minToSpawn:1}],groupWeight:1}],playerRange:32,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6413,7 +6411,7 @@ rule:
 plugin=blockTile
 number=77
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"mocreatures:goat",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"mocreatures:goat",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6421,7 +6419,7 @@ rule:
 plugin=blockTile
 number=78
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"mocreatures:goat",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"mocreatures:goat",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6429,7 +6427,7 @@ rule:
 plugin=blockTile
 number=79
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:bow",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer.elite",minToSpawn:1}],groupWeight:1}],playerRange:32,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:bow",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer.elite",minToSpawn:1}],groupWeight:1}],playerRange:32,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6437,7 +6435,7 @@ rule:
 plugin=vanillaBlocks
 number=80
 data:
-JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"west"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"west"}}}
 :enddata
 :endrule
 
@@ -6445,7 +6443,7 @@ rule:
 plugin=vanillaBlocks
 number=81
 data:
-JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"east"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"east"}}}
 :enddata
 :endrule
 
@@ -6453,7 +6451,7 @@ rule:
 plugin=vanillaBlocks
 number=82
 data:
-JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"north"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"north"}}}
 :enddata
 :endrule
 
@@ -6461,7 +6459,7 @@ rule:
 plugin=vanillaBlocks
 number=83
 data:
-JSON:{blockState:{blockName:"minecraft:wooden_slab",properties:{half:"top",variant:"acacia"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:wooden_slab",properties:{half:"top",variant:"acacia"}}}
 :enddata
 :endrule
 
@@ -6469,7 +6467,7 @@ rule:
 plugin=inventory
 number=84
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:0,teData:{x:195,y:107,z:697,id:"minecraft:chest",Lock:""},inventoryData:{length:27,inventoryContents:[]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},lootLevel:0,teData:{x:195,y:107,z:697,id:"minecraft:chest",Lock:""},inventoryData:{length:27,inventoryContents:[]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -6477,7 +6475,7 @@ rule:
 plugin=blockTile
 number=85
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.civilian.female",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.civilian.female",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6485,7 +6483,7 @@ rule:
 plugin=blockTile
 number=86
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.civilian.female",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.civilian.female",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6493,7 +6491,7 @@ rule:
 plugin=vanillaBlocks
 number=87
 data:
-JSON:{blockState:{blockName:"minecraft:wooden_slab",properties:{half:"bottom",variant:"acacia"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:wooden_slab",properties:{half:"bottom",variant:"acacia"}}}
 :enddata
 :endrule
 
@@ -6501,7 +6499,7 @@ rule:
 plugin=blockTile
 number=88
 data:
-JSON:{blockState:{blockName:"minecraft:furnace",properties:{facing:"east"}},buildPass:0,teData:{CookTime:0,BurnTime:0,Items:[],id:"minecraft:furnace",CookTimeTotal:0,Lock:""}}
+JSON:{blockState:{blockName:"minecraft:furnace",properties:{facing:"east"}},teData:{CookTime:0,BurnTime:0,Items:[],id:"minecraft:furnace",CookTimeTotal:0,Lock:""}}
 :enddata
 :endrule
 
@@ -6509,7 +6507,7 @@ rule:
 plugin=blockTile
 number=89
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6517,7 +6515,7 @@ rule:
 plugin=vanillaBlocks
 number=90
 data:
-JSON:{blockState:{blockName:"minecraft:bed",properties:{part:"foot",facing:"east",occupied:"false"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:bed",properties:{part:"foot",facing:"east",occupied:"false"}}}
 :enddata
 :endrule
 
@@ -6525,7 +6523,7 @@ rule:
 plugin=vanillaBlocks
 number=91
 data:
-JSON:{blockState:{blockName:"minecraft:bed",properties:{part:"head",facing:"east",occupied:"false"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:bed",properties:{part:"head",facing:"east",occupied:"false"}}}
 :enddata
 :endrule
 
@@ -6533,7 +6531,7 @@ rule:
 plugin=vanillaSkull
 number=92
 data:
-JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},buildPass:0,skullRotation:0,teData:{Rot:8,id:"minecraft:skull",SkullType:0b}}
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},skullRotation:0,teData:{Rot:8,id:"minecraft:skull",SkullType:0b}}
 :enddata
 :endrule
 
@@ -6541,7 +6539,7 @@ rule:
 plugin=vanillaBlocks
 number=93
 data:
-JSON:{blockState:{blockName:"minecraft:crafting_table",properties:{}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:crafting_table"}}
 :enddata
 :endrule
 
@@ -6549,7 +6547,7 @@ rule:
 plugin=blockTile
 number=94
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier.elite",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier.elite",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6557,7 +6555,7 @@ rule:
 plugin=inventory
 number=95
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:0,teData:{x:195,y:107,z:702,id:"minecraft:chest",Lock:""},inventoryData:{length:27,inventoryContents:[]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},lootLevel:0,teData:{x:195,y:107,z:702,id:"minecraft:chest",Lock:""},inventoryData:{length:27,inventoryContents:[]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -6565,7 +6563,7 @@ rule:
 plugin=vanillaBlocks
 number=96
 data:
-JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"south"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"south"}}}
 :enddata
 :endrule
 
@@ -6573,7 +6571,7 @@ rule:
 plugin=blockTile
 number=97
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6581,7 +6579,7 @@ rule:
 plugin=vanillaBlocks
 number=98
 data:
-JSON:{blockState:{blockName:"minecraft:stone_slab",properties:{half:"bottom",variant:"stone"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_slab",properties:{half:"bottom",variant:"stone"}}}
 :enddata
 :endrule
 
@@ -6589,7 +6587,7 @@ rule:
 plugin=vanillaBlocks
 number=99
 data:
-JSON:{blockState:{blockName:"minecraft:bed",properties:{part:"head",facing:"north",occupied:"false"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:bed",properties:{part:"head",facing:"north",occupied:"false"}}}
 :enddata
 :endrule
 
@@ -6597,7 +6595,7 @@ rule:
 plugin=vanillaBlocks
 number=100
 data:
-JSON:{blockState:{blockName:"minecraft:bed",properties:{part:"foot",facing:"north",occupied:"false"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:bed",properties:{part:"foot",facing:"north",occupied:"false"}}}
 :enddata
 :endrule
 
@@ -6605,7 +6603,7 @@ rule:
 plugin=blockTile
 number=101
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6613,7 +6611,7 @@ rule:
 plugin=blockTile
 number=102
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier.elite",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier.elite",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6621,7 +6619,7 @@ rule:
 plugin=inventory
 number=103
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},buildPass:0,lootLevel:0,teData:{x:186,y:107,z:723,id:"minecraft:chest",Lock:""},inventoryData:{length:27,inventoryContents:[]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},lootLevel:0,teData:{x:186,y:107,z:723,id:"minecraft:chest",Lock:""},inventoryData:{length:27,inventoryContents:[]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -6629,7 +6627,7 @@ rule:
 plugin=inventory
 number=104
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},buildPass:0,lootLevel:0,teData:{x:191,y:107,z:723,id:"minecraft:chest",Lock:""},inventoryData:{length:27,inventoryContents:[]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},lootLevel:0,teData:{x:191,y:107,z:723,id:"minecraft:chest",Lock:""},inventoryData:{length:27,inventoryContents:[]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -6637,7 +6635,7 @@ rule:
 plugin=blockTile
 number=105
 data:
-JSON:{blockState:{blockName:"minecraft:furnace",properties:{facing:"north"}},buildPass:0,teData:{CookTime:0,BurnTime:0,Items:[],id:"minecraft:furnace",CookTimeTotal:0,Lock:""}}
+JSON:{blockState:{blockName:"minecraft:furnace",properties:{facing:"north"}},teData:{CookTime:0,BurnTime:0,Items:[],id:"minecraft:furnace",CookTimeTotal:0,Lock:""}}
 :enddata
 :endrule
 
@@ -6645,7 +6643,7 @@ rule:
 plugin=blockTile
 number=106
 data:
-JSON:{blockState:{blockName:"minecraft:furnace",properties:{facing:"south"}},buildPass:0,teData:{CookTime:0,BurnTime:0,Items:[],id:"minecraft:furnace",CookTimeTotal:0,Lock:""}}
+JSON:{blockState:{blockName:"minecraft:furnace",properties:{facing:"south"}},teData:{CookTime:0,BurnTime:0,Items:[],id:"minecraft:furnace",CookTimeTotal:0,Lock:""}}
 :enddata
 :endrule
 
@@ -6653,7 +6651,7 @@ rule:
 plugin=inventory
 number=107
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{x:219,y:107,z:727,id:"minecraft:chest",Lock:""},inventoryData:{length:27,inventoryContents:[]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},lootLevel:0,teData:{x:219,y:107,z:727,id:"minecraft:chest",Lock:""},inventoryData:{length:27,inventoryContents:[]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -6661,7 +6659,7 @@ rule:
 plugin=inventory
 number=108
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{x:224,y:107,z:727,id:"minecraft:chest",Lock:""},inventoryData:{length:27,inventoryContents:[]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},lootLevel:0,teData:{x:224,y:107,z:727,id:"minecraft:chest",Lock:""},inventoryData:{length:27,inventoryContents:[]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -6669,7 +6667,7 @@ rule:
 plugin=blockTile
 number=109
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6677,7 +6675,7 @@ rule:
 plugin=blockTile
 number=110
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6685,7 +6683,7 @@ rule:
 plugin=blockTile
 number=111
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.civilian.female",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.civilian.female",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6693,7 +6691,7 @@ rule:
 plugin=vanillaBlocks
 number=112
 data:
-JSON:{blockState:{blockName:"minecraft:bed",properties:{part:"foot",facing:"south",occupied:"false"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:bed",properties:{part:"foot",facing:"south",occupied:"false"}}}
 :enddata
 :endrule
 
@@ -6701,7 +6699,7 @@ rule:
 plugin=blockTile
 number=113
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6709,7 +6707,7 @@ rule:
 plugin=blockTile
 number=114
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6717,7 +6715,7 @@ rule:
 plugin=blockTile
 number=115
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6725,7 +6723,7 @@ rule:
 plugin=vanillaBlocks
 number=116
 data:
-JSON:{blockState:{blockName:"minecraft:bed",properties:{part:"head",facing:"south",occupied:"false"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:bed",properties:{part:"head",facing:"south",occupied:"false"}}}
 :enddata
 :endrule
 
@@ -6733,7 +6731,7 @@ rule:
 plugin=blockTile
 number=117
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6741,7 +6739,7 @@ rule:
 plugin=blockTile
 number=118
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6749,7 +6747,7 @@ rule:
 plugin=blockTile
 number=119
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6757,7 +6755,7 @@ rule:
 plugin=blockTile
 number=120
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6765,7 +6763,7 @@ rule:
 plugin=blockTile
 number=121
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier.elite",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier.elite",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6773,7 +6771,7 @@ rule:
 plugin=blockTile
 number=122
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6781,7 +6779,7 @@ rule:
 plugin=blockTile
 number=123
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier.elite",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier.elite",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6789,7 +6787,7 @@ rule:
 plugin=blockTile
 number=124
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:diamond_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.leader",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:diamond_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.leader",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6797,7 +6795,7 @@ rule:
 plugin=inventory
 number=125
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{x:195,y:107,z:737,id:"minecraft:chest",Lock:""},inventoryData:{length:27,inventoryContents:[]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},lootLevel:0,teData:{x:195,y:107,z:737,id:"minecraft:chest",Lock:""},inventoryData:{length:27,inventoryContents:[]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -6805,7 +6803,7 @@ rule:
 plugin=vanillaBlocks
 number=126
 data:
-JSON:{blockState:{blockName:"minecraft:bed",properties:{part:"head",facing:"west",occupied:"false"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:bed",properties:{part:"head",facing:"west",occupied:"false"}}}
 :enddata
 :endrule
 
@@ -6813,7 +6811,7 @@ rule:
 plugin=vanillaBlocks
 number=127
 data:
-JSON:{blockState:{blockName:"minecraft:bed",properties:{part:"foot",facing:"west",occupied:"false"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:bed",properties:{part:"foot",facing:"west",occupied:"false"}}}
 :enddata
 :endrule
 
@@ -6821,7 +6819,7 @@ rule:
 plugin=inventory
 number=128
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{x:206,y:107,z:739,id:"minecraft:chest",Lock:""},inventoryData:{length:27,inventoryContents:[]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},lootLevel:0,teData:{x:206,y:107,z:739,id:"minecraft:chest",Lock:""},inventoryData:{length:27,inventoryContents:[]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -6829,7 +6827,7 @@ rule:
 plugin=inventory
 number=129
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:0,teData:{x:208,y:107,z:739,id:"minecraft:chest",Lock:""},inventoryData:{length:27,inventoryContents:[]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},lootLevel:0,teData:{x:208,y:107,z:739,id:"minecraft:chest",Lock:""},inventoryData:{length:27,inventoryContents:[]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -6837,7 +6835,7 @@ rule:
 plugin=blockTile
 number=130
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6845,7 +6843,7 @@ rule:
 plugin=blockTile
 number=131
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6853,7 +6851,7 @@ rule:
 plugin=blockTile
 number=132
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6861,7 +6859,7 @@ rule:
 plugin=blockTile
 number=133
 data:
-JSON:{blockState:{blockName:"minecraft:furnace",properties:{facing:"west"}},buildPass:0,teData:{CookTime:0,BurnTime:0,Items:[],id:"minecraft:furnace",CookTimeTotal:0,Lock:""}}
+JSON:{blockState:{blockName:"minecraft:furnace",properties:{facing:"west"}},teData:{CookTime:0,BurnTime:0,Items:[],id:"minecraft:furnace",CookTimeTotal:0,Lock:""}}
 :enddata
 :endrule
 
@@ -6869,7 +6867,7 @@ rule:
 plugin=blockTile
 number=134
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.civilian.female",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.civilian.female",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6877,7 +6875,7 @@ rule:
 plugin=inventory
 number=135
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{x:195,y:107,z:742,id:"minecraft:chest",Lock:""},inventoryData:{length:27,inventoryContents:[]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},lootLevel:0,teData:{x:195,y:107,z:742,id:"minecraft:chest",Lock:""},inventoryData:{length:27,inventoryContents:[]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -6885,7 +6883,7 @@ rule:
 plugin=vanillaBlocks
 number=136
 data:
-JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"up"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"up"}}}
 :enddata
 :endrule
 
@@ -6893,7 +6891,7 @@ rule:
 plugin=blockTile
 number=137
 data:
-JSON:{blockState:{blockName:"minecraft:brewing_stand",properties:{has_bottle_0:"false",has_bottle_1:"false",has_bottle_2:"false"}},buildPass:0,teData:{Fuel:0b,Items:[],id:"minecraft:brewing_stand",BrewTime:0s,Lock:""}}
+JSON:{blockState:{blockName:"minecraft:brewing_stand",properties:{has_bottle_0:"false",has_bottle_1:"false",has_bottle_2:"false"}},teData:{Fuel:0b,Items:[],id:"minecraft:brewing_stand",BrewTime:0s,Lock:""}}
 :enddata
 :endrule
 
@@ -6901,7 +6899,7 @@ rule:
 plugin=blockTile
 number=138
 data:
-JSON:{blockState:{blockName:"minecraft:brewing_stand",properties:{has_bottle_0:"false",has_bottle_1:"false",has_bottle_2:"false"}},buildPass:0,teData:{Fuel:0b,Items:[],id:"minecraft:brewing_stand",BrewTime:0s,Lock:""}}
+JSON:{blockState:{blockName:"minecraft:brewing_stand",properties:{has_bottle_0:"false",has_bottle_1:"false",has_bottle_2:"false"}},teData:{Fuel:0b,Items:[],id:"minecraft:brewing_stand",BrewTime:0s,Lock:""}}
 :enddata
 :endrule
 
@@ -6909,7 +6907,7 @@ rule:
 plugin=inventory
 number=139
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:0,teData:{x:209,y:108,z:693,id:"minecraft:chest",Lock:""},inventoryData:{length:27,inventoryContents:[]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},lootLevel:0,teData:{x:209,y:108,z:693,id:"minecraft:chest",Lock:""},inventoryData:{length:27,inventoryContents:[]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -6917,7 +6915,7 @@ rule:
 plugin=inventory
 number=140
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{x:213,y:108,z:693,id:"minecraft:chest",Lock:""},inventoryData:{length:27,inventoryContents:[]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},lootLevel:0,teData:{x:213,y:108,z:693,id:"minecraft:chest",Lock:""},inventoryData:{length:27,inventoryContents:[]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -6925,7 +6923,7 @@ rule:
 plugin=vanillaBlocks
 number=141
 data:
-JSON:{blockState:{blockName:"minecraft:enchanting_table",properties:{}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:enchanting_table"}}
 :enddata
 :endrule
 
@@ -6933,7 +6931,7 @@ rule:
 plugin=blockTile
 number=142
 data:
-JSON:{blockState:{blockName:"minecraft:furnace",properties:{facing:"east"}},buildPass:0,teData:{CookTime:0,BurnTime:0,Items:[],id:"minecraft:furnace",CookTimeTotal:0,Lock:""}}
+JSON:{blockState:{blockName:"minecraft:furnace",properties:{facing:"east"}},teData:{CookTime:0,BurnTime:0,Items:[],id:"minecraft:furnace",CookTimeTotal:0,Lock:""}}
 :enddata
 :endrule
 
@@ -6941,7 +6939,7 @@ rule:
 plugin=vanillaBlocks
 number=143
 data:
-JSON:{blockState:{blockName:"minecraft:cauldron",properties:{level:"3"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:cauldron",properties:{level:"3"}}}
 :enddata
 :endrule
 
@@ -6949,7 +6947,7 @@ rule:
 plugin=blockTile
 number=144
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:book",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.priest",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:book",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.priest",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6957,7 +6955,7 @@ rule:
 plugin=vanillaSkull
 number=145
 data:
-JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},buildPass:0,skullRotation:0,teData:{Rot:8,id:"minecraft:skull",SkullType:2b}}
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},skullRotation:0,teData:{Rot:8,id:"minecraft:skull",SkullType:2b}}
 :enddata
 :endrule
 
@@ -6965,7 +6963,7 @@ rule:
 plugin=vanillaSkull
 number=146
 data:
-JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},buildPass:0,skullRotation:0,teData:{Rot:8,id:"minecraft:skull",SkullType:4b}}
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},skullRotation:0,teData:{Rot:8,id:"minecraft:skull",SkullType:4b}}
 :enddata
 :endrule
 
@@ -6973,7 +6971,7 @@ rule:
 plugin=blockTile
 number=147
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier.elite",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier.elite",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6981,7 +6979,7 @@ rule:
 plugin=blockTile
 number=148
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6989,7 +6987,7 @@ rule:
 plugin=inventory
 number=149
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:0,teData:{x:209,y:108,z:698,id:"minecraft:chest",Lock:""},inventoryData:{length:27,inventoryContents:[]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},lootLevel:0,teData:{x:209,y:108,z:698,id:"minecraft:chest",Lock:""},inventoryData:{length:27,inventoryContents:[]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -6997,7 +6995,7 @@ rule:
 plugin=vanillaBlocks
 number=150
 data:
-JSON:{blockState:{blockName:"minecraft:double_wooden_slab",properties:{variant:"acacia"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:double_wooden_slab",properties:{variant:"acacia"}}}
 :enddata
 :endrule
 
@@ -7005,7 +7003,7 @@ rule:
 plugin=blockTile
 number=151
 data:
-JSON:{blockState:{blockName:"minecraft:furnace",properties:{facing:"south"}},buildPass:0,teData:{CookTime:0,BurnTime:0,Items:[],id:"minecraft:furnace",CookTimeTotal:0,Lock:""}}
+JSON:{blockState:{blockName:"minecraft:furnace",properties:{facing:"south"}},teData:{CookTime:0,BurnTime:0,Items:[],id:"minecraft:furnace",CookTimeTotal:0,Lock:""}}
 :enddata
 :endrule
 
@@ -7013,7 +7011,7 @@ rule:
 plugin=inventory
 number=152
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{x:222,y:108,z:712,id:"minecraft:chest",Lock:""},inventoryData:{length:27,inventoryContents:[]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},lootLevel:0,teData:{x:222,y:108,z:712,id:"minecraft:chest",Lock:""},inventoryData:{length:27,inventoryContents:[]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -7021,7 +7019,7 @@ rule:
 plugin=inventory
 number=153
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{x:227,y:108,z:712,id:"minecraft:chest",Lock:""},inventoryData:{length:27,inventoryContents:[]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},lootLevel:0,teData:{x:227,y:108,z:712,id:"minecraft:chest",Lock:""},inventoryData:{length:27,inventoryContents:[]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -7029,7 +7027,7 @@ rule:
 plugin=vanillaBlocks
 number=154
 data:
-JSON:{blockState:{blockName:"minecraft:carpet",properties:{color:"red"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:carpet",properties:{color:"red"}}}
 :enddata
 :endrule
 
@@ -7037,7 +7035,7 @@ rule:
 plugin=blockTile
 number=155
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"west"}},buildPass:0,teData:{LootTable:"minecraft:chests/stronghold_library",lootRolls:2b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-3514307173957861658L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"west"}},teData:{LootTable:"minecraft:chests/stronghold_library",lootRolls:2b,lootSettings:{lootRolls:2,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/stronghold_library",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-3514307173957861658L}}
 :enddata
 :endrule
 
@@ -7045,7 +7043,7 @@ rule:
 plugin=inventory
 number=156
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},buildPass:0,lootLevel:0,teData:{x:222,y:108,z:717,id:"minecraft:chest",Lock:""},inventoryData:{length:27,inventoryContents:[]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},lootLevel:0,teData:{x:222,y:108,z:717,id:"minecraft:chest",Lock:""},inventoryData:{length:27,inventoryContents:[]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -7053,7 +7051,7 @@ rule:
 plugin=vanillaSkull
 number=157
 data:
-JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},buildPass:0,skullRotation:0,teData:{Rot:8,id:"minecraft:skull",SkullType:4b}}
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},skullRotation:0,teData:{Rot:8,id:"minecraft:skull",SkullType:4b}}
 :enddata
 :endrule
 
@@ -7061,7 +7059,7 @@ rule:
 plugin=vanillaSkull
 number=158
 data:
-JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},buildPass:0,skullRotation:0,teData:{Rot:8,id:"minecraft:skull",SkullType:2b}}
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},skullRotation:0,teData:{Rot:8,id:"minecraft:skull",SkullType:2b}}
 :enddata
 :endrule
 
@@ -7069,7 +7067,7 @@ rule:
 plugin=vanillaSkull
 number=159
 data:
-JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},buildPass:0,skullRotation:0,teData:{Rot:8,id:"minecraft:skull",SkullType:2b}}
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},skullRotation:0,teData:{Rot:8,id:"minecraft:skull",SkullType:2b}}
 :enddata
 :endrule
 
@@ -7077,7 +7075,7 @@ rule:
 plugin=vanillaSkull
 number=160
 data:
-JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},buildPass:0,skullRotation:0,teData:{Rot:8,id:"minecraft:skull",SkullType:4b}}
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},skullRotation:0,teData:{Rot:8,id:"minecraft:skull",SkullType:4b}}
 :enddata
 :endrule
 
@@ -7085,7 +7083,7 @@ rule:
 plugin=blockTile
 number=161
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},buildPass:0,teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:2b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-2600856154239082107L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:2b,lootSettings:{lootRolls:2,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/simple_dungeon",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-2600856154239082107L}}
 :enddata
 :endrule
 
@@ -7093,7 +7091,7 @@ rule:
 plugin=blockTile
 number=162
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier.elite",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier.elite",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -7101,7 +7099,7 @@ rule:
 plugin=blockTile
 number=163
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier.elite",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier.elite",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -7109,7 +7107,7 @@ rule:
 plugin=blockTile
 number=164
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},buildPass:0,teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:2b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:9180560473604546949L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:2b,lootSettings:{lootRolls:2,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/simple_dungeon",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:9180560473604546949L}}
 :enddata
 :endrule
 
@@ -7117,7 +7115,7 @@ rule:
 plugin=blockTile
 number=165
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.civilian.female",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.civilian.female",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -7125,7 +7123,7 @@ rule:
 plugin=blockTile
 number=166
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.civilian.female",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.civilian.female",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -7133,7 +7131,7 @@ rule:
 plugin=vanillaSkull
 number=167
 data:
-JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},buildPass:0,skullRotation:0,teData:{Rot:8,id:"minecraft:skull",SkullType:4b}}
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},skullRotation:0,teData:{Rot:8,id:"minecraft:skull",SkullType:4b}}
 :enddata
 :endrule
 
@@ -7141,7 +7139,7 @@ rule:
 plugin=vanillaSkull
 number=168
 data:
-JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},buildPass:0,skullRotation:0,teData:{Rot:8,id:"minecraft:skull",SkullType:2b}}
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},skullRotation:0,teData:{Rot:8,id:"minecraft:skull",SkullType:2b}}
 :enddata
 :endrule
 
@@ -7149,7 +7147,7 @@ rule:
 plugin=vanillaBlocks
 number=169
 data:
-JSON:{blockState:{blockName:"minecraft:leaves2",properties:{check_decay:"false",decayable:"true",variant:"acacia"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:leaves2",properties:{check_decay:"false",decayable:"true",variant:"acacia"}}}
 :enddata
 :endrule
 
@@ -7157,7 +7155,7 @@ rule:
 plugin=vanillaSkull
 number=170
 data:
-JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},buildPass:0,skullRotation:0,teData:{Rot:8,id:"minecraft:skull",SkullType:0b}}
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},skullRotation:0,teData:{Rot:8,id:"minecraft:skull",SkullType:0b}}
 :enddata
 :endrule
 
@@ -7165,7 +7163,7 @@ rule:
 plugin=vanillaSkull
 number=171
 data:
-JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},buildPass:0,skullRotation:0,teData:{Rot:8,id:"minecraft:skull",SkullType:0b}}
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},skullRotation:0,teData:{Rot:8,id:"minecraft:skull",SkullType:0b}}
 :enddata
 :endrule
 
@@ -7173,7 +7171,7 @@ rule:
 plugin=blockTile
 number=172
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:diamond_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.leader",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:diamond_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.leader",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -7181,7 +7179,7 @@ rule:
 plugin=blockTile
 number=173
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.civilian.female",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.civilian.female",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -7189,7 +7187,7 @@ rule:
 plugin=vanillaSkull
 number=174
 data:
-JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},buildPass:0,skullRotation:0,teData:{Rot:8,id:"minecraft:skull",SkullType:2b}}
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},skullRotation:0,teData:{Rot:8,id:"minecraft:skull",SkullType:2b}}
 :enddata
 :endrule
 
@@ -7197,7 +7195,7 @@ rule:
 plugin=blockTile
 number=175
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier.elite",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier.elite",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -7205,7 +7203,7 @@ rule:
 plugin=blockTile
 number=176
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.civilian.female",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.civilian.female",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -7213,7 +7211,7 @@ rule:
 plugin=vanillaSkull
 number=177
 data:
-JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},buildPass:0,skullRotation:0,teData:{Rot:8,id:"minecraft:skull",SkullType:4b}}
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},skullRotation:0,teData:{Rot:8,id:"minecraft:skull",SkullType:4b}}
 :enddata
 :endrule
 
@@ -7221,7 +7219,7 @@ rule:
 plugin=blockTile
 number=178
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:diamond_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.leader.elite",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:diamond_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.leader.elite",minToSpawn:1}],groupWeight:1}],playerRange:6,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -7229,7 +7227,7 @@ rule:
 plugin=vanillaBlocks
 number=179
 data:
-JSON:{blockState:{blockName:"minecraft:carpet",properties:{color:"yellow"}},buildPass:2}
+JSON:{blockState:{blockName:"minecraft:carpet",properties:{color:"yellow"}}}
 :enddata
 :endrule
 
@@ -7237,7 +7235,7 @@ rule:
 plugin=vanillaSkull
 number=180
 data:
-JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},buildPass:0,skullRotation:0,teData:{Rot:8,id:"minecraft:skull",SkullType:1b}}
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},skullRotation:0,teData:{Rot:8,id:"minecraft:skull",SkullType:1b}}
 :enddata
 :endrule
 
@@ -7245,7 +7243,7 @@ rule:
 plugin=vanillaSkull
 number=181
 data:
-JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},buildPass:0,skullRotation:0,teData:{Rot:8,id:"minecraft:skull",SkullType:2b}}
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},skullRotation:0,teData:{Rot:8,id:"minecraft:skull",SkullType:2b}}
 :enddata
 :endrule
 
@@ -7253,7 +7251,7 @@ rule:
 plugin=vanillaSkull
 number=182
 data:
-JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},buildPass:0,skullRotation:0,teData:{Rot:8,id:"minecraft:skull",SkullType:2b}}
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},skullRotation:0,teData:{Rot:8,id:"minecraft:skull",SkullType:2b}}
 :enddata
 :endrule
 
@@ -7261,7 +7259,7 @@ rule:
 plugin=vanillaSkull
 number=183
 data:
-JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},buildPass:0,skullRotation:0,teData:{Rot:8,id:"minecraft:skull",SkullType:1b}}
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},skullRotation:0,teData:{Rot:8,id:"minecraft:skull",SkullType:1b}}
 :enddata
 :endrule
 
@@ -7269,7 +7267,7 @@ rule:
 plugin=blockTile
 number=184
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:bow",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer.elite",minToSpawn:1}],groupWeight:1}],playerRange:32,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:bow",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer.elite",minToSpawn:1}],groupWeight:1}],playerRange:32,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -7277,7 +7275,7 @@ rule:
 plugin=blockTile
 number=185
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:bow",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer.elite",minToSpawn:1}],groupWeight:1}],playerRange:32,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:bow",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer.elite",minToSpawn:1}],groupWeight:1}],playerRange:32,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -7285,7 +7283,7 @@ rule:
 plugin=vanillaSkull
 number=186
 data:
-JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},buildPass:0,skullRotation:0,teData:{Rot:8,id:"minecraft:skull",SkullType:0b}}
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},skullRotation:0,teData:{Rot:8,id:"minecraft:skull",SkullType:0b}}
 :enddata
 :endrule
 
@@ -7293,7 +7291,7 @@ rule:
 plugin=blockTile
 number=187
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:bow",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer.elite",minToSpawn:1}],groupWeight:1}],playerRange:32,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:bow",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer.elite",minToSpawn:1}],groupWeight:1}],playerRange:32,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -7301,7 +7299,7 @@ rule:
 plugin=blockTile
 number=188
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:bow",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer.elite",minToSpawn:1}],groupWeight:1}],playerRange:32,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,forced:1b,customTag:{ArmorDropChances:[1.0f,1.0f,1.0f,1.0f],ArmorItems:[{},{},{},{}],HandDropChances:[1.0f,1.0f],factionName:"zimba",HandItems:[{ForgeCaps:{"customnpcs:itemscripteddata":{}},id:"minecraft:bow",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer.elite",minToSpawn:1}],groupWeight:1}],playerRange:32,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
