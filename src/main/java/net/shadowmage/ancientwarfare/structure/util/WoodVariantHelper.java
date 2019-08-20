@@ -15,6 +15,7 @@ import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.structure.block.WoodVariant;
 import net.shadowmage.ancientwarfare.structure.item.WoodItemBlock;
 
+import java.util.Locale;
 import java.util.function.UnaryOperator;
 
 public class WoodVariantHelper {
@@ -73,15 +74,15 @@ public class WoodVariantHelper {
 
 		ModelLoader.setCustomMeshDefinition(WoodItemBlock.getItemFromBlock(block), stack -> {
 			if (!stack.hasTagCompound()) {
-				return new ModelResourceLocation(baseLocation, String.format(modelPropString, WoodVariant.OAK.getName().toLowerCase()));
+				return new ModelResourceLocation(baseLocation, String.format(modelPropString, WoodVariant.OAK.getName().toLowerCase(Locale.ENGLISH)));
 			}
 			WoodVariant variant = getVariant(stack);
-			return new ModelResourceLocation(baseLocation, String.format(modelPropString, variant.getName().toLowerCase()));
+			return new ModelResourceLocation(baseLocation, String.format(modelPropString, variant.getName().toLowerCase(Locale.ENGLISH)));
 		});
 
 		for (WoodVariant variant : WoodVariant.values()) {
 			ModelLoader.registerItemVariants(WoodItemBlock.getItemFromBlock(block),
-					new ModelResourceLocation(baseLocation, String.format(modelPropString, variant.getName().toLowerCase())));
+					new ModelResourceLocation(baseLocation, String.format(modelPropString, variant.getName().toLowerCase(Locale.ENGLISH))));
 		}
 	}
 }

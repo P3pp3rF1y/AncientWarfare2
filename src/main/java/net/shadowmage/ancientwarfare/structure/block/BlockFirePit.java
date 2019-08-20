@@ -38,6 +38,7 @@ import net.shadowmage.ancientwarfare.core.util.NBTBuilder;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
@@ -242,20 +243,20 @@ public class BlockFirePit extends BlockBaseStructure {
 
 		ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(this), stack -> {
 			if (!stack.hasTagCompound()) {
-				return new ModelResourceLocation(baseLocation, String.format(modelPropString, true, Variant.DEFAULT.getName().toLowerCase()));
+				return new ModelResourceLocation(baseLocation, String.format(modelPropString, true, Variant.DEFAULT.getName().toLowerCase(Locale.ENGLISH)));
 			}
 			NBTTagCompound tag = stack.getTagCompound();
 			//noinspection ConstantConditions
 			Variant variant = Variant.byValue(tag.getString(VARIANT_TAG));
 			boolean lit = tag.getBoolean(LIT_TAG);
-			return new ModelResourceLocation(baseLocation, String.format(modelPropString, lit, variant.getName().toLowerCase()));
+			return new ModelResourceLocation(baseLocation, String.format(modelPropString, lit, variant.getName().toLowerCase(Locale.ENGLISH)));
 		});
 
 		for (Variant variant : Variant.values()) {
 			ModelLoader.registerItemVariants(Item.getItemFromBlock(this),
-					new ModelResourceLocation(baseLocation, String.format(modelPropString, true, variant.getName().toLowerCase())));
+					new ModelResourceLocation(baseLocation, String.format(modelPropString, true, variant.getName().toLowerCase(Locale.ENGLISH))));
 			ModelLoader.registerItemVariants(Item.getItemFromBlock(this),
-					new ModelResourceLocation(baseLocation, String.format(modelPropString, false, variant.getName().toLowerCase())));
+					new ModelResourceLocation(baseLocation, String.format(modelPropString, false, variant.getName().toLowerCase(Locale.ENGLISH))));
 		}
 	}
 
