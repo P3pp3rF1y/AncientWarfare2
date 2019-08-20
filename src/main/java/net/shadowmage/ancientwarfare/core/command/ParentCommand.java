@@ -10,13 +10,14 @@ import net.minecraft.util.math.BlockPos;
 import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public abstract class ParentCommand extends CommandBase {
 	private Map<String, ISubCommand> subCommands = new HashMap<>();
 
 	protected void registerSubCommand(ISubCommand subCommand) {
-		subCommands.put(subCommand.getName().toLowerCase(), subCommand);
+		subCommands.put(subCommand.getName().toLowerCase(Locale.ENGLISH), subCommand);
 	}
 
 	@Override
