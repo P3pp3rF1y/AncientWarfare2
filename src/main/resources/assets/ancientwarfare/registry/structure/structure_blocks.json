@@ -13,6 +13,10 @@
         {
             "block": {"name": "minecraft:farmland"},
             "item": {"name": "minecraft:dirt", "data": 0}
+        },
+        {
+            "block": {"name": "minecraft:grass"},
+            "item": {"name": "minecraft:dirt", "data": 0}
         }
     ],
     "block_passes": [
