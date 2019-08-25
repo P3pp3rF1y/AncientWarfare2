@@ -65,6 +65,15 @@ public class AWNPCItems {
 		registry.register(new ItemShield("iron_shield", Item.ToolMaterial.WOOD));
 		registry.register(new ItemShield("gold_shield", Item.ToolMaterial.WOOD));
 		registry.register(new ItemShield("diamond_shield", Item.ToolMaterial.WOOD));
+		registry.register(new ItemShield("shield_tribal_1", Item.ToolMaterial.WOOD));
+		registry.register(new ItemShield("shield_tribal_2", Item.ToolMaterial.WOOD));
+		registry.register(new ItemShield("shield_round_1", Item.ToolMaterial.WOOD));
+		registry.register(new ItemShield("shield_round_2", Item.ToolMaterial.WOOD));
+		registry.register(new ItemShield("shield_round_3", Item.ToolMaterial.WOOD));
+		registry.register(new ItemShield("shield_round_4", Item.ToolMaterial.WOOD));
+		registry.register(new ItemShield("shield_round_5", Item.ToolMaterial.WOOD));
+		registry.register(new ItemShield("shield_round_6", Item.ToolMaterial.WOOD));
+		registry.register(new ItemShield("shield_witchbane_1", Item.ToolMaterial.WOOD));
 
 		registry.register(new ItemWorkOrder());
 		registry.register(new ItemUpkeepOrder());

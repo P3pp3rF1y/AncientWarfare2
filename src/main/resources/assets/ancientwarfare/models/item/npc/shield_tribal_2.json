@@ -1,0 +1,6 @@
+{
+    "parent": "ancientwarfare:item/npc/shield_tribal_1",
+    "textures": {
+        "0": "ancientwarfare:items/npc/shield_tribal_2"
+    }
+}
