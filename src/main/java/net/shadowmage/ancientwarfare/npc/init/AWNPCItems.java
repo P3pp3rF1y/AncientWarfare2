@@ -74,6 +74,7 @@ public class AWNPCItems {
 		registry.register(new ItemShield("shield_round_5", Item.ToolMaterial.WOOD));
 		registry.register(new ItemShield("shield_round_6", Item.ToolMaterial.WOOD));
 		registry.register(new ItemShield("shield_witchbane_1", Item.ToolMaterial.WOOD));
+		registry.register(new ItemShield("shield_witchbane_2", Item.ToolMaterial.WOOD));
 
 		registry.register(new ItemWorkOrder());
 		registry.register(new ItemUpkeepOrder());
