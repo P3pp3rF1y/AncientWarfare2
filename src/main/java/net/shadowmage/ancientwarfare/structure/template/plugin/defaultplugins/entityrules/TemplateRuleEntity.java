@@ -4,7 +4,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -13,6 +12,8 @@ import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntityBase;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 public class TemplateRuleEntity extends TemplateRuleEntityBase {
@@ -111,7 +112,7 @@ public class TemplateRuleEntity extends TemplateRuleEntityBase {
 	}
 
 	@Override
-	public void addResources(NonNullList<ItemStack> resources) {
-		//noop
+	public List<ItemStack> getResources() {
+		return Collections.emptyList();
 	}
 }

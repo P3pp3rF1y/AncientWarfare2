@@ -7,23 +7,23 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.core.tile.IBlockBreakHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.NBTHelper;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
+import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TileDraftingStation extends TileEntity implements ITickable, IBlockBreakHandler {
-
+	private static final String STRUCTURE_NAME_TAG = "structureName";
 	private String structureName;//structure pulled from live structure list anytime a ref is needed
 	private boolean isStarted;//has started compiling resources -- will need input to cancel
-	private List<ItemStack> neededResources = NonNullList.create();
-	private List<ItemStack> returnResources = NonNullList.create();
+	private List<StructureTemplate.BuildResource> buildResources = NonNullList.create();
 	private boolean isFinished;//is finished compiling resources, awaiting output-slot availability
 	private int remainingTime;//not really time, but raw item count
 	private int totalTime;//total raw-item count
@@ -41,10 +41,6 @@ public class TileDraftingStation extends TileEntity implements ITickable, IBlock
 			markDirty();
 		}
 	};
-
-	public TileDraftingStation() {
-
-	}
 
 	@Override
 	public void update() {
@@ -66,28 +62,34 @@ public class TileDraftingStation extends TileEntity implements ITickable, IBlock
 	}
 
 	private boolean tryRemoveResource() {
-		outerLoopLabel:
-		for (int k = 0; k < inputSlots.getSlots(); k++) {
-			ItemStack stack2 = inputSlots.getStackInSlot(k);
-			if (stack2.isEmpty()) {
-				continue;
-			}
-			for (int i = 0; i < neededResources.size(); i++) {
-				ItemStack stack1 = neededResources.get(i);
-				if (InventoryTools.doItemStacksMatchRelaxed(stack1, stack2)) {
-					stack1.shrink(1);
-					stack2.shrink(1);
-					if (stack1.getCount() <= 0) {
-						neededResources.remove(i);
-					}
-					if (stack2.getCount() <= 0) {
-						inputSlots.setStackInSlot(k, ItemStack.EMPTY);
-					}
-					break outerLoopLabel;
+		for (int slot = 0; slot < inputSlots.getSlots(); slot++) {
+			ItemStack inventoryStack = inputSlots.getStackInSlot(slot);
+			if (!inventoryStack.isEmpty() && removeBuildResource(inventoryStack)) {
+				inventoryStack.shrink(1);
+				if (inventoryStack.isEmpty()) {
+					inputSlots.setStackInSlot(slot, ItemStack.EMPTY);
 				}
+				break;
 			}
 		}
-		return neededResources.isEmpty();
+		return buildResources.isEmpty();
+	}
+
+	private boolean removeBuildResource(ItemStack inventoryStack) {
+		for (int i = 0; i < buildResources.size(); i++) {
+			StructureTemplate.BuildResource buildResource = buildResources.get(i);
+			if (InventoryTools.doItemStacksMatchRelaxed(buildResource.getStackRequired(), inventoryStack)) {
+				ItemStack returnStack = buildResource.shrinkStackRequired();
+				if (!returnStack.isEmpty()) {
+					InventoryTools.insertOrDropItem(inputSlots, returnStack, world, pos.up());
+				}
+				if (buildResource.isEmpty()) {
+					buildResources.remove(i);
+				}
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void tryStart() {
@@ -99,9 +101,8 @@ public class TileDraftingStation extends TileEntity implements ITickable, IBlock
 	private boolean tryFinish() {
 		if (outputSlot.getStackInSlot(0).isEmpty()) {
 			@Nonnull ItemStack item = new ItemStack(AWStructureBlocks.STRUCTURE_BUILDER_TICKED);
-			item.setTagInfo("structureName", new NBTTagString(structureName));
+			item.setTagInfo(STRUCTURE_NAME_TAG, new NBTTagString(structureName));
 			outputSlot.setStackInSlot(0, item);
-			InventoryTools.insertOrDropItems(inputSlots, returnResources, world, pos);
 			return true;
 		}
 		return false;
@@ -128,12 +129,12 @@ public class TileDraftingStation extends TileEntity implements ITickable, IBlock
 	}
 
 	public List<ItemStack> getNeededResources() {
-		return neededResources;
+		return buildResources.stream().map(StructureTemplate.BuildResource::getStackRequired).collect(Collectors.toList());
 	}
 
 	public void stopCurrentWork() {
 		this.structureName = null;
-		this.neededResources.clear();
+		this.buildResources.clear();
 		this.remainingTime = 0;
 		this.isFinished = false;
 		this.isStarted = false;
@@ -145,18 +146,13 @@ public class TileDraftingStation extends TileEntity implements ITickable, IBlock
 			return;
 		}
 		this.structureName = null;
-		this.neededResources.clear();
-		returnResources.clear();
+		this.buildResources.clear();
 		this.remainingTime = 0;
 		StructureTemplateManager.getTemplate(templateName).ifPresent(t -> {
-			if (t.getValidationSettings().isSurvival())
+			if (t.getValidationSettings().isSurvival()) {
 				this.structureName = templateName;
-			for (ItemStack item : t.getResourceList()) {
-				this.neededResources.add(item.copy());
 			}
-			for (ItemStack item : t.getRemainingStacks()) {
-				returnResources.add(item.copy());
-			}
+			t.getResourceList().forEach(buildResource -> buildResources.add(buildResource.copy()));
 			calcTime();
 		});
 		markDirty();
@@ -164,8 +160,8 @@ public class TileDraftingStation extends TileEntity implements ITickable, IBlock
 
 	private void calcTime() {
 		int count = 0;
-		for (ItemStack item : this.neededResources) {
-			count += item.getCount();
+		for (StructureTemplate.BuildResource resource : this.buildResources) {
+			count += resource.getStackRequired().getCount();
 		}
 		this.totalTime = this.remainingTime = count;
 	}
@@ -175,8 +171,8 @@ public class TileDraftingStation extends TileEntity implements ITickable, IBlock
 		super.readFromNBT(tag);
 		inputSlots.deserializeNBT(tag.getCompoundTag("inputInventory"));
 		outputSlot.deserializeNBT(tag.getCompoundTag("outputInventory"));
-		if (tag.hasKey("structureName")) {
-			structureName = tag.getString("structureName");
+		if (tag.hasKey(STRUCTURE_NAME_TAG)) {
+			structureName = tag.getString(STRUCTURE_NAME_TAG);
 		} else {
 			structureName = null;
 		}
@@ -184,8 +180,7 @@ public class TileDraftingStation extends TileEntity implements ITickable, IBlock
 		isFinished = tag.getBoolean("isFinished");
 		remainingTime = tag.getInteger("remainingTime");
 		totalTime = tag.getInteger("totalTime");
-		neededResources = NBTHelper.deserializeItemStackList(tag.getTagList("neededResources", Constants.NBT.TAG_COMPOUND));
-		returnResources = NBTHelper.deserializeItemStackList(tag.getTagList("returnResources", Constants.NBT.TAG_COMPOUND));
+		buildResources = NBTHelper.deserializeListFrom(tag, "buildResources", StructureTemplate.BuildResource::new);
 	}
 
 	@Override
@@ -196,14 +191,13 @@ public class TileDraftingStation extends TileEntity implements ITickable, IBlock
 		tag.setTag("outputInventory", outputSlot.serializeNBT());
 
 		if (structureName != null) {
-			tag.setString("structureName", structureName);
+			tag.setString(STRUCTURE_NAME_TAG, structureName);
 		}
 		tag.setBoolean("isStarted", isStarted);
 		tag.setBoolean("isFinished", isFinished);
 		tag.setInteger("remainingTime", remainingTime);
 		tag.setInteger("totalTime", totalTime);
-		tag.setTag("neededResources", NBTHelper.serializeItemStackList(neededResources));
-		tag.setTag("returnResources", NBTHelper.serializeItemStackList(returnResources));
+		NBTHelper.writeSerializablesTo(tag, "buildResources", buildResources);
 
 		return tag;
 	}

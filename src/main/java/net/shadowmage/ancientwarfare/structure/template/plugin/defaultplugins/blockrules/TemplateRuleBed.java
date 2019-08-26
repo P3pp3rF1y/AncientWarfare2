@@ -8,7 +8,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityBed;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -16,6 +15,8 @@ import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 
 import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.List;
 
 public class TemplateRuleBed extends TemplateRuleVanillaBlocks {
 	public static final String PLUGIN_NAME = "bed";
@@ -41,10 +42,12 @@ public class TemplateRuleBed extends TemplateRuleVanillaBlocks {
 	}
 
 	@Override
-	public void addResources(NonNullList<ItemStack> resources) {
+	public List<ItemStack> getResources() {
 		if (state.getValue(BlockBed.PART) == BlockBed.EnumPartType.FOOT) {
-			super.addResources(resources);
+			return super.getResources();
 		}
+
+		return Collections.emptyList();
 	}
 
 	@Override

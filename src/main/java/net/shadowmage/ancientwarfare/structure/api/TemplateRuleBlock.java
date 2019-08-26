@@ -7,7 +7,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -20,6 +19,8 @@ import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.registry.StructureBlockRegistry;
 
 import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.List;
 import java.util.MissingResourceException;
 
 public abstract class TemplateRuleBlock extends TemplateRule {
@@ -36,15 +37,17 @@ public abstract class TemplateRuleBlock extends TemplateRule {
 	public abstract boolean shouldReuseRule(World world, IBlockState state, int turns, BlockPos pos);
 
 	@Override
-	public void addResources(NonNullList<ItemStack> resources) {
+	public List<ItemStack> getResources() {
 		if (state.getBlock() == Blocks.AIR) {
-			return;
+			return Collections.emptyList();
 		}
 
 		ItemStack stack = getCachedStack();
 		if (!stack.isEmpty()) {
-			resources.add(stack);
+			return Collections.singletonList(stack);
 		}
+
+		return Collections.emptyList();
 	}
 
 	private ItemStack getCachedStack() {

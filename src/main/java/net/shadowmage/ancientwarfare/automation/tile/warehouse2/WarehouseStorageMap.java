@@ -2,7 +2,7 @@ package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
 import com.google.common.collect.Lists;
 import net.minecraft.item.ItemStack;
-import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
+import net.shadowmage.ancientwarfare.core.inventory.ItemHashEntry;
 
 import java.util.HashMap;
 import java.util.HashSet;

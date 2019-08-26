@@ -4,7 +4,7 @@ import com.google.common.base.Predicate;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
-import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
+import net.shadowmage.ancientwarfare.core.inventory.ItemHashEntry;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nullable;
@@ -29,7 +29,7 @@ public final class WarehouseInterfaceFilter implements Predicate<ItemStack>, INB
 
 	@Override
 	public int hashCode() {
-		int result = !getFilterItem().isEmpty() ? new ItemQuantityMap.ItemHashEntry(getFilterItem()).hashCode() : 0;
+		int result = !getFilterItem().isEmpty() ? new ItemHashEntry(getFilterItem()).hashCode() : 0;
 		return 31 * result + quantity;
 	}
 

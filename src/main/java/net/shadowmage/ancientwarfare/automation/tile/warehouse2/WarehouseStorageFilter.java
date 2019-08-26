@@ -3,7 +3,7 @@ package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
-import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
+import net.shadowmage.ancientwarfare.core.inventory.ItemHashEntry;
 
 public class WarehouseStorageFilter implements INBTSerializable<NBTTagCompound> {
 	ItemHashEntry hashKey;

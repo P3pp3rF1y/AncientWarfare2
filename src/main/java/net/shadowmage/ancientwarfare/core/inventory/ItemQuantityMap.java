@@ -1,14 +1,10 @@
 package net.shadowmage.ancientwarfare.core.inventory;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 import javax.annotation.Nonnull;
@@ -67,8 +63,9 @@ public class ItemQuantityMap {
 	private void addCount(ItemHashEntry entry, int count) {
 		if (!map.containsKey(entry)) {
 			map.put(entry, count);
-		} else
+		} else {
 			map.put(entry, map.get(entry) + count);
+		}
 	}
 
 	public void decreaseCount(ItemStack item, int count) {
@@ -181,70 +178,4 @@ public class ItemQuantityMap {
 		return map.values().stream().mapToInt(i -> i).sum();
 	}
 
-	/*
-	 * Lightweight wrapper for an item stack as a hashable object suitable for use as keys in maps.<br>
-	 * Uses item, item damage, and nbt-tag for hash-code.<br>
-	 * Ignores quantity.<br>
-	 * Immutable.
-	 *
-	 * @author Shadowmage
-	 */
-	public static final class ItemHashEntry {
-		private final NBTTagCompound itemTag;
-		private ItemStack cacheStack = ItemStack.EMPTY;
-		private String cachedNameAndTooltip = "";
-
-		/*
-		 * @param item MUST NOT BE NULL
-		 */
-		public ItemHashEntry(ItemStack item) {
-			ItemStack copy = item.copy();
-			copy.setCount(1);
-			itemTag = copy.writeToNBT(new NBTTagCompound());
-		}
-
-		@Override
-		public int hashCode() {
-			return itemTag.hashCode();
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (obj == this) {
-				return true;
-			}
-			//noinspection SimplifiableIfStatement
-			if (!(obj instanceof ItemHashEntry)) {
-				return false;
-			}
-			return itemTag.equals(((ItemHashEntry) obj).itemTag);
-		}
-
-		public ItemStack getItemStack() {
-			if (cacheStack.isEmpty()) {
-				cacheStack = new ItemStack(itemTag);
-			}
-			return cacheStack;
-		}
-
-		@SideOnly(Side.CLIENT)
-		public String getNameAndTooltip() {
-			if (cachedNameAndTooltip.isEmpty()) {
-				String stackText = cacheStack.getDisplayName().toLowerCase() + " ";
-				stackText += String.join(" ", cacheStack.getTooltip(Minecraft.getMinecraft().player, ITooltipFlag.TooltipFlags.NORMAL)).toLowerCase();
-
-				cachedNameAndTooltip = stackText;
-			}
-
-			return cachedNameAndTooltip;
-		}
-
-		private NBTTagCompound writeToNBT() {
-			return itemTag.copy();
-		}
-
-		private static ItemHashEntry readFromNBT(NBTTagCompound tag) {
-			return new ItemHashEntry(new ItemStack(tag));
-		}
-	}
 }

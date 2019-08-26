@@ -20,7 +20,9 @@ import net.shadowmage.ancientwarfare.structure.tile.ISpecialLootContainer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TemplateRuleBlockInventory extends TemplateRuleBlockTile {
@@ -78,12 +80,14 @@ public class TemplateRuleBlockInventory extends TemplateRuleBlockTile {
 	}
 
 	@Override
-	public void addResources(NonNullList<ItemStack> resources) {
-		super.addResources(resources);
+	public List<ItemStack> getResources() {
+		List<ItemStack> resources = new ArrayList<>(super.getResources());
 
 		for (NonNullList<ItemStack> stacks : inventoryStacks.values()) {
 			resources.addAll(stacks);
 		}
+
+		return resources;
 	}
 
 	@Override

@@ -5,7 +5,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.owner.Owner;
@@ -17,6 +16,8 @@ import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntityBase;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.gates.types.Gate;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 public class TemplateRuleGates extends TemplateRuleEntityBase {
@@ -89,8 +90,8 @@ public class TemplateRuleGates extends TemplateRuleEntityBase {
 	}
 
 	@Override
-	public void addResources(NonNullList<ItemStack> resources) {
-		resources.add(Gate.getItemToConstruct(Gate.getGateByName(gateType).getGlobalID()));
+	public List<ItemStack> getResources() {
+		return Collections.singletonList(Gate.getItemToConstruct(Gate.getGateByName(gateType).getGlobalID()));
 	}
 
 	@Override

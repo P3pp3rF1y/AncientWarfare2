@@ -3,9 +3,11 @@ package net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.b
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import java.util.Collections;
+import java.util.List;
 
 public class TemplateRuleBlockDoors extends TemplateRuleVanillaBlocks {
 
@@ -20,10 +22,12 @@ public class TemplateRuleBlockDoors extends TemplateRuleVanillaBlocks {
 	}
 
 	@Override
-	public void addResources(NonNullList<ItemStack> resources) {
+	public List<ItemStack> getResources() {
 		if (state.getValue(BlockDoor.HALF) == BlockDoor.EnumDoorHalf.UPPER) {
-			super.addResources(resources);
+			return getResources();
 		}
+
+		return Collections.emptyList();
 	}
 
 	@Override

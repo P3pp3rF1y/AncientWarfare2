@@ -8,15 +8,20 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouse;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
+import net.shadowmage.ancientwarfare.core.inventory.ItemHashEntry;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
-import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack.SortOrder;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack.SortType;
 
 import javax.annotation.Nonnull;
 
 public class ContainerWarehouseControl extends ContainerTileBase<TileWarehouse> {
-
+	private static final String SLOT_CLICK_TAG = "slotClick";
+	private static final String REQ_ITEM_TAG = "reqItem";
+	private static final String CHANGE_LIST_TAG = "changeList";
+	private static final String MAX_STORAGE_TAG = "maxStorage";
+	private static final String SORT_TYPE_TAG = "sortType";
+	private static final String SORT_ORDER_TAG = "sortOrder";
 	public ItemQuantityMap itemMap = new ItemQuantityMap();
 	private final ItemQuantityMap cache = new ItemQuantityMap();
 	private boolean shouldUpdate = true;
@@ -55,24 +60,24 @@ public class ContainerWarehouseControl extends ContainerTileBase<TileWarehouse> 
 
 	@Override
 	public void handlePacketData(NBTTagCompound tag) {
-		if (tag.hasKey("slotClick")) {
-			NBTTagCompound reqTag = tag.getCompoundTag("slotClick");
+		if (tag.hasKey(SLOT_CLICK_TAG)) {
+			NBTTagCompound reqTag = tag.getCompoundTag(SLOT_CLICK_TAG);
 			@Nonnull ItemStack item = ItemStack.EMPTY;
-			if (reqTag.hasKey("reqItem")) {
-				item = new ItemStack(reqTag.getCompoundTag("reqItem"));
+			if (reqTag.hasKey(REQ_ITEM_TAG)) {
+				item = new ItemStack(reqTag.getCompoundTag(REQ_ITEM_TAG));
 			}
 			tileEntity.handleSlotClick(player, item, reqTag.getBoolean("isShiftClick"), reqTag.getBoolean("isRightClick"));
-		} else if (tag.hasKey("changeList")) {
-			handleChangeList(tag.getTagList("changeList", Constants.NBT.TAG_COMPOUND));
+		} else if (tag.hasKey(CHANGE_LIST_TAG)) {
+			handleChangeList(tag.getTagList(CHANGE_LIST_TAG, Constants.NBT.TAG_COMPOUND));
 		} else {
-			if (tag.hasKey("maxStorage")) {
-				maxStorage = tag.getInteger("maxStorage");
+			if (tag.hasKey(MAX_STORAGE_TAG)) {
+				maxStorage = tag.getInteger(MAX_STORAGE_TAG);
 			}
-			if (tag.hasKey("sortType")) {
-				tileEntity.setSortType(SortType.values()[tag.getByte("sortType")]);
+			if (tag.hasKey(SORT_TYPE_TAG)) {
+				tileEntity.setSortType(SortType.values()[tag.getByte(SORT_TYPE_TAG)]);
 			}
-			if (tag.hasKey("sortOrder")) {
-				tileEntity.setSortOrder(SortOrder.values()[tag.getByte("sortOrder")]);
+			if (tag.hasKey(SORT_ORDER_TAG)) {
+				tileEntity.setSortOrder(SortOrder.values()[tag.getByte(SORT_ORDER_TAG)]);
 			}
 		}
 		currentStored = itemMap.getTotalItemCount();
@@ -84,12 +89,12 @@ public class ContainerWarehouseControl extends ContainerTileBase<TileWarehouse> 
 		if (!stack.isEmpty()) {
 			ItemStack copy = stack.copy();
 			copy.setCount(Math.min(stack.getCount(), stack.getMaxStackSize()));
-			tag.setTag("reqItem", copy.writeToNBT(new NBTTagCompound()));
+			tag.setTag(REQ_ITEM_TAG, copy.writeToNBT(new NBTTagCompound()));
 		}
 		tag.setBoolean("isShiftClick", isShiftClick);
 		tag.setBoolean("isRightClick", isRightClick);
 		NBTTagCompound pktTag = new NBTTagCompound();
-		pktTag.setTag("slotClick", tag);
+		pktTag.setTag(SLOT_CLICK_TAG, tag);
 		sendDataToServer(pktTag);
 	}
 
@@ -103,9 +108,9 @@ public class ContainerWarehouseControl extends ContainerTileBase<TileWarehouse> 
 		if (maxStorage != tileEntity.getMaxStorage()) {
 			maxStorage = tileEntity.getMaxStorage();
 			NBTTagCompound tag = new NBTTagCompound();
-			tag.setInteger("maxStorage", maxStorage);
-			tag.setByte("sortOrder", (byte) getSortOrder().ordinal());
-			tag.setByte("sortType", (byte) getSortType().ordinal());
+			tag.setInteger(MAX_STORAGE_TAG, maxStorage);
+			tag.setByte(SORT_ORDER_TAG, (byte) getSortOrder().ordinal());
+			tag.setByte(SORT_TYPE_TAG, (byte) getSortType().ordinal());
 			sendDataToClient(tag);
 		}
 	}
@@ -148,7 +153,7 @@ public class ContainerWarehouseControl extends ContainerTileBase<TileWarehouse> 
 		}
 		if (changeList.tagCount() > 0) {
 			NBTTagCompound tag = new NBTTagCompound();
-			tag.setTag("changeList", changeList);
+			tag.setTag(CHANGE_LIST_TAG, changeList);
 			sendDataToClient(tag);
 		}
 	}
@@ -164,7 +169,7 @@ public class ContainerWarehouseControl extends ContainerTileBase<TileWarehouse> 
 	public void setSortType(SortType sortType) {
 		tileEntity.setSortType(sortType);
 		NBTTagCompound tag = new NBTTagCompound();
-		tag.setByte("sortType", (byte) sortType.ordinal());
+		tag.setByte(SORT_TYPE_TAG, (byte) sortType.ordinal());
 		sendDataToServer(tag);
 	}
 
@@ -175,7 +180,7 @@ public class ContainerWarehouseControl extends ContainerTileBase<TileWarehouse> 
 	public void setSortOrder(SortOrder sortOrder) {
 		tileEntity.setSortOrder(sortOrder);
 		NBTTagCompound tag = new NBTTagCompound();
-		tag.setByte("sortOrder", (byte) sortOrder.ordinal());
+		tag.setByte(SORT_ORDER_TAG, (byte) sortOrder.ordinal());
 		sendDataToServer(tag);
 	}
 }
