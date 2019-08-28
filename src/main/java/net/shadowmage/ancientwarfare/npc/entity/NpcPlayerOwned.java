@@ -4,6 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.INpc;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.PathNavigateGround;
@@ -239,6 +240,27 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 	@Override
 	protected boolean tryCommand(EntityPlayer player) {
 		return hasCommandPermissions(player.getUniqueID(), player.getName()) && super.tryCommand(player);
+	}
+
+	@Override
+	protected void dropEquipment(boolean wasRecentlyHit, int lootingModifier) {
+		for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
+			ItemStack itemstack = this.getItemStackFromSlot(slot);
+			if (!itemstack.isEmpty()) {
+				this.entityDropItem(itemstack, 0.0F);
+			}
+			setItemStackToSlot(slot, ItemStack.EMPTY);
+		}
+		if (!AWNPCStatics.persistOrdersOnDeath) {
+			if (!ordersStack.isEmpty()) {
+				entityDropItem(ordersStack, 0.f);
+			}
+			if (!upkeepStack.isEmpty()) {
+				entityDropItem(upkeepStack, 0.f);
+			}
+			ordersStack = ItemStack.EMPTY;
+			upkeepStack = ItemStack.EMPTY;
+		}
 	}
 
 	public boolean withdrawFood(IItemHandler handler) {
