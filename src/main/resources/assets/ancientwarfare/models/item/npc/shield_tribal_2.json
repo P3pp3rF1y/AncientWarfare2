@@ -2,5 +2,13 @@
     "parent": "ancientwarfare:item/npc/shield_tribal_1",
     "textures": {
         "0": "ancientwarfare:items/npc/shield_tribal_2"
-    }
+    },
+    "overrides": [
+        {
+            "predicate": {
+                "blocking": 1.0
+            },
+            "model": "ancientwarfare:item/npc/shield_tribal_2_blocking"
+        }
+    ]
 }
