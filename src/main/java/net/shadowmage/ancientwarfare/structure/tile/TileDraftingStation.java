@@ -79,7 +79,7 @@ public class TileDraftingStation extends TileEntity implements ITickable, IBlock
 		for (int i = 0; i < buildResources.size(); i++) {
 			StructureTemplate.BuildResource buildResource = buildResources.get(i);
 			if (InventoryTools.doItemStacksMatchRelaxed(buildResource.getStackRequired(), inventoryStack)) {
-				ItemStack returnStack = buildResource.shrinkStackRequired();
+				ItemStack returnStack = buildResource.shrinkStackRequiredAndGetRemaining();
 				if (!returnStack.isEmpty()) {
 					InventoryTools.insertOrDropItem(inputSlots, returnStack, world, pos.up());
 				}

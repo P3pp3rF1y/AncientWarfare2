@@ -64,7 +64,7 @@ public class TemplateLoader {
 		}
 		loadedCount += loadTemplatesFromSource(new File(INCLUDE_DIRECTORY), "", true);
 
-		AncientWarfareStructure.LOG.info("Loaded " + loadedCount + " structure(s)");
+		AncientWarfareStructure.LOG.info("Loaded {} structure(s)", loadedCount);
 
 		validateTownTemplates();
 	}
@@ -116,17 +116,17 @@ public class TemplateLoader {
 		StructureTemplate template = loadedTemplate.getData();
 
 		if (loadedTemplate.isModified()) {
-			AncientWarfareStructure.LOG.info("Template {} had following fixes applied: {}", fileName.toString(),
-					String.join(", ", loadedTemplate.getFixesApplied()));
+			AncientWarfareStructure.LOG.info("Template {} had following fixes applied: {}", () -> fileName,
+					() -> String.join(", ", loadedTemplate.getFixesApplied()));
 		}
 
 		if (saveFixedTemplate && loadedTemplate.isModified()) {
 			TemplateExporter.exportTo(template, fileName.getParent().toFile());
-			AncientWarfareStructure.LOG.info("Changes saved to {}", fileName.toString());
+			AncientWarfareStructure.LOG.info("Changes saved to {}", fileName);
 		}
 
 		if (template != null) {
-			AncientWarfareStructure.LOG.info("Loaded Structure Template: [" + template.name + "] WorldGen: " + template.getValidationSettings().isWorldGenEnabled() + "  Survival: " + template.getValidationSettings().isSurvival());
+			AncientWarfareStructure.LOG.info("Loaded Structure Template: [{}] WorldGen: {}  Survival: {}", template.name, template.getValidationSettings().isWorldGenEnabled(), template.getValidationSettings().isSurvival());
 			StructureTemplateManager.addTemplate(template);
 			return 1;
 		}
@@ -148,7 +148,7 @@ public class TemplateLoader {
 				t.validateStructureEntries();
 				TownTemplateManager.INSTANCE.loadTemplate(t);
 			}
-			AncientWarfareStructure.LOG.info("Loaded : " + this.parsedTownTemplates.size() + " Town Templates.");
+			AncientWarfareStructure.LOG.info("Loaded : {} Town Templates.", parsedTownTemplates.size());
 		}
 	}
 }

@@ -256,9 +256,10 @@ public class StructureTemplate {
 	}
 
 	public static class BuildResource implements INBTSerializable<NBTTagCompound> {
+		private static final String STACK_TO_RETURN_TAG = "stackToReturn";
 		private ItemStack stackRequired;
-		private ItemStack stackToReturn;
-		private int requiredOriginalCount;
+		private ItemStack stackToReturn = ItemStack.EMPTY;
+		private int requiredOriginalCount = 0;
 
 		private BuildResource(ItemStack stackRequired, ItemStack stackToReturn) {
 			this.stackRequired = stackRequired;
@@ -266,8 +267,8 @@ public class StructureTemplate {
 			requiredOriginalCount = stackRequired.getCount();
 		}
 
-		public BuildResource(ItemStack stackRequired) {
-			this(stackRequired, ItemStack.EMPTY);
+		private BuildResource(ItemStack stackRequired) {
+			this.stackRequired = stackRequired;
 		}
 
 		public BuildResource() {}
@@ -276,15 +277,11 @@ public class StructureTemplate {
 			return stackRequired;
 		}
 
-		public ItemStack getStackToReturn() {
-			return stackToReturn;
-		}
-
 		public BuildResource copy() {
 			return new BuildResource(stackRequired.copy(), stackToReturn.copy());
 		}
 
-		public ItemStack shrinkStackRequired() {
+		public ItemStack shrinkStackRequiredAndGetRemaining() {
 			stackRequired.shrink(1);
 			if (!stackToReturn.isEmpty() && stackRequired.getCount() % requiredOriginalCount == 0) {
 				return stackToReturn.copy();
@@ -299,15 +296,19 @@ public class StructureTemplate {
 		public NBTTagCompound serializeNBT() {
 			NBTTagCompound tag = new NBTTagCompound();
 			tag.setTag("stackRequired", stackRequired.writeToNBT(new NBTTagCompound()));
-			tag.setTag("stackToReturn", stackToReturn.writeToNBT(new NBTTagCompound()));
-			tag.setInteger("requiredOriginalCount", requiredOriginalCount);
+			if (!stackToReturn.isEmpty()) {
+				tag.setTag(STACK_TO_RETURN_TAG, stackToReturn.writeToNBT(new NBTTagCompound()));
+				tag.setInteger("requiredOriginalCount", requiredOriginalCount);
+			}
 			return tag;
 		}
 
 		public void deserializeNBT(NBTTagCompound tag) {
 			stackRequired = new ItemStack(tag.getCompoundTag("stackRequired"));
-			stackToReturn = new ItemStack(tag.getCompoundTag("stackToReturn"));
-			requiredOriginalCount = tag.getInteger("requiredOriginalCount");
+			if (tag.hasKey(STACK_TO_RETURN_TAG)) {
+				stackToReturn = new ItemStack(tag.getCompoundTag(STACK_TO_RETURN_TAG));
+				requiredOriginalCount = tag.getInteger("requiredOriginalCount");
+			}
 		}
 	}
 }
