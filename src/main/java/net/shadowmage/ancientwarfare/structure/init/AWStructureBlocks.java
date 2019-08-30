@@ -23,6 +23,9 @@ import net.shadowmage.ancientwarfare.structure.block.BlockBrazierEmber;
 import net.shadowmage.ancientwarfare.structure.block.BlockBrazierFlame;
 import net.shadowmage.ancientwarfare.structure.block.BlockChair;
 import net.shadowmage.ancientwarfare.structure.block.BlockCoffin;
+import net.shadowmage.ancientwarfare.structure.block.BlockCoinStackCopper;
+import net.shadowmage.ancientwarfare.structure.block.BlockCoinStackSilver;
+import net.shadowmage.ancientwarfare.structure.block.BlockCoinStackGold;
 import net.shadowmage.ancientwarfare.structure.block.BlockDraftingStation;
 import net.shadowmage.ancientwarfare.structure.block.BlockFirePit;
 import net.shadowmage.ancientwarfare.structure.block.BlockGateProxy;
@@ -128,6 +131,9 @@ public class AWStructureBlocks {
 	public static final Block TRIBAL_CHAIR = InjectionTools.nullValue();
 	public static final Block SCISSOR_SEAT = InjectionTools.nullValue();
 	public static final Block STATUE = InjectionTools.nullValue();
+	public static final Block COIN_STACK_COPPER = InjectionTools.nullValue();
+	public static final Block COIN_STACK_SILVER = InjectionTools.nullValue();
+	public static final Block COIN_STACK_GOLD = InjectionTools.nullValue();
 
 	@SuppressWarnings("ConstantConditions")
 	@SubscribeEvent
@@ -176,6 +182,9 @@ public class AWStructureBlocks {
 		registry.register(new ItemMultiBlock(TRIBAL_CHAIR, new Vec3i(0, 0, 0), new Vec3i(0, 1, 0)));
 		registry.register(new ItemMultiBlock(SCISSOR_SEAT, new Vec3i(0, 0, 0), new Vec3i(0, 1, 0)));
 		registry.register(new ItemBlockBase(STATUE));
+		registry.register(new ItemBlockBase(COIN_STACK_COPPER));
+		registry.register(new ItemBlockBase(COIN_STACK_SILVER));
+		registry.register(new ItemBlockBase(COIN_STACK_GOLD));
 
 		registerLootContainers();
 	}
@@ -273,6 +282,9 @@ public class AWStructureBlocks {
 
 		registry.register(new BlockStatue());
 		registerTile(TileStatue.class, "statue_tile");
+		registry.register(new BlockCoinStackCopper());
+		registry.register(new BlockCoinStackSilver());
+		registry.register(new BlockCoinStackGold());
 	}
 
 	private static void registerTile(Class<? extends TileEntity> teClass, String teId) {
