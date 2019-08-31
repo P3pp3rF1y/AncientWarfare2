@@ -4,6 +4,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.NonNullList;
+import net.shadowmage.ancientwarfare.npc.init.AWNPCItems;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -20,11 +21,25 @@ public class ItemCoin extends ItemBaseNPC {
 			return;
 		}
 		Arrays.stream(CoinMetal.values()).forEach(metal -> {
-					ItemStack subItem = new ItemStack(this);
-					subItem.setTagInfo("metal", new NBTTagString(metal.getName()));
+			ItemStack subItem = getCoinStack(metal);
 					items.add(subItem);
 				}
 		);
+	}
+
+	private static ItemStack getCoinStack(CoinMetal metal) {
+		return getCoinStack(metal, 1);
+	}
+
+	public static ItemStack getCoinStack(CoinMetal metal, int stackSize) {
+		ItemStack coinStack = new ItemStack(AWNPCItems.COIN);
+		coinStack.setTagInfo("metal", new NBTTagString(metal.getName()));
+		coinStack.setCount(stackSize);
+		return coinStack;
+	}
+
+	public static boolean isSpecificCoin(ItemStack stack, CoinMetal coinMetal) {
+		return stack.getItem() == AWNPCItems.COIN && getMetal(stack) == coinMetal;
 	}
 
 	@Override

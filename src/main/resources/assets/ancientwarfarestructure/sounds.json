@@ -2,6 +2,6 @@
     "protection_flag_claim": {"category": "neutral", "sounds": [{"name": "ancientwarfarestructure:protection_flag_claim", "stream": false}]},
     "coffin_opens": {"category": "neutral", "sounds": [{"name": "ancientwarfarestructure:coffin_opens", "stream": false}]},
     "urn_break": {"category": "neutral", "sounds": [{"name": "ancientwarfarestructure:urn_break", "stream": false}]},
-    "coinstack_break": {"category": "neutral", "sounds": [{"name": "ancientwarfarestructure:coinstack_break", "stream": false}]},
-    "coinstack_interact": {"category": "neutral", "sounds": [{"name": "ancientwarfarestructure:coinstack_interact", "stream": false}]}
+    "coin_stack_break": {"category": "neutral", "sounds": [{"name": "ancientwarfarestructure:coinstack_break", "stream": false}]},
+    "coin_stack_interact": {"category": "neutral", "sounds": [{"name": "ancientwarfarestructure:coinstack_interact", "stream": false}]}
 }

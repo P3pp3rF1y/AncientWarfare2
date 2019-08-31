@@ -7,29 +7,29 @@
         }
     },
     "variants": {
-        "size=0": {
-            "model": "ancientwarfare:structure/coin_stack0"
+        "size=8": {
+            "model": "ancientwarfare:structure/coin_stack_8"
         },
-        "size=1": {
-            "model": "ancientwarfare:structure/coin_stack1"
+        "size=16": {
+            "model": "ancientwarfare:structure/coin_stack_16"
         },
-        "size=2": {
-            "model": "ancientwarfare:structure/coin_stack2"
+        "size=24": {
+            "model": "ancientwarfare:structure/coin_stack_24"
         },
-        "size=3": {
-            "model": "ancientwarfare:structure/coin_stack3"
+        "size=32": {
+            "model": "ancientwarfare:structure/coin_stack_32"
         },
-        "size=4": {
-            "model": "ancientwarfare:structure/coin_stack4"
+        "size=40": {
+            "model": "ancientwarfare:structure/coin_stack_40"
         },
-        "size=5": {
-            "model": "ancientwarfare:structure/coin_stack5"
+        "size=48": {
+            "model": "ancientwarfare:structure/coin_stack_48"
         },
-        "size=6": {
-            "model": "ancientwarfare:structure/coin_stack6"
+        "size=56": {
+            "model": "ancientwarfare:structure/coin_stack_56"
         },
-        "size=7": {
-            "model": "ancientwarfare:structure/coin_stack7"
+        "size=64": {
+            "model": "ancientwarfare:structure/coin_stack_64"
         }
     }
 }

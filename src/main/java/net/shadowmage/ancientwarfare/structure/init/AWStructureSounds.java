@@ -16,8 +16,8 @@ public class AWStructureSounds {
 	public static final SoundEvent PROTECTION_FLAG_CLAIM = InjectionTools.nullValue();
 	public static final SoundEvent COFFIN_OPENS = InjectionTools.nullValue();
 	public static final SoundEvent URN_BREAK = InjectionTools.nullValue();
-	public static final SoundEvent COINSTACK_BREAK = InjectionTools.nullValue();
-	public static final SoundEvent COINSTACK_INTERACT = InjectionTools.nullValue();
+	public static final SoundEvent COIN_STACK_BREAK = InjectionTools.nullValue();
+	public static final SoundEvent COIN_STACK_INTERACT = InjectionTools.nullValue();
 
 	private AWStructureSounds() {}
 
@@ -28,8 +28,8 @@ public class AWStructureSounds {
 		registry.register(createSoundEvent("protection_flag_claim"));
 		registry.register(createSoundEvent("coffin_opens"));
 		registry.register(createSoundEvent("urn_break"));
-		registry.register(createSoundEvent("coinstack_break"));
-		registry.register(createSoundEvent("coinstack_interact"));
+		registry.register(createSoundEvent("coin_stack_break"));
+		registry.register(createSoundEvent("coin_stack_interact"));
 	}
 
 	private static SoundEvent createSoundEvent(String soundName) {

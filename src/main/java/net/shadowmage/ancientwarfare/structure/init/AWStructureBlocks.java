@@ -15,6 +15,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.shadowmage.ancientwarfare.core.item.ItemBlockBase;
 import net.shadowmage.ancientwarfare.core.util.InjectionTools;
+import net.shadowmage.ancientwarfare.npc.item.ItemCoin;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.block.BlockAdvancedLootChest;
 import net.shadowmage.ancientwarfare.structure.block.BlockAdvancedSpawner;
@@ -23,9 +24,7 @@ import net.shadowmage.ancientwarfare.structure.block.BlockBrazierEmber;
 import net.shadowmage.ancientwarfare.structure.block.BlockBrazierFlame;
 import net.shadowmage.ancientwarfare.structure.block.BlockChair;
 import net.shadowmage.ancientwarfare.structure.block.BlockCoffin;
-import net.shadowmage.ancientwarfare.structure.block.BlockCoinStackCopper;
-import net.shadowmage.ancientwarfare.structure.block.BlockCoinStackSilver;
-import net.shadowmage.ancientwarfare.structure.block.BlockCoinStackGold;
+import net.shadowmage.ancientwarfare.structure.block.BlockCoinStack;
 import net.shadowmage.ancientwarfare.structure.block.BlockDraftingStation;
 import net.shadowmage.ancientwarfare.structure.block.BlockFirePit;
 import net.shadowmage.ancientwarfare.structure.block.BlockGateProxy;
@@ -282,9 +281,10 @@ public class AWStructureBlocks {
 
 		registry.register(new BlockStatue());
 		registerTile(TileStatue.class, "statue_tile");
-		registry.register(new BlockCoinStackCopper());
-		registry.register(new BlockCoinStackSilver());
-		registry.register(new BlockCoinStackGold());
+
+		registry.register(new BlockCoinStack("coin_stack_copper", ItemCoin.CoinMetal.COPPER));
+		registry.register(new BlockCoinStack("coin_stack_silver", ItemCoin.CoinMetal.SILVER));
+		registry.register(new BlockCoinStack("coin_stack_gold", ItemCoin.CoinMetal.GOLD));
 	}
 
 	private static void registerTile(Class<? extends TileEntity> teClass, String teId) {
