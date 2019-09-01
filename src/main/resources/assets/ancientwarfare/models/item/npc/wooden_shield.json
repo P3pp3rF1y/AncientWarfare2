@@ -130,5 +130,13 @@
             "rotation": [0, 180, 0],
             "translation": [-0.25, 0.75, 0]
         }
+    },
+      "overrides": [
+    {
+      "predicate": {
+        "blocking": 1.0
+      },
+      "model": "ancientwarfare:item/npc/wooden_shield_blocking"
     }
+  ]
 }

@@ -2,5 +2,13 @@
     "parent": "ancientwarfare:item/npc/wooden_shield",
     "textures": {
         "0": "ancientwarfare:items/npc/stone_shield"
-    }
+    },
+    "overrides": [
+        {
+            "predicate": {
+                "blocking": 1.0
+            },
+            "model": "ancientwarfare:item/npc/stone_shield_blocking"
+        }
+    ]
 }
