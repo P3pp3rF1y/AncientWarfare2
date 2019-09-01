@@ -137,6 +137,8 @@ entity.ancientwarfarenpc.siege_engineer.name=Siege Engineer
 item.coin.gold.name=Gold Dragon
 item.coin.silver.name=Silver Stag
 item.coin.copper.name=Copper Owl
+item.coin.ancient.name=Ancient Coin
+item.coin.ancient.tooltip=%1$s"Of Minossia, only its coins remain - Sic transit gloria mundi."
 
 #vehicle
 
@@ -269,6 +271,7 @@ tile.scissor_seat.name=Scissor Seat
 tile.coin_stack_copper.name=Copper Owl Stack
 tile.coin_stack_silver.name=Silver Stag Stack
 tile.coin_stack_gold.name=Gold Dragon Stack
+tile.coin_stack_ancient.name=Ancient Coin Stack
 
 #colors
 black=Black

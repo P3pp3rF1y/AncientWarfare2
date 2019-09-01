@@ -1,13 +1,21 @@
 package net.shadowmage.ancientwarfare.npc.item;
 
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.npc.init.AWNPCItems;
 
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ItemCoin extends ItemBaseNPC {
@@ -60,6 +68,7 @@ public class ItemCoin extends ItemBaseNPC {
 	}
 
 	public enum CoinMetal {
+		ANCIENT("ancient", 0x445948),
 		GOLD("gold", 0xFFD700),
 		SILVER("silver", 0xC0C0C0),
 		COPPER("copper", 0xB87333);
@@ -88,6 +97,14 @@ public class ItemCoin extends ItemBaseNPC {
 
 		public int getColor() {
 			return color;
+		}
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		if (getMetal(stack).equals("ancient"))  {
+			tooltip.add(I18n.format("item.coin.ancient.tooltip", TextFormatting.DARK_AQUA.toString() + TextFormatting.ITALIC.toString()));
 		}
 	}
 }

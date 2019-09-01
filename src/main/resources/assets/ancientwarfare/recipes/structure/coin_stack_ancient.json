@@ -1,0 +1,20 @@
+{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "AAA",
+        "A A",
+        "AAA"
+    ],
+    "key": {
+        "A": {
+            "type": "minecraft:item_nbt",
+            "item": "ancientwarfarenpc:coin",
+            "nbt": "{metal:\"ancient\"}"
+        }
+    },
+    "result": {
+        "type": "minecraft:item_nbt",
+        "item": "ancientwarfarestructure:coin_stack_ancient",
+        "nbt": "{size:8}"
+    }
+}
