@@ -6,6 +6,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import java.util.Optional;
+
 public class TemplateRuleShulkerBox extends TemplateRuleBlockInventory {
 	public static final String PLUGIN_NAME = "shulkerBox";
 
@@ -18,8 +20,8 @@ public class TemplateRuleShulkerBox extends TemplateRuleBlockInventory {
 	}
 
 	@Override
-	protected ItemStack getStack() {
-		return new ItemStack(Item.getItemFromBlock(state.getBlock()), 1, state.getBlock().damageDropped(state));
+	protected Optional<ItemStack> getStack() {
+		return Optional.of(new ItemStack(Item.getItemFromBlock(state.getBlock()), 1, state.getBlock().damageDropped(state)));
 	}
 
 	@Override

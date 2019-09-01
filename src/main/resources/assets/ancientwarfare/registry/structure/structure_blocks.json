@@ -17,6 +17,10 @@
         {
             "block": {"name": "minecraft:grass"},
             "item": {"name": "minecraft:dirt", "data": 0}
+        },
+        {
+            "block": {"name": "ancientwarfarestructure:bench"},
+            "item": {"name": "minecraft:air"}
         }
     ],
     "block_passes": [

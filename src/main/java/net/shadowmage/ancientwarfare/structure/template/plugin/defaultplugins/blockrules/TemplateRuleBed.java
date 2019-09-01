@@ -17,6 +17,7 @@ import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class TemplateRuleBed extends TemplateRuleVanillaBlocks {
 	public static final String PLUGIN_NAME = "bed";
@@ -37,8 +38,8 @@ public class TemplateRuleBed extends TemplateRuleVanillaBlocks {
 	}
 
 	@Override
-	protected ItemStack getStack() {
-		return new ItemStack(Items.BED, 1, color.getMetadata());
+	protected Optional<ItemStack> getStack() {
+		return Optional.of(new ItemStack(Items.BED, 1, color.getMetadata()));
 	}
 
 	@Override
