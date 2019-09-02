@@ -20,7 +20,111 @@
         },
         {
             "block": {"name": "ancientwarfarestructure:bench"},
+            "item": {"name": "minecraft:planks"}
+        },
+        {
+            "block": {"name": "ancientwarfarestructure:stake"},
+            "item": {"name": "minecraft:planks"}
+        },
+        {
+            "block": {"name": "ancientwarfarestructure:wooden_post"},
+            "item": {"name": "minecraft:planks"}
+        },
+        {
+            "block": {"name": "ancientwarfarestructure:golden_throne"},
+            "item": {"name": "minecraft:gold_ingot"}
+        },
+        {
+            "block": {"name": "ancientwarfarestructure:chair"},
+            "item": {"name": "minecraft:planks"}
+        },
+        {
+            "block": {"name": "ancientwarfarestructure:table"},
+            "item": {"name": "minecraft:planks"}
+        },
+        {
+            "block": {"name": "ancientwarfarestructure:stool"},
+            "item": {"name": "minecraft:planks"}
+        },
+        {
+            "block": {"name": "ancientwarfarestructure:wooden_throne"},
+            "item": {"name": "minecraft:planks", "data": 5}
+        },
+        {
+            "block": {"name": "ancientwarfarestructure:tribal_stool"},
+            "item": {"name": "minecraft:planks", "data": 1}
+        },
+        {
+            "block": {"name": "ancientwarfarestructure:tribal_chair"},
+            "item": {"name": "minecraft:planks", "data": 4}
+        },
+        {
+            "block": {"name": "ancientwarfarestructure:scissor_seat"},
+            "item": {"name": "minecraft:planks", "data": 5}
+        },
+        {
+            "block": {"name": "ancientwarfarestructure:fire_pit"},
+            "item": {"name": "ancientwarfarestructure:fire_pit", "nbt": "{lit:0b,variant:\"log\"}"}
+        },
+        {
+            "block": {"name": "ancientwarfarestructure:totem_part"},
+            "item": {"name": "minecraft:planks"}
+        },
+        {
+            "block": {"name": "ancientwarfarestructure:brazier_ember"},
+            "item": {"name": "minecraft:iron_ingot"}
+        },
+        {
+            "block": {"name": "ancientwarfarestructure:brazier_flame"},
+            "item": {"name": "minecraft:iron_ingot"}
+        },
+        {
+            "block": {"name": "ancientwarfarestructure:altar_short_cloth"},
+            "item": {"name": "minecraft:planks"}
+        },
+        {
+            "block": {"name": "ancientwarfarestructure:altar_long_cloth"},
+            "item": {"name": "minecraft:planks"}
+        },
+        {
+            "block": {"name": "ancientwarfarestructure:altar_lectern"},
+            "item": {"name": "minecraft:planks"}
+        },
+        {
+            "block": {"name": "ancientwarfarestructure:altar_candle"},
             "item": {"name": "minecraft:air"}
+        },
+        {
+            "block": {"name": "ancientwarfarestructure:altar_sun"},
+            "item": {"name": "minecraft:air"}
+        },
+        {
+            "block": {"name": "ancientwarfarestructure:golden_idol"},
+            "item": {"name": "minecraft:gold_ingot"}
+        },
+        {
+            "block": {"name": "ancientwarfarestructure:orc_totem_1"},
+            "item": {"name": "minecraft:stone"}
+        },
+        {
+            "block": {"name": "ancientwarfarestructure:orc_totem_2"},
+            "item": {"name": "minecraft:stone"}
+        },
+        {
+            "block": {"name": "ancientwarfarestructure:orc_totem_2_lit"},
+            "item": {"name": "minecraft:stone"}
+        },
+        {
+            "block": {"name": "ancientwarfarestructure:goblin_totem_1"},
+            "item": {"name": "minecraft:stone"}
+        },
+        {
+            "block": {"name": "ancientwarfarestructure:goblin_totem_2"},
+            "item": {"name": "minecraft:stone"}
+        },
+        {
+            "block": {"name": "ancientwarfarestructure:goblin_totem_2_lit"},
+            "item": {"name": "minecraft:stone"}
         }
     ],
     "block_passes": [
