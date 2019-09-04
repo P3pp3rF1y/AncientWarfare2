@@ -43,7 +43,8 @@
             },
             "archer": {
                 "attributes": {
-                    "generic.maxHealth": 20
+                    "generic.maxHealth": 20,
+                    "generic.followRange": 60
                 },
                 "experience_drop": 20,
                 "equipment": {
@@ -54,7 +55,7 @@
                 "attributes": {
                     "generic.maxHealth": 30,
                     "generic.movementSpeed": 0,
-                    "generic.followRange": 32
+                    "generic.followRange": 80
                 },
                 "experience_drop": 30,
                 "equipment": {
@@ -103,7 +104,7 @@
             "siege_engineer": {
                 "attributes": {
                     "generic.maxHealth": 30,
-                    "generic.followRange": 60
+                    "generic.followRange": 120
                 },
                 "experience_drop": 30,
                 "equipment": {
