@@ -47,6 +47,7 @@ import net.shadowmage.ancientwarfare.structure.network.PacketSoundBlockPlayerSpe
 import net.shadowmage.ancientwarfare.structure.network.PacketStructure;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructureRemove;
 import net.shadowmage.ancientwarfare.structure.proxy.CommonProxyStructure;
+import net.shadowmage.ancientwarfare.structure.registry.BiomeGroupRegistry;
 import net.shadowmage.ancientwarfare.structure.registry.EntitySpawnNBTRegistry;
 import net.shadowmage.ancientwarfare.structure.registry.StructureBlockRegistry;
 import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
@@ -127,6 +128,7 @@ public class AncientWarfareStructure {
 		TemplateLoader.INSTANCE.initializeAndExportDefaults();
 
 		RegistryLoader.registerParser(new EntitySpawnNBTRegistry.Parser());
+		RegistryLoader.registerParser(new BiomeGroupRegistry.Parser());
 		RegistryLoader.registerParser(new StructureBlockRegistry.Parser());
 
 		CapabilityRespawnData.register();

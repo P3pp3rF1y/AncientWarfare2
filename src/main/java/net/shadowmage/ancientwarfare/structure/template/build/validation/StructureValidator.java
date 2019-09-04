@@ -181,6 +181,7 @@ public abstract class StructureValidator {
 		setPropertyValue(property, value);
 	}
 
+	@SuppressWarnings("squid:S4784")
 	private static final Pattern NAME_VALUE_MATCHER = Pattern.compile("([^=]*)=([^=]*)");
 
 	private static void parseLine(String line, BiConsumer<String, String> parseNameValue) {
@@ -302,7 +303,7 @@ public abstract class StructureValidator {
 		return getPropertyValue(MAX_FILL);
 	}
 
-	int getMaxLeveling() {
+	private int getMaxLeveling() {
 		return getPropertyValue(MAX_LEVELING);
 	}
 
@@ -362,7 +363,7 @@ public abstract class StructureValidator {
 	private boolean validateBlockHeightTypeAndBiome(World world, int x, int z, int min, int max, boolean skipWater, Predicate<IBlockState> isValidState) {
 		BlockPos pos = new BlockPos(x, 1, z);
 		if (!canSpawnInRiverBiome() && BiomeDictionary.hasType(world.provider.getBiomeForCoords(pos), BiomeDictionary.Type.RIVER)) {
-			AncientWarfareStructure.LOG.debug("Rejected for placement into river biome at {}", pos.toString());
+			AncientWarfareStructure.LOG.debug("Rejected for placement into river biome at {}", pos);
 			return false;
 		}
 
@@ -430,7 +431,7 @@ public abstract class StructureValidator {
 		return getMinY(template, bb) + getMaxFill();
 	}
 
-	protected void borderLeveling(World world, int x, int z, StructureTemplate template, StructureBB bb) {
+	private void borderLeveling(World world, int x, int z, StructureTemplate template, StructureBB bb) {
 		if (getMaxLeveling() <= 0) {
 			return;
 		}
@@ -524,4 +525,12 @@ public abstract class StructureValidator {
 		return getPropertyValue(SURVIVAL);
 	}
 
+	public Set<String> getBiomeGroupList() {
+		//noinspection unchecked
+		return getPropertyValue(BIOME_GROUP_LIST);
+	}
+
+	public void setBiomeGroupList(Set<String> biomeGroups) {
+		setPropertyValue(BIOME_GROUP_LIST, biomeGroups);
+	}
 }

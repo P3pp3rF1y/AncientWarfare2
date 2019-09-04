@@ -1,3 +1,4 @@
+//TODO world capability
 package net.shadowmage.ancientwarfare.structure.gamedata;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -56,7 +57,6 @@ public class StructureMap extends WorldSavedData {
 		}
 		return Optional.empty();
 	}
-
 
 	public void setGeneratedAt(World world, int worldX, int worldY, int worldZ, EnumFacing face, StructureEntry entry, boolean unique) {
 		int cx = worldX >> 4;

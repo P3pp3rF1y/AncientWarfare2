@@ -22,6 +22,7 @@ clusterValue=50
 minDuplicateDistance=600
 dimensionWhiteList=true
 dimensionList=0
+biomeGroupList=barbarian
 biomeWhiteList=true
 biomeList=traverse:rocky_plains,minecraft:taiga,minecraft:redwood_taiga,minecraft:extreme_hills,minecraft:mutated_taiga,biomesoplenty:steppe,traverse:rocky_plateau
 leveling=10

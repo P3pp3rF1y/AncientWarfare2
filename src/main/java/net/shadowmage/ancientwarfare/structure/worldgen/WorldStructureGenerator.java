@@ -49,9 +49,6 @@ public class WorldStructureGenerator implements IWorldGenerator {
 	}
 
 	void generateAt(int chunkX, int chunkZ, World world) {
-		if (world == null) {
-			return;
-		}
 		long t1 = System.currentTimeMillis();
 		long seed = (((long) chunkX) << 32) | (((long) chunkZ) & 0xffffffffL);
 		rng.setSeed(seed);
@@ -66,17 +63,15 @@ public class WorldStructureGenerator implements IWorldGenerator {
 		world.profiler.startSection("AWTemplateSelection");
 		StructureTemplate template = WorldGenStructureManager.INSTANCE.selectTemplateForGeneration(world, rng, x, y, z, face);
 		world.profiler.endSection();
-		AncientWarfareStructure.LOG.debug("Template selection took: " + (System.currentTimeMillis() - t1) + " ms.");
+		AncientWarfareStructure.LOG.debug("Template selection took: {} ms.", System.currentTimeMillis() - t1);
 		if (template == null) {
 			return;
 		}
 		StructureMap map = AWGameData.INSTANCE.getData(world, StructureMap.class);
-		if (map == null) {
-			return;
-		}
+
 		world.profiler.startSection("AWTemplateGeneration");
 		if (attemptStructureGenerationAt(world, new BlockPos(x, y, z), face, template, map)) {
-			AncientWarfareStructure.LOG.info(String.format("Generated structure: %s at %s, %s, %s, time: %sms", template.name, x, y, z, (System.currentTimeMillis() - t1)));
+			AncientWarfareStructure.LOG.info("Generated structure: {} at {}, {}, {}, time: {}ms", template.name, x, y, z, System.currentTimeMillis() - t1);
 		}
 		world.profiler.endSection();
 	}
@@ -145,18 +140,17 @@ public class WorldStructureGenerator implements IWorldGenerator {
 		int xs = bb.getXSize();
 		int zs = bb.getZSize();
 		int size = ((xs > zs ? xs : zs) / 16) + 3;
-		if (map != null) {
-			if (!checkOtherStructureCrossAndCloseness(world, pos, map, bb, size, template.getValidationSettings().getBorderSize()))
-				return false;
+		if (!checkOtherStructureCrossAndCloseness(world, pos, map, bb, size, template.getValidationSettings().getBorderSize())) {
+			return false;
 		}
 
 		TownMap townMap = AWGameData.INSTANCE.getPerWorldData(world, TownMap.class);
-		if (townMap != null && townMap.intersectsWithTown(bb)) {
-			AncientWarfareStructure.LOG.debug("Skipping structure generation: " + template.name + " at: " + bb + " for intersection with existing town");
+		if (townMap.intersectsWithTown(bb)) {
+			AncientWarfareStructure.LOG.debug("Skipping structure generation: {} at: {} for intersection with existing town", template.name, bb);
 			return false;
 		}
 		if (template.getValidationSettings().validatePlacement(world, pos.getX(), pos.getY(), pos.getZ(), face, template, bb)) {
-			AncientWarfareStructure.LOG.debug("Validation took: " + (System.currentTimeMillis() - t1 + " ms"));
+			AncientWarfareStructure.LOG.debug("Validation took: {} ms", System.currentTimeMillis() - t1);
 			generateStructureAt(world, pos, face, template, map);
 			return true;
 		}
@@ -176,16 +170,11 @@ public class WorldStructureGenerator implements IWorldGenerator {
 				maxDistance = distance;
 			}
 		}
-		if (maxDistance > 30 && world.rand.nextFloat() * (MAX_DISTANCE_WITHIN_CLUSTER - maxDistance) > 30) {
-			return false;
-		}
-		return true;
+		return !(maxDistance > 30 && world.rand.nextFloat() * (MAX_DISTANCE_WITHIN_CLUSTER - maxDistance) > 30);
 	}
 
 	private void generateStructureAt(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureMap map) {
-		if (map != null) {
-			map.setGeneratedAt(world, pos.getX(), pos.getY(), pos.getZ(), face, new StructureEntry(pos.getX(), pos.getY(), pos.getZ(), face, template), template.getValidationSettings().isUnique());
-		}
+		map.setGeneratedAt(world, pos.getX(), pos.getY(), pos.getZ(), face, new StructureEntry(pos.getX(), pos.getY(), pos.getZ(), face, template), template.getValidationSettings().isUnique());
 		WorldGenTickHandler.INSTANCE.addStructureForGeneration(new StructureBuilderWorldGen(world, template, face, pos));
 	}
 

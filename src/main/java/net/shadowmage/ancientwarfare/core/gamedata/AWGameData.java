@@ -1,5 +1,3 @@
-//TODO world capability
-
 package net.shadowmage.ancientwarfare.core.gamedata;
 
 import net.minecraft.world.World;
@@ -14,6 +12,10 @@ public final class AWGameData {
 	public static final AWGameData INSTANCE = new AWGameData();
 
 	public <T extends WorldSavedData> T getData(World world, Class<T> clz) {
+		if (world.getMapStorage() == null) {
+			throw new IllegalStateException("Unable to get WorldSaveData - Map storage hasn't been initialized yet");
+		}
+
 		return initData(world.getMapStorage(), clz);
 	}
 
@@ -23,6 +25,7 @@ public final class AWGameData {
 
 	private <T extends WorldSavedData> T initData(MapStorage storage, Class<T> clz) {
 		String name = "AW" + clz.getSimpleName();
+		//noinspection unchecked
 		T data = (T) storage.getOrLoadData(clz, name);
 		if (data == null) {
 			try {
@@ -30,7 +33,7 @@ public final class AWGameData {
 				storage.setData(name, data);
 			}
 			catch (Exception e) {
-				e.printStackTrace();
+				throw new IllegalStateException("Error getting WorldSaveData of type " + clz.toString(), e);
 			}
 		}
 		return data;

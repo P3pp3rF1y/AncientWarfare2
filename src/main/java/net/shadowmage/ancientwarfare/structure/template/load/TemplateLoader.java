@@ -81,6 +81,7 @@ public class TemplateLoader {
 		FileUtils.findFiles(source, base, (root, file) -> {
 			String relative = root.relativize(file).toString();
 
+			@SuppressWarnings("squid:S4784")
 			String name = FilenameUtils.removeExtension(relative).replaceAll("\\\\", "/");
 
 			String extension = FilenameUtils.getExtension(file.toString());

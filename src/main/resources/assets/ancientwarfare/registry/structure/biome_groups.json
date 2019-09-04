@@ -1,0 +1,23 @@
+{
+    "biome_groups": {
+        "barbarian": [
+            "traverse:rocky_plains",
+            "minecraft:taiga",
+            "minecraft:redwood_taiga",
+            "minecraft:extreme_hills",
+            "minecraft:mutated_taiga",
+            "biomesoplenty:steppe",
+            "traverse:rocky_plateau"
+        ],
+        "xoltec": [
+            "minecraft:mesa",
+            "traverse:red_desert",
+            "minecraft:mutated_mesa_clear_rock",
+            "minecraft:mesa_clear_rock",
+            "minecraft:mesa_rock",
+            "minecraft:mutated_mesa",
+            "minecraft:mutated_mesa_rock"
+        ]
+    }
+}
+}
