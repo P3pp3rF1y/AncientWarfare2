@@ -31,7 +31,7 @@ public class AWNPCStatics extends ModConfiguration {
 	public static int townMaxRange = 100;
 	public static int townUpdateFreq = 100; //5 second broadcast frequency
 	public static boolean npcAIDebugMode = false;
-	public static double archerRange = 16.0;
+	public static double archerRange = 60.0;
 
 	/*
 	 * TODO add these to config

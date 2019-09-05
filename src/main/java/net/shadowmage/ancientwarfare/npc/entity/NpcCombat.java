@@ -42,7 +42,7 @@ import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 import javax.annotation.Nonnull;
 import java.util.Collection;
 
-@SuppressWarnings("squid:MaximumInheritanceDepth")
+@SuppressWarnings({"squid:MaximumInheritanceDepth", "squid:S2160"})
 public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
 	private static final String PATROL_AI_TAG = "patrolAI";
 	private NpcAIAttackMeleeLongRange meleeAI;
@@ -200,9 +200,9 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
 
 	@Override
 	public void attackEntityWithRangedAttack(EntityLivingBase target, float force) {
-		// minimum precision = 10.0f, slowly reaches 0 (or close to it) as the NPC reaches max level
-		float precision = 10.0f - ((float) getLevelingStats().getBaseLevel() / (float) AWNPCStatics.maxNpcLevel * 10.0f);
-		RangeAttackHelper.doRangedAttack(this, target, force, precision);
+		// minimum inaccuracy = 3.0f, slowly reaches 0 (or close to it) as the NPC reaches max level
+		float inaccuracy = 3.0f - ((float) Math.sqrt(getLevelingStats().getBaseLevel()) / (float) Math.sqrt(AWNPCStatics.maxNpcLevel) * 5.0f);
+		RangeAttackHelper.doRangedAttack(this, target, force, inaccuracy);
 	}
 
 	public void respondToDistress(NpcBase source) {

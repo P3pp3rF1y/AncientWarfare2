@@ -23,21 +23,14 @@ public class NpcAIPlayerOwnedFollowCommand extends NpcAI<NpcPlayerOwned> {
 			return false;
 		}
 		Command cmd = npc.getCurrentCommand();
-		if (cmd == null) {
-			return false;
-		}
-		if (cmd.type == CommandType.GUARD || cmd.type == CommandType.ATTACK_AREA)//if it is an attack or entity-targeting task
-		{
-			return npc.getAttackTarget() == null;//only continue with task while attack target is null, else persist command until next run and let the attack ai run
-		}
-		return true;//else it was not one of the aformentioned commands OR attack target==null, continue with command
+		return cmd != Command.NONE && (!(cmd.type == CommandType.GUARD || cmd.type == CommandType.ATTACK_AREA) || npc.getAttackTarget() == null);
 	}
 
 	@Override
 	public void resetTask() {
 		Command cmd = npc.getCurrentCommand();
-		if (cmd != null && (npc.getAttackTarget() == null || !cmd.type.isPersistent())) {
-			npc.handlePlayerCommand(null);
+		if (cmd != Command.NONE && (npc.getAttackTarget() == null || !cmd.type.isPersistent())) {
+			npc.handlePlayerCommand(Command.NONE);
 		}
 	}
 
@@ -51,7 +44,7 @@ public class NpcAIPlayerOwnedFollowCommand extends NpcAI<NpcPlayerOwned> {
 		Command cmd = npc.getCurrentCommand();
 		handleCommand(cmd);
 		if (!cmd.type.isPersistent()) {
-			npc.setPlayerCommand(null);
+			npc.setPlayerCommand(Command.NONE);
 		}
 	}
 
@@ -78,11 +71,12 @@ public class NpcAIPlayerOwnedFollowCommand extends NpcAI<NpcPlayerOwned> {
 			case CLEAR_COMMAND:
 			case ATTACK: {
 				//should already be handled by npc 'handle command' functionality when command first received
-				npc.setPlayerCommand(null);
+				npc.setPlayerCommand(Command.NONE);
 				break;
 			}
 			case ATTACK_AREA: {
-				handleAttackMoveCommand(cmd);
+				//TODO this likely needs an implementaion that will prioritize attacking targets over moving
+				handleMoveCommand(cmd);
 				break;
 			}
 			case GUARD: {
@@ -102,7 +96,7 @@ public class NpcAIPlayerOwnedFollowCommand extends NpcAI<NpcPlayerOwned> {
 	private void handleGuardCommand(Command cmd) {
 		Entity e = cmd.getEntityTarget(npc.world);
 		if (e == null) {
-			npc.setPlayerCommand(null);//clear the command if the target entity cannot be found
+			npc.setPlayerCommand(Command.NONE);//clear the command if the target entity cannot be found
 			return;
 		}
 		double sqDist = npc.getDistanceSq(e);
@@ -114,10 +108,10 @@ public class NpcAIPlayerOwnedFollowCommand extends NpcAI<NpcPlayerOwned> {
 				if (!npc.isRiding() && e.getPassengers().isEmpty()) {
 					npc.startRiding(e);
 					e.prevRotationYaw = e.rotationYaw = npc.rotationYaw % 360F;
-					npc.setPlayerCommand(null);//clear command if horse was mounted successfully..
+					npc.setPlayerCommand(Command.NONE);//clear command if horse was mounted successfully..
 				} else if (npc.isRiding() && npc.getRidingEntity() == e) {
 					npc.dismountRidingEntity();
-					npc.setPlayerCommand(null);
+					npc.setPlayerCommand(Command.NONE);
 				}
 			}
 			//do not clear command, guard command is persistent
@@ -132,21 +126,7 @@ public class NpcAIPlayerOwnedFollowCommand extends NpcAI<NpcPlayerOwned> {
 		if (sqDist > MIN_RANGE) {
 			moveToPosition(moveTargetPos, sqDist);//not finished moving...move along path (or at least try)
 		} else {
-			npc.setPlayerCommand(null);//finished moving..clear the command...
+			npc.setPlayerCommand(Command.NONE);//finished moving..clear the command...
 		}
 	}
-
-	private void handleAttackMoveCommand(Command cmd) {
-		//move along path while looking for attack targets... -- if a target is found, the next 'shouldContinue' will break out of the AI task and allow the NPC to commence attack operations
-		if (moveTargetPos == null || moveTargetPos != cmd.pos) {
-			moveTargetPos = cmd.pos;
-		}
-		double sqDist = npc.getDistanceSq(moveTargetPos);
-		if (sqDist > MIN_RANGE) {
-			moveToPosition(moveTargetPos, sqDist);//not finished moving...move along path (or at least try)
-		} else {
-			npc.setPlayerCommand(null);//finished moving..clear the command...
-		}
-	}
-
 }
