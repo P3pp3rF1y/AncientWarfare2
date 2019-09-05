@@ -153,7 +153,7 @@ public class BlockCoinStack extends BlockBaseStructure {
 	}
 
 	private void addToStack(World world, BlockPos pos, IBlockState state, EntityPlayer player, ItemStack stack) {
-		if (stack.getCount() > 8) {
+		if (stack.getCount() >= 8) {
 			int blockStackSize = state.getValue(STACK_SIZE);
 			if (blockStackSize < 64) {
 				world.setBlockState(pos, state.withProperty(STACK_SIZE, (blockStackSize + 8)));
