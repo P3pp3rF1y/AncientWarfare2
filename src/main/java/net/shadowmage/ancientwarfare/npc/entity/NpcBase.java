@@ -1132,6 +1132,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		// Try placing the NPC to an empty spot next to the bed. We don't want them standing on top of the bed, chance for suffocation
 		EnumFacing bedDirection = getBedDirection();
 
+		setSize(originalWidth, originalHeight);
+
 		//try sides first
 		if (tryMovingToBedside(bedPos.offset(bedDirection.rotateY())))
 			return;
@@ -1144,10 +1146,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 			return;
 		if (tryMovingToBedside(offsetPos.offset(bedDirection.rotateY())))
 			return;
-		if (tryMovingToBedside(offsetPos.offset(bedDirection.rotateYCCW())))
-			return;
-
-		setSize(originalWidth, originalHeight);
+		tryMovingToBedside(offsetPos.offset(bedDirection.rotateYCCW()));
 	}
 
 	private boolean tryMovingToBedside(BlockPos posToMove) {
