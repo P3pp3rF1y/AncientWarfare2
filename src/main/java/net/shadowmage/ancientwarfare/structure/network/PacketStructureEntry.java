@@ -19,15 +19,14 @@ public class PacketStructureEntry extends PacketBase {
 	private int cx;
 	private int cz;
 	private StructureEntry entry;
-	private boolean unique;
 
+	@SuppressWarnings("unused") //necessary for client side handling
 	public PacketStructureEntry() {}
 
-	public PacketStructureEntry(int dimension, int cx, int cz, StructureEntry entry, boolean unique) {
+	public PacketStructureEntry(int dimension, int cx, int cz, StructureEntry entry) {
 		this.dimension = dimension;
 		this.cx = cx;
 		this.cz = cz;
-		this.unique = unique;
 		this.entry = entry;
 	}
 
@@ -36,7 +35,6 @@ public class PacketStructureEntry extends PacketBase {
 		data.writeInt(dimension);
 		data.writeInt(cx);
 		data.writeInt(cz);
-		data.writeBoolean(unique);
 		NBTTagCompound entryTag = new NBTTagCompound();
 		entry.writeToNBT(entryTag);
 		PacketHelper.writeNBTTag(data, entryTag);
@@ -47,7 +45,6 @@ public class PacketStructureEntry extends PacketBase {
 		dimension = data.readInt();
 		cx = data.readInt();
 		cz = data.readInt();
-		unique = data.readBoolean();
 		entry = new StructureEntry();
 		entry.readFromNBT(PacketHelper.readNBTTag(data));
 	}
@@ -57,7 +54,8 @@ public class PacketStructureEntry extends PacketBase {
 	protected void execute() {
 		WorldClient world = Minecraft.getMinecraft().world;
 		if (world != null) {
-			AWGameData.INSTANCE.getData(world, StructureMap.class).setGeneratedAt(dimension, cx, cz, entry, unique);
+			//passing false to unique as it's not needed client side, but client side still uses the same structure data storage that needs some value there
+			AWGameData.INSTANCE.getData(world, StructureMap.class).setGeneratedAt(dimension, cx, cz, entry, false);
 		}
 	}
 }

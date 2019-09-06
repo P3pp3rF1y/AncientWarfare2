@@ -74,9 +74,11 @@ public class TileProtectionFlag extends TileUpdatable {
 	public void validate() {
 		super.validate();
 		AWGameData.INSTANCE.getData(world, StructureMap.class).getStructureAt(world, pos).ifPresent(structure -> {
-			structure.setProtectionFlagPos(pos);
-			if (!world.isRemote) {
-				NetworkHandler.sendToAllPlayers(new PacketStructureEntry(world.provider.getDimension(), structure.getChunkX(), structure.getChunkZ(), structure, false));
+			if (!structure.getProtectionFlagPos().equals(pos)) {
+				structure.setProtectionFlagPos(pos);
+				if (!world.isRemote) {
+					NetworkHandler.sendToAllPlayers(new PacketStructureEntry(world.provider.getDimension(), structure.getChunkX(), structure.getChunkZ(), structure));
+				}
 			}
 		});
 	}
