@@ -10,8 +10,7 @@ public class PacketSingleAmmoUpdate extends PacketVehicleBase {
 	private String ammoRegistryName;
 	private int count;
 
-	public PacketSingleAmmoUpdate() {
-	}
+	public PacketSingleAmmoUpdate() {}
 
 	public PacketSingleAmmoUpdate(VehicleBase vehicle, String ammoRegistryName, int count) {
 		super(vehicle);

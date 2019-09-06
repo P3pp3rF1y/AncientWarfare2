@@ -8,33 +8,33 @@ import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.function.Supplier;
 
 public abstract class PacketBase {
 
-	private static HashMap<Integer, Class<? extends PacketBase>> packetTypes = new HashMap<>();
+	private static HashMap<Integer, Supplier<? extends PacketBase>> packetTypes = new HashMap<>();
 	private static HashMap<Class<? extends PacketBase>, Integer> packetIDs = new HashMap<>();
 
-	public static void registerPacketType(int typeNum, Class<? extends PacketBase> packetClz) {
-		packetTypes.put(typeNum, packetClz);
+	public static void registerPacketType(int typeNum, Class<? extends PacketBase> packetClz, Supplier<? extends PacketBase> instantiate) {
+		packetTypes.put(typeNum, instantiate);
 		packetIDs.put(packetClz, typeNum);
 	}
 
 	public PacketBase() {
 	}
 
-	protected void writeHeaderToStream(ByteBuf data) {
+	private void writeHeaderToStream(ByteBuf data) {
 		data.writeByte(packetIDs.get(this.getClass()));
 	}
 
-	protected static PacketBase readHeaderFromStream(ByteBuf data) {
+	private static PacketBase readHeaderFromStream(ByteBuf data) {
 		int typeNum = data.readByte();
-		try {
-			return packetTypes.get(typeNum).newInstance();
+
+		if (!packetTypes.containsKey(typeNum)) {
+			throw new IllegalArgumentException("Unregistered packet id received - " + typeNum);
 		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+
+		return packetTypes.get(typeNum).get();
 	}
 
 	protected abstract void writeToStream(ByteBuf data);
@@ -44,17 +44,14 @@ public abstract class PacketBase {
 	protected void execute() {
 	}
 
-	;
-
+	@SuppressWarnings("squid:S1172") //used in overrides
 	protected void execute(EntityPlayer player) {
 		execute();
 	}
 
 	public static PacketBase readPacket(ByteBuf data) throws IOException {
 		PacketBase pkt = readHeaderFromStream(data);
-		if (pkt != null) {
-			pkt.readFromStream(data);
-		}
+		pkt.readFromStream(data);
 		return pkt;
 	}
 
@@ -64,5 +61,4 @@ public abstract class PacketBase {
 		writeToStream(buf);
 		return new FMLProxyPacket(buf, NetworkHandler.CHANNELNAME);
 	}
-
 }

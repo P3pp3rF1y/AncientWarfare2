@@ -6,13 +6,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 
 public class PacketBlockEvent extends PacketBase {
+	private BlockPos pos;
+	private short id;
+	private short a;
+	private short b;
 
-	BlockPos pos;
-	short id, a, b;
-
-	public PacketBlockEvent() {
-		//TODO test if needed
-	}
+	public PacketBlockEvent() {}
 
 	/*
 	 * @param pos    coordinates of block in the world
@@ -46,8 +45,5 @@ public class PacketBlockEvent extends PacketBase {
 	@Override
 	protected void execute(EntityPlayer player) {
 		player.world.addBlockEvent(pos, Block.getBlockById(id), a, b);
-
-		//TODO multi threading - scheduled tasks
 	}
-
 }

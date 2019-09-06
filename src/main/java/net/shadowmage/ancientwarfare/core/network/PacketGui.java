@@ -12,7 +12,6 @@ import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import java.io.IOException;
 
 public class PacketGui extends PacketBase {
-
 	private NBTTagCompound packetData;
 
 	public PacketGui(NBTTagCompound packetData) {
@@ -42,23 +41,23 @@ public class PacketGui extends PacketBase {
 	@Override
 	protected void writeToStream(ByteBuf data) {
 		if (packetData != null) {
-			ByteBufOutputStream bbos = new ByteBufOutputStream(data);
-			try {
-				CompressedStreamTools.writeCompressed(packetData, bbos);
+			try (ByteBufOutputStream outputStream = new ByteBufOutputStream(data)) {
+				CompressedStreamTools.writeCompressed(packetData, outputStream);
 			}
 			catch (IOException e) {
-				e.printStackTrace();
+				AncientWarfareCore.LOG.error("Error writing gui packet data: ", e);
 			}
 		}
 	}
 
 	@Override
 	protected void readFromStream(ByteBuf data) {
-		try {
-			packetData = CompressedStreamTools.readCompressed(new ByteBufInputStream(data));
+		try (ByteBufInputStream inputStream = new ByteBufInputStream(data)) {
+			packetData = CompressedStreamTools.readCompressed(inputStream);
 		}
 		catch (IOException e) {
-			e.printStackTrace();
+			AncientWarfareCore.LOG.error("Error reading gui packet data: ", e);
+
 		}
 	}
 
@@ -69,7 +68,7 @@ public class PacketGui extends PacketBase {
 		} else if (player.openContainer instanceof ContainerBase) {
 			((ContainerBase) player.openContainer).onPacketData(packetData);
 		} else {
-			AncientWarfareCore.LOG.error("Invalid target found when processing GUI/Container packet : " + player.openContainer + " packet: " + packetData);
+			AncientWarfareCore.LOG.error("Invalid target found when processing GUI/Container packet : {} packet: {}", player.openContainer, packetData);
 		}
 	}
 

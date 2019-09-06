@@ -104,9 +104,9 @@ public class AncientWarfareStructure {
 		EntityRegistry.registerModEntity(new ResourceLocation(AncientWarfareStructure.MOD_ID, "aw_gate"), EntityGate.class, "aw_gate", 0, this, 250, 200, false);
 		EntityRegistry.registerModEntity(new ResourceLocation(AncientWarfareStructure.MOD_ID, "seat"), EntitySeat.class, "AWSeat", 1, this, 20, 10, false);
 
-		PacketBase.registerPacketType(NetworkHandler.PACKET_STRUCTURE, PacketStructure.class);
-		PacketBase.registerPacketType(NetworkHandler.PACKET_STRUCTURE_REMOVE, PacketStructureRemove.class);
-		PacketBase.registerPacketType(NetworkHandler.PACKET_SOUND_BLOCK_PLAYER_SPEC_VALUES, PacketSoundBlockPlayerSpecValues.class);
+		PacketBase.registerPacketType(NetworkHandler.PACKET_STRUCTURE, PacketStructure.class, PacketStructure::new);
+		PacketBase.registerPacketType(NetworkHandler.PACKET_STRUCTURE_REMOVE, PacketStructureRemove.class, PacketStructureRemove::new);
+		PacketBase.registerPacketType(NetworkHandler.PACKET_SOUND_BLOCK_PLAYER_SPEC_VALUES, PacketSoundBlockPlayerSpecValues.class, PacketSoundBlockPlayerSpecValues::new);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_SCANNER, ContainerStructureScanner.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_BUILDER, ContainerStructureSelection.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_TOWN_BUILDER, ContainerTownSelection.class);

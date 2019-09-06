@@ -8,12 +8,9 @@ import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 
 public class PacketStructureRemove extends PacketBase {
+	private String structureName;
 
-	String structureName;
-
-	public PacketStructureRemove() {
-		// receive side constructor
-	}
+	public PacketStructureRemove() {}
 
 	public PacketStructureRemove(String name) {
 		structureName = name;

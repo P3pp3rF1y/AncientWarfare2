@@ -7,17 +7,16 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.interfaces.IEntityPacketHandler;
 
 import java.io.IOException;
 
 public class PacketEntity extends PacketBase {
-
-	int entityId;
+	private int entityId;
 	public NBTTagCompound packetData = new NBTTagCompound();
 
-	public PacketEntity() {
-	}
+	public PacketEntity() {}
 
 	public PacketEntity(Entity e) {
 		this.entityId = e.getEntityId();
@@ -27,12 +26,11 @@ public class PacketEntity extends PacketBase {
 	protected void writeToStream(ByteBuf data) {
 		data.writeInt(entityId);
 		if (packetData != null) {
-			ByteBufOutputStream bbos = new ByteBufOutputStream(data);
-			try {
-				CompressedStreamTools.writeCompressed(packetData, bbos);
+			try (ByteBufOutputStream outputStream = new ByteBufOutputStream(data)) {
+				CompressedStreamTools.writeCompressed(packetData, outputStream);
 			}
 			catch (IOException e) {
-				e.printStackTrace();
+				AncientWarfareCore.LOG.error("Error writing entity packet data: ", e);
 			}
 		}
 	}
@@ -40,11 +38,11 @@ public class PacketEntity extends PacketBase {
 	@Override
 	protected void readFromStream(ByteBuf data) {
 		entityId = data.readInt();
-		try {
-			packetData = CompressedStreamTools.readCompressed(new ByteBufInputStream(data));
+		try (ByteBufInputStream inputStream = new ByteBufInputStream(data)) {
+			packetData = CompressedStreamTools.readCompressed(inputStream);
 		}
 		catch (IOException e) {
-			e.printStackTrace();
+			AncientWarfareCore.LOG.error("Error reading entity packet data: ", e);
 		}
 	}
 

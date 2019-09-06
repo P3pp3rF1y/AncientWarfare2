@@ -20,7 +20,6 @@ public class PacketStructureEntry extends PacketBase {
 	private int cz;
 	private StructureEntry entry;
 
-	@SuppressWarnings("unused") //necessary for client side handling
 	public PacketStructureEntry() {}
 
 	public PacketStructureEntry(int dimension, int cx, int cz, StructureEntry entry) {
