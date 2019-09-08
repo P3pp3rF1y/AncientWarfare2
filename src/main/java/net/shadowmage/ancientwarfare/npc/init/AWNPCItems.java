@@ -93,6 +93,9 @@ public class AWNPCItems {
 		registerExtendedReachWeapons(registry, "halberd", 3, -3.2D, 4.5F);
 		registerExtendedReachWeapons(registry, "lance", 2.5D, -3.2D, 5.5F);
 		registerExtendedReachWeapons(registry, "cleaver", 3.5D, -2.8D, 3.0F);
+
+		registerUniqueExtendedReachWeapons(registry, "ice_spear", 2, -3, 4.2F);
+		registerUniqueExtendedReachWeapons(registry, "obsidian_spear", 2, -3, 4.2F);
 	}
 
 	private static void registerExtendedReachWeapons(IForgeRegistry<Item> registry, String name, double attackOffset, double attackSpeed, float reach) {
@@ -101,6 +104,10 @@ public class AWNPCItems {
 		registry.register(new ItemExtendedReachWeapon(Item.ToolMaterial.IRON, "iron_" + name, attackOffset, attackSpeed, reach));
 		registry.register(new ItemExtendedReachWeapon(Item.ToolMaterial.GOLD, "golden_" + name, attackOffset, attackSpeed, reach));
 		registry.register(new ItemExtendedReachWeapon(Item.ToolMaterial.DIAMOND, "diamond_" + name, attackOffset, attackSpeed, reach));
+	}
+
+	private static void registerUniqueExtendedReachWeapons(IForgeRegistry<Item> registry, String name, double attackOffset, double attackSpeed, float reach) {
+		registry.register(new ItemExtendedReachWeapon(Item.ToolMaterial.DIAMOND, name, attackOffset, attackSpeed, reach));
 	}
 
 	public static void addFactionBlocks() {
