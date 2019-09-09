@@ -3,7 +3,7 @@
         "attributes": {
             "generic.maxHealth": 50,
             "generic.movementSpeed": 0.3,
-            "generic.followRange": 16,
+            "generic.followRange": 35,
             "generic.attackDamage": 1
         },
         "enabled": true,
