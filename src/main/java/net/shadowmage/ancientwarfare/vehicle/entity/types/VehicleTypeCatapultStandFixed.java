@@ -6,26 +6,26 @@ import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 public class VehicleTypeCatapultStandFixed extends VehicleTypeCatapult {
 	public VehicleTypeCatapultStandFixed(int typeNum) {
 		super(typeNum);
-		this.configName = "catapult_stand";
-		this.width = 2;
-		this.height = 1.7f;
-		this.baseMissileVelocityMax = 37.f;
-		this.turretVerticalOffset = 3 * 0.0625f;
-		this.riderForwardsOffset = 1.2f;
-		this.riderVerticalOffset = 0.0f;
-		this.displayName = "item.vehicleSpawner.0";
-		this.displayTooltip.add("item.vehicleSpawner.tooltip.torsion");
-		this.displayTooltip.add("item.vehicleSpawner.tooltip.fixed");
-		this.displayTooltip.add("item.vehicleSpawner.tooltip.noturret");
-		this.storageBaySize = 0;
-		this.armorBaySize = 4;
-		this.upgradeBaySize = 4;
-		this.yawAdjustable = false;
-		this.drivable = true;
-		this.baseForwardSpeed = 0.f;
-		this.baseStrafeSpeed = .5f;
-		this.riderSits = true;
-		this.riderMovesWithTurret = false;
+		configName = "catapult_stand";
+		width = 2;
+		height = 1.7f;
+		baseMissileVelocityMax = 37.f;
+		turretVerticalOffset = 3 * 0.0625f;
+		riderForwardsOffset = 1.2f;
+		riderVerticalOffset = 0.0f;
+		displayName = "item.vehicleSpawner.0";
+		displayTooltip.add("item.vehicleSpawner.tooltip.torsion");
+		displayTooltip.add("item.vehicleSpawner.tooltip.fixed");
+		displayTooltip.add("item.vehicleSpawner.tooltip.noturret");
+		storageBaySize = 0;
+		armorBaySize = 4;
+		upgradeBaySize = 4;
+		yawAdjustable = false;
+		drivable = true;
+		baseForwardSpeed = 0.f;
+		baseStrafeSpeed = .75f;
+		riderSits = true;
+		riderMovesWithTurret = false;
 	}
 
 	@Override

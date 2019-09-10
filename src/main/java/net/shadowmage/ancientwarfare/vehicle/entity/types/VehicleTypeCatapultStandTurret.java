@@ -6,28 +6,28 @@ import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 public class VehicleTypeCatapultStandTurret extends VehicleTypeCatapult {
 	public VehicleTypeCatapultStandTurret(int typeNum) {
 		super(typeNum);
-		this.configName = "catapult_stand_turret";
-		this.width = 2.7f;
-		this.height = 2.f;
-		this.baseMissileVelocityMax = 32.f;
-		this.turretVerticalOffset = 13 * 0.0625f;
-		this.turretVerticalOffset = 0.4f;
-		this.riderForwardsOffset = 1.2f;
-		this.riderVerticalOffset = 0.55f;
-		this.displayName = "item.vehicleSpawner.1";
-		this.displayTooltip.add("item.vehicleSpawner.tooltip.torsion");
-		this.displayTooltip.add("item.vehicleSpawner.tooltip.fixed");
-		this.displayTooltip.add("item.vehicleSpawner.tooltip.midturret");
-		this.storageBaySize = 0;
-		this.armorBaySize = 4;
-		this.upgradeBaySize = 4;
-		this.yawAdjustable = true;
-		this.baseForwardSpeed = 0.f;
-		this.baseStrafeSpeed = .5f;
-		this.turretRotationMax = 45.f;
-		this.drivable = true;
-		this.riderSits = true;
-		this.riderMovesWithTurret = true;
+		configName = "catapult_stand_turret";
+		width = 2.7f;
+		height = 2.f;
+		baseMissileVelocityMax = 32.f;
+		turretVerticalOffset = 13 * 0.0625f;
+		turretVerticalOffset = 0.4f;
+		riderForwardsOffset = 1.2f;
+		riderVerticalOffset = 0.55f;
+		displayName = "item.vehicleSpawner.1";
+		displayTooltip.add("item.vehicleSpawner.tooltip.torsion");
+		displayTooltip.add("item.vehicleSpawner.tooltip.fixed");
+		displayTooltip.add("item.vehicleSpawner.tooltip.midturret");
+		storageBaySize = 0;
+		armorBaySize = 4;
+		upgradeBaySize = 4;
+		yawAdjustable = true;
+		baseForwardSpeed = 0.f;
+		baseStrafeSpeed = .75f;
+		turretRotationMax = 45.f;
+		drivable = true;
+		riderSits = true;
+		riderMovesWithTurret = true;
 	}
 
 	@Override

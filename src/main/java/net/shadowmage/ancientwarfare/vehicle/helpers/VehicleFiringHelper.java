@@ -21,7 +21,6 @@
 
 package net.shadowmage.ancientwarfare.vehicle.helpers;
 
-import com.google.common.primitives.Floats;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.math.MathHelper;
@@ -610,9 +609,23 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 		if (!vehicle.canAimPower()) {
 			return true;
 		}
+		Vec3d offset = vehicle.getMissileOffset();
+		float x = (float) (vehicle.posX + offset.x);
+		float y = (float) (vehicle.posY + offset.y);
+		float z = (float) (vehicle.posZ + offset.z);
 
-		float powerMin = getPowerFor((float) target.getBoundigBox().minX, (float) target.getBoundigBox().minY, (float) target.getBoundigBox().minZ);
-		float powerMax = getPowerFor((float) target.getBoundigBox().maxX, (float) target.getBoundigBox().maxY, (float) target.getBoundigBox().maxZ);
+		float minDistY;
+		float maxDistY;
+		if (Math.abs(target.getBoundigBox().minY - y) < Math.abs(target.getBoundigBox().maxY - y)) {
+			minDistY = (float) (target.getBoundigBox().minY - y);
+			maxDistY = (float) (target.getBoundigBox().maxY - y);
+		} else {
+			minDistY = (float) (target.getBoundigBox().maxY - y);
+			maxDistY = (float) (target.getBoundigBox().minY - y);
+		}
+
+		float powerMin = getPowerFor((float) target.getBoundigBox().minX - x, minDistY, (float) target.getBoundigBox().minZ - z);
+		float powerMax = getPowerFor((float) target.getBoundigBox().maxX - x, maxDistY, (float) target.getBoundigBox().maxZ - z);
 
 		if (powerMin > powerMax) {
 			float temp = powerMin;
@@ -623,8 +636,8 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 		return vehicle.localLaunchPower >= powerMin && vehicle.localLaunchPower <= powerMax;
 	}
 
-	private float getPowerFor(float minX, float minY, float minZ) {
-		return Trig.iterativeSpeedFinder(minX, minY, minZ, vehicle.localTurretPitch + vehicle.rotationPitch,
+	private float getPowerFor(float distX, float distY, float distZ) {
+		return Trig.iterativeSpeedFinder(distX, distY, distZ, vehicle.localTurretPitch + vehicle.rotationPitch,
 						TRAJECTORY_ITERATIONS_CLIENT, (vehicle.ammoHelper.getCurrentAmmoType() != null && vehicle.ammoHelper.getCurrentAmmoType().isRocket()));
 	}
 

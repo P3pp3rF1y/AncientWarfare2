@@ -25,6 +25,7 @@ import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
+import net.shadowmage.ancientwarfare.npc.gamedata.TeamData;
 import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
 import net.shadowmage.ancientwarfare.npc.registry.NpcDefaultsRegistry;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
@@ -100,6 +101,13 @@ public class EventHandler {
 
 		return (e instanceof NpcPlayerOwned) && NpcDefaultsRegistry.getOwnedNpcDefault((NpcPlayerOwned) e).isTarget(entity);
 
+	}
+
+	@SubscribeEvent
+	public void onPlayerJoined(net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent evt) {
+		TeamData teamData = AWGameData.INSTANCE.getData(evt.player.world, TeamData.class);
+
+		teamData.updatePlayerTeamStandings(evt.player);
 	}
 
 	@SubscribeEvent

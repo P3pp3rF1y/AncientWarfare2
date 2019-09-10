@@ -16,63 +16,63 @@ import net.shadowmage.ancientwarfare.vehicle.registry.UpgradeRegistry;
 public class VehicleTypeCannon extends VehicleType {
 	public VehicleTypeCannon(int typeNum) {
 		super(typeNum);
-		this.configName = "cannon_base";
-		this.vehicleMaterial = VehicleMaterial.materialIron;
-		this.materialCount = 5;
-		this.maxMissileWeight = 10.f;
+		configName = "cannon_base";
+		vehicleMaterial = VehicleMaterial.materialIron;
+		materialCount = 5;
+		maxMissileWeight = 10.f;
 
-		this.validAmmoTypes.add(AmmoRegistry.ammoIronShot5);
-		this.validAmmoTypes.add(AmmoRegistry.ammoIronShot10);
-		this.validAmmoTypes.add(AmmoRegistry.ammoGrapeShot5);
-		this.validAmmoTypes.add(AmmoRegistry.ammoGrapeShot10);
-		this.validAmmoTypes.add(AmmoRegistry.ammoCanisterShot5);
-		this.validAmmoTypes.add(AmmoRegistry.ammoCanisterShot10);
+		validAmmoTypes.add(AmmoRegistry.ammoIronShot5);
+		validAmmoTypes.add(AmmoRegistry.ammoIronShot10);
+		validAmmoTypes.add(AmmoRegistry.ammoGrapeShot5);
+		validAmmoTypes.add(AmmoRegistry.ammoGrapeShot10);
+		validAmmoTypes.add(AmmoRegistry.ammoCanisterShot5);
+		validAmmoTypes.add(AmmoRegistry.ammoCanisterShot10);
 
 		if (AWVehicleStatics.oversizeAmmoEnabled) {
-			this.validAmmoTypes.add(AmmoRegistry.ammoIronShot15);
-			this.validAmmoTypes.add(AmmoRegistry.ammoIronShot25);
-			this.validAmmoTypes.add(AmmoRegistry.ammoGrapeShot15);
-			this.validAmmoTypes.add(AmmoRegistry.ammoGrapeShot25);
-			this.validAmmoTypes.add(AmmoRegistry.ammoCanisterShot15);
-			this.validAmmoTypes.add(AmmoRegistry.ammoCanisterShot25);
+			validAmmoTypes.add(AmmoRegistry.ammoIronShot15);
+			validAmmoTypes.add(AmmoRegistry.ammoIronShot25);
+			validAmmoTypes.add(AmmoRegistry.ammoGrapeShot15);
+			validAmmoTypes.add(AmmoRegistry.ammoGrapeShot25);
+			validAmmoTypes.add(AmmoRegistry.ammoCanisterShot15);
+			validAmmoTypes.add(AmmoRegistry.ammoCanisterShot25);
 		}
 
-		this.ammoBySoldierRank.put(0, AmmoRegistry.ammoIronShot5);
-		this.ammoBySoldierRank.put(1, AmmoRegistry.ammoIronShot5);
-		this.ammoBySoldierRank.put(2, AmmoRegistry.ammoIronShot5);
+		ammoBySoldierRank.put(0, AmmoRegistry.ammoIronShot5);
+		ammoBySoldierRank.put(1, AmmoRegistry.ammoIronShot5);
+		ammoBySoldierRank.put(2, AmmoRegistry.ammoIronShot5);
 
-		this.validUpgrades.add(UpgradeRegistry.pitchDownUpgrade);
-		this.validUpgrades.add(UpgradeRegistry.pitchUpUpgrade);
-		this.validUpgrades.add(UpgradeRegistry.pitchExtUpgrade);
-		this.validUpgrades.add(UpgradeRegistry.powerUpgrade);
-		this.validUpgrades.add(UpgradeRegistry.reloadUpgrade);
-		this.validUpgrades.add(UpgradeRegistry.aimUpgrade);
+		validUpgrades.add(UpgradeRegistry.pitchDownUpgrade);
+		validUpgrades.add(UpgradeRegistry.pitchUpUpgrade);
+		validUpgrades.add(UpgradeRegistry.pitchExtUpgrade);
+		validUpgrades.add(UpgradeRegistry.powerUpgrade);
+		validUpgrades.add(UpgradeRegistry.reloadUpgrade);
+		validUpgrades.add(UpgradeRegistry.aimUpgrade);
 
-		this.validArmors.add(ArmorRegistry.armorStone);
-		this.validArmors.add(ArmorRegistry.armorIron);
-		this.validArmors.add(ArmorRegistry.armorObsidian);
+		validArmors.add(ArmorRegistry.armorStone);
+		validArmors.add(ArmorRegistry.armorIron);
+		validArmors.add(ArmorRegistry.armorObsidian);
 
-		this.turretVerticalOffset = 11.5f * 0.0625f;
-		this.storageBaySize = 0;
-		this.accuracy = 0.98f;
-		this.drivable = true;
-		this.baseForwardSpeed = 0.f;
-		this.baseStrafeSpeed = .5f;
-		this.basePitchMax = 15;
-		this.basePitchMin = -15;
-		this.mountable = true;
-		this.combatEngine = true;
-		this.pitchAdjustable = true;
-		this.powerAdjustable = false;
-		this.yawAdjustable = false;
+		turretVerticalOffset = 11.5f * 0.0625f;
+		storageBaySize = 0;
+		accuracy = 0.98f;
+		drivable = true;
+		baseForwardSpeed = 0.f;
+		baseStrafeSpeed = .75f;
+		basePitchMax = 15;
+		basePitchMin = -15;
+		mountable = true;
+		combatEngine = true;
+		pitchAdjustable = true;
+		powerAdjustable = false;
+		yawAdjustable = false;
 
-		this.baseMissileVelocityMax = 42.f;
-		this.width = 2;
-		this.height = 2;
+		baseMissileVelocityMax = 42.f;
+		width = 2;
+		height = 2;
 
-		this.armorBaySize = 3;
-		this.upgradeBaySize = 3;
-		this.ammoBaySize = 6;
+		armorBaySize = 3;
+		upgradeBaySize = 3;
+		ammoBaySize = 6;
 	}
 
 	@Override
@@ -133,7 +133,7 @@ public class VehicleTypeCannon extends VehicleType {
 				if (!vehicle.world.isRemote) {
 					vehicle.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 1.f, 1.f);
 				}
-				this.vehicle.firingHelper.startLaunching();
+				vehicle.firingHelper.startLaunching();
 				firingTicks = 0;
 			}
 		}
