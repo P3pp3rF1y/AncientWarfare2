@@ -96,6 +96,7 @@ public class AWNPCItems {
 
 		registerUniqueExtendedReachWeapons(registry, "ice_spear", 2, -3, 4.2F);
 		registerUniqueExtendedReachWeapons(registry, "obsidian_spear", 2, -3, 4.2F);
+		registerUniqueExtendedReachWeapons(registry, "giant_club", 3.5, -3.6D, 4.2F);
 	}
 
 	private static void registerExtendedReachWeapons(IForgeRegistry<Item> registry, String name, double attackOffset, double attackSpeed, float reach) {

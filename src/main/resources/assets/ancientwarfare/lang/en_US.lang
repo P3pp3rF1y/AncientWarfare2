@@ -124,6 +124,7 @@ item.golden_cleaver.name=Golden Cleaver
 item.diamond_cleaver.name=Diamond Cleaver
 item.ice_spear.name=Ice Spear
 item.obsidian_spear.name=Obsidian Spear
+item.giant_club.name=Giant Club
 entity.ancientwarfarenpc.courier.name=Courier
 entity.ancientwarfarenpc.trader.name=Trader
 entity.ancientwarfarenpc.priest.name=Priest
