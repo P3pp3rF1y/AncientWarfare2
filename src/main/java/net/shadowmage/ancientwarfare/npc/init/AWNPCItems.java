@@ -14,14 +14,19 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.shadowmage.ancientwarfare.core.util.InjectionTools;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.item.ItemBardInstrument;
+import net.shadowmage.ancientwarfare.npc.item.ItemClub;
 import net.shadowmage.ancientwarfare.npc.item.ItemCoin;
 import net.shadowmage.ancientwarfare.npc.item.ItemCombatOrder;
 import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 import net.shadowmage.ancientwarfare.npc.item.ItemExtendedReachWeapon;
 import net.shadowmage.ancientwarfare.npc.item.ItemFoodBundle;
+import net.shadowmage.ancientwarfare.npc.item.ItemIceSpear;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
+import net.shadowmage.ancientwarfare.npc.item.ItemPitchfork;
 import net.shadowmage.ancientwarfare.npc.item.ItemRoutingOrder;
+import net.shadowmage.ancientwarfare.npc.item.ItemScythe;
 import net.shadowmage.ancientwarfare.npc.item.ItemShield;
+import net.shadowmage.ancientwarfare.npc.item.ItemSickle;
 import net.shadowmage.ancientwarfare.npc.item.ItemTradeOrder;
 import net.shadowmage.ancientwarfare.npc.item.ItemUpkeepOrder;
 import net.shadowmage.ancientwarfare.npc.item.ItemWorkOrder;
@@ -84,6 +89,12 @@ public class AWNPCItems {
 		registry.register(new ItemNpcSpawner());
 
 		registry.register(new ItemCoin());
+		registry.register(new ItemSickle(Item.ToolMaterial.IRON, -2.3F));
+		registry.register(new ItemPitchfork(Item.ToolMaterial.IRON, -2.3F));
+		registry.register(new ItemScythe(Item.ToolMaterial.IRON, "scythe", 0.0F, -2.3F));
+		registry.register(new ItemScythe(Item.ToolMaterial.DIAMOND, "death_scythe", 0.0F, -2.3F));
+		registry.register(new ItemClub(Item.ToolMaterial.DIAMOND, "giant_club", 3.5, -3.6D, 4.2F));
+		registry.register(new ItemIceSpear(Item.ToolMaterial.DIAMOND,"ice_spear", 2, -3, 4.2F));
 
 		ItemFoodBundle bundle = new ItemFoodBundle();
 		registry.register(bundle);
@@ -94,9 +105,7 @@ public class AWNPCItems {
 		registerExtendedReachWeapons(registry, "lance", 2.5D, -3.2D, 5.5F);
 		registerExtendedReachWeapons(registry, "cleaver", 3.5D, -2.8D, 3.0F);
 
-		registerUniqueExtendedReachWeapons(registry, "ice_spear", 2, -3, 4.2F);
-		registerUniqueExtendedReachWeapons(registry, "obsidian_spear", 2, -3, 4.2F);
-		registerUniqueExtendedReachWeapons(registry, "giant_club", 3.5, -3.6D, 4.2F);
+		registerUniqueExtendedReachWeapon(registry, "obsidian_spear", 2, -3, 4.2F);
 	}
 
 	private static void registerExtendedReachWeapons(IForgeRegistry<Item> registry, String name, double attackOffset, double attackSpeed, float reach) {
@@ -107,7 +116,7 @@ public class AWNPCItems {
 		registry.register(new ItemExtendedReachWeapon(Item.ToolMaterial.DIAMOND, "diamond_" + name, attackOffset, attackSpeed, reach));
 	}
 
-	private static void registerUniqueExtendedReachWeapons(IForgeRegistry<Item> registry, String name, double attackOffset, double attackSpeed, float reach) {
+	private static void registerUniqueExtendedReachWeapon(IForgeRegistry<Item> registry, String name, double attackOffset, double attackSpeed, float reach) {
 		registry.register(new ItemExtendedReachWeapon(Item.ToolMaterial.DIAMOND, name, attackOffset, attackSpeed, reach));
 	}
 

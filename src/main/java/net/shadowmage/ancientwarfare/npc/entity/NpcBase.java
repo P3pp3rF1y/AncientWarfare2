@@ -222,6 +222,11 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 			}
 			if (target instanceof EntityLivingBase) {
 				EnchantmentHelper.applyThornEnchantments((EntityLivingBase) target, this);
+
+				EntityLivingBase livingTarget;
+				livingTarget = (EntityLivingBase)target;
+				ItemStack item = this.getHeldItemMainhand();
+				this.getHeldItemMainhand().getItem().hitEntity(item, livingTarget, this);
 			}
 			EnchantmentHelper.applyArthropodEnchantments(this, target);
 		}
