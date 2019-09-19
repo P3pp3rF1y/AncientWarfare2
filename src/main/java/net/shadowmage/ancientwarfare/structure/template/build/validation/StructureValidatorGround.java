@@ -25,7 +25,7 @@ public class StructureValidatorGround extends StructureValidator {
 		Block block = state.getBlock();
 		if (!AWStructureStatics.isValidTargetBlock(state)) {
 			//noinspection ConstantConditions
-			AncientWarfareStructure.LOG.debug("Rejecting due to target block mismatch of: " + block.getRegistryName().toString() + " at: " + x + "," + y + "," + z);
+			AncientWarfareStructure.LOG.debug("Rejecting due to target block mismatch of: {} at: {},{},{}", () -> block.getRegistryName().toString(), () -> x, () -> y, () -> z);
 			return false;
 		}
 		return true;

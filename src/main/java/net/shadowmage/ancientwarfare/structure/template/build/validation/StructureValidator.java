@@ -303,7 +303,7 @@ public abstract class StructureValidator {
 		return getPropertyValue(MAX_FILL);
 	}
 
-	private int getMaxLeveling() {
+	int getMaxLeveling() {
 		return getPropertyValue(MAX_LEVELING);
 	}
 
