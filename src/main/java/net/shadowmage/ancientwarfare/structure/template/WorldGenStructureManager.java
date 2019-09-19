@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.Predicate;
 
 public class WorldGenStructureManager {
 
@@ -63,11 +64,14 @@ public class WorldGenStructureManager {
 	}
 
 	private void whitelistBiomes(StructureTemplate template, Set<String> biomes, Set<String> biomeGroupBiomes) {
-		for (String biome : biomes) {
-			if (templatesByBiome.containsKey(biome)) {
-				if (biomeGroupBiomes.isEmpty() || biomeGroupBiomes.contains(biome)) {
-					templatesByBiome.get(biome).add(template);
-				}
+		addTemplateToBiomes(template, biomeGroupBiomes, b -> true);
+		addTemplateToBiomes(template, biomes, b -> biomeGroupBiomes.isEmpty() || biomeGroupBiomes.contains(b));
+	}
+
+	private void addTemplateToBiomes(StructureTemplate template, Set<String> biomeGroupBiomes, Predicate<String> checkBiome) {
+		for (String biome : biomeGroupBiomes) {
+			if (templatesByBiome.containsKey(biome) && checkBiome.test(biome)) {
+				templatesByBiome.get(biome).add(template);
 			} else if (Loader.isModLoaded((new ResourceLocation(biome)).getResourceDomain())) {
 				AncientWarfareStructure.LOG.warn("Could not locate biome: {} while registering template: {} for world generation.", biome, template.name);
 			}
@@ -80,7 +84,9 @@ public class WorldGenStructureManager {
 			if (!biomes.isEmpty() && biomes.contains(biome)) {
 				continue;
 			}
-			templatesByBiome.get(biome).add(template);
+			if (templatesByBiome.containsKey(biome)) {
+				templatesByBiome.get(biome).add(template);
+			}
 		}
 	}
 
