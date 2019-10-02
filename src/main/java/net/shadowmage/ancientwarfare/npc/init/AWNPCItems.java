@@ -21,6 +21,7 @@ import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 import net.shadowmage.ancientwarfare.npc.item.ItemExtendedReachWeapon;
 import net.shadowmage.ancientwarfare.npc.item.ItemFoodBundle;
 import net.shadowmage.ancientwarfare.npc.item.ItemIceSpear;
+import net.shadowmage.ancientwarfare.npc.item.ItemMacuahuitl;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 import net.shadowmage.ancientwarfare.npc.item.ItemPitchfork;
 import net.shadowmage.ancientwarfare.npc.item.ItemRoutingOrder;
@@ -89,6 +90,7 @@ public class AWNPCItems {
 		registry.register(new ItemNpcSpawner());
 
 		registry.register(new ItemCoin());
+		registry.register(new ItemMacuahuitl(Item.ToolMaterial.IRON, "macuahuitl"));
 		registry.register(new ItemSickle(Item.ToolMaterial.IRON, -2.3F));
 		registry.register(new ItemPitchfork(Item.ToolMaterial.IRON, -2.3F));
 		registry.register(new ItemScythe(Item.ToolMaterial.IRON, "scythe", 0.0F, -2.3F));
