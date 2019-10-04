@@ -118,7 +118,6 @@ public class RenderVehicle extends Render<VehicleBase> {
 		RenderVehicleBase render = vehicleRenders.get(vehicle.vehicleType);
 		render.renderVehicle(vehicle, x, y, z, renderYaw, partialTicks);
 		//TODO add code to change to team color - similar to RenderNpcBase code for it
-		render.renderVehicleFlag();
 		GlStateManager.color(1.f, 1.f, 1.f, 1.f);
 		GlStateManager.popMatrix();
 		if (useAlpha) {

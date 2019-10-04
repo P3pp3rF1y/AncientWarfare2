@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.vehicle.model;
 
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.relauncher.Side;
@@ -7,7 +8,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
 @SideOnly(Side.CLIENT)
-public class ModelCatapultMobileFixed extends ModelVehicleBase {
+public class ModelCatapultMobileFixed extends ModelBase {
 
 	ModelRenderer turretMidBeam;
 	ModelRenderer upright1;
@@ -90,8 +91,6 @@ public class ModelCatapultMobileFixed extends ModelVehicleBase {
 	ModelRenderer chairBrace;
 	ModelRenderer chairBottom;
 	ModelRenderer chairBack;
-	ModelRenderer flagPole;
-	ModelRenderer flagCloth;
 
 	public ModelCatapultMobileFixed() {
 		turretMidBeam = new ModelRenderer(this, "turretMidBeam");
@@ -659,18 +658,6 @@ public class ModelCatapultMobileFixed extends ModelVehicleBase {
 		chairBack.addBox(0.0f, -10.0f, 0.0f, 10, 10, 1);
 		chairBrace.addChild(chairBack);
 		frontCrossBeam.addChild(chairBrace);
-		flagPole = new ModelRenderer(this, "flagPole");
-		flagPole.setTextureOffset(19, 78);
-		flagPole.setTextureSize(256, 256);
-		flagPole.setRotationPoint(-14.0f, -27.0f, 21.5f);
-		setPieceRotation(flagPole, 0.0f, 0.0f, 0.0f);
-		flagPole.addBox(0.0f, 0.0f, 0.0f, 1, 16, 1);
-		flagCloth = new ModelRenderer(this, "flagCloth");
-		flagCloth.setTextureOffset(24, 78);
-		flagCloth.setTextureSize(256, 256);
-		flagCloth.setRotationPoint(-14.0f, -27.0f, 22.5f);
-		setPieceRotation(flagCloth, 0.0f, 0.0f, 0.0f);
-		flagCloth.addBox(0.0f, 0.0f, 0.0f, 1, 8, 11);
 	}
 
 	@Override
@@ -679,7 +666,6 @@ public class ModelCatapultMobileFixed extends ModelVehicleBase {
 		setRotationAngles(f1, f2, f3, f4, f5, f6, entity);
 		turretMidBeam.render(f6);
 		frontCrossBeam.render(f6);
-		flagPole.render(0.0625f);
 	}
 
 	public void setPieceRotation(ModelRenderer model, float x, float y, float z) {
@@ -701,10 +687,5 @@ public class ModelCatapultMobileFixed extends ModelVehicleBase {
 
 	public void setCrankRotations(float angle) {
 		this.pulleyAxle.rotateAngleX = Trig.toRadians(angle);
-	}
-
-	@Override
-	public void renderFlag() {
-		flagCloth.render(0.0625f);
 	}
 }

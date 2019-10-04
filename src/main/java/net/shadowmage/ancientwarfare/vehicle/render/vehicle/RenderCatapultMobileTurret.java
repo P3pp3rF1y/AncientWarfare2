@@ -47,9 +47,4 @@ public class RenderCatapultMobileTurret extends RenderVehicleBase {
 
 	}
 
-	@Override
-	public void renderVehicleFlag() {
-		model.renderFlag();
-	}
-
 }

@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.vehicle.model;
 
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.relauncher.Side;
@@ -7,7 +8,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
 @SideOnly(Side.CLIENT)
-public class ModelBallistaStand extends ModelVehicleBase {
+public class ModelBallistaStand extends ModelBase {
 
 	ModelRenderer baseMain;
 	ModelRenderer basePillar;
@@ -54,8 +55,6 @@ public class ModelBallistaStand extends ModelVehicleBase {
 	ModelRenderer armLeftMainInner3;
 	ModelRenderer armLeftInner;
 	ModelRenderer stringLeft;
-	ModelRenderer flagPole;
-	ModelRenderer flagCloth;
 
 	public ModelBallistaStand() {
 		baseMain = new ModelRenderer(this, "baseMain");
@@ -371,18 +370,6 @@ public class ModelBallistaStand extends ModelVehicleBase {
 		stringLeft.addBox(-17.0f, -0.5f, 0.0f, 17, 1, 1);
 		armLeftMain.addChild(stringLeft);
 		armMain.addChild(armLeftMain);
-		flagPole = new ModelRenderer(this, "flagPole");
-		flagPole.setTextureOffset(0, 38);
-		flagPole.setTextureSize(256, 256);
-		flagPole.setRotationPoint(0.0f, -14.0f, 0.0f);
-		setPieceRotation(flagPole, 0.0f, 0.0f, 0.0f);
-		flagPole.addBox(-10.0f, -25.0f, -6.5f, 1, 16, 1);
-		flagCloth = new ModelRenderer(this, "flagCloth");
-		flagCloth.setTextureOffset(5, 38);
-		flagCloth.setTextureSize(256, 256);
-		flagCloth.setRotationPoint(0.0f, -14.0f, 0.0f);
-		setPieceRotation(flagCloth, 0.0f, 0.0f, 0.0f);
-		flagCloth.addBox(-10.0f, -25.0f, -5.5f, 1, 8, 11);
 	}
 
 	@Override
@@ -391,7 +378,6 @@ public class ModelBallistaStand extends ModelVehicleBase {
 		setRotationAngles(f1, f2, f3, f4, f5, f6, entity);
 		baseMain.render(f6);
 		armMain.render(f6);
-		flagPole.render(0.0625f);
 	}
 
 	public void setPieceRotation(ModelRenderer model, float x, float y, float z) {
@@ -410,10 +396,6 @@ public class ModelBallistaStand extends ModelVehicleBase {
 	public void setTurretRotation(float yaw, float pitch) {
 		this.armMain.rotateAngleY = Trig.toRadians(yaw);
 		this.armMain.rotateAngleX = Trig.toRadians(pitch);
-		this.flagPole.rotateAngleX = this.armMain.rotateAngleX;
-		this.flagPole.rotateAngleY = this.armMain.rotateAngleY;
-		this.flagCloth.rotateAngleX = this.armMain.rotateAngleX;
-		this.flagCloth.rotateAngleY = this.armMain.rotateAngleY;
 	}
 
 	public void setCrankRotations(float angle) {
@@ -422,10 +404,5 @@ public class ModelBallistaStand extends ModelVehicleBase {
 
 	public void setTriggerAngle(float angle) {
 		this.trigger1.rotateAngleX = Trig.toRadians(angle);
-	}
-
-	@Override
-	public void renderFlag() {
-		flagCloth.render(0.0625f);
 	}
 }

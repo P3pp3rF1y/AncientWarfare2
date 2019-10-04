@@ -42,9 +42,4 @@ public class RenderCatapultStandFixed extends RenderVehicleBase {
 		model.render(veh, 0, 0, 0, 0, 0, 0.0625f);
 	}
 
-	@Override
-	public void renderVehicleFlag() {
-		model.renderFlag();
-	}
-
 }

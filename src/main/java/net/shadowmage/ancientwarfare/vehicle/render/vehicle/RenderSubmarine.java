@@ -33,9 +33,4 @@ public class RenderSubmarine extends RenderVehicleBase {
 		bindTexture(veh.getTexture());
 	}
 
-	@Override
-	public void renderVehicleFlag() {
-		model.renderFlag();
-	}
-
 }

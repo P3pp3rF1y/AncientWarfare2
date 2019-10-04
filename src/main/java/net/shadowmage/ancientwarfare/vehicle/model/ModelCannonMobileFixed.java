@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.vehicle.model;
 
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.relauncher.Side;
@@ -7,7 +8,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
 @SideOnly(Side.CLIENT)
-public class ModelCannonMobileFixed extends ModelVehicleBase {
+public class ModelCannonMobileFixed extends ModelBase {
 
 	ModelRenderer cannonBaseMid;
 	ModelRenderer cannonBaseMid2;
@@ -83,8 +84,6 @@ public class ModelCannonMobileFixed extends ModelVehicleBase {
 	ModelRenderer FLw6;
 	ModelRenderer FLw7;
 	ModelRenderer FLw8;
-	ModelRenderer flagPole;
-	ModelRenderer flagCloth;
 
 	public ModelCannonMobileFixed() {
 		cannonBaseMid = new ModelRenderer(this, "cannonBaseMid");
@@ -603,18 +602,6 @@ public class ModelCannonMobileFixed extends ModelVehicleBase {
 		FLw8.addBox(0.0f, -1.0f, -7.0f, 2, 1, 7);
 		FLWheelPivot.addChild(FLw8);
 		frontAxle.addChild(FLWheelPivot);
-		flagPole = new ModelRenderer(this, "flagPole");
-		flagPole.setTextureOffset(19, 78);
-		flagPole.setTextureSize(256, 256);
-		flagPole.setRotationPoint(-7.5f, -30.0f, -5.5f);
-		setPieceRotation(flagPole, 0.0f, 0.0f, 0.0f);
-		flagPole.addBox(0.0f, 0.0f, 0.0f, 1, 16, 1);
-		flagCloth = new ModelRenderer(this, "flagCloth");
-		flagCloth.setTextureOffset(24, 78);
-		flagCloth.setTextureSize(256, 256);
-		flagCloth.setRotationPoint(0.0f, 0.0f, 0.0f);
-		setPieceRotation(flagCloth, 0.0f, 0.0f, 0.0f);
-		flagCloth.addBox(-7.5f, -30.0f, -4.5f, 1, 8, 11);
 	}
 
 	@Override
@@ -623,7 +610,6 @@ public class ModelCannonMobileFixed extends ModelVehicleBase {
 		setRotationAngles(f1, f2, f3, f4, f5, f6, entity);
 		cannonBaseMid.render(f6);
 		frontAxle.render(f6);
-		flagPole.render(f6);
 	}
 
 	public void setWheelRotations(float fl, float fr, float rl, float rr) {
@@ -639,10 +625,5 @@ public class ModelCannonMobileFixed extends ModelVehicleBase {
 		model.rotateAngleX = x;
 		model.rotateAngleY = y;
 		model.rotateAngleZ = z;
-	}
-
-	@Override
-	public void renderFlag() {
-		flagCloth.render(0.0625f);
 	}
 }
