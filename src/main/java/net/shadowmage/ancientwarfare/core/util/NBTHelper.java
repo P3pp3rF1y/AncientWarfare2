@@ -72,13 +72,24 @@ public class NBTHelper {
 		return property.getName((T) valueString);
 	}
 
-	public static Set<String> getStringSet(NBTTagList tagList) {
-		Set<String> ret = new HashSet<>();
+	public static <T> Set<T> getSet(NBTTagList tagList, Function<NBTBase, T> getElement) {
+		Set<T> ret = new HashSet<>();
 		for (NBTBase tag : tagList) {
-			ret.add(((NBTTagString) tag).getString());
+			ret.add(getElement.apply(tag));
 		}
 		return ret;
 	}
+
+	public static Set<String> getStringSet(NBTTagList tagList) {
+		return getSet(tagList, tag -> ((NBTTagString) tag).getString());
+	}
+
+	public static <T> NBTTagList getTagList(Collection<T> collection, Function<T, NBTBase> serializeElement) {
+		NBTTagList ret = new NBTTagList();
+		collection.forEach(element -> ret.appendTag(serializeElement.apply(element)));
+		return ret;
+	}
+
 
 	public static NBTTagList getNBTStringList(Collection<String> strings) {
 		NBTTagList ret = new NBTTagList();
@@ -93,12 +104,7 @@ public class NBTHelper {
 	}
 
 	public static Set<UUID> getUniqueIdSet(NBTBase tag) {
-		NBTTagList tagList = getTagList(tag, Constants.NBT.TAG_COMPOUND);
-		Set<UUID> ret = new HashSet<>();
-		for (NBTBase element : tagList) {
-			ret.add(((NBTTagCompound) element).getUniqueId("uuid"));
-		}
-		return ret;
+		return getSet(getTagList(tag, Constants.NBT.TAG_COMPOUND), element -> ((NBTTagCompound) element).getUniqueId("uuid"));
 	}
 
 	private static NBTTagList getTagList(NBTBase tag, int type) {

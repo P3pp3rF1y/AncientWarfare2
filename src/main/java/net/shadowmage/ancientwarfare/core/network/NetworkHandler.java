@@ -63,6 +63,10 @@ public final class NetworkHandler implements IGuiHandler {
 
 	public static final int PACKET_SOUND_BLOCK_PLAYER_SPEC_VALUES = 30;
 
+	public static final int PACKET_TEAM_MEMBERSHIP_UPDATE = 31;
+	public static final int PACKET_TEAM_STANDINGS_UPDATE = 32;
+	public static final int PACKET_TEAM_STANDING_UPDATE = 33;
+
 	public static final int GUI_CRAFTING = 0;
 	public static final int GUI_SCANNER = 1;
 	public static final int GUI_BUILDER = 2;
@@ -227,7 +231,6 @@ public final class NetworkHandler implements IGuiHandler {
 		openGui(player, id, pos.getX(), pos.getY(), pos.getZ());
 	}
 
-	//TODO refactor stuff to use this entityId overload
 	public final void openGui(EntityPlayer player, int guiId) {
 		openGui(player, guiId, 0);
 	}

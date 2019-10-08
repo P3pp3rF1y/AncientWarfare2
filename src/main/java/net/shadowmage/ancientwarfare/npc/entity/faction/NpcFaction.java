@@ -208,7 +208,8 @@ public abstract class NpcFaction extends NpcBase {
 	public boolean isHostileTowards(Entity e) {
 		if (e instanceof EntityPlayer || e instanceof NpcPlayerOwned) {
 			String playerName = e instanceof EntityPlayer ? e.getName() : ((NpcBase) e).getOwner().getName();
-			return revengePlayers.keySet().contains(playerName) || FactionTracker.INSTANCE.getStandingFor(world, playerName, getFaction()) < 0;
+			UUID playerUUID = e instanceof EntityPlayer ? e.getUniqueID() : ((NpcBase) e).getOwner().getUUID();
+			return revengePlayers.keySet().contains(playerName) || FactionTracker.INSTANCE.isHostileToPlayer(world, playerUUID, playerName, getFaction());
 		} else if (e instanceof NpcFaction) {
 			NpcFaction npc = (NpcFaction) e;
 			return !npc.getFaction().equals(factionName) && FactionRegistry.getFaction(getFaction()).isHostileTowards(npc.getFaction());

@@ -1140,6 +1140,13 @@ command.aw.faction.get.usage=/awfaction get (playername)
 command.aw.faction.status.player=Faction Standing For Player: %s
 command.aw.faction.status.value=Faction %s  Standing: %s
 command.aw.faction.set=Set faction standing for %s with %s to %s
+command.aw.teams.usage=/awteams (list | describe | player)
+command.aw.teams.team_members=Members:
+command.aw.teams.team_does_not_exist=Team %s doesn't exist
+command.aw.teams.standings=Standings:
+command.aw.teams.member_of=Member of:
+command.aw.teams.team_name=Team: %s
+
 command.aw.utils.usage=/awutils exportentities [fileName - defaults to "entitylist.csv"] OR /awutils exportbiomes [fileName - defaults to "biomelist.csv"] OR /awutils exportblocks [fileName - defaults to "blocklist.csv"] OR /awutils exportloottables [fileName - defaults to "loottablelist.csv"] OR /awutils reloadmanual
 
 #research
