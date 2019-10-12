@@ -13,7 +13,6 @@ public class ItemPitchfork extends ItemBaseNPC {
 	private final float attackDamage;
 	protected float attackSpeed;
 
-
 	public ItemPitchfork(ToolMaterial material, float attackSpeed) {
 		super("pitchfork");
 		this.material = material;
@@ -25,25 +24,17 @@ public class ItemPitchfork extends ItemBaseNPC {
 		setCreativeTab(AncientWarfareNPC.TAB);
 	}
 
-	public float getAttackDamage()
-	{
-		return this.material.getAttackDamage();
-	}
-
-	public int getItemEnchantability()
-	{
+	@Override
+	public int getItemEnchantability() {
 		return this.material.getEnchantability();
 	}
 
 	@Override
-	public Multimap<String, AttributeModifier> getItemAttributeModifiers(EntityEquipmentSlot equipmentSlot)
-	{
-		Multimap<String, AttributeModifier> multimap = super.getItemAttributeModifiers(equipmentSlot);
-
-		if (equipmentSlot == EntityEquipmentSlot.MAINHAND)
-		{
-			multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", (double)this.attackDamage, 0));
-			multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", attackSpeed , 0));
+	public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
+		Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot, stack);
+		if (slot == EntityEquipmentSlot.MAINHAND) {
+			multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", (double) this.attackDamage, 0));
+			multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", attackSpeed, 0));
 		}
 		return multimap;
 	}

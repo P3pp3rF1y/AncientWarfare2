@@ -1,8 +1,11 @@
 package net.shadowmage.ancientwarfare.npc.init;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -94,7 +97,12 @@ public class AWNPCItems {
 		registry.register(new ItemSickle(Item.ToolMaterial.IRON, -2.3F));
 		registry.register(new ItemPitchfork(Item.ToolMaterial.IRON, -2.3F));
 		registry.register(new ItemScythe(Item.ToolMaterial.IRON, "scythe", 0.0F, -2.3F));
-		registry.register(new ItemScythe(Item.ToolMaterial.DIAMOND, "death_scythe", 0.0F, -2.3F));
+		registry.register(new ItemScythe(Item.ToolMaterial.DIAMOND, "death_scythe", 0.0F, -2.3F) {
+			@Override
+			protected void applyPotionEffect(EntityLivingBase target) {
+				target.addPotionEffect(new PotionEffect(MobEffects.WITHER, 100));
+			}
+		});
 		registry.register(new ItemClub(Item.ToolMaterial.DIAMOND, "giant_club", 3.5, -3.6D, 4.2F));
 		registry.register(new ItemIceSpear(Item.ToolMaterial.DIAMOND,"ice_spear", 2, -3, 4.2F));
 

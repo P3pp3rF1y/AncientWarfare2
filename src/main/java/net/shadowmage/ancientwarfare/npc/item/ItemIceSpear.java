@@ -1,11 +1,10 @@
 package net.shadowmage.ancientwarfare.npc.item;
 
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.MobEffects;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.text.TextFormatting;
 
 public class ItemIceSpear extends ItemExtendedReachWeapon {
 	public ItemIceSpear(ToolMaterial material, String registryName, double attackOffset, double attackSpeed, float reach) {
@@ -20,7 +19,7 @@ public class ItemIceSpear extends ItemExtendedReachWeapon {
 	}
 
 	@Override
-	public String getItemStackDisplayName(ItemStack stack) {
-		return TextFormatting.AQUA + super.getItemStackDisplayName(stack) + TextFormatting.RESET;
+	public EnumRarity getForgeRarity(ItemStack stack) {
+		return EnumRarity.RARE;
 	}
 }
