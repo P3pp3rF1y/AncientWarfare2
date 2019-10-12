@@ -143,9 +143,11 @@ public class TeamData extends WorldSavedData {
 			addTeamMemberUpdateStanding(teamName, playerName, factionData);
 		}
 
-		for (Team team : playerTeamsLookup.get(playerName)) {
-			if (!teamNames.contains(team.getName())) {
-				removeTeamMember(team.getName(), playerName, player.world.getTotalWorldTime());
+		if (playerTeamsLookup.containsKey(playerName)) {
+			for (Team team : playerTeamsLookup.get(playerName)) {
+				if (!teamNames.contains(team.getName())) {
+					removeTeamMember(team.getName(), playerName, player.world.getTotalWorldTime());
+				}
 			}
 		}
 	}
