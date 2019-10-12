@@ -3,9 +3,10 @@ package net.shadowmage.ancientwarfare.npc.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionTrader;
 import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
+import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
+import net.shadowmage.ancientwarfare.npc.registry.StandingChanges;
 import net.shadowmage.ancientwarfare.npc.trade.FactionTradeList;
 
 public class ContainerNpcFactionTradeView extends ContainerNpcBase<NpcFactionTrader> {
@@ -35,7 +36,7 @@ public class ContainerNpcFactionTradeView extends ContainerNpcBase<NpcFactionTra
 		if (tag.hasKey(TRADE_DATA_TAG)) {
 			tradeList.deserializeNBT(tag.getCompoundTag(TRADE_DATA_TAG));
 		} else if (tag.hasKey(DO_TRADE_TAG) && tradeList.performTrade(player, tag.getInteger(DO_TRADE_TAG))) {
-			FactionTracker.INSTANCE.adjustStandingFor(entity.world, player.getName(), entity.getFaction(), +AWNPCStatics.factionGainOnTrade);
+			FactionTracker.INSTANCE.adjustStandingFor(entity.world, player.getName(), entity.getFaction(), FactionRegistry.getFaction(entity.getFaction()).getStandingChange(StandingChanges.TRADE));
 		}
 		refreshGui();
 	}

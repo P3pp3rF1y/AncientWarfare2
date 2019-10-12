@@ -2,6 +2,10 @@
     "load_after": ["target_lists"],
     "defaults": {
         "player_default_standing": -70,
+        "standing_changes": {
+            "kill": -10,
+            "trade": 2
+        },
         "hostile_towards_factions": {
             "empire": true,
             "norska": true,

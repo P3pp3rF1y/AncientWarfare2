@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.npc.registry;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -16,15 +17,17 @@ public class FactionDefinition {
 	private final Set<String> hostileTowards;
 	private final Set<String> targetList;
 	private Map<String, NBTTagCompound> themedBlocksTags = new HashMap<>();
+	private Map<String, Integer> standingChanges = new HashMap<>();
 
-	FactionDefinition(int playerDefaultStanding, Set<String> hostileTowards, Set<String> targetList) {
+	FactionDefinition(int playerDefaultStanding, Set<String> hostileTowards, Set<String> targetList, Map<String, Integer> standingChanges) {
 		this.playerDefaultStanding = playerDefaultStanding;
 		this.hostileTowards = hostileTowards;
 		this.targetList = targetList;
+		this.standingChanges = standingChanges;
 	}
 
-	private FactionDefinition(String name, int color, int playerDefaultStanding, Set<String> hostileTowards, Set<String> targetList, Map<String, NBTTagCompound> themedBlocksTags) {
-		this(playerDefaultStanding, hostileTowards, targetList);
+	private FactionDefinition(String name, int color, int playerDefaultStanding, Set<String> hostileTowards, Set<String> targetList, Map<String, NBTTagCompound> themedBlocksTags, Map<String, Integer> standingChanges) {
+		this(playerDefaultStanding, hostileTowards, targetList, standingChanges);
 		this.name = name;
 		this.color = color;
 		this.themedBlocksTags = themedBlocksTags;
@@ -43,7 +46,7 @@ public class FactionDefinition {
 	}
 
 	public CopyBuilder copy(String name, int color) {
-		return new CopyBuilder(name, color, getPlayerDefaultStanding(), new HashSet<>(hostileTowards), new HashSet<>(targetList), new HashMap<>(themedBlocksTags));
+		return new CopyBuilder(name, color, getPlayerDefaultStanding(), new HashSet<>(hostileTowards), new HashSet<>(targetList), new HashMap<>(themedBlocksTags), new HashMap<>(standingChanges));
 	}
 
 	public int getPlayerDefaultStanding() {
@@ -56,12 +59,16 @@ public class FactionDefinition {
 				&& targetList.contains(EntityRegistry.getEntry(entity.getClass()).getRegistryName().toString());
 	}
 
-	public Set<String> getTargetList() {
-		return targetList;
-	}
-
 	public Map<String, NBTTagCompound> getThemedBlocksTags() {
 		return themedBlocksTags;
+	}
+
+	public Integer getStandingChange(String changeName) {
+		if (!standingChanges.containsKey(changeName)) {
+			AncientWarfareNPC.LOG.error("{} standing change doesn't have value defined, using 0", changeName);
+			return 0;
+		}
+		return standingChanges.get(changeName);
 	}
 
 	public static class CopyBuilder {
@@ -71,14 +78,16 @@ public class FactionDefinition {
 		private Set<String> hostileTowards;
 		private Set<String> targetList;
 		private Map<String, NBTTagCompound> themedBlocksTags;
+		private Map<String, Integer> standingChanges;
 
-		private CopyBuilder(String name, int color, int playerDefaultStanding, Set<String> hostileTowards, Set<String> targetList, Map<String, NBTTagCompound> themedBlocksTags) {
+		private CopyBuilder(String name, int color, int playerDefaultStanding, Set<String> hostileTowards, Set<String> targetList, Map<String, NBTTagCompound> themedBlocksTags, Map<String, Integer> standingChanges) {
 			this.name = name;
 			this.color = color;
 			this.playerDefaultStanding = playerDefaultStanding;
 			this.hostileTowards = hostileTowards;
 			this.targetList = targetList;
 			this.themedBlocksTags = themedBlocksTags;
+			this.standingChanges = standingChanges;
 		}
 
 		void setPlayerDefaultStanding(int playerDefaultStanding) {
@@ -100,13 +109,16 @@ public class FactionDefinition {
 			return this;
 		}
 
-		CopyBuilder overrideThemedBlocksTags(Map<String, NBTTagCompound> themedBlocksTags) {
+		void overrideThemedBlocksTags(Map<String, NBTTagCompound> themedBlocksTags) {
 			this.themedBlocksTags = themedBlocksTags;
-			return this;
+		}
+
+		void overrideStandingChanges(Map<String, Integer> standingChanges) {
+			this.standingChanges.putAll(standingChanges);
 		}
 
 		public FactionDefinition build() {
-			return new FactionDefinition(name, color, playerDefaultStanding, hostileTowards, targetList, themedBlocksTags);
+			return new FactionDefinition(name, color, playerDefaultStanding, hostileTowards, targetList, themedBlocksTags, standingChanges);
 		}
 	}
 }
