@@ -1,0 +1,6 @@
+{
+    "parent": "ancientwarfare:item/npc/wooden_cleaver",
+    "textures": {
+        "0": "ancientwarfare:items/npc/iron_cleaver"
+    }
+}
