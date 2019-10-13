@@ -25,7 +25,7 @@ jobs:
     - name: Publish to Github Packages
       run: |
         ./gradlew createPom
-        mvn publish
+        mvn deploy
     - name: Code Quality
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
