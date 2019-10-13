@@ -137,6 +137,25 @@ bintray {
 
 }
 
+
+createPom {
+    pom {
+        project {
+            groupId 'com.github.p3pp3rf1y/AncientWarfare2'
+            artifactId 'AncientWarfare2'
+            version "${project.version}"
+
+            inceptionYear '2014'
+            licenses {
+                license {
+                    name 'GPL-3.0'
+                    distribution 'repo'
+                }
+            }
+        }
+    }.writeTo("pom.xml")
+}
+
 sonarqube {
     properties {
         property "sonar.projectName", "Ancient Warfare 2"
