@@ -108,7 +108,7 @@ def getBuildNumber() {
 }
 
 def getStable() {
-    if ((System.getenv("DRONE_BRANCH") == null || System.getenv("DRONE_BRANCH").endsWith("-dev"))
+    if ((System.getenv("GITHUB_REF") == null || System.getenv("GITHUB_REF").endsWith("-dev"))
             && (System.getenv("TRAVIS_BRANCH") == null || System.getenv("TRAVIS_BRANCH").endsWith("-dev"))) {
         return "unstable"
     }
