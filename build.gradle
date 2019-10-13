@@ -141,7 +141,7 @@ bintray {
 task createPom {
     pom {
         project {
-            groupId 'com.github.p3pp3rf1y/AncientWarfare2'
+            groupId 'com.github.p3pp3rf1y'
             artifactId 'AncientWarfare2'
             version "${project.version}"
 
