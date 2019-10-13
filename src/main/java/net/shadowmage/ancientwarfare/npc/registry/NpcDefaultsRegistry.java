@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.npc.registry;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.util.JsonUtils;
@@ -10,6 +11,7 @@ import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.registry.IRegistryDataParser;
 import net.shadowmage.ancientwarfare.core.util.RegistryTools;
 import net.shadowmage.ancientwarfare.core.util.parsing.JsonHelper;
+import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
@@ -24,6 +26,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.MissingResourceException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
@@ -126,7 +129,17 @@ public class NpcDefaultsRegistry {
 				return Collections.emptyMap();
 			}
 			return JsonHelper.mapFromJson(json, "equipment", e -> parseEquipmentSlot(e.getKey()),
-					e -> RegistryTools.getItem(JsonUtils.getString(e.getValue(), "")));
+					e -> parseEquipmentItem(e.getValue()));
+		}
+
+		private Item parseEquipmentItem(JsonElement itemJson) {
+			try {
+				return RegistryTools.getItem(JsonUtils.getString(itemJson, ""));
+			}
+			catch (MissingResourceException ex) {
+				AncientWarfareNPC.LOG.error("Error parsing faction npc equipment: ", ex);
+				return Items.AIR;
+			}
 		}
 
 		private int parseEquipmentSlot(String slotName) {
