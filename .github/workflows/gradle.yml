@@ -19,5 +19,5 @@ jobs:
         ./gradlew setupCIWorkspace
         ./gradlew build
     - name: Code Quality
-      run: ./gradlew sonarqube
+      run: ./gradlew -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }} sonarqube
       
