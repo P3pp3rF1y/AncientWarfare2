@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.npc.item;
 
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -29,6 +30,13 @@ import java.util.List;
 import java.util.Map;
 
 public class ItemCoin extends ItemBaseNPC {
+	private static final Map<CoinMetal, Block> METALS_TO_BLOCKS = ImmutableMap.of(
+			CoinMetal.ANCIENT, AWStructureBlocks.COIN_STACK_ANCIENT,
+			CoinMetal.GOLD, AWStructureBlocks.COIN_STACK_GOLD,
+			CoinMetal.SILVER, AWStructureBlocks.COIN_STACK_SILVER,
+			CoinMetal.COPPER, AWStructureBlocks.COIN_STACK_COPPER
+	);
+
 	public ItemCoin() {
 		super("coin");
 	}
@@ -77,6 +85,41 @@ public class ItemCoin extends ItemBaseNPC {
 		return stack.hasTagCompound() ? stack.getTagCompound().getString("metal") : "";
 	}
 
+	@Override
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		ItemStack stack = player.getHeldItem(hand);
+		CoinMetal metal = getMetal(stack);
+
+		if ((stack.getCount() < 8)) {
+			return EnumActionResult.FAIL;
+		}
+
+		IBlockState state = world.getBlockState(pos);
+		Block block = state.getBlock();
+
+		if (!block.isReplaceable(world, pos)) {
+			pos = pos.offset(facing);
+		}
+
+		Block coinBlock = METALS_TO_BLOCKS.get(metal);
+
+		if (!world.mayPlace(coinBlock, pos, false, facing, player)) {
+			return EnumActionResult.FAIL;
+		}
+		world.setBlockState(pos, coinBlock.getDefaultState());
+		stack.shrink(8);
+		world.playSound(null, pos, AWStructureSounds.COIN_STACK_INTERACT, SoundCategory.PLAYERS, 0.5f, 1);
+		return EnumActionResult.SUCCESS;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		if (getMetal(stack).equals(CoinMetal.ANCIENT)) {
+			tooltip.add(I18n.format("item.coin.ancient.tooltip", TextFormatting.DARK_AQUA.toString() + TextFormatting.ITALIC.toString()));
+		}
+	}
+
 	public enum CoinMetal {
 		ANCIENT("ancient", 0x445948),
 		GOLD("gold", 0xFFD700),
@@ -107,41 +150,6 @@ public class ItemCoin extends ItemBaseNPC {
 
 		public int getColor() {
 			return color;
-		}
-	}
-
-	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		ItemStack stack = player.getHeldItem(hand);
-		String metal = getMetal(stack).toString().toLowerCase();
-
-		Map<String, Block> metalsToBlocks = ImmutableMap.of(
-		"ancient", AWStructureBlocks.COIN_STACK_ANCIENT,
-		"gold", AWStructureBlocks.COIN_STACK_GOLD,
-		"silver", AWStructureBlocks.COIN_STACK_SILVER,
-		"copper", AWStructureBlocks.COIN_STACK_COPPER
-		);
-
-		if ((stack.getCount() < 8)) {
-			return EnumActionResult.FAIL;
-		}
-		if (worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos)) {
-			worldIn.setBlockState(pos, (metalsToBlocks.get(metal)).getDefaultState());
-		} else if (facing == EnumFacing.UP && worldIn.getBlockState(pos.up()).getBlock().isReplaceable(worldIn, pos)) {
-			worldIn.setBlockState(pos.up(), (metalsToBlocks.get(metal)).getDefaultState());
-		} else {
-			return EnumActionResult.FAIL;
-		}
-			stack.shrink(8);
-			worldIn.playSound(null, pos, AWStructureSounds.COIN_STACK_INTERACT, SoundCategory.PLAYERS, 0.5f, 1);
-			return EnumActionResult.SUCCESS;
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		if (getMetal(stack).equals("ancient"))  {
-			tooltip.add(I18n.format("item.coin.ancient.tooltip", TextFormatting.DARK_AQUA.toString() + TextFormatting.ITALIC.toString()));
 		}
 	}
 }
