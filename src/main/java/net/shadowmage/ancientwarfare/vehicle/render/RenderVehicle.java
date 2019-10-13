@@ -1,24 +1,3 @@
-/**
- * Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
- * This software is distributed under the terms of the GNU General Public License.
- * Please see COPYING for precise license information.
- * <p>
- * This file is part of Ancient Warfare.
- * <p>
- * Ancient Warfare is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * <p>
- * Ancient Warfare is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.vehicle.render;
 
 import net.minecraft.client.Minecraft;
@@ -117,17 +96,15 @@ public class RenderVehicle extends Render<VehicleBase> {
 		bindTexture(vehicle.getTexture());
 		RenderVehicleBase render = vehicleRenders.get(vehicle.vehicleType);
 		render.renderVehicle(vehicle, x, y, z, renderYaw, partialTicks);
-		//TODO add code to change to team color - similar to RenderNpcBase code for it
 		GlStateManager.color(1.f, 1.f, 1.f, 1.f);
 		GlStateManager.popMatrix();
 		if (useAlpha) {
 			GlStateManager.disableBlend();
 		}
-		/**
-		 * dont' render nameplate for the vehicle that thePlayer is on
-		 */
+
+		// dont' render nameplate for the vehicle that thePlayer is on
 		if (isInWorld(vehicle) && AWVehicleStatics.renderVehicleNameplates && vehicle.getControllingPassenger() != Minecraft.getMinecraft().player) {
-			renderNamePlate(vehicle, x, y, z, renderYaw, partialTicks);
+			renderNamePlate(vehicle, x, y, z);
 		}
 
 	}
@@ -138,7 +115,7 @@ public class RenderVehicle extends Render<VehicleBase> {
 
 	private DecimalFormat formatter1d = new DecimalFormat("#.#");
 
-	private void renderNamePlate(VehicleBase vehicle, double x, double y, double z, float yaw, float tick) {
+	private void renderNamePlate(VehicleBase vehicle, double x, double y, double z) {
 		double var10 = vehicle.getDistanceSq(this.renderManager.renderViewEntity);
 		int par9 = 64;
 		String par2Str = vehicle.vehicleType.getLocalizedName() + " " + formatter1d.format(vehicle.getHealth()) + "/" + formatter1d.format(vehicle.baseHealth);
