@@ -133,6 +133,7 @@ public class AWStructureBlocks {
 	public static final Block COIN_STACK_COPPER = InjectionTools.nullValue();
 	public static final Block COIN_STACK_SILVER = InjectionTools.nullValue();
 	public static final Block COIN_STACK_GOLD = InjectionTools.nullValue();
+	public static final Block COIN_STACK_ANCIENT = InjectionTools.nullValue();
 
 	@SuppressWarnings("ConstantConditions")
 	@SubscribeEvent
@@ -184,6 +185,7 @@ public class AWStructureBlocks {
 		registry.register(new ItemBlockBase(COIN_STACK_COPPER));
 		registry.register(new ItemBlockBase(COIN_STACK_SILVER));
 		registry.register(new ItemBlockBase(COIN_STACK_GOLD));
+		registry.register(new ItemBlockBase(COIN_STACK_ANCIENT));
 
 		registerLootContainers();
 	}
@@ -285,6 +287,7 @@ public class AWStructureBlocks {
 		registry.register(new BlockCoinStack("coin_stack_copper", ItemCoin.CoinMetal.COPPER));
 		registry.register(new BlockCoinStack("coin_stack_silver", ItemCoin.CoinMetal.SILVER));
 		registry.register(new BlockCoinStack("coin_stack_gold", ItemCoin.CoinMetal.GOLD));
+		registry.register(new BlockCoinStack("coin_stack_ancient", ItemCoin.CoinMetal.ANCIENT));
 	}
 
 	private static void registerTile(Class<? extends TileEntity> teClass, String teId) {
