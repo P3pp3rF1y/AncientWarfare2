@@ -22,6 +22,8 @@ jobs:
         ./gradlew clean
         ./gradlew setupCIWorkspace
         ./gradlew build
+    - name: Publish to Github Packages
+      run: mvn publish
     - name: Code Quality
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
