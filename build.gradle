@@ -21,6 +21,7 @@ buildscript {
 plugins {
     id "com.jfrog.bintray" version "1.8.1"
     id "org.sonarqube" version "2.6.2"
+    id "maven"
 }
 
 // We apply the 'forge' plugin, so ForgeGradle can do it's stuff.
@@ -137,8 +138,7 @@ bintray {
 
 }
 
-
-createPom {
+task createPom {
     pom {
         project {
             groupId 'com.github.p3pp3rf1y/AncientWarfare2'
