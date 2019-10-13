@@ -46,9 +46,4 @@ public class RenderCatapultMobileFixed extends RenderVehicleBase {
 
 	}
 
-	@Override
-	public void renderVehicleFlag() {
-		model.renderFlag();
-	}
-
 }

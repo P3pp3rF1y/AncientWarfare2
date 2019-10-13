@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.vehicle.model;
 
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.relauncher.Side;
@@ -7,7 +8,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
 @SideOnly(Side.CLIENT)
-public class ModelTrebuchetStandFixed extends ModelVehicleBase {
+public class ModelTrebuchetStandFixed extends ModelBase {
 
 	ModelRenderer turretMidBeam;
 	ModelRenderer upright1;
@@ -33,8 +34,6 @@ public class ModelTrebuchetStandFixed extends ModelVehicleBase {
 	ModelRenderer trebuchetRightAngle;
 	ModelRenderer trebuchetRRAngle;
 	ModelRenderer trebuchetLRAngle;
-	ModelRenderer flagPole;
-	ModelRenderer flagCloth;
 
 	public ModelTrebuchetStandFixed() {
 		turretMidBeam = new ModelRenderer(this, "turretMidBeam");
@@ -204,18 +203,6 @@ public class ModelTrebuchetStandFixed extends ModelVehicleBase {
 		setPieceRotation(trebuchetLRAngle, 0.5061455f, 0.34906572f, 0.0f);
 		trebuchetLRAngle.addBox(-2.0f, 0.0f, -1.0f, 2, 38, 2);
 		turretMidBeam.addChild(trebuchetLRAngle);
-		flagPole = new ModelRenderer(this, "flagPole");
-		flagPole.setTextureOffset(19, 78);
-		flagPole.setTextureSize(256, 256);
-		flagPole.setRotationPoint(-7.5f, -51.0f, -0.5f);
-		setPieceRotation(flagPole, 0.0f, 0.0f, 0.0f);
-		flagPole.addBox(0.0f, 0.0f, 0.0f, 1, 16, 1);
-		flagCloth = new ModelRenderer(this, "flagCloth");
-		flagCloth.setTextureOffset(24, 78);
-		flagCloth.setTextureSize(256, 256);
-		flagCloth.setRotationPoint(-7.5f, -51.0f, 0.5f);
-		setPieceRotation(flagCloth, 0.0f, 0.0f, 0.0f);
-		flagCloth.addBox(0.0f, 0.0f, 0.0f, 1, 8, 11);
 
 		setArmRotations(-27.f, -64.f);
 	}
@@ -225,7 +212,6 @@ public class ModelTrebuchetStandFixed extends ModelVehicleBase {
 		super.render(entity, f1, f2, f3, f4, f5, f6);
 		setRotationAngles(f1, f2, f3, f4, f5, f6, entity);
 		turretMidBeam.render(f6);
-		flagPole.render(f6);
 	}
 
 	public void setArmRotations(float main, float string) {
@@ -238,10 +224,5 @@ public class ModelTrebuchetStandFixed extends ModelVehicleBase {
 		model.rotateAngleX = x;
 		model.rotateAngleY = y;
 		model.rotateAngleZ = z;
-	}
-
-	@Override
-	public void renderFlag() {
-		flagCloth.render(0.0625f);
 	}
 }

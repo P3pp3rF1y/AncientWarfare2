@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.vehicle.model;
 
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.relauncher.Side;
@@ -7,7 +8,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
 @SideOnly(Side.CLIENT)
-public class ModelSubmarine extends ModelVehicleBase {
+public class ModelSubmarine extends ModelBase {
 
 	ModelRenderer bottom;
 	ModelRenderer left;
@@ -89,11 +90,9 @@ public class ModelSubmarine extends ModelVehicleBase {
 	ModelRenderer propBlade2;
 	ModelRenderer propBlade3;
 	ModelRenderer propBlade4;
-	ModelRenderer flagPole;
 	ModelRenderer chairBrace;
 	ModelRenderer chairBottom;
 	ModelRenderer chairBack;
-	ModelRenderer flagCloth;
 
 	public ModelSubmarine() {
 		bottom = new ModelRenderer(this, "bottom");
@@ -655,12 +654,6 @@ public class ModelSubmarine extends ModelVehicleBase {
 		propBlade1.addBox(-1.5f, 0.5f, -0.5f, 3, 8, 1);
 		propAxle.addChild(propBlade1);
 		bottom.addChild(propAxle);
-		flagPole = new ModelRenderer(this, "flagPole");
-		flagPole.setTextureOffset(19, 78);
-		flagPole.setTextureSize(256, 256);
-		flagPole.setRotationPoint(-13.0f, -41.0f, 23.0f);
-		setPieceRotation(flagPole, 0.0f, 0.0f, 0.0f);
-		flagPole.addBox(0.0f, 0.0f, 0.0f, 1, 16, 1);
 		chairBrace = new ModelRenderer(this, "chairBrace");
 		chairBrace.setTextureOffset(70, 59);
 		chairBrace.setTextureSize(256, 256);
@@ -681,12 +674,6 @@ public class ModelSubmarine extends ModelVehicleBase {
 		setPieceRotation(chairBack, -0.1745329f, 0.0f, 0.0f);
 		chairBack.addBox(0.0f, -10.0f, 0.0f, 10, 10, 1);
 		chairBrace.addChild(chairBack);
-		flagCloth = new ModelRenderer(this, "flagCloth");
-		flagCloth.setTextureOffset(24, 78);
-		flagCloth.setTextureSize(256, 256);
-		flagCloth.setRotationPoint(-13.0f, -41.0f, 24.0f);
-		setPieceRotation(flagCloth, 0.0f, 0.0f, 0.0f);
-		flagCloth.addBox(0.0f, 0.0f, 0.0f, 1, 8, 11);
 	}
 
 	@Override
@@ -694,7 +681,6 @@ public class ModelSubmarine extends ModelVehicleBase {
 		super.render(entity, f1, f2, f3, f4, f5, f6);
 		setRotationAngles(f1, f2, f3, f4, f5, f6, entity);
 		bottom.render(f6);
-		flagPole.render(f6);
 		chairBrace.render(f6);
 	}
 
@@ -706,10 +692,5 @@ public class ModelSubmarine extends ModelVehicleBase {
 
 	public void setWheelRotations(float fl, float fr, float rl, float rr) {
 		this.propAxle.rotateAngleZ = -Trig.toRadians(fr) * 4;
-	}
-
-	@Override
-	public void renderFlag() {
-		flagCloth.render(0.0625f);
 	}
 }

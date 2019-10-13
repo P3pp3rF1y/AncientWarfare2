@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.vehicle.model;
 
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.relauncher.Side;
@@ -7,7 +8,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
 @SideOnly(Side.CLIENT)
-public class ModelCannonStandTurret extends ModelVehicleBase {
+public class ModelCannonStandTurret extends ModelBase {
 
 	ModelRenderer cannonBaseMid;
 	ModelRenderer cannonBaseMid2;
@@ -61,8 +62,6 @@ public class ModelCannonStandTurret extends ModelVehicleBase {
 	ModelRenderer chairBack;
 	ModelRenderer cannonBaseMidChairBrace;
 	ModelRenderer cannonBaseMidcopy17;
-	ModelRenderer flagPole;
-	ModelRenderer flagCloth;
 
 	public ModelCannonStandTurret() {
 		cannonBaseMid = new ModelRenderer(this, "cannonBaseMid");
@@ -427,18 +426,6 @@ public class ModelCannonStandTurret extends ModelVehicleBase {
 		cannonBaseMidcopy17.setRotationPoint(0.0f, 0.0f, 0.0f);
 		setPieceRotation(cannonBaseMidcopy17, 0.0f, 3.1415927f, 0.0f);
 		cannonBaseMidcopy17.addBox(-8.0f, -2.0f, -21.5f, 16, 2, 28);
-		flagPole = new ModelRenderer(this, "flagPole");
-		flagPole.setTextureOffset(19, 78);
-		flagPole.setTextureSize(256, 256);
-		flagPole.setRotationPoint(0.0f, 0.0f, 0.0f);
-		setPieceRotation(flagPole, 0.0f, 3.141591f, 0.0f);
-		flagPole.addBox(6.5f, -29.0f, 4.5f, 1, 16, 1);
-		flagCloth = new ModelRenderer(this, "flagCloth");
-		flagCloth.setTextureOffset(24, 78);
-		flagCloth.setTextureSize(256, 256);
-		flagCloth.setRotationPoint(0.0f, 0.0f, 0.0f);
-		setPieceRotation(flagCloth, 0.0f, 3.1415927f, 0.0f);
-		flagCloth.addBox(6.5f, -29.0f, -6.5f, 1, 8, 11);
 
 	}
 
@@ -448,7 +435,6 @@ public class ModelCannonStandTurret extends ModelVehicleBase {
 		setRotationAngles(f1, f2, f3, f4, f5, f6, entity);
 		cannonBaseMid.render(f6);
 		cannonBaseMidcopy17.render(f6);
-		flagPole.render(0.0625f);
 	}
 
 	public void setPieceRotation(ModelRenderer model, float x, float y, float z) {
@@ -460,13 +446,5 @@ public class ModelCannonStandTurret extends ModelVehicleBase {
 	public void setTurretRotation(float yaw, float pitch) {
 		this.cannonBaseMid.rotateAngleY = Trig.toRadians(yaw + 180);
 		this.axleRight.rotateAngleX = Trig.toRadians(pitch);
-		this.flagPole.rotateAngleY = cannonBaseMid.rotateAngleY;
-		this.flagCloth.rotateAngleY = cannonBaseMid.rotateAngleY;
 	}
-
-	@Override
-	public void renderFlag() {
-		flagCloth.render(0.0625f);
-	}
-
 }

@@ -24,8 +24,4 @@ public class RenderTrebuchetLarge extends RenderVehicleBase {
 		GlStateManager.disableRescaleNormal();
 	}
 
-	@Override
-	public void renderVehicleFlag() {
-		model.renderFlag();
-	}
 }

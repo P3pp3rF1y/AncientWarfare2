@@ -43,9 +43,4 @@ public class RenderBatteringRam extends RenderVehicleBase {
 		model.render(vehicle, 0, 0, 0, 0, 0, 0.0625f);
 	}
 
-	@Override
-	public void renderVehicleFlag() {
-		this.model.renderFlag();
-	}
-
 }

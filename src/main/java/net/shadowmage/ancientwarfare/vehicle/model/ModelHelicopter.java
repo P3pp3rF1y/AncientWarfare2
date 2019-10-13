@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.vehicle.model;
 
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.relauncher.Side;
@@ -7,7 +8,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
 @SideOnly(Side.CLIENT)
-public class ModelHelicopter extends ModelVehicleBase {
+public class ModelHelicopter extends ModelBase {
 
 	ModelRenderer bodyBottom;
 	ModelRenderer skidLegFR;
@@ -55,8 +56,6 @@ public class ModelHelicopter extends ModelVehicleBase {
 	ModelRenderer tailRoot2;
 	ModelRenderer skidRF;
 	ModelRenderer skidLF;
-	ModelRenderer flagPole;
-	ModelRenderer flagCloth;
 
 	public ModelHelicopter() {
 		bodyBottom = new ModelRenderer(this, "bodyBottom");
@@ -380,18 +379,6 @@ public class ModelHelicopter extends ModelVehicleBase {
 		setPieceRotation(skidLF, -0.34906575f, 0.0f, 0.0f);
 		skidLF.addBox(-1.0f, 0.0f, -5.0f, 2, 1, 5);
 		bodyBottom.addChild(skidLF);
-		flagPole = new ModelRenderer(this, "flagPole");
-		flagPole.setTextureOffset(19, 78);
-		flagPole.setTextureSize(256, 256);
-		flagPole.setRotationPoint(-8.5f, -17.0f, 19.5f);
-		setPieceRotation(flagPole, 0.0f, 0.0f, 0.0f);
-		flagPole.addBox(0.0f, 0.0f, 0.0f, 1, 16, 1);
-		flagCloth = new ModelRenderer(this, "flagCloth");
-		flagCloth.setTextureOffset(24, 78);
-		flagCloth.setTextureSize(256, 256);
-		flagCloth.setRotationPoint(-8.5f, -17.0f, 20.5f);
-		setPieceRotation(flagCloth, 0.0f, 0.0f, 0.0f);
-		flagCloth.addBox(0.0f, 0.0f, 0.0f, 1, 8, 11);
 	}
 
 	@Override
@@ -399,7 +386,6 @@ public class ModelHelicopter extends ModelVehicleBase {
 		super.render(entity, f1, f2, f3, f4, f5, f6);
 		setRotationAngles(f1, f2, f3, f4, f5, f6, entity);
 		bodyBottom.render(f6);
-		flagPole.render(f6);
 	}
 
 	public void setPieceRotation(ModelRenderer model, float x, float y, float z) {
@@ -411,16 +397,5 @@ public class ModelHelicopter extends ModelVehicleBase {
 	public void setWheelRotations(float fl, float fr, float rl, float rr) {
 		this.mainRotor.rotateAngleY = -Trig.toRadians(fl);
 		this.tailRotorAxle.rotateAngleX = -Trig.toRadians(fl);
-	}
-
-	@Override
-	public void renderFlag() {
-		flagCloth.render(0.0625f);
-	}
-
-	public void renderFlag(float pitch, float roll) {
-		flagCloth.rotateAngleX = Trig.toRadians(pitch);
-		flagCloth.rotateAngleZ = Trig.toRadians(roll);
-		this.renderFlag();
 	}
 }

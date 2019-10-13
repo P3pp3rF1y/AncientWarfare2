@@ -41,9 +41,4 @@ public class RenderTrebuchetStandFixed extends RenderVehicleBase {
 		model.render(vehicle, 0, 0, 0, 0, 0, 0.0625f);
 	}
 
-	@Override
-	public void renderVehicleFlag() {
-		model.renderFlag();
-	}
-
 }
