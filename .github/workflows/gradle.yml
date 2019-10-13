@@ -1,4 +1,4 @@
-name: Java CI
+name: Build the mod
 
 on: [push]
 
@@ -18,3 +18,6 @@ jobs:
         ./gradlew clean
         ./gradlew setupCIWorkspace
         ./gradlew build
+    - name: Code Quality
+      run: ./gradlew sonarqube
+      
