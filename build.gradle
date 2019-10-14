@@ -138,22 +138,22 @@ bintray {
 
 }
 
-task createPom {
-    pom {
-        project {
-            groupId 'com.github.p3pp3rf1y'
-            artifactId 'AncientWarfare2'
-            version "${project.version}"
-
-            inceptionYear '2014'
-            licenses {
-                license {
-                    name 'GPL-3.0'
-                    distribution 'repo'
-                }
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/P3pp3rF1y/AncientWarfare2")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("GPR_USER")
+                password = project.findProperty("gpr.key") ?: System.getenv("GPR_API_KEY")
             }
         }
-    }.writeTo("pom.xml")
+    }
+    publications {
+        gpr(MavenPublication) {
+            from(components.java)
+        }
+    }
 }
 
 sonarqube {
