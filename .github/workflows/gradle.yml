@@ -23,6 +23,9 @@ jobs:
         ./gradlew setupCIWorkspace
         ./gradlew build
     - name: Publish to Github Packages
+      env:
+        GPR_USER: ${{ secrets.GPR_USER }}
+        GPR_API_KEY: ${{ secrets.GPR_TOKEN }}
       run: ./gradlew publish
     - name: Code Quality
       env:
