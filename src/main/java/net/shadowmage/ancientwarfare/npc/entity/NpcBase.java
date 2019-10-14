@@ -178,6 +178,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
 	public void setAttackDamageOverride(int attackDamage) {
 		this.attackDamage = attackDamage;
+		getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(attackDamage);
 	}
 
 	public void setArmorValueOverride(int armorValue) {
@@ -195,45 +196,73 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	@Override
 	public boolean attackEntityAsMob(Entity target) {
 		float damage = (float) getAttackDamageOverride();
-		@Nonnull ItemStack shield = ItemStack.EMPTY;
-		if (damage < 0) {
-			if (!getShieldStack().isEmpty()) {
-				shield = getShieldStack().copy();
-				getAttributeMap().applyAttributeModifiers(shield.getAttributeModifiers(EntityEquipmentSlot.OFFHAND));
-			}
-			damage = (float) getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
-		}
-		int knockback = 0;
-		if (target instanceof EntityLivingBase) {
-			damage += EnchantmentHelper.getModifierForCreature(getHeldItemMainhand(), ((EntityLivingBase) target).getCreatureAttribute());
-			knockback += EnchantmentHelper.getKnockbackModifier(this);
-		}
-		boolean targetHit = target.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
-		if (targetHit) {
-			if (knockback > 0) {
-				target.addVelocity((double) (-MathHelper.sin(rotationYaw * (float) Math.PI / 180.0F) * (float) knockback * 0.5F), 0.1D, (double) (MathHelper.cos(rotationYaw * (float) Math.PI / 180.0F) * (float) knockback * 0.5F));
-				motionX *= 0.6D;
-				motionZ *= 0.6D;
-			}
-			int fireDamage = EnchantmentHelper.getFireAspectModifier(this);
 
-			if (fireDamage > 0) {
-				target.setFire(fireDamage * 4);
-			}
-			if (target instanceof EntityLivingBase) {
-				EnchantmentHelper.applyThornEnchantments((EntityLivingBase) target, this);
-
-				EntityLivingBase livingTarget;
-				livingTarget = (EntityLivingBase)target;
-				ItemStack item = getHeldItemMainhand();
-				getHeldItemMainhand().getItem().hitEntity(item, livingTarget, this);
-			}
-			EnchantmentHelper.applyArthropodEnchantments(this, target);
+		ItemStack shield = ItemStack.EMPTY;
+		if (damage < 0 && !getShieldStack().isEmpty()) {
+			shield = getShieldStack().copy();
+			getAttributeMap().applyAttributeModifiers(shield.getAttributeModifiers(EntityEquipmentSlot.OFFHAND));
 		}
+
+		boolean targetHit = vanillaAttackEntityAsMob(target);
+
+		if (targetHit && target instanceof EntityLivingBase) {
+			ItemStack item = getHeldItemMainhand();
+			getHeldItemMainhand().getItem().hitEntity(item, (EntityLivingBase) target, this);
+		}
+
 		if (!shield.isEmpty()) {
 			getAttributeMap().removeAttributeModifiers(shield.getAttributeModifiers(EntityEquipmentSlot.OFFHAND));
 		}
 		return targetHit;
+	}
+
+	@SuppressWarnings({"squid:S3776", "ConstantConditions"})
+	/*
+		not changing this because it's the exact copy of implementation of attackEntityAsMob from EntityMob that we should have here
+		this should make upgrading to new versions easier because it should only mean copying the code from EntityMob here in case something changes there
+		*/
+	private boolean vanillaAttackEntityAsMob(Entity target) {
+		float f = (float) this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
+		int i = 0;
+
+		if (target instanceof EntityLivingBase) {
+			f += EnchantmentHelper.getModifierForCreature(this.getHeldItemMainhand(), ((EntityLivingBase) target).getCreatureAttribute());
+			i += EnchantmentHelper.getKnockbackModifier(this);
+		}
+
+		boolean flag = target.attackEntityFrom(DamageSource.causeMobDamage(this), f);
+
+		if (flag) {
+			if (i > 0 && target instanceof EntityLivingBase) {
+				((EntityLivingBase) target).knockBack(this, (float) i * 0.5F, (double) MathHelper.sin(this.rotationYaw * 0.017453292F), (double) (-MathHelper.cos(this.rotationYaw * 0.017453292F)));
+				this.motionX *= 0.6D;
+				this.motionZ *= 0.6D;
+			}
+
+			int j = EnchantmentHelper.getFireAspectModifier(this);
+
+			if (j > 0) {
+				target.setFire(j * 4);
+			}
+
+			if (target instanceof EntityPlayer) {
+				EntityPlayer entityplayer = (EntityPlayer) target;
+				ItemStack itemstack = this.getHeldItemMainhand();
+				ItemStack itemstack1 = entityplayer.isHandActive() ? entityplayer.getActiveItemStack() : ItemStack.EMPTY;
+
+				if (!itemstack.isEmpty() && !itemstack1.isEmpty() && itemstack.getItem().canDisableShield(itemstack, itemstack1, entityplayer, this) && itemstack1.getItem().isShield(itemstack1, entityplayer)) {
+					float f1 = 0.25F + (float) EnchantmentHelper.getEfficiencyModifier(this) * 0.05F;
+
+					if (this.rand.nextFloat() < f1) {
+						entityplayer.getCooldownTracker().setCooldown(itemstack1.getItem(), 100);
+						this.world.setEntityState(entityplayer, (byte) 30);
+					}
+				}
+			}
+
+			this.applyEnchantments(this, target);
+		}
+		return flag;
 	}
 
 	/*
