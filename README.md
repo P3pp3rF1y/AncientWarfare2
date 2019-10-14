@@ -15,8 +15,8 @@ Modules initially available will be:
 
 Latest and historical releases can be [found on CurseForge](https://minecraft.curseforge.com/projects/ancient-warfare-2/files).
 
-Development unstable releases can be downloaded from Bintray.  
-[ ![Download latest build](https://api.bintray.com/packages/p3pp3rf1y/maven/AncientWarfare2/images/download.svg) ](https://bintray.com/p3pp3rf1y/maven/AncientWarfare2/_latestVersion#files)
+Development unstable releases can be downloaded from Github packages.  
+[Download mod builds](https://github.com/P3pp3rF1y/AncientWarfare2/packages/36069)
 
 ## Development
 
