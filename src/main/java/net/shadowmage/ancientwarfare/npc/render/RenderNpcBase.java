@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
 import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.util.ResourceLocation;
@@ -177,7 +178,8 @@ public class RenderNpcBase<T extends NpcBase> extends RenderBiped<T> {
 			float f1 = 0.016666668F * f;
 			GlStateManager.pushMatrix();
 			float heightScalingOffset = entity.height / 6 - 0.3F;
-			GlStateManager.translate((float) x + 0.0F, (float) y + entity.height + heightScalingOffset + 0.5F, (float) z);
+			float verticalOffset = offsetForRiddenEntity(entity, heightScalingOffset);
+			GlStateManager.translate((float) x + 0.0F, (float) y + entity.height + verticalOffset + 0.5F, (float) z);
 			GlStateManager.glNormal3f(0.0F, 1.0F, 0.0F);
 			GlStateManager.rotate(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
 			GlStateManager.rotate(this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
@@ -208,6 +210,19 @@ public class RenderNpcBase<T extends NpcBase> extends RenderBiped<T> {
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 			GlStateManager.popMatrix();
 		}
+	}
+
+	private float offsetForRiddenEntity(NpcBase entity, float heightScalingOffset) {
+		float ret = heightScalingOffset;
+		if (!entity.isRiding()) {
+			return ret;
+		}
+
+		if (entity.getRidingEntity() instanceof EntityPig) {
+			ret += 0.4f;
+		}
+
+		return ret;
 	}
 
 	@Override
