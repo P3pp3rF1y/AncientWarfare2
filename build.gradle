@@ -116,28 +116,6 @@ def getStable() {
     return ""
 }
 
-bintray {
-    user = System.getenv('BINTRAY_USER')
-    key = System.getenv('BINTRAY_KEY')
-    publish = true
-    filesSpec {
-        from 'build/libs'
-        into '.'
-        exclude '*sources.jar'
-    }
-    pkg {
-        version {
-            name = "${project.version}"
-            released = new Date()
-        }
-        repo = 'maven'
-        name = 'AncientWarfare2'
-        licenses = ['GPL-3.0']
-        vcsUrl = 'https://github.com/P3pp3rF1y/AncientWarfare2.git'
-    }
-
-}
-
 publishing {
     repositories {
         maven {
