@@ -19,7 +19,7 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}    
     - name: Build with Gradle
       run: |
-        ./gradlew clean
+        ./gradlew clean --refresh-dependencies
         ./gradlew setupCIWorkspace
         ./gradlew build
     - name: Publish to Github Packages
