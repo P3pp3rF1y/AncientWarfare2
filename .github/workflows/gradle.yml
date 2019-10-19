@@ -19,9 +19,9 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}    
     - name: Build with Gradle
       run: |
-        ./gradlew clean --refresh-dependencies
-        ./gradlew setupCIWorkspace
-        ./gradlew build
+        ./gradlew clean --no-daemon
+        ./gradlew setupCIWorkspace --no-daemon
+        ./gradlew build --no-daemon
     - name: Publish to Github Packages
       env:
         GPR_USER: ${{ secrets.GPR_USER }}
