@@ -11,15 +11,15 @@ public class NpcAIFactionRangedAttack extends NpcAIAttack<NpcBase> {
 
 	private int attackDistanceSq = -1;
 
-	public NpcAIFactionRangedAttack(NpcBase npc) {
+	public <T extends NpcBase & IRangedAttackMob> NpcAIFactionRangedAttack(T npc) {
 		super(npc);
-		this.rangedAttacker = (IRangedAttackMob) npc;//will classcastexception if improperly used..
-		this.moveSpeed = 1.d;
+		rangedAttacker = npc;
+		moveSpeed = 1.d;
 	}
 
 	@Override
 	protected boolean shouldCloseOnTarget(double dist) {
-		return (dist > getAttackDistanceSq() || !this.npc.getEntitySenses().canSee(this.getTarget()));
+		return (dist > getAttackDistanceSq() || !npc.getEntitySenses().canSee(this.getTarget()));
 	}
 
 	private double getAttackDistanceSq() {
@@ -35,7 +35,7 @@ public class NpcAIFactionRangedAttack extends NpcAIAttack<NpcBase> {
 		double homeDist = npc.getDistanceSqFromHome();
 		if (homeDist > MIN_RANGE && dist < 8 * 8) {
 			npc.addAITask(TASK_MOVE);
-			this.moveToPosition(npc.getHomePosition(), homeDist);
+			moveToPosition(npc.getHomePosition(), homeDist);
 		} else {
 			npc.removeAITask(TASK_MOVE);
 			npc.getNavigator().clearPath();
@@ -43,8 +43,8 @@ public class NpcAIFactionRangedAttack extends NpcAIAttack<NpcBase> {
 		if (this.getAttackDelay() <= 0) {
 			float pwr = (float) (getAttackDistanceSq() / dist);
 			pwr = Math.min(Math.max(pwr, 0.1F), 1F);
-			this.rangedAttacker.attackEntityWithRangedAttack(getTarget(), pwr);
-			this.setAttackDelay(35);
+			rangedAttacker.attackEntityWithRangedAttack(getTarget(), pwr);
+			setAttackDelay(35);
 		}
 	}
 }
