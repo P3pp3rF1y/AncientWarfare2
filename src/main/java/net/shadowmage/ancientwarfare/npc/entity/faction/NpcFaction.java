@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.npc.entity.faction;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -18,6 +19,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.util.NBTHelper;
 import net.shadowmage.ancientwarfare.npc.ai.AIHelper;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionFleeSun;
@@ -112,6 +114,10 @@ public abstract class NpcFaction extends NpcBase {
 		return getAdditionalAttributeValue(AdditionalAttributes.BURNS_IN_SUN).orElse(false);
 	}
 
+	public boolean isUndead() {
+		return getAdditionalAttributeValue(AdditionalAttributes.UNDEAD).orElse(false);
+	}
+
 	@Override
 	public void onLivingUpdate() {
 		doSunBurn();
@@ -143,6 +149,14 @@ public abstract class NpcFaction extends NpcBase {
 				setItemStackToSlot(EntityEquipmentSlot.HEAD, ItemStack.EMPTY);
 			}
 		}
+	}
+
+	@Override
+	public EnumCreatureAttribute getCreatureAttribute() {
+		if (isUndead()) {
+			return EnumCreatureAttribute.UNDEAD;
+		} else
+		return EnumCreatureAttribute.UNDEFINED;
 	}
 
 	public void setFactionNameAndDefaults(String factionName) {
