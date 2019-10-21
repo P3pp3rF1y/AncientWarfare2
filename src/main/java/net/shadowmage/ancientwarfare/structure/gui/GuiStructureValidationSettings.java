@@ -19,23 +19,15 @@ import net.shadowmage.ancientwarfare.structure.template.build.validation.propert
 import net.shadowmage.ancientwarfare.structure.template.build.validation.properties.StructureValidationPropertyBool;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.properties.StructureValidationPropertyInteger;
 
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Set;
 
 import static net.shadowmage.ancientwarfare.structure.template.build.validation.properties.StructureValidationProperties.*;
 
 public class GuiStructureValidationSettings extends GuiContainerBase {
-
 	private final GuiStructureScanner parent;
 
 	private CompositeScrolled area;
 	private Label typeLabel;
-
-	private final Set<Button> typeButtons = new HashSet<>();
-	private final HashMap<Button, StructureValidationType> buttonToValidationType = new HashMap<>();
-
-	private StructureValidator validator;
 
 	public GuiStructureValidationSettings(GuiStructureScanner parent) {
 		super(new ContainerBase(parent.getContainer().player));
@@ -49,56 +41,11 @@ public class GuiStructureValidationSettings extends GuiContainerBase {
 		area = new CompositeScrolled(this, 0, 30, 256, 210);
 		this.addGuiElement(area);
 
-		Listener listener = new Listener(Listener.MOUSE_UP) {
-			@Override
-			public boolean onEvent(GuiElement widget, ActivationEvent evt) {
-				if (widget.isMouseOverElement(evt.mx, evt.my)) {
-					onTypeButtonPressed((Button) widget);
-				}
-				return true;
-			}
-		};
-
-		Button button = new Button(8, 8, 78, 16, StructureValidationType.GROUND.getName());
-		button.addNewListener(listener);
-		buttonToValidationType.put(button, StructureValidationType.GROUND);
-		typeButtons.add(button);
-
-		button = new Button(86, 8, 78, 16, StructureValidationType.UNDERGROUND.getName());
-		button.addNewListener(listener);
-		buttonToValidationType.put(button, StructureValidationType.UNDERGROUND);
-		typeButtons.add(button);
-
-		button = new Button(164, 8, 78, 16, StructureValidationType.SKY.getName());
-		button.addNewListener(listener);
-		buttonToValidationType.put(button, StructureValidationType.SKY);
-		typeButtons.add(button);
-
-		button = new Button(8, 24, 78, 16, StructureValidationType.WATER.getName());
-		button.addNewListener(listener);
-		buttonToValidationType.put(button, StructureValidationType.WATER);
-		typeButtons.add(button);
-
-		button = new Button(86, 24, 78, 16, StructureValidationType.UNDERWATER.getName());
-		button.addNewListener(listener);
-		buttonToValidationType.put(button, StructureValidationType.UNDERWATER);
-		typeButtons.add(button);
-
-		button = new Button(164, 24, 78, 16, StructureValidationType.ISLAND.getName());
-		button.addNewListener(listener);
-		buttonToValidationType.put(button, StructureValidationType.ISLAND);
-		typeButtons.add(button);
-
-		button = new Button(8, 40, 78, 16, StructureValidationType.HARBOR.getName());
-		button.addNewListener(listener);
-		buttonToValidationType.put(button, StructureValidationType.HARBOR);
-		typeButtons.add(button);
-
 		typeLabel = new Label(8, 8, "");
 		addGuiElement(typeLabel);
 
-		button = new Button(256 - 8 - 55, 8, 55, 12, "guistrings.done");
-		button.addNewListener(new Listener(Listener.MOUSE_UP) {
+		Button doneButton = new Button(256 - 8 - 55, 8, 55, 12, "guistrings.done");
+		doneButton.addNewListener(new Listener(Listener.MOUSE_UP) {
 			@Override
 			public boolean onEvent(GuiElement widget, ActivationEvent evt) {
 				if (widget.isMouseOverElement(evt.mx, evt.my)) {
@@ -107,18 +54,25 @@ public class GuiStructureValidationSettings extends GuiContainerBase {
 				return true;
 			}
 		});
-		addGuiElement(button);
+		addGuiElement(doneButton);
 	}
 
-	private void onTypeButtonPressed(Button button) {
-		StructureValidationType type = buttonToValidationType.get(button);
-		if (type == null) {
-			return;
-		}//should never happen
+	private Listener getListener(StructureValidationType validationType) {
+		return new Listener(Listener.MOUSE_UP) {
+			@Override
+			public boolean onEvent(GuiElement widget, ActivationEvent evt) {
+				if (widget.isMouseOverElement(evt.mx, evt.my)) {
+					onTypeButtonPressed(validationType);
+				}
+				return true;
+			}
+		};
+	}
+
+	private void onTypeButtonPressed(StructureValidationType type) {
 		StructureValidator newValidator = type.getValidator();
 		newValidator.inheritPropertiesFrom(parent.getContainer().getValidator());
 		parent.getContainer().setValidator(newValidator);
-		validator = newValidator;
 		this.refreshGui();
 	}
 
@@ -131,16 +85,21 @@ public class GuiStructureValidationSettings extends GuiContainerBase {
 
 		int totalHeight = 0;
 		area.clearElements();
-		for (Button b : typeButtons) {
-			area.addGuiElement(b);
-		}
+
+		addValidationButton(8, 8, StructureValidationType.GROUND);
+		addValidationButton(86, 8, StructureValidationType.UNDERGROUND);
+		addValidationButton(164, 8, StructureValidationType.SKY);
+		addValidationButton(8, 24, StructureValidationType.WATER);
+		addValidationButton(86, 24, StructureValidationType.UNDERWATER);
+		addValidationButton(164, 24, StructureValidationType.ISLAND);
+		addValidationButton(8, 40, StructureValidationType.HARBOR);
+
 		totalHeight += 16 * 3 + 4 + 8;//type buttons height+buffer
 
 		Label label;
 		Checkbox box;
 		NumberInput input;
-		validator = parent.getContainer().getValidator();
-		for (IStructureValidationProperty property : validator.validationType.getValidationProperties()) {
+		for (IStructureValidationProperty property : parent.getContainer().getValidator().validationType.getValidationProperties()) {
 			if (EXCLUDED_PROPERTIES.contains(property)) {
 				continue;//skip the properties handled by blocks, biome, or dimensions setup guis
 			}
@@ -160,9 +119,14 @@ public class GuiStructureValidationSettings extends GuiContainerBase {
 		area.setAreaSize(totalHeight);
 	}
 
+	private void addValidationButton(int topLeftX, int topLeftY, StructureValidationType validationType) {
+		Button button = new Button(topLeftX, topLeftY, 78, 16, validationType.getName());
+		button.addNewListener(getListener(validationType));
+		area.addGuiElement(button);
+	}
+
 	@Override
 	protected boolean onGuiCloseRequested() {
-		parent.getContainer().setValidator(validator);
 		Minecraft.getMinecraft().displayGuiScreen(parent);
 		return false;
 	}
@@ -174,12 +138,12 @@ public class GuiStructureValidationSettings extends GuiContainerBase {
 		private PropertyCheckbox(int topLeftX, int topLeftY, int width, int height, StructureValidationPropertyBool property) {
 			super(topLeftX, topLeftY, width, height, "");
 			this.prop = property;
-			setChecked(validator.getPropertyValue(prop));
+			setChecked(parent.getContainer().getValidator().getPropertyValue(prop));
 		}
 
 		@Override
 		public void onToggled() {
-			validator.setPropertyValue(prop, checked());
+			parent.getContainer().getValidator().setPropertyValue(prop, checked());
 		}
 	}
 
@@ -188,14 +152,14 @@ public class GuiStructureValidationSettings extends GuiContainerBase {
 		private final StructureValidationPropertyInteger prop;
 
 		private PropertyNumberInputInteger(int topLeftX, int topLeftY, int width, StructureValidationPropertyInteger property, IWidgetSelection selector) {
-			super(topLeftX, topLeftY, width, validator.getPropertyValue(property), selector);
+			super(topLeftX, topLeftY, width, parent.getContainer().getValidator().getPropertyValue(property), selector);
 			this.prop = property;
 			this.setIntegerValue();
 		}
 
 		@Override
 		public void onValueUpdated(float value) {
-			validator.setPropertyValue(prop, (int) value);
+			parent.getContainer().getValidator().setPropertyValue(prop, (int) value);
 		}
 	}
 
