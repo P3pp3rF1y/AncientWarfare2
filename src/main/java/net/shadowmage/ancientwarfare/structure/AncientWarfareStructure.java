@@ -39,6 +39,7 @@ import net.shadowmage.ancientwarfare.structure.container.ContainerStatue;
 import net.shadowmage.ancientwarfare.structure.container.ContainerStructureScanner;
 import net.shadowmage.ancientwarfare.structure.container.ContainerStructureSelection;
 import net.shadowmage.ancientwarfare.structure.container.ContainerTownSelection;
+import net.shadowmage.ancientwarfare.structure.datafixes.LootSettingsPotionRegistryNameFixer;
 import net.shadowmage.ancientwarfare.structure.datafixes.TileLootFixer;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.entity.EntitySeat;
@@ -146,6 +147,7 @@ public class AncientWarfareStructure {
 		DataFixManager.registerRuleFixer(new EntityRuleNameFixer());
 		DataFixManager.registerRuleFixer(new EntityEquipmentFixer());
 		DataFixManager.registerRuleFixer(new TileLootFixer());
+		DataFixManager.registerRuleFixer(new LootSettingsPotionRegistryNameFixer());
 	}
 
 	@EventHandler

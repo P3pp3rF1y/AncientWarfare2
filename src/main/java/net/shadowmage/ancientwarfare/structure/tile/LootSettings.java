@@ -5,6 +5,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Constants;
+import net.shadowmage.ancientwarfare.structure.util.PotionHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,7 @@ public class LootSettings {
 		if (!effects.isEmpty()) {
 			NBTTagList effectList = new NBTTagList();
 			for (PotionEffect potioneffect : effects) {
-				effectList.appendTag(potioneffect.writeCustomPotionEffectToNBT(new NBTTagCompound()));
+				effectList.appendTag(PotionHelper.writeCustomPotionEffectToNBT(potioneffect));
 			}
 			ret.setTag("effects", effectList);
 		}
@@ -55,7 +56,7 @@ public class LootSettings {
 		lootSettings.splashPotion = nbt.getBoolean("splashPotion");
 		NBTTagList effectList = nbt.getTagList("effects", Constants.NBT.TAG_COMPOUND);
 		for (int i = 0; i < effectList.tagCount(); i++) {
-			lootSettings.effects.add(PotionEffect.readCustomPotionEffectFromNBT(effectList.getCompoundTagAt(i)));
+			PotionHelper.readCustomPotionEffectFromNBT(effectList.getCompoundTagAt(i)).ifPresent(lootSettings.effects::add);
 		}
 		lootSettings.spawnEntity = nbt.getBoolean("spawnEntity");
 		lootSettings.entity = new ResourceLocation(nbt.getString("entity"));
