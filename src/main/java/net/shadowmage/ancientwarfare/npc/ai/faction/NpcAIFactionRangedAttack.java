@@ -10,11 +10,18 @@ public class NpcAIFactionRangedAttack extends NpcAIAttack<NpcBase> {
 	private final IRangedAttackMob rangedAttacker;
 
 	private int attackDistanceSq = -1;
+	private int attackDelay;
 
-	public <T extends NpcBase & IRangedAttackMob> NpcAIFactionRangedAttack(T npc) {
+	public <T extends NpcBase & IRangedAttackMob> NpcAIFactionRangedAttack(T npc, double moveSpeed, int attackDistanceSq, int attackDelay) {
 		super(npc);
 		rangedAttacker = npc;
-		moveSpeed = 1.d;
+		this.moveSpeed = moveSpeed;
+		this.attackDistanceSq = attackDistanceSq;
+		this.attackDelay = attackDelay;
+	}
+
+	public <T extends NpcBase & IRangedAttackMob> NpcAIFactionRangedAttack(T npc) {
+		this(npc, 1, (int) Math.pow(npc.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getAttributeValue(), 2), 35);
 	}
 
 	@Override
@@ -32,19 +39,11 @@ public class NpcAIFactionRangedAttack extends NpcAIAttack<NpcBase> {
 
 	@Override
 	protected void doAttack(double dist) {
-		double homeDist = npc.getDistanceSqFromHome();
-		if (homeDist > MIN_RANGE && dist < 8 * 8) {
-			npc.addAITask(TASK_MOVE);
-			moveToPosition(npc.getHomePosition(), homeDist);
-		} else {
-			npc.removeAITask(TASK_MOVE);
-			npc.getNavigator().clearPath();
-		}
 		if (this.getAttackDelay() <= 0) {
 			float pwr = (float) (getAttackDistanceSq() / dist);
 			pwr = Math.min(Math.max(pwr, 0.1F), 1F);
 			rangedAttacker.attackEntityWithRangedAttack(getTarget(), pwr);
-			setAttackDelay(35);
+			setAttackDelay(attackDelay);
 		}
 	}
 }

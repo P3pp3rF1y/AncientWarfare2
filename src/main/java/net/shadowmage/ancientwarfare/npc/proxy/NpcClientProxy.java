@@ -4,6 +4,7 @@ import com.google.common.collect.Sets;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.RenderPotion;
 import net.minecraft.client.resources.SkinManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -22,6 +23,7 @@ import net.shadowmage.ancientwarfare.core.util.TextureImageBased;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.client.NPCItemColors;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
+import net.shadowmage.ancientwarfare.npc.entity.NoFriendlyFirePotion;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 import net.shadowmage.ancientwarfare.npc.gui.GuiCombatOrder;
@@ -95,6 +97,7 @@ public class NpcClientProxy extends NpcCommonProxy {
 
 		RenderingRegistry.registerEntityRenderingHandler(NpcBase.class, RenderNpcBase::new);
 		RenderingRegistry.registerEntityRenderingHandler(NpcFaction.class, RenderNpcFaction::new);
+		RenderingRegistry.registerEntityRenderingHandler(NoFriendlyFirePotion.class, renderManager -> new RenderPotion(renderManager, Minecraft.getMinecraft().getRenderItem()));
 
 		MinecraftForge.EVENT_BUS.register(RenderWorkLines.INSTANCE);
 		MinecraftForge.EVENT_BUS.register(RenderCommandOverlay.INSTANCE);
