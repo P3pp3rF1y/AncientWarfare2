@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.vehicle.model;
 
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.relauncher.Side;
@@ -7,7 +8,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
 @SideOnly(Side.CLIENT)
-public class ModelBoatBallista extends ModelVehicleBase {
+public class ModelBoatBallista extends ModelBase {
 
 	ModelRenderer bottomP1;
 	ModelRenderer bow;
@@ -109,8 +110,6 @@ public class ModelBoatBallista extends ModelVehicleBase {
 	ModelRenderer deckP2;
 	ModelRenderer deckP3;
 	ModelRenderer deckP4;
-	ModelRenderer flagPole;
-	ModelRenderer flagCloth;
 
 	public ModelBoatBallista() {
 		bottomP1 = new ModelRenderer(this, "bottomP1");
@@ -808,18 +807,6 @@ public class ModelBoatBallista extends ModelVehicleBase {
 		deckP4.setRotationPoint(15.0f, -9.25f, -9.1f);
 		setPieceRotation(deckP4, 0.0f, 0.0f, 0.0f);
 		deckP4.addBox(-15.0f, -1.0f, -24.0f, 15, 1, 29);
-		flagPole = new ModelRenderer(this, "flagPole");
-		flagPole.setTextureOffset(19, 78);
-		flagPole.setTextureSize(256, 256);
-		flagPole.setRotationPoint(-14.0f, -29.0f, 24.0f);
-		setPieceRotation(flagPole, 0.0f, 0.0f, 0.0f);
-		flagPole.addBox(0.0f, 0.0f, 0.0f, 1, 16, 1);
-		flagCloth = new ModelRenderer(this, "flagCloth");
-		flagCloth.setTextureOffset(24, 78);
-		flagCloth.setTextureSize(256, 256);
-		flagCloth.setRotationPoint(-14.0f, -29.0f, 25.0f);
-		setPieceRotation(flagCloth, 0.0f, 0.0f, 0.0f);
-		flagCloth.addBox(0.0f, 0.0f, 0.0f, 1, 8, 11);
 	}
 
 	@Override
@@ -827,13 +814,11 @@ public class ModelBoatBallista extends ModelVehicleBase {
 		super.render(entity, f1, f2, f3, f4, f5, f6);
 		setRotationAngles(f1, f2, f3, f4, f5, f6, entity);
 		armMain.render(f6);
-		flagPole.render(0.0625f);
 		bottomP1.render(f6);
 		deckP1.render(f6);
 		deckP2.render(f6);
 		deckP3.render(f6);
 		deckP4.render(f6);
-		flagPole.render(f6);
 	}
 
 	public void setPieceRotation(ModelRenderer model, float x, float y, float z) {
@@ -864,10 +849,5 @@ public class ModelBoatBallista extends ModelVehicleBase {
 		this.armRightMain.rotateAngleY = Trig.toRadians(bow);
 		this.stringLeft.rotateAngleY = Trig.toRadians(-string);
 		this.stringRight.rotateAngleY = Trig.toRadians(string);
-	}
-
-	@Override
-	public void renderFlag() {
-		flagCloth.render(0.0625f);
 	}
 }

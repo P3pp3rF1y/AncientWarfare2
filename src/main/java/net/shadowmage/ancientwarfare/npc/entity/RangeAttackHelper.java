@@ -9,10 +9,12 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 
 public final class RangeAttackHelper {
+	private RangeAttackHelper() {}
+
 	/*
 	 * @author Funwayguy for the speedFactor (range) calculations
 	 */
-	public static void doRangedAttack(EntityLivingBase attacker, EntityLivingBase target, float force, float precision) {
+	public static void doRangedAttack(EntityLivingBase attacker, EntityLivingBase target, float force, float inaccuracy) {
 		double targetDist = attacker.getDistance(target.posX + (target.posX - target.lastTickPosX), target.getEntityBoundingBox().minY, target.posZ + (target.posZ - target.lastTickPosZ));
 		float speedFactor = (float) ((0.00013 * (targetDist) * (targetDist)) + (0.02 * targetDist) + 1.25);
 
@@ -21,7 +23,7 @@ public final class RangeAttackHelper {
 		double d1 = target.getEntityBoundingBox().minY + (double) (target.height / 3.0F) - entityarrow.posY;
 		double d2 = target.posZ - attacker.posZ;
 		double d3 = (double) MathHelper.sqrt(d0 * d0 + d2 * d2);
-		entityarrow.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, speedFactor, precision);
+		entityarrow.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, speedFactor, inaccuracy);
 
 		entityarrow.setDamage(force * 2.0D + attacker.getRNG().nextGaussian() * 0.25D);
 

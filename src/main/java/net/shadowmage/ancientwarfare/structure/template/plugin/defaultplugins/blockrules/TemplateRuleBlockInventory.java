@@ -20,7 +20,9 @@ import net.shadowmage.ancientwarfare.structure.tile.ISpecialLootContainer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TemplateRuleBlockInventory extends TemplateRuleBlockTile {
@@ -31,7 +33,7 @@ public class TemplateRuleBlockInventory extends TemplateRuleBlockTile {
 	private static final String LEGACY_FEATURES_TAG = "legacyFeatures";
 	private boolean legacyFeatures;
 	private int randomLootLevel;
-	private Map<EnumFacing, NonNullList<ItemStack>> inventoryStacks;
+	private Map<EnumFacing, NonNullList<ItemStack>> inventoryStacks = new HashMap<>();
 
 	public TemplateRuleBlockInventory() {
 		super();
@@ -78,12 +80,14 @@ public class TemplateRuleBlockInventory extends TemplateRuleBlockTile {
 	}
 
 	@Override
-	public void addResources(NonNullList<ItemStack> resources) {
-		super.addResources(resources);
+	public List<ItemStack> getResources() {
+		List<ItemStack> resources = new ArrayList<>(super.getResources());
 
 		for (NonNullList<ItemStack> stacks : inventoryStacks.values()) {
 			resources.addAll(stacks);
 		}
+
+		return resources;
 	}
 
 	@Override
@@ -189,9 +193,6 @@ public class TemplateRuleBlockInventory extends TemplateRuleBlockTile {
 
 	@SuppressWarnings("squid:S1640") //need to use a null key as well which is not supported in EnumMap
 	private void putInInventoryStacks(@Nullable EnumFacing side, NonNullList<ItemStack> stacks) {
-		if (inventoryStacks == null) {
-			inventoryStacks = new HashMap<>();
-		}
 		inventoryStacks.put(side, stacks);
 	}
 

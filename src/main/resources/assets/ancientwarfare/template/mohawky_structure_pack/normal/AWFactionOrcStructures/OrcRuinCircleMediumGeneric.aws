@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 1/5/2019 at: 23:20:19
+# Auto-generated structure template file. created on: 8/19/2019 at: 10:23:14
 # Lines beginning with # denote comments
 
 header:
-version=2.8
+version=2.9
 name=OrcRuinCircleMediumGeneric
 mods=
 size=29,19,29

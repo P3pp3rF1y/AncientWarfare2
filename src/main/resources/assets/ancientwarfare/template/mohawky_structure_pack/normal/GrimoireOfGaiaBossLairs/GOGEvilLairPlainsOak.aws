@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 11/22/2018 at: 22:30:39
+# Auto-generated structure template file. created on: 8/19/2019 at: 10:23:18
 # Lines beginning with # denote comments
 
 header:
-version=2.7
+version=2.9
 name=GOGEvilLairPlainsOak
 mods=grimoireofgaia
 size=54,109,53
@@ -20,16 +20,14 @@ preserveBlocks=false
 selectionWeight=30
 clusterValue=50
 minDuplicateDistance=1000
-dimensionWhiteList=false
-dimensionList=
+dimensionWhiteList=true
+dimensionList=0
 biomeWhiteList=true
 biomeList=biomesoplenty:meadow,biomesoplenty:shrubland,biomesoplenty:woodland,biomesoplenty:pasture,traverse:woodlands,minecraft:forest,biomesoplenty:steppe,minecraft:plains
 leveling=6
 fill=6
 border=6
 blockSwap=false
-data:
-:enddata
 :endvalidation
 
 #### LAYERS ####
@@ -6034,7 +6032,7 @@ rule:
 plugin=vanillaBlocks
 number=1
 data:
-JSON:{blockState:{blockName:"minecraft:stone",properties:{variant:"stone"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone",properties:{variant:"stone"}}}
 :enddata
 :endrule
 
@@ -6042,7 +6040,7 @@ rule:
 plugin=vanillaBlocks
 number=2
 data:
-JSON:{blockState:{blockName:"minecraft:coal_ore",properties:{}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:coal_ore"}}
 :enddata
 :endrule
 
@@ -6050,7 +6048,7 @@ rule:
 plugin=vanillaBlocks
 number=3
 data:
-JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"dirt",snowy:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"dirt",snowy:"false"}}}
 :enddata
 :endrule
 
@@ -6058,7 +6056,7 @@ rule:
 plugin=vanillaBlocks
 number=4
 data:
-JSON:{blockState:{blockName:"minecraft:iron_ore",properties:{}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:iron_ore"}}
 :enddata
 :endrule
 
@@ -6066,7 +6064,7 @@ rule:
 plugin=blockTile
 number=5
 data:
-JSON:{blockState:{blockName:"thejungle:tyrant_skull",properties:{}},buildPass:0,teData:{id:"minecraft:tyrantskull",direction:0}}
+JSON:{blockState:{blockName:"minecraft:air"},teData:{id:"minecraft:tyrantskull",direction:0}}
 :enddata
 :endrule
 
@@ -6074,7 +6072,7 @@ rule:
 plugin=blockTile
 number=6
 data:
-JSON:{blockState:{blockName:"thejungle:tyrant_skull",properties:{}},buildPass:0,teData:{id:"minecraft:tyrantskull",direction:0}}
+JSON:{blockState:{blockName:"minecraft:air"},teData:{id:"minecraft:tyrantskull",direction:0}}
 :enddata
 :endrule
 
@@ -6082,7 +6080,7 @@ rule:
 plugin=vanillaBlocks
 number=7
 data:
-JSON:{blockState:{blockName:"twilightforest:miniature_structure",properties:{variant:"hedge_maze"}},buildPass:0}
+JSON:{blockState:{blockName:"twilightforest:miniature_structure",properties:{variant:"hedge_maze"}}}
 :enddata
 :endrule
 
@@ -6090,7 +6088,7 @@ rule:
 plugin=vanillaBlocks
 number=8
 data:
-JSON:{blockState:{blockName:"twilightforest:miniature_structure",properties:{variant:"twilight_portal"}},buildPass:0}
+JSON:{blockState:{blockName:"twilightforest:miniature_structure",properties:{variant:"twilight_portal"}}}
 :enddata
 :endrule
 
@@ -6098,7 +6096,7 @@ rule:
 plugin=vanillaBlocks
 number=9
 data:
-JSON:{blockState:{blockName:"twilightforest:miniature_structure",properties:{variant:"final_castle"}},buildPass:0}
+JSON:{blockState:{blockName:"twilightforest:miniature_structure",properties:{variant:"final_castle"}}}
 :enddata
 :endrule
 
@@ -6106,7 +6104,7 @@ rule:
 plugin=vanillaBlocks
 number=10
 data:
-JSON:{blockState:{blockName:"twilightforest:trollber",properties:{}},buildPass:0}
+JSON:{blockState:{blockName:"twilightforest:trollber"}}
 :enddata
 :endrule
 
@@ -6114,7 +6112,7 @@ rule:
 plugin=vanillaBlocks
 number=11
 data:
-JSON:{blockState:{blockName:"harvestcraft:olive_sapling",properties:{}},buildPass:0}
+JSON:{blockState:{blockName:"harvestcraft:olive_sapling"}}
 :enddata
 :endrule
 
@@ -6122,7 +6120,7 @@ rule:
 plugin=vanillaBlocks
 number=12
 data:
-JSON:{blockState:{blockName:"harvestcraft:pamdragonfruit",properties:{age:"2"}},buildPass:0}
+JSON:{blockState:{blockName:"harvestcraft:pamdragonfruit",properties:{age:"2"}}}
 :enddata
 :endrule
 
@@ -6130,7 +6128,7 @@ rule:
 plugin=vanillaBlocks
 number=13
 data:
-JSON:{blockState:{blockName:"minecraft:gravel",properties:{}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:gravel"}}
 :enddata
 :endrule
 
@@ -6138,7 +6136,7 @@ rule:
 plugin=vanillaBlocks
 number=14
 data:
-JSON:{blockState:{blockName:"twilightforest:miniature_structure",properties:{variant:"hollow_hill"}},buildPass:0}
+JSON:{blockState:{blockName:"twilightforest:miniature_structure",properties:{variant:"hollow_hill"}}}
 :enddata
 :endrule
 
@@ -6146,7 +6144,7 @@ rule:
 plugin=vanillaBlocks
 number=15
 data:
-JSON:{blockState:{blockName:"twilightforest:miniature_structure",properties:{variant:"yeti_cave"}},buildPass:0}
+JSON:{blockState:{blockName:"twilightforest:miniature_structure",properties:{variant:"yeti_cave"}}}
 :enddata
 :endrule
 
@@ -6154,7 +6152,7 @@ rule:
 plugin=blockTile
 number=16
 data:
-JSON:{blockState:{blockName:"thejungle:tyrant_skull",properties:{}},buildPass:0,teData:{id:"minecraft:tyrantskull",direction:0}}
+JSON:{blockState:{blockName:"minecraft:air"},teData:{id:"minecraft:tyrantskull",direction:0}}
 :enddata
 :endrule
 
@@ -6162,7 +6160,7 @@ rule:
 plugin=blockTile
 number=17
 data:
-JSON:{blockState:{blockName:"thejungle:tyrant_skull",properties:{}},buildPass:0,teData:{id:"minecraft:tyrantskull",direction:0}}
+JSON:{blockState:{blockName:"minecraft:air"},teData:{id:"minecraft:tyrantskull",direction:0}}
 :enddata
 :endrule
 
@@ -6170,7 +6168,7 @@ rule:
 plugin=blockTile
 number=18
 data:
-JSON:{blockState:{blockName:"thejungle:tyrant_skull",properties:{}},buildPass:0,teData:{id:"minecraft:tyrantskull",direction:0}}
+JSON:{blockState:{blockName:"minecraft:air"},teData:{id:"minecraft:tyrantskull",direction:0}}
 :enddata
 :endrule
 
@@ -6178,7 +6176,7 @@ rule:
 plugin=blockTile
 number=19
 data:
-JSON:{blockState:{blockName:"thejungle:tyrant_skull",properties:{}},buildPass:0,teData:{id:"minecraft:tyrantskull",direction:0}}
+JSON:{blockState:{blockName:"minecraft:air"},teData:{id:"minecraft:tyrantskull",direction:0}}
 :enddata
 :endrule
 
@@ -6186,7 +6184,7 @@ rule:
 plugin=fluid
 number=20
 data:
-JSON:{blockState:{blockName:"minecraft:water",properties:{level:"0"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:water",properties:{level:"0"}}}
 :enddata
 :endrule
 
@@ -6194,7 +6192,7 @@ rule:
 plugin=vanillaBlocks
 number=21
 data:
-JSON:{blockState:{blockName:"minecraft:grass",properties:{snowy:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:grass",properties:{snowy:"false"}}}
 :enddata
 :endrule
 
@@ -6202,7 +6200,7 @@ rule:
 plugin=vanillaBlocks
 number=22
 data:
-JSON:{blockState:{blockName:"minecraft:waterlily",properties:{}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:waterlily"}}
 :enddata
 :endrule
 
@@ -6210,7 +6208,7 @@ rule:
 plugin=vanillaBlocks
 number=23
 data:
-JSON:{blockState:{blockName:"minecraft:tallgrass",properties:{type:"tall_grass"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:tallgrass",properties:{type:"tall_grass"}}}
 :enddata
 :endrule
 
@@ -6218,7 +6216,7 @@ rule:
 plugin=vanillaBlocks
 number=24
 data:
-JSON:{blockState:{blockName:"minecraft:red_flower",properties:{type:"oxeye_daisy"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:red_flower",properties:{type:"oxeye_daisy"}}}
 :enddata
 :endrule
 
@@ -6226,7 +6224,7 @@ rule:
 plugin=vanillaBlocks
 number=25
 data:
-JSON:{blockState:{blockName:"minecraft:red_flower",properties:{type:"houstonia"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:red_flower",properties:{type:"houstonia"}}}
 :enddata
 :endrule
 
@@ -6234,7 +6232,7 @@ rule:
 plugin=vanillaBlocks
 number=26
 data:
-JSON:{blockState:{blockName:"minecraft:red_flower",properties:{type:"poppy"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:red_flower",properties:{type:"poppy"}}}
 :enddata
 :endrule
 
@@ -6242,7 +6240,7 @@ rule:
 plugin=vanillaBlocks
 number=27
 data:
-JSON:{blockState:{blockName:"minecraft:yellow_flower",properties:{type:"dandelion"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:yellow_flower",properties:{type:"dandelion"}}}
 :enddata
 :endrule
 
@@ -6250,7 +6248,7 @@ rule:
 plugin=blockTile
 number=28
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"evil"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"evil"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6258,7 +6256,7 @@ rule:
 plugin=vanillaBlocks
 number=29
 data:
-JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"oak",axis:"y"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"oak",axis:"y"}}}
 :enddata
 :endrule
 
@@ -6266,7 +6264,7 @@ rule:
 plugin=blockTile
 number=30
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"evil"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"evil"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6274,7 +6272,7 @@ rule:
 plugin=vanillaBlocks
 number=31
 data:
-JSON:{blockState:{blockName:"ebwizardry:crystal_flower",properties:{}},buildPass:0}
+JSON:{blockState:{blockName:"ebwizardry:crystal_flower"}}
 :enddata
 :endrule
 
@@ -6282,7 +6280,7 @@ rule:
 plugin=blockTile
 number=32
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"evil"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"evil"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6290,7 +6288,7 @@ rule:
 plugin=vanillaBlocks
 number=33
 data:
-JSON:{blockState:{blockName:"minecraft:soul_sand",properties:{}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:soul_sand"}}
 :enddata
 :endrule
 
@@ -6298,7 +6296,7 @@ rule:
 plugin=vanillaBlocks
 number=34
 data:
-JSON:{blockState:{blockName:"minecraft:stonebrick",properties:{variant:"cracked_stonebrick"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stonebrick",properties:{variant:"cracked_stonebrick"}}}
 :enddata
 :endrule
 
@@ -6306,7 +6304,7 @@ rule:
 plugin=blockTile
 number=35
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"evil"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"evil"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6314,7 +6312,7 @@ rule:
 plugin=blockTile
 number=36
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"evil"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"evil"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6322,7 +6320,7 @@ rule:
 plugin=blockTile
 number=37
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"evil"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"evil"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6330,7 +6328,7 @@ rule:
 plugin=vanillaBlocks
 number=38
 data:
-JSON:{blockState:{blockName:"minecraft:red_flower",properties:{type:"pink_tulip"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:red_flower",properties:{type:"pink_tulip"}}}
 :enddata
 :endrule
 
@@ -6338,7 +6336,7 @@ rule:
 plugin=vanillaBlocks
 number=39
 data:
-JSON:{blockState:{blockName:"minecraft:leaves",properties:{check_decay:"false",decayable:"true",variant:"oak"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:leaves",properties:{check_decay:"false",decayable:"true",variant:"oak"}}}
 :enddata
 :endrule
 
@@ -6346,7 +6344,7 @@ rule:
 plugin=blockTile
 number=40
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"evil"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"evil"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6354,7 +6352,7 @@ rule:
 plugin=vanillaBlocks
 number=41
 data:
-JSON:{blockState:{blockName:"minecraft:red_flower",properties:{type:"red_tulip"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:red_flower",properties:{type:"red_tulip"}}}
 :enddata
 :endrule
 
@@ -6362,7 +6360,7 @@ rule:
 plugin=blockTile
 number=42
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"evil"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"evil"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6370,7 +6368,7 @@ rule:
 plugin=vanillaBlocks
 number=43
 data:
-JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"oak",axis:"z"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"oak",axis:"z"}}}
 :enddata
 :endrule
 
@@ -6378,7 +6376,7 @@ rule:
 plugin=vanillaBlocks
 number=44
 data:
-JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"oak",axis:"x"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"oak",axis:"x"}}}
 :enddata
 :endrule
 
@@ -6386,7 +6384,7 @@ rule:
 plugin=blockTile
 number=45
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"evil"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"evil"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6394,7 +6392,7 @@ rule:
 plugin=vanillaBlocks
 number=46
 data:
-JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"false",south:"false",north:"true",west:"true",up:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"false",south:"false",north:"true",west:"true",up:"false"}}}
 :enddata
 :endrule
 
@@ -6402,7 +6400,7 @@ rule:
 plugin=vanillaBlocks
 number=47
 data:
-JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"false",south:"false",north:"false",west:"true",up:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"false",south:"false",north:"false",west:"true",up:"false"}}}
 :enddata
 :endrule
 
@@ -6410,7 +6408,7 @@ rule:
 plugin=vanillaBlocks
 number=48
 data:
-JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"false",south:"false",north:"true",west:"false",up:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"false",south:"false",north:"true",west:"false",up:"false"}}}
 :enddata
 :endrule
 
@@ -6418,7 +6416,7 @@ rule:
 plugin=vanillaBlocks
 number=49
 data:
-JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"podzol",snowy:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"podzol",snowy:"false"}}}
 :enddata
 :endrule
 
@@ -6426,7 +6424,7 @@ rule:
 plugin=blockTile
 number=50
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"evil"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"evil"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6434,7 +6432,7 @@ rule:
 plugin=vanillaBlocks
 number=51
 data:
-JSON:{blockState:{blockName:"minecraft:fence",properties:{east:"false",south:"false",north:"false",west:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:fence",properties:{east:"false",south:"false",north:"false",west:"false"}}}
 :enddata
 :endrule
 
@@ -6442,7 +6440,7 @@ rule:
 plugin=blockTile
 number=52
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"evil"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"evil"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6450,7 +6448,7 @@ rule:
 plugin=blockTile
 number=53
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:12,hostile:1b,forced:1b,customTag:{},maxToSpawn:12,entityId:"minecraft:bat",minToSpawn:12}],groupWeight:1}],playerRange:4,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:12,hostile:1b,forced:1b,customTag:{},maxToSpawn:12,entityId:"minecraft:bat",minToSpawn:12}],groupWeight:1}],playerRange:4,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6458,7 +6456,7 @@ rule:
 plugin=blockTile
 number=54
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"evil"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:8,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"evil"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:8,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6466,7 +6464,7 @@ rule:
 plugin=vanillaBlocks
 number=55
 data:
-JSON:{blockState:{blockName:"minecraft:quartz_stairs",properties:{half:"bottom",shape:"straight",facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:quartz_stairs",properties:{half:"bottom",shape:"straight",facing:"east"}}}
 :enddata
 :endrule
 
@@ -6474,7 +6472,7 @@ rule:
 plugin=vanillaBlocks
 number=56
 data:
-JSON:{blockState:{blockName:"minecraft:stone_slab",properties:{half:"top",variant:"quartz"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_slab",properties:{half:"top",variant:"quartz"}}}
 :enddata
 :endrule
 
@@ -6482,7 +6480,7 @@ rule:
 plugin=vanillaBlocks
 number=57
 data:
-JSON:{blockState:{blockName:"minecraft:quartz_stairs",properties:{half:"bottom",shape:"straight",facing:"south"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:quartz_stairs",properties:{half:"bottom",shape:"straight",facing:"south"}}}
 :enddata
 :endrule
 
@@ -6490,7 +6488,7 @@ rule:
 plugin=vanillaBlocks
 number=58
 data:
-JSON:{blockState:{blockName:"minecraft:quartz_block",properties:{variant:"chiseled"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:quartz_block",properties:{variant:"chiseled"}}}
 :enddata
 :endrule
 
@@ -6498,7 +6496,7 @@ rule:
 plugin=fluid
 number=59
 data:
-JSON:{blockState:{blockName:"minecraft:water",properties:{level:"9"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:water",properties:{level:"9"}}}
 :enddata
 :endrule
 
@@ -6506,7 +6504,7 @@ rule:
 plugin=vanillaBlocks
 number=60
 data:
-JSON:{blockState:{blockName:"minecraft:glowstone",properties:{}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:glowstone"}}
 :enddata
 :endrule
 
@@ -6514,7 +6512,7 @@ rule:
 plugin=vanillaBlocks
 number=61
 data:
-JSON:{blockState:{blockName:"minecraft:quartz_block",properties:{variant:"default"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:quartz_block",properties:{variant:"default"}}}
 :enddata
 :endrule
 
@@ -6522,7 +6520,7 @@ rule:
 plugin=vanillaBlocks
 number=62
 data:
-JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"birch",axis:"y"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"birch",axis:"y"}}}
 :enddata
 :endrule
 
@@ -6530,7 +6528,7 @@ rule:
 plugin=vanillaBlocks
 number=63
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"north"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"north"}}}
 :enddata
 :endrule
 
@@ -6538,7 +6536,7 @@ rule:
 plugin=vanillaBlocks
 number=64
 data:
-JSON:{blockState:{blockName:"minecraft:stone_slab",properties:{half:"bottom",variant:"quartz"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_slab",properties:{half:"bottom",variant:"quartz"}}}
 :enddata
 :endrule
 
@@ -6546,7 +6544,7 @@ rule:
 plugin=vanillaBlocks
 number=65
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"south"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"south"}}}
 :enddata
 :endrule
 
@@ -6554,7 +6552,7 @@ rule:
 plugin=vanillaBlocks
 number=66
 data:
-JSON:{blockState:{blockName:"minecraft:quartz_stairs",properties:{half:"bottom",shape:"straight",facing:"west"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:quartz_stairs",properties:{half:"bottom",shape:"straight",facing:"west"}}}
 :enddata
 :endrule
 
@@ -6562,7 +6560,7 @@ rule:
 plugin=vanillaBlocks
 number=67
 data:
-JSON:{blockState:{blockName:"minecraft:quartz_stairs",properties:{half:"bottom",shape:"straight",facing:"north"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:quartz_stairs",properties:{half:"bottom",shape:"straight",facing:"north"}}}
 :enddata
 :endrule
 
@@ -6570,7 +6568,7 @@ rule:
 plugin=vanillaBlocks
 number=68
 data:
-JSON:{blockState:{blockName:"minecraft:stone_slab",properties:{half:"bottom",variant:"stone_brick"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_slab",properties:{half:"bottom",variant:"stone_brick"}}}
 :enddata
 :endrule
 
@@ -6578,7 +6576,7 @@ rule:
 plugin=vanillaBlocks
 number=69
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"west"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"west"}}}
 :enddata
 :endrule
 
@@ -6586,7 +6584,7 @@ rule:
 plugin=blockTile
 number=70
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"evil"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:8,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"evil"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:8,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6594,7 +6592,7 @@ rule:
 plugin=vanillaBlocks
 number=71
 data:
-JSON:{blockState:{blockName:"minecraft:brown_mushroom",properties:{}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:brown_mushroom"}}
 :enddata
 :endrule
 
@@ -6602,7 +6600,7 @@ rule:
 plugin=inventory
 number=72
 data:
-JSON:{blockState:{blockName:"minecraft:furnace",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{CookTime:0,BurnTime:0,Items:[],id:"minecraft:furnace",CookTimeTotal:0,Lock:""},inventoryData:{length:0,inventoryContents:[]},legacyFeatures:0b}
+JSON:{blockState:{blockName:"minecraft:furnace",properties:{facing:"west"}},lootLevel:0,teData:{CookTime:0,BurnTime:0,Items:[],id:"minecraft:furnace",CookTimeTotal:0,Lock:""},inventoryData:{length:0,inventoryContents:[]},legacyFeatures:0b}
 :enddata
 :endrule
 
@@ -6610,7 +6608,7 @@ rule:
 plugin=vanillaBlocks
 number=73
 data:
-JSON:{blockState:{blockName:"minecraft:red_mushroom",properties:{}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:red_mushroom"}}
 :enddata
 :endrule
 
@@ -6618,7 +6616,7 @@ rule:
 plugin=inventory
 number=74
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{ForgeData:{},Items:[{Slot:1b,id:"minecraft:red_mushroom",Count:4b,Damage:0s},{Slot:2b,id:"minecraft:red_mushroom",Count:2b,Damage:0s},{Slot:3b,id:"minecraft:red_mushroom",Count:3b,Damage:0s},{Slot:4b,id:"minecraft:brown_mushroom",Count:2b,Damage:0s},{Slot:5b,id:"minecraft:brown_mushroom",Count:3b,Damage:0s},{Slot:6b,id:"minecraft:brown_mushroom",Count:4b,Damage:0s},{Slot:7b,id:"minecraft:brown_mushroom",Count:2b,Damage:0s},{Slot:9b,id:"minecraft:red_mushroom",Count:2b,Damage:0s},{Slot:10b,id:"minecraft:red_mushroom",Count:3b,Damage:0s},{Slot:11b,id:"minecraft:red_mushroom",Count:2b,Damage:0s},{Slot:12b,id:"minecraft:red_mushroom",Count:3b,Damage:0s},{Slot:14b,id:"minecraft:brown_mushroom",Count:3b,Damage:0s},{Slot:15b,id:"minecraft:brown_mushroom",Count:6b,Damage:0s},{Slot:16b,id:"minecraft:brown_mushroom",Count:2b,Damage:0s},{Slot:17b,id:"minecraft:brown_mushroom",Count:10b,Damage:0s},{Slot:18b,id:"minecraft:red_mushroom",Count:9b,Damage:0s},{Slot:19b,id:"minecraft:red_mushroom",Count:1b,Damage:0s},{Slot:20b,id:"minecraft:red_mushroom",Count:2b,Damage:0s},{Slot:22b,id:"minecraft:brown_mushroom",Count:1b,Damage:0s},{Slot:23b,id:"minecraft:brown_mushroom",Count:1b,Damage:0s},{Slot:24b,id:"minecraft:brown_mushroom",Count:2b,Damage:0s},{Slot:25b,id:"minecraft:brown_mushroom",Count:2b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:22,inventoryContents:[{id:"minecraft:red_mushroom",Count:4b,slot:0,Damage:0s},{id:"minecraft:red_mushroom",Count:2b,slot:1,Damage:0s},{id:"minecraft:red_mushroom",Count:3b,slot:2,Damage:0s},{id:"minecraft:brown_mushroom",Count:2b,slot:3,Damage:0s},{id:"minecraft:brown_mushroom",Count:3b,slot:4,Damage:0s},{id:"minecraft:brown_mushroom",Count:4b,slot:5,Damage:0s},{id:"minecraft:brown_mushroom",Count:2b,slot:6,Damage:0s},{id:"minecraft:red_mushroom",Count:2b,slot:7,Damage:0s},{id:"minecraft:red_mushroom",Count:3b,slot:8,Damage:0s},{id:"minecraft:red_mushroom",Count:2b,slot:9,Damage:0s},{id:"minecraft:red_mushroom",Count:3b,slot:10,Damage:0s},{id:"minecraft:brown_mushroom",Count:3b,slot:11,Damage:0s},{id:"minecraft:brown_mushroom",Count:6b,slot:12,Damage:0s},{id:"minecraft:brown_mushroom",Count:2b,slot:13,Damage:0s},{id:"minecraft:brown_mushroom",Count:10b,slot:14,Damage:0s},{id:"minecraft:red_mushroom",Count:9b,slot:15,Damage:0s},{id:"minecraft:red_mushroom",Count:1b,slot:16,Damage:0s},{id:"minecraft:red_mushroom",Count:2b,slot:17,Damage:0s},{id:"minecraft:brown_mushroom",Count:1b,slot:18,Damage:0s},{id:"minecraft:brown_mushroom",Count:1b,slot:19,Damage:0s},{id:"minecraft:brown_mushroom",Count:2b,slot:20,Damage:0s},{id:"minecraft:brown_mushroom",Count:2b,slot:21,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},lootLevel:0,teData:{ForgeData:{},Items:[{Slot:1b,id:"minecraft:red_mushroom",Count:4b,Damage:0s},{Slot:2b,id:"minecraft:red_mushroom",Count:2b,Damage:0s},{Slot:3b,id:"minecraft:red_mushroom",Count:3b,Damage:0s},{Slot:4b,id:"minecraft:brown_mushroom",Count:2b,Damage:0s},{Slot:5b,id:"minecraft:brown_mushroom",Count:3b,Damage:0s},{Slot:6b,id:"minecraft:brown_mushroom",Count:4b,Damage:0s},{Slot:7b,id:"minecraft:brown_mushroom",Count:2b,Damage:0s},{Slot:9b,id:"minecraft:red_mushroom",Count:2b,Damage:0s},{Slot:10b,id:"minecraft:red_mushroom",Count:3b,Damage:0s},{Slot:11b,id:"minecraft:red_mushroom",Count:2b,Damage:0s},{Slot:12b,id:"minecraft:red_mushroom",Count:3b,Damage:0s},{Slot:14b,id:"minecraft:brown_mushroom",Count:3b,Damage:0s},{Slot:15b,id:"minecraft:brown_mushroom",Count:6b,Damage:0s},{Slot:16b,id:"minecraft:brown_mushroom",Count:2b,Damage:0s},{Slot:17b,id:"minecraft:brown_mushroom",Count:10b,Damage:0s},{Slot:18b,id:"minecraft:red_mushroom",Count:9b,Damage:0s},{Slot:19b,id:"minecraft:red_mushroom",Count:1b,Damage:0s},{Slot:20b,id:"minecraft:red_mushroom",Count:2b,Damage:0s},{Slot:22b,id:"minecraft:brown_mushroom",Count:1b,Damage:0s},{Slot:23b,id:"minecraft:brown_mushroom",Count:1b,Damage:0s},{Slot:24b,id:"minecraft:brown_mushroom",Count:2b,Damage:0s},{Slot:25b,id:"minecraft:brown_mushroom",Count:2b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:22,inventoryContents:[{id:"minecraft:red_mushroom",Count:4b,slot:0,Damage:0s},{id:"minecraft:red_mushroom",Count:2b,slot:1,Damage:0s},{id:"minecraft:red_mushroom",Count:3b,slot:2,Damage:0s},{id:"minecraft:brown_mushroom",Count:2b,slot:3,Damage:0s},{id:"minecraft:brown_mushroom",Count:3b,slot:4,Damage:0s},{id:"minecraft:brown_mushroom",Count:4b,slot:5,Damage:0s},{id:"minecraft:brown_mushroom",Count:2b,slot:6,Damage:0s},{id:"minecraft:red_mushroom",Count:2b,slot:7,Damage:0s},{id:"minecraft:red_mushroom",Count:3b,slot:8,Damage:0s},{id:"minecraft:red_mushroom",Count:2b,slot:9,Damage:0s},{id:"minecraft:red_mushroom",Count:3b,slot:10,Damage:0s},{id:"minecraft:brown_mushroom",Count:3b,slot:11,Damage:0s},{id:"minecraft:brown_mushroom",Count:6b,slot:12,Damage:0s},{id:"minecraft:brown_mushroom",Count:2b,slot:13,Damage:0s},{id:"minecraft:brown_mushroom",Count:10b,slot:14,Damage:0s},{id:"minecraft:red_mushroom",Count:9b,slot:15,Damage:0s},{id:"minecraft:red_mushroom",Count:1b,slot:16,Damage:0s},{id:"minecraft:red_mushroom",Count:2b,slot:17,Damage:0s},{id:"minecraft:brown_mushroom",Count:1b,slot:18,Damage:0s},{id:"minecraft:brown_mushroom",Count:1b,slot:19,Damage:0s},{id:"minecraft:brown_mushroom",Count:2b,slot:20,Damage:0s},{id:"minecraft:brown_mushroom",Count:2b,slot:21,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -6626,7 +6624,7 @@ rule:
 plugin=inventory
 number=75
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{ForgeData:{},Items:[{Slot:0b,id:"minecraft:feather",Count:2b,Damage:0s},{Slot:2b,id:"minecraft:feather",Count:1b,Damage:0s},{Slot:3b,id:"minecraft:feather",Count:2b,Damage:0s},{Slot:4b,id:"minecraft:feather",Count:2b,Damage:0s},{Slot:5b,id:"minecraft:feather",Count:1b,Damage:0s},{Slot:9b,id:"minecraft:feather",Count:2b,Damage:0s},{Slot:11b,id:"minecraft:feather",Count:3b,Damage:0s},{Slot:12b,id:"minecraft:feather",Count:2b,Damage:0s},{Slot:13b,id:"minecraft:feather",Count:1b,Damage:0s},{Slot:19b,id:"minecraft:feather",Count:1b,Damage:0s},{Slot:22b,id:"minecraft:bone",Count:3b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:11,inventoryContents:[{id:"minecraft:feather",Count:2b,slot:0,Damage:0s},{id:"minecraft:feather",Count:1b,slot:1,Damage:0s},{id:"minecraft:feather",Count:2b,slot:2,Damage:0s},{id:"minecraft:feather",Count:2b,slot:3,Damage:0s},{id:"minecraft:feather",Count:1b,slot:4,Damage:0s},{id:"minecraft:feather",Count:2b,slot:5,Damage:0s},{id:"minecraft:feather",Count:3b,slot:6,Damage:0s},{id:"minecraft:feather",Count:2b,slot:7,Damage:0s},{id:"minecraft:feather",Count:1b,slot:8,Damage:0s},{id:"minecraft:feather",Count:1b,slot:9,Damage:0s},{id:"minecraft:bone",Count:3b,slot:10,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},lootLevel:0,teData:{ForgeData:{},Items:[{Slot:0b,id:"minecraft:feather",Count:2b,Damage:0s},{Slot:2b,id:"minecraft:feather",Count:1b,Damage:0s},{Slot:3b,id:"minecraft:feather",Count:2b,Damage:0s},{Slot:4b,id:"minecraft:feather",Count:2b,Damage:0s},{Slot:5b,id:"minecraft:feather",Count:1b,Damage:0s},{Slot:9b,id:"minecraft:feather",Count:2b,Damage:0s},{Slot:11b,id:"minecraft:feather",Count:3b,Damage:0s},{Slot:12b,id:"minecraft:feather",Count:2b,Damage:0s},{Slot:13b,id:"minecraft:feather",Count:1b,Damage:0s},{Slot:19b,id:"minecraft:feather",Count:1b,Damage:0s},{Slot:22b,id:"minecraft:bone",Count:3b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:11,inventoryContents:[{id:"minecraft:feather",Count:2b,slot:0,Damage:0s},{id:"minecraft:feather",Count:1b,slot:1,Damage:0s},{id:"minecraft:feather",Count:2b,slot:2,Damage:0s},{id:"minecraft:feather",Count:2b,slot:3,Damage:0s},{id:"minecraft:feather",Count:1b,slot:4,Damage:0s},{id:"minecraft:feather",Count:2b,slot:5,Damage:0s},{id:"minecraft:feather",Count:3b,slot:6,Damage:0s},{id:"minecraft:feather",Count:2b,slot:7,Damage:0s},{id:"minecraft:feather",Count:1b,slot:8,Damage:0s},{id:"minecraft:feather",Count:1b,slot:9,Damage:0s},{id:"minecraft:bone",Count:3b,slot:10,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -6634,7 +6632,7 @@ rule:
 plugin=blockTile
 number=76
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"west"}},buildPass:0,teData:{LootTable:"ebwizardry:chests/wizard_tower",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:3450999858200740939L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"west"}},teData:{LootTable:"ebwizardry:chests/wizard_tower",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"ebwizardry:chests/wizard_tower",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:3450999858200740939L}}
 :enddata
 :endrule
 
@@ -6642,7 +6640,7 @@ rule:
 plugin=inventory
 number=77
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{ForgeData:{},Items:[{Slot:0b,id:"minecraft:slime_ball",Count:1b,Damage:0s},{Slot:1b,id:"minecraft:slime_ball",Count:1b,Damage:0s},{Slot:2b,id:"minecraft:slime_ball",Count:1b,Damage:0s},{Slot:3b,id:"minecraft:slime_ball",Count:2b,Damage:0s},{Slot:4b,id:"minecraft:slime_ball",Count:1b,Damage:0s},{Slot:5b,id:"minecraft:slime_ball",Count:1b,Damage:0s},{Slot:6b,id:"minecraft:slime_ball",Count:1b,Damage:0s},{Slot:7b,id:"minecraft:slime_ball",Count:1b,Damage:0s},{Slot:8b,id:"minecraft:slime_ball",Count:1b,Damage:0s},{Slot:9b,id:"minecraft:slime_ball",Count:1b,Damage:0s},{Slot:10b,id:"minecraft:slime_ball",Count:1b,Damage:0s},{Slot:11b,id:"minecraft:slime_ball",Count:3b,Damage:0s},{Slot:12b,id:"minecraft:slime_ball",Count:1b,Damage:0s},{Slot:13b,id:"minecraft:slime_ball",Count:1b,Damage:0s},{Slot:14b,id:"minecraft:slime_ball",Count:1b,Damage:0s},{Slot:15b,id:"minecraft:slime_ball",Count:2b,Damage:0s},{Slot:16b,id:"minecraft:slime_ball",Count:1b,Damage:0s},{Slot:18b,id:"minecraft:slime_ball",Count:2b,Damage:0s},{Slot:19b,id:"minecraft:slime_ball",Count:2b,Damage:0s},{Slot:20b,id:"minecraft:slime_ball",Count:2b,Damage:0s},{Slot:21b,id:"minecraft:slime_ball",Count:2b,Damage:0s},{Slot:23b,id:"minecraft:slime_ball",Count:2b,Damage:0s},{Slot:24b,id:"minecraft:slime_ball",Count:1b,Damage:0s},{Slot:25b,id:"minecraft:slime_ball",Count:1b,Damage:0s},{Slot:26b,id:"minecraft:slime_ball",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:25,inventoryContents:[{id:"minecraft:slime_ball",Count:1b,slot:0,Damage:0s},{id:"minecraft:slime_ball",Count:1b,slot:1,Damage:0s},{id:"minecraft:slime_ball",Count:1b,slot:2,Damage:0s},{id:"minecraft:slime_ball",Count:2b,slot:3,Damage:0s},{id:"minecraft:slime_ball",Count:1b,slot:4,Damage:0s},{id:"minecraft:slime_ball",Count:1b,slot:5,Damage:0s},{id:"minecraft:slime_ball",Count:1b,slot:6,Damage:0s},{id:"minecraft:slime_ball",Count:1b,slot:7,Damage:0s},{id:"minecraft:slime_ball",Count:1b,slot:8,Damage:0s},{id:"minecraft:slime_ball",Count:1b,slot:9,Damage:0s},{id:"minecraft:slime_ball",Count:1b,slot:10,Damage:0s},{id:"minecraft:slime_ball",Count:3b,slot:11,Damage:0s},{id:"minecraft:slime_ball",Count:1b,slot:12,Damage:0s},{id:"minecraft:slime_ball",Count:1b,slot:13,Damage:0s},{id:"minecraft:slime_ball",Count:1b,slot:14,Damage:0s},{id:"minecraft:slime_ball",Count:2b,slot:15,Damage:0s},{id:"minecraft:slime_ball",Count:1b,slot:16,Damage:0s},{id:"minecraft:slime_ball",Count:2b,slot:17,Damage:0s},{id:"minecraft:slime_ball",Count:2b,slot:18,Damage:0s},{id:"minecraft:slime_ball",Count:2b,slot:19,Damage:0s},{id:"minecraft:slime_ball",Count:2b,slot:20,Damage:0s},{id:"minecraft:slime_ball",Count:2b,slot:21,Damage:0s},{id:"minecraft:slime_ball",Count:1b,slot:22,Damage:0s},{id:"minecraft:slime_ball",Count:1b,slot:23,Damage:0s},{id:"minecraft:slime_ball",Count:1b,slot:24,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},lootLevel:0,teData:{ForgeData:{},Items:[{Slot:0b,id:"minecraft:slime_ball",Count:1b,Damage:0s},{Slot:1b,id:"minecraft:slime_ball",Count:1b,Damage:0s},{Slot:2b,id:"minecraft:slime_ball",Count:1b,Damage:0s},{Slot:3b,id:"minecraft:slime_ball",Count:2b,Damage:0s},{Slot:4b,id:"minecraft:slime_ball",Count:1b,Damage:0s},{Slot:5b,id:"minecraft:slime_ball",Count:1b,Damage:0s},{Slot:6b,id:"minecraft:slime_ball",Count:1b,Damage:0s},{Slot:7b,id:"minecraft:slime_ball",Count:1b,Damage:0s},{Slot:8b,id:"minecraft:slime_ball",Count:1b,Damage:0s},{Slot:9b,id:"minecraft:slime_ball",Count:1b,Damage:0s},{Slot:10b,id:"minecraft:slime_ball",Count:1b,Damage:0s},{Slot:11b,id:"minecraft:slime_ball",Count:3b,Damage:0s},{Slot:12b,id:"minecraft:slime_ball",Count:1b,Damage:0s},{Slot:13b,id:"minecraft:slime_ball",Count:1b,Damage:0s},{Slot:14b,id:"minecraft:slime_ball",Count:1b,Damage:0s},{Slot:15b,id:"minecraft:slime_ball",Count:2b,Damage:0s},{Slot:16b,id:"minecraft:slime_ball",Count:1b,Damage:0s},{Slot:18b,id:"minecraft:slime_ball",Count:2b,Damage:0s},{Slot:19b,id:"minecraft:slime_ball",Count:2b,Damage:0s},{Slot:20b,id:"minecraft:slime_ball",Count:2b,Damage:0s},{Slot:21b,id:"minecraft:slime_ball",Count:2b,Damage:0s},{Slot:23b,id:"minecraft:slime_ball",Count:2b,Damage:0s},{Slot:24b,id:"minecraft:slime_ball",Count:1b,Damage:0s},{Slot:25b,id:"minecraft:slime_ball",Count:1b,Damage:0s},{Slot:26b,id:"minecraft:slime_ball",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:25,inventoryContents:[{id:"minecraft:slime_ball",Count:1b,slot:0,Damage:0s},{id:"minecraft:slime_ball",Count:1b,slot:1,Damage:0s},{id:"minecraft:slime_ball",Count:1b,slot:2,Damage:0s},{id:"minecraft:slime_ball",Count:2b,slot:3,Damage:0s},{id:"minecraft:slime_ball",Count:1b,slot:4,Damage:0s},{id:"minecraft:slime_ball",Count:1b,slot:5,Damage:0s},{id:"minecraft:slime_ball",Count:1b,slot:6,Damage:0s},{id:"minecraft:slime_ball",Count:1b,slot:7,Damage:0s},{id:"minecraft:slime_ball",Count:1b,slot:8,Damage:0s},{id:"minecraft:slime_ball",Count:1b,slot:9,Damage:0s},{id:"minecraft:slime_ball",Count:1b,slot:10,Damage:0s},{id:"minecraft:slime_ball",Count:3b,slot:11,Damage:0s},{id:"minecraft:slime_ball",Count:1b,slot:12,Damage:0s},{id:"minecraft:slime_ball",Count:1b,slot:13,Damage:0s},{id:"minecraft:slime_ball",Count:1b,slot:14,Damage:0s},{id:"minecraft:slime_ball",Count:2b,slot:15,Damage:0s},{id:"minecraft:slime_ball",Count:1b,slot:16,Damage:0s},{id:"minecraft:slime_ball",Count:2b,slot:17,Damage:0s},{id:"minecraft:slime_ball",Count:2b,slot:18,Damage:0s},{id:"minecraft:slime_ball",Count:2b,slot:19,Damage:0s},{id:"minecraft:slime_ball",Count:2b,slot:20,Damage:0s},{id:"minecraft:slime_ball",Count:2b,slot:21,Damage:0s},{id:"minecraft:slime_ball",Count:1b,slot:22,Damage:0s},{id:"minecraft:slime_ball",Count:1b,slot:23,Damage:0s},{id:"minecraft:slime_ball",Count:1b,slot:24,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -6650,7 +6648,7 @@ rule:
 plugin=inventory
 number=78
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{ForgeData:{},Items:[{Slot:0b,id:"minecraft:dye",Count:3b,Damage:0s},{Slot:1b,id:"minecraft:dye",Count:1b,Damage:0s},{Slot:2b,id:"minecraft:dye",Count:2b,Damage:0s},{Slot:3b,id:"minecraft:dye",Count:1b,Damage:0s},{Slot:4b,id:"minecraft:dye",Count:2b,Damage:0s},{Slot:9b,id:"minecraft:dye",Count:1b,Damage:0s},{Slot:10b,id:"minecraft:dye",Count:2b,Damage:0s},{Slot:11b,id:"minecraft:dye",Count:4b,Damage:0s},{Slot:12b,id:"minecraft:dye",Count:2b,Damage:0s},{Slot:13b,id:"minecraft:dye",Count:1b,Damage:0s},{Slot:18b,id:"minecraft:dye",Count:1b,Damage:0s},{Slot:19b,id:"minecraft:dye",Count:1b,Damage:0s},{Slot:21b,id:"minecraft:dye",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:13,inventoryContents:[{id:"minecraft:dye",Count:3b,slot:0,Damage:0s},{id:"minecraft:dye",Count:1b,slot:1,Damage:0s},{id:"minecraft:dye",Count:2b,slot:2,Damage:0s},{id:"minecraft:dye",Count:1b,slot:3,Damage:0s},{id:"minecraft:dye",Count:2b,slot:4,Damage:0s},{id:"minecraft:dye",Count:1b,slot:5,Damage:0s},{id:"minecraft:dye",Count:2b,slot:6,Damage:0s},{id:"minecraft:dye",Count:4b,slot:7,Damage:0s},{id:"minecraft:dye",Count:2b,slot:8,Damage:0s},{id:"minecraft:dye",Count:1b,slot:9,Damage:0s},{id:"minecraft:dye",Count:1b,slot:10,Damage:0s},{id:"minecraft:dye",Count:1b,slot:11,Damage:0s},{id:"minecraft:dye",Count:1b,slot:12,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},lootLevel:0,teData:{ForgeData:{},Items:[{Slot:0b,id:"minecraft:dye",Count:3b,Damage:0s},{Slot:1b,id:"minecraft:dye",Count:1b,Damage:0s},{Slot:2b,id:"minecraft:dye",Count:2b,Damage:0s},{Slot:3b,id:"minecraft:dye",Count:1b,Damage:0s},{Slot:4b,id:"minecraft:dye",Count:2b,Damage:0s},{Slot:9b,id:"minecraft:dye",Count:1b,Damage:0s},{Slot:10b,id:"minecraft:dye",Count:2b,Damage:0s},{Slot:11b,id:"minecraft:dye",Count:4b,Damage:0s},{Slot:12b,id:"minecraft:dye",Count:2b,Damage:0s},{Slot:13b,id:"minecraft:dye",Count:1b,Damage:0s},{Slot:18b,id:"minecraft:dye",Count:1b,Damage:0s},{Slot:19b,id:"minecraft:dye",Count:1b,Damage:0s},{Slot:21b,id:"minecraft:dye",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:13,inventoryContents:[{id:"minecraft:dye",Count:3b,slot:0,Damage:0s},{id:"minecraft:dye",Count:1b,slot:1,Damage:0s},{id:"minecraft:dye",Count:2b,slot:2,Damage:0s},{id:"minecraft:dye",Count:1b,slot:3,Damage:0s},{id:"minecraft:dye",Count:2b,slot:4,Damage:0s},{id:"minecraft:dye",Count:1b,slot:5,Damage:0s},{id:"minecraft:dye",Count:2b,slot:6,Damage:0s},{id:"minecraft:dye",Count:4b,slot:7,Damage:0s},{id:"minecraft:dye",Count:2b,slot:8,Damage:0s},{id:"minecraft:dye",Count:1b,slot:9,Damage:0s},{id:"minecraft:dye",Count:1b,slot:10,Damage:0s},{id:"minecraft:dye",Count:1b,slot:11,Damage:0s},{id:"minecraft:dye",Count:1b,slot:12,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -6658,7 +6656,7 @@ rule:
 plugin=vanillaBlocks
 number=79
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"east"}}}
 :enddata
 :endrule
 
@@ -6666,7 +6664,7 @@ rule:
 plugin=blockTile
 number=80
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:witch",minToSpawn:1}],groupWeight:1}],playerRange:8,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:witch",minToSpawn:1}],groupWeight:1}],playerRange:8,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6674,7 +6672,7 @@ rule:
 plugin=inventory
 number=81
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},buildPass:0,lootLevel:0,teData:{ForgeData:{},Items:[{Slot:3b,id:"minecraft:poisonous_potato",Count:1b,Damage:0s},{Slot:4b,id:"minecraft:poisonous_potato",Count:2b,Damage:0s},{Slot:12b,id:"minecraft:poisonous_potato",Count:3b,Damage:0s},{Slot:13b,id:"minecraft:poisonous_potato",Count:3b,Damage:0s},{Slot:14b,id:"minecraft:poisonous_potato",Count:1b,Damage:0s},{Slot:21b,id:"minecraft:poisonous_potato",Count:2b,Damage:0s},{Slot:22b,id:"minecraft:poisonous_potato",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:7,inventoryContents:[{id:"minecraft:poisonous_potato",Count:1b,slot:0,Damage:0s},{id:"minecraft:poisonous_potato",Count:2b,slot:1,Damage:0s},{id:"minecraft:poisonous_potato",Count:3b,slot:2,Damage:0s},{id:"minecraft:poisonous_potato",Count:3b,slot:3,Damage:0s},{id:"minecraft:poisonous_potato",Count:1b,slot:4,Damage:0s},{id:"minecraft:poisonous_potato",Count:2b,slot:5,Damage:0s},{id:"minecraft:poisonous_potato",Count:1b,slot:6,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},lootLevel:0,teData:{ForgeData:{},Items:[{Slot:3b,id:"minecraft:poisonous_potato",Count:1b,Damage:0s},{Slot:4b,id:"minecraft:poisonous_potato",Count:2b,Damage:0s},{Slot:12b,id:"minecraft:poisonous_potato",Count:3b,Damage:0s},{Slot:13b,id:"minecraft:poisonous_potato",Count:3b,Damage:0s},{Slot:14b,id:"minecraft:poisonous_potato",Count:1b,Damage:0s},{Slot:21b,id:"minecraft:poisonous_potato",Count:2b,Damage:0s},{Slot:22b,id:"minecraft:poisonous_potato",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:7,inventoryContents:[{id:"minecraft:poisonous_potato",Count:1b,slot:0,Damage:0s},{id:"minecraft:poisonous_potato",Count:2b,slot:1,Damage:0s},{id:"minecraft:poisonous_potato",Count:3b,slot:2,Damage:0s},{id:"minecraft:poisonous_potato",Count:3b,slot:3,Damage:0s},{id:"minecraft:poisonous_potato",Count:1b,slot:4,Damage:0s},{id:"minecraft:poisonous_potato",Count:2b,slot:5,Damage:0s},{id:"minecraft:poisonous_potato",Count:1b,slot:6,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -6682,7 +6680,7 @@ rule:
 plugin=blockTile
 number=82
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:witch",minToSpawn:1}],groupWeight:1}],playerRange:8,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:witch",minToSpawn:1}],groupWeight:1}],playerRange:8,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6690,7 +6688,7 @@ rule:
 plugin=inventory
 number=83
 data:
-JSON:{blockState:{blockName:"minecraft:furnace",properties:{facing:"north"}},buildPass:0,lootLevel:0,teData:{CookTime:0,BurnTime:0,Items:[],id:"minecraft:furnace",CookTimeTotal:0,Lock:""},inventoryData:{length:0,inventoryContents:[]},legacyFeatures:0b}
+JSON:{blockState:{blockName:"minecraft:furnace",properties:{facing:"north"}},lootLevel:0,teData:{CookTime:0,BurnTime:0,Items:[],id:"minecraft:furnace",CookTimeTotal:0,Lock:""},inventoryData:{length:0,inventoryContents:[]},legacyFeatures:0b}
 :enddata
 :endrule
 
@@ -6698,7 +6696,7 @@ rule:
 plugin=inventory
 number=84
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},buildPass:0,lootLevel:0,teData:{ForgeData:{},Items:[{Slot:13b,id:"xreliquary:mob_charm",Count:1b,tag:{type:4b},Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:1,inventoryContents:[{id:"xreliquary:mob_charm",Count:1b,tag:{type:4b},slot:0,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"south"}},lootLevel:0,teData:{ForgeData:{},Items:[{Slot:13b,id:"xreliquary:mob_charm",Count:1b,tag:{type:4b},Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:1,inventoryContents:[{id:"xreliquary:mob_charm",Count:1b,tag:{type:4b},slot:0,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -6706,7 +6704,7 @@ rule:
 plugin=inventory
 number=85
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},buildPass:0,lootLevel:0,teData:{Items:[],id:"minecraft:chest",Lock:""},inventoryData:{length:0,inventoryContents:[]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},lootLevel:0,teData:{Items:[],id:"minecraft:chest",Lock:""},inventoryData:{length:0,inventoryContents:[]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -6714,7 +6712,7 @@ rule:
 plugin=blockTile
 number=86
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"grimoireofgaia:witch",minToSpawn:1}],groupWeight:1}],playerRange:8,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"grimoireofgaia:witch",minToSpawn:1}],groupWeight:1}],playerRange:8,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6722,7 +6720,7 @@ rule:
 plugin=blockTile
 number=87
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"evil"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.leader.elite",minToSpawn:1}],groupWeight:1}],playerRange:5,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"evil"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.leader.elite",minToSpawn:1}],groupWeight:1}],playerRange:5,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6730,7 +6728,7 @@ rule:
 plugin=blockTile
 number=88
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"evil"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.priest",minToSpawn:1}],groupWeight:1}],playerRange:8,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"evil"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.priest",minToSpawn:1}],groupWeight:1}],playerRange:8,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6738,7 +6736,7 @@ rule:
 plugin=vanillaBlocks
 number=89
 data:
-JSON:{blockState:{blockName:"minecraft:nether_wart",properties:{age:"3"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:nether_wart",properties:{age:"3"}}}
 :enddata
 :endrule
 
@@ -6746,7 +6744,7 @@ rule:
 plugin=vanillaBlocks
 number=90
 data:
-JSON:{blockState:{blockName:"minecraft:birch_stairs",properties:{half:"bottom",shape:"straight",facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:birch_stairs",properties:{half:"bottom",shape:"straight",facing:"east"}}}
 :enddata
 :endrule
 
@@ -6754,7 +6752,7 @@ rule:
 plugin=blockTile
 number=91
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},buildPass:0,teData:{LootTable:"ancientwarfare:inject/chests/stronghold_corridor",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:149733327122196331L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"ancientwarfare:inject/chests/stronghold_corridor",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"ancientwarfare:inject/chests/stronghold_corridor",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:149733327122196331L}}
 :enddata
 :endrule
 
@@ -6762,7 +6760,7 @@ rule:
 plugin=blockTile
 number=92
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"evil"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:8,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"evil"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:8,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6770,7 +6768,7 @@ rule:
 plugin=inventory
 number=93
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},buildPass:0,lootLevel:0,teData:{ForgeData:{},Items:[{Slot:1b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},Damage:0s},{Slot:2b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},Damage:0s},{Slot:3b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},Damage:0s},{Slot:4b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"gold"},Damage:0s},{Slot:5b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},Damage:0s},{Slot:7b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},Damage:0s},{Slot:8b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},Damage:0s},{Slot:11b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},Damage:0s},{Slot:12b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"gold"},Damage:0s},{Slot:14b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},Damage:0s},{Slot:15b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"gold"},Damage:0s},{Slot:16b,id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"gold"},Damage:0s},{Slot:17b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},Damage:0s},{Slot:20b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},Damage:0s},{Slot:22b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},Damage:0s},{Slot:24b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},Damage:0s},{Slot:25b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"gold"},Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:17,inventoryContents:[{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},slot:0,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},slot:1,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},slot:2,Damage:0s},{id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"gold"},slot:3,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},slot:4,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},slot:5,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},slot:6,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},slot:7,Damage:0s},{id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"gold"},slot:8,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},slot:9,Damage:0s},{id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"gold"},slot:10,Damage:0s},{id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"gold"},slot:11,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},slot:12,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},slot:13,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},slot:14,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},slot:15,Damage:0s},{id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"gold"},slot:16,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"north"}},lootLevel:0,teData:{ForgeData:{},Items:[{Slot:1b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},Damage:0s},{Slot:2b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},Damage:0s},{Slot:3b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},Damage:0s},{Slot:4b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"gold"},Damage:0s},{Slot:5b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},Damage:0s},{Slot:7b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},Damage:0s},{Slot:8b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},Damage:0s},{Slot:11b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},Damage:0s},{Slot:12b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"gold"},Damage:0s},{Slot:14b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},Damage:0s},{Slot:15b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"gold"},Damage:0s},{Slot:16b,id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"gold"},Damage:0s},{Slot:17b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},Damage:0s},{Slot:20b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},Damage:0s},{Slot:22b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},Damage:0s},{Slot:24b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},Damage:0s},{Slot:25b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"gold"},Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:17,inventoryContents:[{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},slot:0,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},slot:1,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},slot:2,Damage:0s},{id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"gold"},slot:3,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},slot:4,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},slot:5,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},slot:6,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},slot:7,Damage:0s},{id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"gold"},slot:8,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},slot:9,Damage:0s},{id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"gold"},slot:10,Damage:0s},{id:"ancientwarfarenpc:coin",Count:3b,tag:{metal:"gold"},slot:11,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},slot:12,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},slot:13,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},slot:14,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"gold"},slot:15,Damage:0s},{id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"gold"},slot:16,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -6778,7 +6776,7 @@ rule:
 plugin=blockTile
 number=94
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:witch",minToSpawn:1}],groupWeight:1}],playerRange:8,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:witch",minToSpawn:1}],groupWeight:1}],playerRange:8,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6786,7 +6784,7 @@ rule:
 plugin=blockTile
 number=95
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:witch",minToSpawn:1}],groupWeight:1}],playerRange:8,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:witch",minToSpawn:1}],groupWeight:1}],playerRange:8,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6794,7 +6792,7 @@ rule:
 plugin=blockTile
 number=96
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},buildPass:0,teData:{LootTable:"minecraft:chests/stronghold_library",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:139818419232156971L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"minecraft:chests/stronghold_library",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/stronghold_library",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:139818419232156971L}}
 :enddata
 :endrule
 
@@ -6802,7 +6800,7 @@ rule:
 plugin=inventory
 number=97
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:0,teData:{ForgeData:{},Items:[{Slot:15b,id:"xreliquary:witch_hat",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:1,inventoryContents:[{id:"xreliquary:witch_hat",Count:1b,slot:0,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},lootLevel:0,teData:{ForgeData:{},Items:[{Slot:15b,id:"xreliquary:witch_hat",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:1,inventoryContents:[{id:"xreliquary:witch_hat",Count:1b,slot:0,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -6810,7 +6808,7 @@ rule:
 plugin=inventory
 number=98
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:0,teData:{ForgeData:{},Items:[{Slot:1b,id:"minecraft:dye",Count:3b,Damage:0s},{Slot:2b,id:"minecraft:dye",Count:2b,Damage:0s},{Slot:5b,id:"minecraft:nether_wart",Count:3b,Damage:0s},{Slot:6b,id:"minecraft:nether_wart",Count:4b,Damage:0s},{Slot:7b,id:"minecraft:nether_wart",Count:2b,Damage:0s},{Slot:8b,id:"minecraft:nether_wart",Count:1b,Damage:0s},{Slot:9b,id:"minecraft:dye",Count:1b,Damage:0s},{Slot:10b,id:"minecraft:dye",Count:1b,Damage:0s},{Slot:11b,id:"minecraft:dye",Count:2b,Damage:0s},{Slot:14b,id:"minecraft:nether_wart",Count:4b,Damage:0s},{Slot:15b,id:"minecraft:nether_wart",Count:6b,Damage:0s},{Slot:16b,id:"minecraft:nether_wart",Count:6b,Damage:0s},{Slot:17b,id:"minecraft:nether_wart",Count:4b,Damage:0s},{Slot:19b,id:"minecraft:dye",Count:5b,Damage:0s},{Slot:20b,id:"minecraft:dye",Count:1b,Damage:0s},{Slot:21b,id:"minecraft:dye",Count:1b,Damage:0s},{Slot:23b,id:"minecraft:nether_wart",Count:2b,Damage:0s},{Slot:24b,id:"minecraft:nether_wart",Count:2b,Damage:0s},{Slot:25b,id:"minecraft:nether_wart",Count:1b,Damage:0s},{Slot:26b,id:"minecraft:nether_wart",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:20,inventoryContents:[{id:"minecraft:dye",Count:3b,slot:0,Damage:0s},{id:"minecraft:dye",Count:2b,slot:1,Damage:0s},{id:"minecraft:nether_wart",Count:3b,slot:2,Damage:0s},{id:"minecraft:nether_wart",Count:4b,slot:3,Damage:0s},{id:"minecraft:nether_wart",Count:2b,slot:4,Damage:0s},{id:"minecraft:nether_wart",Count:1b,slot:5,Damage:0s},{id:"minecraft:dye",Count:1b,slot:6,Damage:0s},{id:"minecraft:dye",Count:1b,slot:7,Damage:0s},{id:"minecraft:dye",Count:2b,slot:8,Damage:0s},{id:"minecraft:nether_wart",Count:4b,slot:9,Damage:0s},{id:"minecraft:nether_wart",Count:6b,slot:10,Damage:0s},{id:"minecraft:nether_wart",Count:6b,slot:11,Damage:0s},{id:"minecraft:nether_wart",Count:4b,slot:12,Damage:0s},{id:"minecraft:dye",Count:5b,slot:13,Damage:0s},{id:"minecraft:dye",Count:1b,slot:14,Damage:0s},{id:"minecraft:dye",Count:1b,slot:15,Damage:0s},{id:"minecraft:nether_wart",Count:2b,slot:16,Damage:0s},{id:"minecraft:nether_wart",Count:2b,slot:17,Damage:0s},{id:"minecraft:nether_wart",Count:1b,slot:18,Damage:0s},{id:"minecraft:nether_wart",Count:1b,slot:19,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},lootLevel:0,teData:{ForgeData:{},Items:[{Slot:1b,id:"minecraft:dye",Count:3b,Damage:0s},{Slot:2b,id:"minecraft:dye",Count:2b,Damage:0s},{Slot:5b,id:"minecraft:nether_wart",Count:3b,Damage:0s},{Slot:6b,id:"minecraft:nether_wart",Count:4b,Damage:0s},{Slot:7b,id:"minecraft:nether_wart",Count:2b,Damage:0s},{Slot:8b,id:"minecraft:nether_wart",Count:1b,Damage:0s},{Slot:9b,id:"minecraft:dye",Count:1b,Damage:0s},{Slot:10b,id:"minecraft:dye",Count:1b,Damage:0s},{Slot:11b,id:"minecraft:dye",Count:2b,Damage:0s},{Slot:14b,id:"minecraft:nether_wart",Count:4b,Damage:0s},{Slot:15b,id:"minecraft:nether_wart",Count:6b,Damage:0s},{Slot:16b,id:"minecraft:nether_wart",Count:6b,Damage:0s},{Slot:17b,id:"minecraft:nether_wart",Count:4b,Damage:0s},{Slot:19b,id:"minecraft:dye",Count:5b,Damage:0s},{Slot:20b,id:"minecraft:dye",Count:1b,Damage:0s},{Slot:21b,id:"minecraft:dye",Count:1b,Damage:0s},{Slot:23b,id:"minecraft:nether_wart",Count:2b,Damage:0s},{Slot:24b,id:"minecraft:nether_wart",Count:2b,Damage:0s},{Slot:25b,id:"minecraft:nether_wart",Count:1b,Damage:0s},{Slot:26b,id:"minecraft:nether_wart",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:20,inventoryContents:[{id:"minecraft:dye",Count:3b,slot:0,Damage:0s},{id:"minecraft:dye",Count:2b,slot:1,Damage:0s},{id:"minecraft:nether_wart",Count:3b,slot:2,Damage:0s},{id:"minecraft:nether_wart",Count:4b,slot:3,Damage:0s},{id:"minecraft:nether_wart",Count:2b,slot:4,Damage:0s},{id:"minecraft:nether_wart",Count:1b,slot:5,Damage:0s},{id:"minecraft:dye",Count:1b,slot:6,Damage:0s},{id:"minecraft:dye",Count:1b,slot:7,Damage:0s},{id:"minecraft:dye",Count:2b,slot:8,Damage:0s},{id:"minecraft:nether_wart",Count:4b,slot:9,Damage:0s},{id:"minecraft:nether_wart",Count:6b,slot:10,Damage:0s},{id:"minecraft:nether_wart",Count:6b,slot:11,Damage:0s},{id:"minecraft:nether_wart",Count:4b,slot:12,Damage:0s},{id:"minecraft:dye",Count:5b,slot:13,Damage:0s},{id:"minecraft:dye",Count:1b,slot:14,Damage:0s},{id:"minecraft:dye",Count:1b,slot:15,Damage:0s},{id:"minecraft:nether_wart",Count:2b,slot:16,Damage:0s},{id:"minecraft:nether_wart",Count:2b,slot:17,Damage:0s},{id:"minecraft:nether_wart",Count:1b,slot:18,Damage:0s},{id:"minecraft:nether_wart",Count:1b,slot:19,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -6818,7 +6816,7 @@ rule:
 plugin=vanillaBlocks
 number=99
 data:
-JSON:{blockState:{blockName:"minecraft:birch_stairs",properties:{half:"bottom",shape:"straight",facing:"north"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:birch_stairs",properties:{half:"bottom",shape:"straight",facing:"north"}}}
 :enddata
 :endrule
 
@@ -6826,7 +6824,7 @@ rule:
 plugin=vanillaBlocks
 number=100
 data:
-JSON:{blockState:{blockName:"minecraft:birch_stairs",properties:{half:"bottom",shape:"straight",facing:"south"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:birch_stairs",properties:{half:"bottom",shape:"straight",facing:"south"}}}
 :enddata
 :endrule
 
@@ -6834,7 +6832,7 @@ rule:
 plugin=blockTile
 number=101
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"east"}},buildPass:0,teData:{ForgeData:{},Items:[{Slot:0b,id:"ebwizardry:spell_book",Count:1b,Damage:111s},{Slot:1b,id:"minecraft:rotten_flesh",Count:1b,Damage:0s},{Slot:2b,id:"minecraft:rotten_flesh",Count:2b,Damage:0s},{Slot:4b,id:"ancientwarfare:engineering_station",Count:1b,Damage:0s},{Slot:8b,id:"minecraft:melon_seeds",Count:2b,Damage:0s},{Slot:12b,id:"ebwizardry:poison_bomb",Count:1b,Damage:0s},{Slot:13b,id:"exoticbirds:phoenix_dust",Count:2b,Damage:0s},{Slot:14b,id:"minecraft:melon_seeds",Count:1b,Damage:0s},{Slot:15b,id:"minecraft:bone",Count:1b,Damage:0s},{Slot:17b,id:"minecraft:rotten_flesh",Count:1b,Damage:0s},{Slot:20b,id:"ebwizardry:identification_scroll",Count:1b,Damage:0s},{Slot:21b,id:"minecraft:rotten_flesh",Count:2b,Damage:0s},{Slot:23b,id:"minecraft:rotten_flesh",Count:2b,Damage:0s},{Slot:24b,id:"minecraft:saddle",Count:1b,Damage:0s},{Slot:25b,id:"minecraft:rotten_flesh",Count:2b,Damage:0s},{Slot:26b,id:"minecraft:rotten_flesh",Count:2b,Damage:0s}],id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:""}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"east"}},teData:{ForgeData:{},lootSettings:{lootRolls:0,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:",spawnEntity:0b},Items:[{Slot:0b,id:"ebwizardry:spell_book",Count:1b,Damage:111s},{Slot:1b,id:"minecraft:rotten_flesh",Count:1b,Damage:0s},{Slot:2b,id:"minecraft:rotten_flesh",Count:2b,Damage:0s},{Slot:4b,id:"ancientwarfare:engineering_station",Count:1b,Damage:0s},{Slot:8b,id:"minecraft:melon_seeds",Count:2b,Damage:0s},{Slot:12b,id:"ebwizardry:poison_bomb",Count:1b,Damage:0s},{Slot:13b,id:"exoticbirds:phoenix_dust",Count:2b,Damage:0s},{Slot:14b,id:"minecraft:melon_seeds",Count:1b,Damage:0s},{Slot:15b,id:"minecraft:bone",Count:1b,Damage:0s},{Slot:17b,id:"minecraft:rotten_flesh",Count:1b,Damage:0s},{Slot:20b,id:"ebwizardry:identification_scroll",Count:1b,Damage:0s},{Slot:21b,id:"minecraft:rotten_flesh",Count:2b,Damage:0s},{Slot:23b,id:"minecraft:rotten_flesh",Count:2b,Damage:0s},{Slot:24b,id:"minecraft:saddle",Count:1b,Damage:0s},{Slot:25b,id:"minecraft:rotten_flesh",Count:2b,Damage:0s},{Slot:26b,id:"minecraft:rotten_flesh",Count:2b,Damage:0s}],id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:""}}
 :enddata
 :endrule
 
@@ -6842,7 +6840,7 @@ rule:
 plugin=blockTile
 number=102
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"east"}},buildPass:0,teData:{LootTable:"ebwizardry:chests/dungeon_additions",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:7404578474205497931L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"east"}},teData:{LootTable:"ebwizardry:chests/dungeon_additions",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"ebwizardry:chests/dungeon_additions",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:7404578474205497931L}}
 :enddata
 :endrule
 
@@ -6850,7 +6848,7 @@ rule:
 plugin=inventory
 number=103
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},buildPass:0,lootLevel:0,teData:{ForgeData:{},Items:[{Slot:0b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"silver"},Damage:0s},{Slot:1b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},Damage:0s},{Slot:2b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"silver"},Damage:0s},{Slot:4b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},Damage:0s},{Slot:5b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},Damage:0s},{Slot:6b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},Damage:0s},{Slot:7b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},Damage:0s},{Slot:8b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},Damage:0s},{Slot:9b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},Damage:0s},{Slot:10b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},Damage:0s},{Slot:11b,id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"gold"},Damage:0s},{Slot:12b,id:"ancientwarfarenpc:coin",Count:9b,tag:{metal:"gold"},Damage:0s},{Slot:13b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"silver"},Damage:0s},{Slot:14b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"copper"},Damage:0s},{Slot:15b,id:"ancientwarfarenpc:coin",Count:52b,tag:{metal:"copper"},Damage:0s},{Slot:16b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},Damage:0s},{Slot:17b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},Damage:0s},{Slot:18b,id:"ancientwarfarenpc:coin",Count:17b,tag:{metal:"silver"},Damage:0s},{Slot:20b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"gold"},Damage:0s},{Slot:21b,id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"gold"},Damage:0s},{Slot:23b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},Damage:0s},{Slot:24b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},Damage:0s},{Slot:25b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},Damage:0s},{Slot:26b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:24,inventoryContents:[{id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"silver"},slot:0,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},slot:1,Damage:0s},{id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"silver"},slot:2,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},slot:3,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},slot:4,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},slot:5,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},slot:6,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},slot:7,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},slot:8,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},slot:9,Damage:0s},{id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"gold"},slot:10,Damage:0s},{id:"ancientwarfarenpc:coin",Count:9b,tag:{metal:"gold"},slot:11,Damage:0s},{id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"silver"},slot:12,Damage:0s},{id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"copper"},slot:13,Damage:0s},{id:"ancientwarfarenpc:coin",Count:52b,tag:{metal:"copper"},slot:14,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},slot:15,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},slot:16,Damage:0s},{id:"ancientwarfarenpc:coin",Count:17b,tag:{metal:"silver"},slot:17,Damage:0s},{id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"gold"},slot:18,Damage:0s},{id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"gold"},slot:19,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},slot:20,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},slot:21,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},slot:22,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},slot:23,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"east"}},lootLevel:0,teData:{ForgeData:{},Items:[{Slot:0b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"silver"},Damage:0s},{Slot:1b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},Damage:0s},{Slot:2b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"silver"},Damage:0s},{Slot:4b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},Damage:0s},{Slot:5b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},Damage:0s},{Slot:6b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},Damage:0s},{Slot:7b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},Damage:0s},{Slot:8b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},Damage:0s},{Slot:9b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},Damage:0s},{Slot:10b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},Damage:0s},{Slot:11b,id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"gold"},Damage:0s},{Slot:12b,id:"ancientwarfarenpc:coin",Count:9b,tag:{metal:"gold"},Damage:0s},{Slot:13b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"silver"},Damage:0s},{Slot:14b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"copper"},Damage:0s},{Slot:15b,id:"ancientwarfarenpc:coin",Count:52b,tag:{metal:"copper"},Damage:0s},{Slot:16b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},Damage:0s},{Slot:17b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},Damage:0s},{Slot:18b,id:"ancientwarfarenpc:coin",Count:17b,tag:{metal:"silver"},Damage:0s},{Slot:20b,id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"gold"},Damage:0s},{Slot:21b,id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"gold"},Damage:0s},{Slot:23b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},Damage:0s},{Slot:24b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},Damage:0s},{Slot:25b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},Damage:0s},{Slot:26b,id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:24,inventoryContents:[{id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"silver"},slot:0,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},slot:1,Damage:0s},{id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"silver"},slot:2,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},slot:3,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},slot:4,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},slot:5,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},slot:6,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},slot:7,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},slot:8,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"silver"},slot:9,Damage:0s},{id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"gold"},slot:10,Damage:0s},{id:"ancientwarfarenpc:coin",Count:9b,tag:{metal:"gold"},slot:11,Damage:0s},{id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"silver"},slot:12,Damage:0s},{id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"copper"},slot:13,Damage:0s},{id:"ancientwarfarenpc:coin",Count:52b,tag:{metal:"copper"},slot:14,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},slot:15,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},slot:16,Damage:0s},{id:"ancientwarfarenpc:coin",Count:17b,tag:{metal:"silver"},slot:17,Damage:0s},{id:"ancientwarfarenpc:coin",Count:2b,tag:{metal:"gold"},slot:18,Damage:0s},{id:"ancientwarfarenpc:coin",Count:4b,tag:{metal:"gold"},slot:19,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},slot:20,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},slot:21,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},slot:22,Damage:0s},{id:"ancientwarfarenpc:coin",Count:1b,tag:{metal:"copper"},slot:23,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -6858,7 +6856,7 @@ rule:
 plugin=blockTile
 number=104
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:witch",minToSpawn:1}],groupWeight:1}],playerRange:8,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:witch",minToSpawn:1}],groupWeight:1}],playerRange:8,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6866,7 +6864,7 @@ rule:
 plugin=vanillaBlocks
 number=105
 data:
-JSON:{blockState:{blockName:"minecraft:birch_stairs",properties:{half:"bottom",shape:"straight",facing:"west"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:birch_stairs",properties:{half:"bottom",shape:"straight",facing:"west"}}}
 :enddata
 :endrule
 
@@ -6874,7 +6872,7 @@ rule:
 plugin=blockTile
 number=106
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:witch",minToSpawn:1}],groupWeight:1}],playerRange:8,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"minecraft:witch",minToSpawn:1}],groupWeight:1}],playerRange:8,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6882,7 +6880,7 @@ rule:
 plugin=vanillaBlocks
 number=107
 data:
-JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"true",south:"false",north:"true",west:"false",up:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"true",south:"false",north:"true",west:"false",up:"false"}}}
 :enddata
 :endrule
 
@@ -6890,7 +6888,7 @@ rule:
 plugin=inventory
 number=108
 data:
-JSON:{blockState:{blockName:"minecraft:furnace",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{CookTime:0,BurnTime:0,Items:[],id:"minecraft:furnace",CookTimeTotal:0,Lock:""},inventoryData:{length:0,inventoryContents:[]},legacyFeatures:0b}
+JSON:{blockState:{blockName:"minecraft:furnace",properties:{facing:"west"}},lootLevel:0,teData:{CookTime:0,BurnTime:0,Items:[],id:"minecraft:furnace",CookTimeTotal:0,Lock:""},inventoryData:{length:0,inventoryContents:[]},legacyFeatures:0b}
 :enddata
 :endrule
 
@@ -6898,7 +6896,7 @@ rule:
 plugin=inventory
 number=109
 data:
-JSON:{blockState:{blockName:"minecraft:furnace",properties:{facing:"north"}},buildPass:0,lootLevel:0,teData:{CookTime:0,BurnTime:0,Items:[],id:"minecraft:furnace",CookTimeTotal:0,Lock:""},inventoryData:{length:0,inventoryContents:[]},legacyFeatures:0b}
+JSON:{blockState:{blockName:"minecraft:furnace",properties:{facing:"north"}},lootLevel:0,teData:{CookTime:0,BurnTime:0,Items:[],id:"minecraft:furnace",CookTimeTotal:0,Lock:""},inventoryData:{length:0,inventoryContents:[]},legacyFeatures:0b}
 :enddata
 :endrule
 
@@ -6906,7 +6904,7 @@ rule:
 plugin=vanillaBlocks
 number=110
 data:
-JSON:{blockState:{blockName:"minecraft:fence_gate",properties:{in_wall:"false",powered:"false",facing:"south",open:"true"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:fence_gate",properties:{in_wall:"false",powered:"false",facing:"south",open:"true"}}}
 :enddata
 :endrule
 
@@ -6914,7 +6912,7 @@ rule:
 plugin=vanillaBlocks
 number=111
 data:
-JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"false",south:"true",north:"true",west:"false",up:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"false",south:"true",north:"true",west:"false",up:"false"}}}
 :enddata
 :endrule
 
@@ -6922,7 +6920,7 @@ rule:
 plugin=vanillaBlocks
 number=112
 data:
-JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"false",south:"true",north:"false",west:"true",up:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"false",south:"true",north:"false",west:"true",up:"false"}}}
 :enddata
 :endrule
 
@@ -6930,7 +6928,7 @@ rule:
 plugin=vanillaBlocks
 number=113
 data:
-JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"true",south:"true",north:"true",west:"true",up:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"true",south:"true",north:"true",west:"true",up:"false"}}}
 :enddata
 :endrule
 
@@ -6938,7 +6936,7 @@ rule:
 plugin=blockTile
 number=114
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"evil"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:8,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"evil"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:8,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -6946,7 +6944,7 @@ rule:
 plugin=vanillaBlocks
 number=115
 data:
-JSON:{blockState:{blockName:"minecraft:wooden_pressure_plate",properties:{powered:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:wooden_pressure_plate",properties:{powered:"false"}}}
 :enddata
 :endrule
 
@@ -6954,7 +6952,7 @@ rule:
 plugin=vanillaBlocks
 number=116
 data:
-JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"true",south:"false",north:"false",west:"false",up:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"true",south:"false",north:"false",west:"false",up:"false"}}}
 :enddata
 :endrule
 
@@ -6962,7 +6960,7 @@ rule:
 plugin=vanillaBlocks
 number=117
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"north"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"north"}}}
 :enddata
 :endrule
 
@@ -6970,7 +6968,7 @@ rule:
 plugin=vanillaBlocks
 number=118
 data:
-JSON:{blockState:{blockName:"minecraft:stone_slab",properties:{half:"top",variant:"stone_brick"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_slab",properties:{half:"top",variant:"stone_brick"}}}
 :enddata
 :endrule
 
@@ -6978,7 +6976,7 @@ rule:
 plugin=vanillaBlocks
 number=119
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"south"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"south"}}}
 :enddata
 :endrule
 
@@ -6986,7 +6984,7 @@ rule:
 plugin=vanillaBlocks
 number=120
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"east"}}}
 :enddata
 :endrule
 
@@ -6994,7 +6992,7 @@ rule:
 plugin=vanillaBlocks
 number=121
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"west"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"west"}}}
 :enddata
 :endrule
 
@@ -7002,7 +7000,7 @@ rule:
 plugin=vanillaBlocks
 number=122
 data:
-JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"true",south:"true",north:"true",west:"false",up:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"true",south:"true",north:"true",west:"false",up:"false"}}}
 :enddata
 :endrule
 
@@ -7010,7 +7008,7 @@ rule:
 plugin=vanillaBlocks
 number=123
 data:
-JSON:{blockState:{blockName:"minecraft:stained_hardened_clay",properties:{color:"green"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stained_hardened_clay",properties:{color:"green"}}}
 :enddata
 :endrule
 
@@ -7018,7 +7016,7 @@ rule:
 plugin=blockTile
 number=124
 data:
-JSON:{blockState:{blockName:"minecraft:beacon",properties:{}},buildPass:0,teData:{Secondary:-1,Primary:-1,Levels:0,id:"minecraft:beacon",Lock:""}}
+JSON:{blockState:{blockName:"minecraft:beacon"},teData:{Secondary:-1,Primary:-1,Levels:0,id:"minecraft:beacon",Lock:""}}
 :enddata
 :endrule
 
@@ -7026,7 +7024,7 @@ rule:
 plugin=blockTile
 number=125
 data:
-JSON:{blockState:{blockName:"minecraft:beacon",properties:{}},buildPass:0,teData:{Secondary:-1,Primary:-1,Levels:0,id:"minecraft:beacon",Lock:""}}
+JSON:{blockState:{blockName:"minecraft:beacon"},teData:{Secondary:-1,Primary:-1,Levels:0,id:"minecraft:beacon",Lock:""}}
 :enddata
 :endrule
 
@@ -7034,7 +7032,7 @@ rule:
 plugin=vanillaBlocks
 number=126
 data:
-JSON:{blockState:{blockName:"minecraft:leaves",properties:{check_decay:"false",decayable:"true",variant:"birch"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:leaves",properties:{check_decay:"false",decayable:"true",variant:"birch"}}}
 :enddata
 :endrule
 
@@ -7042,7 +7040,7 @@ rule:
 plugin=vanillaBlocks
 number=127
 data:
-JSON:{blockState:{blockName:"minecraft:quartz_stairs",properties:{half:"top",shape:"straight",facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:quartz_stairs",properties:{half:"top",shape:"straight",facing:"east"}}}
 :enddata
 :endrule
 
@@ -7050,7 +7048,7 @@ rule:
 plugin=blockTile
 number=128
 data:
-JSON:{blockState:{blockName:"minecraft:beacon",properties:{}},buildPass:0,teData:{Secondary:-1,Primary:-1,Levels:0,id:"minecraft:beacon",Lock:""}}
+JSON:{blockState:{blockName:"minecraft:beacon"},teData:{Secondary:-1,Primary:-1,Levels:0,id:"minecraft:beacon",Lock:""}}
 :enddata
 :endrule
 
@@ -7058,7 +7056,7 @@ rule:
 plugin=vanillaBlocks
 number=129
 data:
-JSON:{blockState:{blockName:"minecraft:stained_hardened_clay",properties:{color:"white"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stained_hardened_clay",properties:{color:"white"}}}
 :enddata
 :endrule
 
@@ -7066,7 +7064,7 @@ rule:
 plugin=vanillaBlocks
 number=130
 data:
-JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"false",south:"true",north:"false",west:"false",up:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"false",south:"true",north:"false",west:"false",up:"false"}}}
 :enddata
 :endrule
 
@@ -7074,7 +7072,7 @@ rule:
 plugin=vanillaBlocks
 number=131
 data:
-JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"true",south:"true",north:"false",west:"false",up:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"true",south:"true",north:"false",west:"false",up:"false"}}}
 :enddata
 :endrule
 
@@ -7082,7 +7080,7 @@ rule:
 plugin=vanillaBlocks
 number=132
 data:
-JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"true",south:"false",north:"false",west:"true",up:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"true",south:"false",north:"false",west:"true",up:"false"}}}
 :enddata
 :endrule
 
@@ -7090,7 +7088,7 @@ rule:
 plugin=vanillaBlocks
 number=133
 data:
-JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"true",south:"true",north:"false",west:"true",up:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"true",south:"true",north:"false",west:"true",up:"false"}}}
 :enddata
 :endrule
 
@@ -7098,7 +7096,7 @@ rule:
 plugin=fluid
 number=134
 data:
-JSON:{blockState:{blockName:"minecraft:water",properties:{level:"1"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:water",properties:{level:"1"}}}
 :enddata
 :endrule
 
@@ -7106,7 +7104,7 @@ rule:
 plugin=vanillaBlocks
 number=135
 data:
-JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"false",south:"false",north:"false",west:"false",up:"false"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:vine",properties:{east:"false",south:"false",north:"false",west:"false",up:"false"}}}
 :enddata
 :endrule
 
@@ -7114,7 +7112,7 @@ rule:
 plugin=blockTile
 number=136
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"grimoireofgaia:witch",minToSpawn:1}],groupWeight:1}],playerRange:8,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{},maxToSpawn:1,entityId:"grimoireofgaia:witch",minToSpawn:1}],groupWeight:1}],playerRange:8,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 

@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 1/4/2019 at: 11:33:44
+# Auto-generated structure template file. created on: 8/19/2019 at: 10:23:11
 # Lines beginning with # denote comments
 
 header:
-version=2.8
+version=2.9
 name=EmpireVillageChapel
 mods=
 size=16,13,38
@@ -973,7 +973,7 @@ rule:
 plugin=vanillaSign
 number=53
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"Chapel§r",signContents1:"Goodly§r",signContents3:"",rotation:0}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"Chapel§r§r",signContents1:"Goodly§r§r",signContents3:"",rotation:0}
 :enddata
 :endrule
 

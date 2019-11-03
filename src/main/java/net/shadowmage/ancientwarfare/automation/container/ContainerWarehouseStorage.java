@@ -9,8 +9,8 @@ import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.WarehouseStorageFilter;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
+import net.shadowmage.ancientwarfare.core.inventory.ItemHashEntry;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
-import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
 import net.shadowmage.ancientwarfare.core.util.NBTHelper;
 
 import javax.annotation.Nonnull;
@@ -18,7 +18,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ContainerWarehouseStorage extends ContainerTileBase<TileWarehouseStorage> {
-
+	private static final String REQ_ITEM_TAG = "reqItem";
+	private static final String IS_SHIFT_CLICK_TAG = "isShiftClick";
+	private static final String IS_RIGHT_CLICK_TAG = "isRightClick";
+	private static final String SLOT_CLICK_TAG = "slotClick";
+	private static final String FILTER_LIST_TAG = "filterList";
+	private static final String CHANGE_LIST_TAG = "changeList";
 	private boolean shouldSynch = true;
 	private ItemQuantityMap cache = new ItemQuantityMap();
 	public ItemQuantityMap itemMap = new ItemQuantityMap();
@@ -55,47 +60,47 @@ public class ContainerWarehouseStorage extends ContainerTileBase<TileWarehouseSt
 		if (!stack.isEmpty()) {
 			ItemStack copy = stack.copy();
 			copy.setCount(Math.min(stack.getCount(), stack.getMaxStackSize()));
-			tag.setTag("reqItem", copy.writeToNBT(new NBTTagCompound()));
+			tag.setTag(REQ_ITEM_TAG, copy.writeToNBT(new NBTTagCompound()));
 		}
-		tag.setBoolean("isShiftClick", isShiftClick);
-		tag.setBoolean("isRightClick", isRightClick);
+		tag.setBoolean(IS_SHIFT_CLICK_TAG, isShiftClick);
+		tag.setBoolean(IS_RIGHT_CLICK_TAG, isRightClick);
 		NBTTagCompound pktTag = new NBTTagCompound();
-		pktTag.setTag("slotClick", tag);
+		pktTag.setTag(SLOT_CLICK_TAG, tag);
 		sendDataToServer(pktTag);
 	}
 
 	@Override
 	public void sendInitData() {
 		NBTTagCompound tag = new NBTTagCompound();
-		NBTHelper.writeSerializablesTo(tag, "filterList", filters);
+		NBTHelper.writeSerializablesTo(tag, FILTER_LIST_TAG, filters);
 		sendDataToClient(tag);
 	}
 
 	public void sendFiltersToServer() {
 		NBTTagCompound tag = new NBTTagCompound();
-		NBTHelper.writeSerializablesTo(tag, "filterList", filters);
+		NBTHelper.writeSerializablesTo(tag, FILTER_LIST_TAG, filters);
 		sendDataToServer(tag);
 	}
 
 	@Override
 	public void handlePacketData(NBTTagCompound tag) {
-		if (tag.hasKey("filterList")) {
-			List<WarehouseStorageFilter> filters = NBTHelper.deserializeListFrom(tag, "filterList", WarehouseStorageFilter::new);
+		if (tag.hasKey(FILTER_LIST_TAG)) {
+			List<WarehouseStorageFilter> deserializedFilters = NBTHelper.deserializeListFrom(tag, FILTER_LIST_TAG, WarehouseStorageFilter::new);
 			if (player.world.isRemote) {
-				this.filters = filters;
+				this.filters = deserializedFilters;
 				refreshGui();
 			} else {
-				tileEntity.setFilters(filters);
+				tileEntity.setFilters(deserializedFilters);
 			}
-		} else if (tag.hasKey("slotClick")) {
-			NBTTagCompound reqTag = tag.getCompoundTag("slotClick");
+		} else if (tag.hasKey(SLOT_CLICK_TAG)) {
+			NBTTagCompound reqTag = tag.getCompoundTag(SLOT_CLICK_TAG);
 			@Nonnull ItemStack item = ItemStack.EMPTY;
-			if (reqTag.hasKey("reqItem")) {
-				item = new ItemStack(reqTag.getCompoundTag("reqItem"));
+			if (reqTag.hasKey(REQ_ITEM_TAG)) {
+				item = new ItemStack(reqTag.getCompoundTag(REQ_ITEM_TAG));
 			}
-			tileEntity.handleSlotClick(player, item, reqTag.getBoolean("isShiftClick"), reqTag.getBoolean("isRightClick"));
-		} else if (tag.hasKey("changeList")) {
-			handleChangeList(tag.getTagList("changeList", Constants.NBT.TAG_COMPOUND));
+			tileEntity.handleSlotClick(player, item, reqTag.getBoolean(IS_SHIFT_CLICK_TAG), reqTag.getBoolean(IS_RIGHT_CLICK_TAG));
+		} else if (tag.hasKey(CHANGE_LIST_TAG)) {
+			handleChangeList(tag.getTagList(CHANGE_LIST_TAG, Constants.NBT.TAG_COMPOUND));
 			refreshGui();
 		}
 		super.handlePacketData(tag);
@@ -148,7 +153,7 @@ public class ContainerWarehouseStorage extends ContainerTileBase<TileWarehouseSt
 		}
 		if (changeList.tagCount() > 0) {
 			NBTTagCompound tag = new NBTTagCompound();
-			tag.setTag("changeList", changeList);
+			tag.setTag(CHANGE_LIST_TAG, changeList);
 			sendDataToClient(tag);
 		}
 	}

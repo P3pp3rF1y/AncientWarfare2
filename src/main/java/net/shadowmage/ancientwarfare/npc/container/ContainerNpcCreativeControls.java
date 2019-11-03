@@ -54,6 +54,7 @@ public class ContainerNpcCreativeControls extends ContainerNpcBase<NpcBase> impl
 		armorValue = tag.getInteger("armorValue");
 		maxHealth = tag.getInteger("maxHealth");
 		skinSettings = NpcSkinSettings.deserializeNBT(tag.getCompoundTag("skinSettings"));
+		entity.setSkinSettings(skinSettings);
 		hasChanged = true;
 		refreshGui();
 	}

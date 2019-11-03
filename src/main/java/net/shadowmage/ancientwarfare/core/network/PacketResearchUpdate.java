@@ -19,10 +19,7 @@ public class PacketResearchUpdate extends PacketBase {
 		this.live = live;
 	}
 
-	@SuppressWarnings("unused")
-	public PacketResearchUpdate() {
-
-	}
+	public PacketResearchUpdate() {}
 
 	@Override
 	protected void writeToStream(ByteBuf data) {

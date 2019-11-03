@@ -6,28 +6,28 @@ import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 public class VehicleTypeBallistaStandTurret extends VehicleTypeBallista {
 	public VehicleTypeBallistaStandTurret(int typeNum) {
 		super(typeNum);
-		this.configName = "ballista_stand_turret";
-		this.baseMissileVelocityMax = 42.f;//stand versions should have higher velocity, as should fixed version--i.e. mobile turret should have the worst of all versions
-		this.width = 1.2f;
-		this.height = 1.4f;
+		configName = "ballista_stand_turret";
+		baseMissileVelocityMax = 42.f;//stand versions should have higher velocity, as should fixed version--i.e. mobile turret should have the worst of all versions
+		width = 1.2f;
+		height = 1.4f;
 
-		this.armorBaySize = 4;
-		this.upgradeBaySize = 4;
+		armorBaySize = 4;
+		upgradeBaySize = 4;
 
-		this.turretVerticalOffset = 18.f * 0.0625f;
-		this.riderForwardsOffset = -1.8f;
-		this.riderVerticalOffset = 0.35f;
-		this.riderSits = false;
-		this.drivable = true;//adjust based on isMobile or not
-		this.baseForwardSpeed = 0.f;
-		this.baseStrafeSpeed = .5f;
-		this.riderMovesWithTurret = true;
-		this.yawAdjustable = true;//adjust based on hasTurret or not
-		this.turretRotationMax = 45.f;
-		this.displayName = "item.vehicleSpawner.5";
-		this.displayTooltip.add("item.vehicleSpawner.tooltip.torsion");
-		this.displayTooltip.add("item.vehicleSpawner.tooltip.fixed");
-		this.displayTooltip.add("item.vehicleSpawner.tooltip.midturret");
+		turretVerticalOffset = 18.f * 0.0625f;
+		riderForwardsOffset = -1.8f;
+		riderVerticalOffset = 0.35f;
+		riderSits = false;
+		drivable = true;//adjust based on isMobile or not
+		baseForwardSpeed = 0.f;
+		baseStrafeSpeed = 1f;
+		riderMovesWithTurret = true;
+		yawAdjustable = true;//adjust based on hasTurret or not
+		turretRotationMax = 45.f;
+		displayName = "item.vehicleSpawner.5";
+		displayTooltip.add("item.vehicleSpawner.tooltip.torsion");
+		displayTooltip.add("item.vehicleSpawner.tooltip.fixed");
+		displayTooltip.add("item.vehicleSpawner.tooltip.midturret");
 	}
 
 	@Override

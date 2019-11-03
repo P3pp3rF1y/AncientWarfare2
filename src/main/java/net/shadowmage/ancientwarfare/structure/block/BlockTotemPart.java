@@ -42,6 +42,7 @@ import net.shadowmage.ancientwarfare.structure.tile.TileTotemPart;
 import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -182,17 +183,17 @@ public class BlockTotemPart extends BlockBaseStructure {
 
 		ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(this), stack -> {
 			if (!stack.hasTagCompound()) {
-				return new ModelResourceLocation(baseLocation, String.format(modelPropString, true, Variant.BASE.getName().toLowerCase()));
+				return new ModelResourceLocation(baseLocation, String.format(modelPropString, true, Variant.BASE.getName().toLowerCase(Locale.ENGLISH)));
 			}
 			NBTTagCompound tag = stack.getTagCompound();
 			//noinspection ConstantConditions
 			Variant variant = Variant.fromId(tag.getByte(VARIANT_TAG));
-			return new ModelResourceLocation(baseLocation, String.format(modelPropString, variant.getName().toLowerCase()));
+			return new ModelResourceLocation(baseLocation, String.format(modelPropString, variant.getName().toLowerCase(Locale.ENGLISH)));
 		});
 
 		for (Variant variant : Variant.values()) {
 			ModelLoader.registerItemVariants(Item.getItemFromBlock(this),
-					new ModelResourceLocation(baseLocation, String.format(modelPropString, variant.getName().toLowerCase())));
+					new ModelResourceLocation(baseLocation, String.format(modelPropString, variant.getName().toLowerCase(Locale.ENGLISH))));
 		}
 	}
 

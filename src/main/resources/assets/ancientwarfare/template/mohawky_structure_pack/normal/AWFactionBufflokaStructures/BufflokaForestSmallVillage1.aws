@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 1/2/2019 at: 23:32:30
+# Auto-generated structure template file. created on: 8/19/2019 at: 10:23:9
 # Lines beginning with # denote comments
 
 header:
-version=2.8
+version=2.9
 name=BufflokaForestSmallVillage1
 mods=
 size=33,45,38
@@ -2077,7 +2077,7 @@ rule:
 plugin=blockTile
 number=31
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"east"}},teData:{LootTable:"minecraft:chests/village_blacksmith",lootRolls:4b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:8746997454618932287L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"east"}},teData:{LootTable:"minecraft:chests/village_blacksmith",lootRolls:4b,lootSettings:{lootRolls:4,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/village_blacksmith",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:8746997454618932287L}}
 :enddata
 :endrule
 
@@ -2285,7 +2285,7 @@ rule:
 plugin=blockTile
 number=57
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"east"}},teData:{LootTable:"minecraft:chests/abandoned_mineshaft",lootRolls:4b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-2092922392234775800L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"east"}},teData:{LootTable:"minecraft:chests/abandoned_mineshaft",lootRolls:4b,lootSettings:{lootRolls:4,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/abandoned_mineshaft",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-2092922392234775800L}}
 :enddata
 :endrule
 

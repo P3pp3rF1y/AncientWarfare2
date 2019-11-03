@@ -6,14 +6,12 @@ import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import java.io.IOException;
 
 public class PacketVehicleInput extends PacketVehicleBase {
-
 	private byte forwardInput = 0;
 	private byte turnInput = 0;
 	private byte powerInput = 0;
 	private byte rotationInput = 0;
 
-	public PacketVehicleInput() {
-	}
+	public PacketVehicleInput() {}
 
 	public PacketVehicleInput(VehicleBase vehicle) {
 		super(vehicle);

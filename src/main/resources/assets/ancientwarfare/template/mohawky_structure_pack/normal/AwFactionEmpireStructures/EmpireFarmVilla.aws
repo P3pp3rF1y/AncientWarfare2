@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 1/4/2019 at: 11:38:52
+# Auto-generated structure template file. created on: 8/19/2019 at: 10:23:10
 # Lines beginning with # denote comments
 
 header:
-version=2.8
+version=2.9
 name=EmpireFarmVilla
 mods=
 size=47,14,39
@@ -1499,7 +1499,7 @@ rule:
 plugin=vanillaSign
 number=112
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"east"}},signContents2:"Farm Estate§r",signContents1:"Gentry§r",signContents3:"",rotation:0}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"east"}},signContents2:"Farm Estate§r§r",signContents1:"Gentry§r§r",signContents3:"",rotation:0}
 :enddata
 :endrule
 

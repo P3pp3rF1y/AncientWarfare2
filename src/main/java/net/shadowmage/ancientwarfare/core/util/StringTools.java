@@ -5,8 +5,10 @@ import net.minecraft.util.math.BlockPos;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
+import java.util.StringJoiner;
 import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 
@@ -120,5 +122,11 @@ public class StringTools {
 
 	public static Set<String> parseStringSet(String valueString) {
 		return Collections.list(new StringTokenizer(valueString, ",")).stream().map(token -> (String) token).collect(Collectors.toSet());
+	}
+
+	public static String joinElements(String delimiter, Collection<String> stringCollection) {
+		StringJoiner joiner = new StringJoiner(delimiter);
+		stringCollection.forEach(joiner::add);
+		return joiner.toString();
 	}
 }

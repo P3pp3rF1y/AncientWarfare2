@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 12/10/2018 at: 14:11:14
+# Auto-generated structure template file. created on: 8/19/2019 at: 10:23:17
 # Lines beginning with # denote comments
 
 header:
-version=2.8
+version=2.9
 name=XoltecTempleCompound
 mods=
 size=53,44,52
@@ -20,10 +20,10 @@ preserveBlocks=false
 selectionWeight=70
 clusterValue=50
 minDuplicateDistance=1000
-dimensionWhiteList=false
-dimensionList=
+dimensionWhiteList=true
+dimensionList=0
 biomeWhiteList=true
-biomeList=traverse:red_desert,minecraft:mesa,minecraft:mutated_mesa_clear_rock,minecraft:mesa_clear_rock,minecraft:mesa_rock,minecraft:mutated_mesa,minecraft:mutated_mesa_rock
+biomeList=minecraft:mesa,traverse:red_desert,minecraft:mutated_mesa_clear_rock,minecraft:mesa_clear_rock,minecraft:mesa_rock,minecraft:mutated_mesa,minecraft:mutated_mesa_rock
 leveling=40
 fill=20
 border=10
@@ -2477,7 +2477,7 @@ rule:
 plugin=vanillaSign
 number=9
 data:
-JSON:{signContents0:"xoltec§r",blockState:{blockName:"minecraft:standing_sign",properties:{rotation:"12"}},signContents2:"",signContents1:"",signContents3:"",rotation:12}
+JSON:{signContents0:"xoltec§r§r",blockState:{blockName:"minecraft:standing_sign",properties:{rotation:"12"}},signContents2:"",signContents1:"",signContents3:"",rotation:12}
 :enddata
 :endrule
 
@@ -2933,7 +2933,7 @@ rule:
 plugin=blockTile
 number=66
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{LootTable:"minecraft:chests/desert_pyramid",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:3088584030758309346L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{LootTable:"minecraft:chests/desert_pyramid",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/desert_pyramid",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:3088584030758309346L}}
 :enddata
 :endrule
 
@@ -2941,7 +2941,7 @@ rule:
 plugin=blockTile
 number=67
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{LootTable:"minecraft:chests/desert_pyramid",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:7015722906706185698L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{LootTable:"minecraft:chests/desert_pyramid",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/desert_pyramid",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:7015722906706185698L}}
 :enddata
 :endrule
 
@@ -2957,7 +2957,7 @@ rule:
 plugin=blockTile
 number=69
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{LootTable:"minecraft:chests/desert_pyramid",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:3078669127163237282L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{LootTable:"minecraft:chests/desert_pyramid",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/desert_pyramid",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:3078669127163237282L}}
 :enddata
 :endrule
 
@@ -2965,7 +2965,7 @@ rule:
 plugin=blockTile
 number=70
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"west"}},teData:{LootTable:"minecraft:chests/desert_pyramid",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:7005807998816146338L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"west"}},teData:{LootTable:"minecraft:chests/desert_pyramid",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/desert_pyramid",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:7005807998816146338L}}
 :enddata
 :endrule
 

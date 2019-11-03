@@ -7,27 +7,23 @@ import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
-public final class FactionEntry {
-
-	public final String playerName;
+public class FactionEntry implements Iterable<Map.Entry<String, Integer>> {
 	private HashMap<String, Integer> factionStandings = new HashMap<>();
 
 	public FactionEntry(NBTTagCompound tag) {
-		playerName = tag.getString("playerName");
-		for (String name : FactionRegistry.getFactionNames()) {
-			factionStandings.put(name, AncientWarfareNPC.statics.getPlayerDefaultStanding(name));
-		}
+		this();
 		readFromNBT(tag);
 	}
 
-	public FactionEntry(String playerName) {
-		this.playerName = playerName;
+	public FactionEntry() {
 		for (String name : FactionRegistry.getFactionNames()) {
-			factionStandings.put(name, AncientWarfareNPC.statics.getPlayerDefaultStanding(name));
+			setStandingFor(name, AncientWarfareNPC.statics.getPlayerDefaultStanding(name));
 		}
 	}
+
 
 	public int getStandingFor(String factionName) {
 		if (factionStandings.containsKey(factionName)) {
@@ -57,16 +53,20 @@ public final class FactionEntry {
 		}
 	}
 
-	public final NBTTagCompound writeToNBT(NBTTagCompound tag) {
-		tag.setString("playerName", playerName);
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		NBTTagList entryList = new NBTTagList();
-		NBTTagCompound entryTag;
 		for (Map.Entry<String, Integer> entry : this.factionStandings.entrySet()) {
-			entryTag = new NBTTagCompound();
+			NBTTagCompound entryTag = new NBTTagCompound();
 			entryTag.setString("name", entry.getKey());
 			entryTag.setInteger("standing", entry.getValue());
+			entryList.appendTag(entryTag);
 		}
 		tag.setTag("entryList", entryList);
 		return tag;
+	}
+
+	@Override
+	public Iterator<Map.Entry<String, Integer>> iterator() {
+		return factionStandings.entrySet().iterator();
 	}
 }

@@ -4,7 +4,6 @@ import com.google.gson.JsonObject;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.BlockSnow;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.JsonUtils;
 import net.shadowmage.ancientwarfare.core.registry.IRegistryDataParser;
@@ -13,6 +12,7 @@ import net.shadowmage.ancientwarfare.core.util.parsing.JsonHelper;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class StructureBlockRegistry {
 	private StructureBlockRegistry() {}
@@ -22,10 +22,10 @@ public class StructureBlockRegistry {
 	private static final Map<BlockStateMatcher, Integer> STATE_PASS = new HashMap<>();
 
 	@SuppressWarnings({"squid:CallToDeprecatedMethod", "squid:S4449"}) //null passed in intentionally and any exceptions caused by that are caught upstream
-	public static ItemStack getItemStackFrom(IBlockState state) {
+	public static Optional<ItemStack> getItemStackFrom(IBlockState state) {
 		for (Map.Entry<BlockStateMatcher, ItemStack> stateItem : STATE_TO_ITEM.entrySet()) {
 			if (stateItem.getKey().test(state)) {
-				return stateItem.getValue();
+				return Optional.of(stateItem.getValue());
 			}
 		}
 
@@ -33,10 +33,10 @@ public class StructureBlockRegistry {
 			//noinspection deprecation - using this for a different purpose than the pickblock is meant to, also can't raytrace and don't have player variable
 			ItemStack stack = state.getBlock().getItem(null, null, state);
 			updateCountForSpecialBlocks(state, stack);
-			return stack;
+			return stack.isEmpty() ? Optional.empty() : Optional.of(stack);
 		}
 		catch (NullPointerException ex) {
-			return new ItemStack(Items.AIR);
+			return Optional.empty();
 		}
 	}
 

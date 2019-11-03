@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 11/16/2018 at: 12:17:53
+# Auto-generated structure template file. created on: 8/19/2019 at: 10:23:15
 # Lines beginning with # denote comments
 
 header:
-version=2.7
+version=2.9
 name=PirateCoastalCannonTowerSand
 mods=
 size=11,72,11
@@ -20,16 +20,14 @@ preserveBlocks=false
 selectionWeight=50
 clusterValue=70
 minDuplicateDistance=999
-dimensionWhiteList=false
-dimensionList=
+dimensionWhiteList=true
+dimensionList=0
 biomeWhiteList=true
 biomeList=biomesoplenty:white_beach,minecraft:beaches
 leveling=5
 fill=0
 border=5
 blockSwap=true
-data:
-:enddata
 :endvalidation
 
 #### LAYERS ####
@@ -975,7 +973,7 @@ rule:
 plugin=vanillaBlocks
 number=1
 data:
-JSON:{blockState:{blockName:"minecraft:stone",properties:{variant:"stone"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone",properties:{variant:"stone"}}}
 :enddata
 :endrule
 
@@ -983,7 +981,7 @@ rule:
 plugin=vanillaBlocks
 number=2
 data:
-JSON:{blockState:{blockName:"minecraft:sandstone",properties:{type:"sandstone"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:sandstone",properties:{type:"sandstone"}}}
 :enddata
 :endrule
 
@@ -991,7 +989,7 @@ rule:
 plugin=vanillaBlocks
 number=3
 data:
-JSON:{blockState:{blockName:"minecraft:sand",properties:{variant:"sand"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:sand",properties:{variant:"sand"}}}
 :enddata
 :endrule
 
@@ -999,7 +997,7 @@ rule:
 plugin=vanillaBlocks
 number=4
 data:
-JSON:{blockState:{blockName:"minecraft:stonebrick",properties:{variant:"mossy_stonebrick"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stonebrick",properties:{variant:"mossy_stonebrick"}}}
 :enddata
 :endrule
 
@@ -1007,7 +1005,7 @@ rule:
 plugin=vanillaBlocks
 number=5
 data:
-JSON:{blockState:{blockName:"minecraft:stonebrick",properties:{variant:"stonebrick"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stonebrick",properties:{variant:"stonebrick"}}}
 :enddata
 :endrule
 
@@ -1015,7 +1013,7 @@ rule:
 plugin=vanillaSign
 number=6
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:standing_sign",properties:{rotation:"8"}},signContents2:"",buildPass:0,signContents1:"",signContents3:""}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:standing_sign",properties:{rotation:"8"}},signContents2:"",signContents1:"",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -1023,7 +1021,7 @@ rule:
 plugin=blockTile
 number=7
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"pirate"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"pirate"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -1031,7 +1029,7 @@ rule:
 plugin=vanillaBlocks
 number=8
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"west"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"west"}}}
 :enddata
 :endrule
 
@@ -1039,7 +1037,7 @@ rule:
 plugin=blockTile
 number=9
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"pirate"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"pirate"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -1047,7 +1045,7 @@ rule:
 plugin=vanillaBlocks
 number=10
 data:
-JSON:{blockState:{blockName:"minecraft:cobblestone",properties:{}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:cobblestone"}}
 :enddata
 :endrule
 
@@ -1055,7 +1053,7 @@ rule:
 plugin=blockTile
 number=11
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"pirate"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"pirate"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -1063,7 +1061,7 @@ rule:
 plugin=blockTile
 number=12
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"pirate"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"pirate"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -1071,7 +1069,7 @@ rule:
 plugin=vanillaBlocks
 number=13
 data:
-JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}}}
 :enddata
 :endrule
 
@@ -1079,7 +1077,7 @@ rule:
 plugin=blockTile
 number=14
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"pirate"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer.elite",minToSpawn:1}],groupWeight:1}],playerRange:32,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"pirate"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer.elite",minToSpawn:1}],groupWeight:1}],playerRange:32,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -1087,7 +1085,7 @@ rule:
 plugin=blockTile
 number=15
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"pirate"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer.elite",minToSpawn:1}],groupWeight:1}],playerRange:32,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"pirate"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer.elite",minToSpawn:1}],groupWeight:1}],playerRange:32,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -1095,7 +1093,7 @@ rule:
 plugin=vanillaBlocks
 number=16
 data:
-JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}}}
 :enddata
 :endrule
 
@@ -1103,7 +1101,7 @@ rule:
 plugin=blockTile
 number=17
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"pirate"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer.elite",minToSpawn:1}],groupWeight:1}],playerRange:32,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"pirate"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer.elite",minToSpawn:1}],groupWeight:1}],playerRange:32,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -1111,7 +1109,7 @@ rule:
 plugin=blockTile
 number=18
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"pirate"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer.elite",minToSpawn:1}],groupWeight:1}],playerRange:32,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"pirate"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer.elite",minToSpawn:1}],groupWeight:1}],playerRange:32,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -1119,7 +1117,7 @@ rule:
 plugin=vanillaBlocks
 number=19
 data:
-JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}}}
 :enddata
 :endrule
 
@@ -1127,7 +1125,7 @@ rule:
 plugin=vanillaBlocks
 number=20
 data:
-JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"east"}}}
 :enddata
 :endrule
 
@@ -1135,7 +1133,7 @@ rule:
 plugin=vanillaBlocks
 number=21
 data:
-JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}}}
 :enddata
 :endrule
 
@@ -1143,7 +1141,7 @@ rule:
 plugin=vanillaBlocks
 number=22
 data:
-JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"south"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"south"}}}
 :enddata
 :endrule
 
@@ -1151,7 +1149,7 @@ rule:
 plugin=vanillaBlocks
 number=23
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"west"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"west"}}}
 :enddata
 :endrule
 
@@ -1159,7 +1157,7 @@ rule:
 plugin=vanillaBlocks
 number=24
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"west"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"west"}}}
 :enddata
 :endrule
 
@@ -1167,7 +1165,7 @@ rule:
 plugin=vanillaBlocks
 number=25
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"west"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"west"}}}
 :enddata
 :endrule
 
@@ -1175,7 +1173,7 @@ rule:
 plugin=vanillaBlocks
 number=26
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"north"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"north"}}}
 :enddata
 :endrule
 
@@ -1183,7 +1181,7 @@ rule:
 plugin=vanillaBlocks
 number=27
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"north"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"north"}}}
 :enddata
 :endrule
 
@@ -1191,7 +1189,7 @@ rule:
 plugin=vanillaBlocks
 number=28
 data:
-JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}}}
 :enddata
 :endrule
 
@@ -1199,7 +1197,7 @@ rule:
 plugin=vanillaBlocks
 number=29
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"north"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"north"}}}
 :enddata
 :endrule
 
@@ -1207,7 +1205,7 @@ rule:
 plugin=vanillaBlocks
 number=30
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"west"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"west"}}}
 :enddata
 :endrule
 
@@ -1215,7 +1213,7 @@ rule:
 plugin=vanillaBlocks
 number=31
 data:
-JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}}}
 :enddata
 :endrule
 
@@ -1223,7 +1221,7 @@ rule:
 plugin=vanillaBlocks
 number=32
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"north"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"bottom",shape:"straight",facing:"north"}}}
 :enddata
 :endrule
 
@@ -1231,7 +1229,7 @@ rule:
 plugin=vanillaBlocks
 number=33
 data:
-JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}}}
 :enddata
 :endrule
 
@@ -1239,7 +1237,7 @@ rule:
 plugin=vanillaBlocks
 number=34
 data:
-JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}}}
 :enddata
 :endrule
 
@@ -1247,7 +1245,7 @@ rule:
 plugin=vanillaBlocks
 number=35
 data:
-JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}}}
 :enddata
 :endrule
 
@@ -1255,7 +1253,7 @@ rule:
 plugin=vanillaBlocks
 number=36
 data:
-JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}}}
 :enddata
 :endrule
 
@@ -1263,7 +1261,7 @@ rule:
 plugin=vanillaBlocks
 number=37
 data:
-JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}}}
 :enddata
 :endrule
 
@@ -1271,7 +1269,7 @@ rule:
 plugin=vanillaBlocks
 number=38
 data:
-JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}}}
 :enddata
 :endrule
 
@@ -1279,7 +1277,7 @@ rule:
 plugin=vanillaBlocks
 number=39
 data:
-JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}}}
 :enddata
 :endrule
 
@@ -1287,7 +1285,7 @@ rule:
 plugin=vanillaBlocks
 number=40
 data:
-JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}}}
 :enddata
 :endrule
 
@@ -1295,7 +1293,7 @@ rule:
 plugin=vanillaBlocks
 number=41
 data:
-JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}}}
 :enddata
 :endrule
 
@@ -1303,7 +1301,7 @@ rule:
 plugin=vanillaBlocks
 number=42
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"west"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"west"}}}
 :enddata
 :endrule
 
@@ -1311,7 +1309,7 @@ rule:
 plugin=vanillaBlocks
 number=43
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"south"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"south"}}}
 :enddata
 :endrule
 
@@ -1319,7 +1317,7 @@ rule:
 plugin=vanillaBlocks
 number=44
 data:
-JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}}}
 :enddata
 :endrule
 
@@ -1327,7 +1325,7 @@ rule:
 plugin=vanillaBlocks
 number=45
 data:
-JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}}}
 :enddata
 :endrule
 
@@ -1335,7 +1333,7 @@ rule:
 plugin=vanillaBlocks
 number=46
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"west"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"west"}}}
 :enddata
 :endrule
 
@@ -1343,7 +1341,7 @@ rule:
 plugin=vanillaBlocks
 number=47
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"south"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"south"}}}
 :enddata
 :endrule
 
@@ -1351,7 +1349,7 @@ rule:
 plugin=vanillaBlocks
 number=48
 data:
-JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}}}
 :enddata
 :endrule
 
@@ -1359,7 +1357,7 @@ rule:
 plugin=vanillaBlocks
 number=49
 data:
-JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}}}
 :enddata
 :endrule
 
@@ -1367,7 +1365,7 @@ rule:
 plugin=vanillaBlocks
 number=50
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"west"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"west"}}}
 :enddata
 :endrule
 
@@ -1375,7 +1373,7 @@ rule:
 plugin=vanillaBlocks
 number=51
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"west"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"west"}}}
 :enddata
 :endrule
 
@@ -1383,7 +1381,7 @@ rule:
 plugin=vanillaBlocks
 number=52
 data:
-JSON:{blockState:{blockName:"minecraft:stone_slab",properties:{half:"top",variant:"stone_brick"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_slab",properties:{half:"top",variant:"stone_brick"}}}
 :enddata
 :endrule
 
@@ -1391,7 +1389,7 @@ rule:
 plugin=vanillaBlocks
 number=53
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"south"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"south"}}}
 :enddata
 :endrule
 
@@ -1399,7 +1397,7 @@ rule:
 plugin=vanillaBlocks
 number=54
 data:
-JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}}}
 :enddata
 :endrule
 
@@ -1407,7 +1405,7 @@ rule:
 plugin=vanillaBlocks
 number=55
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"south"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"south"}}}
 :enddata
 :endrule
 
@@ -1415,7 +1413,7 @@ rule:
 plugin=vanillaBlocks
 number=56
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"west"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"west"}}}
 :enddata
 :endrule
 
@@ -1423,7 +1421,7 @@ rule:
 plugin=vanillaBlocks
 number=57
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"west"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"west"}}}
 :enddata
 :endrule
 
@@ -1431,7 +1429,7 @@ rule:
 plugin=vanillaBlocks
 number=58
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"west"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"west"}}}
 :enddata
 :endrule
 
@@ -1439,7 +1437,7 @@ rule:
 plugin=vanillaBlocks
 number=59
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"west"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"west"}}}
 :enddata
 :endrule
 
@@ -1447,7 +1445,7 @@ rule:
 plugin=vanillaBlocks
 number=60
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"west"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"west"}}}
 :enddata
 :endrule
 
@@ -1455,7 +1453,7 @@ rule:
 plugin=vanillaBlocks
 number=61
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"west"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"west"}}}
 :enddata
 :endrule
 
@@ -1463,7 +1461,7 @@ rule:
 plugin=vanillaBlocks
 number=62
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"west"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"west"}}}
 :enddata
 :endrule
 
@@ -1471,7 +1469,7 @@ rule:
 plugin=vanillaBlocks
 number=63
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"south"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"south"}}}
 :enddata
 :endrule
 
@@ -1479,7 +1477,7 @@ rule:
 plugin=vanillaBlocks
 number=64
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"south"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"south"}}}
 :enddata
 :endrule
 
@@ -1487,7 +1485,7 @@ rule:
 plugin=vanillaBlocks
 number=65
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"south"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"south"}}}
 :enddata
 :endrule
 
@@ -1495,7 +1493,7 @@ rule:
 plugin=vanillaBlocks
 number=66
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"south"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"south"}}}
 :enddata
 :endrule
 
@@ -1503,7 +1501,7 @@ rule:
 plugin=vanillaBlocks
 number=67
 data:
-JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}}}
 :enddata
 :endrule
 
@@ -1511,7 +1509,7 @@ rule:
 plugin=vanillaBlocks
 number=68
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"south"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"south"}}}
 :enddata
 :endrule
 
@@ -1519,7 +1517,7 @@ rule:
 plugin=vanillaBlocks
 number=69
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"south"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"south"}}}
 :enddata
 :endrule
 
@@ -1527,7 +1525,7 @@ rule:
 plugin=vanillaBlocks
 number=70
 data:
-JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"south"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:stone_brick_stairs",properties:{half:"top",shape:"straight",facing:"south"}}}
 :enddata
 :endrule
 
@@ -1535,7 +1533,7 @@ rule:
 plugin=blockTile
 number=71
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"pirate"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.siege_engineer",minToSpawn:1}],groupWeight:1}],playerRange:64,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"pirate"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.siege_engineer",minToSpawn:1}],groupWeight:1}],playerRange:64,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -1543,7 +1541,7 @@ rule:
 plugin=vanillaBlocks
 number=72
 data:
-JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:ladder",properties:{facing:"east"}}}
 :enddata
 :endrule
 
@@ -1551,7 +1549,7 @@ rule:
 plugin=inventory
 number=73
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},buildPass:0,lootLevel:0,teData:{ForgeData:{},Items:[{Slot:14b,id:"ancientwarfarevehicle:ammo_iron_shot_10_15",Count:15b,Damage:0s},{Slot:15b,id:"minecraft:emerald",Count:14b,Damage:0s},{Slot:16b,id:"minecraft:diamond",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:3,inventoryContents:[{id:"ancientwarfarevehicle:ammo_iron_shot_10_15",Count:15b,slot:0,Damage:0s},{id:"minecraft:emerald",Count:14b,slot:1,Damage:0s},{id:"minecraft:diamond",Count:1b,slot:2,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},lootLevel:0,teData:{ForgeData:{},Items:[{Slot:14b,id:"ancientwarfarevehicle:ammo_iron_shot_10_15",Count:15b,Damage:0s},{Slot:15b,id:"minecraft:emerald",Count:14b,Damage:0s},{Slot:16b,id:"minecraft:diamond",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:3,inventoryContents:[{id:"ancientwarfarevehicle:ammo_iron_shot_10_15",Count:15b,slot:0,Damage:0s},{id:"minecraft:emerald",Count:14b,slot:1,Damage:0s},{id:"minecraft:diamond",Count:1b,slot:2,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -1559,7 +1557,7 @@ rule:
 plugin=blockTile
 number=74
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"pirate"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:5,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"pirate"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:5,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -1567,7 +1565,7 @@ rule:
 plugin=blockTile
 number=75
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"pirate"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:5,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"pirate"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:5,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -1575,7 +1573,7 @@ rule:
 plugin=blockTile
 number=76
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"pirate"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.siege_engineer",minToSpawn:1}],groupWeight:1}],playerRange:64,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"pirate"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.siege_engineer",minToSpawn:1}],groupWeight:1}],playerRange:64,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -1583,7 +1581,7 @@ rule:
 plugin=blockTile
 number=77
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"pirate"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.siege_engineer",minToSpawn:1}],groupWeight:1}],playerRange:64,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"pirate"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.siege_engineer",minToSpawn:1}],groupWeight:1}],playerRange:64,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -1591,7 +1589,7 @@ rule:
 plugin=blockTile
 number=78
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},buildPass:0,teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"pirate"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.siege_engineer",minToSpawn:1}],groupWeight:1}],playerRange:64,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,forced:1b,customTag:{factionName:"pirate"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.siege_engineer",minToSpawn:1}],groupWeight:1}],playerRange:64,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
 :enddata
 :endrule
 
@@ -1599,7 +1597,7 @@ rule:
 plugin=vanillaBlocks
 number=79
 data:
-JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"up"}},buildPass:0}
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"up"}}}
 :enddata
 :endrule
 
@@ -1608,7 +1606,7 @@ entity:
 plugin=AWVehicle
 number=0
 data:
-JSON:{yOffset:0.0f,xOffset:0.5f,rotation:-26.653687f,mobID:"ancientwarfarevehicle:vehicle",zOffset:0.5f,position:1376335691777L,entityData:{Invulnerable:0b,PortalCooldown:0,inventory:{storageInventory:{Size:0,Items:[]},armorInventory:{Size:3,Items:[]},ammoInventory:{Size:6,Items:[]},upgradeInventory:{Size:3,Items:[]}},upgrades:{armors:[],upgrades:[]},FallDistance:0.0f,ForgeCaps:{"llibrary:extendedentitydatacapability":{}},fire:{rt:0,r:0b,f:0b,l:0b},vars:{fT:0},Motion:[-0.0d,0.0d,-0.0d],move:{fi:0b,si:0b,ri:0b,pi:0b,tr:0.0f},ammo:{list:[{count:0,type:"ancientwarfarevehicle:ammo_canister_shot_10"},{count:0,type:"ancientwarfarevehicle:ammo_canister_shot_15"},{count:0,type:"ancientwarfarevehicle:ammo_canister_shot_25"},{count:0,type:"ancientwarfarevehicle:ammo_canister_shot_5"},{count:0,type:"ancientwarfarevehicle:ammo_grape_shot_10"},{count:0,type:"ancientwarfarevehicle:ammo_grape_shot_15"},{count:0,type:"ancientwarfarevehicle:ammo_grape_shot_25"},{count:0,type:"ancientwarfarevehicle:ammo_grape_shot_5"},{count:0,type:"ancientwarfarevehicle:ammo_iron_shot_10_15"},{count:0,type:"ancientwarfarevehicle:ammo_iron_shot_15_30"},{count:0,type:"ancientwarfarevehicle:ammo_iron_shot_25_45"},{count:0,type:"ancientwarfarevehicle:ammo_iron_shot_5_10"}]},trd:63.346313f,vehType:10,health:140.0f,tpd:15.0f,Air:300s,OnGround:1b,Dimension:0,Rotation:[63.346313f,0.0f],UpdateBlocked:0b,matLvl:3,turHome:63.346313f,Pos:[1566.5d,147.0d,646.5d],Fire:-1s,lc:40.0f,setup:0b,tp:15.0f,tr:63.346313f}}
+JSON:{yOffset:0.0f,xOffset:0.5f,rotation:-26.653687f,mobID:"ancientwarfarevehicle:vehicle",zOffset:0.5f,position:1376335691777L,turretRotation:0.0f,entityData:{Invulnerable:0b,PortalCooldown:0,inventory:{storageInventory:{Size:0,Items:[]},armorInventory:{Size:3,Items:[]},ammoInventory:{Size:6,Items:[]},upgradeInventory:{Size:3,Items:[]}},upgrades:{armors:[],upgrades:[]},FallDistance:0.0f,ForgeCaps:{"llibrary:extendedentitydatacapability":{}},fire:{rt:0,r:0b,f:0b,l:0b},vars:{fT:0},Motion:[-0.0d,0.0d,-0.0d],move:{fi:0b,si:0b,ri:0b,pi:0b,tr:0.0f},ammo:{list:[{count:0,type:"ancientwarfarevehicle:ammo_canister_shot_10"},{count:0,type:"ancientwarfarevehicle:ammo_canister_shot_15"},{count:0,type:"ancientwarfarevehicle:ammo_canister_shot_25"},{count:0,type:"ancientwarfarevehicle:ammo_canister_shot_5"},{count:0,type:"ancientwarfarevehicle:ammo_grape_shot_10"},{count:0,type:"ancientwarfarevehicle:ammo_grape_shot_15"},{count:0,type:"ancientwarfarevehicle:ammo_grape_shot_25"},{count:0,type:"ancientwarfarevehicle:ammo_grape_shot_5"},{count:0,type:"ancientwarfarevehicle:ammo_iron_shot_10_15"},{count:0,type:"ancientwarfarevehicle:ammo_iron_shot_15_30"},{count:0,type:"ancientwarfarevehicle:ammo_iron_shot_25_45"},{count:0,type:"ancientwarfarevehicle:ammo_iron_shot_5_10"}]},trd:63.346313f,vehType:10,health:140.0f,tpd:15.0f,Air:300s,OnGround:1b,Dimension:0,Rotation:[63.346313f,0.0f],UpdateBlocked:0b,matLvl:3,turHome:63.346313f,Pos:[1566.5d,147.0d,646.5d],Fire:-1s,lc:40.0f,setup:0b,tp:15.0f,tr:63.346313f}}
 :enddata
 :endentity
 
@@ -1616,7 +1614,7 @@ entity:
 plugin=AWVehicle
 number=1
 data:
-JSON:{yOffset:0.0f,xOffset:0.5f,rotation:259.39563f,mobID:"ancientwarfarevehicle:vehicle",zOffset:0.5f,position:2200969412613L,entityData:{Invulnerable:0b,PortalCooldown:0,inventory:{storageInventory:{Size:0,Items:[]},armorInventory:{Size:3,Items:[]},ammoInventory:{Size:6,Items:[]},upgradeInventory:{Size:3,Items:[]}},upgrades:{armors:[],upgrades:[]},FallDistance:0.0f,ForgeCaps:{"llibrary:extendedentitydatacapability":{}},fire:{rt:0,r:0b,f:0b,l:0b},vars:{fT:0},Motion:[0.0d,0.0d,-0.0d],move:{fi:0b,si:0b,ri:0b,pi:0b,tr:0.0f},ammo:{list:[{count:0,type:"ancientwarfarevehicle:ammo_canister_shot_10"},{count:0,type:"ancientwarfarevehicle:ammo_canister_shot_15"},{count:0,type:"ancientwarfarevehicle:ammo_canister_shot_25"},{count:0,type:"ancientwarfarevehicle:ammo_canister_shot_5"},{count:0,type:"ancientwarfarevehicle:ammo_grape_shot_10"},{count:0,type:"ancientwarfarevehicle:ammo_grape_shot_15"},{count:0,type:"ancientwarfarevehicle:ammo_grape_shot_25"},{count:0,type:"ancientwarfarevehicle:ammo_grape_shot_5"},{count:0,type:"ancientwarfarevehicle:ammo_iron_shot_10_15"},{count:0,type:"ancientwarfarevehicle:ammo_iron_shot_15_30"},{count:0,type:"ancientwarfarevehicle:ammo_iron_shot_25_45"},{count:0,type:"ancientwarfarevehicle:ammo_iron_shot_5_10"}]},trd:349.39563f,vehType:10,health:140.0f,tpd:15.0f,Air:300s,OnGround:1b,Dimension:0,Rotation:[349.39563f,0.0f],UpdateBlocked:0b,matLvl:3,turHome:349.39563f,Pos:[1570.5d,147.0d,643.5d],Fire:-1s,lc:40.0f,setup:0b,tp:15.0f,tr:349.39563f}}
+JSON:{yOffset:0.0f,xOffset:0.5f,rotation:259.39563f,mobID:"ancientwarfarevehicle:vehicle",zOffset:0.5f,position:2200969412613L,turretRotation:0.0f,entityData:{Invulnerable:0b,PortalCooldown:0,inventory:{storageInventory:{Size:0,Items:[]},armorInventory:{Size:3,Items:[]},ammoInventory:{Size:6,Items:[]},upgradeInventory:{Size:3,Items:[]}},upgrades:{armors:[],upgrades:[]},FallDistance:0.0f,ForgeCaps:{"llibrary:extendedentitydatacapability":{}},fire:{rt:0,r:0b,f:0b,l:0b},vars:{fT:0},Motion:[0.0d,0.0d,-0.0d],move:{fi:0b,si:0b,ri:0b,pi:0b,tr:0.0f},ammo:{list:[{count:0,type:"ancientwarfarevehicle:ammo_canister_shot_10"},{count:0,type:"ancientwarfarevehicle:ammo_canister_shot_15"},{count:0,type:"ancientwarfarevehicle:ammo_canister_shot_25"},{count:0,type:"ancientwarfarevehicle:ammo_canister_shot_5"},{count:0,type:"ancientwarfarevehicle:ammo_grape_shot_10"},{count:0,type:"ancientwarfarevehicle:ammo_grape_shot_15"},{count:0,type:"ancientwarfarevehicle:ammo_grape_shot_25"},{count:0,type:"ancientwarfarevehicle:ammo_grape_shot_5"},{count:0,type:"ancientwarfarevehicle:ammo_iron_shot_10_15"},{count:0,type:"ancientwarfarevehicle:ammo_iron_shot_15_30"},{count:0,type:"ancientwarfarevehicle:ammo_iron_shot_25_45"},{count:0,type:"ancientwarfarevehicle:ammo_iron_shot_5_10"}]},trd:349.39563f,vehType:10,health:140.0f,tpd:15.0f,Air:300s,OnGround:1b,Dimension:0,Rotation:[349.39563f,0.0f],UpdateBlocked:0b,matLvl:3,turHome:349.39563f,Pos:[1570.5d,147.0d,643.5d],Fire:-1s,lc:40.0f,setup:0b,tp:15.0f,tr:349.39563f}}
 :enddata
 :endentity
 
@@ -1624,7 +1622,7 @@ entity:
 plugin=AWVehicle
 number=2
 data:
-JSON:{yOffset:0.0f,xOffset:0.5f,rotation:165.19556f,mobID:"ancientwarfarevehicle:vehicle",zOffset:0.5f,position:1376335691785L,entityData:{Invulnerable:0b,PortalCooldown:0,inventory:{storageInventory:{Size:0,Items:[]},armorInventory:{Size:3,Items:[]},ammoInventory:{Size:6,Items:[]},upgradeInventory:{Size:3,Items:[]}},upgrades:{armors:[],upgrades:[]},FallDistance:0.0f,ForgeCaps:{"llibrary:extendedentitydatacapability":{}},fire:{rt:0,r:0b,f:0b,l:0b},vars:{fT:0},Motion:[0.0d,0.0d,0.0d],move:{fi:0b,si:0b,ri:0b,pi:0b,tr:0.0f},ammo:{list:[{count:0,type:"ancientwarfarevehicle:ammo_canister_shot_10"},{count:0,type:"ancientwarfarevehicle:ammo_canister_shot_15"},{count:0,type:"ancientwarfarevehicle:ammo_canister_shot_25"},{count:0,type:"ancientwarfarevehicle:ammo_canister_shot_5"},{count:0,type:"ancientwarfarevehicle:ammo_grape_shot_10"},{count:0,type:"ancientwarfarevehicle:ammo_grape_shot_15"},{count:0,type:"ancientwarfarevehicle:ammo_grape_shot_25"},{count:0,type:"ancientwarfarevehicle:ammo_grape_shot_5"},{count:0,type:"ancientwarfarevehicle:ammo_iron_shot_10_15"},{count:0,type:"ancientwarfarevehicle:ammo_iron_shot_15_30"},{count:0,type:"ancientwarfarevehicle:ammo_iron_shot_25_45"},{count:0,type:"ancientwarfarevehicle:ammo_iron_shot_5_10"}]},trd:255.19556f,vehType:10,health:140.0f,tpd:15.0f,Air:300s,OnGround:1b,Dimension:0,Rotation:[255.19556f,0.0f],UpdateBlocked:0b,matLvl:3,turHome:255.19556f,Pos:[1574.5d,147.0d,646.5d],Fire:-1s,lc:40.0f,setup:0b,tp:15.0f,tr:255.19556f}}
+JSON:{yOffset:0.0f,xOffset:0.5f,rotation:165.19556f,mobID:"ancientwarfarevehicle:vehicle",zOffset:0.5f,position:1376335691785L,turretRotation:0.0f,entityData:{Invulnerable:0b,PortalCooldown:0,inventory:{storageInventory:{Size:0,Items:[]},armorInventory:{Size:3,Items:[]},ammoInventory:{Size:6,Items:[]},upgradeInventory:{Size:3,Items:[]}},upgrades:{armors:[],upgrades:[]},FallDistance:0.0f,ForgeCaps:{"llibrary:extendedentitydatacapability":{}},fire:{rt:0,r:0b,f:0b,l:0b},vars:{fT:0},Motion:[0.0d,0.0d,0.0d],move:{fi:0b,si:0b,ri:0b,pi:0b,tr:0.0f},ammo:{list:[{count:0,type:"ancientwarfarevehicle:ammo_canister_shot_10"},{count:0,type:"ancientwarfarevehicle:ammo_canister_shot_15"},{count:0,type:"ancientwarfarevehicle:ammo_canister_shot_25"},{count:0,type:"ancientwarfarevehicle:ammo_canister_shot_5"},{count:0,type:"ancientwarfarevehicle:ammo_grape_shot_10"},{count:0,type:"ancientwarfarevehicle:ammo_grape_shot_15"},{count:0,type:"ancientwarfarevehicle:ammo_grape_shot_25"},{count:0,type:"ancientwarfarevehicle:ammo_grape_shot_5"},{count:0,type:"ancientwarfarevehicle:ammo_iron_shot_10_15"},{count:0,type:"ancientwarfarevehicle:ammo_iron_shot_15_30"},{count:0,type:"ancientwarfarevehicle:ammo_iron_shot_25_45"},{count:0,type:"ancientwarfarevehicle:ammo_iron_shot_5_10"}]},trd:255.19556f,vehType:10,health:140.0f,tpd:15.0f,Air:300s,OnGround:1b,Dimension:0,Rotation:[255.19556f,0.0f],UpdateBlocked:0b,matLvl:3,turHome:255.19556f,Pos:[1574.5d,147.0d,646.5d],Fire:-1s,lc:40.0f,setup:0b,tp:15.0f,tr:255.19556f}}
 :enddata
 :endentity
 
@@ -1632,7 +1630,7 @@ entity:
 plugin=AWVehicle
 number=3
 data:
-JSON:{yOffset:0.0f,xOffset:0.5f,rotation:76.39575f,mobID:"ancientwarfarevehicle:vehicle",zOffset:0.5f,position:276824064005L,entityData:{Invulnerable:0b,PortalCooldown:0,inventory:{storageInventory:{Size:0,Items:[]},armorInventory:{Size:3,Items:[]},ammoInventory:{Size:6,Items:[]},upgradeInventory:{Size:3,Items:[]}},upgrades:{armors:[],upgrades:[]},FallDistance:0.0f,ForgeCaps:{"llibrary:extendedentitydatacapability":{}},fire:{rt:0,r:0b,f:0b,l:0b},vars:{fT:0},Motion:[-0.0d,0.0d,0.0d],move:{fi:0b,si:0b,ri:0b,pi:0b,tr:0.0f},ammo:{list:[{count:0,type:"ancientwarfarevehicle:ammo_canister_shot_10"},{count:0,type:"ancientwarfarevehicle:ammo_canister_shot_15"},{count:0,type:"ancientwarfarevehicle:ammo_canister_shot_25"},{count:0,type:"ancientwarfarevehicle:ammo_canister_shot_5"},{count:0,type:"ancientwarfarevehicle:ammo_grape_shot_10"},{count:0,type:"ancientwarfarevehicle:ammo_grape_shot_15"},{count:0,type:"ancientwarfarevehicle:ammo_grape_shot_25"},{count:0,type:"ancientwarfarevehicle:ammo_grape_shot_5"},{count:0,type:"ancientwarfarevehicle:ammo_iron_shot_10_15"},{count:0,type:"ancientwarfarevehicle:ammo_iron_shot_15_30"},{count:0,type:"ancientwarfarevehicle:ammo_iron_shot_25_45"},{count:0,type:"ancientwarfarevehicle:ammo_iron_shot_5_10"}]},trd:166.39575f,vehType:10,health:140.0f,tpd:15.0f,Air:300s,OnGround:1b,Dimension:0,Rotation:[166.39575f,0.0f],UpdateBlocked:0b,matLvl:3,turHome:166.39575f,Pos:[1570.5d,147.0d,650.5d],Fire:-1s,lc:40.0f,setup:0b,tp:15.0f,tr:166.39575f}}
+JSON:{yOffset:0.0f,xOffset:0.5f,rotation:76.39575f,mobID:"ancientwarfarevehicle:vehicle",zOffset:0.5f,position:276824064005L,turretRotation:0.0f,entityData:{Invulnerable:0b,PortalCooldown:0,inventory:{storageInventory:{Size:0,Items:[]},armorInventory:{Size:3,Items:[]},ammoInventory:{Size:6,Items:[]},upgradeInventory:{Size:3,Items:[]}},upgrades:{armors:[],upgrades:[]},FallDistance:0.0f,ForgeCaps:{"llibrary:extendedentitydatacapability":{}},fire:{rt:0,r:0b,f:0b,l:0b},vars:{fT:0},Motion:[-0.0d,0.0d,0.0d],move:{fi:0b,si:0b,ri:0b,pi:0b,tr:0.0f},ammo:{list:[{count:0,type:"ancientwarfarevehicle:ammo_canister_shot_10"},{count:0,type:"ancientwarfarevehicle:ammo_canister_shot_15"},{count:0,type:"ancientwarfarevehicle:ammo_canister_shot_25"},{count:0,type:"ancientwarfarevehicle:ammo_canister_shot_5"},{count:0,type:"ancientwarfarevehicle:ammo_grape_shot_10"},{count:0,type:"ancientwarfarevehicle:ammo_grape_shot_15"},{count:0,type:"ancientwarfarevehicle:ammo_grape_shot_25"},{count:0,type:"ancientwarfarevehicle:ammo_grape_shot_5"},{count:0,type:"ancientwarfarevehicle:ammo_iron_shot_10_15"},{count:0,type:"ancientwarfarevehicle:ammo_iron_shot_15_30"},{count:0,type:"ancientwarfarevehicle:ammo_iron_shot_25_45"},{count:0,type:"ancientwarfarevehicle:ammo_iron_shot_5_10"}]},trd:166.39575f,vehType:10,health:140.0f,tpd:15.0f,Air:300s,OnGround:1b,Dimension:0,Rotation:[166.39575f,0.0f],UpdateBlocked:0b,matLvl:3,turHome:166.39575f,Pos:[1570.5d,147.0d,650.5d],Fire:-1s,lc:40.0f,setup:0b,tp:15.0f,tr:166.39575f}}
 :enddata
 :endentity
 

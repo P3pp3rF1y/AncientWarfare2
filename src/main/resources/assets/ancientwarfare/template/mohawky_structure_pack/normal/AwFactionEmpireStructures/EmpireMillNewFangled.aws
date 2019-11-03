@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 1/4/2019 at: 9:58:29
+# Auto-generated structure template file. created on: 8/19/2019 at: 10:23:10
 # Lines beginning with # denote comments
 
 header:
-version=2.8
+version=2.9
 name=EmpireMillNewFangled
 mods=
 size=19,28,19
@@ -833,7 +833,7 @@ rule:
 plugin=vanillaSign
 number=27
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"Mill§r",signContents1:"New Fangled§r",signContents3:"",rotation:0}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"Mill§r§r",signContents1:"New Fangled§r§r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -865,7 +865,7 @@ rule:
 plugin=vanillaSign
 number=31
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"north"}},signContents2:"Mill§r",signContents1:"New Fangled§r",signContents3:"",rotation:0}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"north"}},signContents2:"Mill§r§r",signContents1:"New Fangled§r§r",signContents3:"",rotation:0}
 :enddata
 :endrule
 

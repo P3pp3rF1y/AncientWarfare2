@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.vehicle.model;
 
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.relauncher.Side;
@@ -7,7 +8,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
 @SideOnly(Side.CLIENT)
-public class ModelAirplane extends ModelVehicleBase {
+public class ModelAirplane extends ModelBase {
 
 	ModelRenderer fuseParent;
 	ModelRenderer fuse1;
@@ -101,10 +102,8 @@ public class ModelAirplane extends ModelVehicleBase {
 	ModelRenderer gear2W12;
 	ModelRenderer wingL2;
 	ModelRenderer wingR2;
-	ModelRenderer flagPole;
 	ModelRenderer fuseRear14;
 	ModelRenderer fuseRear15;
-	ModelRenderer flagCloth;
 
 	public ModelAirplane() {
 		fuseParent = new ModelRenderer(this, "fuseParent");
@@ -750,13 +749,6 @@ public class ModelAirplane extends ModelVehicleBase {
 		setPieceRotation(wingR2, 0.0f, 0.0f, -0.01308997f);
 		wingR2.addBox(-64.0f, 0.0f, 0.0f, 64, 1, 6);
 		fuseParent.addChild(wingR2);
-		flagPole = new ModelRenderer(this, "flagPole");
-		flagPole.setTextureOffset(19, 78);
-		flagPole.setTextureSize(256, 256);
-		flagPole.setRotationPoint(-0.5f, -20.0f, 22.0f);
-		setPieceRotation(flagPole, 0.0f, 0.0f, 0.0f);
-		flagPole.addBox(0.0f, 0.0f, 0.0f, 1, 16, 1);
-		fuseParent.addChild(flagPole);
 		fuseRear14 = new ModelRenderer(this, "fuseRear14");
 		fuseRear14.setTextureOffset(86, 217);
 		fuseRear14.setTextureSize(256, 256);
@@ -771,12 +763,6 @@ public class ModelAirplane extends ModelVehicleBase {
 		setPieceRotation(fuseRear15, 0.0f, 0.0f, 0.0f);
 		fuseRear15.addBox(0.0f, 0.0f, -1.0f, 8, 2, 2);
 		fuseParent.addChild(fuseRear15);
-		flagCloth = new ModelRenderer(this, "flagCloth");
-		flagCloth.setTextureOffset(24, 78);
-		flagCloth.setTextureSize(256, 256);
-		flagCloth.setRotationPoint(0.0f, -15.0f, 0.0f);
-		setPieceRotation(flagCloth, 0.0f, 0.0f, 0.0f);
-		flagCloth.addBox(-0.5f, -20.0f, 23.0f, 1, 8, 11);
 	}
 
 	@Override
@@ -784,7 +770,6 @@ public class ModelAirplane extends ModelVehicleBase {
 		super.render(entity, f1, f2, f3, f4, f5, f6);
 		setRotationAngles(f1, f2, f3, f4, f5, f6, entity);
 		fuseParent.render(f6);
-		flagCloth.render(f6);
 	}
 
 	public void setPieceRotation(ModelRenderer model, float x, float y, float z) {
@@ -795,16 +780,5 @@ public class ModelAirplane extends ModelVehicleBase {
 
 	public void setWheelRotations(float fl, float fr, float rl, float rr) {
 		this.spinner1.rotateAngleZ = -Trig.toDegrees(fl);
-	}
-
-	@Override
-	public void renderFlag() {
-		flagCloth.render(0.0625f);
-	}
-
-	public void renderFlag(float pitch, float roll) {
-		flagCloth.rotateAngleX = Trig.toRadians(pitch);
-		flagCloth.rotateAngleZ = Trig.toRadians(roll);
-		this.renderFlag();
 	}
 }

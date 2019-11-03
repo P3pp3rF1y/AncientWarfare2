@@ -12,7 +12,6 @@ import java.io.IOException;
 public class PacketExtendedReachAttack extends PacketBase {
 	private int entityId;
 
-	@SuppressWarnings("unused") //used in reflection
 	public PacketExtendedReachAttack() {}
 
 	public PacketExtendedReachAttack(int entityId) {this.entityId = entityId;}

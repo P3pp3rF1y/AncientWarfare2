@@ -39,6 +39,7 @@ import net.shadowmage.ancientwarfare.structure.container.ContainerStatue;
 import net.shadowmage.ancientwarfare.structure.container.ContainerStructureScanner;
 import net.shadowmage.ancientwarfare.structure.container.ContainerStructureSelection;
 import net.shadowmage.ancientwarfare.structure.container.ContainerTownSelection;
+import net.shadowmage.ancientwarfare.structure.datafixes.LootSettingsPotionRegistryNameFixer;
 import net.shadowmage.ancientwarfare.structure.datafixes.TileLootFixer;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.entity.EntitySeat;
@@ -47,6 +48,7 @@ import net.shadowmage.ancientwarfare.structure.network.PacketSoundBlockPlayerSpe
 import net.shadowmage.ancientwarfare.structure.network.PacketStructure;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructureRemove;
 import net.shadowmage.ancientwarfare.structure.proxy.CommonProxyStructure;
+import net.shadowmage.ancientwarfare.structure.registry.BiomeGroupRegistry;
 import net.shadowmage.ancientwarfare.structure.registry.EntitySpawnNBTRegistry;
 import net.shadowmage.ancientwarfare.structure.registry.StructureBlockRegistry;
 import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
@@ -103,9 +105,9 @@ public class AncientWarfareStructure {
 		EntityRegistry.registerModEntity(new ResourceLocation(AncientWarfareStructure.MOD_ID, "aw_gate"), EntityGate.class, "aw_gate", 0, this, 250, 200, false);
 		EntityRegistry.registerModEntity(new ResourceLocation(AncientWarfareStructure.MOD_ID, "seat"), EntitySeat.class, "AWSeat", 1, this, 20, 10, false);
 
-		PacketBase.registerPacketType(NetworkHandler.PACKET_STRUCTURE, PacketStructure.class);
-		PacketBase.registerPacketType(NetworkHandler.PACKET_STRUCTURE_REMOVE, PacketStructureRemove.class);
-		PacketBase.registerPacketType(NetworkHandler.PACKET_SOUND_BLOCK_PLAYER_SPEC_VALUES, PacketSoundBlockPlayerSpecValues.class);
+		PacketBase.registerPacketType(NetworkHandler.PACKET_STRUCTURE, PacketStructure.class, PacketStructure::new);
+		PacketBase.registerPacketType(NetworkHandler.PACKET_STRUCTURE_REMOVE, PacketStructureRemove.class, PacketStructureRemove::new);
+		PacketBase.registerPacketType(NetworkHandler.PACKET_SOUND_BLOCK_PLAYER_SPEC_VALUES, PacketSoundBlockPlayerSpecValues.class, PacketSoundBlockPlayerSpecValues::new);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_SCANNER, ContainerStructureScanner.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_BUILDER, ContainerStructureSelection.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_TOWN_BUILDER, ContainerTownSelection.class);
@@ -127,6 +129,7 @@ public class AncientWarfareStructure {
 		TemplateLoader.INSTANCE.initializeAndExportDefaults();
 
 		RegistryLoader.registerParser(new EntitySpawnNBTRegistry.Parser());
+		RegistryLoader.registerParser(new BiomeGroupRegistry.Parser());
 		RegistryLoader.registerParser(new StructureBlockRegistry.Parser());
 
 		CapabilityRespawnData.register();
@@ -144,6 +147,7 @@ public class AncientWarfareStructure {
 		DataFixManager.registerRuleFixer(new EntityRuleNameFixer());
 		DataFixManager.registerRuleFixer(new EntityEquipmentFixer());
 		DataFixManager.registerRuleFixer(new TileLootFixer());
+		DataFixManager.registerRuleFixer(new LootSettingsPotionRegistryNameFixer());
 	}
 
 	@EventHandler

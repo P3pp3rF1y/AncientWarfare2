@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 12/1/2018 at: 17:37:59
+# Auto-generated structure template file. created on: 8/19/2019 at: 10:23:14
 # Lines beginning with # denote comments
 
 header:
-version=2.8
+version=2.9
 name=PirateArtilleryShip
 mods=
 size=33,63,90
@@ -20,8 +20,8 @@ preserveBlocks=false
 selectionWeight=50
 clusterValue=60
 minDuplicateDistance=1000
-dimensionWhiteList=false
-dimensionList=
+dimensionWhiteList=true
+dimensionList=0
 biomeWhiteList=true
 biomeList=minecraft:ocean,minecraft:deep_ocean
 leveling=0
@@ -6065,7 +6065,7 @@ rule:
 plugin=blockTile
 number=30
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:2b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:7273056872826345637L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:2b,lootSettings:{lootRolls:2,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/simple_dungeon",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:7273056872826345637L}}
 :enddata
 :endrule
 
@@ -6097,7 +6097,7 @@ rule:
 plugin=blockTile
 number=34
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"west"}},teData:{LootTable:"minecraft:chests/village_blacksmith",lootRolls:2b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:11601792876307525L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"west"}},teData:{LootTable:"minecraft:chests/village_blacksmith",lootRolls:2b,lootSettings:{lootRolls:2,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/village_blacksmith",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:11601792876307525L}}
 :enddata
 :endrule
 
@@ -6113,7 +6113,7 @@ rule:
 plugin=blockTile
 number=36
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"west"}},teData:{LootTable:"minecraft:chests/abandoned_mineshaft",lootRolls:2b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-6288480236891242138L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"west"}},teData:{LootTable:"minecraft:chests/abandoned_mineshaft",lootRolls:2b,lootSettings:{lootRolls:2,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/abandoned_mineshaft",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-6288480236891242138L}}
 :enddata
 :endrule
 
@@ -6225,7 +6225,7 @@ rule:
 plugin=blockTile
 number=50
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"east"}},teData:{LootTable:"minecraft:chests/abandoned_mineshaft",lootRolls:2b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-6242210685349250073L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"east"}},teData:{LootTable:"minecraft:chests/abandoned_mineshaft",lootRolls:2b,lootSettings:{lootRolls:2,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/abandoned_mineshaft",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-6242210685349250073L}}
 :enddata
 :endrule
 
@@ -6289,7 +6289,7 @@ rule:
 plugin=blockTile
 number=58
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"east"}},teData:{LootTable:"minecraft:chests/village_blacksmith",lootRolls:2b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-7198626285881686137L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"east"}},teData:{LootTable:"minecraft:chests/village_blacksmith",lootRolls:2b,lootSettings:{lootRolls:2,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/village_blacksmith",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-7198626285881686137L}}
 :enddata
 :endrule
 
@@ -6305,7 +6305,7 @@ rule:
 plugin=blockTile
 number=60
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:2b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:7312716487206633894L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:2b,lootSettings:{lootRolls:2,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/simple_dungeon",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:7312716487206633894L}}
 :enddata
 :endrule
 
@@ -6409,7 +6409,7 @@ rule:
 plugin=blockTile
 number=73
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:2b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:6761150647862399141L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:2b,lootSettings:{lootRolls:2,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/simple_dungeon",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:6761150647862399141L}}
 :enddata
 :endrule
 
@@ -6441,7 +6441,7 @@ rule:
 plugin=blockTile
 number=77
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:2b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:6800810262242687398L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:2b,lootSettings:{lootRolls:2,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/simple_dungeon",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:6800810262242687398L}}
 :enddata
 :endrule
 
@@ -6858,7 +6858,7 @@ entity:
 plugin=AWVehicle
 number=0
 data:
-JSON:{yOffset:0.5f,xOffset:0.5f,rotation:-178.1142f,mobID:"ancientwarfarevehicle:vehicle",zOffset:0.5f,position:4948943175739L,entityData:{Invulnerable:0b,PortalCooldown:0,inventory:{storageInventory:{Size:0,Items:[]},armorInventory:{Size:4,Items:[]},ammoInventory:{Size:6,Items:[]},upgradeInventory:{Size:4,Items:[]}},upgrades:{armors:[],upgrades:[]},FallDistance:0.0f,ForgeCaps:{"llibrary:extendedentitydatacapability":{}},fire:{rt:0,r:0b,f:0b,l:0b},vars:{cS:0.0f,sS:0.0f,bS:0.0f,tA:0.0f,cA:0.0f,sA:-118.087494f,bA:67.5f},Motion:[0.0d,0.0d,-0.0d],move:{fi:0b,si:0b,ri:0b,pi:0b,tr:0.0f},ammo:{list:[{count:0,type:"ancientwarfarevehicle:ammo_ballista_bolt"},{count:0,type:"ancientwarfarevehicle:ammo_ballista_bolt_explosive"},{count:0,type:"ancientwarfarevehicle:ammo_ballista_bolt_flame"},{count:0,type:"ancientwarfarevehicle:ammo_ballista_bolt_iron"}]},trd:271.8858f,vehType:5,health:75.0f,tpd:15.0f,Air:300s,OnGround:1b,Dimension:0,Rotation:[-88.1142f,0.0f],UpdateBlocked:0b,matLvl:0,turHome:271.8858f,Pos:[1420.5d,134.5d,720.5d],Fire:-1s,lc:42.0f,setup:0b,tp:15.0f,tr:271.8858f}}
+JSON:{yOffset:0.5f,xOffset:0.5f,rotation:-178.1142f,mobID:"ancientwarfarevehicle:vehicle",zOffset:0.5f,position:4948943175739L,turretRotation:0.0f,entityData:{Invulnerable:0b,PortalCooldown:0,inventory:{storageInventory:{Size:0,Items:[]},armorInventory:{Size:4,Items:[]},ammoInventory:{Size:6,Items:[]},upgradeInventory:{Size:4,Items:[]}},upgrades:{armors:[],upgrades:[]},FallDistance:0.0f,ForgeCaps:{"llibrary:extendedentitydatacapability":{}},fire:{rt:0,r:0b,f:0b,l:0b},vars:{cS:0.0f,sS:0.0f,bS:0.0f,tA:0.0f,cA:0.0f,sA:-118.087494f,bA:67.5f},Motion:[0.0d,0.0d,-0.0d],move:{fi:0b,si:0b,ri:0b,pi:0b,tr:0.0f},ammo:{list:[{count:0,type:"ancientwarfarevehicle:ammo_ballista_bolt"},{count:0,type:"ancientwarfarevehicle:ammo_ballista_bolt_explosive"},{count:0,type:"ancientwarfarevehicle:ammo_ballista_bolt_flame"},{count:0,type:"ancientwarfarevehicle:ammo_ballista_bolt_iron"}]},trd:271.8858f,vehType:5,health:75.0f,tpd:15.0f,Air:300s,OnGround:1b,Dimension:0,Rotation:[-88.1142f,0.0f],UpdateBlocked:0b,matLvl:0,turHome:271.8858f,Pos:[1420.5d,134.5d,720.5d],Fire:-1s,lc:42.0f,setup:0b,tp:15.0f,tr:271.8858f}}
 :enddata
 :endentity
 

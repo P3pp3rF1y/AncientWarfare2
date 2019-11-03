@@ -7,7 +7,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
-import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
+import net.shadowmage.ancientwarfare.core.inventory.ItemHashEntry;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
@@ -54,7 +54,7 @@ public class WarehouseDebugger {
 
 	private static void reviewInventory(TileWarehouse warehouse, Map<ItemStack, Integer> debugData) {
 		HashMap<ItemStack, Integer> copy = new HashMap<>(debugData);
-		for (Map.Entry<ItemQuantityMap.ItemHashEntry, Integer> entry : warehouse.cachedItemMap.getItemCounts().entrySet()) {
+		for (Map.Entry<ItemHashEntry, Integer> entry : warehouse.cachedItemMap.getItemCounts().entrySet()) {
 			reviewStackCount(warehouse.getPos(), debugData, copy, entry);
 		}
 
@@ -65,7 +65,7 @@ public class WarehouseDebugger {
 		}
 	}
 
-	private static void reviewStackCount(BlockPos warehousePos, Map<ItemStack, Integer> debugData, Map<ItemStack, Integer> debugDataCopy, Map.Entry<ItemQuantityMap.ItemHashEntry, Integer> warehouseEntry) {
+	private static void reviewStackCount(BlockPos warehousePos, Map<ItemStack, Integer> debugData, Map<ItemStack, Integer> debugDataCopy, Map.Entry<ItemHashEntry, Integer> warehouseEntry) {
 		ItemStack warehouseStack = warehouseEntry.getKey().getItemStack();
 		int warehouseCount = warehouseEntry.getValue();
 
@@ -102,7 +102,7 @@ public class WarehouseDebugger {
 	private static void initializeItemCounts(World world, BlockPos pos, WarehouseDebuggerData debugData) {
 		WorldTools.getTile(world, pos, TileWarehouse.class).ifPresent((TileWarehouse wh) -> {
 			Map<ItemStack, Integer> warehouseItems = new HashMap<>();
-			for (Map.Entry<ItemQuantityMap.ItemHashEntry, Integer> itemCount : wh.cachedItemMap.getItemCounts().entrySet()) {
+			for (Map.Entry<ItemHashEntry, Integer> itemCount : wh.cachedItemMap.getItemCounts().entrySet()) {
 				warehouseItems.put(itemCount.getKey().getItemStack().copy(), itemCount.getValue());
 			}
 			debugData.setItemCounts(pos, warehouseItems);

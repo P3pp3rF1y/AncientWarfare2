@@ -11,9 +11,6 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.structure.container.ContainerDraftingStation;
 
 public class GuiDraftingStation extends GuiContainerBase<ContainerDraftingStation> {
-
-	//right-side column @ X=176
-	//max X size == 352?
 	private CompositeScrolled resourceListArea;
 	private Button stopButton;
 	private Button startButton;

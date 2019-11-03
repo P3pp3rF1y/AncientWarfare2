@@ -25,7 +25,7 @@ public class StructureValidatorGround extends StructureValidator {
 		Block block = state.getBlock();
 		if (!AWStructureStatics.isValidTargetBlock(state)) {
 			//noinspection ConstantConditions
-			AncientWarfareStructure.LOG.debug("Rejecting due to target block mismatch of: " + block.getRegistryName().toString() + " at: " + x + "," + y + "," + z);
+			AncientWarfareStructure.LOG.debug("Rejecting due to target block mismatch of: {} at: {},{},{}", () -> block.getRegistryName().toString(), () -> x, () -> y, () -> z);
 			return false;
 		}
 		return true;
@@ -59,7 +59,7 @@ public class StructureValidatorGround extends StructureValidator {
 	}
 
 	private void clearBB(World world, StructureTemplate template, StructureBB bb) {
-		BlockTools.getAllInBoxTopDown(bb.min, bb.max.add(0, 10, 0)).forEach(pos -> handleClearAction(world, pos, template, bb));
+		BlockTools.getAllInBoxTopDown(bb.min, bb.max.add(0, 10 + getMaxLeveling(), 0)).forEach(pos -> handleClearAction(world, pos, template, bb));
 	}
 
 	@Override

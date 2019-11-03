@@ -12,6 +12,7 @@ import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureEntry;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
+import net.shadowmage.ancientwarfare.structure.registry.BiomeGroupRegistry;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
 
 import javax.annotation.Nullable;
@@ -20,9 +21,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.Predicate;
 
 public class WorldGenStructureManager {
 
@@ -52,20 +53,38 @@ public class WorldGenStructureManager {
 	public void registerWorldGenStructure(StructureTemplate template) {
 		StructureValidator validation = template.getValidationSettings();
 		Set<String> biomes = validation.getBiomeList();
+		Set<String> biomeGroupBiomes = new HashSet<>();
+		validation.getBiomeGroupList().forEach(biomeGroup -> biomeGroupBiomes.addAll(BiomeGroupRegistry.getGroupBiomes(biomeGroup)));
+
 		if (validation.isBiomeWhiteList()) {
-			for (String biome : biomes) {
-				if (templatesByBiome.containsKey(biome)) {
-					templatesByBiome.get(biome).add(template);
-				} else if (Loader.isModLoaded((new ResourceLocation(biome)).getResourceDomain())) {
-					AncientWarfareStructure.LOG.warn("Could not locate biome: " + biome + " while registering template: " + template.name + " for world generation.");
-				}
+			whitelistBiomes(template, biomes, biomeGroupBiomes);
+		} else {
+			blacklistBiomes(template, biomes, biomeGroupBiomes);
+		}
+	}
+
+	private void whitelistBiomes(StructureTemplate template, Set<String> biomes, Set<String> biomeGroupBiomes) {
+		addTemplateToBiomes(template, biomeGroupBiomes, b -> true);
+		addTemplateToBiomes(template, biomes, b -> biomeGroupBiomes.isEmpty() || biomeGroupBiomes.contains(b));
+	}
+
+	private void addTemplateToBiomes(StructureTemplate template, Set<String> biomeGroupBiomes, Predicate<String> checkBiome) {
+		for (String biome : biomeGroupBiomes) {
+			if (templatesByBiome.containsKey(biome) && checkBiome.test(biome)) {
+				templatesByBiome.get(biome).add(template);
+			} else if (Loader.isModLoaded((new ResourceLocation(biome)).getResourceDomain())) {
+				AncientWarfareStructure.LOG.warn("Could not locate biome: {} while registering template: {} for world generation.", biome, template.name);
 			}
-		} else//blacklist, skip template-biomes
-		{
-			for (String biome : templatesByBiome.keySet()) {
-				if (!biomes.isEmpty() && biomes.contains(biome.toLowerCase(Locale.ENGLISH))) {
-					continue;
-				}
+		}
+	}
+
+	private void blacklistBiomes(StructureTemplate template, Set<String> biomes, Set<String> biomeGroupBiomes) {
+		Set<String> biomesBaseList = biomeGroupBiomes.isEmpty() ? templatesByBiome.keySet() : biomeGroupBiomes;
+		for (String biome : biomesBaseList) {
+			if (!biomes.isEmpty() && biomes.contains(biome)) {
+				continue;
+			}
+			if (templatesByBiome.containsKey(biome)) {
 				templatesByBiome.get(biome).add(template);
 			}
 		}
@@ -82,16 +101,15 @@ public class WorldGenStructureManager {
 		int foundValue = 0;
 		int chunkDistance;
 		float foundDistance;
-		float mx;
-		float mz;
 
 		Biome biome = world.provider.getBiomeForCoords(new BlockPos(x, 1, z));
+		//noinspection ConstantConditions
 		String biomeName = biome.getRegistryName().toString();
 		Collection<StructureEntry> duplicateSearchEntries = map.getEntriesNear(world, x, z, AWStructureStatics.duplicateStructureSearchRange, false, searchCache);
 		for (StructureEntry entry : duplicateSearchEntries) {
-			mx = entry.getBB().getCenterX() - x;
-			mz = entry.getBB().getCenterZ() - z;
-			foundDistance = MathHelper.sqrt(mx * mx + mz * mz);
+			int mx = entry.getBB().getCenterX() - x;
+			int mz = entry.getBB().getCenterZ() - z;
+			foundDistance = MathHelper.sqrt((float) mx * mx + mz * mz);
 			chunkDistance = (int) (foundDistance / 16.f);
 			if (distancesFound.containsKey(entry.getName())) {
 				int dist = distancesFound.get(entry.getName());

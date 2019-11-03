@@ -31,7 +31,7 @@ public class AWNPCStatics extends ModConfiguration {
 	public static int townMaxRange = 100;
 	public static int townUpdateFreq = 100; //5 second broadcast frequency
 	public static boolean npcAIDebugMode = false;
-	public static double archerRange = 16.0;
+	public static double archerRange = 60.0;
 
 	/*
 	 * TODO add these to config
@@ -46,13 +46,11 @@ public class AWNPCStatics extends ModConfiguration {
 	private Configuration foodConfig;
 	private static final String foodSettings = "01_food_settings";
 	private HashMap<String, Integer> foodValues;
-	private int foodMultiplier;
+	private static int foodMultiplier = 350;
 
 	/* ********************************************FACTION STARTING VALUE SETTINGS************************************************ */
 	private Configuration factionConfig;
 	private static final String factionSettings = "01_faction_settings";
-	public static int factionLossOnDeath = 10;//how much faction standing is lost when you (or one of your npcs) kills an enemy faction-based npc
-	public static int factionGainOnTrade = 2;//how much faction standing is gained when you complete a trade with a faction-based trader-npc
 
 	public AWNPCStatics(String mod) {
 		super(mod);
@@ -97,10 +95,6 @@ public class AWNPCStatics extends ModConfiguration {
 
 		townUpdateFreq = config.get(serverOptions, "town_hall_ticks", townUpdateFreq, "Default=" + townUpdateFreq + "\n" + "How many game ticks should pass between Town Hall updates." + "This affect how an NPC can change its selected Town Hall by moving to different places.\n" + "Lower values will make an NPC change its Town Hall faster, but is more costly for a server.\n").getInt();
 
-		factionLossOnDeath = factionConfig.get(factionSettings, "faction_loss_on_kill", factionLossOnDeath, "Faction Loss On Kill\nDefault=10\n" + "How much faction standing should be lost if you or one of your minions kills a faction based NPC.").getInt();
-
-		factionGainOnTrade = factionConfig.get(factionSettings, "faction_gain_on_trade", factionGainOnTrade, "Faction Gain On Trade\nDefault=2\n" + "How much faction standing should be gained when you trade with a faction based trader.").getInt();
-
 		loadDefaultSkinPack = config.get(clientOptions, "load_default_skin_pack", loadDefaultSkinPack, "Load Default Skin Pack\nDefault=true\n" + "If true, default skin pack will be loaded.\n" + "If false, default skin pack will NOT be loaded -- you will need to supply your own\n" + "skin packs or all npcs will use the default skin.").getBoolean();
 
 		archerRange = config.get(serverOptions, "archer_attack_range", archerRange, "Archer attack range\nDefault=" + archerRange + "\n" + "Attack range of all archers, except mounted archers who are half of this value.").getDouble();
@@ -128,7 +122,7 @@ public class AWNPCStatics extends ModConfiguration {
 	}
 
 	private void loadFoodValues() {
-		foodMultiplier = foodConfig.getInt("Food Multiplier", "Default", 350, 0, Integer.MAX_VALUE / 10, "Food items which don't have a custom duration time set will have their nourishing amount multiplied by this number, to get the number of ticks feeding the npc.");
+		foodMultiplier = foodConfig.getInt("Food Multiplier", "Default", foodMultiplier, 0, Integer.MAX_VALUE / 10, "Food items which don't have a custom duration time set will have their nourishing amount multiplied by this number, to get the number of ticks feeding the npc.");
 		foodConfig.get(foodSettings, "minecraft:apple", 3000, "Example of a food usual tick duration. Default food multiplier included.");
 		foodConfig.get(foodSettings, "minecraft:mushroom_stew", 4500, "Example of a food usual tick duration. Default food multiplier included.");
 		foodConfig.get(foodSettings, "minecraft:rotten_flesh", 0, "Rotten flesh is a rejected food by default.");
@@ -157,7 +151,9 @@ public class AWNPCStatics extends ModConfiguration {
 		if (foodValues.containsKey(name)) {
 			return foodValues.get(name);
 		} else if (stack.getItem() instanceof ItemFood) {
-			return ((((ItemFood) stack.getItem()).getHealAmount(stack)) + ((int)((((ItemFood) stack.getItem()).getSaturationModifier(stack))) * 10)) * foodMultiplier;
+			int healAmount = ((ItemFood) stack.getItem()).getHealAmount(stack);
+			float saturationModifier = ((ItemFood) stack.getItem()).getSaturationModifier(stack);
+			return (healAmount + healAmount * (int) (saturationModifier * 2F)) * foodMultiplier;
 		}
 		return 0;
 	}

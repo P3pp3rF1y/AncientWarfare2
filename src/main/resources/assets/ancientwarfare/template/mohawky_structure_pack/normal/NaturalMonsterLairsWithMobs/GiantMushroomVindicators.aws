@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 12/3/2018 at: 12:14:20
+# Auto-generated structure template file. created on: 8/19/2019 at: 10:23:19
 # Lines beginning with # denote comments
 
 header:
-version=2.8
+version=2.9
 name=GiantMushroomVindicators
 mods=
 size=25,41,25
@@ -20,8 +20,8 @@ preserveBlocks=false
 selectionWeight=30
 clusterValue=30
 minDuplicateDistance=500
-dimensionWhiteList=false
-dimensionList=
+dimensionWhiteList=true
+dimensionList=0
 biomeWhiteList=true
 biomeList=minecraft:swampland,minecraft:mushroom_island_shore,biomesoplenty:bayou,biomesoplenty:dead_swamp,biomesoplenty:marsh,biomesoplenty:mangrove
 leveling=0
@@ -1272,7 +1272,7 @@ rule:
 plugin=blockTile
 number=17
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:1b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:8356785610588424947L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{LootTable:"minecraft:chests/simple_dungeon",lootRolls:1b,lootSettings:{lootRolls:1,splashPotion:0b,hasLoot:1b,lootTableName:"minecraft:chests/simple_dungeon",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:8356785610588424947L}}
 :enddata
 :endrule
 

@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.npc.entity.faction;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -18,11 +19,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.util.NBTHelper;
 import net.shadowmage.ancientwarfare.npc.ai.AIHelper;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionFleeSun;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRestrictSun;
-import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.entity.faction.attributes.AdditionalAttributes;
@@ -31,6 +32,7 @@ import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
 import net.shadowmage.ancientwarfare.npc.registry.FactionNpcDefault;
 import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
 import net.shadowmage.ancientwarfare.npc.registry.NpcDefaultsRegistry;
+import net.shadowmage.ancientwarfare.npc.registry.StandingChanges;
 import net.shadowmage.ancientwarfare.structure.util.CapabilityRespawnData;
 import net.shadowmage.ancientwarfare.structure.util.IRespawnData;
 import net.shadowmage.ancientwarfare.structure.util.SpawnerHelper;
@@ -112,6 +114,10 @@ public abstract class NpcFaction extends NpcBase {
 		return getAdditionalAttributeValue(AdditionalAttributes.BURNS_IN_SUN).orElse(false);
 	}
 
+	public boolean isUndead() {
+		return getAdditionalAttributeValue(AdditionalAttributes.UNDEAD).orElse(false);
+	}
+
 	@Override
 	public void onLivingUpdate() {
 		doSunBurn();
@@ -143,6 +149,14 @@ public abstract class NpcFaction extends NpcBase {
 				setItemStackToSlot(EntityEquipmentSlot.HEAD, ItemStack.EMPTY);
 			}
 		}
+	}
+
+	@Override
+	public EnumCreatureAttribute getCreatureAttribute() {
+		if (isUndead()) {
+			return EnumCreatureAttribute.UNDEAD;
+		} else
+		return EnumCreatureAttribute.UNDEFINED;
 	}
 
 	public void setFactionNameAndDefaults(String factionName) {
@@ -208,7 +222,8 @@ public abstract class NpcFaction extends NpcBase {
 	public boolean isHostileTowards(Entity e) {
 		if (e instanceof EntityPlayer || e instanceof NpcPlayerOwned) {
 			String playerName = e instanceof EntityPlayer ? e.getName() : ((NpcBase) e).getOwner().getName();
-			return revengePlayers.keySet().contains(playerName) || FactionTracker.INSTANCE.getStandingFor(world, playerName, getFaction()) < 0;
+			UUID playerUUID = e instanceof EntityPlayer ? e.getUniqueID() : ((NpcBase) e).getOwner().getUUID();
+			return revengePlayers.keySet().contains(playerName) || FactionTracker.INSTANCE.isHostileToPlayer(world, playerUUID, playerName, getFaction());
 		} else if (e instanceof NpcFaction) {
 			NpcFaction npc = (NpcFaction) e;
 			return !npc.getFaction().equals(factionName) && FactionRegistry.getFaction(getFaction()).isHostileTowards(npc.getFaction());
@@ -266,7 +281,7 @@ public abstract class NpcFaction extends NpcBase {
 		if (damageSource.getTrueSource() instanceof EntityPlayer || damageSource.getTrueSource() instanceof NpcPlayerOwned) {
 			String playerName = damageSource.getTrueSource() instanceof EntityPlayer ? damageSource.getTrueSource().getName() :
 					((NpcBase) damageSource.getTrueSource()).getOwner().getName();
-			FactionTracker.INSTANCE.adjustStandingFor(world, playerName, getFaction(), -AWNPCStatics.factionLossOnDeath);
+			FactionTracker.INSTANCE.adjustStandingFor(world, playerName, getFaction(), FactionRegistry.getFaction(getFaction()).getStandingChange(StandingChanges.KILL));
 
 			setDeathRevengePlayer(playerName);
 			world.getEntitiesWithinAABB(NpcFaction.class, new AxisAlignedBB(getPosition()).grow(REVENGE_SET_RANGE))

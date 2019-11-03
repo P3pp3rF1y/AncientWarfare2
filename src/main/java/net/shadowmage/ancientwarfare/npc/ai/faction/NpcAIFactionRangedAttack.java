@@ -10,16 +10,23 @@ public class NpcAIFactionRangedAttack extends NpcAIAttack<NpcBase> {
 	private final IRangedAttackMob rangedAttacker;
 
 	private int attackDistanceSq = -1;
+	private int attackDelay;
 
-	public NpcAIFactionRangedAttack(NpcBase npc) {
+	public <T extends NpcBase & IRangedAttackMob> NpcAIFactionRangedAttack(T npc, double moveSpeed, int attackDistanceSq, int attackDelay) {
 		super(npc);
-		this.rangedAttacker = (IRangedAttackMob) npc;//will classcastexception if improperly used..
-		this.moveSpeed = 1.d;
+		rangedAttacker = npc;
+		this.moveSpeed = moveSpeed;
+		this.attackDistanceSq = attackDistanceSq;
+		this.attackDelay = attackDelay;
+	}
+
+	public <T extends NpcBase & IRangedAttackMob> NpcAIFactionRangedAttack(T npc) {
+		this(npc, 1, (int) Math.pow(npc.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getAttributeValue(), 2), 35);
 	}
 
 	@Override
 	protected boolean shouldCloseOnTarget(double dist) {
-		return (dist > getAttackDistanceSq() || !this.npc.getEntitySenses().canSee(this.getTarget()));
+		return (dist > getAttackDistanceSq() || !npc.getEntitySenses().canSee(this.getTarget()));
 	}
 
 	private double getAttackDistanceSq() {
@@ -32,19 +39,11 @@ public class NpcAIFactionRangedAttack extends NpcAIAttack<NpcBase> {
 
 	@Override
 	protected void doAttack(double dist) {
-		double homeDist = npc.getDistanceSqFromHome();
-		if (homeDist > MIN_RANGE && dist < 8 * 8) {
-			npc.addAITask(TASK_MOVE);
-			this.moveToPosition(npc.getHomePosition(), homeDist);
-		} else {
-			npc.removeAITask(TASK_MOVE);
-			npc.getNavigator().clearPath();
-		}
 		if (this.getAttackDelay() <= 0) {
 			float pwr = (float) (getAttackDistanceSq() / dist);
 			pwr = Math.min(Math.max(pwr, 0.1F), 1F);
-			this.rangedAttacker.attackEntityWithRangedAttack(getTarget(), pwr);
-			this.setAttackDelay(35);
+			rangedAttacker.attackEntityWithRangedAttack(getTarget(), pwr);
+			setAttackDelay(attackDelay);
 		}
 	}
 }

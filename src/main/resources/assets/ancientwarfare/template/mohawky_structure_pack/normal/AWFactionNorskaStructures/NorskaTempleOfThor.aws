@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 1/2/2019 at: 23:41:29
+# Auto-generated structure template file. created on: 8/19/2019 at: 10:23:13
 # Lines beginning with # denote comments
 
 header:
-version=2.8
+version=2.9
 name=NorskaTempleOfThor
 mods=
 size=40,53,30
@@ -1821,7 +1821,7 @@ rule:
 plugin=blockTile
 number=12
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{LootTable:"ancientwarfare:inject/chests/simple_dungeon",lootRolls:2b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-2669869194221979349L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{LootTable:"ancientwarfare:inject/chests/simple_dungeon",lootRolls:2b,lootSettings:{lootRolls:2,splashPotion:0b,hasLoot:1b,lootTableName:"ancientwarfare:inject/chests/simple_dungeon",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-2669869194221979349L}}
 :enddata
 :endrule
 
@@ -1829,7 +1829,7 @@ rule:
 plugin=blockTile
 number=13
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{LootTable:"ancientwarfare:inject/chests/village_blacksmith",lootRolls:2b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-6002532919302424277L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{LootTable:"ancientwarfare:inject/chests/village_blacksmith",lootRolls:2b,lootSettings:{lootRolls:2,splashPotion:0b,hasLoot:1b,lootTableName:"ancientwarfare:inject/chests/village_blacksmith",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-6002532919302424277L}}
 :enddata
 :endrule
 
@@ -1837,7 +1837,7 @@ rule:
 plugin=blockTile
 number=14
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{LootTable:"ancientwarfare:inject/chests/simple_dungeon",lootRolls:2b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:9111547429326682411L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"south"}},teData:{LootTable:"ancientwarfare:inject/chests/simple_dungeon",lootRolls:2b,lootSettings:{lootRolls:2,splashPotion:0b,hasLoot:1b,lootTableName:"ancientwarfare:inject/chests/simple_dungeon",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:9111547429326682411L}}
 :enddata
 :endrule
 
@@ -1869,7 +1869,7 @@ rule:
 plugin=inventory
 number=18
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},lootLevel:0,teData:{ForgeData:{},Items:[{Slot:11b,id:"ancientwarfarenpc:diamond_spear",Count:1b,Damage:0s},{Slot:12b,id:"minecraft:diamond_sword",Count:1b,Damage:0s},{Slot:13b,id:"dungeontactics:tungsten_hammer",Count:1b,Damage:0s},{Slot:14b,id:"minecraft:arrow",Count:23b,Damage:0s},{Slot:16b,id:"ancientwarfarenpc:diamond_lance",Count:1b,Damage:0s},{Slot:22b,id:"ancientwarfarenpc:diamond_halberd",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:6,inventoryContents:[{id:"ancientwarfarenpc:diamond_spear",Count:1b,slot:0,Damage:0s},{id:"minecraft:diamond_sword",Count:1b,slot:1,Damage:0s},{id:"dungeontactics:tungsten_hammer",Count:1b,slot:2,Damage:0s},{id:"minecraft:arrow",Count:23b,slot:3,Damage:0s},{id:"ancientwarfarenpc:diamond_lance",Count:1b,slot:4,Damage:0s},{id:"ancientwarfarenpc:diamond_halberd",Count:1b,slot:5,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},lootLevel:0,teData:{ForgeData:{},Items:[{Slot:11b,id:"ancientwarfarenpc:diamond_spear",Count:1b,Damage:0s},{Slot:12b,id:"minecraft:diamond_sword",Count:1b,Damage:0s},{Slot:13b,id:"dungeontactics:tungsten_hammer",Count:1b,Damage:0s},{Slot:14b,id:"minecraft:arrow",Count:23b,Damage:0s},{Slot:16b,id:"ancientwarfarenpc:diamond_lance",Count:1b,Damage:0s},{Slot:22b,id:"ancientwarfarenpc:diamond_halberd",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:6,inventoryContents:[{id:"ancientwarfarenpc:diamond_spear",Count:1b,slot:0,Damage:0s},{id:"minecraft:diamond_sword",Count:1b,slot:1,Damage:0s},{id:"minecraft:arrow",Count:23b,slot:3,Damage:0s},{id:"ancientwarfarenpc:diamond_lance",Count:1b,slot:4,Damage:0s},{id:"ancientwarfarenpc:diamond_halberd",Count:1b,slot:5,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -1901,7 +1901,7 @@ rule:
 plugin=vanillaBlocks
 number=22
 data:
-JSON:{blockState:{blockName:"dungeontactics:trap_fire",properties:{powered:"false"}}}
+JSON:{blockState:{blockName:"minecraft:air"}}
 :enddata
 :endrule
 
@@ -1949,7 +1949,7 @@ rule:
 plugin=inventory
 number=28
 data:
-JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},lootLevel:0,teData:{ForgeData:{},Items:[{Slot:10b,id:"ancientwarfarenpc:diamond_spear",Count:1b,Damage:0s},{Slot:12b,id:"minecraft:diamond_sword",Count:1b,Damage:0s},{Slot:13b,id:"ancientwarfarenpc:diamond_halberd",Count:1b,Damage:0s},{Slot:14b,id:"dungeontactics:crystal_hammer",Count:1b,Damage:0s},{Slot:15b,id:"minecraft:arrow",Count:23b,Damage:0s},{Slot:16b,id:"ancientwarfarenpc:diamond_lance",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:6,inventoryContents:[{id:"ancientwarfarenpc:diamond_spear",Count:1b,slot:0,Damage:0s},{id:"minecraft:diamond_sword",Count:1b,slot:1,Damage:0s},{id:"ancientwarfarenpc:diamond_halberd",Count:1b,slot:2,Damage:0s},{id:"dungeontactics:crystal_hammer",Count:1b,slot:3,Damage:0s},{id:"minecraft:arrow",Count:23b,slot:4,Damage:0s},{id:"ancientwarfarenpc:diamond_lance",Count:1b,slot:5,Damage:0s}]},legacyFeatures:1b}
+JSON:{blockState:{blockName:"minecraft:chest",properties:{facing:"west"}},lootLevel:0,teData:{ForgeData:{},Items:[{Slot:10b,id:"ancientwarfarenpc:diamond_spear",Count:1b,Damage:0s},{Slot:12b,id:"minecraft:diamond_sword",Count:1b,Damage:0s},{Slot:13b,id:"ancientwarfarenpc:diamond_halberd",Count:1b,Damage:0s},{Slot:14b,id:"dungeontactics:crystal_hammer",Count:1b,Damage:0s},{Slot:15b,id:"minecraft:arrow",Count:23b,Damage:0s},{Slot:16b,id:"ancientwarfarenpc:diamond_lance",Count:1b,Damage:0s}],id:"minecraft:chest",Lock:""},inventoryData:{length:6,inventoryContents:[{id:"ancientwarfarenpc:diamond_spear",Count:1b,slot:0,Damage:0s},{id:"minecraft:diamond_sword",Count:1b,slot:1,Damage:0s},{id:"ancientwarfarenpc:diamond_halberd",Count:1b,slot:2,Damage:0s},{id:"minecraft:arrow",Count:23b,slot:4,Damage:0s},{id:"ancientwarfarenpc:diamond_lance",Count:1b,slot:5,Damage:0s}]},legacyFeatures:1b}
 :enddata
 :endrule
 
@@ -1965,7 +1965,7 @@ rule:
 plugin=blockTile
 number=30
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"ancientwarfare:inject/chests/simple_dungeon",lootRolls:2b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-2317890114449437420L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"ancientwarfare:inject/chests/simple_dungeon",lootRolls:2b,lootSettings:{lootRolls:2,splashPotion:0b,hasLoot:1b,lootTableName:"ancientwarfare:inject/chests/simple_dungeon",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-2317890114449437420L}}
 :enddata
 :endrule
 
@@ -1973,7 +1973,7 @@ rule:
 plugin=blockTile
 number=31
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"ancientwarfare:inject/chests/village_blacksmith",lootRolls:2b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-5650553839529882348L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"ancientwarfare:inject/chests/village_blacksmith",lootRolls:2b,lootSettings:{lootRolls:2,splashPotion:0b,hasLoot:1b,lootTableName:"ancientwarfare:inject/chests/village_blacksmith",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-5650553839529882348L}}
 :enddata
 :endrule
 
@@ -1981,7 +1981,7 @@ rule:
 plugin=blockTile
 number=32
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"ancientwarfare:inject/chests/simple_dungeon",lootRolls:2b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-8983217560315359980L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"north"}},teData:{LootTable:"ancientwarfare:inject/chests/simple_dungeon",lootRolls:2b,lootSettings:{lootRolls:2,splashPotion:0b,hasLoot:1b,lootTableName:"ancientwarfare:inject/chests/simple_dungeon",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:-8983217560315359980L}}
 :enddata
 :endrule
 
@@ -2061,7 +2061,7 @@ rule:
 plugin=vanillaSign
 number=42
 data:
-JSON:{signContents0:"Beware§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"Curse§r",signContents1:"the§r",signContents3:"of Thor!§r",rotation:0}
+JSON:{signContents0:"Beware§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"Curse§r§r",signContents1:"the§r§r",signContents3:"of Thor!§r§r",rotation:0}
 :enddata
 :endrule
 
@@ -2077,7 +2077,7 @@ rule:
 plugin=vanillaSign
 number=44
 data:
-JSON:{signContents0:"Beware§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"Curse§r",signContents1:"the §r",signContents3:"of Thor!§r",rotation:0}
+JSON:{signContents0:"Beware§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"Curse§r§r",signContents1:"the §r§r",signContents3:"of Thor!§r§r",rotation:0}
 :enddata
 :endrule
 
@@ -2221,7 +2221,7 @@ rule:
 plugin=vanillaSign
 number=62
 data:
-JSON:{signContents0:"Norska§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"east"}},signContents2:"Thor§r",signContents1:"temple of§r",signContents3:"",rotation:0}
+JSON:{signContents0:"Norska§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"east"}},signContents2:"Thor§r§r",signContents1:"temple of§r§r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -2229,7 +2229,7 @@ rule:
 plugin=vanillaSign
 number=63
 data:
-JSON:{signContents0:"Norska§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"east"}},signContents2:"Thor§r",signContents1:"temple of§r",signContents3:"",rotation:0}
+JSON:{signContents0:"Norska§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"east"}},signContents2:"Thor§r§r",signContents1:"temple of§r§r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -2485,7 +2485,7 @@ rule:
 plugin=blockTile
 number=95
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"east"}},teData:{LootTable:"ebwizardry:chests/wizard_tower",lootRolls:2b,id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:4434530468381223403L}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_loot_chest",properties:{facing:"east"}},teData:{LootTable:"ebwizardry:chests/wizard_tower",lootRolls:2b,lootSettings:{lootRolls:2,splashPotion:0b,hasLoot:1b,lootTableName:"ebwizardry:chests/wizard_tower",spawnEntity:0b},id:"ancientwarfarestructure:advanced_loot_chest_tile",Lock:"",LootTableSeed:4434530468381223403L}}
 :enddata
 :endrule
 
@@ -2517,7 +2517,7 @@ rule:
 plugin=blockTile
 number=99
 data:
-JSON:{blockState:{blockName:"eplus:advanced_table"},teData:{InvList:[],id:"minecraft:eplus.advanced.table"}}
+JSON:{blockState:{blockName:"minecraft:air"},teData:{InvList:[],id:"minecraft:eplus.advanced.table"}}
 :enddata
 :endrule
 

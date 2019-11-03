@@ -13,9 +13,7 @@ public class PacketItemInteraction extends PacketBase {
 
 	private byte altFunction;
 
-	public PacketItemInteraction() {
-
-	}
+	public PacketItemInteraction() {}
 
 	public PacketItemInteraction(ItemAltFunction altFunction) {
 		this.altFunction = (byte) altFunction.ordinal();

@@ -43,8 +43,8 @@ public class StructureEntry {
 		tag.setInteger("value", value);
 		tag.setIntArray("bb", new int[] {bb.min.getX(), bb.min.getY(), bb.min.getZ(), bb.max.getX(), bb.max.getY(), bb.max.getZ()});
 		tag.setLong("protectionFlagPos", protectionFlagPos.toLong());
-		tag.setInteger("cx", 4);
-		tag.setInteger("cz", 4);
+		tag.setInteger("cx", cx);
+		tag.setInteger("cz", cz);
 	}
 
 	public void readFromNBT(NBTTagCompound tag) {

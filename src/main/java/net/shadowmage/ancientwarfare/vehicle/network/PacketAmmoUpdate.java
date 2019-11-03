@@ -10,8 +10,7 @@ import java.io.IOException;
 public class PacketAmmoUpdate extends PacketVehicleBase {
 	private NBTTagCompound ammoTag;
 
-	public PacketAmmoUpdate() {
-	}
+	public PacketAmmoUpdate() {}
 
 	public PacketAmmoUpdate(VehicleBase vehicle, NBTTagCompound ammoTag) {
 		super(vehicle);

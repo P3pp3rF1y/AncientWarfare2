@@ -40,6 +40,7 @@ public class FactionRegistry {
 		private static final String PLAYER_DEFAULT_STANDING = "player_default_standing";
 		private static final String HOSTILE_TOWARDS_FACTIONS = "hostile_towards_factions";
 		private static final String THEMED_BLOCKS = "themed_blocks";
+		private static final String STANDING_CHANGES = "standing_changes";
 
 		@Override
 		public String getName() {
@@ -51,7 +52,7 @@ public class FactionRegistry {
 			JsonObject defaults = JsonUtils.getJsonObject(json, "defaults");
 			FactionDefinition defaultDefinition = new FactionDefinition(JsonUtils.getInt(defaults, PLAYER_DEFAULT_STANDING),
 					parseHostileTowards(defaults).entrySet().stream().filter(Entry::getValue).map(Entry::getKey).collect(Collectors.toCollection(HashSet::new)),
-					TargetRegistry.parseTargets(defaults).orElse(new HashSet<>()));
+					TargetRegistry.parseTargets(defaults).orElse(new HashSet<>()), parseStandingChanges(defaults));
 
 			JsonArray factionsArray = JsonUtils.getJsonArray(json, "factions");
 
@@ -75,8 +76,16 @@ public class FactionRegistry {
 					builder.overrideThemedBlocksTags(parseThemedBLocks(faction, factionName));
 				}
 
+				if (faction.has(STANDING_CHANGES)) {
+					builder.overrideStandingChanges(parseStandingChanges(faction));
+				}
+
 				factions.put(factionName, builder.build());
 			}
+		}
+
+		private Map<String, Integer> parseStandingChanges(JsonObject json) {
+			return JsonHelper.mapFromJson(json, STANDING_CHANGES, Entry::getKey, entry -> JsonUtils.getInt(entry.getValue(), entry.getKey()));
 		}
 
 		private Map<String, NBTTagCompound> parseThemedBLocks(JsonObject json, String factionName) {
@@ -103,5 +112,5 @@ public class FactionRegistry {
 
 	}
 
-	private static final FactionDefinition EMPTY_FACTION = new FactionDefinition(0, new HashSet<>(), new HashSet<>()).copy("", -1).build();
+	private static final FactionDefinition EMPTY_FACTION = new FactionDefinition(0, new HashSet<>(), new HashSet<>(), new HashMap<>()).copy("", -1).build();
 }

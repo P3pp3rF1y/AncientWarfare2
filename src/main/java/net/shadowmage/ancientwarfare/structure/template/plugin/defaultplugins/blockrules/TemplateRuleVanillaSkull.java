@@ -14,6 +14,7 @@ import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 
 import javax.annotation.Nullable;
+import java.util.Optional;
 
 public class TemplateRuleVanillaSkull extends TemplateRuleBlockTile {
 	public static final String PLUGIN_NAME = "vanillaSkull";
@@ -41,8 +42,8 @@ public class TemplateRuleVanillaSkull extends TemplateRuleBlockTile {
 	}
 
 	@Override
-	protected ItemStack getStack() {
-		return new ItemStack(Items.SKULL, 1, tag.getByte("SkullType"));
+	protected Optional<ItemStack> getStack() {
+		return Optional.of(new ItemStack(Items.SKULL, 1, tag.getByte("SkullType")));
 	}
 
 	@Override

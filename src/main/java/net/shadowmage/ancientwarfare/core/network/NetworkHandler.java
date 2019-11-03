@@ -63,6 +63,10 @@ public final class NetworkHandler implements IGuiHandler {
 
 	public static final int PACKET_SOUND_BLOCK_PLAYER_SPEC_VALUES = 30;
 
+	public static final int PACKET_TEAM_MEMBERSHIP_UPDATE = 31;
+	public static final int PACKET_TEAM_STANDINGS_UPDATE = 32;
+	public static final int PACKET_TEAM_STANDING_UPDATE = 33;
+
 	public static final int GUI_CRAFTING = 0;
 	public static final int GUI_SCANNER = 1;
 	public static final int GUI_BUILDER = 2;
@@ -134,18 +138,18 @@ public final class NetworkHandler implements IGuiHandler {
 	public final void registerNetwork() {
 		channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(CHANNELNAME);
 		channel.register(new PacketHandlerServer());
-		PacketBase.registerPacketType(PACKET_GUI, PacketGui.class);
-		PacketBase.registerPacketType(PACKET_ITEM_KEY_INTERFACE, PacketItemInteraction.class);
-		PacketBase.registerPacketType(PACKET_ENTITY, PacketEntity.class);
-		PacketBase.registerPacketType(PACKET_RESEARCH_INIT, PacketResearchInit.class);
-		PacketBase.registerPacketType(PACKET_RESEARCH_ADD, PacketResearchUpdate.class);
-		PacketBase.registerPacketType(PACKET_RESEARCH_START, PacketResearchStart.class);
-		PacketBase.registerPacketType(PACKET_BLOCK_EVENT, PacketBlockEvent.class);
-		PacketBase.registerPacketType(PACKET_MANUAL_RELOAD, PacketManualReload.class);
+		PacketBase.registerPacketType(PACKET_GUI, PacketGui.class, PacketGui::new);
+		PacketBase.registerPacketType(PACKET_ITEM_KEY_INTERFACE, PacketItemInteraction.class, PacketItemInteraction::new);
+		PacketBase.registerPacketType(PACKET_ENTITY, PacketEntity.class, PacketEntity::new);
+		PacketBase.registerPacketType(PACKET_RESEARCH_INIT, PacketResearchInit.class, PacketResearchInit::new);
+		PacketBase.registerPacketType(PACKET_RESEARCH_ADD, PacketResearchUpdate.class, PacketResearchUpdate::new);
+		PacketBase.registerPacketType(PACKET_RESEARCH_START, PacketResearchStart.class, PacketResearchStart::new);
+		PacketBase.registerPacketType(PACKET_BLOCK_EVENT, PacketBlockEvent.class, PacketBlockEvent::new);
+		PacketBase.registerPacketType(PACKET_MANUAL_RELOAD, PacketManualReload.class, PacketManualReload::new);
 		NetworkRegistry.INSTANCE.registerGuiHandler(AncientWarfareCore.instance, this);
 
 		if (Loader.isModLoaded("jei")) {
-			PacketBase.registerPacketType(PACKET_JEI_TRANSFER_RECIPE, PacketTransferRecipe.class);
+			PacketBase.registerPacketType(PACKET_JEI_TRANSFER_RECIPE, PacketTransferRecipe.class, PacketTransferRecipe::new);
 		}
 	}
 
@@ -227,7 +231,6 @@ public final class NetworkHandler implements IGuiHandler {
 		openGui(player, id, pos.getX(), pos.getY(), pos.getZ());
 	}
 
-	//TODO refactor stuff to use this entityId overload
 	public final void openGui(EntityPlayer player, int guiId) {
 		openGui(player, guiId, 0);
 	}

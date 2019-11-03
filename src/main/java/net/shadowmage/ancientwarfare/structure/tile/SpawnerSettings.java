@@ -220,7 +220,7 @@ public class SpawnerSettings {
 	}
 
 	private boolean isContinuousSpawnerOfFriendlyFaction(EntityPlayer player) {
-		return !isOneShotSpawner && !factionName.isEmpty() && FactionTracker.INSTANCE.getStandingFor(world, player.getName(), factionName) >= 0;
+		return !isOneShotSpawner && !factionName.isEmpty() && !FactionTracker.INSTANCE.isHostileToPlayer(world, player.getUniqueID(), player.getName(), factionName);
 	}
 
 	private List<EntityPlayer> getPlayersWithinAABB() {

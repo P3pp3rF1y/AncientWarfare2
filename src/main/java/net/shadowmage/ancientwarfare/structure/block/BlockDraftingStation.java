@@ -10,7 +10,10 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.structure.gui.GuiDraftingStation;
 import net.shadowmage.ancientwarfare.structure.tile.TileDraftingStation;
 
 import static net.shadowmage.ancientwarfare.core.render.property.CoreProperties.FACING;
@@ -73,5 +76,13 @@ public class BlockDraftingStation extends BlockBaseStructure {
 	@Override
 	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerClient() {
+		super.registerClient();
+
+		NetworkHandler.registerGui(NetworkHandler.GUI_DRAFTING_STATION, GuiDraftingStation.class);
 	}
 }

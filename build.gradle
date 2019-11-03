@@ -21,6 +21,7 @@ buildscript {
 plugins {
     id "com.jfrog.bintray" version "1.8.1"
     id "org.sonarqube" version "2.6.2"
+    id "maven-publish"
 }
 
 // We apply the 'forge' plugin, so ForgeGradle can do it's stuff.
@@ -101,40 +102,36 @@ jar {
 }
 
 def getBuildNumber() {
-    if (System.getenv("TRAVIS_BUILD_NUMBER") != null) {
-        return System.getenv("TRAVIS_BUILD_NUMBER").toString()
+    if (System.getenv("BUILD_NUMBER") != null) {
+        return System.getenv("BUILD_NUMBER").toString()
     }
     return ""
 }
 
 def getStable() {
-    if ((System.getenv("DRONE_BRANCH") == null || System.getenv("DRONE_BRANCH").endsWith("-dev"))
+    if ((System.getenv("GITHUB_REF") == null || System.getenv("GITHUB_REF").endsWith("-dev"))
             && (System.getenv("TRAVIS_BRANCH") == null || System.getenv("TRAVIS_BRANCH").endsWith("-dev"))) {
         return "unstable"
     }
     return ""
 }
 
-bintray {
-    user = System.getenv('BINTRAY_USER')
-    key = System.getenv('BINTRAY_KEY')
-    publish = true
-    filesSpec {
-        from 'build/libs'
-        into '.'
-        exclude '*sources.jar'
-    }
-    pkg {
-        version {
-            name = "${project.version}"
-            released = new Date()
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/P3pp3rF1y/AncientWarfare2")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("GPR_USER")
+                password = project.findProperty("gpr.key") ?: System.getenv("GPR_API_KEY")
+            }
         }
-        repo = 'maven'
-        name = 'AncientWarfare2'
-        licenses = ['GPL-3.0']
-        vcsUrl = 'https://github.com/P3pp3rF1y/AncientWarfare2.git'
     }
-
+    publications {
+        gpr(MavenPublication) {
+            from(components.java)
+        }
+    }
 }
 
 sonarqube {

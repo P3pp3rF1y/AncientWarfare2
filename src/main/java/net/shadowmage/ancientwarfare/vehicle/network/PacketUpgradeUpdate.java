@@ -10,8 +10,7 @@ public class PacketUpgradeUpdate extends PacketVehicleBase {
 	private String[] upgradeRegistryNames;
 	private String[] armorRegistryNames;
 
-	public PacketUpgradeUpdate() {
-	}
+	public PacketUpgradeUpdate() {}
 
 	public PacketUpgradeUpdate(VehicleBase vehicle) {
 		super(vehicle);

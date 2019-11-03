@@ -1,9 +1,9 @@
 # Ancient Warfare Structure Template File
-# Auto-generated structure template file. created on: 12/3/2018 at: 7:44:15
+# Auto-generated structure template file. created on: 8/19/2019 at: 10:23:18
 # Lines beginning with # denote comments
 
 header:
-version=2.8
+version=2.9
 name=BarrowMoundPlains
 mods=
 size=44,48,21
@@ -20,8 +20,8 @@ preserveBlocks=false
 selectionWeight=30
 clusterValue=30
 minDuplicateDistance=994
-dimensionWhiteList=false
-dimensionList=
+dimensionWhiteList=true
+dimensionList=0
 biomeWhiteList=true
 biomeList=biomesoplenty:meadow,biomesoplenty:shrubland,biomesoplenty:dead_forest,minecraft:savanna,biomesoplenty:steppe,minecraft:plains
 leveling=3
@@ -1157,7 +1157,7 @@ rule:
 plugin=blockTile
 number=3
 data:
-JSON:{blockState:{blockName:"minecraft:mob_spawner"},teData:{MaxNearbyEntities:6s,RequiredPlayerRange:16s,SpawnCount:4s,SpawnData:{id:"minecraft:skeleton"},MaxSpawnDelay:800s,Delay:665s,id:"minecraft:mob_spawner",SpawnRange:4s,MinSpawnDelay:200s,SpawnPotentials:[{Entity:{id:"minecraft:skeleton"},Weight:1}]}}
+JSON:{blockState:{blockName:"minecraft:mob_spawner"},teData:{MaxNearbyEntities:6s,RequiredPlayerRange:16s,SpawnCount:4s,SpawnData:{id:"minecraft:skeleton"},MaxSpawnDelay:800s,id:"minecraft:mob_spawner",SpawnRange:4s,Delay:665s,MinSpawnDelay:200s,SpawnPotentials:[{Entity:{id:"minecraft:skeleton"},Weight:1}]}}
 :enddata
 :endrule
 
@@ -1181,7 +1181,7 @@ rule:
 plugin=blockTile
 number=6
 data:
-JSON:{blockState:{blockName:"minecraft:mob_spawner"},teData:{MaxNearbyEntities:6s,RequiredPlayerRange:16s,SpawnCount:4s,SpawnData:{id:"minecraft:zombie"},MaxSpawnDelay:800s,Delay:205s,id:"minecraft:mob_spawner",SpawnRange:4s,MinSpawnDelay:200s,SpawnPotentials:[{Entity:{id:"minecraft:zombie"},Weight:1}]}}
+JSON:{blockState:{blockName:"minecraft:mob_spawner"},teData:{MaxNearbyEntities:6s,RequiredPlayerRange:16s,SpawnCount:4s,SpawnData:{id:"minecraft:zombie"},MaxSpawnDelay:800s,id:"minecraft:mob_spawner",SpawnRange:4s,Delay:205s,MinSpawnDelay:200s,SpawnPotentials:[{Entity:{id:"minecraft:zombie"},Weight:1}]}}
 :enddata
 :endrule
 
@@ -1197,7 +1197,7 @@ rule:
 plugin=blockTile
 number=8
 data:
-JSON:{blockState:{blockName:"minecraft:mob_spawner"},teData:{MaxNearbyEntities:6s,RequiredPlayerRange:16s,SpawnCount:4s,SpawnData:{id:"minecraft:skeleton"},MaxSpawnDelay:800s,Delay:458s,id:"minecraft:mob_spawner",SpawnRange:4s,MinSpawnDelay:200s,SpawnPotentials:[{Entity:{id:"minecraft:skeleton"},Weight:1}]}}
+JSON:{blockState:{blockName:"minecraft:mob_spawner"},teData:{MaxNearbyEntities:6s,RequiredPlayerRange:16s,SpawnCount:4s,SpawnData:{id:"minecraft:skeleton"},MaxSpawnDelay:800s,id:"minecraft:mob_spawner",SpawnRange:4s,Delay:458s,MinSpawnDelay:200s,SpawnPotentials:[{Entity:{id:"minecraft:skeleton"},Weight:1}]}}
 :enddata
 :endrule
 
@@ -1205,7 +1205,7 @@ rule:
 plugin=blockTile
 number=9
 data:
-JSON:{blockState:{blockName:"minecraft:mob_spawner"},teData:{MaxNearbyEntities:6s,RequiredPlayerRange:16s,SpawnCount:4s,SpawnData:{id:"minecraft:zombie"},MaxSpawnDelay:800s,Delay:40s,id:"minecraft:mob_spawner",SpawnRange:4s,MinSpawnDelay:200s,SpawnPotentials:[{Entity:{id:"minecraft:zombie"},Weight:1}]}}
+JSON:{blockState:{blockName:"minecraft:mob_spawner"},teData:{MaxNearbyEntities:6s,RequiredPlayerRange:16s,SpawnCount:4s,SpawnData:{id:"minecraft:zombie"},MaxSpawnDelay:800s,id:"minecraft:mob_spawner",SpawnRange:4s,Delay:40s,MinSpawnDelay:200s,SpawnPotentials:[{Entity:{id:"minecraft:zombie"},Weight:1}]}}
 :enddata
 :endrule
 

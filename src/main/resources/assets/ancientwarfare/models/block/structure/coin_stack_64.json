@@ -1,0 +1,164 @@
+{
+    "credit": "Made with Blockbench",
+    "textures": {
+        "particle": "#0"
+    },
+    "elements": [
+        {
+            "name": "coin1",
+            "from": [0, 0, 9],
+            "to": [3, 2, 12],
+            "faces": {
+                "north": {"uv": [4, 4, 7, 6], "texture": "#0"},
+                "east": {"uv": [13, 4, 16, 6], "texture": "#0"},
+                "south": {"uv": [7, 4, 10, 6], "texture": "#0"},
+                "west": {"uv": [10, 4, 13, 6], "texture": "#0"},
+                "up": {"uv": [0, 0, 3, 3], "texture": "#0"},
+                "down": {"uv": [0, 0, 3, 3], "texture": "#0"}
+            }
+        },
+        {
+            "name": "coin2",
+            "from": [12, 0, 1],
+            "to": [15, 3, 4],
+            "faces": {
+                "north": {"uv": [4, 0, 7, 3], "texture": "#0"},
+                "east": {"uv": [13, 0, 16, 3], "texture": "#0"},
+                "south": {"uv": [7, 0, 10, 3], "texture": "#0"},
+                "west": {"uv": [10, 0, 13, 3], "texture": "#0"},
+                "up": {"uv": [0, 0, 3, 3], "texture": "#0"},
+                "down": {"uv": [0, 0, 3, 3], "texture": "#0"}
+            }
+        },
+        {
+            "name": "coin3",
+            "from": [5, 0, 5],
+            "to": [8, 14, 8],
+            "faces": {
+                "north": {"uv": [4, 0, 7, 14], "texture": "#0"},
+                "east": {"uv": [13, 0, 16, 14], "texture": "#0"},
+                "south": {"uv": [10, 0, 13, 14], "texture": "#0"},
+                "west": {"uv": [7, 0, 10, 14], "texture": "#0"},
+                "up": {"uv": [0, 0, 3, 3], "texture": "#0"},
+                "down": {"uv": [0, 0, 3, 3], "texture": "#0"}
+            }
+        },
+        {
+            "name": "coin4",
+            "from": [4, 0, 9],
+            "to": [7, 10, 12],
+            "faces": {
+                "north": {"uv": [13, 6, 16, 16], "texture": "#0"},
+                "east": {"uv": [4, 6, 7, 16], "texture": "#0"},
+                "south": {"uv": [10, 6, 13, 16], "texture": "#0"},
+                "west": {"uv": [7, 6, 10, 16], "texture": "#0"},
+                "up": {"uv": [0, 0, 3, 3], "texture": "#0"},
+                "down": {"uv": [0, 0, 3, 3], "texture": "#0"}
+            }
+        },
+        {
+            "name": "coin5",
+            "from": [8, 0, 8],
+            "to": [11, 16, 11],
+            "faces": {
+                "north": {"uv": [4, 0, 7, 16], "texture": "#0"},
+                "east": {"uv": [13, 0, 16, 16], "texture": "#0"},
+                "south": {"uv": [7, 0, 10, 16], "texture": "#0"},
+                "west": {"uv": [10, 0, 13, 16], "texture": "#0"},
+                "up": {"uv": [0, 0, 3, 3], "texture": "#0"},
+                "down": {"uv": [0, 0, 3, 3], "texture": "#0"}
+            }
+        },
+        {
+            "name": "coin6",
+            "from": [11, 0, 6],
+            "to": [14, 11, 9],
+            "faces": {
+                "north": {"uv": [7, 0, 10, 11], "texture": "#0"},
+                "east": {"uv": [10, 0, 13, 11], "texture": "#0"},
+                "south": {"uv": [13, 0, 16, 11], "texture": "#0"},
+                "west": {"uv": [4, 0, 7, 11], "texture": "#0"},
+                "up": {"uv": [0, 0, 3, 3], "texture": "#0"},
+                "down": {"uv": [0, 0, 3, 3], "texture": "#0"}
+            }
+        },
+        {
+            "name": "coin7",
+            "from": [7, 0, 11],
+            "to": [10, 8, 14],
+            "faces": {
+                "north": {"uv": [7, 0, 10, 8], "texture": "#0"},
+                "east": {"uv": [10, 0, 13, 8], "texture": "#0"},
+                "south": {"uv": [13, 0, 16, 8], "texture": "#0"},
+                "west": {"uv": [4, 0, 7, 8], "texture": "#0"},
+                "up": {"uv": [0, 0, 3, 3], "texture": "#0"},
+                "down": {"uv": [0, 0, 3, 3], "texture": "#0"}
+            }
+        },
+        {
+            "name": "coin8",
+            "from": [1, 0, 2],
+            "to": [4, 5, 5],
+            "faces": {
+                "north": {"uv": [4, 6, 7, 11], "texture": "#0"},
+                "east": {"uv": [13, 6, 16, 11], "texture": "#0"},
+                "south": {"uv": [10, 6, 13, 11], "texture": "#0"},
+                "west": {"uv": [7, 6, 10, 11], "texture": "#0"},
+                "up": {"uv": [0, 0, 3, 3], "texture": "#0"},
+                "down": {"uv": [0, 0, 3, 3], "texture": "#0"}
+            }
+        },
+        {
+            "name": "coin9",
+            "from": [5, 0, 1],
+            "to": [8, 6, 4],
+            "faces": {
+                "north": {"uv": [7, 0, 10, 6], "texture": "#0"},
+                "east": {"uv": [10, 0, 13, 6], "texture": "#0"},
+                "south": {"uv": [13, 0, 16, 6], "texture": "#0"},
+                "west": {"uv": [4, 0, 7, 6], "texture": "#0"},
+                "up": {"uv": [0, 0, 3, 3], "texture": "#0"},
+                "down": {"uv": [0, 0, 3, 3], "texture": "#0"}
+            }
+        },
+        {
+            "name": "coin10",
+            "from": [9, 0, 3],
+            "to": [12, 8, 6],
+            "faces": {
+                "north": {"uv": [4, 4, 7, 12], "texture": "#0"},
+                "east": {"uv": [13, 4, 16, 12], "texture": "#0"},
+                "south": {"uv": [10, 4, 13, 12], "texture": "#0"},
+                "west": {"uv": [7, 4, 10, 12], "texture": "#0"},
+                "up": {"uv": [0, 0, 3, 3], "texture": "#0"},
+                "down": {"uv": [0, 0, 3, 3], "texture": "#0"}
+            }
+        },
+        {
+            "name": "coin11",
+            "from": [3, 0, 13],
+            "to": [6, 6, 16],
+            "faces": {
+                "north": {"uv": [4, 10, 7, 16], "texture": "#0"},
+                "east": {"uv": [13, 10, 16, 16], "texture": "#0"},
+                "south": {"uv": [10, 10, 13, 16], "texture": "#0"},
+                "west": {"uv": [7, 10, 10, 16], "texture": "#0"},
+                "up": {"uv": [0, 0, 3, 3], "texture": "#0"},
+                "down": {"uv": [0, 0, 3, 3], "texture": "#0"}
+            }
+        },
+        {
+            "name": "coin12",
+            "from": [12, 0, 12],
+            "to": [15, 4, 15],
+            "faces": {
+                "north": {"uv": [7, 0, 10, 4], "texture": "#0"},
+                "east": {"uv": [10, 0, 13, 4], "texture": "#0"},
+                "south": {"uv": [13, 0, 16, 4], "texture": "#0"},
+                "west": {"uv": [4, 0, 7, 4], "texture": "#0"},
+                "up": {"uv": [0, 0, 3, 3], "texture": "#0"},
+                "down": {"uv": [0, 0, 3, 3], "texture": "#0"}
+            }
+        }
+    ]
+}
