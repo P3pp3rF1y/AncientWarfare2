@@ -48,6 +48,7 @@ public class ItemLootChestPlacer extends ItemBaseStructure implements IItemKeyIn
 
 	public ItemLootChestPlacer() {
 		super("loot_chest_placer");
+		setMaxStackSize(1);
 	}
 
 	@Override
