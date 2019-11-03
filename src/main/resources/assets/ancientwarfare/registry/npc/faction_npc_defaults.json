@@ -489,7 +489,7 @@
                 "soldier": {
                     "equipment": {
                         "mainhand": "ancientwarfarenpc:stone_spear",
-                        "offhand": "ancientwarfarenpc:shield_round_1"
+                        "offhand": "ancientwarfarenpc:shield_buffloka"
                     }
                 },
                 "soldier.elite": {
@@ -504,7 +504,7 @@
                 "cavalry": {
                     "equipment": {
                         "mainhand": "ancientwarfarenpc:stone_spear",
-                        "offhand": "ancientwarfarenpc:shield_round_1"
+                        "offhand": "ancientwarfarenpc:shield_buffloka"
                     }
                 },
                 "leader": {
