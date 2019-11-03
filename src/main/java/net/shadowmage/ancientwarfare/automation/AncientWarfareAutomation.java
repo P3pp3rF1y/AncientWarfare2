@@ -22,6 +22,7 @@ import net.shadowmage.ancientwarfare.automation.container.ContainerStirlingGener
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseControl;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseCraftingStation;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseInterface;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStockLinker;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStockViewer;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteAnimalControl;
@@ -92,6 +93,7 @@ public class AncientWarfareAutomation {
 		NetworkHandler.registerContainer(NetworkHandler.GUI_STIRLING_GENERATOR, ContainerStirlingGenerator.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_CHUNK_LOADER_DELUXE, ContainerChunkLoaderDeluxe.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_STOCK, ContainerWarehouseStockViewer.class);
+		NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_STOCK_LINKER, ContainerWarehouseStockLinker.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_BOUNDS, ContainerWorksiteBoundsAdjust.class);
 
 		MinecraftForge.EVENT_BUS.register(this);

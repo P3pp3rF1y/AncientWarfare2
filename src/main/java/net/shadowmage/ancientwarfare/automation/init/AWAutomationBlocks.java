@@ -27,6 +27,7 @@ import net.shadowmage.ancientwarfare.automation.block.BlockTorqueTransport;
 import net.shadowmage.ancientwarfare.automation.block.BlockTorqueTransportShaft;
 import net.shadowmage.ancientwarfare.automation.block.BlockWarehouseCraftingStation;
 import net.shadowmage.ancientwarfare.automation.block.BlockWarehouseInterface;
+import net.shadowmage.ancientwarfare.automation.block.BlockWarehouseStockLinker;
 import net.shadowmage.ancientwarfare.automation.block.BlockWarehouseStockViewer;
 import net.shadowmage.ancientwarfare.automation.block.BlockWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.block.BlockWaterwheelGenerator;
@@ -34,6 +35,7 @@ import net.shadowmage.ancientwarfare.automation.block.BlockWindmillBlade;
 import net.shadowmage.ancientwarfare.automation.block.BlockWindmillGenerator;
 import net.shadowmage.ancientwarfare.automation.block.BlockWorksiteBase;
 import net.shadowmage.ancientwarfare.automation.item.ItemBlockTorqueTile;
+import net.shadowmage.ancientwarfare.automation.item.ItemBlockWarehouseStockLinker;
 import net.shadowmage.ancientwarfare.automation.item.ItemBlockWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.item.ItemBlockWorksiteStatic;
 import net.shadowmage.ancientwarfare.automation.tile.TileChunkLoaderDeluxe;
@@ -60,6 +62,7 @@ import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileWindm
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouse;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseCraftingStation;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseInterface;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStockLinker;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStockViewer;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStorageLarge;
@@ -94,6 +97,7 @@ public class AWAutomationBlocks {
 	public static final BlockWarehouseInterface WAREHOUSE_INTERFACE = InjectionTools.nullValue();
 	public static final BlockWarehouseCraftingStation WAREHOUSE_CRAFTING = InjectionTools.nullValue();
 	public static final BlockWarehouseStockViewer WAREHOUSE_STOCK_VIEWER = InjectionTools.nullValue();
+	public static final BlockWarehouseStockLinker WAREHOUSE_STOCK_LINKER = InjectionTools.nullValue();
 	public static final BlockMailbox MAILBOX = InjectionTools.nullValue();
 
 	public static final BlockFlywheelController FLYWHEEL_CONTROLLER = InjectionTools.nullValue();
@@ -125,6 +129,7 @@ public class AWAutomationBlocks {
 		registry.register(new ItemBlock(WAREHOUSE_INTERFACE).setRegistryName(WAREHOUSE_INTERFACE.getRegistryName()));
 		registry.register(new ItemBlock(WAREHOUSE_CRAFTING).setRegistryName(WAREHOUSE_CRAFTING.getRegistryName()));
 		registry.register(new ItemBlockOwnedRotatable(WAREHOUSE_STOCK_VIEWER));
+		registry.register(new ItemBlockWarehouseStockLinker(WAREHOUSE_STOCK_LINKER));
 		registry.register(new ItemBlockRotatableMetaTile(AUTO_CRAFTING));
 		registry.register(new ItemBlockOwnedRotatable(MAILBOX));
 
@@ -180,7 +185,9 @@ public class AWAutomationBlocks {
 		registerTile(TileWarehouseCraftingStation.class, "warehouse_crafting_tile");
 
 		registry.register(new BlockWarehouseStockViewer("warehouse_stock_viewer"));
+		registry.register(new BlockWarehouseStockLinker("warehouse_stock_linker"));
 		registerTile(TileWarehouseStockViewer.class, "warehouse_stock_viewer_tile");
+		registerTile(TileWarehouseStockLinker.class, "warehouse_stock_linker_tile");
 
 		registry.register(new BlockAutoCrafting("auto_crafting"));
 		registerTile(TileAutoCrafting.class, "auto_crafting_tile");
