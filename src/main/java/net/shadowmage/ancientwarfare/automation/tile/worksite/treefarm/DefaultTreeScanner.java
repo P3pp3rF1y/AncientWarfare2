@@ -46,7 +46,7 @@ public class DefaultTreeScanner implements ITreeScanner {
 	}
 
 	@Override
-	public ITree scanTree(World world, BlockPos pos) {
+	public ITree scanTree(World world, BlockPos pos, int maxDistanceToInitial) {
 		HorizontalAABB trunkBounds = new HorizontalAABB(pos);
 
 		if (!isTrunk(world.getBlockState(pos))) {
@@ -63,17 +63,20 @@ public class DefaultTreeScanner implements ITreeScanner {
 			BlockPos current = openList.remove(0);
 			Set<BlockPos> toScan = nextPositionGetter.getPositionsToScan(current).filter(p -> !alreadyScanned.contains(p))
 					.collect(Collectors.toCollection(LinkedHashSet::new));
-			openList.addAll(addTreeBlocks(toScan, world, tree, trunkBounds));
+			openList.addAll(addTreeBlocks(toScan, world, tree, trunkBounds, pos, maxDistanceToInitial));
 			alreadyScanned.addAll(toScan);
 		}
 
 		return tree;
 	}
 
-	private Collection<? extends BlockPos> addTreeBlocks(Set<BlockPos> toScan, World world, Tree tree, HorizontalAABB trunkBounds) {
+	private Collection<? extends BlockPos> addTreeBlocks(Set<BlockPos> toScan, World world, Tree tree, HorizontalAABB trunkBounds, BlockPos initialPos, int maxDistanceToInitial) {
 		Set<BlockPos> treeBlocks = new HashSet<>();
 
 		for (BlockPos pos : toScan) {
+			if (horizontalDistance(pos, initialPos) > maxDistanceToInitial) {
+				continue;
+			}
 			IBlockState state = world.getBlockState(pos);
 			if (isTrunk(state)) {
 				tree.addTrunkPosition(pos);
@@ -88,6 +91,12 @@ public class DefaultTreeScanner implements ITreeScanner {
 		}
 
 		return treeBlocks;
+	}
+
+	private int horizontalDistance(BlockPos pos, BlockPos initialPos) {
+		int xDifference = Math.abs(pos.getX() - initialPos.getX());
+		int zDifference = Math.abs(pos.getZ() - initialPos.getZ());
+		return (int) Math.sqrt(xDifference * xDifference + zDifference * zDifference);
 	}
 
 	private boolean isLeaf(IBlockState state) {

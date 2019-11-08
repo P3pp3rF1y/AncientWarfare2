@@ -39,7 +39,7 @@ public class StructureTemplate {
 	 * stored template data
 	 */
 	public final Set<String> modDependencies;
-	private Map<Integer, TemplateRule> blockRules;
+	private Map<Integer, TemplateRuleBlock> blockRules;
 	private Map<Integer, TemplateRuleEntityBase> entityRules;
 	private short[] templateData;
 	private List<BuildResource> resourceList;
@@ -65,7 +65,7 @@ public class StructureTemplate {
 		return entityRules;
 	}
 
-	public Map<Integer, TemplateRule> getBlockRules() {
+	public Map<Integer, TemplateRuleBlock> getBlockRules() {
 		return blockRules;
 	}
 
@@ -77,7 +77,7 @@ public class StructureTemplate {
 		return validator;
 	}
 
-	public void setBlockRules(Map<Integer, TemplateRule> rules) {
+	public void setBlockRules(Map<Integer, TemplateRuleBlock> rules) {
 		this.blockRules = rules;
 	}
 
@@ -93,12 +93,7 @@ public class StructureTemplate {
 		this.validator = settings;
 	}
 
-	public Optional<TemplateRuleBlock> getBlockRuleAt(Vec3i pos) {
-		Optional<TemplateRule> rule = getRuleAt(pos);
-		return !rule.isPresent() || !(rule.get() instanceof TemplateRuleBlock) ? Optional.empty() : Optional.of((TemplateRuleBlock) rule.get());
-	}
-
-	public Optional<TemplateRule> getRuleAt(Vec3i pos) {
+	public Optional<TemplateRuleBlock> getRuleAt(Vec3i pos) {
 		int index = getIndex(pos, size);
 		int ruleIndex = index >= 0 && index < templateData.length ? templateData[index] : -1;
 		return Optional.ofNullable(blockRules.get(ruleIndex));

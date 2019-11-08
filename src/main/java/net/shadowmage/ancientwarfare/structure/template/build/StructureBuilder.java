@@ -25,6 +25,7 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
+import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntityBase;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 
@@ -91,7 +92,7 @@ public class StructureBuilder implements IStructureBuilder {
 
 	public void instantConstruction() {
 		while (!this.isFinished()) {
-			Optional<TemplateRule> rule = template.getRuleAt(curTempPos);
+			Optional<TemplateRuleBlock> rule = template.getRuleAt(curTempPos);
 			if (rule.isPresent()) {
 				placeCurrentPosition(rule.get());
 			} else if (currentPriority == 0) {

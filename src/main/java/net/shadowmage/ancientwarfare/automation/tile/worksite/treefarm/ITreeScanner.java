@@ -5,7 +5,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public interface ITreeScanner {
-	ITree scanTree(World world, BlockPos pos);
+	ITree scanTree(World world, BlockPos pos, int maxDistanceToInitial);
 
 	boolean matches(IBlockState state);
 }

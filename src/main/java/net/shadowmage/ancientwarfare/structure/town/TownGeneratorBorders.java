@@ -16,6 +16,8 @@ import net.shadowmage.ancientwarfare.structure.worldgen.WorldStructureGenerator;
 import java.util.Optional;
 
 public class TownGeneratorBorders {
+	private static final int CLEAR_TREE_MAX_BORDER_DISTANCE = 10;
+
 	private TownGeneratorBorders() {}
 
 	public static void generateBorders(World world, StructureBB exterior, StructureBB walls, StructureBB max) {
@@ -110,7 +112,7 @@ public class TownGeneratorBorders {
 				world.setBlockToAir(clearPos);
 				return;
 			}
-			ITree tree = treeScanner.get().scanTree(world, clearPos);
+			ITree tree = treeScanner.get().scanTree(world, clearPos, CLEAR_TREE_MAX_BORDER_DISTANCE);
 			tree.getLeafPositions().forEach(world::setBlockToAir);
 			tree.getTrunkPositions().forEach(world::setBlockToAir);
 		}

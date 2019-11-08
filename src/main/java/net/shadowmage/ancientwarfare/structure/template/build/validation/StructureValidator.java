@@ -11,7 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
-import net.shadowmage.ancientwarfare.automation.registry.TreeFarmRegistry;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.DefaultTreeScanner;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.ITree;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.ITreeScanner;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
@@ -28,7 +28,6 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
@@ -38,6 +37,7 @@ import java.util.regex.Pattern;
 import static net.shadowmage.ancientwarfare.structure.template.build.validation.properties.StructureValidationProperties.*;
 
 public abstract class StructureValidator {
+	private static final int CLEAR_TREE_MAX_BORDER_DISTANCE = 10;
 	public final StructureValidationType validationType;
 
 	private boolean riverBiomeChecked = false;
@@ -132,14 +132,12 @@ public abstract class StructureValidator {
 
 		IBlockState state = world.getBlockState(pos);
 		if (state.getMaterial() != Material.AIR) {
-			if (state.getMaterial() == Material.WOOD) {
-				Optional<ITreeScanner> treeScanner = TreeFarmRegistry.getRegisteredTreeScanner(state);
-				if (treeScanner.isPresent()) {
-					ITree tree = treeScanner.get().scanTree(world, pos);
-					tree.getLeafPositions().forEach(world::setBlockToAir);
-					tree.getTrunkPositions().forEach(world::setBlockToAir);
-					return;
-				}
+			if (state.getMaterial() == Material.WOOD || state.getMaterial() == Material.LEAVES) {
+				ITreeScanner treeScanner = new DefaultTreeScanner(st -> st.getMaterial() == Material.WOOD, sl -> sl.getMaterial() == Material.LEAVES, DefaultTreeScanner.ALL_AROUND, 6);
+				ITree tree = treeScanner.scanTree(world, pos, CLEAR_TREE_MAX_BORDER_DISTANCE);
+				tree.getLeafPositions().forEach(world::setBlockToAir);
+				tree.getTrunkPositions().forEach(world::setBlockToAir);
+				return;
 			}
 			world.setBlockToAir(pos);
 		}

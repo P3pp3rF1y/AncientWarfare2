@@ -47,13 +47,14 @@ public class StructureValidatorGround extends StructureValidator {
 		if (!isPreserveBlocks()) {
 			clearBB(world, template, bb);
 			prePlacementUnderfill(world, bb);
+			smoothoutBorder(world, bb, face, template);
 		}
 	}
 
-	private void smoothoutBorder(World world, StructureBB bb, StructureTemplate template) {
+	private void smoothoutBorder(World world, StructureBB bb, EnumFacing face, StructureTemplate template) {
 		int borderSize = getBorderSize();
 		if (borderSize > 0) {
-			new SmoothingMatrixBuilder(world, bb, borderSize, bb.min.getY() + template.getOffset().getY() - 1).build()
+			new SmoothingMatrixBuilder(world, bb, borderSize, face, template).build()
 					.apply(world, pos -> handleClearAction(world, pos, template, bb));
 		}
 	}
@@ -64,9 +65,6 @@ public class StructureValidatorGround extends StructureValidator {
 
 	@Override
 	public void postGeneration(World world, BlockPos origin, StructureBB bb, StructureTemplate template) {
-		if (!isPreserveBlocks()) {
-			smoothoutBorder(world, bb, template);
-		}
 		if (world.canSnowAt(origin.up(), false)) {
 			WorldStructureGenerator.sprinkleSnow(world, bb, getBorderSize());
 		}

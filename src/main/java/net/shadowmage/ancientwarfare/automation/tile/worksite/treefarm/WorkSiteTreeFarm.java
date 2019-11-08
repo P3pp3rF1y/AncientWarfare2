@@ -35,7 +35,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+@SuppressWarnings("squid:MaximumInheritanceDepth")
 public class WorkSiteTreeFarm extends TileWorksiteFarm {
+	private static final int MAX_DISTANCE_TO_INITIAL_CUT_POSITION = 15;
+	private static final String TARGET_LIST_TAG = "targetList";
+	private static final String TARGET_LEAF_LIST_TAG = "targetLeafList";
 	private boolean hasShears;
 	private final Set<BlockPos> blocksToShear = new LinkedHashSet<>();
 	private final Set<BlockPos> leafBlocksToChop = new LinkedHashSet<>();
@@ -181,7 +185,7 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
 	private void addTreeBlocks(IBlockState state, BlockPos basePos) {
 		world.profiler.startSection("TreeFinder");
 
-		ITree tree = TreeFarmRegistry.getTreeScanner(state).scanTree(world, basePos);
+		ITree tree = TreeFarmRegistry.getTreeScanner(state).scanTree(world, basePos, MAX_DISTANCE_TO_INITIAL_CUT_POSITION);
 		List<BlockPos> leafBlocks = tree.getLeafPositions();
 		if (hasShears) {
 			blocksToShear.addAll(leafBlocks);
@@ -218,14 +222,14 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
 			for (BlockPos position : trunkBlocksToChop) {
 				chopList.appendTag(new NBTTagLong(position.toLong()));
 			}
-			tag.setTag("targetList", chopList);
+			tag.setTag(TARGET_LIST_TAG, chopList);
 		}
 		if (!leafBlocksToChop.isEmpty()) {
 			NBTTagList chopList = new NBTTagList();
 			for (BlockPos position : leafBlocksToChop) {
 				chopList.appendTag(new NBTTagLong(position.toLong()));
 			}
-			tag.setTag("targetLeafList", chopList);
+			tag.setTag(TARGET_LEAF_LIST_TAG, chopList);
 		}
 		return tag;
 	}
@@ -234,14 +238,14 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 		trunkBlocksToChop.clear();
-		if (tag.hasKey("targetList")) {
-			NBTTagList chopList = tag.getTagList("targetList", Constants.NBT.TAG_LONG);
+		if (tag.hasKey(TARGET_LIST_TAG)) {
+			NBTTagList chopList = tag.getTagList(TARGET_LIST_TAG, Constants.NBT.TAG_LONG);
 			for (int i = 0; i < chopList.tagCount(); i++) {
 				trunkBlocksToChop.add(BlockPos.fromLong(((NBTTagLong) chopList.get(i)).getLong()));
 			}
 		}
-		if (tag.hasKey("targetLeafList")) {
-			NBTTagList chopList = tag.getTagList("targetLeafList", Constants.NBT.TAG_LONG);
+		if (tag.hasKey(TARGET_LEAF_LIST_TAG)) {
+			NBTTagList chopList = tag.getTagList(TARGET_LEAF_LIST_TAG, Constants.NBT.TAG_LONG);
 			for (int i = 0; i < chopList.tagCount(); i++) {
 				leafBlocksToChop.add(BlockPos.fromLong(((NBTTagLong) chopList.get(i)).getLong()));
 			}

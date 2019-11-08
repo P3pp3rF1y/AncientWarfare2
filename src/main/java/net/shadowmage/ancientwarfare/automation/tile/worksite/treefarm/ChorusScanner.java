@@ -15,7 +15,7 @@ import java.util.Set;
 
 public class ChorusScanner implements ITreeScanner {
 	@Override
-	public ITree scanTree(World world, BlockPos pos) {
+	public ITree scanTree(World world, BlockPos pos, int maxDistanceToInitial) {
 		Branch branch = new Branch();
 		Set<BlockPos> scannedPositions = new HashSet<>();
 		scanBranchHarvestableBlocks(scannedPositions, branch, world, pos, EnumFacing.DOWN);
