@@ -143,7 +143,9 @@ public class GuiStructureValidationSettings extends GuiContainerBase {
 
 		@Override
 		public void onToggled() {
-			parent.getContainer().getValidator().setPropertyValue(prop, checked());
+			StructureValidator validator = parent.getContainer().getValidator();
+			validator.setPropertyValue(prop, checked());
+			parent.getContainer().setValidator(validator);
 		}
 	}
 
@@ -159,8 +161,9 @@ public class GuiStructureValidationSettings extends GuiContainerBase {
 
 		@Override
 		public void onValueUpdated(float value) {
-			parent.getContainer().getValidator().setPropertyValue(prop, (int) value);
+			StructureValidator validator = parent.getContainer().getValidator();
+			validator.setPropertyValue(prop, (int) value);
+			parent.getContainer().setValidator(validator);
 		}
 	}
-
 }
