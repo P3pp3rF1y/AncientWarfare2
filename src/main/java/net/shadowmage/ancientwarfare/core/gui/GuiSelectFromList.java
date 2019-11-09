@@ -4,7 +4,6 @@ import net.minecraft.client.Minecraft;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
-import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
 
 import javax.annotation.Nullable;
@@ -28,11 +27,13 @@ public class GuiSelectFromList<T> extends GuiContainerBase {
 		this(parent, entry, getDisplayName, getList, setEntry, true);
 	}
 
-	public GuiSelectFromList(GuiContainerBase parent, @Nullable T entry, Function<T, String> getDisplayName, Supplier<List<T>> getList, Consumer<T> setEntry, boolean showFilter) {
+	public GuiSelectFromList(GuiContainerBase parent,
+			@Nullable T entry, Function<T, String> getDisplayName, Supplier<List<T>> getList, Consumer<T> setEntry, boolean showFilter) {
 		this(parent, entry, getDisplayName, getList, setEntry, showFilter, parent.getContainer());
 	}
 
-	public GuiSelectFromList(GuiContainerBase parent, @Nullable T entry, Function<T, String> getDisplayName, Supplier<List<T>> getList, Consumer<T> setEntry, boolean showFilter, ContainerBase container) {
+	public GuiSelectFromList(GuiContainerBase parent, @Nullable
+			T entry, Function<T, String> getDisplayName, Supplier<List<T>> getList, Consumer<T> setEntry, boolean showFilter, ContainerBase container) {
 		super(container);
 		this.parent = parent;
 		this.entry = entry;
@@ -55,19 +56,12 @@ public class GuiSelectFromList<T> extends GuiContainerBase {
 						refreshGui();
 					}
 				}
-			};
-			Listener l = new Listener(Listener.MOUSE_UP) {
-				@Override
-				public boolean onEvent(GuiElement widget, GuiContainerBase.ActivationEvent evt) {
-					if (evt.mButton == 1 && widget.isMouseOverElement(evt.mx, evt.my)) {
-						((Text) widget).setText("");
-						refreshGui();
-					}
 
-					return false;
+				@Override
+				public void onTextUpdated(String oldText, String newText) {
+					refreshGui();
 				}
 			};
-			selectionLabel.addNewListener(l);
 			addGuiElement(selectionLabel);
 		}
 

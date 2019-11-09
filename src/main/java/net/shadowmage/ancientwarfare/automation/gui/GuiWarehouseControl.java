@@ -72,23 +72,11 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
 			}
 
 		};
-		Listener l = new Listener(Listener.MOUSE_UP) {
-			@Override
-			public boolean onEvent(GuiElement widget, ActivationEvent evt) {
-				if (evt.mButton == 1 && widget.isMouseOverElement(evt.mx, evt.my)) {
-					((Text) widget).setText("");
-					refreshGui();
-				}
-
-				return false;
-			}
-		};
-		input.addNewListener(l);
 		addGuiElement(input);
 
 		area = new CompositeItemSlots(this, 0, 8 + 12 + 4 + 12 + 2, 178, 96, this);
 
-		l = new Listener(Listener.MOUSE_DOWN) {
+		Listener l = new Listener(Listener.MOUSE_DOWN) {
 			@Override
 			public boolean onEvent(GuiElement widget, ActivationEvent evt) {
 				if (evt.mButton == 0 && widget.isMouseOverElement(evt.mx, evt.my) && !area.isMouseOverSubElement(evt.mx, evt.my)) {

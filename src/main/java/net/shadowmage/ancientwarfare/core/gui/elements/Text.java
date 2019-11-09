@@ -51,6 +51,12 @@ public class Text extends GuiElement {
 			@Override
 			public boolean onEvent(GuiElement widget, ActivationEvent evt) {
 				if (enabled && visible && isMouseOverElement(evt.mx, evt.my)) {
+					if (selected && evt.mButton == 1) {
+						String oldText = text;
+						setText("");
+						onTextUpdated(oldText, text);
+						return false;
+					}
 					setSelected(true);
 					selector.onWidgetSelected(Text.this);
 					cursorIndex = text.length();

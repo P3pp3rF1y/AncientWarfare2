@@ -4,10 +4,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
-import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
-import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
 import net.shadowmage.ancientwarfare.core.util.SongPlayData;
 
@@ -46,19 +44,12 @@ public class GuiSoundSelect extends GuiContainerBase {
 					refreshGui();
 				}
 			}
-		};
-		Listener l = new Listener(Listener.MOUSE_UP) {
-			@Override
-			public boolean onEvent(GuiElement widget, ActivationEvent evt) {
-				if (evt.mButton == 1 && widget.isMouseOverElement(evt.mx, evt.my)) {
-					((Text) widget).setText("");
-					refreshGui();
-				}
 
-				return false;
+			@Override
+			public void onTextUpdated(String oldText, String newText) {
+				refreshGui();
 			}
 		};
-		selectionLabel.addNewListener(l);
 		addGuiElement(selectionLabel);
 		area = new CompositeScrolled(this, 0, 40, 256, 200);
 		addGuiElement(area);
