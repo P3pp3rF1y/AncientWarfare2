@@ -330,7 +330,7 @@ public class Text extends GuiElement {
 
 		if (selected) {
 			int w = 0;
-			for (int i = 0; i < cursorIndex; i++) {
+			for (int i = 0; i < cursorIndex && i < text.length(); i++) {
 				w += Minecraft.getMinecraft().fontRenderer.getCharWidth(text.charAt(i));
 			}
 			Minecraft.getMinecraft().fontRenderer.drawString("_", renderX + 2 + w, renderY + 3, 0xffff0000);

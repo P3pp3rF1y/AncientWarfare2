@@ -119,7 +119,7 @@ public class NumberInput extends Text {
 		if (ch == '.') {
 			allowed = allowDecimal;
 		} else if (ch == '-') {
-			allowed = allowNeg;
+			allowed = allowNeg && value > 0 && cursorIndex == 0;
 		}
 		if (allowed)//is allowed character
 		{
