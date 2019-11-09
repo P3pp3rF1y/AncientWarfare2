@@ -10,6 +10,8 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 import java.util.MissingResourceException;
 
 public class RegistryTools {
+	public static final ResourceLocation EMPTY_REGISTRY_NAME = new ResourceLocation("", "");
+
 	private RegistryTools() {}
 
 	static Block getBlock(String registryName) {

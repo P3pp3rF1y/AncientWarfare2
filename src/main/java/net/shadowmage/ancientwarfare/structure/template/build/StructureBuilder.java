@@ -12,6 +12,7 @@ import net.minecraft.block.BlockStairs;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
@@ -22,7 +23,9 @@ import net.minecraft.world.biome.BiomeTaiga;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.BiomeEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
@@ -35,6 +38,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
+
+import static net.shadowmage.ancientwarfare.structure.template.build.validation.properties.StructureValidationProperties.BIOME_REPLACEMENT;
 
 public class StructureBuilder implements IStructureBuilder {
 
@@ -102,8 +107,23 @@ public class StructureBuilder implements IStructureBuilder {
 		}
 		setStateAgainForSpecialBlocks();
 		updateNeighbors();
+		changeBiome();
 
 		this.placeEntities();
+	}
+
+	private void changeBiome() {
+		ResourceLocation biomeRegistryName = template.getValidationSettings().getPropertyValue(BIOME_REPLACEMENT);
+		if (!ForgeRegistries.BIOMES.containsKey(biomeRegistryName)) {
+			return;
+		}
+
+		Biome replacementBiome = ForgeRegistries.BIOMES.getValue(biomeRegistryName);
+
+		BlockPos minPos = bb.min;
+		BlockPos maxPos = new BlockPos(bb.max.getX(), bb.min.getY(), bb.max.getZ());
+		//noinspection ConstantConditions
+		BlockPos.getAllInBox(minPos, maxPos).forEach(pos -> WorldTools.changeBiome(world, pos, replacementBiome));
 	}
 
 	private void updateNeighbors() {

@@ -9,6 +9,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.WorldSavedData;
@@ -22,7 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
+import java.util.function.Predicate;
 
 public class WorldTools {
 	private WorldTools() {}
@@ -36,7 +37,7 @@ public class WorldTools {
 			List<TileEntity> tileEntities = Lists.newArrayList();
 			for (int x = (x1 >> 4); x <= (x2 >> 4); x++) {
 				for (int z = (z1 >> 4); z <= (z2 >> 4); z++) {
-					addValidTilesInChunkArea(world, x1, y1, z1, x2, y2, z2, tileEntities, x, z);
+					addValidTilesInChunkArea(world, new BlockPos(x1, y1, z1), new BlockPos(x2, y2, z2), tileEntities, x, z);
 				}
 			}
 			return tileEntities;
@@ -44,17 +45,18 @@ public class WorldTools {
 		return Collections.emptyList();
 	}
 
-	private static void addValidTilesInChunkArea(World world, int x1, int y1, int z1, int x2, int y2, int z2, List<TileEntity> tileEntities, int x, int z) {
+	private static void addValidTilesInChunkArea(World world, BlockPos min, BlockPos max, List<TileEntity> tileEntities, int x, int z) {
 		Chunk chunk = world.getChunkFromChunkCoords(x, z);
 		for (TileEntity tile : chunk.getTileEntityMap().values()) {
-			if (!tile.isInvalid() && isTileInArea(x1, y1, z1, x2, y2, z2, tile)) {
+			if (!tile.isInvalid() && isTileInArea(min, max, tile)) {
 				tileEntities.add(tile);
 			}
 		}
 	}
 
-	private static boolean isTileInArea(int x1, int y1, int z1, int x2, int y2, int z2, TileEntity tile) {
-		return tile.getPos().getX() >= x1 && tile.getPos().getY() >= y1 && tile.getPos().getZ() >= z1 && tile.getPos().getX() <= x2 && tile.getPos().getY() <= y2 && tile.getPos().getZ() <= z2;
+	private static boolean isTileInArea(BlockPos min, BlockPos max, TileEntity tile) {
+		BlockPos tilePos = tile.getPos();
+		return tilePos.getX() >= min.getX() && tilePos.getY() >= min.getY() && tilePos.getZ() >= min.getZ() && tilePos.getX() <= max.getX() && tilePos.getY() <= max.getY() && tilePos.getZ() <= max.getZ();
 	}
 
 	public static Optional<IItemHandler> getItemHandlerFromTile(IBlockAccess world, BlockPos pos, @Nullable EnumFacing side) {
@@ -87,14 +89,14 @@ public class WorldTools {
 		return getTile(world, pos, IInteractableTile.class).map(t -> t.onBlockClicked(player, hand)).orElse(false);
 	}
 
-	private static final Map<Integer, Function<World, Boolean>> DIMENSION_DAY_TIMES = new HashMap<>();
+	private static final Map<Integer, Predicate<World>> DIMENSION_DAY_TIMES = new HashMap<>();
 
-	public static void registerDimensionDaytimeLogic(int dimension, Function<World, Boolean> isDayTime) {
+	public static void registerDimensionDaytimeLogic(int dimension, Predicate<World> isDayTime) {
 		DIMENSION_DAY_TIMES.put(dimension, isDayTime);
 	}
 
 	public static boolean isDaytimeInDimension(World world) {
-		return DIMENSION_DAY_TIMES.getOrDefault(world.provider.getDimension(), World::isDaytime).apply(world);
+		return DIMENSION_DAY_TIMES.getOrDefault(world.provider.getDimension(), World::isDaytime).test(world);
 	}
 
 	public static boolean hasItemHandler(World world, BlockPos pos) {
@@ -120,5 +122,11 @@ public class WorldTools {
 		}
 
 		return Optional.of(data);
+	}
+
+	public static void changeBiome(World world, BlockPos pos, Biome biome) {
+		Chunk c = world.getChunkFromBlockCoords(pos);
+		c.getBiomeArray()[(pos.getZ() & 15) << 4 | pos.getX() & 15] = (byte) Biome.getIdForBiome(biome);
+		c.setModified(true);
 	}
 }

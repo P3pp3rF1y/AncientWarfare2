@@ -2,6 +2,8 @@ package net.shadowmage.ancientwarfare.structure.template.build.validation.proper
 
 import java.util.HashSet;
 
+import static net.shadowmage.ancientwarfare.core.util.RegistryTools.EMPTY_REGISTRY_NAME;
+
 public class StructureValidationProperties {
 	private StructureValidationProperties() {}
 
@@ -40,4 +42,6 @@ public class StructureValidationProperties {
 	public static final StructureValidationPropertyIntArray DIMENSION_LIST = new StructureValidationPropertyIntArray("dimensionList", new int[0]);
 
 	public static final StructureValidationPropertyBool BLOCK_SWAP = new StructureValidationPropertyBool("blockSwap", false);
+
+	public static final StructureValidationPropertyResourceLocation BIOME_REPLACEMENT = new StructureValidationPropertyResourceLocation("biomeReplacement", EMPTY_REGISTRY_NAME);
 }

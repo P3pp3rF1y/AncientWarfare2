@@ -3,8 +3,11 @@ package net.shadowmage.ancientwarfare.structure.gui;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
+import net.shadowmage.ancientwarfare.core.gui.GuiSelectFromList;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.Checkbox;
@@ -13,12 +16,17 @@ import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
 import net.shadowmage.ancientwarfare.core.interfaces.IWidgetSelection;
+import net.shadowmage.ancientwarfare.core.util.RegistryTools;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidationType;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.properties.IStructureValidationProperty;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.properties.StructureValidationPropertyBool;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.properties.StructureValidationPropertyInteger;
+import net.shadowmage.ancientwarfare.structure.template.build.validation.properties.StructureValidationPropertyResourceLocation;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
 
 import static net.shadowmage.ancientwarfare.structure.template.build.validation.properties.StructureValidationProperties.*;
@@ -112,6 +120,8 @@ public class GuiStructureValidationSettings extends GuiContainerBase {
 			} else if (StructureValidationPropertyBool.class.isAssignableFrom(property.getClass())) {
 				box = new PropertyCheckbox(200, totalHeight - 3, 16, 16, (StructureValidationPropertyBool) property);
 				area.addGuiElement(box);
+			} else if (StructureValidationPropertyResourceLocation.class.isAssignableFrom(property.getClass())) {
+				area.addGuiElement(new PropertyBiomeInput(100, totalHeight - 1, 132, 14, (StructureValidationPropertyResourceLocation) property));
 			}
 
 			totalHeight += 16;
@@ -164,6 +174,32 @@ public class GuiStructureValidationSettings extends GuiContainerBase {
 			StructureValidator validator = parent.getContainer().getValidator();
 			validator.setPropertyValue(prop, (int) value);
 			parent.getContainer().setValidator(validator);
+		}
+	}
+
+	private class PropertyBiomeInput extends Button {
+		private final StructureValidationPropertyResourceLocation property;
+
+		private PropertyBiomeInput(int topLeftX, int topLeftY, int width, int height, StructureValidationPropertyResourceLocation property) {
+			super(topLeftX, topLeftY, width, height, parent.getContainer().getValidator().getPropertyValue(property).toString());
+			this.property = property;
+		}
+
+		@Override
+		protected void onPressed() {
+			Minecraft.getMinecraft().displayGuiScreen(new GuiSelectFromList<>(GuiStructureValidationSettings.this, PropertyBiomeInput.this.text, s -> s,
+					() -> ForgeRegistries.BIOMES.getEntries().stream().map(e -> e.getKey().toString()).sorted(Comparator.naturalOrder()).collect(() -> {
+						List<String> ret = new ArrayList<>();
+						ret.add(RegistryTools.EMPTY_REGISTRY_NAME.toString());
+						return ret;
+					}, List::add, List::addAll),
+					s -> {
+						setText(s);
+						StructureValidator validator = parent.getContainer().getValidator();
+						validator.setPropertyValue(property, new ResourceLocation(s));
+						parent.getContainer().setValidator(validator);
+					}));
+			refreshGui();
 		}
 	}
 }
