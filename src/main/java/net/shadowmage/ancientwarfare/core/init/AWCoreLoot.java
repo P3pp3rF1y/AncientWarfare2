@@ -18,10 +18,14 @@ import java.util.List;
 @Mod.EventBusSubscriber(modid = AncientWarfareCore.MOD_ID)
 public class AWCoreLoot {
 	private static final List<String> CHEST_TABLES = ImmutableList.of("abandoned_mineshaft", "desert_pyramid", "igloo_chest", "jungle_temple", "simple_dungeon", "stronghold_corridor", "village_blacksmith");
+	private static final List<String> FACTION_CHEST_TABLES = ImmutableList.of("empire", "norska", "sarkonid", "xoltec", "witchbane", "nogg", "buffloka", "zimba", "kong", "orc", "brigand", "pirate", "evil", "good", "wizardly", "elf", "dwarf", "hobbit", "undead", "demon", "barbarian", "smingol", "rakshasa", "vyncan", "sealsker", "guild", "klown", "coven", "minossian", "icelord", "lizardman", "amazon", "ishtari", "monster", "beast", "ent", "gnome", "gremlin", "giant", "vampire");
 
 	public static void init() {
 		for (String s : CHEST_TABLES) {
 			LootTableList.register(new ResourceLocation(AncientWarfareCore.MOD_ID, "inject/chests/" + s));
+		}
+		for (String s : FACTION_CHEST_TABLES) {
+			LootTableList.register(new ResourceLocation(AncientWarfareCore.MOD_ID, "factions/chests/" + s));
 		}
 	}
 

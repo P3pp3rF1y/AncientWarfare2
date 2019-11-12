@@ -1,0 +1,28 @@
+{
+    "pools": [
+        {
+            "name": "main",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "ancientwarfarenpc:coin",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "minecraft:set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 8
+                            }
+                        },
+                        {
+                            "function": "minecraft:set_nbt",
+                            "tag": "{metal:\"copper\"}"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
