@@ -185,7 +185,9 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
 	private void addTreeBlocks(IBlockState state, BlockPos basePos) {
 		world.profiler.startSection("TreeFinder");
 
-		ITree tree = TreeFarmRegistry.getTreeScanner(state).scanTree(world, basePos, MAX_DISTANCE_TO_INITIAL_CUT_POSITION);
+		ITree tree = TreeFarmRegistry.getTreeScanner(state).scanTree(world, basePos,
+				basePos.add(-MAX_DISTANCE_TO_INITIAL_CUT_POSITION, 0, -MAX_DISTANCE_TO_INITIAL_CUT_POSITION),
+				basePos.add(MAX_DISTANCE_TO_INITIAL_CUT_POSITION, 0, MAX_DISTANCE_TO_INITIAL_CUT_POSITION));
 		List<BlockPos> leafBlocks = tree.getLeafPositions();
 		if (hasShears) {
 			blocksToShear.addAll(leafBlocks);

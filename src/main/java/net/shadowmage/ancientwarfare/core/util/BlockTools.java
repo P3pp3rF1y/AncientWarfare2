@@ -36,7 +36,6 @@ import net.shadowmage.ancientwarfare.core.util.parsing.PropertyState;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 
 import javax.annotation.Nullable;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.MissingResourceException;
@@ -167,9 +166,13 @@ public class BlockTools {
 	 * @return true if it does
 	 */
 	public static boolean isPositionWithinBounds(BlockPos test, BlockPos pos1, BlockPos pos2) {
-		return test.getX() >= pos1.getX() && test.getX() <= pos2.getX()
-				&& test.getY() >= pos1.getY() && test.getY() <= pos2.getY()
-				&& test.getZ() >= pos1.getZ() && test.getZ() <= pos2.getZ();
+		return isPositionWithinHorizontalBounds(test, pos1, pos2)
+				&& test.getY() >= pos1.getY() && test.getY() <= pos2.getY();
+	}
+
+	public static boolean isPositionWithinHorizontalBounds(BlockPos test, BlockPos minPos, BlockPos maxPos) {
+		return test.getX() >= minPos.getX() && test.getX() <= maxPos.getX()
+				&& test.getZ() >= minPos.getZ() && test.getZ() <= maxPos.getZ();
 	}
 
 	/*
@@ -554,39 +557,35 @@ public class BlockTools {
 	}
 
 	public static Iterable<BlockPos> getAllInBoxTopDown(final int x1, final int y1, final int z1, final int x2, final int y2, final int z2) {
-		return new Iterable<BlockPos>() {
-			public Iterator<BlockPos> iterator() {
-				return new AbstractIterator<BlockPos>() {
-					private boolean first = true;
-					private int lastPosX;
-					private int lastPosY;
-					private int lastPosZ;
+		return () -> new AbstractIterator<BlockPos>() {
+			private boolean first = true;
+			private int lastPosX;
+			private int lastPosY;
+			private int lastPosZ;
 
-					protected BlockPos computeNext() {
-						if (this.first) {
-							this.first = false;
-							this.lastPosX = x1;
-							this.lastPosY = y2;
-							this.lastPosZ = z1;
-							return new BlockPos(x1, y2, z1);
-						} else if (this.lastPosX == x2 && this.lastPosY == y1 && this.lastPosZ == z2) {
-							return this.endOfData();
-						} else {
-							if (this.lastPosX < x2) {
-								++this.lastPosX;
-							} else if (this.lastPosZ < z2) {
-								this.lastPosX = x1;
-								++this.lastPosZ;
-							} else if (this.lastPosY > y1) {
-								this.lastPosX = x1;
-								this.lastPosZ = z1;
-								--this.lastPosY;
-							}
-
-							return new BlockPos(this.lastPosX, this.lastPosY, this.lastPosZ);
-						}
+			protected BlockPos computeNext() {
+				if (this.first) {
+					this.first = false;
+					this.lastPosX = x1;
+					this.lastPosY = y2;
+					this.lastPosZ = z1;
+					return new BlockPos(x1, y2, z1);
+				} else if (this.lastPosX == x2 && this.lastPosY == y1 && this.lastPosZ == z2) {
+					return this.endOfData();
+				} else {
+					if (this.lastPosX < x2) {
+						++this.lastPosX;
+					} else if (this.lastPosZ < z2) {
+						this.lastPosX = x1;
+						++this.lastPosZ;
+					} else if (this.lastPosY > y1) {
+						this.lastPosX = x1;
+						this.lastPosZ = z1;
+						--this.lastPosY;
 					}
-				};
+
+					return new BlockPos(this.lastPosX, this.lastPosY, this.lastPosZ);
+				}
 			}
 		};
 	}

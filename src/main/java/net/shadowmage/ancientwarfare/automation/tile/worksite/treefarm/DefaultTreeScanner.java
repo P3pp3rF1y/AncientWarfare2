@@ -5,6 +5,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,7 +47,7 @@ public class DefaultTreeScanner implements ITreeScanner {
 	}
 
 	@Override
-	public ITree scanTree(World world, BlockPos pos, int maxDistanceToInitial) {
+	public ITree scanTree(World world, BlockPos pos, BlockPos minPos, BlockPos maxPos) {
 		HorizontalAABB trunkBounds = new HorizontalAABB(pos);
 
 		if (!isTrunk(world.getBlockState(pos))) {
@@ -63,18 +64,18 @@ public class DefaultTreeScanner implements ITreeScanner {
 			BlockPos current = openList.remove(0);
 			Set<BlockPos> toScan = nextPositionGetter.getPositionsToScan(current).filter(p -> !alreadyScanned.contains(p))
 					.collect(Collectors.toCollection(LinkedHashSet::new));
-			openList.addAll(addTreeBlocks(toScan, world, tree, trunkBounds, pos, maxDistanceToInitial));
+			openList.addAll(addTreeBlocks(toScan, world, tree, trunkBounds, minPos, maxPos));
 			alreadyScanned.addAll(toScan);
 		}
 
 		return tree;
 	}
 
-	private Collection<? extends BlockPos> addTreeBlocks(Set<BlockPos> toScan, World world, Tree tree, HorizontalAABB trunkBounds, BlockPos initialPos, int maxDistanceToInitial) {
+	private Collection<? extends BlockPos> addTreeBlocks(Set<BlockPos> toScan, World world, Tree tree, HorizontalAABB trunkBounds, BlockPos minPos, BlockPos maxPos) {
 		Set<BlockPos> treeBlocks = new HashSet<>();
 
 		for (BlockPos pos : toScan) {
-			if (horizontalDistance(pos, initialPos) > maxDistanceToInitial) {
+			if (!BlockTools.isPositionWithinHorizontalBounds(pos, minPos, maxPos)) {
 				continue;
 			}
 			IBlockState state = world.getBlockState(pos);
@@ -91,12 +92,6 @@ public class DefaultTreeScanner implements ITreeScanner {
 		}
 
 		return treeBlocks;
-	}
-
-	private int horizontalDistance(BlockPos pos, BlockPos initialPos) {
-		int xDifference = Math.abs(pos.getX() - initialPos.getX());
-		int zDifference = Math.abs(pos.getZ() - initialPos.getZ());
-		return (int) Math.sqrt(xDifference * xDifference + zDifference * zDifference);
 	}
 
 	private boolean isLeaf(IBlockState state) {

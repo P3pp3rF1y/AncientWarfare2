@@ -60,7 +60,7 @@ public class StructureValidatorGround extends StructureValidator {
 	}
 
 	private void clearBB(World world, StructureTemplate template, StructureBB bb) {
-		BlockTools.getAllInBoxTopDown(bb.min, bb.max.add(0, 10 + getMaxLeveling(), 0)).forEach(pos -> handleClearAction(world, pos, template, bb));
+		BlockTools.getAllInBoxTopDown(bb.min, bb.max.add(0, 50 + getMaxLeveling(), 0)).forEach(pos -> handleClearAction(world, pos, template, bb));
 	}
 
 	@Override

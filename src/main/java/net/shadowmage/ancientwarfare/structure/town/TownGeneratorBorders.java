@@ -112,7 +112,9 @@ public class TownGeneratorBorders {
 				world.setBlockToAir(clearPos);
 				return;
 			}
-			ITree tree = treeScanner.get().scanTree(world, clearPos, CLEAR_TREE_MAX_BORDER_DISTANCE);
+			ITree tree = treeScanner.get().scanTree(world, clearPos,
+					clearPos.add(-CLEAR_TREE_MAX_BORDER_DISTANCE, 0, -CLEAR_TREE_MAX_BORDER_DISTANCE),
+					clearPos.add(CLEAR_TREE_MAX_BORDER_DISTANCE, 0, CLEAR_TREE_MAX_BORDER_DISTANCE));
 			tree.getLeafPositions().forEach(world::setBlockToAir);
 			tree.getTrunkPositions().forEach(world::setBlockToAir);
 		}

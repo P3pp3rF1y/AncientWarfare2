@@ -132,9 +132,11 @@ public abstract class StructureValidator {
 
 		IBlockState state = world.getBlockState(pos);
 		if (state.getMaterial() != Material.AIR) {
-			if (state.getMaterial() == Material.WOOD || state.getMaterial() == Material.LEAVES) {
+			if (state.getMaterial() == Material.WOOD) {
 				ITreeScanner treeScanner = new DefaultTreeScanner(st -> st.getMaterial() == Material.WOOD, sl -> sl.getMaterial() == Material.LEAVES, DefaultTreeScanner.ALL_AROUND, 6);
-				ITree tree = treeScanner.scanTree(world, pos, CLEAR_TREE_MAX_BORDER_DISTANCE);
+				ITree tree = treeScanner.scanTree(world, pos,
+						bb.min.add(-CLEAR_TREE_MAX_BORDER_DISTANCE, 0, -CLEAR_TREE_MAX_BORDER_DISTANCE),
+						bb.max.add(CLEAR_TREE_MAX_BORDER_DISTANCE, 0, CLEAR_TREE_MAX_BORDER_DISTANCE));
 				tree.getLeafPositions().forEach(world::setBlockToAir);
 				tree.getTrunkPositions().forEach(world::setBlockToAir);
 				return;
