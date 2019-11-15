@@ -480,9 +480,6 @@ public abstract class StructureValidator {
 	}
 
 	void prePlacementUnderfill(World world, StructureBB bb) {
-		if (getMaxFill() <= 0) {
-			return;
-		}
 		int bx;
 		int bz;
 		for (bx = bb.min.getX(); bx <= bb.max.getX(); bx++) {
