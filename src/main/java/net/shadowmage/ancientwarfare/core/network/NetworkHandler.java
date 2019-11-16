@@ -97,6 +97,7 @@ public final class NetworkHandler implements IGuiHandler {
 	public static final int GUI_WORKSITE_FISH_FARM = 29;
 	public static final int GUI_WORKSITE_QUARRY_BOUNDS = 30;
 	public static final int GUI_STIRLING_GENERATOR = 31;
+	public static final int GUI_WAREHOUSE_STOCK_LINKER = 32;
 	public static final int GUI_NPC_WORK_ORDER = 34;
 	public static final int GUI_NPC_UPKEEP_ORDER = 35;
 	public static final int GUI_NPC_COMBAT_ORDER = 36;

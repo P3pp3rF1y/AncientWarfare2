@@ -41,6 +41,7 @@ import net.shadowmage.ancientwarfare.automation.render.TorqueJunctionRenderer;
 import net.shadowmage.ancientwarfare.automation.render.TorqueShaftAnimationRenderer;
 import net.shadowmage.ancientwarfare.automation.render.TorqueShaftRenderer;
 import net.shadowmage.ancientwarfare.automation.render.TorqueTransportAnimationRenderer;
+import net.shadowmage.ancientwarfare.automation.render.WarehouseStockLinkerRenderer;
 import net.shadowmage.ancientwarfare.automation.render.WarehouseStockViewerRenderer;
 import net.shadowmage.ancientwarfare.automation.render.WaterwheelGeneratorRenderer;
 import net.shadowmage.ancientwarfare.automation.render.WindmillBladeAnimationRenderer;
@@ -59,6 +60,7 @@ import net.shadowmage.ancientwarfare.automation.tile.torque.TileWindmillControll
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileFlywheelStorage;
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileWindmillBlade;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseBase;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStockLinker;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStockViewer;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteBase;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
@@ -100,6 +102,7 @@ public class ClientProxyAutomation extends ClientProxyBase {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileWorksiteBase.class, new WorksiteRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileWarehouseBase.class, new WorksiteRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileWarehouseStockViewer.class, new WarehouseStockViewerRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileWarehouseStockLinker.class, new WarehouseStockLinkerRenderer());
 
 		//********************************************CONDUIT / TRANSPORT RENDERS***************************************************************//
 

@@ -175,6 +175,7 @@ tile.warehouse_storage.2.name=Large Warehouse Storage
 tile.warehouse_interface.name=Warehouse Interface
 tile.warehouse_crafting.name=Warehouse Crafting Station
 tile.warehouse_stock_viewer.name=Warehouse Stock Viewer
+tile.warehouse_stock_linker.name=Warehouse Stock Linker
 tile.mailbox.name=Mailbox
 tile.flywheel_controller.0.name=Light Flywheel Controller
 tile.flywheel_controller.1.name=Medium Flywheel Controller
@@ -551,6 +552,7 @@ guistrings.automation.ignore_damage=Ign. Dmg
 guistrings.automation.ignore_nbt=Ign. NBT
 guistrings.automation.item=Item
 guistrings.automation.new_filter=Add New Filter
+guistrings.automation.warehouse_set=Warehouse Set
 guistrings.automation.filter_setup=Filters
 guistrings.automation.quantity=Quantityx
 guistrings.automation.filter_name=Filter Name
@@ -688,6 +690,13 @@ route.fill.minimum=Fill Minimum
 route.fill.minimum.tooltip=Try to FILL a MINIMUM of the amount(s) specified TO the target inventory. Same as 'Fill Upto', except it will only put items if the target will result in having AT LEAST this amount. This check if performed PER STACK.
 route.take.minimum=Take Minimum
 route.take.minimum.tooltip=Try to TAKE a MINIMUM of the amount(s) specified FROM the target inventory. Same as 'Take Upto', except it will only take items if the courier will result in having AT LEAST this amount. This check if performed PER STACK.
+
+#Equality Sign Names
+equality.equal==
+equality.greaterthan=>
+equality.lessthan=<
+equality.greaterthanorequalto=≥
+equality.lessthanorequalto=≤
 
 #research guis/items/misc
 guistrings.research.current_goal=Current Goal

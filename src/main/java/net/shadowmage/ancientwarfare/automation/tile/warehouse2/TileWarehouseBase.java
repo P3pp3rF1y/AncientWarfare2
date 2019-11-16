@@ -33,6 +33,7 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
 	private boolean shouldRecount;
 
 	private final Set<TileWarehouseStockViewer> stockViewers = new HashSet<>();
+	private final Set<TileWarehouseStockLinker> stockLinkers = new HashSet<>();
 	private final Set<TileWarehouseInterface> interfaceTiles = new HashSet<>();
 	private final Set<IWarehouseStorageTile> storageTiles = new HashSet<>();
 
@@ -85,6 +86,10 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
 			i.setController(null);
 		}
 		this.stockViewers.clear();
+		for (TileWarehouseStockLinker i : stockLinkers) {
+			i.setController(null);
+		}
+		this.stockLinkers.clear();
 		for (IWarehouseStorageTile i : storageTiles) {
 			if (i instanceof IControlledTile)
 				((IControlledTile) i).setController(null);
@@ -315,6 +320,9 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
 		for (TileWarehouseStockViewer viewer : stockViewers) {
 			viewer.onWarehouseInventoryUpdated();
 		}
+		for (TileWarehouseStockLinker linker : stockLinkers) {
+			linker.onWarehouseInventoryUpdated();
+		}
 		for (ContainerWarehouseCraftingStation viewer : craftingViewers) {
 			viewer.onWarehouseInventoryUpdated();
 		}
@@ -399,6 +407,19 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
 		stockViewers.remove(tile);
 	}
 
+	private void addStockLinker(TileWarehouseStockLinker linker) {
+		if (world.isRemote) {
+			return;
+		}
+		stockLinkers.add(linker);
+		linker.setController(this);
+		linker.onWarehouseInventoryUpdated();
+	}
+
+	private void removeStockLinker(TileWarehouseStockLinker tile) {
+		stockLinkers.remove(tile);
+	}
+
 	@Override
 	public final void addControlledTile(IControlledTile tile) {
 		if (tile instanceof IWarehouseStorageTile) {
@@ -407,6 +428,8 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
 			addInterfaceTile((TileWarehouseInterface) tile);
 		} else if (tile instanceof TileWarehouseStockViewer) {
 			addStockViewer((TileWarehouseStockViewer) tile);
+		} else if (tile instanceof TileWarehouseStockLinker) {
+			addStockLinker((TileWarehouseStockLinker) tile);
 		}
 	}
 
@@ -418,6 +441,8 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
 			removeInterfaceTile((TileWarehouseInterface) tile);
 		} else if (tile instanceof TileWarehouseStockViewer) {
 			removeStockViewer((TileWarehouseStockViewer) tile);
+		} else if (tile instanceof TileWarehouseStockLinker) {
+			removeStockLinker((TileWarehouseStockLinker) tile);
 		}
 	}
 
