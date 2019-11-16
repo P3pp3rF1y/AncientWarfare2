@@ -1,0 +1,119 @@
+{
+    "pools": [
+        {
+            "name": "main",
+            "rolls": {
+                "min": 3,
+                "max": 4
+            },
+            "type": "item",
+            "name": "gold_ingot",
+            "weight": 2,
+            "functions": [
+                {
+                    "function": "minecraft:set_count",
+                    "count": {
+                        "min": 2,
+                        "max": 5
+                    }
+                }
+            ]
+        },
+        {
+            "type": "item",
+            "name": "diamond",
+            "weight": 1,
+            "functions": [
+                {
+                    "function": "minecraft:set_count",
+                    "count": {
+                        "min": 1,
+                        "max": 2
+                    }
+                }
+            ]
+        },
+        {
+            "type": "item",
+            "name": "emerald",
+            "weight": 5,
+            "functions": [
+                {
+                    "function": "minecraft:set_count",
+                    "count": {
+                        "min": 3,
+                        "max": 9
+                    }
+                }
+            ]
+        },
+        {
+            "type": "item",
+            "name": "gold_nugget",
+            "weight": 3,
+            "functions": [
+                {
+                    "function": "minecraft:set_count",
+                    "count": {
+                        "min": 4,
+                        "max": 16
+                    }
+                }
+            ]
+        },
+        {
+            "type": "item",
+            "name": "ancientwarfarenpc:coin",
+            "weight": 6,
+            "functions": [
+                {
+                    "function": "minecraft:set_count",
+                    "count": {
+                        "min": 8,
+                        "max": 32
+                    }
+                },
+                {
+                    "function": "minecraft:set_nbt",
+                    "tag": "{metal:\"copper\"}"
+                }
+            ]
+        },
+        {
+            "type": "item",
+            "name": "ancientwarfarenpc:coin",
+            "weight": 5,
+            "functions": [
+                {
+                    "function": "minecraft:set_count",
+                    "count": {
+                        "min": 4,
+                        "max": 16
+                    }
+                },
+                {
+                    "function": "minecraft:set_nbt",
+                    "tag": "{metal:\"silver\"}"
+                }
+            ]
+        },
+        {
+            "type": "item",
+            "name": "ancientwarfarenpc:coin",
+            "weight": 4,
+            "functions": [
+                {
+                    "function": "minecraft:set_count",
+                    "count": {
+                        "min": 4,
+                        "max": 8
+                    }
+                },
+                {
+                    "function": "minecraft:set_nbt",
+                    "tag": "{metal:\"gold\"}"
+                }
+            ]
+        }
+    ]
+}

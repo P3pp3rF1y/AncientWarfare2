@@ -1,0 +1,73 @@
+{
+    "pools": [
+        {
+            "name": "main",
+            "rolls": {
+                "min": 3,
+                "max": 4
+            },
+            "type": "item",
+            "name": "gold_ingot",
+            "weight": 3,
+            "functions": [
+                {
+                    "function": "minecraft:set_count",
+                    "count": {
+                        "min": 5,
+                        "max": 9
+                    }
+                }
+            ]
+        },
+        {
+            "type": "item",
+            "name": "diamond",
+            "weight": 3,
+            "functions": [
+                {
+                    "function": "minecraft:set_count",
+                    "count": {
+                        "min": 3,
+                        "max": 6
+                    }
+                }
+            ]
+        },
+        {
+            "type": "item",
+            "name": "ancientwarfarenpc:coin",
+            "weight": 5,
+            "functions": [
+                {
+                    "function": "minecraft:set_count",
+                    "count": {
+                        "min": 20,
+                        "max": 40
+                    }
+                },
+                {
+                    "function": "minecraft:set_nbt",
+                    "tag": "{metal:\"silver\"}"
+                }
+            ]
+        },
+        {
+            "type": "item",
+            "name": "ancientwarfarenpc:coin",
+            "weight": 4,
+            "functions": [
+                {
+                    "function": "minecraft:set_count",
+                    "count": {
+                        "min": 10,
+                        "max": 20
+                    }
+                },
+                {
+                    "function": "minecraft:set_nbt",
+                    "tag": "{metal:\"gold\"}"
+                }
+            ]
+        }
+    ]
+}
