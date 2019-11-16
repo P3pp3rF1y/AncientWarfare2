@@ -1,0 +1,70 @@
+{
+    "mod": "growthcraft",
+    "fruits": [
+        {
+            "type": "picked_drop",
+            "fruit": "growthcraft_apples:apple_crop",
+            "ripe": {
+                "age": "7"
+            },
+            "new": {
+                "age": "0"
+            },
+            "drop": {
+                "name": "minecraft:apple"
+            }
+        },
+        {
+            "type": "break_only",
+            "fruit": {
+                "name": "growthcraft_grapes:native_grape_fruit",
+                "properties": {
+                    "type": "0"
+                }
+            },
+            "drop": {
+                "name": "growthcraft_grapes:grape",
+                "data": 10
+            }
+        },
+        {
+            "type": "break_only",
+            "fruit": {
+                "name": "growthcraft_grapes:native_grape_fruit",
+                "properties": {
+                    "type": "1"
+                }
+            },
+            "drop": {
+                "name": "growthcraft_grapes:grape",
+                "data": 13
+            }
+        },
+        {
+            "type": "break_only",
+            "fruit": {
+                "name": "growthcraft_grapes:native_grape_fruit",
+                "properties": {
+                    "type": "2"
+                }
+            },
+            "drop": {
+                "name": "growthcraft_grapes:grape",
+                "data": 14
+            }
+        },
+        {
+            "type": "picked_drop",
+            "fruit": "growthcraft_hops:hops",
+            "ripe": {
+                "age": "3"
+            },
+            "new": {
+                "age": "2"
+            },
+            "drop": {
+                "name": "growthcraft_hops:hops"
+            }
+        }
+    ]
+}
