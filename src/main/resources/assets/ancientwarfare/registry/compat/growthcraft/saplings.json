@@ -1,0 +1,10 @@
+{
+    "mod": "growthcraft",
+    "saplings": [
+        {
+            "sapling": {
+                "name": "growthcraft_bamboo:bamboo_shoot"
+            }
+        }
+    ]
+}
