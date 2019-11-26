@@ -9,6 +9,7 @@ import net.minecraft.block.BlockOldLog;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.BlockSandStone;
 import net.minecraft.block.BlockStairs;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
@@ -20,6 +21,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeDesert;
 import net.minecraft.world.biome.BiomeSavanna;
 import net.minecraft.world.biome.BiomeTaiga;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.BiomeEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
@@ -78,7 +80,7 @@ public class StructureBuilder implements IStructureBuilder {
 		turns = ((face.getHorizontalIndex() + 2) % 4);
 		/*
 		 * initialize the first target destination so that the structure is ready to start building when called on to build
-         */
+		 */
 		incrementDestination();
 	}
 
@@ -122,8 +124,26 @@ public class StructureBuilder implements IStructureBuilder {
 
 		BlockPos minPos = bb.min;
 		BlockPos maxPos = new BlockPos(bb.max.getX(), bb.min.getY(), bb.max.getZ());
-		//noinspection ConstantConditions
-		BlockPos.getAllInBox(minPos, maxPos).forEach(pos -> WorldTools.changeBiome(world, pos, replacementBiome));
+		BlockPos.getAllInBox(minPos, maxPos).forEach(pos -> {
+			if (isTopBlockSolid(world, pos)) {
+				//noinspection ConstantConditions
+				WorldTools.changeBiome(world, pos, replacementBiome);
+			}
+		});
+	}
+
+	private boolean isTopBlockSolid(World world, BlockPos pos) {
+		Chunk chunk = world.getChunkFromBlockCoords(pos);
+		BlockPos posDown;
+		for (BlockPos currentPos = new BlockPos(pos.getX(), chunk.getTopFilledSegment() + 16, pos.getZ()); currentPos.getY() >= 0; currentPos = posDown) {
+			posDown = currentPos.down();
+			IBlockState state = chunk.getBlockState(posDown);
+
+			if (state.getMaterial() != Material.AIR && !state.getBlock().isLeaves(state, world, posDown) && !state.getBlock().isFoliage(world, posDown)) {
+				return !state.getMaterial().isLiquid();
+			}
+		}
+		return false;
 	}
 
 	private void updateNeighbors() {
