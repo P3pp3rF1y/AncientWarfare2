@@ -1,36 +1,61 @@
 {
     "pools": [
         {
-            "name":"main", 
+            "name":"main",
             "rolls": {
                 "min": 3,
-                "max": 4
+                "max": 6
             },
             "entries": [
                 {
                     "type": "item",
                     "name": "book",
-                    "weight": 6,
+                    "weight": 12,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
-                                "min": 6,
-                                "max": 12
+                                "min": 3,
+                                "max": 15
                             }
                         }
                     ]
                 },
                 {
                     "type": "item",
+                    "name": "ancientwarfare:manual",
+                    "weight": 1
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfare:research_book",
+                    "weight": 1
+                },
+                {
+                    "type": "item",
+                    "name": "knowledge_book",
+                    "weight": 1
+                },
+                {
+                    "type": "item",
+                    "name": "writable_book",
+                    "weight": 2
+                },
+                {
+                    "type": "item",
+                    "name": "name_tag",
+                    "weight": 2
+                },
+                {
+                    "type": "item",
                     "name": "paper",
-                    "weight": 5,
+                    "weight": 10,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 6,
-                                "max": 12
+                                "max": 18
                             }
                         }
                     ]
@@ -38,7 +63,7 @@
                 {
                     "type": "item",
                     "name": "leather",
-                    "weight": 2,
+                    "weight": 4,
                     "functions": [
                         {
                             "function": "set_count",
@@ -51,11 +76,25 @@
                 },
                 {
                     "type": "item",
-                    "name": "feather",
-                    "weight": 3,
+                    "name": "torch",
+                    "weight": 4,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 12
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "feather",
+                    "weight": 6,
+                    "functions": [
+                        {
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
                                 "max": 3
@@ -66,10 +105,10 @@
                 {
                     "type": "item",
                     "name": "ancientwarfare:wooden_quill",
-                    "weight": 2,
+                    "weight": 4,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
                                 "max": 2
@@ -80,16 +119,156 @@
                 {
                     "type": "item",
                     "name": "ancientwarfare:stone_quill",
-                    "weight": 1,
+                    "weight": 2,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
                                 "max": 2
                             }
                         }
                     ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfare:iron_quill",
+                    "weight": 1
+                },
+                {
+                    "type": "item",
+                    "name": "map",
+                    "weight": 2
+                },
+                {
+                    "type": "item",
+                    "name": "compass",
+                    "weight": 2
+                },
+                {
+                    "type": "item",
+                    "name": "clock",
+                    "weight": 1
+                },
+                {
+                    "type": "item",
+                    "name": "experience_bottle",
+                    "weight": 1
+                },
+                {
+                    "type": "item",
+                    "name": "painting",
+                    "weight": 1
+                },
+                {
+                    "type": "item",
+                    "name": "dye",
+                    "entryName": "ink_sack",
+                    "weight": 4,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 3
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "enchanted_book",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 7
+                },
+                {
+                    "type": "loot_table",
+                    "name": "ancientwarfare:chests/enchanted_book",
+                    "weight": 1
+                }
+            ]
+        },
+        {
+            "name": "research_note",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 20
+                },
+                {
+                    "type": "loot_table",
+                    "name": "ancientwarfare:chests/research_note",
+                    "weight": 1
+                }
+            ]
+        },
+        {
+            "name": "disc",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 50
+                },
+                {
+                    "type": "item",
+                    "name": "record_cat",
+                    "weight": 1
+                },
+                {
+                    "type": "item",
+                    "name": "record_blocks",
+                    "weight": 1
+                },
+                {
+                    "type": "item",
+                    "name": "record_chirp",
+                    "weight": 1
+                },
+                {
+                    "type": "item",
+                    "name": "record_far",
+                    "weight": 1
+                },
+                {
+                    "type": "item",
+                    "name": "record_mall",
+                    "weight": 1
+                },
+                {
+                    "type": "item",
+                    "name": "record_mellohi",
+                    "weight": 1
+                },
+                {
+                    "type": "item",
+                    "name": "record_stal",
+                    "weight": 1
+                },
+                {
+                    "type": "item",
+                    "name": "record_strad",
+                    "weight": 1
+                },
+                {
+                    "type": "item",
+                    "name": "record_ward",
+                    "weight": 1
+                },
+                {
+                    "type": "item",
+                    "name": "record_11",
+                    "weight": 1
+                },
+                {
+                    "type": "item",
+                    "name": "record_wait",
+                    "weight": 1
                 }
             ]
         }

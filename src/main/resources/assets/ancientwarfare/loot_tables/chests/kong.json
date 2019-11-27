@@ -1,7 +1,7 @@
 {
     "pools": [
         {
-            "name":"main", 
+            "name": "main",
             "rolls": {
                 "min": 3,
                 "max": 4
@@ -13,7 +13,7 @@
                     "weight": 3,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
                                 "max": 2
@@ -27,7 +27,7 @@
                     "weight": 5,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 4,
                                 "max": 12
@@ -69,7 +69,7 @@
                     "weight": 5,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 4,
                                 "max": 8
@@ -79,14 +79,33 @@
                 },
                 {
                     "type": "item",
-                    "name": "cocoa_beans",
+                    "name": "dye",
+                    "entryName": "cocoa_beans",
                     "weight": 5,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 2,
                                 "max": 6
+                            }
+                        },
+                        {
+                            "function": "set_data",
+                            "data": 3
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "egg",
+                    "weight": 3,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 2,
+                                "max": 7
                             }
                         }
                     ]
@@ -97,7 +116,7 @@
                     "weight": 3,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 4,
                                 "max": 8
@@ -111,7 +130,7 @@
                     "weight": 3,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 6,
                                 "max": 12
@@ -122,16 +141,7 @@
                 {
                     "type": "item",
                     "name": "bow",
-                    "weight": 3,
-                    "functions": [
-                        {
-                            "function": "minecraft:set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 1
-                            }
-                        }
-                    ]
+                    "weight": 3
                 },
                 {
                     "type": "item",
@@ -139,7 +149,7 @@
                     "weight": 3,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
                                 "max": 7

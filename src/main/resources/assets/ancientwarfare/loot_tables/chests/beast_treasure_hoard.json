@@ -1,19 +1,76 @@
 {
     "pools": [
         {
-            "name":"main", 
+            "name": "main",
             "rolls": {
-                "min": 1,
+                "min": 3,
                 "max": 4
             },
             "entries": [
                 {
                     "type": "item",
-                    "name": "milk_bucket",
-                    "weight": 6,
+                    "name": "ancientwarfarenpc:coin",
+                    "entryName": "coin_copper",
+                    "weight": 4,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
+                            "count": {
+                                "min": 10,
+                                "max": 64
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{metal:\"copper\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfarenpc:coin",
+                    "entryName": "coin_silver",
+                    "weight": 4,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 5,
+                                "max": 40
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{metal:\"silver\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfarenpc:coin",
+                    "entryName": "coin_gold",
+                    "weight": 4,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 10,
+                                "max": 20
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{metal:\"gold\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "experience_bottle",
+                    "weight": 3,
+                    "functions": [
+                        {
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
                                 "max": 2
@@ -23,17 +80,8 @@
                 },
                 {
                     "type": "item",
-                    "name": "cooked_beef",
-                    "weight": 5,
-                    "functions": [
-                        {
-                            "function": "minecraft:set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 5
-                            }
-                        }
-                    ]
+                    "name": "totem_of_undying",
+                    "weight": 1
                 },
                 {
                     "type": "item",
@@ -51,8 +99,134 @@
                 },
                 {
                     "type": "item",
-                    "name": "ancientwarfarenpc:iron_spear",
-                    "weight": 5,
+                    "name": "iron_pickaxe",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "iron_hoe",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "iron_shovel",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "iron_axe",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "iron_sword",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "golden_pickaxe",
+                    "weight": 3,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "golden_hoe",
+                    "weight": 3,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "golden_shovel",
+                    "weight": 3,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "golden_axe",
+                    "weight": 3,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "golden_sword",
+                    "weight": 3,
                     "functions": [
                         {
                             "function": "set_count",
@@ -66,10 +240,24 @@
                 {
                     "type": "item",
                     "name": "gold_ingot",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 3
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "emerald",
                     "weight": 2,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
                                 "max": 3
@@ -83,7 +271,7 @@
                     "weight": 1,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
                                 "max": 3
@@ -93,45 +281,8 @@
                 },
                 {
                     "type": "item",
-                    "name": "ancientwarfarenpc:shield_tribal_1",
-                    "weight": 3,
-                    "functions": [
-                        {
-                            "function": "minecraft:set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 2
-                            }
-                        }
-                    ]
-                },
-                {
-                    "type": "item",
-                    "name": "ancientwarfarenpc:shield_tribal_2",
-                    "weight": 3,
-                    "functions": [
-                        {
-                            "function": "minecraft:set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 2
-                            }
-                        }
-                    ]
-                },
-                {
-                    "type": "item",
-                    "name": "beef",
-                    "weight": 5,
-                    "functions": [
-                        {
-                            "function": "minecraft:set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 6
-                            }
-                        }
-                    ]
+                    "name": "gold_block",
+                    "weight": 1
                 },
                 {
                     "type": "item",
@@ -139,11 +290,707 @@
                     "weight": 3,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
                                 "max": 7
                             }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "golden_boots",
+                    "weight": 3,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "golden_chestplate",
+                    "weight": 3,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "golden_leggings",
+                    "weight": 3,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "saddle",
+                    "weight": 3
+                },
+                {
+                    "type": "item",
+                    "name": "golden_helmet",
+                    "weight": 3,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "tools",
+            "rolls": {
+                "min": 1,
+                "max": 2
+            },
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "diamond_pickaxe",
+                    "entryName": "diamond_pickaxe_non_enchanted",
+                    "weight": 5,
+                    "conditions": [
+                        {
+                            "condition": "random_chance",
+                            "chance": 0.2
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_pickaxe",
+                    "entryName": "diamond_pickaxe_lightly_enchanted",
+                    "weight": 4,
+                    "conditions": [
+                        {
+                            "condition": "random_chance",
+                            "chance": 0.2
+                        }
+                    ],
+                    "functions": [
+                        {
+                            "function": "enchant_with_levels",
+                            "levels": {
+                                "min": 1,
+                                "max": 10
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_pickaxe",
+                    "entryName": "diamond_pickaxe_medium_enchanted",
+                    "weight": 3,
+                    "conditions": [
+                        {
+                            "condition": "random_chance",
+                            "chance": 0.2
+                        }
+                    ],
+                    "functions": [
+                        {
+                            "function": "enchant_with_levels",
+                            "levels": {
+                                "min": 10,
+                                "max": 20
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_pickaxe",
+                    "entryName": "diamond_pickaxe_highly_enchanted",
+                    "weight": 2,
+                    "conditions": [
+                        {
+                            "condition": "random_chance",
+                            "chance": 0.2
+                        }
+                    ],
+                    "functions": [
+                        {
+                            "function": "enchant_with_levels",
+                            "levels": {
+                                "min": 20,
+                                "max": 30
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_hoe",
+                    "entryName": "diamond_hoe_non_enchanted",
+                    "weight": 5,
+                    "conditions": [
+                        {
+                            "condition": "random_chance",
+                            "chance": 0.2
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_hoe",
+                    "entryName": "diamond_hoe_lightly_enchanted",
+                    "weight": 4,
+                    "conditions": [
+                        {
+                            "condition": "random_chance",
+                            "chance": 0.2
+                        }
+                    ],
+                    "functions": [
+                        {
+                            "function": "enchant_with_levels",
+                            "levels": {
+                                "min": 1,
+                                "max": 10
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_hoe",
+                    "entryName": "diamond_hoe_medium_enchanted",
+                    "weight": 3,
+                    "conditions": [
+                        {
+                            "condition": "random_chance",
+                            "chance": 0.2
+                        }
+                    ],
+                    "functions": [
+                        {
+                            "function": "enchant_with_levels",
+                            "levels": {
+                                "min": 10,
+                                "max": 20
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_hoe",
+                    "entryName": "diamond_hoe_highly_enchanted",
+                    "weight": 2,
+                    "conditions": [
+                        {
+                            "condition": "random_chance",
+                            "chance": 0.2
+                        }
+                    ],
+                    "functions": [
+                        {
+                            "function": "enchant_with_levels",
+                            "levels": {
+                                "min": 20,
+                                "max": 30
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_shovel",
+                    "entryName": "diamond_shovel_non_enchanted",
+                    "weight": 5,
+                    "conditions": [
+                        {
+                            "condition": "random_chance",
+                            "chance": 0.2
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_shovel",
+                    "entryName": "diamond_shovel_lightly_enchanted",
+                    "weight": 4,
+                    "conditions": [
+                        {
+                            "condition": "random_chance",
+                            "chance": 0.2
+                        }
+                    ],
+                    "functions": [
+                        {
+                            "function": "enchant_with_levels",
+                            "levels": {
+                                "min": 1,
+                                "max": 10
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_shovel",
+                    "entryName": "diamond_shovel_medium_enchanted",
+                    "weight": 3,
+                    "conditions": [
+                        {
+                            "condition": "random_chance",
+                            "chance": 0.2
+                        }
+                    ],
+                    "functions": [
+                        {
+                            "function": "enchant_with_levels",
+                            "levels": {
+                                "min": 10,
+                                "max": 20
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_shovel",
+                    "entryName": "diamond_shovel_highly_enchanted",
+                    "weight": 2,
+                    "conditions": [
+                        {
+                            "condition": "random_chance",
+                            "chance": 0.2
+                        }
+                    ],
+                    "functions": [
+                        {
+                            "function": "enchant_with_levels",
+                            "levels": {
+                                "min": 20,
+                                "max": 30
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_axe",
+                    "entryName": "diamond_axe_non_enchanted",
+                    "weight": 5,
+                    "conditions": [
+                        {
+                            "condition": "random_chance",
+                            "chance": 0.2
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_axe",
+                    "entryName": "diamond_axe_lightly_enchanted",
+                    "weight": 4,
+                    "conditions": [
+                        {
+                            "condition": "random_chance",
+                            "chance": 0.2
+                        }
+                    ],
+                    "functions": [
+                        {
+                            "function": "enchant_with_levels",
+                            "levels": {
+                                "min": 1,
+                                "max": 10
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_axe",
+                    "entryName": "diamond_axe_medium_enchanted",
+                    "weight": 3,
+                    "conditions": [
+                        {
+                            "condition": "random_chance",
+                            "chance": 0.2
+                        }
+                    ],
+                    "functions": [
+                        {
+                            "function": "enchant_with_levels",
+                            "levels": {
+                                "min": 10,
+                                "max": 20
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_axe",
+                    "entryName": "diamond_axe_highly_enchanted",
+                    "weight": 2,
+                    "conditions": [
+                        {
+                            "condition": "random_chance",
+                            "chance": 0.2
+                        }
+                    ],
+                    "functions": [
+                        {
+                            "function": "enchant_with_levels",
+                            "levels": {
+                                "min": 20,
+                                "max": 30
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "armor",
+            "rolls": {
+                "min": 1,
+                "max": 2
+            },
+            "entries": [
+                {
+                    "type": "item",
+                    "weight": 5,
+                    "name": "diamond_helmet",
+                    "entryName": "diamond_helmet_non_enchanted",
+                    "conditions": [
+                        {
+                            "condition": "random_chance",
+                            "chance": 0.2
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 4,
+                    "name": "diamond_helmet",
+                    "entryName": "diamond_helmet_lightly_enchanted",
+                    "conditions": [
+                        {
+                            "condition": "random_chance",
+                            "chance": 0.2
+                        }
+                    ],
+                    "functions": [
+                        {
+                            "function": "enchant_with_levels",
+                            "levels": {
+                                "min": 1,
+                                "max": 10
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 3,
+                    "name": "diamond_helmet",
+                    "entryName": "diamond_helmet_medium_enchanted",
+                    "conditions": [
+                        {
+                            "condition": "random_chance",
+                            "chance": 0.2
+                        }
+                    ],
+                    "functions": [
+                        {
+                            "function": "enchant_with_levels",
+                            "levels": {
+                                "min": 10,
+                                "max": 20
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 2,
+                    "name": "diamond_helmet",
+                    "entryName": "diamond_helmet_highly_enchanted",
+                    "conditions": [
+                        {
+                            "condition": "random_chance",
+                            "chance": 0.2
+                        }
+                    ],
+                    "functions": [
+                        {
+                            "function": "enchant_with_levels",
+                            "levels": {
+                                "min": 20,
+                                "max": 30
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 4,
+                    "name": "diamond_chestplate",
+                    "entryName": "diamond_chestplate_non_enchanted",
+                    "conditions": [
+                        {
+                            "condition": "random_chance",
+                            "chance": 0.3
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 3,
+                    "name": "diamond_chestplate",
+                    "entryName": "diamond_chestplate_lightly_enchanted",
+                    "conditions": [
+                        {
+                            "condition": "random_chance",
+                            "chance": 0.2
+                        }
+                    ],
+                    "functions": [
+                        {
+                            "function": "enchant_with_levels",
+                            "levels": {
+                                "min": 1,
+                                "max": 10
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 3,
+                    "name": "diamond_chestplate",
+                    "entryName": "diamond_chestplate_medium_enchanted",
+                    "conditions": [
+                        {
+                            "condition": "random_chance",
+                            "chance": 0.2
+                        }
+                    ],
+                    "functions": [
+                        {
+                            "function": "enchant_with_levels",
+                            "levels": {
+                                "min": 10,
+                                "max": 20
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 2,
+                    "name": "diamond_chestplate",
+                    "entryName": "diamond_chestplate_highly_enchanted",
+                    "conditions": [
+                        {
+                            "condition": "random_chance",
+                            "chance": 0.2
+                        }
+                    ],
+                    "functions": [
+                        {
+                            "function": "enchant_with_levels",
+                            "levels": {
+                                "min": 20,
+                                "max": 30
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 4,
+                    "name": "diamond_leggings",
+                    "entryName": "diamond_leggings_non_enchanted",
+                    "conditions": [
+                        {
+                            "condition": "random_chance",
+                            "chance": 0.2
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 3,
+                    "name": "diamond_leggings",
+                    "entryName": "diamond_leggings_lightly_enchanted",
+                    "conditions": [
+                        {
+                            "condition": "random_chance",
+                            "chance": 0.2
+                        }
+                    ],
+                    "functions": [
+                        {
+                            "function": "enchant_with_levels",
+                            "levels": {
+                                "min": 1,
+                                "max": 10
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 3,
+                    "name": "diamond_leggings",
+                    "entryName": "diamond_leggings_medium_enchanted",
+                    "conditions": [
+                        {
+                            "condition": "random_chance",
+                            "chance": 0.2
+                        }
+                    ],
+                    "functions": [
+                        {
+                            "function": "enchant_with_levels",
+                            "levels": {
+                                "min": 10,
+                                "max": 20
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 2,
+                    "name": "diamond_leggings",
+                    "entryName": "diamond_leggings_highly_enchanted",
+                    "conditions": [
+                        {
+                            "condition": "random_chance",
+                            "chance": 0.2
+                        }
+                    ],
+                    "functions": [
+                        {
+                            "function": "enchant_with_levels",
+                            "levels": {
+                                "min": 20,
+                                "max": 30
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 5,
+                    "name": "diamond_boots",
+                    "entryName": "diamond_boots_non_enchanted",
+                    "conditions": [
+                        {
+                            "condition": "random_chance",
+                            "chance": 0.2
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 3,
+                    "name": "diamond_boots",
+                    "entryName": "diamond_boots_lightly_enchanted",
+                    "conditions": [
+                        {
+                            "condition": "random_chance",
+                            "chance": 0.2
+                        }
+                    ],
+                    "functions": [
+                        {
+                            "function": "enchant_with_levels",
+                            "levels": {
+                                "min": 1,
+                                "max": 10
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 3,
+                    "name": "diamond_boots",
+                    "entryName": "diamond_boots_medium_enchanted",
+                    "conditions": [
+                        {
+                            "condition": "random_chance",
+                            "chance": 0.2
+                        }
+                    ],
+                    "functions": [
+                        {
+                            "function": "enchant_with_levels",
+                            "levels": {
+                                "min": 10,
+                                "max": 20
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 2,
+                    "name": "diamond_boots",
+                    "entryName": "diamond_boots_highly_enchanted",
+                    "conditions": [
+                        {
+                            "condition": "random_chance",
+                            "chance": 0.2
+                        }
+                    ],
+                    "functions": [
+                        {
+                            "function": "enchant_with_levels",
+                            "levels": {
+                                "min": 20,
+                                "max": 30
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "potions",
+            "rolls": 5,
+            "entries": [
+                {
+                    "type": "loot_table",
+                    "name": "ancientwarfare:chests/rakshasa",
+                    "weight": 1,
+                    "conditions": [
+                        {
+                            "condition": "random_chance",
+                            "chance": 0.4
                         }
                     ]
                 }

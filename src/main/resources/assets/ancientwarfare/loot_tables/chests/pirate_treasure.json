@@ -13,7 +13,7 @@
                     "weight": 2,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
                                 "max": 3
@@ -27,7 +27,7 @@
                     "weight": 1,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
                                 "max": 2
@@ -41,7 +41,7 @@
                     "weight": 5,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
                                 "max": 6
@@ -55,7 +55,7 @@
                     "weight": 3,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
                                 "max": 7
@@ -66,17 +66,18 @@
                 {
                     "type": "item",
                     "name": "ancientwarfarenpc:coin",
+                    "entryName": "copper_coin",
                     "weight": 6,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 12,
                                 "max": 48
                             }
                         },
                         {
-                            "function": "minecraft:set_nbt",
+                            "function": "set_nbt",
                             "tag": "{metal:\"copper\"}"
                         }
                     ]
@@ -84,17 +85,18 @@
                 {
                     "type": "item",
                     "name": "ancientwarfarenpc:coin",
+                    "entryName": "silver_coin",
                     "weight": 5,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 6,
                                 "max": 24
                             }
                         },
                         {
-                            "function": "minecraft:set_nbt",
+                            "function": "set_nbt",
                             "tag": "{metal:\"silver\"}"
                         }
                     ]
@@ -102,17 +104,18 @@
                 {
                     "type": "item",
                     "name": "ancientwarfarenpc:coin",
+                    "entryName": "gold_coin",
                     "weight": 4,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 6,
                                 "max": 12
                             }
                         },
                         {
-                            "function": "minecraft:set_nbt",
+                            "function": "set_nbt",
                             "tag": "{metal:\"gold\"}"
                         }
                     ]

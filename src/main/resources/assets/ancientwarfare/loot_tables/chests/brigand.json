@@ -1,7 +1,7 @@
 {
     "pools": [
         {
-            "name":"main", 
+            "name": "main",
             "rolls": {
                 "min": 3,
                 "max": 4
@@ -13,7 +13,7 @@
                     "weight": 2,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
                                 "max": 1
@@ -27,7 +27,7 @@
                     "weight": 5,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
                                 "max": 5
@@ -83,7 +83,7 @@
                     "weight": 2,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
                                 "max": 3
@@ -97,7 +97,7 @@
                     "weight": 1,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
                                 "max": 3
@@ -107,29 +107,58 @@
                 },
                 {
                     "type": "item",
-                    "name": "coin bronze",
-                    "weight": 3,
+                    "name": "ancientwarfarenpc:coin",
+                    "entryName": "coin_copper",
+                    "weight": 6,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
-                                "min": 1,
-                                "max": 2
+                                "min": 3,
+                                "max": 16
                             }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{metal:\"copper\"}"
                         }
                     ]
                 },
                 {
                     "type": "item",
-                    "name": "coin silver",
-                    "weight": 3,
+                    "name": "ancientwarfarenpc:coin",
+                    "entryName": "coin_silver",
+                    "weight": 5,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
+                            "count": {
+                                "min": 2,
+                                "max": 8
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{metal:\"silver\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfarenpc:coin",
+                    "entryName": "coin_gold",
+                    "weight": 4,
+                    "functions": [
+                        {
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
-                                "max": 2
+                                "max": 4
                             }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{metal:\"gold\"}"
                         }
                     ]
                 },
@@ -139,7 +168,7 @@
                     "weight": 5,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
                                 "max": 6
@@ -153,65 +182,11 @@
                     "weight": 3,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
                                 "max": 7
                             }
-                        }
-                    ]
-                },
-                {
-                	"type": "item",
-                    "name": "ancientwarfarenpc:coin",
-                    "weight": 6,
-                    "functions": [
-                        {
-                            "function": "minecraft:set_count",
-                            "count": {
-                                "min": 3,
-                                "max": 16
-                            }
-                        },
-                        {
-                            "function": "minecraft:set_nbt",
-                            "tag": "{metal:\"copper\"}"
-                        }
-                    ]
-                },
-                {
-                	"type": "item",
-                    "name": "ancientwarfarenpc:coin",
-                    "weight": 5,
-                    "functions": [
-                        {
-                            "function": "minecraft:set_count",
-                            "count": {
-                                "min": 2,
-                                "max": 8
-                            }
-                        },
-                        {
-                            "function": "minecraft:set_nbt",
-                            "tag": "{metal:\"silver\"}"
-                        }
-                    ]
-                },
-                {
-                	"type": "item",
-                    "name": "ancientwarfarenpc:coin",
-                    "weight": 4,
-                    "functions": [
-                        {
-                            "function": "minecraft:set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 4
-                            }
-                        },
-                        {
-                            "function": "minecraft:set_nbt",
-                            "tag": "{metal:\"gold\"}"
                         }
                     ]
                 }

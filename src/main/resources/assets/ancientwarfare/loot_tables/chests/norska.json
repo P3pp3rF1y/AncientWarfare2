@@ -13,10 +13,38 @@
                     "weight": 5,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 3,
                                 "max": 9
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "torch",
+                    "weight": 3,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 6
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "bread",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 5
                             }
                         }
                     ]
@@ -27,7 +55,7 @@
                     "weight": 5,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
                                 "max": 5
@@ -51,7 +79,7 @@
                 },
                 {
                     "type": "item",
-                    "name": "ancientwarfarenpc:iron_axe",
+                    "name": "iron_axe",
                     "weight": 5,
                     "functions": [
                         {
@@ -69,7 +97,7 @@
                     "weight": 3,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 3,
                                 "max": 6
@@ -83,7 +111,7 @@
                     "weight": 1,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
                                 "max": 3
@@ -97,7 +125,7 @@
                     "weight": 3,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
                                 "max": 2
@@ -111,7 +139,7 @@
                     "weight": 3,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
                                 "max": 2
@@ -125,7 +153,7 @@
                     "weight": 5,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
                                 "max": 6
@@ -139,7 +167,7 @@
                     "weight": 3,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
                                 "max": 7
@@ -150,17 +178,18 @@
                 {
                 	"type": "item",
                     "name": "ancientwarfarenpc:coin",
+                    "entryName": "coin_copper",
                     "weight": 6,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 12,
                                 "max": 48
                             }
                         },
                         {
-                            "function": "minecraft:set_nbt",
+                            "function": "set_nbt",
                             "tag": "{metal:\"copper\"}"
                         }
                     ]
@@ -168,17 +197,18 @@
                 {
                 	"type": "item",
                     "name": "ancientwarfarenpc:coin",
+                    "entryName": "coin_silver",
                     "weight": 5,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 6,
                                 "max": 24
                             }
                         },
                         {
-                            "function": "minecraft:set_nbt",
+                            "function": "set_nbt",
                             "tag": "{metal:\"silver\"}"
                         }
                     ]
@@ -186,17 +216,18 @@
                 {
                 	"type": "item",
                     "name": "ancientwarfarenpc:coin",
+                    "entryName": "coin_gold",
                     "weight": 4,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 6,
                                 "max": 12
                             }
                         },
                         {
-                            "function": "minecraft:set_nbt",
+                            "function": "set_nbt",
                             "tag": "{metal:\"gold\"}"
                         }
                     ]

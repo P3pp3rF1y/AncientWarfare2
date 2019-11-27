@@ -1,0 +1,382 @@
+{
+    "pools": [
+        {
+            "name": "main",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "ancientwarfare:research_note",
+                    "entryName": "advanced_siege_warfare",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{researchName:\"advanced_siege_warfare\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfare:research_note",
+                    "entryName": "agriculture",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{researchName:\"agriculture\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfare:research_note",
+                    "entryName": "animal_husbandry",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{researchName:\"animal_husbandry\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfare:research_note",
+                    "entryName": "ballistics",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{researchName:\"ballistics\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfare:research_note",
+                    "entryName": "chemistry",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{researchName:\"chemistry\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfare:research_note",
+                    "entryName": "combustion",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{researchName:\"combustion\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfare:research_note",
+                    "entryName": "command",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{researchName:\"command\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfare:research_note",
+                    "entryName": "conscription",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{researchName:\"conscription\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfare:research_note",
+                    "entryName": "construction",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{researchName:\"construction\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfare:research_note",
+                    "entryName": "engineering",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{researchName:\"engineering\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfare:research_note",
+                    "entryName": "explosives",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{researchName:\"explosives\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfare:research_note",
+                    "entryName": "farming",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{researchName:\"farming\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfare:research_note",
+                    "entryName": "fishing",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{researchName:\"fishing\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfare:research_note",
+                    "entryName": "flight",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{researchName:\"flight\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfare:research_note",
+                    "entryName": "gunpowder",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{researchName:\"gunpowder\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfare:research_note",
+                    "entryName": "invention",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{researchName:\"invention\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfare:research_note",
+                    "entryName": "leadership",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{researchName:\"leadership\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfare:research_note",
+                    "entryName": "machinery",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{researchName:\"machinery\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfare:research_note",
+                    "entryName": "mass_production",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{researchName:\"mass_production\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfare:research_note",
+                    "entryName": "mathematics",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{researchName:\"mathematics\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfare:research_note",
+                    "entryName": "mining",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{researchName:\"mining\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfare:research_note",
+                    "entryName": "naval_warfare",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{researchName:\"naval_warfare\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfare:research_note",
+                    "entryName": "navigation",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{researchName:\"navigation\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfare:research_note",
+                    "entryName": "refining",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{researchName:\"refining\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfare:research_note",
+                    "entryName": "rocketry",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{researchName:\"rocketry\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfare:research_note",
+                    "entryName": "seafaring",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{researchName:\"seafaring\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfare:research_note",
+                    "entryName": "siege_warfare",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{researchName:\"siege_warfare\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfare:research_note",
+                    "entryName": "tactics",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{researchName:\"tactics\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfare:research_note",
+                    "entryName": "theory_of_gravity",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{researchName:\"theory_of_gravity\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfare:research_note",
+                    "entryName": "the_wheel",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{researchName:\"the_wheel\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfare:research_note",
+                    "entryName": "trade",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{researchName:\"trade\"}"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,940 @@
+{
+    "pools": [
+        {
+            "name": "main",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "enchanted_book",
+                    "entryName": "protection",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:1s,id:0s}]}"
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:2s,id:0s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.3
+                                }
+                            ]
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:3s,id:0s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.2
+                                }
+                            ]
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:4s,id:0s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.15
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "enchanted_book",
+                    "entryName": "fire_protection",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:1s,id:1s}]}"
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:2s,id:1s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.3
+                                }
+                            ]
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:3s,id:1s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.2
+                                }
+                            ]
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:4s,id:1s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.15
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "enchanted_book",
+                    "entryName": "feather_falling",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:1s,id:2s}]}"
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:2s,id:2s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.3
+                                }
+                            ]
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:3s,id:2s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.2
+                                }
+                            ]
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:4s,id:2s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.15
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "enchanted_book",
+                    "entryName": "blast_protection",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:1s,id:3s}]}"
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:2s,id:3s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.3
+                                }
+                            ]
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:3s,id:3s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.2
+                                }
+                            ]
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:4s,id:3s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.15
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "enchanted_book",
+                    "entryName": "projectile_protection",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:1s,id:4s}]}"
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:2s,id:4s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.3
+                                }
+                            ]
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:3s,id:4s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.2
+                                }
+                            ]
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:4s,id:4s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.15
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "enchanted_book",
+                    "entryName": "respiration",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:1s,id:5s}]}"
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:2s,id:5s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.3
+                                }
+                            ]
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:3s,id:5s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.2
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "enchanted_book",
+                    "entryName": "aqua_affinity",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:1s,id:6s}]}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "enchanted_book",
+                    "entryName": "thorns",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:1s,id:7s}]}"
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:2s,id:7s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.3
+                                }
+                            ]
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:3s,id:7s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.2
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "enchanted_book",
+                    "entryName": "depth_strider",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:1s,id:8s}]}"
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:2s,id:8s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.3
+                                }
+                            ]
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:3s,id:8s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.2
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "enchanted_book",
+                    "entryName": "sharpness",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:1s,id:16s}]}"
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:2s,id:16s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.3
+                                }
+                            ]
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:3s,id:16s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.2
+                                }
+                            ]
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:4s,id:16s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.15
+                                }
+                            ]
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:5s,id:16s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.1
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "enchanted_book",
+                    "entryName": "smite",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:1s,id:17s}]}"
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:2s,id:17s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.3
+                                }
+                            ]
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:3s,id:17s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.2
+                                }
+                            ]
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:4s,id:17s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.15
+                                }
+                            ]
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:5s,id:17s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.1
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "enchanted_book",
+                    "entryName": "bane_of_arthropods",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:1s,id:18s}]}"
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:2s,id:18s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.3
+                                }
+                            ]
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:3s,id:18s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.2
+                                }
+                            ]
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:4s,id:18s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.15
+                                }
+                            ]
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:5s,id:18s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.1
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "enchanted_book",
+                    "entryName": "knockback",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:1s,id:19s}]}"
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:2s,id:19s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.3
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "enchanted_book",
+                    "entryName": "fire_aspect",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:1s,id:20s}]}"
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:2s,id:20s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.3
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "enchanted_book",
+                    "entryName": "efficiency",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:1s,id:32s}]}"
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:2s,id:32s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.3
+                                }
+                            ]
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:3s,id:32s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.2
+                                }
+                            ]
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:4s,id:32s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.15
+                                }
+                            ]
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:5s,id:32s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.1
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "enchanted_book",
+                    "entryName": "unbreaking",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:1s,id:34s}]}"
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:2s,id:34s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.3
+                                }
+                            ]
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:3s,id:34s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.2
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "enchanted_book",
+                    "entryName": "power",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:1s,id:48s}]}"
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:2s,id:48s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.3
+                                }
+                            ]
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:3s,id:48s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.2
+                                }
+                            ]
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:4s,id:48s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.15
+                                }
+                            ]
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:5s,id:48s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.1
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "enchanted_book",
+                    "entryName": "punch",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:1s,id:49s}]}"
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:2s,id:49s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.3
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "enchanted_book",
+                    "entryName": "flame",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:1s,id:50s}]}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "enchanted_book",
+                    "entryName": "frost_walker",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:1s,id:9s}]}"
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:2s,id:9s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.2
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "enchanted_book",
+                    "entryName": "binding_curse",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:1s,id:10s}]}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "enchanted_book",
+                    "entryName": "looting",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:1s,id:21s}]}"
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:2s,id:21s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.3
+                                }
+                            ]
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:3s,id:21s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.15
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "enchanted_book",
+                    "entryName": "sweeping",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:1s,id:22s}]}"
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:2s,id:22s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.3
+                                }
+                            ]
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:3s,id:22s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.15
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "enchanted_book",
+                    "entryName": "silk_touch",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:1s,id:33s}]}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "enchanted_book",
+                    "entryName": "fortune",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:1s,id:35s}]}"
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:2s,id:35s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.3
+                                }
+                            ]
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:3s,id:35s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.2
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "enchanted_book",
+                    "entryName": "infinity",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:1s,id:51s}]}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "enchanted_book",
+                    "entryName": "luck_of_the_sea",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:1s,id:61s}]}"
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:2s,id:61s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.3
+                                }
+                            ]
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:3s,id:61s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.2
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "enchanted_book",
+                    "entryName": "lure",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:1s,id:62s}]}"
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:2s,id:62s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.3
+                                }
+                            ]
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:3s,id:62s}]}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.2
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "enchanted_book",
+                    "entryName": "mending",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:1s,id:70s}]}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "enchanted_book",
+                    "entryName": "vanishing_curse",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{StoredEnchantments:[{lvl:1s,id:71s}]}"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
