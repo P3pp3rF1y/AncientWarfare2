@@ -9,6 +9,11 @@
             "entries": [
                 {
                     "type": "item",
+                    "name": "diamond_horse_armor",
+                    "weight": 1
+                },
+                {
+                    "type": "item",
                     "name": "ancientwarfarenpc:diamond_shield",
                     "weight": 5,
                     "functions": [
@@ -55,7 +60,7 @@
                     "weight": 5,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
                                 "max": 2
@@ -66,16 +71,7 @@
                 {
                     "type": "item",
                     "name": "diamond_axe",
-                    "weight": 5,
-                    "functions": [
-                        {
-                            "function": "minecraft:set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 2
-                            }
-                        }
-                    ]
+                    "weight": 5
                 },
                 {
                     "type": "item",
@@ -83,7 +79,7 @@
                     "weight": 3,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
                                 "max": 2
@@ -94,58 +90,22 @@
                 {
                     "type": "item",
                     "name": "diamond_boots",
-                    "weight": 4,
-                    "functions": [
-                        {
-                            "function": "minecraft:set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 2
-                            }
-                        }
-                    ]
+                    "weight": 4
                 },
                 {
                     "type": "item",
                     "name": "diamond_chestplate",
-                    "weight": 4,
-                    "functions": [
-                        {
-                            "function": "minecraft:set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 2
-                            }
-                        }
-                    ]
+                    "weight": 4
                 },
                 {
                     "type": "item",
                     "name": "diamond_leggings",
-                    "weight": 4,
-                    "functions": [
-                        {
-                            "function": "minecraft:set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 2
-                            }
-                        }
-                    ]
+                    "weight": 4
                 },
                 {
                     "type": "item",
                     "name": "diamond_helmet",
-                    "weight": 4,
-                    "functions": [
-                        {
-                            "function": "minecraft:set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 2
-                            }
-                        }
-                    ]
+                    "weight": 4
                 }
             ]
         }

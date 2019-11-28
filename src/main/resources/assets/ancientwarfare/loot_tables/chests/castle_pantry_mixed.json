@@ -9,11 +9,26 @@
             "entries": [
                 {
                     "type": "item",
+                    "name": "ancientwarfarenpc:food_bundle",
+                    "entryName": "food_bundle",
+                    "weight": 4,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 4
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
                     "name": "mushroom_stew",
                     "weight": 4,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
                                 "max": 4
@@ -27,7 +42,7 @@
                     "weight": 5,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 6,
                                 "max": 12
@@ -83,7 +98,7 @@
                     "weight": 2,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
                                 "max": 3
@@ -97,7 +112,7 @@
                     "weight": 3,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
                                 "max": 1
@@ -111,7 +126,7 @@
                     "weight": 3,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
                                 "max": 1
@@ -125,7 +140,7 @@
                     "weight": 3,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
                                 "max": 1

@@ -13,10 +13,24 @@
                     "weight": 6,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
                                 "max": 2
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "bread",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 5
                             }
                         }
                     ]
@@ -27,7 +41,7 @@
                     "weight": 5,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
                                 "max": 5
@@ -39,6 +53,20 @@
                     "type": "item",
                     "name": "leather",
                     "weight": 6,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 6
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "torch",
+                    "weight": 3,
                     "functions": [
                         {
                             "function": "set_count",
@@ -69,7 +97,7 @@
                     "weight": 2,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
                                 "max": 3
@@ -83,7 +111,7 @@
                     "weight": 1,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
                                 "max": 3
@@ -97,7 +125,7 @@
                     "weight": 3,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
                                 "max": 2
@@ -111,7 +139,7 @@
                     "weight": 3,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
                                 "max": 2
@@ -125,7 +153,7 @@
                     "weight": 5,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
                                 "max": 6
@@ -139,7 +167,7 @@
                     "weight": 3,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 1,
                                 "max": 7

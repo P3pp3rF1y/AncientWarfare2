@@ -13,7 +13,7 @@
                     "weight": 6,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 6,
                                 "max": 12
@@ -27,7 +27,7 @@
                     "weight": 5,
                     "functions": [
                         {
-                            "function": "minecraft:set_count",
+                            "function": "set_count",
                             "count": {
                                 "min": 6,
                                 "max": 12
@@ -38,6 +38,7 @@
                 {
                     "type": "item",
                     "name": "harvestcraft:flouritem",
+                    "entryName": "harvestcraft_flouritem",
                     "weight": 6,
                     "functions": [
                         {

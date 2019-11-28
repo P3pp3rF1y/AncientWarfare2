@@ -1,0 +1,206 @@
+{
+    "pools": [
+        {
+            "name": "main",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "potion",
+                    "entryName": "vanilla_regular_harming_potion",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{Potion:\"minecraft:harming\"}"
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{Potion:\"minecraft:strong_harming\"}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.3
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "splash_potion",
+                    "entryName": "vanilla_splash_harming_potion",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{Potion:\"minecraft:harming\"}"
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{Potion:\"minecraft:strong_harming\"}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.3
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "potion",
+                    "entryName": "vanilla_regular_weakness_potion",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{Potion:\"minecraft:weakness\"}"
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{Potion:\"minecraft:long_weakness\"}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.3
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "splash_potion",
+                    "entryName": "vanilla_splash_weakness_potion",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{Potion:\"minecraft:weakness\"}"
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{Potion:\"minecraft:long_weakness\"}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.3
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "potion",
+                    "entryName": "vanilla_regular_slowness_potion",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{Potion:\"minecraft:slowness\"}"
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{Potion:\"minecraft:long_slowness\"}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.3
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "splash_potion",
+                    "entryName": "vanilla_splash_slowness_potion",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{Potion:\"minecraft:slowness\"}"
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{Potion:\"minecraft:long_slowness\"}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.3
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "potion",
+                    "entryName": "vanilla_regular_poison_potion",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{Potion:\"minecraft:poison\"}"
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{Potion:\"minecraft:long_poison\"}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.3
+                                }
+                            ]
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{Potion:\"minecraft:strong_poison\"}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.3
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "splash_potion",
+                    "entryName": "vanilla_splash_poison_potion",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_nbt",
+                            "tag": "{Potion:\"minecraft:poison\"}"
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{Potion:\"minecraft:long_poison\"}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.3
+                                }
+                            ]
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{Potion:\"minecraft:strong_poison\"}",
+                            "conditions": [
+                                {
+                                    "condition": "random_chance",
+                                    "chance": 0.3
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
