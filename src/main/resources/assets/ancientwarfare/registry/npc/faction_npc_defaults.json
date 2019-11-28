@@ -14,7 +14,6 @@
             "burns_in_sun": false,
             "horse_entity": "net.minecraft.entity.passive.EntityHorse"
         },
-        "loot_table": "ancientwarfare:entities/faction_npc",
         "height": {
             "min": 1.7,
             "max": 1.8
@@ -28,7 +27,8 @@
                 "experience_drop": 20,
                 "equipment": {
                     "mainhand": "minecraft:iron_sword"
-                }
+                },
+                "loot_table": "ancientwarfare:entities/soldier"
             },
             "soldier.elite": {
                 "attributes": {
@@ -39,7 +39,8 @@
                 "experience_drop": 30,
                 "equipment": {
                     "mainhand": "minecraft:iron_sword"
-                }
+                },
+                "loot_table": "ancientwarfare:entities/soldier_elite"
             },
             "archer": {
                 "attributes": {
@@ -60,7 +61,8 @@
                 "experience_drop": 30,
                 "equipment": {
                     "mainhand": "minecraft:bow"
-                }
+                },
+                "loot_table": "ancientwarfare:entities/archer"
             },
             "cavalry": {
                 "attributes": {
@@ -70,7 +72,8 @@
                 "experience_drop": 40,
                 "equipment": {
                     "mainhand": "minecraft:iron_sword"
-                }
+                },
+                "loot_table": "ancientwarfare:entities/cavalry"
             },
             "mounted_archer": {
                 "attributes": {
@@ -79,7 +82,8 @@
                 "experience_drop": 30,
                 "equipment": {
                     "mainhand": "minecraft:bow"
-                }
+                },
+                "loot_table": "ancientwarfare:entities/mounted_archer"
             },
             "leader": {
                 "attributes": {
@@ -89,7 +93,8 @@
                 "experience_drop": 50,
                 "equipment": {
                     "mainhand": "minecraft:diamond_sword"
-                }
+                },
+                "loot_table": "ancientwarfare:entities/leader"
             },
             "leader.elite": {
                 "attributes": {
@@ -99,7 +104,8 @@
                 "experience_drop": 60,
                 "equipment": {
                     "mainhand": "minecraft:diamond_sword"
-                }
+                },
+                "loot_table": "ancientwarfare:entities/leader_elite"
             },
             "siege_engineer": {
                 "attributes": {
@@ -109,7 +115,8 @@
                 "experience_drop": 30,
                 "equipment": {
                     "mainhand": "minecraft:air"
-                }
+                },
+                "loot_table": "ancientwarfare:entities/siege_engineer"
             },
             "priest": {
                 "attributes": {
@@ -120,7 +127,8 @@
                 "experience_drop": 40,
                 "equipment": {
                     "mainhand": "minecraft:book"
-                }
+                },
+                "loot_table": "ancientwarfare:entities/priest"
             },
             "bard": {
                 "attributes": {
@@ -129,7 +137,8 @@
                 "equipment": {
                     "mainhand": "ancientwarfarenpc:bard_instrument"
                 },
-                "can_break_doors": false
+                "can_break_doors": false,
+                "loot_table": "minecraft:empty"
             },
             "trader": {
                 "attributes": {
@@ -139,7 +148,8 @@
                 "equipment": {
                     "mainhand": "minecraft:book"
                 },
-                "can_break_doors": false
+                "can_break_doors": false,
+                "loot_table": "minecraft:empty"
             },
             "civilian.female": {
                 "attributes": {
@@ -149,7 +159,8 @@
                 "equipment": {
                     "mainhand": "minecraft:air"
                 },
-                "can_break_doors": false
+                "can_break_doors": false,
+                "loot_table": "minecraft:empty"
             },
             "civilian.male": {
                 "attributes": {
@@ -159,7 +170,8 @@
                 "equipment": {
                     "mainhand": "minecraft:air"
                 },
-                "can_break_doors": false
+                "can_break_doors": false,
+                "loot_table": "minecraft:empty"
             }
         }
     },
