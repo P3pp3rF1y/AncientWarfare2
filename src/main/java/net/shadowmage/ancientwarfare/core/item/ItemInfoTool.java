@@ -28,6 +28,7 @@ import java.util.Map;
 public class ItemInfoTool extends ItemBaseCore {
 	public ItemInfoTool() {
 		super("info_tool");
+		setMaxStackSize(1);
 	}
 
 	@Override

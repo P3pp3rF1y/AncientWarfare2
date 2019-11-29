@@ -27,6 +27,7 @@ public class ItemConstructionTool extends ItemBaseStructure implements IItemKeyI
 
 	public ItemConstructionTool(String name) {
 		super(name);
+		setMaxStackSize(1);
 	}
 
 	@Override

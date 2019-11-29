@@ -17,6 +17,7 @@ public class ItemConstructionToolLakes extends ItemBaseStructure {
 
 	public ItemConstructionToolLakes(String name) {
 		super(name);
+		setMaxStackSize(1);
 	}
 
 	@Override

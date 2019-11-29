@@ -93,8 +93,8 @@
                 },
                 {
                     "type": "item",
-                    "name": "ancientwarfarenpc:buffloka_shield",
-                    "entryName": "buffloka_shield",
+                    "name": "ancientwarfarenpc:shield_buffloka",
+                    "entryName": "shield_buffloka",
                     "weight": 3,
                     "functions": [
                         {

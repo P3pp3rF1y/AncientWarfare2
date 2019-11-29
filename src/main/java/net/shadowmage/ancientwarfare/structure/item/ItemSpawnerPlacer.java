@@ -38,6 +38,7 @@ public class ItemSpawnerPlacer extends ItemBaseStructure implements IItemKeyInte
 
 	public ItemSpawnerPlacer(String name) {
 		super(name);
+		setMaxStackSize(1);
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 
