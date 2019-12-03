@@ -6,6 +6,7 @@
 !releases
 !src
 !code_format
+!libs
 
 !.gitignore
 !.gitattributes
