@@ -49,6 +49,9 @@ repositories {
     maven {
         url 'http://minecraft.curseforge.com/api/maven/'
     }
+    flatDir {
+        dirs 'libs'
+    }
 }
 
 minecraft{
