@@ -80,9 +80,7 @@ public class ItemStructureBuilder extends ItemBaseStructure implements IItemKeyI
 			EnumFacing facing = buildPos.get().getSecond();
 
 			StructureBuilder builder = new StructureBuilder(player.world, template.get(), facing, hit);
-			builder.getTemplate().getValidationSettings().preGeneration(player.world, hit, facing, builder.getTemplate(), builder.getBoundingBox());
-			builder.instantConstruction();
-			builder.getTemplate().getValidationSettings().postGeneration(player.world, hit, builder.getBoundingBox(), builder.getTemplate());
+			buildStructure(player, hit, facing, builder);
 			removeLockPosition(stack);
 			if (!player.capabilities.isCreativeMode) {
 				stack.shrink(1);
@@ -90,6 +88,10 @@ public class ItemStructureBuilder extends ItemBaseStructure implements IItemKeyI
 		} else {
 			player.sendMessage(new TextComponentTranslation("guistrings.structure.no_selection"));
 		}
+	}
+
+	protected void buildStructure(EntityPlayer player, BlockPos hit, EnumFacing facing, StructureBuilder builder) {
+		builder.instantConstruction();
 	}
 
 	@Override

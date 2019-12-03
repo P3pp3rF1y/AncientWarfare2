@@ -34,21 +34,6 @@
                             }
                         }
                     ]
-                },
-                {
-                    "type": "item",
-                    "name": "harvestcraft:flouritem",
-                    "entryName": "harvestcraft_flouritem",
-                    "weight": 6,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 6,
-                                "max": 12
-                            }
-                        }
-                    ]
                 }
             ]
         }

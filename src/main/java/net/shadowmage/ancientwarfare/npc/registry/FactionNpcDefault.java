@@ -30,7 +30,7 @@ public class FactionNpcDefault extends NpcDefault {
 		this.lootTable = lootTable;
 		this.heightRange = heightRange;
 		this.thinness = thinness;
-		if (!LootTableList.getAll().contains(lootTable)) {
+		if (lootTable != null && !LootTableList.getAll().contains(lootTable)) {
 			LootTableList.register(lootTable);
 		}
 	}
