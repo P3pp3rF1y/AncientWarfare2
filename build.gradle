@@ -33,10 +33,6 @@ repositories {
         url = "http://maven.covers1624.net"
     }
     maven {
-        name = "ChickenBones Maven"
-        url = "http://chickenbones.net/maven/"
-    }
-    maven {
         name "LatvianModder Ivy"
         url = "https://maven.latmod.com/"
     }
