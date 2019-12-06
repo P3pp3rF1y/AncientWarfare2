@@ -1,0 +1,26 @@
+{
+    "pools": [
+        {
+            "name": "coins",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "loot_table",
+                    "name": "ancientwarfare:entities/archer_elite",
+                    "weight": 1
+                }
+            ]
+        },
+        {
+            "name": "stray_drops",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "loot_table",
+                    "name": "minecraft:entities/stray",
+                    "weight": 1
+                }
+            ]
+        }
+    ]
+}

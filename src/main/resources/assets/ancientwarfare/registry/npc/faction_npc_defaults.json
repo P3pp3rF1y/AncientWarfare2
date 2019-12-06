@@ -1258,43 +1258,59 @@
             "npc_subtypes": {
                 "soldier": {
                     "additional_attributes": {
-                        "burns_in_sun": true
-                    }
+                        "burns_in_sun": true,
+                        "undead": true
+                },
+                    "loot_table": "ancientwarfare:entities/undead_soldier"
                 },
                 "soldier.elite": {
                     "equipment": {
                         "mainhand": "ancientwarfarenpc:scythe"
                     },
                     "additional_attributes": {
-                        "burns_in_sun": true
-                    }
+                        "burns_in_sun": true,
+                        "undead": true
+                },
+                    "loot_table": "ancientwarfare:entities/undead_soldier_elite"
                 },
                 "archer": {
+                    "thinness": 0.9,
                     "additional_attributes": {
-                        "burns_in_sun": true
-                    }
+                        "burns_in_sun": true,
+                        "undead": true
+                },
+                    "loot_table": "ancientwarfare:entities/undead_archer"
                 },
                 "archer.elite": {
+                    "thinness": 0.9,
                     "additional_attributes": {
-                        "burns_in_sun": true
-                    }
+                        "burns_in_sun": true,
+                        "undead": true
+                },
+                    "loot_table": "ancientwarfare:entities/undead_archer_elite"
                 },
                 "cavalry": {
                     "additional_attributes": {
                         "burns_in_sun": true,
+                        "undead": true,
                         "horse_entity": "net.minecraft.entity.passive.EntitySkeletonHorse"
-                    }
+                },
+                    "loot_table": "ancientwarfare:entities/undead_cavalry"
                 },
                 "mounted_archer": {
                     "additional_attributes": {
                         "burns_in_sun": true,
+                        "undead": true,
                         "horse_entity": "net.minecraft.entity.passive.EntitySkeletonHorse"
-                    }
+                },
+                    "loot_table": "ancientwarfare:entities/undead_mounted_archer"
                 },
                 "leader": {
                     "additional_attributes": {
-                        "burns_in_sun": true
-                    }
+                        "burns_in_sun": true,
+                        "undead": true
+                },
+                    "loot_table": "ancientwarfare:entities/undead_leader"
                 },
                 "leader.elite": {
                     "attributes": {
@@ -1304,12 +1320,15 @@
                         "mainhand": "ancientwarfarenpc:death_scythe"
                     },
                     "additional_attributes": {
-                        "burns_in_sun": true
-                    }
+                        "burns_in_sun": true,
+                        "undead": true
+                },
+                    "loot_table": "ancientwarfare:entities/undead_leader_elite"
                 },
                 "siege_engineer": {
                     "additional_attributes": {
-                        "burns_in_sun": true
+                        "burns_in_sun": true,
+                        "undead": true
                     }
                 },
                 "priest": {
@@ -1317,12 +1336,15 @@
                         "mainhand": "minecraft:skull"
                     },
                     "additional_attributes": {
-                        "burns_in_sun": true
-                    }
+                        "burns_in_sun": true,
+                        "undead": true
+                },
+                    "loot_table": "ancientwarfare:entities/undead_priest"
                 },
                 "bard": {
                     "additional_attributes": {
-                        "burns_in_sun": true
+                        "burns_in_sun": true,
+                        "undead": true
                     }
                 },
                 "trader": {
@@ -1330,7 +1352,8 @@
                         "mainhand": "minecraft:bone"
                     },
                     "additional_attributes": {
-                        "burns_in_sun": true
+                        "burns_in_sun": true,
+                        "undead": true
                     }
                 },
                 "civilian.female": {
@@ -1354,7 +1377,7 @@
                 },
                 "soldier.elite": {
                     "height": {
-                        "min": 2.0,
+                        "min": 2,
                         "max": 2.2
                     },
                     "thinness": 1.1,
