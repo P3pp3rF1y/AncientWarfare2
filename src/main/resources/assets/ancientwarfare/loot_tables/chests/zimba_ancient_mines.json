@@ -121,20 +121,6 @@
                 },
                 {
                     "type": "item",
-                    "name": "diamond",
-                    "weight": 5,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 5,
-                                "max": 10
-                            }
-                        }
-                    ]
-                },
-                {
-                    "type": "item",
                     "name": "ancientwarfarenpc:shield_tribal_1",
                     "weight": 3,
                     "functions": [
