@@ -1,0 +1,26 @@
+{
+    "pools": [
+        {
+            "name": "coins",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "loot_table",
+                    "name": "ancientwarfare:entities/archer",
+                    "weight": 1
+                }
+            ]
+        },
+        {
+            "name": "skeleton_drops",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "loot_table",
+                    "name": "minecraft:entities/skeleton",
+                    "weight": 1
+                }
+            ]
+        }
+    ]
+}

@@ -98,51 +98,6 @@
                 },
                 {
                     "type": "item",
-                    "name": "rustic:magic_resistance",
-                    "entryName": "rustic_magic_resistance",
-                    "weight": 1,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 2
-                            }
-                        }
-                    ]
-                },
-                {
-                    "type": "item",
-                    "name": "simplytea:caffeinated",
-                    "EntryName": "simplytea_caffeinated",
-                    "weight": 1,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 2
-                            }
-                        }
-                    ]
-                },
-                {
-                    "type": "item",
-                    "name": "simplytea:restful",
-                    "EntryName": "simplytea_restful",
-                    "weight": 1,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 2
-                            }
-                        }
-                    ]
-                },
-                {
-                    "type": "item",
                     "name": "golden_carrot",
                     "weight": 3,
                     "functions": [
@@ -165,20 +120,6 @@
                             "count": {
                                 "min": 2,
                                 "max": 6
-                            }
-                        }
-                    ]
-                },
-                {
-                    "type": "item",
-                    "name": "mowziesmobs:poison_resist",
-                    "weight": 3,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 2
                             }
                         }
                     ]
