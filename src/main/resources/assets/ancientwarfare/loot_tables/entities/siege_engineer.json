@@ -1,7 +1,7 @@
 {
     "pools": [
         {
-            "name": "siege_engineer",
+            "name": "siege_engineer_coins",
             "rolls": 1,
             "entries": [
                 {
@@ -20,6 +20,177 @@
                         {
                             "function": "set_nbt",
                             "tag": "{metal:\"gold\"}"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "siege_engineer_ammo",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "loot_table",
+                    "name": "ancientwarfare:chests/ammo_ballista",
+                    "entryName": "ballista",
+                    "weight": 999,
+                    "conditions": [
+                        {
+                            "condition": "entity_properties",
+                            "entity": "this",
+                            "properties": {
+                                "ancientwarfarenpc:rides_vehicle": "ballista"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "loot_table",
+                    "name": "ancientwarfare:chests/ammo_catapult_trebuchet",
+                    "entryName": "ammo_catapult",
+                    "weight": 999,
+                    "conditions": [
+                        {
+                            "condition": "entity_properties",
+                            "entity": "this",
+                            "properties": {
+                                "ancientwarfarenpc:rides_vehicle": "catapult"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "loot_table",
+                    "name": "ancientwarfare:chests/ammo_catapult_trebuchet",
+                    "entryName": "ammo_trebuchet",
+                    "weight": 999,
+                    "conditions": [
+                        {
+                            "condition": "entity_properties",
+                            "entity": "this",
+                            "properties": {
+                                "ancientwarfarenpc:rides_vehicle": "trebuchet"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "loot_table",
+                    "name": "ancientwarfare:chests/ammo_cannon",
+                    "entryName": "cannon",
+                    "weight": 999,
+                    "conditions": [
+                        {
+                            "condition": "entity_properties",
+                            "entity": "this",
+                            "properties": {
+                                "ancientwarfarenpc:rides_vehicle": "cannon"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "loot_table",
+                    "name": "ancientwarfare:chests/ammo_hwacha",
+                    "entryName": "hwacha",
+                    "weight": 999,
+                    "conditions": [
+                        {
+                            "condition": "entity_properties",
+                            "entity": "this",
+                            "properties": {
+                                "ancientwarfarenpc:rides_vehicle": "hwacha"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfarevehicle:explosive_charge",
+                    "entryName": "no_vehicle_explosive_charge",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 6
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfarevehicle:iron_casing",
+                    "entryName": "no_vehicle_iron_casing",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 4
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfarevehicle:cluster_charge",
+                    "entryName": "no_vehicle_cluster_charge",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 4
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfarevehicle:rocket_charge",
+                    "entryName": "no_vehicle_rocket_charge",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 4
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfarevehicle:flame_charge",
+                    "entryName": "no_vehicle_flame_charge",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 4
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfarevehicle:napalm_charge",
+                    "entryName": "no_vehicle_napalm_charge",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
                         }
                     ]
                 }
