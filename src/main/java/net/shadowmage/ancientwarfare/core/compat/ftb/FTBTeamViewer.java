@@ -56,7 +56,7 @@ public class FTBTeamViewer implements ITeamViewer {
 		}
 
 		ForgeTeam team = player.team;
-		return team == null ? Collections.emptySet() : Collections.singleton(new ResourceLocation(FTBLIB_MOD_ID, team.getName()));
+		return team == null ? Collections.emptySet() : Collections.singleton(new ResourceLocation(FTBLIB_MOD_ID, team.getId()));
 	}
 
 	@Override
