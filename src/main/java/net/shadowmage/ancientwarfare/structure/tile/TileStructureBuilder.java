@@ -30,7 +30,7 @@ public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IO
 	private static final String BUILDER_TAG = "builder";
 	private static final String BB_MIN_TAG = "bbMin";
 	private static final String BB_MAX_TAG = "bbMax";
-	private Owner owner;
+	private Owner owner = Owner.EMPTY;
 
 	private StructureBuilderTicked builder;
 	private boolean shouldRemove = false;
