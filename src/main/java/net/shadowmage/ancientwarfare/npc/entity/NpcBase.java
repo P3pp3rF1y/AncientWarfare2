@@ -966,6 +966,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		if (tag.hasKey(FOUND_BED_TAG))
 			foundBed = tag.getBoolean(FOUND_BED_TAG);
 
+		originalWidth = tag.getFloat("originalWidth");
+		originalHeight = tag.getFloat("originalHeight");
+
 		readBaseTags(tag);
 		onWeaponInventoryChanged();
 	}
@@ -989,6 +992,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		BlockPos bedPos = getBedPosition();
 		tag.setLong(BED_POS_TAG, bedPos.toLong());
 		tag.setBoolean(FOUND_BED_TAG, foundBed);
+		tag.setFloat("originalWidth", originalWidth);
+		tag.setFloat("originalHeight", originalHeight);
 
 		writeBaseTags(tag);
 	}
