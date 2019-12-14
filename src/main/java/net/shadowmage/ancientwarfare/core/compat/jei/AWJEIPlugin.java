@@ -6,6 +6,7 @@ import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.ISubtypeRegistry;
 import mezz.jei.api.JEIPlugin;
+import mezz.jei.api.ingredients.IIngredientBlacklist;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import mezz.jei.api.recipe.transfer.IRecipeTransferRegistry;
@@ -25,6 +26,7 @@ import net.shadowmage.ancientwarfare.npc.init.AWNPCItems;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureItems;
 import net.shadowmage.ancientwarfare.vehicle.init.AWVehicleItems;
+import net.shadowmage.ancientwarfare.vehicle.registry.AmmoRegistry;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -52,6 +54,16 @@ public class AWJEIPlugin implements IModPlugin {
 
 	@Override
 	public void register(IModRegistry registry) {
+		// Blacklist exclusions from the JEI inventory
+		IIngredientBlacklist blackList = registry.getJeiHelpers().getIngredientBlacklist();
+		blackList.addIngredientToBlacklist(new ItemStack(AmmoRegistry.getItemForAmmo(AmmoRegistry.ammoBallShot)));
+		blackList.addIngredientToBlacklist(new ItemStack(AmmoRegistry.getItemForAmmo(AmmoRegistry.ammoBallIronShot)));
+		blackList.addIngredientToBlacklist(new ItemStack(AmmoRegistry.getItemForAmmo(AmmoRegistry.ammoArrow)));
+		blackList.addIngredientToBlacklist(new ItemStack(AmmoRegistry.getItemForAmmo(AmmoRegistry.ammoArrowFlame)));
+		blackList.addIngredientToBlacklist(new ItemStack(AmmoRegistry.getItemForAmmo(AmmoRegistry.ammoArrowIron)));
+		blackList.addIngredientToBlacklist(new ItemStack(AmmoRegistry.getItemForAmmo(AmmoRegistry.ammoArrowIronFlame)));
+
+
 		List<ResearchRecipeWrapper> shapedResearchRecipes = AWCraftingManager.getRecipes().stream().filter(r -> r instanceof ShapedResearchRecipe).map(r -> new ShapedResearchRecipeWrapper(registry.getJeiHelpers(), (ShapedResearchRecipe) r)).collect(Collectors.toList());
 		registry.addRecipes(shapedResearchRecipes, ShapedResearchRecipeCategory.UID);
 

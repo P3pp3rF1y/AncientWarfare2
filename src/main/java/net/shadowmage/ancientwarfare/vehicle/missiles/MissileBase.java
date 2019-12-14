@@ -75,7 +75,7 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 		}
 		this.prevRotationPitch = this.rotationPitch;
 		this.prevRotationYaw = this.rotationYaw;
-		if (this.ammoType.isRocket() || this.ammoType.isTorpedo())//use launch power to determine rocket burn time...
+		if (this.ammoType.isRocket())//use launch power to determine rocket burn time...
 		{
 			float temp = MathHelper.sqrt(mx * mx + my * my + mz * mz);
 			this.rocketBurnTime = (int) (temp * 20.f * AmmoHwachaRocket.BURN_TIME_FACTOR);
@@ -152,9 +152,6 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 		this.onMovementTick();
 		if (!this.world.isRemote) {
 			if (this.ticksExisted > 6000)//5 min timer max for missiles...
-			{
-				this.setDead();
-			} else if (this.ammoType.isTorpedo() && this.ticksExisted > 400)//and much shorter for torpedoes, 10 second lifetime
 			{
 				this.setDead();
 			}
@@ -306,28 +303,6 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 				this.motionZ += mZ;
 				if (this.world.isRemote) {
 					this.world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
-				}
-			} else if (this.ammoType.isTorpedo()) {
-				if (this.rocketBurnTime > 0) {
-					this.rocketBurnTime--;
-					this.motionX += mX;
-					this.motionY += mY;
-					this.motionZ += mZ;
-				}
-				if (this.world.isRemote && this.inWater) {
-					if (this.inWater) {
-						this.world.spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
-					} else {
-						this.world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
-					}
-				}
-				if (!this.isInWater()) {
-					this.motionY -= (double) this.ammoType.getGravityFactor();
-				} else {
-					this.motionY *= 0.45f;
-					if (Math.abs(this.motionY) < 0.001) {
-						this.motionY = 0.f;
-					}
 				}
 			} else {
 				this.motionY -= (double) this.ammoType.getGravityFactor();

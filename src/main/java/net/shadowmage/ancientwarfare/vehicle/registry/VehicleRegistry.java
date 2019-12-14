@@ -23,8 +23,6 @@ package net.shadowmage.ancientwarfare.vehicle.registry;
 
 import net.shadowmage.ancientwarfare.vehicle.entity.IVehicleType;
 import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleType;
-import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeAirBomber;
-import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeAirInterceptor;
 import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeBallistaMobile;
 import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeBallistaMobileTurret;
 import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeBallistaStand;
@@ -41,9 +39,7 @@ import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeCatapultMob
 import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeCatapultStandFixed;
 import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeCatapultStandTurret;
 import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeChestCart;
-import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeHelicopter;
 import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeHwacha;
-import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeSubmarine;
 import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeTrebuchetLarge;
 import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeTrebuchetMobileFixed;
 import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeTrebuchetStandFixed;
@@ -82,12 +78,6 @@ public class VehicleRegistry {
 	public static final IVehicleType BOAT_BALLISTA = new VehicleTypeBoatBallista(18);
 	public static final IVehicleType BOAT_CATAPULT = new VehicleTypeBoatCatapult(19);
 	public static final IVehicleType BOAT_TRANSPORT = new VehicleTypeBoatTransport(20);
-
-	public static final IVehicleType AIR_BOMBER = new VehicleTypeAirBomber(21);
-	public static final IVehicleType AIR_FIGHTER = new VehicleTypeAirInterceptor(22);
-	public static final IVehicleType AIR_HELICOPTER = new VehicleTypeHelicopter(23);
-
-	public static final IVehicleType SUBMARINE_TEST = new VehicleTypeSubmarine(24);
 
 	private VehicleRegistry() {
 	}
