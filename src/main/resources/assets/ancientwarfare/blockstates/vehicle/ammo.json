@@ -158,22 +158,22 @@
             },
             "ammo_iron_shot_5_10": {
                 "textures": {
-                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_iron"
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_iron_shot_5_10"
                 }
             },
             "ammo_iron_shot_10_15": {
                 "textures": {
-                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_iron"
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_iron_shot_10_15"
                 }
             },
             "ammo_iron_shot_15_30": {
                 "textures": {
-                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_iron"
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_iron_shot_15_30"
                 }
             },
             "ammo_iron_shot_25_45": {
                 "textures": {
-                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_iron"
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_iron_shot_25_45"
                 }
             },
             "ammo_canister_shot_5": {
