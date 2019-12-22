@@ -24,7 +24,7 @@ public class ItemArmor extends ItemBaseVehicle {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(I18n.format(tooltipName));
 	}
 

@@ -16,17 +16,20 @@ import java.util.List;
 
 public class ItemAmmo extends ItemBaseVehicle {
 	private String tooltipName;
+	private String tooltipVehicleList;
 
 	public ItemAmmo(ResourceLocation registryName) {
 		super(registryName.getResourcePath());
 
 		tooltipName = "item." + registryName.getResourcePath() + ".tooltip";
+		tooltipVehicleList = "item." + registryName.getResourcePath() + ".tooltipVehicleList";
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(I18n.format(tooltipName));
+		tooltip.add(I18n.format(tooltipVehicleList));
 	}
 
 	@Override

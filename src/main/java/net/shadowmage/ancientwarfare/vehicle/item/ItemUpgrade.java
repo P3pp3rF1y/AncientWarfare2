@@ -16,16 +16,19 @@ import java.util.List;
 
 public class ItemUpgrade extends ItemBaseVehicle {
 	private String tooltipName;
+	private String vehicleUpgradeTooltipName;
 
 	public ItemUpgrade(ResourceLocation registryName) {
 		super(registryName.getResourcePath());
 		tooltipName = "item." + registryName.getResourcePath() + ".tooltip";
+		vehicleUpgradeTooltipName = "item.vehicle_upgrade_tooltip";
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(I18n.format(tooltipName));
+		tooltip.add(I18n.format(vehicleUpgradeTooltipName));
 	}
 
 	@Override
