@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.core.owner;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -44,11 +45,16 @@ public class Owner {
 	}
 
 	public boolean isOwnerOrSameTeamOrFriend(@Nullable Entity entity) {
+		// check our own implementation of the ownable entities
 		if (entity instanceof IOwnable) {
 			Owner owner = ((IOwnable) entity).getOwner();
 			return isOwnerOrSameTeamOrFriend(entity.world, owner.getUUID(), owner.getName());
 		}
-
+		// check if entity implements vanilla interface if the entity is ownable & player is the owner
+		if (entity instanceof IEntityOwnable && ((IEntityOwnable) entity).getOwner() != null) {
+			Entity owner = ((IEntityOwnable) entity).getOwner();
+			return isOwnerOrSameTeamOrFriend(entity.world, owner.getUniqueID(), owner.getName());
+		}
 		return entity != null && isOwnerOrSameTeamOrFriend(entity.world, entity.getUniqueID(), entity.getName());
 	}
 
