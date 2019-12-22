@@ -36,8 +36,6 @@ public class RenderOverlayAdvanced {
 		} else if (vehicle.ammoHelper.getCurrentAmmoType() != null && vehicle.ammoHelper.getCurrentAmmoType().isRocket()) {
 			renderOverlay(vehicle, player, partialTick,
 					(rOffset, speed, accVec, gravity) -> drawRocketFlightPath(vehicle, player, rOffset, speed, accVec, gravity));
-		} else if (vehicle.ammoHelper.getCurrentAmmoType() != null && vehicle.ammoHelper.getCurrentAmmoType().isTorpedo()) {
-			renderOverlay(vehicle, player, partialTick, (rOffset, speed, accVec, gravity) -> drawTorpedoPath(vehicle, rOffset, speed, accVec));
 		} else {
 			renderOverlay(vehicle, player, partialTick, (rOffset, speed, accVec, gravity) -> drawNormalTrajectory(vehicle, player, rOffset, gravity, accVec));
 		}
@@ -87,28 +85,6 @@ public class RenderOverlayAdvanced {
 
 		dynamicRenderer.render(renderOffset, speed, accelerationVector, gravity);
 		GlStateManager.glEnd();
-	}
-
-	private static void drawTorpedoPath(VehicleBase vehicle, Vec3d renderOffset, double speed, Vec3d accelerationVector) {
-		float xAcc = (float) (accelerationVector.x / speed) * AmmoHwachaRocket.ACCELERATION_FACTOR;
-		float yAcc = (float) (accelerationVector.y / speed) * AmmoHwachaRocket.ACCELERATION_FACTOR;
-		float zAcc = (float) (accelerationVector.z / speed) * AmmoHwachaRocket.ACCELERATION_FACTOR;
-		Vec3d adjustedAccelerationVector = new Vec3d(xAcc, yAcc, zAcc);
-		float dist = 0;
-
-		Vec3d offset = vehicle.getMissileOffset();
-		double x2 = renderOffset.x + offset.x;
-		double y2 = renderOffset.y + offset.y;
-		double z2 = renderOffset.z + offset.z;
-
-		while (dist < 100 * 100) {
-			GL11.glVertex3d(x2, y2, z2);
-			x2 += adjustedAccelerationVector.x;
-			z2 += adjustedAccelerationVector.z;
-			y2 += adjustedAccelerationVector.y;
-			dist += x2 * x2 + z2 * z2 + y2 * y2;
-			GL11.glVertex3d(x2, y2, z2);
-		}
 	}
 
 	private static void drawRocketFlightPath(VehicleBase vehicle, EntityPlayer player, Vec3d renderOffset, double speed, Vec3d accelerationVector,

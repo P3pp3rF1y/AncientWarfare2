@@ -75,8 +75,6 @@ public interface IAmmo {
 
 	boolean isAvailableAsItem();
 
-	boolean isTorpedo();
-
 	float entityProximity();
 
 	float groundProximity();

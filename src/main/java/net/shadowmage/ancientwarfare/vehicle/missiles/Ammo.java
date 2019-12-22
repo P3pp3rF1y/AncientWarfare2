@@ -33,7 +33,6 @@ public abstract class Ammo implements IAmmo {
 	boolean isProximityAmmo = false;
 	boolean isCraftable = true;
 	boolean isEnabled = true;
-	boolean isTorpedo = false;
 	float groundProximity = 0.f;
 	float entityProximity = 0.f;
 	float ammoWeight = 10;
@@ -80,11 +79,6 @@ public abstract class Ammo implements IAmmo {
 	@Override
 	public void setEnabled(boolean val) {
 		this.isEnabled = val;
-	}
-
-	@Override
-	public boolean isTorpedo() {
-		return this.isTorpedo;
 	}
 
 	@Override

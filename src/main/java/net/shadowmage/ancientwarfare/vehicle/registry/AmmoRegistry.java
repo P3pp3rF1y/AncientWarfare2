@@ -27,9 +27,7 @@ import net.shadowmage.ancientwarfare.vehicle.missiles.AmmoIronBallShot;
 import net.shadowmage.ancientwarfare.vehicle.missiles.AmmoIronShot;
 import net.shadowmage.ancientwarfare.vehicle.missiles.AmmoNapalmShot;
 import net.shadowmage.ancientwarfare.vehicle.missiles.AmmoPebbleShot;
-import net.shadowmage.ancientwarfare.vehicle.missiles.AmmoSoldierArrow;
 import net.shadowmage.ancientwarfare.vehicle.missiles.AmmoStoneShot;
-import net.shadowmage.ancientwarfare.vehicle.missiles.AmmoTorpedo;
 import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
 
 import java.util.HashMap;
@@ -100,14 +98,6 @@ public class AmmoRegistry {
 	public static IAmmo ammoHwachaRocketFlame;
 	public static IAmmo ammoHwachaRocketExplosive;
 	public static IAmmo ammoHwachaRocketAirburst;
-	public static IAmmo ammoSoldierArrowWood;
-	public static IAmmo ammoSoldierArrowIron;
-	public static IAmmo ammoSoldierArrowWoodFlame;
-	public static IAmmo ammoSoldierArrowIronFlame;
-	public static IAmmo ammoTorpedo10;
-	public static IAmmo ammoTorpedo15;
-	public static IAmmo ammoTorpedo30;
-	public static IAmmo ammoTorpedo45;
 
 	private AmmoRegistry() {
 	}
@@ -171,14 +161,6 @@ public class AmmoRegistry {
 		ammoHwachaRocketFlame = registerAmmoType(new AmmoHwachaRocketFlame(), registry);
 		ammoHwachaRocketExplosive = registerAmmoType(new AmmoHwachaRocketExplosive(), registry);
 		ammoHwachaRocketAirburst = registerAmmoType(new AmmoHwachaRocketAirburst(), registry);
-		ammoSoldierArrowWood = registerAmmoType(new AmmoSoldierArrow(5, false), registry);
-		ammoSoldierArrowIron = registerAmmoType(new AmmoSoldierArrow(7, false), registry);
-		ammoSoldierArrowWoodFlame = registerAmmoType(new AmmoSoldierArrow(5, true), registry);
-		ammoSoldierArrowIronFlame = registerAmmoType(new AmmoSoldierArrow(7, true), registry);
-		ammoTorpedo10 = registerAmmoType(new AmmoTorpedo(10), registry);
-		ammoTorpedo15 = registerAmmoType(new AmmoTorpedo(15), registry);
-		ammoTorpedo30 = registerAmmoType(new AmmoTorpedo(30), registry);
-		ammoTorpedo45 = registerAmmoType(new AmmoTorpedo(45), registry);
 	}
 
 	private static IAmmo registerAmmoType(IAmmo ammo, IForgeRegistry<Item> registry) {

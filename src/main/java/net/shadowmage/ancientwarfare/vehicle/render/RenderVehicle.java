@@ -13,7 +13,6 @@ import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.entity.IVehicleType;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.registry.VehicleRegistry;
-import net.shadowmage.ancientwarfare.vehicle.render.vehicle.RenderAircraft;
 import net.shadowmage.ancientwarfare.vehicle.render.vehicle.RenderBallistaMobile;
 import net.shadowmage.ancientwarfare.vehicle.render.vehicle.RenderBallistaStand;
 import net.shadowmage.ancientwarfare.vehicle.render.vehicle.RenderBatteringRam;
@@ -28,9 +27,7 @@ import net.shadowmage.ancientwarfare.vehicle.render.vehicle.RenderCatapultMobile
 import net.shadowmage.ancientwarfare.vehicle.render.vehicle.RenderCatapultStandFixed;
 import net.shadowmage.ancientwarfare.vehicle.render.vehicle.RenderCatapultStandTurret;
 import net.shadowmage.ancientwarfare.vehicle.render.vehicle.RenderChestCart;
-import net.shadowmage.ancientwarfare.vehicle.render.vehicle.RenderHelicopter;
 import net.shadowmage.ancientwarfare.vehicle.render.vehicle.RenderHwacha;
-import net.shadowmage.ancientwarfare.vehicle.render.vehicle.RenderSubmarine;
 import net.shadowmage.ancientwarfare.vehicle.render.vehicle.RenderTrebuchetLarge;
 import net.shadowmage.ancientwarfare.vehicle.render.vehicle.RenderTrebuchetMobileFixed;
 import net.shadowmage.ancientwarfare.vehicle.render.vehicle.RenderTrebuchetStandFixed;
@@ -70,10 +67,6 @@ public class RenderVehicle extends Render<VehicleBase> {
 		vehicleRenders.put(VehicleRegistry.BOAT_BALLISTA, new RenderBoatBallista(renderManager));
 		vehicleRenders.put(VehicleRegistry.BOAT_CATAPULT, new RenderBoatCatapult(renderManager));
 		vehicleRenders.put(VehicleRegistry.BOAT_TRANSPORT, new RenderBoatTransport(renderManager));
-		vehicleRenders.put(VehicleRegistry.AIR_BOMBER, new RenderAircraft(renderManager));
-		vehicleRenders.put(VehicleRegistry.AIR_FIGHTER, new RenderAircraft(renderManager));
-		vehicleRenders.put(VehicleRegistry.AIR_HELICOPTER, new RenderHelicopter(renderManager));
-		vehicleRenders.put(VehicleRegistry.SUBMARINE_TEST, new RenderSubmarine(renderManager));
 	}
 
 	@Override

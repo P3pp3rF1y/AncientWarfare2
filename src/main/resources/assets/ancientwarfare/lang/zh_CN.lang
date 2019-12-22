@@ -1033,14 +1033,6 @@ item.ammo_hwacha_rocket_explosive.name=火箱车爆裂火箭
 item.ammo_hwacha_rocket_airburst.name=火箱车飞空火箭
 item.ammo_ball_shot.name=石质圆弹
 item.ammo_iron_ball_shot.name=铁质圆弹
-item.ammo_soldier_arrow_5.name=士兵箭
-item.ammo_soldier_arrow_7.name=士兵铁质箭
-item.ammo_soldier_arrow_5_flaming.name=士兵火焰箭
-item.ammo_soldier_arrow_7_flaming.name=士兵铁质火焰箭
-item.ammo_torpedo_10.name=10kg 鱼雷
-item.ammo_torpedo_15.name=15kg 鱼雷
-item.ammo_torpedo_30.name=30kg 鱼雷
-item.ammo_torpedo_45.name=45kg 鱼雷
 item.ammo_stone_shot_10.tooltip=10kg 石头
 item.ammo_stone_shot_15.tooltip=15kg 石头
 item.ammo_stone_shot_30.tooltip=30kg 石头
@@ -1095,14 +1087,6 @@ item.ammo_hwacha_rocket_explosive.tooltip=自推式爆炸箭头
 item.ammo_hwacha_rocket_airburst.tooltip=自推式，接近雷管
 item.ammo_ball_shot.tooltip=用于集簇弹药
 item.ammo_iron_ball_shot.tooltip=用于集簇弹药
-item.ammo_soldier_arrow_5.tooltip=士兵使用
-item.ammo_soldier_arrow_7.tooltip=士兵使用
-item.ammo_soldier_arrow_5_flaming.tooltip=士兵使用
-item.ammo_soldier_arrow_7_flaming.tooltip=士兵使用
-item.ammo_torpedo_10.tooltip=潜艇使用
-item.ammo_torpedo_15.tooltip=潜艇使用
-item.ammo_torpedo_30.tooltip=潜艇使用
-item.ammo_torpedo_45.tooltip=潜艇使用
 death.attack.AWMissile=%1$s被攻城器械击毙了
 death.attack.AWMissile.player=%1$s被%2$s用攻城器械击毙了
 
@@ -1122,7 +1106,6 @@ item.vehicleSpawner.tooltip.barrage=特殊：弹幕
 item.vehicleSpawner.tooltip.large=特殊：可使用大型弹药
 item.vehicleSpawner.tooltip.noweapon=没有武器
 item.vehicleSpawner.tooltip.boat=特殊：船
-item.vehicleSpawner.tooltip.submarine=特殊：潜艇
 
 # components
 item.flame_charge.name=未装填火药
