@@ -22,11 +22,12 @@ public class EntityVehicleProperty implements EntityProperty {
 	}
 
 	public boolean testProperty(Random random, Entity entityIn) {
-		if (entityIn instanceof IVehicleUser && (((IVehicleUser) entityIn).isRidingVehicle())) {
-			if (((IVehicleUser) entityIn).getVehicle().isPresent()) {
-				VehicleBase vehicle = ((IVehicleUser) entityIn).getVehicle().get();
+		if (entityIn instanceof IVehicleUser) {
+			IVehicleUser vehicleUserEntity = (IVehicleUser) entityIn;
+			if (vehicleUserEntity.isRidingVehicle() && vehicleUserEntity.getVehicle().isPresent()) {
+				VehicleBase vehicle = vehicleUserEntity.getVehicle().get();
 				String vehicleConfigName = vehicle.vehicleType.getConfigName();
-				return vehicleConfigName.contains(this.testVehicle);
+				return vehicleConfigName.contains(testVehicle);
 			}
 		}
 		return false;
