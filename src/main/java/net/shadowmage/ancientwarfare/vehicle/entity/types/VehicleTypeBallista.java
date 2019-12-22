@@ -4,11 +4,16 @@ import net.shadowmage.ancientwarfare.vehicle.VehicleVarHelpers.BallistaVarHelper
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.materials.VehicleMaterial;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
+import net.shadowmage.ancientwarfare.vehicle.init.AWVehicleSounds;
 import net.shadowmage.ancientwarfare.vehicle.registry.AmmoRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.ArmorRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.UpgradeRegistry;
 
+import java.util.Random;
+
 public abstract class VehicleTypeBallista extends VehicleType {
+
+	protected Random rand;
 
 	public VehicleTypeBallista(int typeNum) {
 		super(typeNum);
@@ -50,6 +55,7 @@ public abstract class VehicleTypeBallista extends VehicleType {
 		pitchAdjustable = true;
 		powerAdjustable = false;
 
+
 		/*
 		 * default values that should be overriden by ballista types...
 		 */
@@ -71,4 +77,13 @@ public abstract class VehicleTypeBallista extends VehicleType {
 		return new BallistaVarHelper(veh);
 	}
 
+	@Override
+	public void playReloadSound(VehicleBase vehicleBase) {
+		vehicleBase.playSound(AWVehicleSounds.BALLISTA_RELOAD, 1, 1);
+	}
+
+	@Override
+	public void playFiringSound(VehicleBase vehicleBase) {
+		vehicleBase.playSound(AWVehicleSounds.BALLISTA_LAUNCH, 6, 1);
+	}
 }

@@ -272,6 +272,7 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 			this.isFiring = true;
 			this.isLaunching = false;
 			this.isReloading = false;
+			vehicle.vehicleType.playFiringSound(vehicle);
 		}
 	}
 
@@ -302,6 +303,7 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 		this.isReloading = true;
 		this.isLaunching = false;
 		this.reloadingTicks = vehicle.currentReloadTicks;
+		vehicle.vehicleType.playReloadSound(vehicle);
 	}
 
 	public void handleFireUpdate() {

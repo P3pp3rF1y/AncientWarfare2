@@ -8,6 +8,7 @@ import net.shadowmage.ancientwarfare.vehicle.VehicleVarHelpers.BatteringRamVarHe
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.materials.VehicleMaterial;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
+import net.shadowmage.ancientwarfare.vehicle.init.AWVehicleSounds;
 import net.shadowmage.ancientwarfare.vehicle.registry.ArmorRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.UpgradeRegistry;
 
@@ -95,5 +96,10 @@ public class VehicleTypeBatteringRam extends VehicleType {
 		positions[5] = new BlockPos(blockHit.getX(), blockHit.getY() + 1, blockHit.getZ());
 		positions[6] = new BlockPos(blockHit.getX(), blockHit.getY(), blockHit.getZ() + 1);
 		return positions;
+	}
+
+	@Override
+	public void playFiringSound(VehicleBase vehicleBase) {
+		vehicleBase.playSound(AWVehicleSounds.BATTERING_RAM_LAUNCH, 2, 1);
 	}
 }

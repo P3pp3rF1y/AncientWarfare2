@@ -7,6 +7,7 @@ import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.materials.VehicleMaterial;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
+import net.shadowmage.ancientwarfare.vehicle.init.AWVehicleSounds;
 import net.shadowmage.ancientwarfare.vehicle.registry.AmmoRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.ArmorRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.UpgradeRegistry;
@@ -14,85 +15,85 @@ import net.shadowmage.ancientwarfare.vehicle.registry.UpgradeRegistry;
 public class VehicleTypeTrebuchet extends VehicleType {
 	public VehicleTypeTrebuchet(int typeNum) {
 		super(typeNum);
-		this.configName = "trebuchet_base";
-		this.vehicleMaterial = VehicleMaterial.materialWood;
-		this.materialCount = 8;
-		this.maxMissileWeight = 10.f;
+		configName = "trebuchet_base";
+		vehicleMaterial = VehicleMaterial.materialWood;
+		materialCount = 8;
+		maxMissileWeight = 10.f;
 
-		this.validAmmoTypes.add(AmmoRegistry.ammoStoneShot10);
-		this.validAmmoTypes.add(AmmoRegistry.ammoStoneShot15);
-		this.validAmmoTypes.add(AmmoRegistry.ammoFireShot10);
-		this.validAmmoTypes.add(AmmoRegistry.ammoFireShot15);
-		this.validAmmoTypes.add(AmmoRegistry.ammoPebbleShot10);
-		this.validAmmoTypes.add(AmmoRegistry.ammoPebbleShot15);
-		this.validAmmoTypes.add(AmmoRegistry.ammoClusterShot10);
-		this.validAmmoTypes.add(AmmoRegistry.ammoClusterShot15);
-		this.validAmmoTypes.add(AmmoRegistry.ammoExplosive10);
-		this.validAmmoTypes.add(AmmoRegistry.ammoExplosive15);
-		this.validAmmoTypes.add(AmmoRegistry.ammoHE10);
-		this.validAmmoTypes.add(AmmoRegistry.ammoHE15);
-		this.validAmmoTypes.add(AmmoRegistry.ammoNapalm10);
-		this.validAmmoTypes.add(AmmoRegistry.ammoNapalm15);
+		validAmmoTypes.add(AmmoRegistry.ammoStoneShot10);
+		validAmmoTypes.add(AmmoRegistry.ammoStoneShot15);
+		validAmmoTypes.add(AmmoRegistry.ammoFireShot10);
+		validAmmoTypes.add(AmmoRegistry.ammoFireShot15);
+		validAmmoTypes.add(AmmoRegistry.ammoPebbleShot10);
+		validAmmoTypes.add(AmmoRegistry.ammoPebbleShot15);
+		validAmmoTypes.add(AmmoRegistry.ammoClusterShot10);
+		validAmmoTypes.add(AmmoRegistry.ammoClusterShot15);
+		validAmmoTypes.add(AmmoRegistry.ammoExplosive10);
+		validAmmoTypes.add(AmmoRegistry.ammoExplosive15);
+		validAmmoTypes.add(AmmoRegistry.ammoHE10);
+		validAmmoTypes.add(AmmoRegistry.ammoHE15);
+		validAmmoTypes.add(AmmoRegistry.ammoNapalm10);
+		validAmmoTypes.add(AmmoRegistry.ammoNapalm15);
 
-		this.validAmmoTypes.add(AmmoRegistry.ammoArrow);
-		this.validAmmoTypes.add(AmmoRegistry.ammoArrowFlame);
-		this.validAmmoTypes.add(AmmoRegistry.ammoArrowIron);
-		this.validAmmoTypes.add(AmmoRegistry.ammoArrowIronFlame);
+		validAmmoTypes.add(AmmoRegistry.ammoArrow);
+		validAmmoTypes.add(AmmoRegistry.ammoArrowFlame);
+		validAmmoTypes.add(AmmoRegistry.ammoArrowIron);
+		validAmmoTypes.add(AmmoRegistry.ammoArrowIronFlame);
 
 		if (AWVehicleStatics.oversizeAmmoEnabled) {
-			this.validAmmoTypes.add(AmmoRegistry.ammoStoneShot30);
-			this.validAmmoTypes.add(AmmoRegistry.ammoStoneShot45);
-			this.validAmmoTypes.add(AmmoRegistry.ammoFireShot30);
-			this.validAmmoTypes.add(AmmoRegistry.ammoFireShot45);
-			this.validAmmoTypes.add(AmmoRegistry.ammoPebbleShot30);
-			this.validAmmoTypes.add(AmmoRegistry.ammoPebbleShot45);
-			this.validAmmoTypes.add(AmmoRegistry.ammoClusterShot30);
-			this.validAmmoTypes.add(AmmoRegistry.ammoClusterShot45);
-			this.validAmmoTypes.add(AmmoRegistry.ammoExplosive30);
-			this.validAmmoTypes.add(AmmoRegistry.ammoExplosive45);
-			this.validAmmoTypes.add(AmmoRegistry.ammoHE30);
-			this.validAmmoTypes.add(AmmoRegistry.ammoHE45);
+			validAmmoTypes.add(AmmoRegistry.ammoStoneShot30);
+			validAmmoTypes.add(AmmoRegistry.ammoStoneShot45);
+			validAmmoTypes.add(AmmoRegistry.ammoFireShot30);
+			validAmmoTypes.add(AmmoRegistry.ammoFireShot45);
+			validAmmoTypes.add(AmmoRegistry.ammoPebbleShot30);
+			validAmmoTypes.add(AmmoRegistry.ammoPebbleShot45);
+			validAmmoTypes.add(AmmoRegistry.ammoClusterShot30);
+			validAmmoTypes.add(AmmoRegistry.ammoClusterShot45);
+			validAmmoTypes.add(AmmoRegistry.ammoExplosive30);
+			validAmmoTypes.add(AmmoRegistry.ammoExplosive45);
+			validAmmoTypes.add(AmmoRegistry.ammoHE30);
+			validAmmoTypes.add(AmmoRegistry.ammoHE45);
 		}
 
-		this.ammoBySoldierRank.put(0, AmmoRegistry.ammoStoneShot10);
-		this.ammoBySoldierRank.put(1, AmmoRegistry.ammoStoneShot10);
-		this.ammoBySoldierRank.put(2, AmmoRegistry.ammoStoneShot10);
+		ammoBySoldierRank.put(0, AmmoRegistry.ammoStoneShot10);
+		ammoBySoldierRank.put(1, AmmoRegistry.ammoStoneShot10);
+		ammoBySoldierRank.put(2, AmmoRegistry.ammoStoneShot10);
 
-		this.validArmors.add(ArmorRegistry.armorStone);
-		this.validArmors.add(ArmorRegistry.armorIron);
-		this.validArmors.add(ArmorRegistry.armorObsidian);
+		validArmors.add(ArmorRegistry.armorStone);
+		validArmors.add(ArmorRegistry.armorIron);
+		validArmors.add(ArmorRegistry.armorObsidian);
 
-		this.validUpgrades.add(UpgradeRegistry.pitchDownUpgrade);
-		this.validUpgrades.add(UpgradeRegistry.pitchUpUpgrade);
-		this.validUpgrades.add(UpgradeRegistry.powerUpgrade);
-		this.validUpgrades.add(UpgradeRegistry.reloadUpgrade);
-		this.validUpgrades.add(UpgradeRegistry.aimUpgrade);
+		validUpgrades.add(UpgradeRegistry.pitchDownUpgrade);
+		validUpgrades.add(UpgradeRegistry.pitchUpUpgrade);
+		validUpgrades.add(UpgradeRegistry.powerUpgrade);
+		validUpgrades.add(UpgradeRegistry.reloadUpgrade);
+		validUpgrades.add(UpgradeRegistry.aimUpgrade);
 
-		this.displayName = "Trebuchet";
+		displayName = "Trebuchet";
 		//TODO fix display tooltip
 		//  this.displayTooltip.add("Trebuchet Firing Mechanism");
 		//  this.displayTooltip.add("Fixed-Emplacement");
 		//  this.displayTooltip.add("No Turret");
-		this.pitchAdjustable = false;
-		this.powerAdjustable = true;
-		this.yawAdjustable = false;
-		this.mountable = true;
-		this.combatEngine = true;
-		this.drivable = true;
-		this.riderSits = false;
-		this.riderMovesWithTurret = false;
-		this.baseForwardSpeed = 0.f;
-		this.baseStrafeSpeed = 0.5f;
-		this.ammoBaySize = 6;
-		this.armorBaySize = 3;
-		this.upgradeBaySize = 3;
-		this.storageBaySize = 0;
-		this.accuracy = 0.85f;
+		pitchAdjustable = false;
+		powerAdjustable = true;
+		yawAdjustable = false;
+		mountable = true;
+		combatEngine = true;
+		drivable = true;
+		riderSits = false;
+		riderMovesWithTurret = false;
+		baseForwardSpeed = 0.f;
+		baseStrafeSpeed = 0.5f;
+		ammoBaySize = 6;
+		armorBaySize = 3;
+		upgradeBaySize = 3;
+		storageBaySize = 0;
+		accuracy = 0.85f;
 
-		this.basePitchMax = 70.f;
-		this.basePitchMin = 70.f;
-		this.turretVerticalOffset = (34.f + 67.5f + 24.0f) * 0.0625f;
-		this.baseMissileVelocityMax = 40.f;
+		basePitchMax = 70.f;
+		basePitchMin = 70.f;
+		turretVerticalOffset = (34.f + 67.5f + 24.0f) * 0.0625f;
+		baseMissileVelocityMax = 40.f;
 	}
 
 	@Override
@@ -114,6 +115,16 @@ public class VehicleTypeTrebuchet extends VehicleType {
 	}
 
 	@Override
+	public void playFiringSound(VehicleBase vehicleBase) {
+		vehicleBase.playSound(AWVehicleSounds.TREBUCHET_LAUNCH, 6, 1);
+	}
+
+	@Override
+	public void playReloadSound(VehicleBase vehicleBase) {
+		vehicleBase.playSound(AWVehicleSounds.TREBUCHET_RELOAD, 2, 1);
+	}
+
+	@Override
 	public VehicleFiringVarsHelper getFiringVarsHelper(VehicleBase veh) {
 		return new TrebuchetVarHelper(veh);
 	}
@@ -131,7 +142,7 @@ public class VehicleTypeTrebuchet extends VehicleType {
 		@Override
 		public NBTTagCompound serializeNBT() {
 			NBTTagCompound tag = new NBTTagCompound();
-			tag.setFloat("aA", this.armAngle);
+			tag.setFloat("aA", armAngle);
 			tag.setFloat("aS", armSpeed);
 			tag.setFloat("sA", stringAngle);
 			tag.setFloat("sS", stringSpeed);
@@ -140,10 +151,10 @@ public class VehicleTypeTrebuchet extends VehicleType {
 
 		@Override
 		public void deserializeNBT(NBTTagCompound tag) {
-			this.armAngle = tag.getFloat("aA");
-			this.armSpeed = tag.getFloat("aS");
-			this.stringAngle = tag.getFloat("sA");
-			this.stringSpeed = tag.getFloat("sS");
+			armAngle = tag.getFloat("aA");
+			armSpeed = tag.getFloat("aS");
+			stringAngle = tag.getFloat("sA");
+			stringSpeed = tag.getFloat("sS");
 		}
 
 		@Override
