@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.npc;
 
+import net.minecraft.world.storage.loot.properties.EntityPropertyManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
@@ -38,6 +39,7 @@ import net.shadowmage.ancientwarfare.npc.container.ContainerTownHall;
 import net.shadowmage.ancientwarfare.npc.container.ContainerTradeOrder;
 import net.shadowmage.ancientwarfare.npc.container.ContainerUpkeepOrder;
 import net.shadowmage.ancientwarfare.npc.container.ContainerWorkOrder;
+import net.shadowmage.ancientwarfare.npc.entity.faction.attributes.EntityVehicleProperty;
 import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
 import net.shadowmage.ancientwarfare.npc.init.AWNPCEntities;
 import net.shadowmage.ancientwarfare.npc.init.AWNPCItems;
@@ -77,6 +79,7 @@ public class AncientWarfareNPC {
 	public void preInit(FMLPreInitializationEvent evt) {
 		statics = new AWNPCStatics("AncientWarfareNpc");
 
+		EntityPropertyManager.registerProperty(new EntityVehicleProperty.Serializer());
 		proxy.preInit();
 
 		MinecraftForge.EVENT_BUS.register(this);
