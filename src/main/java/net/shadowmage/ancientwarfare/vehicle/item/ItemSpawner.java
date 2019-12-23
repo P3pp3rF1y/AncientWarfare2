@@ -39,6 +39,7 @@ public class ItemSpawner extends ItemBaseVehicle {
 	public ItemSpawner() {
 		super("spawner");
 		setHasSubtypes(true);
+		maxStackSize = 1;
 	}
 
 	@Override
