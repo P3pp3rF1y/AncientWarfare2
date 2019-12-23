@@ -179,12 +179,12 @@ public class WorldGenStructureManager {
 	private StructureTemplate getWeightedRandomStructure(Random rng) {
 		int totalWeight = 0;
 		for (StructureTemplate t : trimmedPotentialStructures) {
-			totalWeight += t.getValidationSettings().getSelectionWeight();
+			totalWeight += t.getValidationSettings().getSelectionWeight() * t.getValidationSettings().getSelectionWeight();
 		}
 		int rnd = rng.nextInt(totalWeight + 1);
 		StructureTemplate toReturn = null;
 		for (StructureTemplate t : trimmedPotentialStructures) {
-			rnd -= t.getValidationSettings().getSelectionWeight();
+			rnd -= t.getValidationSettings().getSelectionWeight() * t.getValidationSettings().getSelectionWeight();
 			if (rnd <= 0) {
 				toReturn = t;
 				break;
