@@ -163,7 +163,10 @@ public abstract class NpcFaction extends NpcBase {
 		this.factionName = factionName;
 		FactionNpcDefault npcDefault = NpcDefaultsRegistry.getFactionNpcDefault(this);
 		applyFactionNpcSettings(npcDefault);
+		// do not apply the default equipment if the hasCustomEquipment tag was set to true
+		if (!getCustomEquipmentOverride()) {
 		npcDefault.applyEquipment(this);
+		}
 
 		Range<Float> heightRange = npcDefault.getHeightRange();
 		float newHeight = heightRange.getMinimum() + world.rand.nextFloat() * (heightRange.getMaximum() - heightRange.getMinimum());

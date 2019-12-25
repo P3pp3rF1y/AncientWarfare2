@@ -96,6 +96,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	private static final String ATTACK_DAMAGE_OVERRIDE_TAG = "attackDamageOverride";
 	private static final String ARMOR_VALUE_OVERRIDE_TAG = "armorValueOverride";
 	private static final String AI_ENABLED_TAG = "aiEnabled";
+	private static final String HAS_CUSTOM_EQUIPMENT_TAG = "hasCustomEquipment";
 	public static final int ORDER_SLOT = 6;
 	public static final int UPKEEP_SLOT = 7;
 
@@ -119,6 +120,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
 	private boolean aiEnabled = true;
 	public boolean doNotPursue = false; //if the npc should not pursue targets away from its position/route
+	private boolean hasCustomEquipment = false; //faction based only
 
 	private int attackDamage = -1;//faction based only
 	private int armorValue = -1;//faction based only
@@ -191,6 +193,14 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
 	public int getAttackDamageOverride() {
 		return attackDamage;
+	}
+
+	public void setCustomEquipmentOverride(boolean val) {
+		hasCustomEquipment = val;
+	}
+
+	public boolean getCustomEquipmentOverride() {
+		return hasCustomEquipment;
 	}
 
 	@Override
@@ -1032,6 +1042,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		if (tag.hasKey(DO_NOT_PURSUE)) {
 			setDoNotPursue(tag.getBoolean(DO_NOT_PURSUE));
 		}
+		if (tag.hasKey(HAS_CUSTOM_EQUIPMENT_TAG)) {
+			setCustomEquipmentOverride(tag.getBoolean(HAS_CUSTOM_EQUIPMENT_TAG));
+		}
 		setSkinSettings(NpcSkinSettings.deserializeNBT(tag.getCompoundTag("skinSettings")).minimizeData());
 		owner = Owner.deserializeFromNBT(tag);
 	}
@@ -1059,6 +1072,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		tag.setInteger(ARMOR_VALUE_OVERRIDE_TAG, armorValue);
 		tag.setBoolean(AI_ENABLED_TAG, aiEnabled);
 		tag.setBoolean(DO_NOT_PURSUE, doNotPursue);
+		tag.setBoolean(HAS_CUSTOM_EQUIPMENT_TAG, hasCustomEquipment);
 		tag.setTag("skinSettings", skinSettings.serializeNBT());
 		owner.serializeToNBT(tag);
 	}

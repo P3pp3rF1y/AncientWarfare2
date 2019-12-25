@@ -3,12 +3,14 @@ package net.shadowmage.ancientwarfare.npc.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 import net.shadowmage.ancientwarfare.npc.skin.NpcSkinSettings;
 
 public class ContainerNpcCreativeControls extends ContainerNpcBase<NpcBase> implements ISkinSettingsContainer {
 
 	public String ownerName;//allow for editing owner name for player-owned, no effect on faction-owned
 	public boolean wander;//temp flag in all npcs
+	public boolean hasCustomEquipment;//faction based only
 	public int maxHealth;
 	public int attackDamage;//faction based only
 	public int armorValue;//faction based only
@@ -24,6 +26,7 @@ public class ContainerNpcCreativeControls extends ContainerNpcBase<NpcBase> impl
 		maxHealth = entity.getMaxHealthOverride();
 		attackDamage = entity.getAttackDamageOverride();
 		armorValue = entity.getArmorValueOverride();
+		hasCustomEquipment = entity.getCustomEquipmentOverride();
 	}
 
 	public void sendChangesToServer() {
@@ -38,6 +41,7 @@ public class ContainerNpcCreativeControls extends ContainerNpcBase<NpcBase> impl
 		tag.setInteger("maxHealth", maxHealth);
 		tag.setInteger("attackDamage", attackDamage);
 		tag.setInteger("armorValue", armorValue);
+		tag.setBoolean("hasCustomEquipment", hasCustomEquipment);
 		return tag;
 	}
 
@@ -50,6 +54,7 @@ public class ContainerNpcCreativeControls extends ContainerNpcBase<NpcBase> impl
 	public void handlePacketData(NBTTagCompound tag) {
 		ownerName = tag.getString("ownerName");
 		wander = tag.getBoolean("wander");
+		hasCustomEquipment = tag.getBoolean("hasCustomEquipment");
 		attackDamage = tag.getInteger("attackDamage");
 		armorValue = tag.getInteger("armorValue");
 		maxHealth = tag.getInteger("maxHealth");
@@ -69,6 +74,7 @@ public class ContainerNpcCreativeControls extends ContainerNpcBase<NpcBase> impl
 			entity.setArmorValueOverride(armorValue);
 			entity.setIsAIEnabled(wander);
 			entity.setMaxHealthOverride(maxHealth);
+			entity.setCustomEquipmentOverride(hasCustomEquipment);
 		}
 		super.onContainerClosed(par1EntityPlayer);
 	}
@@ -81,6 +87,10 @@ public class ContainerNpcCreativeControls extends ContainerNpcBase<NpcBase> impl
 	@Override
 	public NpcSkinSettings getSkinSettings() {
 		return skinSettings;
+	}
+
+	public boolean isFactionNpc() {
+		return entity instanceof NpcFaction;
 	}
 
 	@Override
