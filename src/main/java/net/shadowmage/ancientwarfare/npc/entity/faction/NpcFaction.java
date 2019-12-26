@@ -19,7 +19,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.util.NBTHelper;
 import net.shadowmage.ancientwarfare.npc.ai.AIHelper;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionFleeSun;
@@ -156,7 +155,7 @@ public abstract class NpcFaction extends NpcBase {
 		if (isUndead()) {
 			return EnumCreatureAttribute.UNDEAD;
 		} else
-		return EnumCreatureAttribute.UNDEFINED;
+			return EnumCreatureAttribute.UNDEFINED;
 	}
 
 	public void setFactionNameAndDefaults(String factionName) {
@@ -165,7 +164,7 @@ public abstract class NpcFaction extends NpcBase {
 		applyFactionNpcSettings(npcDefault);
 		// do not apply the default equipment if the hasCustomEquipment tag was set to true
 		if (!getCustomEquipmentOverride()) {
-		npcDefault.applyEquipment(this);
+			npcDefault.applyEquipment(this);
 		}
 
 		Range<Float> heightRange = npcDefault.getHeightRange();

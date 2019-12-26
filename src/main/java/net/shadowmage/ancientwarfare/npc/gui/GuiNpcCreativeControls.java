@@ -10,7 +10,6 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcCreativeControls;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 
 public class GuiNpcCreativeControls extends GuiContainerBase<ContainerNpcCreativeControls> {
 	private Text ownerNameInput;
@@ -140,14 +139,14 @@ public class GuiNpcCreativeControls extends GuiContainerBase<ContainerNpcCreativ
 	protected boolean onGuiCloseRequested() {
 		/*
 		 * if changes were made while gui was open, send these to server
-         */
+		 */
 		if (hasChanged) {
 			getContainer().sendChangesToServer();
 		}
 
-        /*
+		/*
 		 * force opening of normal gui (whatever that may be for the npc) when advanced controls is closed
-         */
+		 */
 		getContainer().entity.openGUI(player);
 		return false;
 	}
