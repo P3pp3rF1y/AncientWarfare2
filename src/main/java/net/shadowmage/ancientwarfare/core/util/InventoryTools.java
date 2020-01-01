@@ -244,6 +244,10 @@ public class InventoryTools {
 			ItemStack stackToMove = stack.copy();
 			stackToMove.setCount(stackSizeToMove);
 
+			if (from.extractItem(slot, stackSizeToMove, true).getCount() != stackSizeToMove) {
+				continue;
+			}
+
 			ItemStack remaining = insertItem(to, stackToMove, false);
 
 			int stackSizeMoved = stackSizeToMove - remaining.getCount();
