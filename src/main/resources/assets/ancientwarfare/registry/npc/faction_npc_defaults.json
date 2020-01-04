@@ -178,6 +178,9 @@
     },
     "factions": {
         "empire": {
+            "additional_attributes": {
+                "entity_sound": "human"
+            },
             "npc_subtypes": {
                 "soldier.elite": {
                     "attributes": {
@@ -212,10 +215,18 @@
                         "mainhand": "minecraft:diamond_axe",
                         "offhand": "ancientwarfarenpc:iron_shield"
                     }
+                },
+                "civilian.female": {
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    }
                 }
             }
         },
         "norska": {
+            "additional_attributes": {
+                "entity_sound": "norska"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "attributes": {
@@ -270,10 +281,18 @@
                         "offhand": "ancientwarfarenpc:shield_round_4"
                     },
                     "experience_drop": 100
+                },
+                "civilian.female": {
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    }
                 }
             }
         },
         "sarkonid": {
+            "additional_attributes": {
+                "entity_sound": "human"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "equipment": {
@@ -308,10 +327,18 @@
                         "mainhand": "minecraft:golden_sword",
                         "offhand": "ancientwarfarenpc:gold_shield"
                     }
+                },
+                "civilian.female": {
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    }
                 }
             }
         },
         "xoltec": {
+            "additional_attributes": {
+                "entity_sound": "human"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "equipment": {
@@ -372,10 +399,18 @@
                         "generic.maxHealth": 50
                     },
                     "experience_drop": 50
+                },
+                "civilian.female": {
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    }
                 }
             }
         },
         "witchbane": {
+            "additional_attributes": {
+                "entity_sound": "human"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "attributes": {
@@ -439,10 +474,18 @@
                         "generic.maxHealth": 50
                     },
                     "experience_drop": 50
+                },
+                "civilian.female": {
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    }
                 }
             }
         },
         "nogg": {
+            "additional_attributes": {
+                "entity_sound": "norska"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "attributes": {
@@ -494,10 +537,18 @@
                         "generic.maxHealth": 50
                     },
                     "experience_drop": 50
+                },
+                "civilian.female": {
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    }
                 }
             }
         },
         "buffloka": {
+            "additional_attributes": {
+                "entity_sound": "human"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "equipment": {
@@ -539,10 +590,18 @@
                     "equipment": {
                         "mainhand": "minecraft:feather"
                     }
+                },
+                "civilian.female": {
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    }
                 }
             }
         },
         "zimba": {
+            "additional_attributes": {
+                "entity_sound": "human"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "equipment": {
@@ -581,10 +640,18 @@
                     "equipment": {
                         "mainhand": "minecraft:stick"
                     }
+                },
+                "civilian.female": {
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    }
                 }
             }
         },
         "kong": {
+            "additional_attributes": {
+                "entity_sound": "human"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "attributes": {
@@ -657,10 +724,18 @@
                     "equipment": {
                         "mainhand": "minecraft:bone"
                     }
+                },
+                "civilian.female": {
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    }
                 }
             }
         },
         "orc": {
+            "additional_attributes": {
+                "entity_sound": "orc"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "attributes": {
@@ -679,6 +754,9 @@
                     "thinness": 1.1,
                     "attributes": {
                         "generic.maxHealth": 50
+                    },
+                    "additional_attributes": {
+                        "entity_sound": "orc_uruk"
                     },
                     "equipment": {
                         "mainhand": "ancientwarfarenpc:iron_cleaver",
@@ -708,6 +786,9 @@
                     "experience_drop": 20
                 },
                 "leader": {
+                    "additional_attributes": {
+                        "entity_sound": "orc_uruk"
+                    },
                     "equipment": {
                         "mainhand": "ancientwarfarenpc:iron_cleaver"
                     }
@@ -715,6 +796,9 @@
                 "leader.elite": {
                     "attributes": {
                         "generic.attackDamage": 5
+                    },
+                    "additional_attributes": {
+                        "entity_sound": "orc_uruk"
                     }
                 },
                 "priest": {
@@ -730,6 +814,9 @@
             }
         },
         "brigand": {
+            "additional_attributes": {
+                "entity_sound": "brigand"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "attributes": {
@@ -790,10 +877,18 @@
                         "mainhand": "ancientwarfarenpc:iron_halberd"
                     },
                     "experience_drop": 60
+                },
+                "civilian.female": {
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    }
                 }
             }
         },
         "pirate": {
+            "additional_attributes": {
+                "entity_sound": "pirate"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "attributes": {
@@ -836,10 +931,18 @@
                         "generic.maxHealth": 60
                     },
                     "experience_drop": 60
+                },
+                "civilian.female": {
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    }
                 }
             }
         },
         "evil": {
+            "additional_attributes": {
+                "entity_sound": "malice"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "equipment": {
@@ -897,10 +1000,18 @@
                         "generic.maxHealth": 50
                     },
                     "experience_drop": 50
+                },
+                "civilian.female": {
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    }
                 }
             }
         },
         "good": {
+            "additional_attributes": {
+                "entity_sound": "human"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "attributes": {
@@ -953,10 +1064,18 @@
                         "generic.maxHealth": 50
                     },
                     "experience_drop": 50
+                },
+                "civilian.female": {
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    }
                 }
             }
         },
         "wizardly": {
+            "additional_attributes": {
+                "entity_sound": "human"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "attributes": {
@@ -1035,6 +1154,9 @@
                     "attributes": {
                         "generic.maxHealth": 10
                     },
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    },
                     "equipment": {
                         "mainhand": "minecraft:book"
                     },
@@ -1057,6 +1179,9 @@
             }
         },
         "elf": {
+            "additional_attributes": {
+                "entity_sound": "human"
+            },
             "height": {
                 "min": 1.9,
                 "max": 2.1
@@ -1125,6 +1250,11 @@
                         "generic.maxHealth": 50
                     },
                     "experience_drop": 50
+                },
+                "civilian.female": {
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    }
                 }
             }
         },
@@ -1190,10 +1320,18 @@
                         "generic.maxHealth": 50
                     },
                     "experience_drop": 50
+                },
+                "civilian.female": {
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    }
                 }
             }
         },
         "hobbit": {
+            "additional_attributes": {
+                "entity_sound": "hobbit"
+            },
             "height": {
                 "min": 1.2,
                 "max": 1.3
@@ -1251,16 +1389,24 @@
                 },
                 "siege_engineer": {
                     "enabled": false
+                },
+                "civilian.female": {
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    }
                 }
             }
         },
         "undead": {
+            "additional_attributes": {
+                "entity_sound": "zombie"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "additional_attributes": {
                         "burns_in_sun": true,
                         "undead": true
-                },
+                    },
                     "loot_table": "ancientwarfare:entities/undead_soldier"
                 },
                 "soldier.elite": {
@@ -1270,15 +1416,16 @@
                     "additional_attributes": {
                         "burns_in_sun": true,
                         "undead": true
-                },
+                    },
                     "loot_table": "ancientwarfare:entities/undead_soldier_elite"
                 },
                 "archer": {
                     "thinness": 0.9,
                     "additional_attributes": {
                         "burns_in_sun": true,
+                        "entity_sound": "zombie",
                         "undead": true
-                },
+                    },
                     "loot_table": "ancientwarfare:entities/undead_archer"
                 },
                 "archer.elite": {
@@ -1286,7 +1433,7 @@
                     "additional_attributes": {
                         "burns_in_sun": true,
                         "undead": true
-                },
+                    },
                     "loot_table": "ancientwarfare:entities/undead_archer_elite"
                 },
                 "cavalry": {
@@ -1294,7 +1441,7 @@
                         "burns_in_sun": true,
                         "undead": true,
                         "horse_entity": "net.minecraft.entity.passive.EntitySkeletonHorse"
-                },
+                    },
                     "loot_table": "ancientwarfare:entities/undead_cavalry"
                 },
                 "mounted_archer": {
@@ -1302,14 +1449,14 @@
                         "burns_in_sun": true,
                         "undead": true,
                         "horse_entity": "net.minecraft.entity.passive.EntitySkeletonHorse"
-                },
+                    },
                     "loot_table": "ancientwarfare:entities/undead_mounted_archer"
                 },
                 "leader": {
                     "additional_attributes": {
                         "burns_in_sun": true,
                         "undead": true
-                },
+                    },
                     "loot_table": "ancientwarfare:entities/undead_leader"
                 },
                 "leader.elite": {
@@ -1322,7 +1469,7 @@
                     "additional_attributes": {
                         "burns_in_sun": true,
                         "undead": true
-                },
+                    },
                     "loot_table": "ancientwarfare:entities/undead_leader_elite"
                 },
                 "siege_engineer": {
@@ -1338,7 +1485,7 @@
                     "additional_attributes": {
                         "burns_in_sun": true,
                         "undead": true
-                },
+                    },
                     "loot_table": "ancientwarfare:entities/undead_priest"
                 },
                 "bard": {
@@ -1456,6 +1603,9 @@
             }
         },
         "barbarian": {
+            "additional_attributes": {
+                "entity_sound": "barbarian"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "equipment": {
@@ -1517,6 +1667,7 @@
             }
         },
         "smingol": {
+
             "npc_subtypes": {
                 "soldier": {
                     "enabled": false
@@ -1613,6 +1764,9 @@
             }
         },
         "vyncan": {
+            "additional_attributes": {
+                "entity_sound": "human"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "equipment": {
@@ -1667,10 +1821,18 @@
                 },
                 "bard": {
                     "enabled": false
+                },
+                "civilian.female": {
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    }
                 }
             }
         },
         "sealsker": {
+            "additional_attributes": {
+                "entity_sound": "human"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "equipment": {
@@ -1733,6 +1895,11 @@
                 },
                 "bard": {
                     "enabled": false
+                },
+                "civilian.female": {
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    }
                 }
             }
         },
@@ -1796,6 +1963,9 @@
                     }
                 },
                 "soldier.elite": {
+                    "additional_attributes": {
+                        "entity_sound": "klown"
+                    },
                     "equipment": {
                         "mainhand": "minecraft:iron_axe"
                     }
@@ -1814,7 +1984,8 @@
                         "mainhand": "ancientwarfarenpc:iron_cleaver"
                     },
                     "additional_attributes": {
-                        "horse_entity": "net.minecraft.entity.passive.EntityZombieHorse"
+                        "horse_entity": "net.minecraft.entity.passive.EntityZombieHorse",
+                        "entity_sound": "norska"
                     }
                 },
                 "mounted_archer": {
@@ -1847,6 +2018,9 @@
                         "generic.armor": 2.0,
                         "generic.attackDamage": 2
                     },
+                    "additional_attributes": {
+                        "entity_sound": "norska"
+                    },
                     "equipment": {
                         "mainhand": "ancientwarfarenpc:giant_club"
                     }
@@ -1862,12 +2036,20 @@
                         "generic.movementSpeed": 0.3,
                         "generic.attackDamage": 3
                     },
+                    "additional_attributes": {
+                        "entity_sound": "klown"
+                    },
                     "equipment": {
                         "mainhand": "ancientwarfarenpc:iron_cleaver"
                     }
                 },
                 "siege_engineer": {
                     "enabled": false
+                },
+                "priest": {
+                    "additional_attributes": {
+                        "entity_sound": "human"
+                    }
                 },
                 "bard": {
                     "enabled": false
@@ -1885,9 +2067,22 @@
         },
         "coven": {
             "npc_subtypes": {
+                "archer": {
+                    "additional_attributes": {
+                        "entity_sound": "coven_satyr"
+                    }
+                },
+                "archer.elite": {
+                    "additional_attributes": {
+                        "entity_sound": "coven_dryad"
+                    }
+                },
                 "soldier": {
                     "equipment": {
                         "mainhand": "ancientwarfarenpc:sickle"
+                    },
+                    "additional_attributes": {
+                        "entity_sound": "coven_scarecrow"
                     }
                 },
                 "soldier.elite": {
@@ -1902,6 +2097,9 @@
                         "generic.armor": 6.0,
                         "generic.attackDamage": 4
                     },
+                    "additional_attributes": {
+                        "entity_sound": "coven_puppet"
+                    },
                     "equipment": {
                         "mainhand": "minecraft:air"
                     }
@@ -1911,7 +2109,8 @@
                         "mainhand": "ancientwarfarenpc:death_scythe"
                     },
                     "additional_attributes": {
-                        "horse_entity": "net.minecraft.entity.passive.EntitySkeletonHorse"
+                        "horse_entity": "net.minecraft.entity.passive.EntitySkeletonHorse",
+                        "entity_sound": "coven_puppetd"
                     }
                 },
                 "mounted_archer": {
@@ -1923,6 +2122,9 @@
                         "max": 1.1
                     },
                     "thinness": 0.8,
+                    "additional_attributes": {
+                        "entity_sound": "coven_familiar"
+                    },
                     "attributes": {
                         "generic.maxHealth": 45,
                         "generic.movementSpeed": 0.355,
@@ -1938,6 +2140,9 @@
                         "generic.movementSpeed": 0.2,
                         "generic.armor": 5.0,
                         "generic.attackDamage": 5
+                    },
+                    "additional_attributes": {
+                        "entity_sound": "coven_witch"
                     },
                     "equipment": {
                         "mainhand": "ancientwarfarenpc:sickle"
@@ -2053,6 +2258,9 @@
             }
         },
         "icelord": {
+            "additional_attributes": {
+                "entity_sound": "zombie"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "equipment": {
@@ -2136,6 +2344,9 @@
             }
         },
         "lizardman": {
+            "additional_attributes": {
+                "entity_sound": "lizardman"
+            },
             "height": {
                 "min": 2.0,
                 "max": 2.2
@@ -2220,6 +2431,9 @@
             }
         },
         "amazon": {
+            "additional_attributes": {
+                "entity_sound": "human_female"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "equipment": {
@@ -2251,6 +2465,9 @@
             }
         },
         "ishtari": {
+            "additional_attributes": {
+                "entity_sound": "ishtari_mummy"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "equipment": {
@@ -2260,6 +2477,9 @@
                 "soldier.elite": {
                     "equipment": {
                         "mainhand": "minecraft:golden_sword"
+                    },
+                    "additional_attributes": {
+                        "entity_sound": "zombie"
                     }
                 },
                 "archer.elite": {
@@ -2283,11 +2503,17 @@
                         "generic.armor": 5.0,
                         "generic.attackDamage": 3
                     },
+                    "additional_attributes": {
+                        "entity_sound": "ishtari_anubite"
+                    },
                     "equipment": {
                         "mainhand": "ancientwarfarenpc:golden_halberd"
                     }
                 },
                 "leader.elite": {
+                    "additional_attributes": {
+                        "entity_sound": "ishtari_pharoah"
+                    },
                     "equipment": {
                         "mainhand": "minecraft:diamond_sword"
                     }
@@ -2313,6 +2539,9 @@
             }
         },
         "monster": {
+            "additional_attributes": {
+                "entity_sound": "monster"
+            },
             "height": {
                 "min": 2.0,
                 "max": 2.1
@@ -2428,6 +2657,9 @@
                         "generic.movementSpeed": 0.255,
                         "generic.attackDamage": 1
                     },
+                    "additional_attributes": {
+                        "entity_sound": "kobold"
+                    },
                     "equipment": {
                         "mainhand": "minecraft:stone_axe"
                     }
@@ -2442,6 +2674,9 @@
                         "generic.maxHealth": 30,
                         "generic.movementSpeed": 0.255,
                         "generic.attackDamage": 2
+                    },
+                    "additional_attributes": {
+                        "entity_sound": "gargoyle"
                     },
                     "equipment": {
                         "mainhand": "minecraft:air"
@@ -2471,6 +2706,9 @@
                         "generic.armor": 6.0,
                         "generic.attackDamage": 2
                     },
+                    "additional_attributes": {
+                        "entity_sound": "owlbear"
+                    },
                     "equipment": {
                         "mainhand": "minecraft:air"
                     }
@@ -2486,6 +2724,9 @@
                         "generic.movementSpeed": 0.222,
                         "generic.armor": 16.0,
                         "generic.attackDamage": 2
+                    },
+                    "additional_attributes": {
+                        "entity_sound": "ent"
                     },
                     "equipment": {
                         "mainhand": "minecraft:air"
@@ -2512,6 +2753,9 @@
             }
         },
         "ent": {
+            "additional_attributes": {
+                "entity_sound": "ent"
+            },
             "height": {
                 "min": 1.8,
                 "max": 1.9
@@ -2600,6 +2844,9 @@
             }
         },
         "gnome": {
+            "additional_attributes": {
+                "entity_sound": "gnome"
+            },
             "height": {
                 "min": 0.8,
                 "max": 0.8
@@ -2708,6 +2955,9 @@
             }
         },
         "gremlin": {
+            "additional_attributes": {
+                "entity_sound": "gremlin"
+            },
             "height": {
                 "min": 0.9,
                 "max": 0.9
@@ -2813,6 +3063,9 @@
             }
         },
         "giant": {
+            "additional_attributes": {
+                "entity_sound": "giant"
+            },
             "height": {
                 "min": 3.6,
                 "max": 4.0
@@ -2926,7 +3179,8 @@
                     },
                     "additional_attributes": {
                         "burns_in_sun": false,
-                        "can_swim": false
+                        "can_swim": false,
+                        "entity_sound": "monster"
                     },
                     "equipment": {
                         "mainhand": "minecraft:air"
@@ -2946,7 +3200,9 @@
                     },
                     "additional_attributes": {
                         "burns_in_sun": true,
-                        "can_swim": false
+                        "can_swim": false,
+                        "undead": true,
+                        "entity_sound": "vampire_bride"
                     },
                     "equipment": {
                         "mainhand": "minecraft:air"
@@ -2954,12 +3210,14 @@
                 },
                 "archer": {
                     "additional_attributes": {
-                        "burns_in_sun": false
+                        "burns_in_sun": false,
+                        "entity_sound": "malice"
                     }
                 },
                 "archer.elite": {
                     "additional_attributes": {
-                        "burns_in_sun": false
+                        "burns_in_sun": false,
+                        "entity_sound": "malice"
                     }
                 },
                 "cavalry": {
@@ -2978,7 +3236,8 @@
                 },
                 "mounted_archer": {
                     "additional_attributes": {
-                        "burns_in_sun": false
+                        "burns_in_sun": false,
+                        "entity_sound": "malice"
                     }
                 },
                 "leader": {
@@ -2998,7 +3257,9 @@
                     },
                     "additional_attributes": {
                         "burns_in_sun": true,
-                        "can_swim": false
+                        "can_swim": false,
+                        "undead": true,
+                        "entity_sound": "vampire"
                     }
                 },
                 "leader.elite": {
@@ -3018,12 +3279,15 @@
                     },
                     "additional_attributes": {
                         "burns_in_sun": true,
+                        "undead": true,
+                        "entity_sound": "vampire_boss",
                         "can_swim": false
                     }
                 },
                 "siege_engineer": {
                     "additional_attributes": {
-                        "burns_in_sun": false
+                        "burns_in_sun": false,
+                        "entity_sound": "malice"
                     }
                 },
                 "priest": {
@@ -3032,6 +3296,7 @@
                     },
                     "additional_attributes": {
                         "burns_in_sun": true,
+                        "undead": true,
                         "can_swim": false
                     }
                 },
@@ -3043,17 +3308,22 @@
                         "mainhand": "minecraft:bone"
                     },
                     "additional_attributes": {
-                        "burns_in_sun": true
+                        "burns_in_sun": true,
+                        "undead": true,
+                        "entity_sound": "vampire"
                     }
                 },
                 "civilian.female": {
                     "additional_attributes": {
-                        "burns_in_sun": false
+                        "burns_in_sun": false,
+                        "entity_sound": "human"
                     }
                 },
                 "civilian.male": {
                     "additional_attributes": {
-                        "burns_in_sun": false
+                        "burns_in_sun": false,
+                        "entity_sound": "human_female"
+
                     }
                 }
             }

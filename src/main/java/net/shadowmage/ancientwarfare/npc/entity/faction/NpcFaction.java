@@ -6,6 +6,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,6 +15,7 @@ import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.I18n;
@@ -29,6 +31,7 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.entity.faction.attributes.AdditionalAttributes;
 import net.shadowmage.ancientwarfare.npc.entity.faction.attributes.IAdditionalAttribute;
 import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
+import net.shadowmage.ancientwarfare.npc.init.AWNPCSounds;
 import net.shadowmage.ancientwarfare.npc.registry.FactionNpcDefault;
 import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
 import net.shadowmage.ancientwarfare.npc.registry.NpcDefaultsRegistry;
@@ -247,6 +250,39 @@ public abstract class NpcFaction extends NpcBase {
 			}
 		}
 
+	}
+
+	private String getEntitySound() {
+		if (getAdditionalAttributeValue(AdditionalAttributes.ENTITY_SOUND).isPresent()) {
+			return "entity_" + getAdditionalAttributeValue(AdditionalAttributes.ENTITY_SOUND).get();
+		} else
+			return "generic";
+	}
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+		String sound = getEntitySound() + "_hurt";
+
+		if (!sound.equals("generic_hurt") && AWNPCSounds.isValidSound(sound)) {
+			return AWNPCSounds.getSoundEventFromString(sound);
+		} else
+			return SoundEvents.ENTITY_GENERIC_HURT;
+	}
+
+	@Override
+	protected SoundEvent getDeathSound() {
+		String sound = getEntitySound() + "_death";
+		if (!sound.equals("generic_death") && AWNPCSounds.isValidSound(sound)) {
+			return AWNPCSounds.getSoundEventFromString(sound);
+		} else
+			return SoundEvents.ENTITY_GENERIC_DEATH;
+	}
+
+	public void playAttackSound() {
+		String sound = getEntitySound() + "_attack";
+		if (!sound.equals("generic_attack") && AWNPCSounds.isValidSound(sound)) {
+			playSound(AWNPCSounds.getSoundEventFromString(sound), 1.0F, 1.2F / (rand.nextFloat() * 0.2F + 0.9F));
+		}
 	}
 
 	@Override
