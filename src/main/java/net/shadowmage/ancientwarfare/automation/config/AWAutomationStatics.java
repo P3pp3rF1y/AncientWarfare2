@@ -35,12 +35,12 @@ public class AWAutomationStatics extends ModConfiguration {
 	 * Travel time per block when sending/receiving items using the mailbox system<br>
 	 * Distances are calculated as a floating point distance and rounded to the nearest whole<br>
 	 */
-	public static int mailboxTimePerBlock = 20;
+	public static int mailboxTimePerBlock = 10;
 
 	/*
 	 * Travel time for mail using mailboxes when items are being sent/received in different dimensions
 	 */
-	public static int mailboxTimeForDimension = 1200;
+	public static int mailboxTimeForDimension = 100;
 
 	/*
 	 * used to reduce network updates
