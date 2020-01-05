@@ -32,11 +32,12 @@ public class AWNPCStatics extends ModConfiguration {
 	public static int townUpdateFreq = 100; //5 second broadcast frequency
 	public static boolean npcAIDebugMode = false;
 	public static double archerRange = 60.0;
+	public static boolean vanillaEquipmentDropRate = true;
+	public static double npcLevelDamageMultiplier = 0.05;//damage bonus per npc level.  @ level 10 they do 2x the damage as at lvl 0
 
 	/*
 	 * TODO add these to config
 	 */
-	public static double npcLevelDamageMultiplier = 0.05;//damage bonus per npc level.  @ level 10 they do 2x the damage as at lvl 0
 	/* ********************************************CLIENT SETTINGS************************************************ */
 	public static boolean loadDefaultSkinPack = true;
 
@@ -79,7 +80,9 @@ public class AWNPCStatics extends ModConfiguration {
 
 		npcXpFromAttack = config.get(serverOptions, "npc_xp_per_attack", npcXpFromAttack, "XP Per Attack\nDefault=" + npcXpFromAttack + "\n" + "How much xp should an NPC gain each time they damage but do not kill an enemy?\n" + "Higher values will result in faster npc leveling.\n" + "Applies to both player-owned and faction-based NPCs.").getInt();
 
-		npcXpFromKill = config.get(serverOptions, "npc_xp_per_kill", npcXpFromKill, "XP Per Killnefault=" + npcXpFromKill + "\n" + "How much xp should an NPC gain each time they kill an enemy?\n" + "Higher values will result in faster npc leveling.\n" + "Applies to both player-owned and faction-based NPCs.").getInt();
+		npcXpFromKill = config.get(serverOptions, "npc_xp_per_kill", npcXpFromKill, "XP Per Kill\nDefault=" + npcXpFromKill + "\n" + "How much xp should an NPC gain each time they kill an enemy?\n" + "Higher values will result in faster npc leveling.\n" + "Applies to both player-owned and faction-based NPCs.").getInt();
+
+		npcLevelDamageMultiplier = config.get(serverOptions, "npc_level_damage_multiplier", npcLevelDamageMultiplier, "NPC damage bonus per npc level\nDefault=" + npcLevelDamageMultiplier + "\n" + "By default at level 10 they do 2x the damage as at lvl 0.\n" + "Higher values will result in more damage.\n" + "Applies to player-owned and faction-based NPCs.").getDouble();
 
 		npcXpFromTrade = config.get(serverOptions, "npc_xp_per_trade", npcXpFromTrade, "XP Per Trade\nDefault=" + npcXpFromTrade + "\n" + "How much xp should an NPC gain each time successfully traded with?\n" + "Higher values will result in faster npc leveling and unlock more trade recipes.\n" + "Applies to both player-owned and faction-based NPCs.").getInt();
 
@@ -108,6 +111,8 @@ public class AWNPCStatics extends ModConfiguration {
 		renderTeamColors = config.get(clientOptions, "render_team_colors", true);
 
 		npcActionRange = config.get(generalOptions, "npc_action_range", npcActionRange, "Action Range\nDefault=" + npcActionRange + "\n" + "The range in blocks that an NPC can perform an action on something. The player has an action\n" + "range of 5. Only affects workers, no effect on the attack range of combat units nor medics.\n" + "Minimum value of 3 unless you want NPC's to bug-out and get stuck at random.").getInt();
+
+		vanillaEquipmentDropRate = config.get(generalOptions, "npc_vanilla_equipment_drop_rate", vanillaEquipmentDropRate, "Vanilla equipment drop rate for faction NPCs\nMakes Faction NPCs drop their items by the Vanilla Equipment Drop rate (8,5%)\nDefault=" + vanillaEquipmentDropRate + "\n" + "If set to false, the NPCs will ALWAYS drop ALL equipment they have (100%) rate").getBoolean();
 
 		repackCreativeOnly = config.get(generalOptions, "npc_repack_creative_only", repackCreativeOnly, "Repack only available for Creative players?\nDefault=" + repackCreativeOnly + "\n" + "If true, the 'Repack' option for NPC's will be unavailable outside of Creative mode.").getBoolean();
 
