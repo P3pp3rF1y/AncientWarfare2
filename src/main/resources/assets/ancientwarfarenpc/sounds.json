@@ -53,7 +53,7 @@
             }
         ]
     },
-    "entity_barbarian_attack": {
+    "barbarian_attack": {
         "category": "hostile",
         "sounds": [
             {
@@ -88,7 +88,7 @@
             }
         ]
     },
-    "entity_barbarian_hurt": {
+    "barbarian_hurt": {
         "category": "hostile",
         "sounds": [
             {
@@ -118,7 +118,7 @@
             }
         ]
     },
-    "entity_beast_attack": {
+    "beast_attack": {
         "category": "hostile",
         "sounds": [
             {
@@ -138,7 +138,7 @@
             }
         ]
     },
-    "entity_beast_death": {
+    "beast_death": {
         "category": "hostile",
         "sounds": [
             {
@@ -158,7 +158,7 @@
             }
         ]
     },
-    "entity_beast_hurt": {
+    "beast_hurt": {
         "category": "hostile",
         "sounds": [
             {
@@ -173,7 +173,7 @@
             }
         ]
     },
-    "entity_brigand_attack": {
+    "brigand_attack": {
         "category": "hostile",
         "sounds": [
             {
@@ -208,7 +208,7 @@
             }
         ]
     },
-    "entity_brigand_death": {
+    "brigand_death": {
         "category": "hostile",
         "sounds": [
             {
@@ -238,7 +238,7 @@
             }
         ]
     },
-    "entity_brigand_hurt": {
+    "brigand_hurt": {
         "category": "hostile",
         "sounds": [
             {
@@ -268,7 +268,7 @@
             }
         ]
     },
-    "entity_coven_dryad_death": {
+    "coven_dryad_death": {
         "category": "hostile",
         "sounds": [
             {
@@ -278,7 +278,7 @@
             }
         ]
     },
-    "entity_coven_dryad_hurt": {
+    "coven_dryad_hurt": {
         "category": "hostile",
         "sounds": [
             {
@@ -288,7 +288,7 @@
             }
         ]
     },
-    "entity_coven_familiar_attack": {
+    "coven_familiar_attack": {
         "category": "hostile",
         "sounds": [
             {
@@ -298,7 +298,7 @@
             }
         ]
     },
-    "entity_coven_familiar_death": {
+    "coven_familiar_death": {
         "category": "hostile",
         "sounds": [
             {
@@ -308,7 +308,7 @@
             }
         ]
     },
-    "entity_coven_familiar_hurt": {
+    "coven_familiar_hurt": {
         "category": "hostile",
         "sounds": [
             {
@@ -318,7 +318,7 @@
             }
         ]
     },
-    "entity_coven_puppet_attack": {
+    "coven_puppet_attack": {
         "category": "hostile",
         "sounds": [
             {
@@ -328,7 +328,7 @@
             }
         ]
     },
-    "entity_coven_puppet_death": {
+    "coven_puppet_death": {
         "category": "hostile",
         "sounds": [
             {
@@ -338,7 +338,7 @@
             }
         ]
     },
-    "entity_coven_puppet_hurt": {
+    "coven_puppet_hurt": {
         "category": "hostile",
         "sounds": [
             {
@@ -348,7 +348,7 @@
             }
         ]
     },
-    "entity_coven_satyr_death": {
+    "coven_satyr_death": {
         "category": "hostile",
         "sounds": [
             {
@@ -358,7 +358,7 @@
             }
         ]
     },
-    "entity_coven_satyr_hurt": {
+    "coven_satyr_hurt": {
         "category": "hostile",
         "sounds": [
             {
@@ -368,7 +368,7 @@
             }
         ]
     },
-    "entity_coven_scarecrow_attack": {
+    "coven_scarecrow_attack": {
         "category": "hostile",
         "sounds": [
             {
@@ -378,7 +378,7 @@
             }
         ]
     },
-    "entity_coven_scarecrow_death": {
+    "coven_scarecrow_death": {
         "category": "hostile",
         "sounds": [
             {
@@ -388,7 +388,7 @@
             }
         ]
     },
-    "entity_coven_scarecrow_hurt": {
+    "coven_scarecrow_hurt": {
         "category": "hostile",
         "sounds": [
             {
@@ -398,7 +398,7 @@
             }
         ]
     },
-    "entity_coven_witch_attack": {
+    "coven_witch_attack": {
         "category": "hostile",
         "sounds": [
             {
@@ -413,7 +413,7 @@
             }
         ]
     },
-    "entity_coven_witch_death": {
+    "coven_witch_death": {
         "category": "hostile",
         "sounds": [
             {
@@ -428,7 +428,7 @@
             }
         ]
     },
-    "entity_coven_witch_hurt": {
+    "coven_witch_hurt": {
         "category": "hostile",
         "sounds": [
             {
@@ -438,7 +438,7 @@
             }
         ]
     },
-    "entity_dwarf_attack": {
+    "dwarf_attack": {
         "category": "hostile",
         "sounds": [
             {
@@ -458,7 +458,7 @@
             }
         ]
     },
-    "entity_dwarf_death": {
+    "dwarf_death": {
         "category": "hostile",
         "sounds": [
             {
@@ -483,7 +483,7 @@
             }
         ]
     },
-    "entity_dwarf_hurt": {
+    "dwarf_hurt": {
         "category": "hostile",
         "sounds": [
             {
@@ -508,7 +508,7 @@
             }
         ]
     },
-    "entity_elf_attack": {
+    "elf_attack": {
         "category": "hostile",
         "sounds": [
             {
@@ -518,7 +518,7 @@
             }
         ]
     },
-    "entity_elf_death": {
+    "elf_death": {
         "category": "hostile",
         "sounds": [
             {
@@ -533,7 +533,7 @@
             }
         ]
     },
-    "entity_elf_hurt": {
+    "elf_hurt": {
         "category": "hostile",
         "sounds": [
             {
@@ -553,7 +553,7 @@
             }
         ]
     },
-    "entity_ent_attack": {
+    "ent_attack": {
         "category": "hostile",
         "sounds": [
             {
@@ -568,7 +568,7 @@
             }
         ]
     },
-    "entity_ent_death": {
+    "ent_death": {
         "category": "hostile",
         "sounds": [
             {
@@ -588,7 +588,7 @@
             }
         ]
     },
-    "entity_ent_hurt": {
+    "ent_hurt": {
         "category": "hostile",
         "sounds": [
             {
@@ -608,7 +608,7 @@
             }
         ]
     },
-    "entity_gargoyle_attack": {
+    "gargoyle_attack": {
         "category": "hostile",
         "sounds": [
             {
@@ -623,7 +623,7 @@
             }
         ]
     },
-    "entity_gargoyle_death": {
+    "gargoyle_death": {
         "category": "hostile",
         "sounds": [
             {
@@ -633,7 +633,7 @@
             }
         ]
     },
-    "entity_gargoyle_hurt": {
+    "gargoyle_hurt": {
         "category": "hostile",
         "sounds": [
             {
@@ -643,7 +643,7 @@
             }
         ]
     },
-    "entity_giant_attack": {
+    "giant_attack": {
         "category": "hostile",
         "sounds": [
             {
@@ -668,7 +668,7 @@
             }
         ]
     },
-    "entity_giant_death": {
+    "giant_death": {
         "category": "hostile",
         "sounds": [
             {
@@ -693,7 +693,7 @@
             }
         ]
     },
-    "entity_giant_hurt": {
+    "giant_hurt": {
         "category": "hostile",
         "sounds": [
             {
@@ -723,7 +723,7 @@
             }
         ]
     },
-    "entity_gnome_attack": {
+    "gnome_attack": {
         "category": "hostile",
         "sounds": [
             {
@@ -743,7 +743,7 @@
             }
         ]
     },
-    "entity_gnome_death": {
+    "gnome_death": {
         "category": "hostile",
         "sounds": [
             {
@@ -758,7 +758,7 @@
             }
         ]
     },
-    "entity_gnome_hurt": {
+    "gnome_hurt": {
         "category": "hostile",
         "sounds": [
             {
@@ -773,7 +773,7 @@
             }
         ]
     },
-    "entity_gremlin_attack": {
+    "gremlin_attack": {
         "category": "hostile",
         "sounds": [
             {
@@ -788,7 +788,7 @@
             }
         ]
     },
-    "entity_gremlin_death": {
+    "gremlin_death": {
         "category": "hostile",
         "sounds": [
             {
@@ -803,7 +803,7 @@
             }
         ]
     },
-    "entity_gremlin_hurt": {
+    "gremlin_hurt": {
         "category": "hostile",
         "sounds": [
             {
@@ -818,7 +818,7 @@
             }
         ]
     },
-    "entity_hobbit_attack": {
+    "hobbit_attack": {
         "category": "hostile",
         "sounds": [
             {
@@ -833,7 +833,7 @@
             }
         ]
     },
-    "entity_hobbit_death": {
+    "hobbit_death": {
         "category": "hostile",
         "sounds": [
             {
@@ -853,7 +853,7 @@
             }
         ]
     },
-    "entity_hobbit_hurt": {
+    "hobbit_hurt": {
         "category": "hostile",
         "sounds": [
             {
@@ -873,7 +873,7 @@
             }
         ]
     },
-    "entity_human_attack": {
+    "human_attack": {
         "category": "hostile",
         "sounds": [
             {
@@ -928,7 +928,7 @@
             }
         ]
     },
-    "entity_human_death": {
+    "human_death": {
         "category": "hostile",
         "sounds": [
             {
@@ -1013,7 +1013,7 @@
             }
         ]
     },
-    "entity_human_hurt": {
+    "human_hurt": {
         "category": "hostile",
         "sounds": [
             {
@@ -1083,7 +1083,7 @@
             }
         ]
     },
-    "entity_human_female_attack": {
+    "human_female_attack": {
         "category": "hostile",
         "sounds": [
             {
@@ -1098,7 +1098,7 @@
             }
         ]
     },
-    "entity_human_female_death": {
+    "human_female_death": {
         "category": "hostile",
         "sounds": [
             {
@@ -1128,7 +1128,7 @@
             }
         ]
     },
-    "entity_human_female_hurt": {
+    "human_female_hurt": {
         "category": "hostile",
         "sounds": [
             {
@@ -1163,7 +1163,7 @@
             }
         ]
     },
-    "entity_ishtari_anubite_attack": {
+    "ishtari_anubite_attack": {
         "category": "hostile",
         "sounds": [
             {
@@ -1178,7 +1178,7 @@
             }
         ]
     },
-    "entity_ishtari_anubite_death": {
+    "ishtari_anubite_death": {
         "category": "hostile",
         "sounds": [
             {
@@ -1188,7 +1188,7 @@
             }
         ]
     },
-    "entity_ishtari_anubite_hurt": {
+    "ishtari_anubite_hurt": {
         "category": "hostile",
         "sounds": [
             {
@@ -1198,7 +1198,7 @@
             }
         ]
     },
-    "entity_ishtari_mummy_attack": {
+    "ishtari_mummy_attack": {
         "category": "hostile",
         "sounds": [
             {
@@ -1223,7 +1223,7 @@
             }
         ]
     },
-    "entity_ishtari_mummy_death": {
+    "ishtari_mummy_death": {
         "category": "hostile",
         "sounds": [
             {
@@ -1243,7 +1243,7 @@
             }
         ]
     },
-    "entity_ishtari_mummy_hurt": {
+    "ishtari_mummy_hurt": {
         "category": "hostile",
         "sounds": [
             {
@@ -1263,7 +1263,7 @@
             }
         ]
     },
-    "entity_ishtari_pharoah_attack": {
+    "ishtari_pharoah_attack": {
         "category": "hostile",
         "sounds": [
             {
@@ -1273,7 +1273,7 @@
             }
         ]
     },
-    "entity_ishtari_pharoah_death": {
+    "ishtari_pharoah_death": {
         "category": "hostile",
         "sounds": [
             {
@@ -1283,7 +1283,7 @@
             }
         ]
     },
-    "entity_ishtari_pharoah_hurt": {
+    "ishtari_pharoah_hurt": {
         "category": "hostile",
         "sounds": [
             {
@@ -1293,7 +1293,7 @@
             }
         ]
     },
-    "entity_klown_attack": {
+    "klown_attack": {
         "category": "hostile",
         "sounds": [
             {
@@ -1308,7 +1308,7 @@
             }
         ]
     },
-    "entity_klown_death": {
+    "klown_death": {
         "category": "hostile",
         "sounds": [
             {
@@ -1323,7 +1323,7 @@
             }
         ]
     },
-    "entity_klown_hurt": {
+    "klown_hurt": {
         "category": "hostile",
         "sounds": [
             {
@@ -1333,7 +1333,7 @@
             }
         ]
     },
-    "entity_kobold_attack": {
+    "kobold_attack": {
         "category": "hostile",
         "sounds": [
             {
@@ -1343,7 +1343,7 @@
             }
         ]
     },
-    "entity_kobold_death": {
+    "kobold_death": {
         "category": "hostile",
         "sounds": [
             {
@@ -1358,7 +1358,7 @@
             }
         ]
     },
-    "entity_kobold_hurt": {
+    "kobold_hurt": {
         "category": "hostile",
         "sounds": [
             {
@@ -1373,7 +1373,7 @@
             }
         ]
     },
-    "entity_kong_ape_attack": {
+    "kong_ape_attack": {
         "category": "hostile",
         "sounds": [
             {
@@ -1383,7 +1383,7 @@
             }
         ]
     },
-    "entity_kong_ape_death": {
+    "kong_ape_death": {
         "category": "hostile",
         "sounds": [
             {
@@ -1393,7 +1393,7 @@
             }
         ]
     },
-    "entity_kong_ape_hurt": {
+    "kong_ape_hurt": {
         "category": "hostile",
         "sounds": [
             {
@@ -1403,7 +1403,7 @@
             }
         ]
     },
-    "entity_lizardman_ambient": {
+    "lizardman_ambient": {
         "category": "hostile",
         "sounds": [
             {
@@ -1413,7 +1413,7 @@
             }
         ]
     },
-    "entity_lizardman_attack": {
+    "lizardman_attack": {
         "category": "hostile",
         "sounds": [
             {
@@ -1443,7 +1443,7 @@
             }
         ]
     },
-    "entity_lizardman_death": {
+    "lizardman_death": {
         "category": "hostile",
         "sounds": [
             {
@@ -1458,7 +1458,7 @@
             }
         ]
     },
-    "entity_lizardman_hurt": {
+    "lizardman_hurt": {
         "category": "hostile",
         "sounds": [
             {
@@ -1483,7 +1483,7 @@
             }
         ]
     },
-    "entity_malice_attack": {
+    "malice_attack": {
         "category": "hostile",
         "sounds": [
             {
@@ -1503,7 +1503,7 @@
             }
         ]
     },
-    "entity_malice_death": {
+    "malice_death": {
         "category": "hostile",
         "sounds": [
             {
@@ -1528,7 +1528,7 @@
             }
         ]
     },
-    "entity_malice_hurt": {
+    "malice_hurt": {
         "category": "hostile",
         "sounds": [
             {
@@ -1558,7 +1558,7 @@
             }
         ]
     },
-    "entity_monster_attack": {
+    "monster_attack": {
         "category": "hostile",
         "sounds": [
             {
@@ -1578,7 +1578,7 @@
             }
         ]
     },
-    "entity_monster_death": {
+    "monster_death": {
         "category": "hostile",
         "sounds": [
             {
@@ -1593,7 +1593,7 @@
             }
         ]
     },
-    "entity_monster_hurt": {
+    "monster_hurt": {
         "category": "hostile",
         "sounds": [
             {
@@ -1613,7 +1613,7 @@
             }
         ]
     },
-    "entity_norska_attack": {
+    "norska_attack": {
         "category": "hostile",
         "sounds": [
             {
@@ -1638,7 +1638,7 @@
             }
         ]
     },
-    "entity_norska_death": {
+    "norska_death": {
         "category": "hostile",
         "sounds": [
             {
@@ -1658,7 +1658,7 @@
             }
         ]
     },
-    "entity_norska_hurt": {
+    "norska_hurt": {
         "category": "hostile",
         "sounds": [
             {
@@ -1683,7 +1683,7 @@
             }
         ]
     },
-    "entity_orc_ambient": {
+    "orc_ambient": {
         "category": "hostile",
         "sounds": [
             {
@@ -1708,7 +1708,7 @@
             }
         ]
     },
-    "entity_orc_attack": {
+    "orc_attack": {
         "category": "hostile",
         "sounds": [
             {
@@ -1733,7 +1733,7 @@
             }
         ]
     },
-    "entity_orc_death": {
+    "orc_death": {
         "category": "hostile",
         "sounds": [
             {
@@ -1773,7 +1773,7 @@
             }
         ]
     },
-    "entity_orc_hurt": {
+    "orc_hurt": {
         "category": "hostile",
         "sounds": [
             {
@@ -1808,7 +1808,7 @@
             }
         ]
     },
-    "entity_orc_uruk_attack": {
+    "orc_uruk_attack": {
         "category": "hostile",
         "sounds": [
             {
@@ -1838,7 +1838,7 @@
             }
         ]
     },
-    "entity_orc_uruk_death": {
+    "orc_uruk_death": {
         "category": "hostile",
         "sounds": [
             {
@@ -1863,7 +1863,7 @@
             }
         ]
     },
-    "entity_orc_uruk_hurt": {
+    "orc_uruk_hurt": {
         "category": "hostile",
         "sounds": [
             {
@@ -1903,7 +1903,7 @@
             }
         ]
     },
-    "entity_pirate_ambient": {
+    "pirate_ambient": {
         "category": "hostile",
         "sounds": [
             {
@@ -1918,7 +1918,7 @@
             }
         ]
     },
-    "entity_pirate_attack": {
+    "pirate_attack": {
         "category": "hostile",
         "sounds": [
             {
@@ -1958,7 +1958,7 @@
             }
         ]
     },
-    "entity_pirate_death": {
+    "pirate_death": {
         "category": "hostile",
         "sounds": [
             {
@@ -1988,7 +1988,7 @@
             }
         ]
     },
-    "entity_pirate_hurt": {
+    "pirate_hurt": {
         "category": "hostile",
         "sounds": [
             {
@@ -2003,7 +2003,7 @@
             }
         ]
     },
-    "entity_skeleton_death": {
+    "skeleton_death": {
         "category": "hostile",
         "sounds": [
             {
@@ -2018,7 +2018,7 @@
             }
         ]
     },
-    "entity_skeleton_hurt": {
+    "skeleton_hurt": {
         "category": "hostile",
         "sounds": [
             {
@@ -2038,7 +2038,7 @@
             }
         ]
     },
-    "entity_vampire_attack": {
+    "vampire_attack": {
         "category": "hostile",
         "sounds": [
             {
@@ -2063,7 +2063,7 @@
             }
         ]
     },
-    "entity_vampire_boss_attack": {
+    "vampire_boss_attack": {
         "category": "hostile",
         "sounds": [
             {
@@ -2073,7 +2073,7 @@
             }
         ]
     },
-    "entity_vampire_boss_death": {
+    "vampire_boss_death": {
         "category": "hostile",
         "sounds": [
             {
@@ -2083,7 +2083,7 @@
             }
         ]
     },
-    "entity_vampire_boss_hurt": {
+    "vampire_boss_hurt": {
         "category": "hostile",
         "sounds": [
             {
@@ -2093,7 +2093,7 @@
             }
         ]
     },
-    "entity_vampire_bride_attack": {
+    "vampire_bride_attack": {
         "category": "hostile",
         "sounds": [
             {
@@ -2108,7 +2108,7 @@
             }
         ]
     },
-    "entity_vampire_bride_death": {
+    "vampire_bride_death": {
         "category": "hostile",
         "sounds": [
             {
@@ -2123,7 +2123,7 @@
             }
         ]
     },
-    "entity_vampire_bride_hurt": {
+    "vampire_bride_hurt": {
         "category": "hostile",
         "sounds": [
             {
@@ -2133,7 +2133,7 @@
             }
         ]
     },
-    "entity_vampire_death": {
+    "vampire_death": {
         "category": "hostile",
         "sounds": [
             {
@@ -2148,7 +2148,7 @@
             }
         ]
     },
-    "entity_vampire_hurt": {
+    "vampire_hurt": {
         "category": "hostile",
         "sounds": [
             {
@@ -2163,7 +2163,7 @@
             }
         ]
     },
-    "entity_zombie_ambient": {
+    "zombie_ambient": {
         "category": "hostile",
         "sounds": [
             {
@@ -2193,7 +2193,7 @@
             }
         ]
     },
-    "entity_zombie_attack": {
+    "zombie_attack": {
         "category": "hostile",
         "sounds": [
             {
@@ -2233,7 +2233,7 @@
             }
         ]
     },
-    "entity_zombie_death": {
+    "zombie_death": {
         "category": "hostile",
         "sounds": [
             {
@@ -2263,7 +2263,7 @@
             }
         ]
     },
-    "entity_zombie_hurt": {
+    "zombie_hurt": {
         "category": "hostile",
         "sounds": [
             {

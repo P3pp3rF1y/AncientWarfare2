@@ -254,7 +254,7 @@ public abstract class NpcFaction extends NpcBase {
 
 	private String getEntitySound() {
 		if (getAdditionalAttributeValue(AdditionalAttributes.ENTITY_SOUND).isPresent()) {
-			return "entity_" + getAdditionalAttributeValue(AdditionalAttributes.ENTITY_SOUND).get();
+			return getAdditionalAttributeValue(AdditionalAttributes.ENTITY_SOUND).get();
 		} else
 			return "generic";
 	}
