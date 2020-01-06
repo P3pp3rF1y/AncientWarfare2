@@ -65,13 +65,13 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 	@Nullable
 	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-		return isFemale() ? AWNPCSounds.HUMAN_FEMALE_HURT : AWNPCSounds.HUMAN_HURT;
+		return isFemale() || getSkinSettings().isAlexModel() ? AWNPCSounds.HUMAN_FEMALE_HURT : AWNPCSounds.HUMAN_HURT;
 	}
 
 	@Nullable
 	@Override
 	protected SoundEvent getDeathSound() {
-		return isFemale() ? AWNPCSounds.HUMAN_FEMALE_DEATH : AWNPCSounds.HUMAN_DEATH;
+		return isFemale() || getSkinSettings().isAlexModel() ? AWNPCSounds.HUMAN_FEMALE_DEATH : AWNPCSounds.HUMAN_HURT;
 	}
 
 	@Override
