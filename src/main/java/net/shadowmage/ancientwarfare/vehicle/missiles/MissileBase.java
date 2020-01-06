@@ -268,7 +268,6 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 						this.posX -= this.motionX / (double) var20 * 0.05000000074505806D;
 						this.posY -= this.motionY / (double) var20 * 0.05000000074505806D;
 						this.posZ -= this.motionZ / (double) var20 * 0.05000000074505806D;
-						this.playSound(SoundEvents.ENTITY_ARROW_HIT, 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
 						this.inGround = true;
 						if (!this.ammoType.isPersistent() && !this.world.isRemote) {
 							this.setDead();

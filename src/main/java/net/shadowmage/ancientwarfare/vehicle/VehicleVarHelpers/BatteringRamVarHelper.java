@@ -1,24 +1,3 @@
-/**
- * Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
- * This software is distributed under the terms of the GNU General Public License.
- * Please see COPYING for precise license information.
- * <p>
- * This file is part of Ancient Warfare.
- * <p>
- * Ancient Warfare is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * <p>
- * Ancient Warfare is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.vehicle.VehicleVarHelpers;
 
 import net.minecraft.entity.Entity;
@@ -26,12 +5,15 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeBatteringRam;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
+import net.shadowmage.ancientwarfare.vehicle.init.AWVehicleSounds;
 import net.shadowmage.ancientwarfare.vehicle.missiles.DamageType;
 
 import java.util.List;
+import java.util.Random;
 
 public class BatteringRamVarHelper extends VehicleFiringVarsHelper {
 
@@ -72,24 +54,24 @@ public class BatteringRamVarHelper extends VehicleFiringVarsHelper {
 
 	@Override
 	public void onReloadUpdate() {
-		if (this.logAngle < 0) {
-			this.logAngle++;
-			this.logSpeed = 1;
+		if (logAngle < 0) {
+			logAngle++;
+			logSpeed = 1;
 		} else {
-			this.logAngle = 0;
-			this.logSpeed = 0;
+			logAngle = 0;
+			logSpeed = 0;
 		}
 	}
 
 	@Override
 	public void onLaunchingUpdate() {
 		if (logAngle <= -30) {
-			this.vehicle.firingHelper.setFinishedLaunching();
-			this.doDamageEffects();
-			this.logSpeed = 0;
+			vehicle.firingHelper.setFinishedLaunching();
+			doDamageEffects();
+			logSpeed = 0;
 		} else {
 			logAngle -= 2;
-			this.logSpeed = -2;
+			logSpeed = -2;
 		}
 	}
 
@@ -107,21 +89,35 @@ public class BatteringRamVarHelper extends VehicleFiringVarsHelper {
 			bb = new AxisAlignedBB(pos, pos.add(1, 1, 1));
 			hitEntities = vehicle.world.getEntitiesWithinAABBExcludingEntity(vehicle, bb);
 			if (hitEntities != null) {
+				boolean firstGateBlock = true; // only used if a gate was hit
 				for (Entity ent : hitEntities) {
+					System.out.println("entity: " + ent);
 					ent.attackEntityFrom(DamageType.batteringDamage, 5 + vehicle.vehicleMaterialLevel);
+					if (ent instanceof EntityGate) {
+						String gateTypeName = (((EntityGate) ent).gateType.getVariant().toString().toLowerCase());
+						if (gateTypeName.contains("wood") && firstGateBlock) {
+							ent.playSound(AWVehicleSounds.BATTERING_RAM_HIT_WOOD, 3, 1);
+							firstGateBlock = false; // makes playing the sound only once, the gate can hit the Gate entity multiple times at once
+						} else if (gateTypeName.contains("iron") && firstGateBlock) {
+							System.out.println("sound played");
+							ent.playSound(AWVehicleSounds.BATTERING_RAM_HIT_IRON, 3, 1);
+							firstGateBlock = false;
+						}
+					}
 				}
 			}
-/* TODO warzone implementation?
-			if (WarzoneManager.instance().shouldBreakBlock(vehicle.world, pos.x, pos.y, pos.z)) {
-*/
-			BlockTools.breakBlockAndDrop(vehicle.world, pos);
+			// nerfing the battering ram to only break a block with a 25% chance
+			Random rand = new Random();
+			if (rand.nextDouble() < 0.20) {
+				BlockTools.breakBlockAndDrop(vehicle.world, pos);
+			}
 		}
 	}
 
 	@Override
 	public void onReloadingFinished() {
-		this.logAngle = 0;
-		this.logSpeed = 0;
+		logAngle = 0;
+		logSpeed = 0;
 	}
 
 	@Override

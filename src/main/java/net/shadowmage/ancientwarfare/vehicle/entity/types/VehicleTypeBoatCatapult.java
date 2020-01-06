@@ -8,6 +8,7 @@ import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleMovementType;
 import net.shadowmage.ancientwarfare.vehicle.entity.materials.VehicleMaterial;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
+import net.shadowmage.ancientwarfare.vehicle.init.AWVehicleSounds;
 import net.shadowmage.ancientwarfare.vehicle.registry.AmmoRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.ArmorRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.UpgradeRegistry;
@@ -15,101 +16,101 @@ import net.shadowmage.ancientwarfare.vehicle.registry.UpgradeRegistry;
 public class VehicleTypeBoatCatapult extends VehicleType {
 	public VehicleTypeBoatCatapult(int typeNum) {
 		super(typeNum);
-		this.configName = "boat_catapult";
-		this.vehicleMaterial = VehicleMaterial.materialWood;
-		this.materialCount = 5;
-		this.movementType = VehicleMovementType.WATER;
-		this.validAmmoTypes.add(AmmoRegistry.ammoStoneShot10);
-		this.validAmmoTypes.add(AmmoRegistry.ammoStoneShot15);
-		this.validAmmoTypes.add(AmmoRegistry.ammoFireShot10);
-		this.validAmmoTypes.add(AmmoRegistry.ammoFireShot15);
-		this.validAmmoTypes.add(AmmoRegistry.ammoPebbleShot10);
-		this.validAmmoTypes.add(AmmoRegistry.ammoPebbleShot15);
-		this.validAmmoTypes.add(AmmoRegistry.ammoClusterShot10);
-		this.validAmmoTypes.add(AmmoRegistry.ammoClusterShot15);
-		this.validAmmoTypes.add(AmmoRegistry.ammoExplosive10);
-		this.validAmmoTypes.add(AmmoRegistry.ammoExplosive15);
-		this.validAmmoTypes.add(AmmoRegistry.ammoHE10);
-		this.validAmmoTypes.add(AmmoRegistry.ammoHE15);
-		this.validAmmoTypes.add(AmmoRegistry.ammoNapalm10);
-		this.validAmmoTypes.add(AmmoRegistry.ammoNapalm15);
+		configName = "boat_catapult";
+		vehicleMaterial = VehicleMaterial.materialWood;
+		materialCount = 5;
+		movementType = VehicleMovementType.WATER;
+		validAmmoTypes.add(AmmoRegistry.ammoStoneShot10);
+		validAmmoTypes.add(AmmoRegistry.ammoStoneShot15);
+		validAmmoTypes.add(AmmoRegistry.ammoFireShot10);
+		validAmmoTypes.add(AmmoRegistry.ammoFireShot15);
+		validAmmoTypes.add(AmmoRegistry.ammoPebbleShot10);
+		validAmmoTypes.add(AmmoRegistry.ammoPebbleShot15);
+		validAmmoTypes.add(AmmoRegistry.ammoClusterShot10);
+		validAmmoTypes.add(AmmoRegistry.ammoClusterShot15);
+		validAmmoTypes.add(AmmoRegistry.ammoExplosive10);
+		validAmmoTypes.add(AmmoRegistry.ammoExplosive15);
+		validAmmoTypes.add(AmmoRegistry.ammoHE10);
+		validAmmoTypes.add(AmmoRegistry.ammoHE15);
+		validAmmoTypes.add(AmmoRegistry.ammoNapalm10);
+		validAmmoTypes.add(AmmoRegistry.ammoNapalm15);
 
-		this.validAmmoTypes.add(AmmoRegistry.ammoArrow);
-		this.validAmmoTypes.add(AmmoRegistry.ammoArrowFlame);
-		this.validAmmoTypes.add(AmmoRegistry.ammoArrowIron);
-		this.validAmmoTypes.add(AmmoRegistry.ammoArrowIronFlame);
+		validAmmoTypes.add(AmmoRegistry.ammoArrow);
+		validAmmoTypes.add(AmmoRegistry.ammoArrowFlame);
+		validAmmoTypes.add(AmmoRegistry.ammoArrowIron);
+		validAmmoTypes.add(AmmoRegistry.ammoArrowIronFlame);
 
 		if (AWVehicleStatics.oversizeAmmoEnabled) {
-			this.validAmmoTypes.add(AmmoRegistry.ammoStoneShot30);
-			this.validAmmoTypes.add(AmmoRegistry.ammoStoneShot45);
-			this.validAmmoTypes.add(AmmoRegistry.ammoFireShot30);
-			this.validAmmoTypes.add(AmmoRegistry.ammoFireShot45);
-			this.validAmmoTypes.add(AmmoRegistry.ammoPebbleShot30);
-			this.validAmmoTypes.add(AmmoRegistry.ammoPebbleShot45);
-			this.validAmmoTypes.add(AmmoRegistry.ammoClusterShot30);
-			this.validAmmoTypes.add(AmmoRegistry.ammoClusterShot45);
-			this.validAmmoTypes.add(AmmoRegistry.ammoExplosive30);
-			this.validAmmoTypes.add(AmmoRegistry.ammoExplosive45);
-			this.validAmmoTypes.add(AmmoRegistry.ammoHE30);
-			this.validAmmoTypes.add(AmmoRegistry.ammoHE45);
+			validAmmoTypes.add(AmmoRegistry.ammoStoneShot30);
+			validAmmoTypes.add(AmmoRegistry.ammoStoneShot45);
+			validAmmoTypes.add(AmmoRegistry.ammoFireShot30);
+			validAmmoTypes.add(AmmoRegistry.ammoFireShot45);
+			validAmmoTypes.add(AmmoRegistry.ammoPebbleShot30);
+			validAmmoTypes.add(AmmoRegistry.ammoPebbleShot45);
+			validAmmoTypes.add(AmmoRegistry.ammoClusterShot30);
+			validAmmoTypes.add(AmmoRegistry.ammoClusterShot45);
+			validAmmoTypes.add(AmmoRegistry.ammoExplosive30);
+			validAmmoTypes.add(AmmoRegistry.ammoExplosive45);
+			validAmmoTypes.add(AmmoRegistry.ammoHE30);
+			validAmmoTypes.add(AmmoRegistry.ammoHE45);
 
 		}
 
-		this.ammoBySoldierRank.put(0, AmmoRegistry.ammoStoneShot10);
-		this.ammoBySoldierRank.put(1, AmmoRegistry.ammoStoneShot10);
-		this.ammoBySoldierRank.put(2, AmmoRegistry.ammoStoneShot10);
+		ammoBySoldierRank.put(0, AmmoRegistry.ammoStoneShot10);
+		ammoBySoldierRank.put(1, AmmoRegistry.ammoStoneShot10);
+		ammoBySoldierRank.put(2, AmmoRegistry.ammoStoneShot10);
 
-		this.validArmors.add(ArmorRegistry.armorStone);
-		this.validArmors.add(ArmorRegistry.armorObsidian);
-		this.validArmors.add(ArmorRegistry.armorIron);
+		validArmors.add(ArmorRegistry.armorStone);
+		validArmors.add(ArmorRegistry.armorObsidian);
+		validArmors.add(ArmorRegistry.armorIron);
 
-		this.validUpgrades.add(UpgradeRegistry.aimUpgrade);
-		this.validUpgrades.add(UpgradeRegistry.pitchDownUpgrade);
-		this.validUpgrades.add(UpgradeRegistry.pitchUpUpgrade);
-		this.validUpgrades.add(UpgradeRegistry.powerUpgrade);
-		this.validUpgrades.add(UpgradeRegistry.speedUpgrade);
-		this.validUpgrades.add(UpgradeRegistry.aimUpgrade);
-		this.validUpgrades.add(UpgradeRegistry.reloadUpgrade);
+		validUpgrades.add(UpgradeRegistry.aimUpgrade);
+		validUpgrades.add(UpgradeRegistry.pitchDownUpgrade);
+		validUpgrades.add(UpgradeRegistry.pitchUpUpgrade);
+		validUpgrades.add(UpgradeRegistry.powerUpgrade);
+		validUpgrades.add(UpgradeRegistry.speedUpgrade);
+		validUpgrades.add(UpgradeRegistry.aimUpgrade);
+		validUpgrades.add(UpgradeRegistry.reloadUpgrade);
 
-		this.storageBaySize = 0;
-		this.armorBaySize = 3;
-		this.upgradeBaySize = 3;
+		storageBaySize = 0;
+		armorBaySize = 3;
+		upgradeBaySize = 3;
 
-		this.drivable = true;
-		this.riderSits = true;
-		this.riderMovesWithTurret = false;
-		this.mountable = true;
+		drivable = true;
+		riderSits = true;
+		riderMovesWithTurret = false;
+		mountable = true;
 
-		this.combatEngine = true;
-		this.powerAdjustable = true;
-		this.pitchAdjustable = false;
-		this.yawAdjustable = false;
+		combatEngine = true;
+		powerAdjustable = true;
+		pitchAdjustable = false;
+		yawAdjustable = false;
 
-		this.width = 2.7f;
-		this.height = 1.4f;
+		width = 2.7f;
+		height = 1.4f;
 
-		this.baseStrafeSpeed = 2.f;
-		this.baseForwardSpeed = 6.2f * 0.05f;
+		baseStrafeSpeed = 2.f;
+		baseForwardSpeed = 6.2f * 0.05f;
 
-		this.accuracy = 0.95f;
+		accuracy = 0.95f;
 
-		this.basePitchMax = 20;
-		this.basePitchMin = 20;
-		this.baseMissileVelocityMax = 32.f;
-		this.maxMissileWeight = 10.f;
+		basePitchMax = 20;
+		basePitchMin = 20;
+		baseMissileVelocityMax = 32.f;
+		maxMissileWeight = 10.f;
 
-		this.missileVerticalOffset = 0;
+		missileVerticalOffset = 0;
 
-		this.missileForwardsOffset = -37 * 0.0625f;
-		this.turretVerticalOffset = 18 * 0.0625f;
+		missileForwardsOffset = -37 * 0.0625f;
+		turretVerticalOffset = 18 * 0.0625f;
 
-		this.riderForwardsOffset = 1.10f;
-		this.riderVerticalOffset = 0.55f;
+		riderForwardsOffset = 1.10f;
+		riderVerticalOffset = 0.55f;
 
-		this.displayName = "item.vehicleSpawner.19";
-		this.displayTooltip.add("item.vehicleSpawner.tooltip.torsion");
-		this.displayTooltip.add("item.vehicleSpawner.tooltip.boat");
-		this.displayTooltip.add("item.vehicleSpawner.tooltip.noturret");
+		displayName = "item.vehicleSpawner.19";
+		displayTooltip.add("item.vehicleSpawner.tooltip.torsion");
+		displayTooltip.add("item.vehicleSpawner.tooltip.boat");
+		displayTooltip.add("item.vehicleSpawner.tooltip.noturret");
 	}
 
 	@Override
@@ -135,4 +136,13 @@ public class VehicleTypeBoatCatapult extends VehicleType {
 		return new CatapultVarHelper(veh);
 	}
 
+	@Override
+	public void playFiringSound(VehicleBase vehicleBase) {
+		vehicleBase.playSound(AWVehicleSounds.CATAPULT_LAUNCH, 6, 1);
+	}
+
+	@Override
+	public void playReloadSound(VehicleBase vehicleBase) {
+		vehicleBase.playSound(AWVehicleSounds.CATAPULT_RELOAD, 1, 1);
+	}
 }

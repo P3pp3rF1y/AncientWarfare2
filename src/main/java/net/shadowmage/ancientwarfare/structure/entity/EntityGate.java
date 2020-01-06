@@ -46,7 +46,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 
 	public float openingSpeed = 0.f;//calculated speed of the opening gate -- used during animation
 
-	private Gate gateType = Gate.getGateByID(0);
+	public Gate gateType = Gate.getGateByID(0);
 
 	private Owner owner = Owner.EMPTY;
 	private int health = 0;
