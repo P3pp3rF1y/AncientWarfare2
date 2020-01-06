@@ -203,7 +203,7 @@ public abstract class NpcFaction extends NpcBase {
 		//noinspection deprecation
 		String name = I18n.translateToLocal("entity.ancientwarfarenpc." + getNpcFullType() + ".name");
 		if (hasCustomName()) {
-			name = name + " : " + getCustomNameTag();
+			name = getCustomNameTag();
 		}
 		return name;
 	}
