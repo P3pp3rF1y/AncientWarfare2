@@ -22,6 +22,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import static net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics.mailboxTimeForDimension;
+import static net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics.mailboxTimePerBlock;
+
 public class MailboxData extends WorldSavedData {
 	private MailboxSet publicMailboxes = new MailboxSet("public");
 	private HashMap<String, MailboxSet> privateMailboxes = new HashMap<>();
@@ -260,8 +263,8 @@ public class MailboxData extends WorldSavedData {
 		private List<DeliverableItem> getDeliverableItems(List<DeliverableItem> items, World world, int x, int y, int z) {
 			int dim = world.provider.getDimension();
 			int time = 0;
-			int timePerBlock = 10;//set time from config for per-block time
-			int timeForDimension = 100;//set time from config for cross-dimensional items
+			int timePerBlock = mailboxTimePerBlock;//set time from config for per-block time
+			int timeForDimension = mailboxTimeForDimension;//set time from config for cross-dimensional items
 			for (DeliverableItem item : this.incomingItems) {
 				if (dim != item.originDimension) {
 					time = timeForDimension;
@@ -314,8 +317,8 @@ public class MailboxData extends WorldSavedData {
 
 			int dim;
 			int time = 0;
-			int timePerBlock = 10;//set time from config for per-block time
-			int timeForDimension = 100;//set time from config for cross-dimensional items
+			int timePerBlock = mailboxTimePerBlock;//set time from config for per-block time
+			int timeForDimension = mailboxTimeForDimension;//set time from config for cross-dimensional items
 			int x, y, z;
 			Iterator<DeliverableItem> it;
 			DeliverableItem item;

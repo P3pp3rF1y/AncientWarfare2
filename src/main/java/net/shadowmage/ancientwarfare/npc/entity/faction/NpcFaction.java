@@ -19,11 +19,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.util.NBTHelper;
 import net.shadowmage.ancientwarfare.npc.ai.AIHelper;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionFleeSun;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRestrictSun;
+import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.entity.faction.attributes.AdditionalAttributes;
@@ -156,14 +156,23 @@ public abstract class NpcFaction extends NpcBase {
 		if (isUndead()) {
 			return EnumCreatureAttribute.UNDEAD;
 		} else
-		return EnumCreatureAttribute.UNDEFINED;
+			return EnumCreatureAttribute.UNDEFINED;
 	}
 
 	public void setFactionNameAndDefaults(String factionName) {
 		this.factionName = factionName;
 		FactionNpcDefault npcDefault = NpcDefaultsRegistry.getFactionNpcDefault(this);
 		applyFactionNpcSettings(npcDefault);
-		npcDefault.applyEquipment(this);
+		// do not apply the default equipment if the hasCustomEquipment tag was set to true
+		if (!getCustomEquipmentOverride()) {
+			npcDefault.applyEquipment(this);
+		}
+
+		// makes faction NPCs drop all their items otherwise use the default vanilla drop rate
+		if (!AWNPCStatics.vanillaEquipmentDropRate) {
+			inventoryArmorDropChances = new float[] {1.f, 1.f, 1.f, 1.f};
+			inventoryHandsDropChances = new float[] {1.f, 1.f};
+		}
 
 		Range<Float> heightRange = npcDefault.getHeightRange();
 		float newHeight = heightRange.getMinimum() + world.rand.nextFloat() * (heightRange.getMaximum() - heightRange.getMinimum());
