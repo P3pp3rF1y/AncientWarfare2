@@ -38,9 +38,6 @@ public class NpcAIAttackMeleeLongRange extends NpcAIAttack<NpcBase> {
 			npc.attackEntityAsMob(getTarget());
 			setAttackDelay(getCoolDown());
 			npc.addExperience(AWNPCStatics.npcXpFromAttack);
-			if ((Math.random() < 0.2 && npc instanceof NpcFaction)) {
-				((NpcFaction) npc).playAttackSound();
-			}
 		}
 	}
 

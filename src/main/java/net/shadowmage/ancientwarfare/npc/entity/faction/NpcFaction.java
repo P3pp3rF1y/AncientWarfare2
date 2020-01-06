@@ -21,7 +21,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.util.NBTHelper;
 import net.shadowmage.ancientwarfare.npc.ai.AIHelper;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionFleeSun;
@@ -55,6 +54,9 @@ public abstract class NpcFaction extends NpcBase {
 	private static final int REVENGE_LIST_VALIDATION_TICKS = DEATH_REVENGE_TICKS / 100;
 	private static final double REVENGE_SET_RANGE = 50D;
 	private static final String HEIGHT_TAG = "height";
+	private final SoundEvent attackSound;
+	private final SoundEvent deathSound;
+	private final SoundEvent hurtSound;
 
 	protected String factionName;
 	private Map<String, Long> revengePlayers = new HashMap<>();
@@ -62,12 +64,18 @@ public abstract class NpcFaction extends NpcBase {
 	public NpcFaction(World world) {
 		super(world);
 		addAI();
+		attackSound = getSoundEventFromAttributes("_attack");
+		deathSound = getSoundEventFromAttributes("_death");
+		hurtSound = getSoundEventFromAttributes("_hurt");
 	}
 
 	public NpcFaction(World world, String factionName) {
 		super(world);
 		setFactionNameAndDefaults(factionName);
 		addAI();
+		attackSound = getSoundEventFromAttributes("_attack");
+		deathSound = getSoundEventFromAttributes("_death");
+		hurtSound = getSoundEventFromAttributes("_hurt");
 	}
 
 	private Map<IAdditionalAttribute<?>, Object> additionalAttributes = new HashMap<>();
@@ -159,7 +167,7 @@ public abstract class NpcFaction extends NpcBase {
 		if (isUndead()) {
 			return EnumCreatureAttribute.UNDEAD;
 		} else
-		return EnumCreatureAttribute.UNDEFINED;
+			return EnumCreatureAttribute.UNDEFINED;
 	}
 
 	public void setFactionNameAndDefaults(String factionName) {
@@ -252,36 +260,33 @@ public abstract class NpcFaction extends NpcBase {
 
 	}
 
-	private String getEntitySound() {
+	private SoundEvent getSoundEventFromAttributes(String suffix) {
 		if (getAdditionalAttributeValue(AdditionalAttributes.ENTITY_SOUND).isPresent()) {
-			return getAdditionalAttributeValue(AdditionalAttributes.ENTITY_SOUND).get();
-		} else
-			return "generic";
-	}
-
-	@Override
-	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-		String sound = getEntitySound() + "_hurt";
-
-		if (!sound.equals("generic_hurt") && AWNPCSounds.isValidSound(sound)) {
-			return AWNPCSounds.getSoundEventFromString(sound);
+			String sound = getAdditionalAttributeValue(AdditionalAttributes.ENTITY_SOUND).get() + suffix;
+			if (AWNPCSounds.isValidSound(sound)) {
+				return AWNPCSounds.getSoundEventFromString(sound);
+			}
+		}
+		if (suffix.equals("_death")) {
+			return SoundEvents.ENTITY_GENERIC_DEATH;
 		} else
 			return SoundEvents.ENTITY_GENERIC_HURT;
 	}
 
 	@Override
-	protected SoundEvent getDeathSound() {
-		String sound = getEntitySound() + "_death";
-		if (!sound.equals("generic_death") && AWNPCSounds.isValidSound(sound)) {
-			return AWNPCSounds.getSoundEventFromString(sound);
-		} else
-			return SoundEvents.ENTITY_GENERIC_DEATH;
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+		return hurtSound;
 	}
 
-	public void playAttackSound() {
-		String sound = getEntitySound() + "_attack";
-		if (!sound.equals("generic_attack") && AWNPCSounds.isValidSound(sound)) {
-			playSound(AWNPCSounds.getSoundEventFromString(sound), 1.0F, 1.2F / (rand.nextFloat() * 0.2F + 0.9F));
+	@Override
+	protected SoundEvent getDeathSound() {
+		return deathSound;
+	}
+
+	private void playAttackSound() {
+		// don't play any sound if there is no specific attack sound
+		if (attackSound != SoundEvents.ENTITY_GENERIC_HURT) {
+			playSound(attackSound, 1.0F, 1.2F / (rand.nextFloat() * 0.2F + 0.9F));
 		}
 	}
 
@@ -309,6 +314,14 @@ public abstract class NpcFaction extends NpcBase {
 	public boolean canBeAttackedBy(Entity e) {
 		//can only be attacked by other factions, not your own...disable friendly fire
 		return !(e instanceof NpcFaction) || !getFaction().equals(((NpcFaction) e).getFaction());
+	}
+
+	@Override
+	public boolean attackEntityAsMob(Entity target) {
+		if ((Math.random() < 0.2)) {
+			playAttackSound();
+		}
+		return super.attackEntityAsMob(target);
 	}
 
 	@Override
