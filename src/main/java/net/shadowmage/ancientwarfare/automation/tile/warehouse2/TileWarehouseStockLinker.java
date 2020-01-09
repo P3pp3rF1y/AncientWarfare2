@@ -107,10 +107,12 @@ public class TileWarehouseStockLinker extends TileControlled implements IOwnable
 				filter.setCompareValue(0);
 			}
 		} else {
-			for (WarehouseStockFilter filter : this.filters) {
-				filter.setQuantity(filter.getFilterItem().isEmpty() ? 0 : controller.get().getCountOf(filter.getFilterItem()));
-				filter.setEqualitySignType((byte) filter.getEqualitySignType().ordinal());
-				filter.setCompareValue(filter.getCompareValue());
+			if(controller.get().isActive()) {
+				for (WarehouseStockFilter filter : this.filters) {
+					filter.setQuantity(filter.getFilterItem().isEmpty() ? 0 : controller.get().getCountOf(filter.getFilterItem()));
+					filter.setEqualitySignType((byte) filter.getEqualitySignType().ordinal());
+					filter.setCompareValue(filter.getCompareValue());
+				}
 			}
 		}
 	}
@@ -118,12 +120,10 @@ public class TileWarehouseStockLinker extends TileControlled implements IOwnable
 	@Override
 	public void searchForController() {
 		if (warehouseBlockPos != null) {
-			for (TileEntity te : WorldTools.getTileEntitiesInArea(world, warehouseBlockPos.getX(), warehouseBlockPos.getY(), warehouseBlockPos.getZ(), warehouseBlockPos.getX(), warehouseBlockPos.getY(), warehouseBlockPos.getZ())) {
+			TileEntity te = world.getTileEntity(warehouseBlockPos);
 				if (te instanceof IControllerTile && isValidController((IControllerTile) te)) {
 					((IControllerTile) te).addControlledTile(this);
-					break;
 				}
-			}
 		}
 	}
 
@@ -182,9 +182,6 @@ public class TileWarehouseStockLinker extends TileControlled implements IOwnable
 	protected void writeUpdateNBT(NBTTagCompound tag) {
 		super.writeUpdateNBT(tag);
 		NBTHelper.writeSerializablesTo(tag, FILTER_LIST_TAG, filters);
-		if (warehouseBlockPos != null) {
-			tag.setTag(WAREHOUSE_POS_TAG, NBTUtil.createPosTag(warehouseBlockPos));
-		}
 	}
 
 	@Override
@@ -192,9 +189,6 @@ public class TileWarehouseStockLinker extends TileControlled implements IOwnable
 		super.handleUpdateNBT(tag);
 		this.filters.clear();
 		this.filters.addAll(NBTHelper.deserializeListFrom(tag, TileWarehouseStockLinker.FILTER_LIST_TAG, WarehouseStockFilter::new));
-		if (tag.hasKey(WAREHOUSE_POS_TAG)) {
-			NBTUtil.getPosFromTag(tag.getCompoundTag(WAREHOUSE_POS_TAG));
-		}
 		BlockTools.notifyBlockUpdate(this);
 		updateViewers();
 	}
@@ -203,9 +197,6 @@ public class TileWarehouseStockLinker extends TileControlled implements IOwnable
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 		filters.addAll(NBTHelper.deserializeListFrom(tag, TileWarehouseStockLinker.FILTER_LIST_TAG, WarehouseStockFilter::new));
-		if (tag.hasKey(WAREHOUSE_POS_TAG)) {
-			NBTUtil.getPosFromTag(tag.getCompoundTag(WAREHOUSE_POS_TAG));
-		}
 		owner = Owner.deserializeFromNBT(tag);
 	}
 
@@ -213,9 +204,6 @@ public class TileWarehouseStockLinker extends TileControlled implements IOwnable
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 		NBTHelper.writeSerializablesTo(tag, FILTER_LIST_TAG, filters);
-		if (warehouseBlockPos != null) {
-			tag.setTag(WAREHOUSE_POS_TAG, NBTUtil.createPosTag(warehouseBlockPos));
-		}
 		owner.serializeToNBT(tag);
 		return tag;
 	}
