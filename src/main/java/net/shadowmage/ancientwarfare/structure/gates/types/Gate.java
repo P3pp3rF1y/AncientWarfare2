@@ -65,7 +65,7 @@ public class Gate implements IGateType {
 	protected String displayName = "";
 	protected String tooltip = "";
 	protected Variant variant;
-	protected int maxHealth = 40;
+	protected int maxHealth = 80;
 	private int modelType = 0;
 
 	protected boolean canSoldierInteract = true;
