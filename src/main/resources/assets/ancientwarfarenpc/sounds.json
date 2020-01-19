@@ -402,12 +402,12 @@
         "category": "hostile",
         "sounds": [
             {
-                "name": "ancicoven_witchwarfare:npc/coven_witch_attack_1",
+                "name": "ancientwarfare:npc/coven_witch_attack_1",
                 "weight": 1,
                 "stream": false
             },
             {
-                "name": "ancicoven_witchwarfare:npc/coven_witch_attack_2",
+                "name": "ancientwarfare:npc/coven_witch_attack_2",
                 "weight": 1,
                 "stream": false
             }
@@ -417,12 +417,12 @@
         "category": "hostile",
         "sounds": [
             {
-                "name": "ancicoven_witchwarfare:npc/coven_witch_death_1",
+                "name": "ancientwarfare:npc/coven_witch_death_1",
                 "weight": 1,
                 "stream": false
             },
             {
-                "name": "ancicoven_witchwarfare:npc/coven_witch_death_2",
+                "name": "ancientwarfare:npc/coven_witch_death_2",
                 "weight": 1,
                 "stream": false
             }
@@ -432,7 +432,7 @@
         "category": "hostile",
         "sounds": [
             {
-                "name": "ancicoven_witchwarfare:npc/coven_witch_hurt_1",
+                "name": "ancientwarfare:npc/coven_witch_hurt_1",
                 "weight": 1,
                 "stream": false
             }
@@ -612,12 +612,12 @@
         "category": "hostile",
         "sounds": [
             {
-                "name": "ancigargoylewarfare:npc/gargoyle_attack_1",
+                "name": "ancientwarfare:npc/gargoyle_attack_1",
                 "weight": 1,
                 "stream": false
             },
             {
-                "name": "ancigargoylewarfare:npc/gargoyle_attack_2",
+                "name": "ancientwarfare:npc/gargoyle_attack_2",
                 "weight": 1,
                 "stream": false
             }
@@ -627,7 +627,7 @@
         "category": "hostile",
         "sounds": [
             {
-                "name": "ancigargoylewarfare:npc/gargoyle_death_1",
+                "name": "ancientwarfare:npc/gargoyle_death_1",
                 "weight": 1,
                 "stream": false
             }
@@ -637,7 +637,7 @@
         "category": "hostile",
         "sounds": [
             {
-                "name": "ancigargoylewarfare:npc/gargoyle_hurt_1",
+                "name": "ancientwarfare:npc/gargoyle_hurt_1",
                 "weight": 1,
                 "stream": false
             }
@@ -2113,11 +2113,6 @@
         "sounds": [
             {
                 "name": "ancientwarfare:npc/vampire_bride_death_1",
-                "weight": 1,
-                "stream": false
-            },
-            {
-                "name": "ancientwarfare:npc/vampire_bride_death_2",
                 "weight": 1,
                 "stream": false
             }
