@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.gates.types;
 
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -10,8 +11,8 @@ public class GateDouble extends Gate {
 	 * @param id
 	 * @param textureLocation
 	 */
-	public GateDouble(int id, String textureLocation) {
-		super(id, textureLocation);
+	public GateDouble(int id, String textureLocation, SoundEvent moveSound, SoundEvent hurtSound, SoundEvent breakSound) {
+		super(id, textureLocation, moveSound, hurtSound, breakSound);
 	}
 
 	@Override

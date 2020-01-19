@@ -1,7 +1,89 @@
 {
-    "protection_flag_claim": {"category": "neutral", "sounds": [{"name": "ancientwarfarestructure:protection_flag_claim", "stream": false}]},
-    "coffin_opens": {"category": "neutral", "sounds": [{"name": "ancientwarfarestructure:coffin_opens", "stream": false}]},
-    "urn_break": {"category": "neutral", "sounds": [{"name": "ancientwarfarestructure:urn_break", "stream": false}]},
-    "coin_stack_break": {"category": "neutral", "sounds": [{"name": "ancientwarfarestructure:coinstack_break", "stream": false}]},
-    "coin_stack_interact": {"category": "neutral", "sounds": [{"name": "ancientwarfarestructure:coinstack_interact", "stream": false}]}
+    "protection_flag_claim": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:protection_flag_claim",
+                "stream": false
+            }
+        ]
+    },
+    "coffin_opens": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:coffin_opens",
+                "stream": false
+            }
+        ]
+    },
+    "urn_break": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:urn_break",
+                "stream": false
+            }
+        ]
+    },
+    "coin_stack_break": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:coinstack_break",
+                "stream": false
+            }
+        ]
+    },
+    "coin_stack_interact": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:coinstack_interact",
+                "stream": false
+            }
+        ]
+    },
+    "iron_gate": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:portcullis",
+                "stream": false
+            }
+        ]
+    },
+    "iron_gate_break": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:iron_gate_break",
+                "stream": false
+            }
+        ]
+    },
+    "wooden_gate": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:drawbridge",
+                "stream": false
+            }
+        ]
+    },
+    "wooden_gate_break": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:wooden_gate_break_1",
+                "weight": 1,
+                "stream": false
+            },
+            {
+                "name": "ancientwarfarestructure:wooden_gate_break_2",
+                "weight": 1,
+                "stream": false
+            }
+        ]
+    }
 }
