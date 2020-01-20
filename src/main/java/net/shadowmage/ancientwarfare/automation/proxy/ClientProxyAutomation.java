@@ -28,7 +28,6 @@ import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteInventorySideSele
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteQuarry;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteQuarryBounds;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteTreeFarm;
-import net.shadowmage.ancientwarfare.automation.render.AutoCraftingRenderer;
 import net.shadowmage.ancientwarfare.automation.render.FlywheelControllerAnimationRenderer;
 import net.shadowmage.ancientwarfare.automation.render.FlywheelControllerRenderer;
 import net.shadowmage.ancientwarfare.automation.render.FlywheelStorageAnimationRenderer;
@@ -154,7 +153,6 @@ public class ClientProxyAutomation extends ClientProxyBase {
 
 	@SubscribeEvent
 	public void onPreTextureStitch(TextureStitchEvent.Pre evt) {
-		AutoCraftingRenderer.INSTANCE.setSprite(registerSprite(evt, "tile_auto_crafting"));
 
 		StirlingGeneratorRenderer.INSTANCE.setSprite(registerSprite(evt, "stirling_generator"));
 
