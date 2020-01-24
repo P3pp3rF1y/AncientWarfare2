@@ -5,18 +5,23 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.owner.TeamViewerRegistry;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcCombat;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 
+import javax.annotation.Nullable;
 import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.UUID;
 
 public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
 
@@ -103,11 +108,21 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
 					if (((NpcBase) entity).getNpcSubType().equals("soldier") && ((NpcBase) entity).hasCommandPermissions(npc.getOwner())) {
 						nearbySoldiers.add((NpcCombat) entity);
 					}
+				} else if (entity instanceof IEntityOwnable && ((IEntityOwnable) entity).getOwner() != null) {
+					Entity owner = ((IEntityOwnable) entity).getOwner();
+					if (isFriendly(((Entity) entity).world, owner.getUniqueID(), owner.getName())) {
+						return;
+					}
 				} else {
 					npc.nearbyHostiles.add((Entity) entity);
 				}
 			}
 		}
+	}
+
+	// check if  the owner is same or owned by a team member or owned by a friend
+	public boolean isFriendly(World world, @Nullable UUID ownerId, String ownerName) {
+		return TeamViewerRegistry.areFriendly(world, npc.getOwner().getUUID(), ownerId, npc.getOwner().getName(), ownerName);
 	}
 
 	@Override
