@@ -2,14 +2,20 @@ package net.shadowmage.ancientwarfare.structure.entity;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemAxe;
+import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -61,6 +67,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 	private AxisAlignedBB renderBoundingBox = new AxisAlignedBB(0, 0, 0, 0, 0, 0);
 
 	private TEGateProxy renderedTile = null;
+	private int soundTicks = 15;
 
 	public EntityGate(World par1World) {
 		super(par1World);
@@ -124,6 +131,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 			//catch gates that have proxy blocks still in the world
 			gateType.onGateStartOpen(this);
 			gateType.onGateStartClose(this);
+			playSound(gateType.breakSound, 1, 1);
 		}
 	}
 
@@ -239,6 +247,11 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 		}
 	}
 
+	private void playGateMoveSound(BlockPos pos, Gate gateType) {
+		world.playSound(null, pos, gateType.moveSound, SoundCategory.AMBIENT, 2, 1);
+		soundTicks = 0;
+	}
+
 	@Override
 	@SuppressWarnings("squid:S2696") //World.MAX_ENTITY_RADIUS is static and can only be set this way, also just running in the main thread makes this safe
 	public void onUpdate() {
@@ -255,16 +268,26 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 		}
 		if (this.gateStatus == 1) {
 			this.edgePosition += this.gateType.getMoveSpeed();
+			if (soundTicks == 15) {
+				playGateMoveSound(pos1, gateType);
+			}
+			soundTicks++;
 			if (this.edgePosition >= this.edgeMax) {
 				this.edgePosition = this.edgeMax;
 				this.gateStatus = 0;
+				soundTicks = 15;
 				this.gateType.onGateFinishOpen(this);
 			}
 		} else if (this.gateStatus == -1) {
 			this.edgePosition -= this.gateType.getMoveSpeed();
+			if (soundTicks == 15) {
+				playGateMoveSound(pos1, gateType);
+			}
+			soundTicks++;
 			if (this.edgePosition <= 0) {
 				this.edgePosition = 0;
 				this.gateStatus = 0;
+				soundTicks = 15;
 				this.gateType.onGateFinishClose(this);
 			}
 		}
@@ -325,6 +348,30 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 				return false;
 			}
 			this.hurtInvulTicks = 10;
+		}
+
+		playSound(gateType.hurtSound, 1, 1);
+		if (damageSource.getImmediateSource() instanceof EntityArrow) { // ignore arrow dmg
+			return false;
+		}
+		if (damageSource.getImmediateSource() instanceof EntityLivingBase) {
+			/*  getTrueSource is no good here because that would make it work for ranged attacks like arrows and vehicles too,
+			we only want to reduce melee damage */
+			EntityLivingBase entitylivingbase = (EntityLivingBase) damageSource.getImmediateSource();
+			if ((!entitylivingbase.getHeldItem(EnumHand.MAIN_HAND).isEmpty())) {
+				Item heldItem = entitylivingbase.getHeldItem(EnumHand.MAIN_HAND).getItem();
+				if (gateType.isWood(gateType.getVariant())) { // wooden gates
+					amount = (heldItem instanceof ItemAxe) ? amount / 2 : amount / 4; // half dmg for axe, 1/4 for anything else
+
+				} else { // iron gates
+					if ((heldItem instanceof ItemPickaxe)) {
+						Item.ToolMaterial material = Item.ToolMaterial.valueOf(((ItemPickaxe) heldItem).getToolMaterialName());
+						amount = material == Item.ToolMaterial.DIAMOND ? amount / 2 : amount / 3; // half dmg for diamond pickaxe, 1/3 for any other axes
+					} else { // anything but a pickaxe
+						amount = amount / 4;
+					}
+				}
+			}
 		}
 		this.setHealth((int) (getHealth() - amount));
 

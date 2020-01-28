@@ -18,6 +18,10 @@ public class AWStructureSounds {
 	public static final SoundEvent URN_BREAK = InjectionTools.nullValue();
 	public static final SoundEvent COIN_STACK_BREAK = InjectionTools.nullValue();
 	public static final SoundEvent COIN_STACK_INTERACT = InjectionTools.nullValue();
+	public static final SoundEvent IRON_GATE = InjectionTools.nullValue();
+	public static final SoundEvent IRON_GATE_BREAK = InjectionTools.nullValue();
+	public static final SoundEvent WOODEN_GATE = InjectionTools.nullValue();
+	public static final SoundEvent WOODEN_GATE_BREAK = InjectionTools.nullValue();
 
 	private AWStructureSounds() {}
 
@@ -30,6 +34,10 @@ public class AWStructureSounds {
 		registry.register(createSoundEvent("urn_break"));
 		registry.register(createSoundEvent("coin_stack_break"));
 		registry.register(createSoundEvent("coin_stack_interact"));
+		registry.register(createSoundEvent("iron_gate"));
+		registry.register(createSoundEvent("iron_gate_break"));
+		registry.register(createSoundEvent("wooden_gate"));
+		registry.register(createSoundEvent("wooden_gate_break"));
 	}
 
 	private static SoundEvent createSoundEvent(String soundName) {

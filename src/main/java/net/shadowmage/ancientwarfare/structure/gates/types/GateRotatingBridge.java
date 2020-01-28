@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.structure.gates.types;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
@@ -15,8 +16,8 @@ public class GateRotatingBridge extends Gate {
 	/*
 	 * @param id
 	 */
-	public GateRotatingBridge(int id, String tex) {
-		super(id, tex);
+	public GateRotatingBridge(int id, String tex, SoundEvent moveSound, SoundEvent hurtSound, SoundEvent breakSound) {
+		super(id, tex, moveSound, hurtSound, breakSound);
 		setName("gateDrawbridge");
 		this.moveSpeed = 1.f;
 		this.canSoldierInteract = false;

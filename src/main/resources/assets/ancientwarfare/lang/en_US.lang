@@ -162,7 +162,7 @@ item.coin.ancient.tooltip=%1$s"Of Minossia, only its coins remain - Sic transit 
 tile.engineering_station.0.name=Engineering Station
 tile.research_station.0.name=Research Station
 #automation
-tile.auto_crafting.0.name=Auto Crafting Station
+tile.auto_crafting.name=Auto Crafting Station
 tile.quarry.name=Quarry
 tile.tree_farm.name=Tree Farm
 tile.crop_farm.name=Crop Farm

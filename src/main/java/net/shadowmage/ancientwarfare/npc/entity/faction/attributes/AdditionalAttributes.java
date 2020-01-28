@@ -12,8 +12,9 @@ public class AdditionalAttributes {
 	public static final ClassAttribute HORSE_ENTITY = new ClassAttribute("horse_entity", EntityLiving.class);
 	public static final BoolAttribute BURNS_IN_SUN = new BoolAttribute("burns_in_sun");
 	public static final BoolAttribute UNDEAD = new BoolAttribute("undead");
+	public static final StringAttribute ENTITY_SOUND = new StringAttribute("entity_sound");
 	private static final Map<String, IAdditionalAttribute<?>> ALL_ATTRIBUTES =
-			ImmutableMap.of(HORSE_ENTITY.getName(), HORSE_ENTITY, BURNS_IN_SUN.getName(), BURNS_IN_SUN, UNDEAD.getName(), UNDEAD);
+			ImmutableMap.of(HORSE_ENTITY.getName(), HORSE_ENTITY, BURNS_IN_SUN.getName(), BURNS_IN_SUN, UNDEAD.getName(), UNDEAD, ENTITY_SOUND.getName(), ENTITY_SOUND);
 
 	public static IAdditionalAttribute getByName(String attributeName) {
 		return ALL_ATTRIBUTES.getOrDefault(attributeName, INVALID_ATTRIBUTE);

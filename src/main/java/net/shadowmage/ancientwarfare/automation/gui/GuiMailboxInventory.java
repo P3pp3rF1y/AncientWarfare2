@@ -12,6 +12,7 @@ import org.lwjgl.input.Mouse;
 public class GuiMailboxInventory extends GuiContainerBase<ContainerMailbox> {
 
 	private Label inputName, outputName;
+	private Checkbox autoExport, privateBox;
 
 	public GuiMailboxInventory(ContainerBase par1Container) {
 		super(par1Container, 178, 240);
@@ -56,16 +57,16 @@ public class GuiMailboxInventory extends GuiContainerBase<ContainerMailbox> {
 		};
 		addGuiElement(sideSelectButton);
 
-		Checkbox export = new Checkbox(8, ySize - 12 - 12 - 8, 12, 12, "guistrings.automation.auto_output") {
+		autoExport = new Checkbox(8, ySize - 12 - 12 - 8, 12, 12, "guistrings.automation.auto_output") {
 			@Override
 			public void onToggled() {
 				getContainer().handleAutoExportToggle(checked());
 			}
 		};
-		export.setChecked(getContainer().autoExport);
-		addGuiElement(export);
+		autoExport.setChecked(getContainer().autoExport);
+		addGuiElement(autoExport);
 
-		Checkbox privateBox = new Checkbox(8, ySize - 12 - 8, 12, 12, "guistrings.automation.private_mailbox") {
+		privateBox = new Checkbox(8, ySize - 12 - 8, 12, 12, "guistrings.automation.private_mailbox") {
 			@Override
 			public void onToggled() {
 				getContainer().handlePrivateBoxToggle(checked());
@@ -85,6 +86,8 @@ public class GuiMailboxInventory extends GuiContainerBase<ContainerMailbox> {
 	public void setupElements() {
 		inputName.setText(getContainer().mailboxName);
 		outputName.setText(getContainer().targetName);
+		autoExport.setChecked(getContainer().autoExport);
+		privateBox.setChecked(getContainer().privateBox);
 	}
 
 }

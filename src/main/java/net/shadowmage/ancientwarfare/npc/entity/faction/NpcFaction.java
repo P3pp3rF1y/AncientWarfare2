@@ -6,6 +6,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,6 +15,7 @@ import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.I18n;
@@ -29,6 +31,7 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.entity.faction.attributes.AdditionalAttributes;
 import net.shadowmage.ancientwarfare.npc.entity.faction.attributes.IAdditionalAttribute;
 import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
+import net.shadowmage.ancientwarfare.npc.init.AWNPCSounds;
 import net.shadowmage.ancientwarfare.npc.registry.FactionNpcDefault;
 import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
 import net.shadowmage.ancientwarfare.npc.registry.NpcDefaultsRegistry;
@@ -52,6 +55,9 @@ public abstract class NpcFaction extends NpcBase {
 	private static final int REVENGE_LIST_VALIDATION_TICKS = DEATH_REVENGE_TICKS / 100;
 	private static final double REVENGE_SET_RANGE = 50D;
 	private static final String HEIGHT_TAG = "height";
+	private final SoundEvent attackSound;
+	private final SoundEvent deathSound;
+	private final SoundEvent hurtSound;
 
 	protected String factionName;
 	private Map<String, Long> revengePlayers = new HashMap<>();
@@ -59,12 +65,18 @@ public abstract class NpcFaction extends NpcBase {
 	public NpcFaction(World world) {
 		super(world);
 		addAI();
+		attackSound = getSoundEventFromAttributes("_attack");
+		deathSound = getSoundEventFromAttributes("_death");
+		hurtSound = getSoundEventFromAttributes("_hurt");
 	}
 
 	public NpcFaction(World world, String factionName) {
 		super(world);
 		setFactionNameAndDefaults(factionName);
 		addAI();
+		attackSound = getSoundEventFromAttributes("_attack");
+		deathSound = getSoundEventFromAttributes("_death");
+		hurtSound = getSoundEventFromAttributes("_hurt");
 	}
 
 	private Map<IAdditionalAttribute<?>, Object> additionalAttributes = new HashMap<>();
@@ -258,6 +270,36 @@ public abstract class NpcFaction extends NpcBase {
 
 	}
 
+	private SoundEvent getSoundEventFromAttributes(String suffix) {
+		if (getAdditionalAttributeValue(AdditionalAttributes.ENTITY_SOUND).isPresent()) {
+			String sound = getAdditionalAttributeValue(AdditionalAttributes.ENTITY_SOUND).get() + suffix;
+			if (AWNPCSounds.isValidSound(sound)) {
+				return AWNPCSounds.getSoundEventFromString(sound);
+			}
+		}
+		if (suffix.equals("_death")) {
+			return SoundEvents.ENTITY_GENERIC_DEATH;
+		} else
+			return SoundEvents.ENTITY_GENERIC_HURT;
+	}
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+		return hurtSound;
+	}
+
+	@Override
+	protected SoundEvent getDeathSound() {
+		return deathSound;
+	}
+
+	private void playAttackSound() {
+		// don't play any sound if there is no specific attack sound
+		if (attackSound != SoundEvents.ENTITY_GENERIC_HURT) {
+			playSound(attackSound, 1.0F, 1.2F / (rand.nextFloat() * 0.2F + 0.9F));
+		}
+	}
+
 	@Override
 	protected void damageEntity(DamageSource damageSrc, float damageAmount) {
 		super.damageEntity(damageSrc, damageAmount);
@@ -282,6 +324,14 @@ public abstract class NpcFaction extends NpcBase {
 	public boolean canBeAttackedBy(Entity e) {
 		//can only be attacked by other factions, not your own...disable friendly fire
 		return !(e instanceof NpcFaction) || !getFaction().equals(((NpcFaction) e).getFaction());
+	}
+
+	@Override
+	public boolean attackEntityAsMob(Entity target) {
+		if ((Math.random() < 0.2)) {
+			playAttackSound();
+		}
+		return super.attackEntityAsMob(target);
 	}
 
 	@Override

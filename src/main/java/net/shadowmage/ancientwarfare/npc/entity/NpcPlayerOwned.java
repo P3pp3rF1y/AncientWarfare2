@@ -11,6 +11,7 @@ import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
@@ -20,6 +21,7 @@ import net.shadowmage.ancientwarfare.npc.ai.AIHelper;
 import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedRideHorse;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
+import net.shadowmage.ancientwarfare.npc.init.AWNPCSounds;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.Command;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.CommandType;
 import net.shadowmage.ancientwarfare.npc.orders.UpkeepOrder;
@@ -58,6 +60,18 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 	@Override
 	public int getMaxFallHeight() {
 		return super.getMaxFallHeight() - 1;
+	}
+
+	@Nullable
+	@Override
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+		return isFemale() || getSkinSettings().isAlexModel() ? AWNPCSounds.HUMAN_FEMALE_HURT : AWNPCSounds.HUMAN_HURT;
+	}
+
+	@Nullable
+	@Override
+	protected SoundEvent getDeathSound() {
+		return isFemale() || getSkinSettings().isAlexModel() ? AWNPCSounds.HUMAN_FEMALE_DEATH : AWNPCSounds.HUMAN_HURT;
 	}
 
 	@Override
