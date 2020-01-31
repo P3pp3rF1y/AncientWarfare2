@@ -32,7 +32,6 @@ import static net.shadowmage.ancientwarfare.structure.template.build.validation.
 
 public class WorldGenStructureManager {
 	public static final String GENERIC_TERRITORY_NAME = "";
-	private static final float CHUNK_CLUSTER_VALUE = 1f;
 	private HashMap<String, Set<StructureTemplate>> templatesByBiome = new HashMap<>();
 	private HashMap<Biome, List<String>> territoryNamesByBiome = new HashMap<>();
 	private HashMap<String, Set<Biome>> biomesByTerritoryNames = new HashMap<>();
@@ -168,7 +167,7 @@ public class WorldGenStructureManager {
 			return null;
 		}
 
-		int remainingValueCache = (int) (1f * territory.getNumberOfChunks()) - territory.getTotalClusterValue();
+		int remainingValueCache = (int) (AWStructureStatics.chunkClusterValue * territory.getNumberOfChunks()) - territory.getTotalClusterValue();
 
 		int dim = world.provider.getDimension();
 		for (StructureTemplate template : potentialStructures)//loop through initial structures, only adding to 2nd list those which meet biome, unique, value, and minDuplicate distance settings

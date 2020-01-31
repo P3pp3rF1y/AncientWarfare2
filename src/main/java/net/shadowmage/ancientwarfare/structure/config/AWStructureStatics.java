@@ -23,15 +23,14 @@ public class AWStructureStatics extends ModConfiguration {
 		super(mod);
 	}
 
+	public static float chunkClusterValue = 1f;
 	public static String templateExtension = "aws";
 	public static String townTemplateExtension = "awt";
 	public static boolean enableWorldGen = true;
 	public static boolean enableTownGeneration = true;
 	public static boolean enableStructureGeneration = true;
 	public static boolean loadDefaultPack = true;
-	public static int clusterValueSearchRange = 16;
 	public static int duplicateStructureSearchRange = 40;
-	public static int maxClusterValue = 500;
 	public static float randomGenerationChance = 0.075f;
 	public static int spawnProtectionRange = 24;
 	public static int townClosestDistance = 90;
@@ -67,9 +66,8 @@ public class AWStructureStatics extends ModConfiguration {
 		enableTownGeneration = config.get(worldGenCategory, "enable_town_generation", enableTownGeneration, "Default=" + enableTownGeneration + "\n" + "Enable or disable custom town generation e.g. walls and additional buildings.").getBoolean(enableTownGeneration);
 		loadDefaultPack = config.get(worldGenCategory, "load_default_structure_pack", loadDefaultPack, "If true the default structure pack will be loaded and enabled for world-gen.").getBoolean(loadDefaultPack);
 		duplicateStructureSearchRange = config.get(worldGenCategory, "validation_duplicate_search_radius", duplicateStructureSearchRange, "Default=" + duplicateStructureSearchRange + "\n" + "The minimum radius in chunks to be searched for duplicate structures.\n" + "This setting should generally not need to be adjusted unless you have templates with extremely\n" + "large 'minDuplicateDistance' values\n" + "Extremely large values may introduce extra lag during generation.  Lower values may reduce lag during generation,\n" + "at the cost of some accuracy in the min duplicate distance tests.").getInt(duplicateStructureSearchRange);
-		clusterValueSearchRange = config.get(worldGenCategory, "validation_cluster_value_search_radius", clusterValueSearchRange, "Default=" + clusterValueSearchRange + "\n" + "The minimum radius in chunks to be searched for structures when tallying cluster value in an area.\n" + "This setting should be adjusted along with maxClusterValue and the clusterValue in templates to encourage\n" + "or discourage specific structures to generate near eachother.\n" + "Extremely large values may introduce extra lag during generation.  Lower values may reduce lag during generation,\n" + "at the cost of some accuracy in the cluster value tests.").getInt(clusterValueSearchRange);
-		maxClusterValue = config.get(worldGenCategory, "max_cluster_value", maxClusterValue, "Default=" + maxClusterValue + "\n" + "The maximum allowed cluster value that may be present inside of 'validation_chunk_radius'.\n" + "").getInt(maxClusterValue);
 		randomGenerationChance = (float) config.get(worldGenCategory, "random_generation_chance", randomGenerationChance, "Default=" + randomGenerationChance + "\n" + "Accepts values between 0 and 1.\n" + "Determines the chance that a structure will attempt to be generated in any given chunk.\n" + "Number is specified as a percentage -- e.g. 0.75 == 75% chance to attempt generation.\n" + "Higher values will result in more attempts to generate structures.  Actual number\n" + "generated will depend upon your specific templates and their validation settings.\n" + "Values of 0 or lower will result in no structures generating.  Values higher than 1\n" + "will result in a generation attempt in every chunk.").getDouble(randomGenerationChance);
+		chunkClusterValue = (float) config.get(worldGenCategory, "chunk_cluster_value", chunkClusterValue, "Default=" + chunkClusterValue + "\n" + "Accepts values greater than 0.\n" + "Determines how much total cluster value territory gets per chunk. When structures spawn the total territory cluster value is used to determine how many points remain and thus it influences how big and how many structures can spawn").getDouble(chunkClusterValue);
 		spawnProtectionRange = config.get(worldGenCategory, "spawn_protection_chunk_radius", spawnProtectionRange, "Default=" + spawnProtectionRange + "\n" + "Determines the area around the central spawn coordinate that will be excluded from random structure generation.\n" + "Larger values will see a larger area around spawn that is devoid of structures.").getInt(spawnProtectionRange);
 		enableWorldGen = config.get(serverOptions, "enable_world_generation", enableWorldGen, "Default=" + enableWorldGen + "\n" + "Enable or disable world generation entirely. If disabled, all other options will have no effect.").getBoolean(enableWorldGen);
 
