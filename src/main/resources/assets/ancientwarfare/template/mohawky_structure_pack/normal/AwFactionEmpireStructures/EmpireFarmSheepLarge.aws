@@ -28,6 +28,7 @@ leveling=10
 fill=10
 border=10
 blockSwap=false
+territoryName=empire
 :endvalidation
 
 #### LAYERS ####
@@ -1347,7 +1348,7 @@ rule:
 plugin=vanillaSign
 number=86
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"east"}},signContents2:"the Dog§r§r",signContents1:"Beware of§r§r",signContents3:"",rotation:0}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"east"}},signContents2:"the Dogï¿½rï¿½r",signContents1:"Beware ofï¿½rï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -1403,7 +1404,7 @@ rule:
 plugin=vanillaSign
 number=93
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"east"}},signContents2:"Sheep Farm§r§r",signContents1:"Gentry§r§r",signContents3:"",rotation:0}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"east"}},signContents2:"Sheep Farmï¿½rï¿½r",signContents1:"Gentryï¿½rï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 

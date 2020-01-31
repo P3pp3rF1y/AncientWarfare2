@@ -28,6 +28,7 @@ leveling=20
 fill=2
 border=10
 blockSwap=false
+territoryName=kong
 :endvalidation
 
 #### LAYERS ####
@@ -6349,7 +6350,7 @@ rule:
 plugin=vanillaSign
 number=97
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"north"}},signContents2:"Larder§r§r",signContents1:"Village§r§r",signContents3:"",rotation:0}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"north"}},signContents2:"Larderï¿½rï¿½r",signContents1:"Villageï¿½rï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 

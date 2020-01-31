@@ -28,6 +28,7 @@ leveling=5
 fill=5
 border=5
 blockSwap=false
+territoryName=empire
 :endvalidation
 
 #### LAYERS ####
@@ -1045,7 +1046,7 @@ rule:
 plugin=vanillaSign
 number=46
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"north"}},signContents2:"Mill§r§r",signContents1:"Traditional§r§r",signContents3:"",rotation:0}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"north"}},signContents2:"Millï¿½rï¿½r",signContents1:"Traditionalï¿½rï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -1229,7 +1230,7 @@ rule:
 plugin=vanillaSign
 number=69
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"Miller§r§r",signContents1:"Windy§r§r",signContents3:"",rotation:0}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"Millerï¿½rï¿½r",signContents1:"Windyï¿½rï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -1261,7 +1262,7 @@ rule:
 plugin=vanillaSign
 number=73
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"Store§r§r",signContents1:"Grain§r§r",signContents3:"",rotation:0}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"Storeï¿½rï¿½r",signContents1:"Grainï¿½rï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 

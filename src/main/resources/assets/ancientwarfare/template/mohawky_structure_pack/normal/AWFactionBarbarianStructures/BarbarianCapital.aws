@@ -28,6 +28,7 @@ leveling=30
 fill=30
 border=20
 blockSwap=false
+territoryName=barbarian
 :endvalidation
 
 #### LAYERS ####
@@ -3862,7 +3863,7 @@ rule:
 plugin=vanillaSign
 number=46
 data:
-JSON:{signContents0:"up§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"",signContents1:"",signContents3:"",rotation:0}
+JSON:{signContents0:"upï¿½rï¿½r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"",signContents1:"",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -4630,7 +4631,7 @@ rule:
 plugin=vanillaSign
 number=142
 data:
-JSON:{signContents0:"push§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"",signContents1:"",signContents3:"",rotation:0}
+JSON:{signContents0:"pushï¿½rï¿½r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"",signContents1:"",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -4638,7 +4639,7 @@ rule:
 plugin=vanillaSign
 number=143
 data:
-JSON:{signContents0:"push§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"",signContents1:"",signContents3:"",rotation:0}
+JSON:{signContents0:"pushï¿½rï¿½r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"",signContents1:"",signContents3:"",rotation:0}
 :enddata
 :endrule
 

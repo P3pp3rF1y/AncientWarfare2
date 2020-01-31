@@ -28,6 +28,7 @@ leveling=2
 fill=0
 border=0
 blockSwap=false
+territoryName=evil
 :endvalidation
 
 #### LAYERS ####

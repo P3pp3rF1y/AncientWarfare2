@@ -28,6 +28,7 @@ leveling=3
 fill=1
 border=3
 blockSwap=false
+territoryName=buffloka
 :endvalidation
 
 #### LAYERS ####
@@ -2312,7 +2313,7 @@ rule:
 plugin=vanillaSign
 number=51
 data:
-JSON:{signContents0:"Buffloka§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"Welcome§r§r",signContents1:"Trader§r§r",signContents3:"All!§r§r",rotation:0}
+JSON:{signContents0:"Bufflokaï¿½rï¿½r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"Welcomeï¿½rï¿½r",signContents1:"Traderï¿½rï¿½r",signContents3:"All!ï¿½rï¿½r",rotation:0}
 :enddata
 :endrule
 
@@ -2320,7 +2321,7 @@ rule:
 plugin=vanillaSign
 number=52
 data:
-JSON:{signContents0:"Buffloka§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"Welcome§r§r",signContents1:"Trader§r§r",signContents3:"All!§r§r",rotation:0}
+JSON:{signContents0:"Bufflokaï¿½rï¿½r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"Welcomeï¿½rï¿½r",signContents1:"Traderï¿½rï¿½r",signContents3:"All!ï¿½rï¿½r",rotation:0}
 :enddata
 :endrule
 

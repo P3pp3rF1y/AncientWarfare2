@@ -28,6 +28,7 @@ leveling=5
 fill=5
 border=5
 blockSwap=false
+territoryName=empire
 :endvalidation
 
 #### LAYERS ####
@@ -833,7 +834,7 @@ rule:
 plugin=vanillaSign
 number=27
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"Mill§r§r",signContents1:"New Fangled§r§r",signContents3:"",rotation:0}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"Millï¿½rï¿½r",signContents1:"New Fangledï¿½rï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -865,7 +866,7 @@ rule:
 plugin=vanillaSign
 number=31
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"north"}},signContents2:"Mill§r§r",signContents1:"New Fangled§r§r",signContents3:"",rotation:0}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"north"}},signContents2:"Millï¿½rï¿½r",signContents1:"New Fangledï¿½rï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 

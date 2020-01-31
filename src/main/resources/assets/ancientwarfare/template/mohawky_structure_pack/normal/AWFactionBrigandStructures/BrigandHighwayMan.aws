@@ -28,6 +28,7 @@ leveling=3
 fill=12
 border=0
 blockSwap=true
+territoryName=brigand
 :endvalidation
 
 #### LAYERS ####

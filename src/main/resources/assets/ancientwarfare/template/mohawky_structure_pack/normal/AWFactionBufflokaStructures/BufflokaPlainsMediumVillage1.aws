@@ -28,6 +28,7 @@ leveling=6
 fill=6
 border=3
 blockSwap=false
+territoryName=buffloka
 :endvalidation
 
 #### LAYERS ####

@@ -28,6 +28,7 @@ leveling=20
 fill=2
 border=10
 blockSwap=false
+territoryName=kong
 :endvalidation
 
 #### LAYERS ####

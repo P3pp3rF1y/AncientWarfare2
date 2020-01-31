@@ -28,6 +28,7 @@ leveling=0
 fill=0
 border=0
 blockSwap=false
+territoryName=nogg
 :endvalidation
 
 #### LAYERS ####

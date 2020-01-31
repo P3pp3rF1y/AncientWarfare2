@@ -28,6 +28,7 @@ leveling=6
 fill=6
 border=6
 blockSwap=false
+territoryName=zimba
 :endvalidation
 
 #### LAYERS ####
@@ -5899,7 +5900,7 @@ rule:
 plugin=vanillaSign
 number=13
 data:
-JSON:{signContents0:"zimba§r§r§r",blockState:{blockName:"minecraft:standing_sign",properties:{rotation:"12"}},signContents2:"",signContents1:"",signContents3:"",rotation:0}
+JSON:{signContents0:"zimbaï¿½rï¿½rï¿½r",blockState:{blockName:"minecraft:standing_sign",properties:{rotation:"12"}},signContents2:"",signContents1:"",signContents3:"",rotation:0}
 :enddata
 :endrule
 

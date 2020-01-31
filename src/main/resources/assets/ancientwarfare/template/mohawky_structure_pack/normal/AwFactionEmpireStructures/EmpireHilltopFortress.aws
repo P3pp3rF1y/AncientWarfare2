@@ -28,6 +28,7 @@ leveling=12
 fill=12
 border=12
 blockSwap=false
+territoryName=empire
 :endvalidation
 
 #### LAYERS ####

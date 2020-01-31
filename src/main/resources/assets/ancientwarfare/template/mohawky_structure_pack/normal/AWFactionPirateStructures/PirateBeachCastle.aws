@@ -28,6 +28,7 @@ leveling=7
 fill=3
 border=7
 blockSwap=false
+territoryName=pirate
 :endvalidation
 
 #### LAYERS ####

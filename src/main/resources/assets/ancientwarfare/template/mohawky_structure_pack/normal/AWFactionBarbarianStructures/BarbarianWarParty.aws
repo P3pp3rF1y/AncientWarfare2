@@ -28,6 +28,7 @@ leveling=20
 fill=20
 border=5
 blockSwap=true
+territoryName=barbarian
 :endvalidation
 
 #### LAYERS ####

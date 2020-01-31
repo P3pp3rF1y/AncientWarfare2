@@ -4,6 +4,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -65,6 +66,7 @@ import net.shadowmage.ancientwarfare.structure.template.datafixes.fixers.json.Js
 import net.shadowmage.ancientwarfare.structure.template.load.TemplateLoader;
 import net.shadowmage.ancientwarfare.structure.town.WorldTownGenerator;
 import net.shadowmage.ancientwarfare.structure.util.CapabilityRespawnData;
+import net.shadowmage.ancientwarfare.structure.worldgen.CapabilityTerritoryData;
 import net.shadowmage.ancientwarfare.structure.worldgen.WorldGenTickHandler;
 import net.shadowmage.ancientwarfare.structure.worldgen.WorldStructureGenerator;
 import org.apache.logging.log4j.LogManager;
@@ -133,6 +135,7 @@ public class AncientWarfareStructure {
 		RegistryLoader.registerParser(new StructureBlockRegistry.Parser());
 
 		CapabilityRespawnData.register();
+		CapabilityTerritoryData.register();
 	}
 
 	@EventHandler
@@ -169,6 +172,11 @@ public class AncientWarfareStructure {
 	@SubscribeEvent
 	public void onEntityCapabilityAttach(AttachCapabilitiesEvent<Entity> event) {
 		CapabilityRespawnData.onAttach(event);
+	}
+
+	@SubscribeEvent
+	public void onWorldCapabilityAttach(AttachCapabilitiesEvent<World> event) {
+		CapabilityTerritoryData.onAttach(event);
 	}
 
 	@SubscribeEvent

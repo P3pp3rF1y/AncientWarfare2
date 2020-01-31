@@ -28,6 +28,7 @@ leveling=40
 fill=20
 border=6
 blockSwap=false
+territoryName=xoltec
 :endvalidation
 
 #### LAYERS ####

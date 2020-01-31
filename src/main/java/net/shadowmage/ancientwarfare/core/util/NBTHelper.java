@@ -90,7 +90,6 @@ public class NBTHelper {
 		return ret;
 	}
 
-
 	public static NBTTagList getNBTStringList(Collection<String> strings) {
 		NBTTagList ret = new NBTTagList();
 		strings.forEach(str -> ret.appendTag(new NBTTagString(str)));
@@ -161,7 +160,7 @@ public class NBTHelper {
 
 	public static <K, V> Map<K, V> getMap(NBTTagList list, Function<NBTTagCompound, K> getKey, Function<NBTTagCompound, V> getValue) {
 		Map<K, V> ret = new HashMap<>();
-		for (int i=0; i<list.tagCount(); i++) {
+		for (int i = 0; i < list.tagCount(); i++) {
 			NBTTagCompound tag = list.getCompoundTagAt(i);
 
 			ret.put(getKey.apply(tag), getValue.apply(tag));
@@ -170,9 +169,9 @@ public class NBTHelper {
 		return ret;
 	}
 
-	public static <K,V> NBTTagList mapToCompoundList(Map<K, V> map, BiConsumer<NBTTagCompound, K> setKeyTag, BiConsumer<NBTTagCompound, V> setValueTag) {
+	public static <K, V> NBTTagList mapToCompoundList(Map<K, V> map, BiConsumer<NBTTagCompound, K> setKeyTag, BiConsumer<NBTTagCompound, V> setValueTag) {
 		NBTTagList list = new NBTTagList();
-		for(Map.Entry<K, V> entry : map.entrySet()) {
+		for (Map.Entry<K, V> entry : map.entrySet()) {
 			NBTTagCompound nbtEntry = new NBTTagCompound();
 			setKeyTag.accept(nbtEntry, entry.getKey());
 			setValueTag.accept(nbtEntry, entry.getValue());

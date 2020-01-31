@@ -28,6 +28,7 @@ leveling=4
 fill=4
 border=0
 blockSwap=false
+territoryName=orc
 :endvalidation
 
 #### LAYERS ####
@@ -435,7 +436,7 @@ rule:
 plugin=vanillaSign
 number=17
 data:
-JSON:{signContents0:"Or§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"or§r§r",signContents1:"Dwarves§r§r",signContents3:"Hobbits!§r§r",rotation:0}
+JSON:{signContents0:"Orï¿½rï¿½r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"orï¿½rï¿½r",signContents1:"Dwarvesï¿½rï¿½r",signContents3:"Hobbits!ï¿½rï¿½r",rotation:0}
 :enddata
 :endrule
 
@@ -451,7 +452,7 @@ rule:
 plugin=vanillaSign
 number=19
 data:
-JSON:{signContents0:"Orc Trader§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"Well, almost all§r§r",signContents1:"All Welcome!§r§r",signContents3:"No Bloody Elfs!§r§r",rotation:0}
+JSON:{signContents0:"Orc Traderï¿½rï¿½r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"Well, almost allï¿½rï¿½r",signContents1:"All Welcome!ï¿½rï¿½r",signContents3:"No Bloody Elfs!ï¿½rï¿½r",rotation:0}
 :enddata
 :endrule
 

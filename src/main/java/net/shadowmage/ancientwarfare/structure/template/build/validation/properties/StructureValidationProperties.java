@@ -43,5 +43,7 @@ public class StructureValidationProperties {
 
 	public static final StructureValidationPropertyBool BLOCK_SWAP = new StructureValidationPropertyBool("blockSwap", false);
 
+	public static final StructureValidationPropertyString TERRITORY_NAME = new StructureValidationPropertyString("territoryName", "");
+
 	public static final StructureValidationPropertyResourceLocation BIOME_REPLACEMENT = new StructureValidationPropertyResourceLocation("biomeReplacement", EMPTY_REGISTRY_NAME);
 }

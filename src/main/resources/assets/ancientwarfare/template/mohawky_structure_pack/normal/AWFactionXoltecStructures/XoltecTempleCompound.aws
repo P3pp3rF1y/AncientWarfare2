@@ -28,6 +28,7 @@ leveling=40
 fill=20
 border=10
 blockSwap=false
+territoryName=xoltec
 :endvalidation
 
 #### LAYERS ####
@@ -2477,7 +2478,7 @@ rule:
 plugin=vanillaSign
 number=9
 data:
-JSON:{signContents0:"xoltec§r§r",blockState:{blockName:"minecraft:standing_sign",properties:{rotation:"12"}},signContents2:"",signContents1:"",signContents3:"",rotation:12}
+JSON:{signContents0:"xoltecï¿½rï¿½r",blockState:{blockName:"minecraft:standing_sign",properties:{rotation:"12"}},signContents2:"",signContents1:"",signContents3:"",rotation:12}
 :enddata
 :endrule
 

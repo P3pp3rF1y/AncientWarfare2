@@ -28,6 +28,7 @@ leveling=6
 fill=6
 border=6
 blockSwap=false
+territoryName=norska
 :endvalidation
 
 #### LAYERS ####
@@ -2061,7 +2062,7 @@ rule:
 plugin=vanillaSign
 number=42
 data:
-JSON:{signContents0:"Beware§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"Curse§r§r",signContents1:"the§r§r",signContents3:"of Thor!§r§r",rotation:0}
+JSON:{signContents0:"Bewareï¿½rï¿½r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"Curseï¿½rï¿½r",signContents1:"theï¿½rï¿½r",signContents3:"of Thor!ï¿½rï¿½r",rotation:0}
 :enddata
 :endrule
 
@@ -2077,7 +2078,7 @@ rule:
 plugin=vanillaSign
 number=44
 data:
-JSON:{signContents0:"Beware§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"Curse§r§r",signContents1:"the §r§r",signContents3:"of Thor!§r§r",rotation:0}
+JSON:{signContents0:"Bewareï¿½rï¿½r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"Curseï¿½rï¿½r",signContents1:"the ï¿½rï¿½r",signContents3:"of Thor!ï¿½rï¿½r",rotation:0}
 :enddata
 :endrule
 
@@ -2221,7 +2222,7 @@ rule:
 plugin=vanillaSign
 number=62
 data:
-JSON:{signContents0:"Norska§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"east"}},signContents2:"Thor§r§r",signContents1:"temple of§r§r",signContents3:"",rotation:0}
+JSON:{signContents0:"Norskaï¿½rï¿½r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"east"}},signContents2:"Thorï¿½rï¿½r",signContents1:"temple ofï¿½rï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -2229,7 +2230,7 @@ rule:
 plugin=vanillaSign
 number=63
 data:
-JSON:{signContents0:"Norska§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"east"}},signContents2:"Thor§r§r",signContents1:"temple of§r§r",signContents3:"",rotation:0}
+JSON:{signContents0:"Norskaï¿½rï¿½r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"east"}},signContents2:"Thorï¿½rï¿½r",signContents1:"temple ofï¿½rï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 

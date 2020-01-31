@@ -28,6 +28,7 @@ leveling=6
 fill=6
 border=6
 blockSwap=false
+territoryName=empire
 :endvalidation
 
 #### LAYERS ####
@@ -1362,7 +1363,7 @@ rule:
 plugin=vanillaSign
 number=88
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"Rest§r§r",signContents1:"Travellers§r§r",signContents3:"",rotation:0}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"Restï¿½rï¿½r",signContents1:"Travellersï¿½rï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -1370,7 +1371,7 @@ rule:
 plugin=vanillaSign
 number=89
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"Rest§r§r",signContents1:"Travellers§r§r",signContents3:"",rotation:0}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"Restï¿½rï¿½r",signContents1:"Travellersï¿½rï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -1378,7 +1379,7 @@ rule:
 plugin=vanillaSign
 number=90
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"north"}},signContents2:"Rest§r§r",signContents1:"Travellers§r§r",signContents3:"",rotation:0}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"north"}},signContents2:"Restï¿½rï¿½r",signContents1:"Travellersï¿½rï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -1482,7 +1483,7 @@ rule:
 plugin=vanillaSign
 number=103
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"Room§r§r",signContents1:"Poor§r§r",signContents3:"",rotation:0}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"Roomï¿½rï¿½r",signContents1:"Poorï¿½rï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 

@@ -28,6 +28,7 @@ leveling=50
 fill=25
 border=10
 blockSwap=false
+territoryName=xoltec
 :endvalidation
 
 #### LAYERS ####
@@ -4133,7 +4134,7 @@ rule:
 plugin=vanillaSign
 number=27
 data:
-JSON:{signContents0:"Pool§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"the§r§r",signContents1:"of§r§r",signContents3:"Damned§r§r",rotation:0}
+JSON:{signContents0:"Poolï¿½rï¿½r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"theï¿½rï¿½r",signContents1:"ofï¿½rï¿½r",signContents3:"Damnedï¿½rï¿½r",rotation:0}
 :enddata
 :endrule
 
@@ -4837,7 +4838,7 @@ rule:
 plugin=vanillaSign
 number=115
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"of Souls§r§r",signContents1:"Well§r§r",signContents3:"",rotation:0}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"of Soulsï¿½rï¿½r",signContents1:"Wellï¿½rï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 

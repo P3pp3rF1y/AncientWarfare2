@@ -28,6 +28,7 @@ leveling=6
 fill=6
 border=6
 blockSwap=false
+territoryName=norska
 :endvalidation
 
 #### LAYERS ####

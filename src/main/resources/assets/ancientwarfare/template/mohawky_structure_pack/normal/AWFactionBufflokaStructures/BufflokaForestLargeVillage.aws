@@ -28,6 +28,7 @@ leveling=6
 fill=6
 border=0
 blockSwap=false
+territoryName=buffloka
 :endvalidation
 
 #### LAYERS ####
@@ -5307,7 +5308,7 @@ entity:
 plugin=entity
 number=1
 data:
-JSON:{yOffset:0.0f,xOffset:0.10272453f,rotation:233.73468f,mobID:"minecraft:chicken",zOffset:0.7914576f,position:11545274744858L,entityData:{IsChickenJockey:0b,HurtByTimestamp:0,ForgeData:{cnpcmarkdata:{marks:[]}},Attributes:[{Base:4.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.25d,Name:"generic.movementSpeed"},{Base:0.0d,Name:"generic.armor"},{Base:0.0d,Name:"generic.armorToughness"},{Base:1.0d,Name:"forge.swimSpeed"},{Base:16.0d,Name:"generic.followRange"}],Invulnerable:1b,FallFlying:0b,ForcedAge:0,PortalCooldown:0,AbsorptionAmount:0.0f,FallDistance:0.0f,InLove:0,DeathTime:0s,ForgeCaps:{"dsurround:emojidata":{as:0,es:0,et:0},"llibrary:extendedentitydatacapability":{"mm:living":{frozenYaw:0.0f,freezeProgress:0.0f,frozenPitch:0.0f,frozenYawHead:0.0f,frozenEntityID:-1,frozenLimbSwingAmount:0.0f,frozenRenderYawOffset:0.0f,frozenSwingProgress:0.0f}}},HandDropChances:[0.085f,0.085f],PersistenceRequired:0b,Age:0,Motion:[0.0d,-0.0784000015258789d,0.0d],Leashed:0b,Health:4.0f,LeftHanded:0b,Air:300s,OnGround:1b,Dimension:0,Rotation:[233.73468f,0.0f],UpdateBlocked:0b,HandItems:[{},{}],ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],EggLayTime:2063,CustomName:"§4Chicken",Pos:[692.1027245278432d,102.0d,513.7914576085948d],Fire:-1s,ArmorItems:[{},{},{},{}],CanPickUpLoot:0b,HurtTime:0s,CustomNameVisible:1b}}
+JSON:{yOffset:0.0f,xOffset:0.10272453f,rotation:233.73468f,mobID:"minecraft:chicken",zOffset:0.7914576f,position:11545274744858L,entityData:{IsChickenJockey:0b,HurtByTimestamp:0,ForgeData:{cnpcmarkdata:{marks:[]}},Attributes:[{Base:4.0d,Name:"generic.maxHealth"},{Base:0.0d,Name:"generic.knockbackResistance"},{Base:0.25d,Name:"generic.movementSpeed"},{Base:0.0d,Name:"generic.armor"},{Base:0.0d,Name:"generic.armorToughness"},{Base:1.0d,Name:"forge.swimSpeed"},{Base:16.0d,Name:"generic.followRange"}],Invulnerable:1b,FallFlying:0b,ForcedAge:0,PortalCooldown:0,AbsorptionAmount:0.0f,FallDistance:0.0f,InLove:0,DeathTime:0s,ForgeCaps:{"dsurround:emojidata":{as:0,es:0,et:0},"llibrary:extendedentitydatacapability":{"mm:living":{frozenYaw:0.0f,freezeProgress:0.0f,frozenPitch:0.0f,frozenYawHead:0.0f,frozenEntityID:-1,frozenLimbSwingAmount:0.0f,frozenRenderYawOffset:0.0f,frozenSwingProgress:0.0f}}},HandDropChances:[0.085f,0.085f],PersistenceRequired:0b,Age:0,Motion:[0.0d,-0.0784000015258789d,0.0d],Leashed:0b,Health:4.0f,LeftHanded:0b,Air:300s,OnGround:1b,Dimension:0,Rotation:[233.73468f,0.0f],UpdateBlocked:0b,HandItems:[{},{}],ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],EggLayTime:2063,CustomName:"ï¿½4Chicken",Pos:[692.1027245278432d,102.0d,513.7914576085948d],Fire:-1s,ArmorItems:[{},{},{},{}],CanPickUpLoot:0b,HurtTime:0s,CustomNameVisible:1b}}
 :enddata
 :endentity
 

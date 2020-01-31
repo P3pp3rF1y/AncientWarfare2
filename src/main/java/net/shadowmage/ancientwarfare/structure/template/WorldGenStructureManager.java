@@ -7,6 +7,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
@@ -14,31 +15,47 @@ import net.shadowmage.ancientwarfare.structure.gamedata.StructureEntry;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
 import net.shadowmage.ancientwarfare.structure.registry.BiomeGroupRegistry;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
+import net.shadowmage.ancientwarfare.structure.util.CollectionUtils;
+import net.shadowmage.ancientwarfare.structure.worldgen.Territory;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 import java.util.function.Predicate;
 
-public class WorldGenStructureManager {
+import static net.shadowmage.ancientwarfare.structure.template.build.validation.properties.StructureValidationProperties.TERRITORY_NAME;
 
+public class WorldGenStructureManager {
+	public static final String GENERIC_TERRITORY_NAME = "";
+	private static final float CHUNK_CLUSTER_VALUE = 1f;
 	private HashMap<String, Set<StructureTemplate>> templatesByBiome = new HashMap<>();
+	private HashMap<Biome, List<String>> territoryNamesByBiome = new HashMap<>();
+	private HashMap<String, Set<Biome>> biomesByTerritoryNames = new HashMap<>();
+	private HashMap<String, Set<StructureTemplate>> templatesByTerritoryName = new HashMap<>();
+
 	/*
 	 * cached list objects, used for temp searching, as to not allocate new lists for every chunk-generated....
 	 */
 	private List<StructureEntry> searchCache = new ArrayList<>();
 	private List<StructureTemplate> trimmedPotentialStructures = new ArrayList<>();
 	private HashMap<String, Integer> distancesFound = new HashMap<>();
-	BlockPos rearBorderPos = BlockPos.ORIGIN;
 
 	public static final WorldGenStructureManager INSTANCE = new WorldGenStructureManager();
 
 	private WorldGenStructureManager() {
+	}
+
+	public Optional<List<String>> getBiomeTerritoryNames(Biome biome) {
+		return Optional.ofNullable(territoryNamesByBiome.get(biome));
+	}
+
+	public Optional<Set<Biome>> getTerritoryBiomes(String territoryName) {
+		return Optional.ofNullable(biomesByTerritoryNames.get(territoryName));
 	}
 
 	public void loadBiomeList() {
@@ -56,41 +73,62 @@ public class WorldGenStructureManager {
 		Set<String> biomeGroupBiomes = new HashSet<>();
 		validation.getBiomeGroupList().forEach(biomeGroup -> biomeGroupBiomes.addAll(BiomeGroupRegistry.getGroupBiomes(biomeGroup)));
 
+		String territoryName = template.getValidationSettings().getPropertyValue(TERRITORY_NAME);
+		Set<StructureTemplate> templates = templatesByTerritoryName.getOrDefault(territoryName, new HashSet<>());
+		templates.add(template);
+		templatesByTerritoryName.put(territoryName, templates);
+
 		if (validation.isBiomeWhiteList()) {
-			whitelistBiomes(template, biomes, biomeGroupBiomes);
+			whitelistBiomes(template, biomes, biomeGroupBiomes, territoryName);
 		} else {
-			blacklistBiomes(template, biomes, biomeGroupBiomes);
+			blacklistBiomes(template, biomes, biomeGroupBiomes, territoryName);
 		}
 	}
 
-	private void whitelistBiomes(StructureTemplate template, Set<String> biomes, Set<String> biomeGroupBiomes) {
-		addTemplateToBiomes(template, biomeGroupBiomes, b -> true);
-		addTemplateToBiomes(template, biomes, b -> biomeGroupBiomes.isEmpty() || biomeGroupBiomes.contains(b));
+	private void whitelistBiomes(StructureTemplate template, Set<String> biomes, Set<String> biomeGroupBiomes, String territoryName) {
+		addTemplateToBiomes(template, biomeGroupBiomes, b -> true, territoryName);
+		addTemplateToBiomes(template, biomes, b -> biomeGroupBiomes.isEmpty() || biomeGroupBiomes.contains(b), territoryName);
 	}
 
-	private void addTemplateToBiomes(StructureTemplate template, Set<String> biomeGroupBiomes, Predicate<String> checkBiome) {
-		for (String biome : biomeGroupBiomes) {
-			if (templatesByBiome.containsKey(biome) && checkBiome.test(biome)) {
-				templatesByBiome.get(biome).add(template);
-			} else if (Loader.isModLoaded((new ResourceLocation(biome)).getResourceDomain())) {
-				AncientWarfareStructure.LOG.warn("Could not locate biome: {} while registering template: {} for world generation.", biome, template.name);
+	private void addTemplateToBiomes(StructureTemplate template, Set<String> biomeGroupBiomes, Predicate<String> checkBiome, String territoryName) {
+		for (String biomeName : biomeGroupBiomes) {
+			if (templatesByBiome.containsKey(biomeName) && checkBiome.test(biomeName)) {
+				addBiomeTemplate(template, territoryName, biomeName);
+			} else if (Loader.isModLoaded((new ResourceLocation(biomeName)).getResourceDomain())) {
+				AncientWarfareStructure.LOG.warn("Could not locate biome: {} while registering template: {} for world generation.", biomeName, template.name);
 			}
 		}
 	}
 
-	private void blacklistBiomes(StructureTemplate template, Set<String> biomes, Set<String> biomeGroupBiomes) {
+	private void addBiomeTemplate(StructureTemplate template, String territoryName, String biomeName) {
+		templatesByBiome.get(biomeName).add(template);
+		Biome biome = ForgeRegistries.BIOMES.getValue(new ResourceLocation(biomeName));
+		if (biome != null) {
+			List<String> territoryNames = territoryNamesByBiome.getOrDefault(biome, new ArrayList<>());
+			if (!territoryNames.contains(territoryName)) {
+				territoryNames.add(territoryName);
+				territoryNamesByBiome.put(biome, territoryNames);
+			}
+
+			Set<Biome> biomes = biomesByTerritoryNames.getOrDefault(territoryName, new HashSet<>());
+			biomes.add(biome);
+			biomesByTerritoryNames.put(territoryName, biomes);
+		}
+	}
+
+	private void blacklistBiomes(StructureTemplate template, Set<String> biomes, Set<String> biomeGroupBiomes, String territoryName) {
 		Set<String> biomesBaseList = biomeGroupBiomes.isEmpty() ? templatesByBiome.keySet() : biomeGroupBiomes;
 		for (String biome : biomesBaseList) {
 			if (!biomes.isEmpty() && biomes.contains(biome)) {
 				continue;
 			}
 			if (templatesByBiome.containsKey(biome)) {
-				templatesByBiome.get(biome).add(template);
+				addBiomeTemplate(template, territoryName, biome);
 			}
 		}
 	}
 
-	public StructureTemplate selectTemplateForGeneration(World world, Random rng, int x, int y, int z, EnumFacing face) {
+	public StructureTemplate selectTemplateForGeneration(World world, Random rng, int x, int y, int z, EnumFacing face, Territory territory) {
 		searchCache.clear();
 		trimmedPotentialStructures.clear();
 		distancesFound.clear();
@@ -98,11 +136,11 @@ public class WorldGenStructureManager {
 		if (map == null) {
 			return null;
 		}
-		int foundValue = 0;
 		int chunkDistance;
 		float foundDistance;
 
 		Biome biome = world.provider.getBiomeForCoords(new BlockPos(x, 1, z));
+
 		//noinspection ConstantConditions
 		String biomeName = biome.getRegistryName().toString();
 		Collection<StructureEntry> duplicateSearchEntries = map.getEntriesNear(world, x, z, AWStructureStatics.duplicateStructureSearchRange, false, searchCache);
@@ -121,75 +159,63 @@ public class WorldGenStructureManager {
 			}
 		}
 
-		Collection<StructureEntry> clusterValueSearchEntries = map.getEntriesNear(world, x, z, AWStructureStatics.clusterValueSearchRange, false, searchCache);
-		for (StructureEntry entry : clusterValueSearchEntries) {
-			foundValue += entry.getValue();
-		}
-		Set<StructureTemplate> potentialStructures = templatesByBiome.get(biomeName);
-		if (potentialStructures == null || potentialStructures.isEmpty()) {
+		Set<StructureTemplate> potentialStructures = new HashSet<>();
+		potentialStructures.addAll(getTerritoryTemplates(territory.getTerritoryName()));
+		potentialStructures.addAll(getTerritoryTemplates(GENERIC_TERRITORY_NAME));
+		Set<StructureTemplate> biomeTemplates = templatesByBiome.get(biomeName);
+		potentialStructures.removeIf(t -> !biomeTemplates.contains(t));
+		if (potentialStructures.isEmpty()) {
 			return null;
 		}
 
-		int remainingValueCache = AWStructureStatics.maxClusterValue - foundValue;
-		StructureValidator settings;
+		int remainingValueCache = (int) (1f * territory.getNumberOfChunks()) - territory.getTotalClusterValue();
+
 		int dim = world.provider.getDimension();
 		for (StructureTemplate template : potentialStructures)//loop through initial structures, only adding to 2nd list those which meet biome, unique, value, and minDuplicate distance settings
 		{
-			settings = template.getValidationSettings();
-
-			boolean dimensionMatch = !settings.isDimensionWhiteList();
-			for (int i = 0; i < settings.getAcceptedDimensions().length; i++) {
-				int dimTest = settings.getAcceptedDimensions()[i];
-				if (dimTest == dim) {
-					dimensionMatch = !dimensionMatch;
-					break;
-				}
+			if (validateTemplate(world, x, y, z, face, map, remainingValueCache, dim, template)) {
+				trimmedPotentialStructures.add(template);
 			}
-			if (!dimensionMatch)//skip if dimension is blacklisted, or not present on whitelist
-			{
-				continue;
-			}
-			if (settings.isUnique() && map.isGeneratedUnique(template.name)) {
-				continue;
-			}//skip already generated uniques
-			if (settings.getClusterValue() > remainingValueCache) {
-				continue;
-			}//skip if cluster value is to high to place in given area
-			if (distancesFound.containsKey(template.name)) {
-				int dist = distancesFound.get(template.name);
-				if (dist < settings.getMinDuplicateDistance()) {
-					continue;
-				}//skip if minDuplicate distance is not met
-			}
-			if (!settings.shouldIncludeForSelection(world, x, y, z, face, template)) {
-				continue;
-			}
-			trimmedPotentialStructures.add(template);
 		}
 		if (trimmedPotentialStructures.isEmpty()) {
 			return null;
 		}
-		StructureTemplate toReturn = getWeightedRandomStructure(rng);
+		StructureTemplate toReturn = CollectionUtils.getWeightedRandomElement(rng, this.trimmedPotentialStructures, e -> e.getValidationSettings().getSelectionWeight()).orElse(null);
 		distancesFound.clear();
 		trimmedPotentialStructures.clear();
 		return toReturn;
 	}
 
-	@Nullable
-	private StructureTemplate getWeightedRandomStructure(Random rng) {
-		int totalWeight = 0;
-		for (StructureTemplate t : trimmedPotentialStructures) {
-			totalWeight += t.getValidationSettings().getSelectionWeight() * t.getValidationSettings().getSelectionWeight();
-		}
-		int rnd = rng.nextInt(totalWeight + 1);
-		StructureTemplate toReturn = null;
-		for (StructureTemplate t : trimmedPotentialStructures) {
-			rnd -= t.getValidationSettings().getSelectionWeight() * t.getValidationSettings().getSelectionWeight();
-			if (rnd <= 0) {
-				toReturn = t;
+	private boolean validateTemplate(World world, int x, int y, int z, EnumFacing face, StructureMap map, int remainingValueCache, int dim, StructureTemplate template) {
+		StructureValidator settings = template.getValidationSettings();
+		boolean dimensionMatch = !settings.isDimensionWhiteList();
+		for (int i = 0; i < settings.getAcceptedDimensions().length; i++) {
+			int dimTest = settings.getAcceptedDimensions()[i];
+			if (dimTest == dim) {
+				dimensionMatch = !dimensionMatch;
 				break;
 			}
 		}
-		return toReturn;
+		if (!dimensionMatch)//skip if dimension is blacklisted, or not present on whitelist
+		{
+			return false;
+		}
+		if (settings.isUnique() && map.isGeneratedUnique(template.name)) {
+			return false;
+		}//skip already generated uniques
+		if (settings.getClusterValue() > remainingValueCache) {
+			return false;
+		}//skip if cluster value is to high to place in given area
+		if (distancesFound.containsKey(template.name)) {
+			int dist = distancesFound.get(template.name);
+			if (dist < settings.getMinDuplicateDistance()) {
+				return false;
+			}//skip if minDuplicate distance is not met
+		}
+		return settings.shouldIncludeForSelection(world, x, y, z, face, template);
+	}
+
+	public Set<StructureTemplate> getTerritoryTemplates(String territoryName) {
+		return templatesByTerritoryName.get(territoryName);
 	}
 }

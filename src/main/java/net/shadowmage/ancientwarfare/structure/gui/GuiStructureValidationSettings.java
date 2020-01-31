@@ -15,6 +15,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
+import net.shadowmage.ancientwarfare.core.gui.elements.Text;
 import net.shadowmage.ancientwarfare.core.interfaces.IWidgetSelection;
 import net.shadowmage.ancientwarfare.core.util.RegistryTools;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidationType;
@@ -23,6 +24,7 @@ import net.shadowmage.ancientwarfare.structure.template.build.validation.propert
 import net.shadowmage.ancientwarfare.structure.template.build.validation.properties.StructureValidationPropertyBool;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.properties.StructureValidationPropertyInteger;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.properties.StructureValidationPropertyResourceLocation;
+import net.shadowmage.ancientwarfare.structure.template.build.validation.properties.StructureValidationPropertyString;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -122,6 +124,8 @@ public class GuiStructureValidationSettings extends GuiContainerBase {
 				area.addGuiElement(box);
 			} else if (StructureValidationPropertyResourceLocation.class.isAssignableFrom(property.getClass())) {
 				area.addGuiElement(new PropertyBiomeInput(100, totalHeight - 1, 132, 14, (StructureValidationPropertyResourceLocation) property));
+			} else if (StructureValidationPropertyString.class.isAssignableFrom(property.getClass())) {
+				area.addGuiElement(new PropertyText(100, totalHeight - 3, 132, this, (StructureValidationPropertyString) property));
 			}
 
 			totalHeight += 16;
@@ -141,8 +145,23 @@ public class GuiStructureValidationSettings extends GuiContainerBase {
 		return false;
 	}
 
-	private class PropertyCheckbox extends Checkbox {
+	private class PropertyText extends Text {
+		private final StructureValidationPropertyString prop;
 
+		public PropertyText(int topLeftX, int topLeftY, int width, IWidgetSelection selector, StructureValidationPropertyString property) {
+			super(topLeftX, topLeftY, width, parent.getContainer().getValidator().getPropertyValue(property), selector);
+			prop = property;
+		}
+
+		@Override
+		public void onTextUpdated(String oldText, String newText) {
+			StructureValidator validator = parent.getContainer().getValidator();
+			validator.setPropertyValue(prop, newText);
+			parent.getContainer().setValidator(validator);
+		}
+	}
+
+	private class PropertyCheckbox extends Checkbox {
 		private final StructureValidationPropertyBool prop;
 
 		private PropertyCheckbox(int topLeftX, int topLeftY, int width, int height, StructureValidationPropertyBool property) {

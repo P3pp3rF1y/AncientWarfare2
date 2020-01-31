@@ -28,6 +28,7 @@ leveling=12
 fill=12
 border=12
 blockSwap=false
+territoryName=empire
 :endvalidation
 
 #### LAYERS ####
@@ -4041,7 +4042,7 @@ rule:
 plugin=vanillaSign
 number=144
 data:
-JSON:{signContents0:"Empireï¿½r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"Castleï¿½r§r",signContents1:"Baronsï¿½r§r",signContents3:"",rotation:0}
+JSON:{signContents0:"Empireï¿½rï¿½r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"Castleï¿½rï¿½r",signContents1:"Baronsï¿½rï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 

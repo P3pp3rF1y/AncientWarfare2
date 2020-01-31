@@ -28,6 +28,7 @@ leveling=4
 fill=4
 border=3
 blockSwap=false
+territoryName=norska
 :endvalidation
 
 #### LAYERS ####
@@ -1079,7 +1080,7 @@ rule:
 plugin=vanillaSign
 number=75
 data:
-JSON:{signContents0:"Norska§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"",signContents1:"Blacksmith§r§r",signContents3:"",rotation:0}
+JSON:{signContents0:"Norskaï¿½rï¿½r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"",signContents1:"Blacksmithï¿½rï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 

@@ -28,6 +28,7 @@ leveling=5
 fill=5
 border=5
 blockSwap=false
+territoryName=orc
 :endvalidation
 
 #### LAYERS ####

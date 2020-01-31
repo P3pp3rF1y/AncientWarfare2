@@ -126,12 +126,9 @@ public class TemplateLoader {
 			AncientWarfareStructure.LOG.info("Changes saved to {}", fileName);
 		}
 
-		if (template != null) {
-			AncientWarfareStructure.LOG.info("Loaded Structure Template: [{}] WorldGen: {}  Survival: {}", template.name, template.getValidationSettings().isWorldGenEnabled(), template.getValidationSettings().isSurvival());
-			StructureTemplateManager.addTemplate(template);
-			return 1;
-		}
-		return 0;
+		AncientWarfareStructure.LOG.info("Loaded Structure Template: [{}] WorldGen: {}  Survival: {}", template.name, template.getValidationSettings().isWorldGenEnabled(), template.getValidationSettings().isSurvival());
+		StructureTemplateManager.addTemplate(template);
+		return 1;
 	}
 
 	private void loadTownTemplate(List<String> lines) {
