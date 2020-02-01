@@ -24,6 +24,8 @@ public class AWStructureStatics extends ModConfiguration {
 	}
 
 	public static float chunkClusterValue = 1f;
+	public static int maxTerritoryChunkRadius = 11;
+	public static double maxTerritoryCenterDistanceSq = Math.pow(maxTerritoryChunkRadius * 16, 2);
 	public static String templateExtension = "aws";
 	public static String townTemplateExtension = "awt";
 	public static boolean enableWorldGen = true;

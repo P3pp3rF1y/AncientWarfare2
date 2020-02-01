@@ -179,10 +179,19 @@ public class WorldGenStructureManager {
 		if (trimmedPotentialStructures.isEmpty()) {
 			return null;
 		}
-		StructureTemplate toReturn = CollectionUtils.getWeightedRandomElement(rng, this.trimmedPotentialStructures, e -> e.getValidationSettings().getSelectionWeight()).orElse(null);
+		StructureTemplate toReturn = CollectionUtils.getWeightedRandomElement(rng, this.trimmedPotentialStructures, e -> getStructureWeight(x, y, z, territory, e)).orElse(null);
 		distancesFound.clear();
 		trimmedPotentialStructures.clear();
 		return toReturn;
+	}
+
+	private int getStructureWeight(int x, int y, int z, Territory territory, StructureTemplate e) {
+		boolean bigStructure = e.getValidationSettings().getClusterValue() > 50;
+		int weight = e.getValidationSettings().getSelectionWeight();
+		if (bigStructure) {
+			return Math.max(0, (int) (weight - ((territory.getTerritoryCenter().distanceSq(x, y, z) / AWStructureStatics.maxTerritoryCenterDistanceSq) * weight)));
+		}
+		return weight;
 	}
 
 	private boolean validateTemplate(World world, int x, int y, int z, EnumFacing face, StructureMap map, int remainingValueCache, int dim, StructureTemplate template) {

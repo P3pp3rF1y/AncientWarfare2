@@ -6,6 +6,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
+import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.WorldGenStructureManager;
 import net.shadowmage.ancientwarfare.structure.util.CollectionUtils;
 
@@ -19,8 +20,6 @@ import java.util.Set;
 
 public class TerritoryManager {
 	private TerritoryManager() {}
-
-	private static final int MAX_TERRITORY_RADIUS = 11;
 
 	public static Optional<Territory> getTerritory(int chunkX, int chunkZ, World world) {
 		Chunk chunk = world.getChunkFromChunkCoords(chunkX, chunkZ);
@@ -37,12 +36,18 @@ public class TerritoryManager {
 		return territoryData.getTerritory(chunkPosValue);
 	}
 
+	public static BlockPos getChunkCenterPos(int chunkX, int chunkZ) {
+		int x = chunkX * 16 + 8;
+		int z = chunkZ * 16 + 8;
+
+		return new BlockPos(x, 1, z);
+	}
+
 	private static class TerritoryGenerator {
 		private Map<Long, ProcessedChunk> chunksToProcess = new HashMap<>();
 		private Map<Long, BlockPos> includedChunks = new HashMap<>();
 		private Set<Long> visitedChunks = new HashSet<>();
 		private World world;
-		private double maxCenterDistanceSq = Math.pow((double) MAX_TERRITORY_RADIUS * 16, 2);
 
 		private TerritoryGenerator(World world) {
 			this.world = world;
@@ -71,24 +76,8 @@ public class TerritoryManager {
 			}
 		}
 
-		private BlockPos getChunkCenterPos(int chunkX, int chunkZ) {
-			int x = chunkX * 16 + 8;
-			int z = chunkZ * 16 + 8;
-
-			return new BlockPos(x, 1, z);
-		}
-
 		private BlockPos getTerritoryCenter() {
-			BlockPos territoryCenterPos;
-			double averageX = 0;
-			double averageZ = 0;
-			Collection<BlockPos> positions = includedChunks.values();
-			for (BlockPos pos : positions) {
-				averageX += (float) pos.getX() / positions.size();
-				averageZ += (float) pos.getZ() / positions.size();
-			}
-			territoryCenterPos = new BlockPos(averageX, 1, averageZ);
-			return territoryCenterPos;
+			return TerritoryManager.getTerritoryCenter(includedChunks.values());
 		}
 
 		private void addChunkToProcess(Set<Biome> biomes, BlockPos territoryCenterPos, ChunkPos chunkPos, ITerritoryData territoryData) {
@@ -97,7 +86,7 @@ public class TerritoryManager {
 			if (territoryData.isOwned(chunkPosValue) || visitedChunks.contains(chunkPosValue) || chunksToProcess.containsKey(chunkPosValue)) {
 				return;
 			}
-			if (biomes.contains(world.getBiome(centerPos)) && centerPos.distanceSq(territoryCenterPos) < 1.1 * maxCenterDistanceSq) {
+			if (biomes.contains(world.getBiome(centerPos)) && centerPos.distanceSq(territoryCenterPos) < 1.1 * AWStructureStatics.maxTerritoryCenterDistanceSq) {
 				chunksToProcess.put(chunkPosValue, new ProcessedChunk(chunkPosValue, centerPos, chunkPos.x, chunkPos.z));
 			}
 		}
@@ -131,7 +120,7 @@ public class TerritoryManager {
 				}
 			}
 			if (closestChunkToProcess != null) {
-				if (closestDist < maxCenterDistanceSq) {
+				if (closestDist < AWStructureStatics.maxTerritoryCenterDistanceSq) {
 					includeChunk(closestChunkToProcess);
 
 					addChunkToProcess(biomes, territoryCenterPos, new ChunkPos(closestChunkToProcess.getChunkX() + 1, closestChunkToProcess.getChunkZ()), territoryData);
@@ -169,6 +158,18 @@ public class TerritoryManager {
 							+ WorldGenStructureManager.INSTANCE.getTerritoryTemplates(WorldGenStructureManager.GENERIC_TERRITORY_NAME).size())
 					.orElse(WorldGenStructureManager.GENERIC_TERRITORY_NAME);
 		}
+	}
+
+	public static BlockPos getTerritoryCenter(Collection<BlockPos> positions) {
+		BlockPos territoryCenterPos;
+		double averageX = 0;
+		double averageZ = 0;
+		for (BlockPos pos : positions) {
+			averageX += (float) pos.getX() / positions.size();
+			averageZ += (float) pos.getZ() / positions.size();
+		}
+		territoryCenterPos = new BlockPos(averageX, 1, averageZ);
+		return territoryCenterPos;
 	}
 
 	private static class ProcessedChunk {

@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.structure.worldgen;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagLong;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.shadowmage.ancientwarfare.core.util.NBTHelper;
@@ -15,6 +16,8 @@ public class Territory implements INBTSerializable<NBTTagCompound> {
 	private String territoryName;
 	private int totalClusterValue = 0;
 	private Set<Long> chunkPositions = new HashSet<>();
+	private BlockPos territoryCenter = BlockPos.ORIGIN;
+	private Set<BlockPos> chunkCenters = new HashSet<>();
 
 	Territory() {
 	}
@@ -38,6 +41,12 @@ public class Territory implements INBTSerializable<NBTTagCompound> {
 
 	public void addChunk(long chunkPos) {
 		chunkPositions.add(chunkPos);
+		chunkCenters.add(getChunkCenter(chunkPos));
+		territoryCenter = TerritoryManager.getTerritoryCenter(chunkCenters);
+	}
+
+	private BlockPos getChunkCenter(long chunkPos) {
+		return TerritoryManager.getChunkCenterPos((int) (chunkPos & 4294967295L), (int) (chunkPos >> 32 & 4294967295L));
 	}
 
 	@Override
@@ -79,9 +88,16 @@ public class Territory implements INBTSerializable<NBTTagCompound> {
 		territoryName = nbt.getString("territoryName");
 		totalClusterValue = nbt.getInteger("totalClusterValue");
 		chunkPositions = NBTHelper.getSet(nbt.getTagList("chunkPositions", Constants.NBT.TAG_LONG), n -> ((NBTTagLong) n).getLong());
+		chunkCenters.clear();
+		chunkPositions.forEach(cp -> chunkCenters.add(getChunkCenter(cp)));
+		territoryCenter = TerritoryManager.getTerritoryCenter(chunkCenters);
 	}
 
 	public Set<Long> getChunkPositions() {
 		return chunkPositions;
+	}
+
+	public BlockPos getTerritoryCenter() {
+		return territoryCenter;
 	}
 }
