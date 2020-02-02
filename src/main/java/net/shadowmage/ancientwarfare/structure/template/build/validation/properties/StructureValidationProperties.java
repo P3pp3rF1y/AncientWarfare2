@@ -30,8 +30,8 @@ public class StructureValidationProperties {
 	public static final StructureValidationPropertyInteger MAX_LEVELING = new StructureValidationPropertyInteger("leveling", 0);
 	public static final StructureValidationPropertyInteger MAX_FILL = new StructureValidationPropertyInteger("fill", 0);
 
-	public static final StructureValidationPropertyBool BIOME_WHITE_LIST = new StructureValidationPropertyBool("biomeWhiteList", false);
-	public static final StructureValidationPropertyBool DIMENSION_WHITE_LIST = new StructureValidationPropertyBool("dimensionWhiteList", false);
+	public static final StructureValidationPropertyBool BIOME_WHITE_LIST = new StructureValidationPropertyBool("biomeWhiteList", true);
+	public static final StructureValidationPropertyBool DIMENSION_WHITE_LIST = new StructureValidationPropertyBool("dimensionWhiteList", true);
 
 	public static final StructureValidationPropertyStringSet BIOME_LIST = new StructureValidationPropertyStringSet("biomeList",
 			new HashSet<>());
