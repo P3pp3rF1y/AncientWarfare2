@@ -662,6 +662,9 @@ guistrings.npc.orders.open_gui=Use item to Open GUI
 guistrings.npc.orders.add_position=Press '%s' to add target position.
 guistrings.npc.orders.position_added=Position added
 guistrings.npc.inventory=Inventory
+guistrings.npc.search=Search
+guistrings.npc.spells=Spells
+guistrings.npc.current_spells=Currently assigned spells
 guistrings.structure.loot_placer.copy=Copy Settings From Loot Container
 guistrings.structure.loot_placer.paste=Paste Settings To Loot Container
 guistrings.structure.coins=Coins
@@ -1146,6 +1149,7 @@ entity.ancientwarfarenpc.faction.civilian.male.name=Faction Civilian Male
 entity.ancientwarfarenpc.faction.civilian.female.name=Faction Civilian Female
 entity.ancientwarfarenpc.faction.bard.name=Faction Bard
 entity.ancientwarfarenpc.faction.siege_engineer.name=Faction Siege Engineer
+entity.ancientwarfarenpc.faction.spellcaster.name=Faction Spellcaster
 
 #commands
 command.aw.structure.usage=/awstructure save [templateName] OR /awstructure delete <templateName> [true to remove the config file] OR /awstructure build <templateName> <x> <y> <z> [north:east:south:west] OR /awstructure reload OR /awstructure name OR /awstructure scannersReexport [true to reload main settings]

@@ -95,6 +95,11 @@
                 "textures": {
                     "layer3": "ancientwarfare:items/npc/spawner_civilian_male"
                 }
+            },
+            "spellcaster": {
+                "textures": {
+                    "layer3": "ancientwarfare:items/npc/spawner_spellcaster"
+                }
             }
         }
     }

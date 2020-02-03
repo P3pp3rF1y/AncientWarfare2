@@ -4,6 +4,7 @@ import net.minecraft.world.storage.loot.properties.EntityPropertyManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -30,6 +31,7 @@ import net.shadowmage.ancientwarfare.npc.container.ContainerCombatOrder;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcBard;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcCreativeControls;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcFactionBard;
+import net.shadowmage.ancientwarfare.npc.container.ContainerNpcFactionSpellcasterWizardry;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcFactionTradeSetup;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcFactionTradeView;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcInventory;
@@ -57,6 +59,8 @@ import net.shadowmage.ancientwarfare.npc.registry.TargetRegistry;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructureEntry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.function.Supplier;
 
 @Mod(name = "Ancient Warfare NPCs", modid = AncientWarfareNPC.MOD_ID, version = "@VERSION@", dependencies = "required-after:ancientwarfare")
 
@@ -98,6 +102,18 @@ public class AncientWarfareNPC {
 		NetworkHandler.registerContainer(NetworkHandler.GUI_NPC_TRADE_ORDER, ContainerTradeOrder.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_NPC_PLAYER_OWNED_TRADE, ContainerNpcPlayerOwnedTrade.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_NPC_FACTION_BARD, ContainerNpcFactionBard.class);
+
+		/* optional dependency for EBWizardry spell casters
+		 * References to the EBWizardry specific class can only be here, to avoid class loading if the mod is no present.
+		 * Any reference outside of the Stream will crash the game if EBWizardry is not present */
+		Supplier<Runnable> register_wizardry_spellcaster = () -> () -> {
+			NetworkHandler.registerContainer(NetworkHandler.GUI_NPC_FACTION_SPELLCASTER_WIZARDRY, ContainerNpcFactionSpellcasterWizardry.class);
+		};
+
+		if (Loader.isModLoaded("ebwizardry")) {
+			register_wizardry_spellcaster.get().run();
+		}
+
 		PacketBase.registerPacketType(NetworkHandler.PACKET_NPC_COMMAND, PacketNpcCommand.class, PacketNpcCommand::new);
 		PacketBase.registerPacketType(NetworkHandler.PACKET_FACTION_UPDATE, PacketFactionUpdate.class, PacketFactionUpdate::new);
 		PacketBase.registerPacketType(NetworkHandler.PACKET_EXTENDED_REACH_ATTACK, PacketExtendedReachAttack.class, PacketExtendedReachAttack::new);
