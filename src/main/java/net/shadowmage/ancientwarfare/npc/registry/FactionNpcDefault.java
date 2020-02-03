@@ -15,7 +15,7 @@ import java.util.function.Consumer;
 
 @Immutable
 public class FactionNpcDefault extends NpcDefault {
-	private Map<IAdditionalAttribute<?>, Object> additionaAttributes;
+	private Map<IAdditionalAttribute<?>, Object> additionalAttributes;
 	private boolean enabled;
 	private ResourceLocation lootTable;
 	private Range<Float> heightRange;
@@ -25,7 +25,7 @@ public class FactionNpcDefault extends NpcDefault {
 			Map<IAdditionalAttribute<?>, Object> additionaAttributes, boolean enabled,
 			@Nullable ResourceLocation lootTable, Range<Float> heightRange, float thinness) {
 		super(attributes, experienceDrop, canSwim, canBreakDoors, equipment);
-		this.additionaAttributes = additionaAttributes;
+		this.additionalAttributes = additionaAttributes;
 		this.enabled = enabled;
 		this.lootTable = lootTable;
 		this.heightRange = heightRange;
@@ -36,7 +36,7 @@ public class FactionNpcDefault extends NpcDefault {
 	}
 
 	private FactionNpcDefault copy() {
-		return new FactionNpcDefault(new HashMap<>(attributes), experienceDrop, canSwim, canBreakDoors, new HashMap<>(equipment), new HashMap<>(additionaAttributes), enabled, lootTable, heightRange, thinness);
+		return new FactionNpcDefault(new HashMap<>(attributes), experienceDrop, canSwim, canBreakDoors, new HashMap<>(equipment), new HashMap<>(additionalAttributes), enabled, lootTable, heightRange, thinness);
 	}
 
 	private FactionNpcDefault change(Consumer<FactionNpcDefault> makeChange) {
@@ -75,7 +75,7 @@ public class FactionNpcDefault extends NpcDefault {
 	}
 
 	public FactionNpcDefault setAdditionalAttributes(Map<IAdditionalAttribute<?>, Object> overrides) {
-		return change(def -> def.additionaAttributes.putAll(overrides));
+		return change(def -> def.additionalAttributes.putAll(overrides));
 	}
 
 	public FactionNpcDefault setLootTable(ResourceLocation lootTable) {
@@ -91,7 +91,7 @@ public class FactionNpcDefault extends NpcDefault {
 	}
 
 	public void applyAdditionalAttributes(NpcFaction npc) {
-		additionaAttributes.forEach(npc::setAdditionalAttribute);
+		additionalAttributes.forEach(npc::setAdditionalAttribute);
 	}
 
 	public boolean isEnabled() {

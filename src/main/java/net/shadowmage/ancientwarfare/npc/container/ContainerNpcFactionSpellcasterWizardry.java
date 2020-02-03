@@ -16,17 +16,11 @@ public class ContainerNpcFactionSpellcasterWizardry extends ContainerNpcBase<Npc
 
 	private List<Spell> assignedSpells;
 
-	private boolean hasChanged;//if set to true, will set all flags to entity on container close
+	private boolean hasChanged; //if set to true, will set all flags to entity on container close
 
 	public ContainerNpcFactionSpellcasterWizardry(EntityPlayer player, int x, int y, int z) {
 		super(player, x);
 		assignedSpells = entity.getSpells();
-
-		if (entity.world.isRemote) {
-			System.out.println("Client: " + entity.getSpells());
-		} else {
-			System.out.println("Server: " + entity.getSpells());
-		}
 	}
 
 	public void sendChangesToServer() {
@@ -72,69 +66,8 @@ public class ContainerNpcFactionSpellcasterWizardry extends ContainerNpcBase<Npc
 	public void removeSpell(Spell spell) {
 		assignedSpells.remove(spell);
 	}
-	//
-	//	public List<String> getAllSpellNames() {
-	//		return allSpellNames;
-	//	}
 
 	public List<Spell> getAllSpells() {
 		return allSpells;
 	}
-
-	//	public void handleSpellSelection(String name) { //todo: might remove this?
-	//		//		NBTTagCompound tag = new NBTTagCompound();
-	//		//		tag.setString("structName", name);
-	//		//		sendDataToServer(tag);
-	//	}
-	//
-	//	public List<String> getEntitySpellNames() {
-	//		List<String> spellNames = entitySpells.stream().map(Spell::getDisplayName).collect(Collectors.toList());
-	//		for (String spell : spellNames) {
-	//			System.out.println(spell);
-	//		}
-	//		return spellNames;
-	//	}
-
-	//	public List<Spell> assignedSpells = new ArrayList<>();
-	//
-	//	private boolean hasChanged;//if set to true, will set all flags to entity on container close
-	//
-	//	public ContainerNpcFactionSpellcasterWizardry(EntityPlayer player, int x) {
-	//		super(player, x);
-	//		//		assignedSpells = entity.getAssignedSpells();
-	//		assignedSpells.add(Spells.darkness_orb);
-	//	}
-	//
-	//	public void sendChangesToServer() {
-	//		sendDataToServer(serializeContainerData());
-	//	}
-	//
-
-	//
-	//	public List<Spell> getAssignedSpells() {
-	//		return assignedSpells;
-	//	}
-	//
-	//	@Override
-	//	public void handlePacketData(NBTTagCompound tag) {
-	//		refreshGui();
-	//	}
-	//
-	//	//	@Override
-	//	//	public void sendInitData() {
-	//	//		NBTTagCompound tag = new NBTTagCompound();
-	//	//		tag.setTag("assignedSpells", NBTExtras.listToNBT(assignedSpells, spell -> new NBTTagInt(spell.metadata())));
-	//	//		sendDataToClient(tag);
-	//	//	}
-	//	//
-	//	//	@Override
-	//	//	public void handlePacketData(NBTTagCompound tag) {
-	//	//		if (tag.hasKey("assignedSpells")) {
-	//	//			assignedSpells = (List<Spell>) NBTExtras.NBTToList(tag.getTagList("assignedSpells", Constants.NBT.TAG_INT),
-	//	//					(NBTTagInt nbt) -> Spell.byMetadata(nbt.getInt()));
-	//	//		}
-	//	//		refreshGui();
-	//	//	}
-	//
-	//}
 }

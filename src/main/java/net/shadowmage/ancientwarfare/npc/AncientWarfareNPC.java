@@ -105,7 +105,7 @@ public class AncientWarfareNPC {
 
 		/* optional dependency for EBWizardry spell casters
 		 * References to the EBWizardry specific class can only be here, to avoid class loading if the mod is no present.
-		 * Any reference outside of the Stream will crash the game if EBWizardry is not present */
+		 * Any reference outside of the lambdas will crash the game if EBWizardry is not present */
 		Supplier<Runnable> register_wizardry_spellcaster = () -> () -> {
 			NetworkHandler.registerContainer(NetworkHandler.GUI_NPC_FACTION_SPELLCASTER_WIZARDRY, ContainerNpcFactionSpellcasterWizardry.class);
 		};
