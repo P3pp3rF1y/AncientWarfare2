@@ -16,25 +16,11 @@ import java.util.stream.Collectors;
 public class GuiNpcFactionSpellcasterWizardry extends GuiContainerBase<ContainerNpcFactionSpellcasterWizardry> {
 
 	private Text spellFilterInput;
-	private Spell currentSelection;
 	private CompositeScrolled selectionArea;
 	private CompositeScrolled assignedSpellsArea;
-
 	private Label selection;
 
 	private boolean hasChanged = false;
-
-	//	private final List<Spell> allSpells = Spell.getAllSpells();
-	//	private final List<String> allSpellNames = allSpells.stream().map(Spell::getDisplayName).collect(Collectors.toList());
-
-	//	private List<Spell> entitySpells;
-	//	List<Spell> spells = new ArrayList<Spell>(getContainer().entity.getAssignedSpells());
-
-	public List<String> getEntitySpellNames() {
-		List<String> spelz = getContainer().entity.getSpells().stream().map(Spell::getDisplayName).collect(Collectors.toList());
-		//		getContainer().entity.getAssignedSpells().
-		return spelz;
-	}
 
 	public GuiNpcFactionSpellcasterWizardry(ContainerBase container) {
 		super(container);
@@ -47,14 +33,8 @@ public class GuiNpcFactionSpellcasterWizardry extends GuiContainerBase<Container
 		addGuiElement(new Button(xSize - 55 - 8, 8, 55, 12, "guistrings.done") {
 			@Override
 			protected void onPressed() {
-				//				if (currentSelection != null) { // do saving here??? todo:
-				//					getContainer().handleNameSelection(currentSelection.name);
 				getContainer().addSlots();
 				closeGui();
-				//				for (String spell : allSpellNames) {
-				//					System.out.println(spell);
-				//				}
-				//				}
 			}
 		});
 
@@ -81,16 +61,7 @@ public class GuiNpcFactionSpellcasterWizardry extends GuiContainerBase<Container
 
 		assignedSpellsArea = new CompositeScrolled(this, 143, 70, 143, 168);
 		addGuiElement(assignedSpellsArea);
-
 	}
-	//
-	//	protected List<String> getSpellNamesForDisplay() {
-	//		return allSpellNames;
-	//	}
-	//
-	//	private Set<String> getSpellNamesForDisplay() {
-	//		re
-	//	}
 
 	private class SpellAddButton extends Button {
 		private Spell spell;
@@ -131,8 +102,8 @@ public class GuiNpcFactionSpellcasterWizardry extends GuiContainerBase<Container
 
 		selectionArea.clearElements();
 
-		SpellAddButton button;
-		int totalHeight = 8;
+		SpellAddButton spellAddButton;
+		int selectionAreaHeight = 8;
 
 		/*
 		Generates an ordered button list of all spells. Clicking on a button will assign the spell to the entity
@@ -140,16 +111,16 @@ public class GuiNpcFactionSpellcasterWizardry extends GuiContainerBase<Container
 		for (Spell currSpell : getContainer().getAllSpells().stream()
 				.filter(spell -> spell.getDisplayName().toLowerCase().contains(spellFilterInput.getText().toLowerCase()))
 				.sorted(Comparator.comparing(spell -> spell.getDisplayName().toLowerCase())).collect(Collectors.toList())) {
-			button = new SpellAddButton(8, totalHeight, currSpell);
-			selectionArea.addGuiElement(button);
-			totalHeight += 12;
+			spellAddButton = new SpellAddButton(8, selectionAreaHeight, currSpell);
+			selectionArea.addGuiElement(spellAddButton);
+			selectionAreaHeight += 12;
 		}
-		selectionArea.setAreaSize(totalHeight + 8);
+		selectionArea.setAreaSize(selectionAreaHeight + 8);
 
 		assignedSpellsArea.clearElements();
 
 		SpellRemoveButton assignedSpellButton;
-		int totalHeight2 = 8;
+		int assignedSpellsAreaHeight = 8;
 
 		List<Spell> assignedSpells = getContainer().getAssignedSpells();
 
@@ -158,16 +129,14 @@ public class GuiNpcFactionSpellcasterWizardry extends GuiContainerBase<Container
 		 */
 		for (Spell currSpell : assignedSpells.stream()
 				.sorted(Comparator.comparing(spell -> spell.getDisplayName().toLowerCase())).collect(Collectors.toList())) {
-			assignedSpellButton = new SpellRemoveButton(8, totalHeight2, currSpell);
+			assignedSpellButton = new SpellRemoveButton(8, assignedSpellsAreaHeight, currSpell);
 			assignedSpellsArea.addGuiElement(assignedSpellButton);
-			totalHeight2 += 12;
+			assignedSpellsAreaHeight += 12;
 		}
 
-		assignedSpellsArea.setAreaSize(totalHeight2 + 8);
+		assignedSpellsArea.setAreaSize(assignedSpellsAreaHeight + 8);
 
 	}
-
-	//				.filter(spellName -> spellName.toLowerCase().contains(spellFilterInput.getText().toLowerCase()))
 
 	@Override
 	protected boolean onGuiCloseRequested() {

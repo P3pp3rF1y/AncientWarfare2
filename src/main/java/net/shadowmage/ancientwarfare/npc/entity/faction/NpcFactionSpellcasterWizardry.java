@@ -136,7 +136,7 @@ public class NpcFactionSpellcasterWizardry extends NpcFaction implements ISpellC
 	@Override
 	public void readEntityFromNBT(NBTTagCompound nbt) {
 		super.readEntityFromNBT(nbt);
-		this.spells = ((List<Spell>) NBTExtras.NBTToList(nbt.getTagList("spells", Constants.NBT.TAG_INT),
+		spells = ((List<Spell>) NBTExtras.NBTToList(nbt.getTagList("spells", Constants.NBT.TAG_INT),
 				(NBTTagInt tag) -> Spell.byMetadata(tag.getInt())));
 
 	}
