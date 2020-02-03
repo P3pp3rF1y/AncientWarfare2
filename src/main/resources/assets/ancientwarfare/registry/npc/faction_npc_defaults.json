@@ -131,6 +131,16 @@
                 },
                 "loot_table": "ancientwarfare:entities/priest"
             },
+            "spellcaster": {
+                "attributes": {
+                    "generic.maxHealth": 30
+                },
+                "experience_drop": 40,
+                "equipment": {
+                    "mainhand": "minecraft:stick"
+                },
+                "loot_table": "ancientwarfare:entities/soldier"
+            },
             "bard": {
                 "attributes": {
                     "generic.attackDamage": 0

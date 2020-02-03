@@ -1,7 +1,7 @@
 {
     "entity_nbt": {
         "net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction": [
-            "factionName","hasCustomEquipment"
+            "factionName","hasCustomEquipment", "spells"
         ],
         "net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionTrader": [
             "tradeList"
@@ -11,6 +11,9 @@
         ],
         "net.shadowmage.ancientwarfare.npc.entity.NpcBase": [
             "skinSettings"
+        ],
+        "net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionSpellcasterWizardry": [
+            "spells"
         ]
     }
 }
