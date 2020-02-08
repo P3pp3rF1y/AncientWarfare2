@@ -46,8 +46,6 @@ public class TemplateParser {
 		StructureValidator validation = null;
 		List<String> groupedLines = new ArrayList<>();
 
-		int parsedLayers = 0;
-
 		String name = "";
 		Version version = Version.NONE;
 		Vec3i size = new Vec3i(0, 0, 0);
@@ -184,8 +182,7 @@ public class TemplateParser {
 						break;
 					}
 				}
-				parseLayer(groupedLines, parsedLayers, size, templateData);
-				parsedLayers++;
+				parseLayer(groupedLines, size, templateData);
 				groupedLines.clear();
 			}
 		}
@@ -205,18 +202,79 @@ public class TemplateParser {
 	/*
 	 * should parse layer and insert direcly into templateData
 	 */
-	private void parseLayer(List<String> templateLines, int yLayer, Vec3i size, short[] templateData) {
-		int z = 0;
+	private void parseLayer(List<String> templateLines, Vec3i size, short[] templateData) {
+		int minLayer = 0;
+		int maxLayer = 0;
+		List<String> rowLines = new ArrayList<>();
 		for (String st : templateLines) {
-			if (st.startsWith("layer:") || st.startsWith(":endlayer")) {
-				continue;
+			if (!st.startsWith(":endlayer")) {
+				if (st.startsWith("layer:")) {
+					String[] layerIds = st.split(":")[1].split("-");
+					minLayer = Integer.parseInt(layerIds[0].trim());
+					maxLayer = layerIds.length > 1 ? Integer.parseInt(layerIds[1].trim()) : minLayer;
+				} else {
+					rowLines.add(st);
+				}
 			}
-			short[] data = StringTools.parseShortArray(st);
-			for (int x = 0; x < size.getX() && x < data.length; x++) {
-				templateData[StructureTemplate.getIndex(new Vec3i(x, yLayer, z), size)] = data[x];
+		}
+		parseLayer(size, templateData, minLayer, maxLayer, rowLines);
+	}
+
+	private void parseLayer(Vec3i size, short[] templateData, int minLayer, int maxLayer, List<String> rowLines) {
+		List<short[]> rows = parseLayerRows(rowLines);
+		for (int layerId = minLayer; layerId <= maxLayer; layerId++) {
+			int z = 0;
+			for (short[] data : rows) {
+				for (int x = 0; x < size.getX() && x < data.length; x++) {
+					templateData[StructureTemplate.getIndex(new Vec3i(x, layerId, z), size)] = data[x];
+				}
+				z++;
 			}
-			z++;
 		}
 	}
 
+	private List<short[]> parseLayerRows(List<String> rowLines) {
+		List<short[]> rows = new ArrayList<>();
+		for (String rowLine : rowLines) {
+			String[] rowParts = rowLine.split("x");
+			int repeat = 1;
+			short[] blocks;
+			if (rowParts.length > 1) {
+				repeat = Integer.parseInt(rowParts[0]);
+				blocks = parseBlocks(rowParts[1]);
+			} else {
+				blocks = parseBlocks(rowParts[0]);
+			}
+			for (int i = 0; i < repeat; i++) {
+				rows.add(blocks);
+			}
+		}
+
+		return rows;
+	}
+
+	private short[] parseBlocks(String row) {
+		List<Short> blocks = new ArrayList<>();
+
+		String[] blockParts = row.split(",");
+
+		for (String blockPart : blockParts) {
+			String[] blockDef = blockPart.split("\\|");
+			int repeat = 1;
+			if (blockDef.length > 1) {
+				repeat = Integer.parseInt(blockDef[1]);
+			}
+			short id = Short.parseShort(blockDef[0]);
+			for (int i = 0; i < repeat; i++) {
+				blocks.add(id);
+			}
+		}
+
+		short[] ret = new short[blocks.size()];
+		int i = 0;
+		for (short block : blocks) {
+			ret[i++] = block;
+		}
+		return ret;
+	}
 }

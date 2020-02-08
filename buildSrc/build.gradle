@@ -1,0 +1,13 @@
+plugins {
+    id 'groovy'
+}
+
+apply plugin: 'idea'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile gradleApi()
+}

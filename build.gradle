@@ -115,6 +115,10 @@ def getStable() {
     return ""
 }
 
+task minifyStructureTemplates(type: MinifyStructuresTask) {
+    templateFolder = "$projectDir/src/main/resources/assets/ancientwarfare/template/"
+}
+
 publishing {
     repositories {
         maven {
