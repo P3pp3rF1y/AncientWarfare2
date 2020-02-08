@@ -159,8 +159,8 @@ public class WorldGenStructureManager {
 		}
 
 		Set<StructureTemplate> potentialStructures = new HashSet<>();
-		potentialStructures.addAll(getTerritoryTemplates(territory.getTerritoryName()));
-		potentialStructures.addAll(getTerritoryTemplates(GENERIC_TERRITORY_NAME));
+		getTerritoryTemplates(territory.getTerritoryName()).ifPresent(potentialStructures::addAll);
+		getTerritoryTemplates(GENERIC_TERRITORY_NAME).ifPresent(potentialStructures::addAll);
 		Set<StructureTemplate> biomeTemplates = templatesByBiome.get(biomeName);
 		potentialStructures.removeIf(t -> !biomeTemplates.contains(t));
 		if (potentialStructures.isEmpty()) {
@@ -223,7 +223,7 @@ public class WorldGenStructureManager {
 		return settings.shouldIncludeForSelection(world, x, y, z, face, template);
 	}
 
-	public Set<StructureTemplate> getTerritoryTemplates(String territoryName) {
-		return templatesByTerritoryName.get(territoryName);
+	public Optional<Set<StructureTemplate>> getTerritoryTemplates(String territoryName) {
+		return Optional.ofNullable(templatesByTerritoryName.get(territoryName));
 	}
 }

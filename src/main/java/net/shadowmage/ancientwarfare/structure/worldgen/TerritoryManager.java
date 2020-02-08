@@ -154,8 +154,8 @@ public class TerritoryManager {
 
 		private String getRandomTerritory(List<String> names) {
 			return CollectionUtils.getWeightedRandomElement(world.rand, names,
-					name -> WorldGenStructureManager.INSTANCE.getTerritoryTemplates(name).size()
-							+ WorldGenStructureManager.INSTANCE.getTerritoryTemplates(WorldGenStructureManager.GENERIC_TERRITORY_NAME).size())
+					name -> WorldGenStructureManager.INSTANCE.getTerritoryTemplates(name).map(Set::size).orElse(0)
+							+ WorldGenStructureManager.INSTANCE.getTerritoryTemplates(WorldGenStructureManager.GENERIC_TERRITORY_NAME).map(Set::size).orElse(0))
 					.orElse(WorldGenStructureManager.GENERIC_TERRITORY_NAME);
 		}
 	}
