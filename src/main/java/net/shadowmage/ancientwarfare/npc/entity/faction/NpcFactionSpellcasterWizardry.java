@@ -11,7 +11,7 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagInt;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
@@ -130,15 +130,27 @@ public class NpcFactionSpellcasterWizardry extends NpcFaction implements ISpellC
 	@Override
 	public void writeEntityToNBT(NBTTagCompound nbt) {
 		super.writeEntityToNBT(nbt);
-		nbt.setTag("spells", NBTExtras.listToNBT(getSpells(), spell -> new NBTTagInt(spell.metadata())));
+		nbt.setTag("spells", NBTExtras.listToNBT(getSpells(), spell -> new NBTTagString(spell.getRegistryName().toString())));
+	}
+
+	@Override
+	public void writeAdditionalItemData(NBTTagCompound nbt) {
+		nbt.setTag("spells", NBTExtras.listToNBT(getSpells(), spell -> new NBTTagString(spell.getRegistryName().toString())));
+		super.writeAdditionalItemData(nbt);
 	}
 
 	@Override
 	public void readEntityFromNBT(NBTTagCompound nbt) {
 		super.readEntityFromNBT(nbt);
-		spells = ((List<Spell>) NBTExtras.NBTToList(nbt.getTagList("spells", Constants.NBT.TAG_INT),
-				(NBTTagInt tag) -> Spell.byMetadata(tag.getInt())));
+		spells = ((List<Spell>) NBTExtras.NBTToList(nbt.getTagList("spells", Constants.NBT.TAG_STRING),
+				(NBTTagString tag) -> Spell.get(tag.getString())));
+	}
 
+	@Override
+	public void readAdditionalItemData(NBTTagCompound nbt) {
+		spells = ((List<Spell>) NBTExtras.NBTToList(nbt.getTagList("spells", Constants.NBT.TAG_STRING),
+				(NBTTagString tag) -> Spell.get(tag.getString())));
+		super.readAdditionalItemData(nbt);
 	}
 
 	@Override
