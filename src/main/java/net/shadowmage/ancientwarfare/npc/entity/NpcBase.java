@@ -17,6 +17,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagByteArray;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
@@ -657,7 +658,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	/*
 	 * implementations should read in any data written during {@link #writeAdditionalItemData(NBTTagCompound)}
 	 */
-	public final void readAdditionalItemData(NBTTagCompound tag) {
+	public void readAdditionalItemData(NBTTagCompound tag) {
 		NBTTagList equipmentList = tag.getTagList("equipment", Constants.NBT.TAG_COMPOUND);
 		@Nonnull ItemStack stack;
 		NBTTagCompound equipmentTag;
@@ -675,7 +676,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	 * Implementations should write out any persistent entity-data needed to restore entity-state from an item-stack.<br>
 	 * This should include inventory, levels, orders, faction / etc
 	 */
-	public final void writeAdditionalItemData(NBTTagCompound tag) {
+	public void writeAdditionalItemData(NBTTagCompound tag) {
 		NBTTagList equipmentList = new NBTTagList();
 		@Nonnull ItemStack stack;
 		NBTTagCompound equipmentTag;
