@@ -113,8 +113,8 @@ public class NpcSkinSettings {
 		if (skinSettings.skinTypeSelected == SkinType.NPC_TYPE) {
 			skinSettings.random = packetBuffer.readBoolean();
 			skinSettings.npcTypeName = packetBuffer.readString(30);
+			String skin = packetBuffer.readString(100);
 			if (!skinSettings.random) {
-				String skin = packetBuffer.readString(100);
 				skinSettings.npcTypeSkin = skin.isEmpty() ? null : new ResourceLocation(skin);
 			}
 		} else {

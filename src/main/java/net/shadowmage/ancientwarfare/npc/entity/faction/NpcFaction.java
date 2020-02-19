@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.entity.faction;
 
+import com.google.common.primitives.Floats;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -188,7 +189,13 @@ public abstract class NpcFaction extends NpcBase {
 
 		Range<Float> heightRange = npcDefault.getHeightRange();
 		float newHeight = heightRange.getMinimum() + world.rand.nextFloat() * (heightRange.getMaximum() - heightRange.getMinimum());
-		setSize((newHeight / 1.8f) * 0.6f * npcDefault.getThinness(), newHeight);
+		float newWidth = (newHeight / 1.8f) * 0.6f * npcDefault.getThinness();
+		setSize(newWidth, newHeight);
+	}
+
+	@Override
+	protected void setSize(float width, float height) {
+		super.setSize(Floats.constrainToRange(width, 0.1f, 10f), Floats.constrainToRange(height, 0.1f, 40f));
 	}
 
 	private void applyFactionNpcSettings(FactionNpcDefault npcDefault) {
@@ -397,8 +404,7 @@ public abstract class NpcFaction extends NpcBase {
 		revengePlayers = NBTHelper.getMap(tag.getTagList("revengePlayers", Constants.NBT.TAG_COMPOUND),
 				t -> t.getString("playerName"), t -> t.getLong("time"));
 		if (tag.hasKey(HEIGHT_TAG)) {
-			height = tag.getFloat(HEIGHT_TAG);
-			width = tag.getFloat("width");
+			setSize(tag.getFloat("width"), tag.getFloat(HEIGHT_TAG));
 		} else {
 			setFactionNameAndDefaults(factionName);
 		}
