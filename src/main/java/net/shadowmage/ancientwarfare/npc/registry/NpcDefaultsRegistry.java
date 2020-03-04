@@ -221,7 +221,14 @@ public class NpcDefaultsRegistry {
 			npcSubtypeDefault = getLootTable(data).map(npcSubtypeDefault::setLootTable).orElse(npcSubtypeDefault);
 			npcSubtypeDefault = getHeightRange(data).map(npcSubtypeDefault::setHeightRange).orElse(npcSubtypeDefault);
 			npcSubtypeDefault = getThinness(data).map(npcSubtypeDefault::setThinness).orElse(npcSubtypeDefault);
+			if (subtype.contains("spellcaster")) {
+				npcSubtypeDefault = getSpells(data).map(npcSubtypeDefault::setSpells).orElse(npcSubtypeDefault);
+			}
 			return npcSubtypeDefault;
+		}
+
+		private Optional<String> getSpells(JsonObject json) {
+			return json.has("spells") ? Optional.of(JsonUtils.getString(json, "spells")) : Optional.empty();
 		}
 
 		private Optional<Boolean> getEnabled(JsonObject data) {

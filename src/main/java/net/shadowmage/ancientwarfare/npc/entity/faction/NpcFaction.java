@@ -7,12 +7,14 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.pathfinding.PathNavigateGround;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
@@ -170,6 +172,16 @@ public abstract class NpcFaction extends NpcBase {
 			return EnumCreatureAttribute.UNDEAD;
 		} else
 			return EnumCreatureAttribute.UNDEFINED;
+	}
+
+	@Override
+	public boolean isPotionApplicable(PotionEffect potioneffectIn) { // makes lizardman and coven immune to poison
+		if (potioneffectIn.getPotion() == MobEffects.POISON && getFaction().equals("lizardman|coven")) {
+			net.minecraftforge.event.entity.living.PotionEvent.PotionApplicableEvent event = new net.minecraftforge.event.entity.living.PotionEvent.PotionApplicableEvent(this, potioneffectIn);
+			net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(event);
+			return event.getResult() == net.minecraftforge.fml.common.eventhandler.Event.Result.ALLOW;
+		}
+		return super.isPotionApplicable(potioneffectIn);
 	}
 
 	public void setFactionNameAndDefaults(String factionName) {

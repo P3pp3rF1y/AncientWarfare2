@@ -33,7 +33,7 @@ import java.util.List;
  * which cannot have any references to EBWizardry objects */
 public class NpcFactionSpellcasterWizardry extends NpcFaction implements ISpellCaster {
 
-	private EntityAIAttackSpell<NpcFactionSpellcasterWizardry> spellCastingAI = new EntityAIAttackSpell<>(this, 0.75D, 18.0F, 35, 50);
+	private EntityAIAttackSpell<NpcFactionSpellcasterWizardry> spellCastingAI = new EntityAIAttackSpell<>(this, 0.75D, 16.0F, 32, 30);
 
 	// Field implementations
 	private List<Spell> spells = new ArrayList<Spell>(4);

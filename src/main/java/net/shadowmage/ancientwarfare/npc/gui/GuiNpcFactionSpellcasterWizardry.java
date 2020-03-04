@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.npc.gui;
 
 import electroblob.wizardry.spell.Spell;
+import net.minecraft.util.text.translation.I18n;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
@@ -8,7 +9,9 @@ import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcFactionSpellcasterWizardry;
+import net.shadowmage.ancientwarfare.npc.registry.NpcDefaultsRegistry;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,6 +22,7 @@ public class GuiNpcFactionSpellcasterWizardry extends GuiContainerBase<Container
 	private CompositeScrolled selectionArea;
 	private CompositeScrolled assignedSpellsArea;
 	private Label selection;
+	Button button;
 
 	private boolean hasChanged = false;
 
@@ -61,6 +65,32 @@ public class GuiNpcFactionSpellcasterWizardry extends GuiContainerBase<Container
 
 		assignedSpellsArea = new CompositeScrolled(this, 143, 70, 143, 168);
 		addGuiElement(assignedSpellsArea);
+
+		for (int i = 0; i < 5; i++) {
+			String name = I18n.translateToLocal("entity.ancientwarfarenpc." + getContainer().entity.getNpcFullType() + "." + (i + 1 + ".name"));
+			String presetSubtypeName = "spellcaster." + (i + 1);
+			if (NpcDefaultsRegistry.getFactionNpcDefault(getContainer().entity.getFaction(), presetSubtypeName).isEnabled()) {
+				int x;
+				int y;
+				if (i < 2) {
+					x = 8; // first button row
+					y = 8 + (15 * i);
+				} else {
+					x = 8 + 112; // second button row
+					y = 8 + (15 * (i - 2));
+				}
+				button = new Button(x, y, 100, 12, name) {
+					@Override
+					protected void onPressed() {
+						hasChanged = true;
+						getContainer().setNameAndPresetDefaults(presetSubtypeName);
+						getContainer().sendChangesToServer();
+						refreshGui();
+					}
+				};
+			}
+			addGuiElement(button);
+		}
 	}
 
 	private class SpellAddButton extends Button {
@@ -105,10 +135,13 @@ public class GuiNpcFactionSpellcasterWizardry extends GuiContainerBase<Container
 		SpellAddButton spellAddButton;
 		int selectionAreaHeight = 8;
 
+		List<Spell> castableSpells = new ArrayList<>();
+		castableSpells.addAll(getContainer().getAllSpells());
+
 		/*
 		Generates an ordered button list of all spells. Clicking on a button will assign the spell to the entity
 		 */
-		for (Spell currSpell : getContainer().getAllSpells().stream()
+		for (Spell currSpell : castableSpells.stream()
 				.filter(spell -> spell.getDisplayName().toLowerCase().contains(spellFilterInput.getText().toLowerCase()))
 				.sorted(Comparator.comparing(spell -> spell.getDisplayName().toLowerCase())).collect(Collectors.toList())) {
 			spellAddButton = new SpellAddButton(8, selectionAreaHeight, currSpell);
