@@ -54,6 +54,23 @@ public class NpcFactionSpellcasterWizardry extends NpcFaction implements ISpellC
 		tasks.addTask(3, spellCastingAI);
 	}
 
+	@SuppressWarnings("Duplicates")
+	private void addAI() {
+		tasks.addTask(0, new EntityAISwimming(this));
+		tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
+		tasks.addTask(0, new NpcAIDoor(this, true));
+		tasks.addTask(1, new NpcAIFollowPlayer(this));
+		tasks.addTask(2, new NpcAIMoveHome(this, 50.f, 5.f, 30.f, 5.f));
+		tasks.addTask(2, new NpcAIFactionArcherStayAtHome(this));
+
+		tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
+		tasks.addTask(102, new NpcAIWander(this));
+		tasks.addTask(103, new NpcAIWatchClosest(this, EntityLiving.class, 8.0F));
+
+		targetTasks.addTask(1, new NpcAIHurt(this));
+		targetTasks.addTask(2, new NpcAIAttackNearest(this, this::isHostileTowards));
+	}
+
 	public void setSpells(List<Spell> spells) {
 		this.spells = spells;
 	}
@@ -75,7 +92,9 @@ public class NpcFactionSpellcasterWizardry extends NpcFaction implements ISpellC
 
 	@Override
 	public SpellModifiers getModifiers() {
-		return new SpellModifiers();
+		SpellModifiers spellModifiers = new SpellModifiers();
+		spellModifiers.set("potency", 1.5f, true);
+		return spellModifiers;
 	}
 
 	@Override
@@ -85,16 +104,6 @@ public class NpcFactionSpellcasterWizardry extends NpcFaction implements ISpellC
 
 	@Override
 	public Spell getContinuousSpell() { return continuousSpell; }
-
-	@Override
-	public boolean hasAltGui() {
-		return true;
-	}
-
-	@Override
-	public void openAltGui(EntityPlayer player) {
-		NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_FACTION_SPELLCASTER_WIZARDRY, getEntityId(), 0, 0);
-	}
 
 	@Override
 	public int getAimingError(EnumDifficulty difficulty) { // for spells
@@ -110,21 +119,14 @@ public class NpcFactionSpellcasterWizardry extends NpcFaction implements ISpellC
 		}
 	}
 
-	@SuppressWarnings("Duplicates")
-	private void addAI() {
-		tasks.addTask(0, new EntityAISwimming(this));
-		tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
-		tasks.addTask(0, new NpcAIDoor(this, true));
-		tasks.addTask(1, new NpcAIFollowPlayer(this));
-		tasks.addTask(2, new NpcAIMoveHome(this, 50.f, 5.f, 30.f, 5.f));
-		tasks.addTask(2, new NpcAIFactionArcherStayAtHome(this));
+	@Override
+	public boolean hasAltGui() {
+		return true;
+	}
 
-		tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
-		tasks.addTask(102, new NpcAIWander(this));
-		tasks.addTask(103, new NpcAIWatchClosest(this, EntityLiving.class, 8.0F));
-
-		targetTasks.addTask(1, new NpcAIHurt(this));
-		targetTasks.addTask(2, new NpcAIAttackNearest(this, this::isHostileTowards));
+	@Override
+	public void openAltGui(EntityPlayer player) {
+		NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_FACTION_SPELLCASTER_WIZARDRY, getEntityId(), 0, 0);
 	}
 
 	@Override
