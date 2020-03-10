@@ -8,9 +8,12 @@ import net.minecraft.scoreboard.Team;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import net.shadowmage.ancientwarfare.core.block.BlockResearchStation;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
@@ -19,6 +22,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.owner.Owner;
 import net.shadowmage.ancientwarfare.core.registry.ResearchRegistry;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
@@ -42,6 +46,8 @@ public class TileResearchStation extends TileOwned implements IWorkSite, ITorque
 	public final ItemStackHandler bookInventory = new ItemStackHandler(1) {
 		@Override
 		protected void onContentsChanged(int slot) {
+			IBlockState iblockstate = world.getBlockState(pos);
+			world.setBlockState(pos, iblockstate.withProperty(BlockResearchStation.HAS_BOOK, hasBook()));
 			markDirty();
 		}
 
@@ -77,6 +83,10 @@ public class TileResearchStation extends TileOwned implements IWorkSite, ITorque
 	public void onBlockBroken(IBlockState state) {
 		InventoryTools.dropItemsInWorld(world, bookInventory, pos);
 		InventoryTools.dropItemsInWorld(world, resourceInventory, pos);
+	}
+
+	public boolean hasBook() {
+		return (!bookInventory.getStackInSlot(0).isEmpty());
 	}
 
 	@Override
@@ -323,5 +333,11 @@ public class TileResearchStation extends TileOwned implements IWorkSite, ITorque
 			return (T) resourceInventory;
 		}
 		return super.getCapability(capability, facing);
+	}
+
+	@Override
+	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
+		super.shouldRefresh(world, pos, oldState, newSate);
+		return !(newSate.getBlock() instanceof BlockResearchStation);
 	}
 }

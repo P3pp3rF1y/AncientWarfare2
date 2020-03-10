@@ -163,6 +163,7 @@ tile.engineering_station.0.name=Engineering Station
 tile.research_station.0.name=Research Station
 #automation
 tile.auto_crafting.name=Auto Crafting Station
+tile.auto_crafting.0.name=Auto Crafting Station
 tile.quarry.name=Quarry
 tile.tree_farm.name=Tree Farm
 tile.crop_farm.name=Crop Farm
@@ -704,7 +705,7 @@ guistrings.research.no_research=No Research
 guistrings.research.research_queue=Research Queue
 guistrings.research.research_time=Research Time: %d
 guistrings.research.resources_needed=Resources Needed
-guistrings.research.info=Info
+guistrings.research.info=Open
 guistrings.research.input=Input
 guistrings.research.needed=Needed
 guistrings.research.progress=Progress
