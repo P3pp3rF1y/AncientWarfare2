@@ -34,7 +34,7 @@ public class TileWarehouse extends TileWarehouseBase {
 
 	@Override
 	public void handleSlotClick(EntityPlayer player, ItemStack filter, boolean shiftClick, boolean rightClick) {
-		if (!shiftClick && !player.inventory.getItemStack().isEmpty()) {
+		if (!shiftClick && !player.inventory.getItemStack().isEmpty() && cachedItemMap.getTotalItemCount() != getMaxStorage()) {
 			tryAddItem(player, player.inventory.getItemStack());
 		} else if (!filter.isEmpty()) {
 			tryGetItem(player, filter, shiftClick, rightClick);
