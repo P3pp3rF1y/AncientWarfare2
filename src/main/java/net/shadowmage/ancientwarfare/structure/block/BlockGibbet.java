@@ -11,8 +11,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
@@ -37,11 +39,11 @@ import java.util.Map;
 import static net.shadowmage.ancientwarfare.core.render.property.CoreProperties.FACING;
 import static net.shadowmage.ancientwarfare.core.render.property.CoreProperties.VISIBLE;
 
-public class BlockWoodenPost extends BlockBaseStructure {
+public class BlockGibbet extends BlockBaseStructure {
 	private static final PropertyEnum<Part> PART = PropertyEnum.create("part", Part.class);
 
-	public BlockWoodenPost() {
-		super(Material.WOOD, "wooden_post");
+	public BlockGibbet() {
+		super(Material.WOOD, "gibbet");
 	}
 
 	@Override
@@ -61,17 +63,13 @@ public class BlockWoodenPost extends BlockBaseStructure {
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		IBlockState placeState = state.withProperty(FACING, placer.getHorizontalFacing().getOpposite());
-		world.setBlockState(pos, placeState.withProperty(PART, Part.BOTTOM).withProperty(VISIBLE, true));
-		world.setBlockState(pos.up(), placeState.withProperty(PART, Part.BOTTOM).withProperty(VISIBLE, false));
-		world.setBlockState(pos.up(2), placeState.withProperty(PART, Part.TOP).withProperty(VISIBLE, true));
-		world.setBlockState(pos.up(3), placeState.withProperty(PART, Part.TOP).withProperty(VISIBLE, false));
+	public EnumBlockRenderType getRenderType(IBlockState state) {
+		return state.getValue(VISIBLE) ? super.getRenderType(state) : EnumBlockRenderType.INVISIBLE;
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
-		return state.getValue(VISIBLE) ? super.getRenderType(state) : EnumBlockRenderType.INVISIBLE;
+	public BlockRenderLayer getBlockLayer() {
+		return BlockRenderLayer.CUTOUT;
 	}
 
 	@Override
@@ -92,6 +90,15 @@ public class BlockWoodenPost extends BlockBaseStructure {
 	@Override
 	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
 		return BlockFaceShape.UNDEFINED;
+	}
+
+	@Override
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		IBlockState placeState = state.withProperty(FACING, placer.getHorizontalFacing().getOpposite());
+		world.setBlockState(pos, placeState.withProperty(PART, Part.BOTTOM).withProperty(VISIBLE, true));
+		world.setBlockState(pos.up(), placeState.withProperty(PART, Part.BOTTOM).withProperty(VISIBLE, false));
+		world.setBlockState(pos.up(2), placeState.withProperty(PART, Part.TOP).withProperty(VISIBLE, true));
+		world.setBlockState(pos.up(3), placeState.withProperty(PART, Part.TOP).withProperty(VISIBLE, false));
 	}
 
 	@Override
@@ -119,25 +126,32 @@ public class BlockWoodenPost extends BlockBaseStructure {
 		super.breakBlock(world, pos, state);
 	}
 
-	private static final List<AxisAlignedBB> BOTTOM_BASE_AABBs = ImmutableList.of(
-			new AxisAlignedBB(0, 0, 0, 1, 2 / 16D, 1),
-			new AxisAlignedBB(6 / 16D, 0, 6 / 16D, 10 / 16D, 1, 10 / 16D));
+	private static final Map<EnumFacing, List<AxisAlignedBB>> BOTTOM_BASE_AABBs = ImmutableMap.of(
+			EnumFacing.NORTH, ImmutableList.of(
+					new AxisAlignedBB(2 / 16D, 0, 0, 14 / 16D, 2 / 16D, 1)),
+			EnumFacing.SOUTH, ImmutableList.of(
+					new AxisAlignedBB(2 / 16D, 0, 0, 14 / 16D, 2 / 16D, 1)),
+			EnumFacing.EAST, ImmutableList.of(
+					new AxisAlignedBB(0, 0, 2 / 16D, 1, 2 / 16D, 14 / 16D)),
+			EnumFacing.WEST, ImmutableList.of(
+					new AxisAlignedBB(0, 0, 2 / 16D, 1, 2 / 16D, 14 / 16D))
+	);
 
-	private static final AxisAlignedBB POST_AABB = new AxisAlignedBB(6 / 16D, 0, 6 / 16D, 10 / 16D, 1, 10 / 16D);
+	private static final AxisAlignedBB MIDDLE_AABB = new AxisAlignedBB(5.5 / 16D, 0, 5.5 / 16D, 10.5 / 16D, 1, 10.5 / 16D);
 
 	private static final Map<EnumFacing, List<AxisAlignedBB>> TOP_AABBs = ImmutableMap.of(
 			EnumFacing.NORTH, ImmutableList.of(
-					new AxisAlignedBB(6 / 16D, 0, 6 / 16D, 10 / 16D, 1, 10 / 16D),
-					new AxisAlignedBB(6 / 16D, 4 / 16D, 0, 10 / 16D, 14 / 16D, 6 / 16D)),
+					new AxisAlignedBB(7 / 16D, 0, 7 / 16D, 9 / 16D, 10 / 16D, 9 / 16D),
+					new AxisAlignedBB(6 / 16D, 10 / 16D, 0, 10 / 16D, 14 / 16D, 1)),
 			EnumFacing.SOUTH, ImmutableList.of(
-					new AxisAlignedBB(6 / 16D, 0, 6 / 16D, 10 / 16D, 1, 10 / 16D),
-					new AxisAlignedBB(6 / 16D, 4 / 16D, 10 / 16D, 10 / 16D, 14 / 16D, 1)),
+					new AxisAlignedBB(7 / 16D, 0, 7 / 16D, 9 / 16D, 10 / 16D, 9 / 16D),
+					new AxisAlignedBB(6 / 16D, 10 / 16D, 0, 10 / 16D, 14 / 16D, 1)),
 			EnumFacing.EAST, ImmutableList.of(
-					new AxisAlignedBB(6 / 16D, 0, 6 / 16D, 10 / 16D, 1, 10 / 16D),
-					new AxisAlignedBB(10 / 16D, 4 / 16D, 6 / 16D, 16 / 16D, 14 / 16D, 10 / 16D)),
+					new AxisAlignedBB(7 / 16D, 0, 7 / 16D, 9 / 16D, 10 / 16D, 9 / 16D),
+					new AxisAlignedBB(0, 10 / 16D, 6 / 16D, 1, 14 / 16D, 10 / 16D)),
 			EnumFacing.WEST, ImmutableList.of(
-					new AxisAlignedBB(6 / 16D, 0, 6 / 16D, 10 / 16D, 1, 10 / 16D),
-					new AxisAlignedBB(0, 4 / 16D, 6 / 16D, 6 / 16D, 14 / 16D, 10 / 16D))
+					new AxisAlignedBB(7 / 16D, 0, 7 / 16D, 9 / 16D, 10 / 16D, 9 / 16D),
+					new AxisAlignedBB(0, 10 / 16D, 6 / 16D, 1, 14 / 16D, 10 / 16D))
 	);
 
 	@Nullable
@@ -145,38 +159,37 @@ public class BlockWoodenPost extends BlockBaseStructure {
 	public RayTraceResult collisionRayTrace(IBlockState state, World world, BlockPos pos, Vec3d start, Vec3d end) {
 		if (state.getValue(PART) == Part.BOTTOM) {
 			if (state.getValue(VISIBLE)) {
-				return RayTraceUtils.raytraceMultiAABB(BOTTOM_BASE_AABBs, pos, start, end, (rtr, aabb) -> rtr);
+				return RayTraceUtils.raytraceMultiAABB(BOTTOM_BASE_AABBs.get(state.getValue(FACING)), pos, start, end, (rtr, aabb) -> rtr);
 			} else {
-				return rayTrace(pos, start, end, POST_AABB);
+				return rayTrace(pos, start, end, MIDDLE_AABB);
 			}
 		} else {
 			if (state.getValue(VISIBLE)) {
-				return rayTrace(pos, start, end, POST_AABB);
+				return rayTrace(pos, start, end, MIDDLE_AABB);
 			} else {
 				return RayTraceUtils.raytraceMultiAABB(TOP_AABBs.get(state.getValue(FACING)), pos, start, end, (rtr, aabb) -> rtr);
 			}
 		}
 	}
 
-	@Nullable
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess world, BlockPos pos) {
-		return POST_AABB;
+	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes,
+			@Nullable Entity entityIn, boolean isActualState) {
+		TOP_AABBs.get(state.getValue(FACING)).forEach(aabb -> addCollisionBoxToList(pos, entityBox, collidingBoxes, aabb));
 	}
-
 	@Override
 	@SideOnly(Side.CLIENT)
 	public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World world, BlockPos pos) {
 		if (state.getValue(PART) == Part.BOTTOM) {
 			if (state.getValue(VISIBLE)) {
 				EntityPlayerSP player = Minecraft.getMinecraft().player;
-				return RayTraceUtils.getSelectedBoundingBox(BOTTOM_BASE_AABBs, pos, player);
+				return RayTraceUtils.getSelectedBoundingBox(BOTTOM_BASE_AABBs.get(state.getValue(FACING)), pos, player);
 			} else {
-				return POST_AABB.offset(pos);
+				return MIDDLE_AABB.offset(pos);
 			}
 		} else {
 			if (state.getValue(VISIBLE)) {
-				return POST_AABB.offset(pos);
+				return MIDDLE_AABB.offset(pos);
 			} else {
 				EntityPlayerSP player = Minecraft.getMinecraft().player;
 				return RayTraceUtils.getSelectedBoundingBox(TOP_AABBs.get(state.getValue(FACING)), pos, player);

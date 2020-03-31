@@ -1,0 +1,131 @@
+{
+	"credit": "Made by Silentine, with Blockbench",
+	"textures": {
+		"0": "ancientwarfare:blocks/structure/iron_cage",
+		"particle": "ancientwarfare:blocks/structure/iron_cage"
+	},
+	"elements": [
+		{
+			"name": "cage",
+			"from": [0, 16, 0],
+			"to": [16, 32, 16],
+			"faces": {
+				"north": {"uv": [0, 10, 4, 14], "texture": "#0"},
+				"east": {"uv": [0, 10, 4, 14], "texture": "#0"},
+				"south": {"uv": [0, 10, 4, 14], "texture": "#0"},
+				"west": {"uv": [0, 10, 4, 14], "texture": "#0"},
+				"down": {"uv": [4, 0, 8, 4], "rotation": 90, "texture": "#0"}
+			}
+		},
+		{
+			"name": "cagebottom",
+			"from": [0, 16.01, 0],
+			"to": [16, 16.01, 16],
+			"faces": {
+				"up": {"uv": [4, 0, 8, 4], "rotation": 270, "texture": "#0"}
+			}
+		},
+		{
+			"name": "cagesidenorth",
+			"from": [0, 16, 0.01],
+			"to": [16, 32, 0.01],
+			"faces": {
+				"south": {"uv": [0, 10, 4, 14], "texture": "#0"}
+			}
+		},
+		{
+			"name": "cagesidesouth",
+			"from": [0, 16, 15.99],
+			"to": [16, 32, 15.99],
+			"faces": {
+				"north": {"uv": [0, 10, 4, 14], "texture": "#0"}
+			}
+		},
+		{
+			"name": "cagesidewest",
+			"from": [0.01, 16, 0],
+			"to": [0.01, 32, 16],
+			"faces": {
+				"east": {"uv": [0, 10, 4, 14], "texture": "#0"}
+			}
+		},
+		{
+			"name": "cagesideeast",
+			"from": [16.01, 16, 0],
+			"to": [16.01, 32, 16],
+			"faces": {
+				"west": {"uv": [0, 10, 4, 14], "texture": "#0"}
+			}
+		},
+		{
+			"name": "horizontalwood03",
+			"from": [10, 0, 0],
+			"to": [14, 2, 16],
+			"faces": {
+				"north": {"uv": [8, 1.5, 9, 2], "texture": "#0"},
+				"east": {"uv": [8, 1.5, 12, 2], "texture": "#0"},
+				"south": {"uv": [8, 1.5, 9, 2], "texture": "#0"},
+				"west": {"uv": [8, 1.5, 12, 2], "texture": "#0"},
+				"up": {"uv": [8, 0, 12, 1], "rotation": 270, "texture": "#0"},
+				"down": {"uv": [12, 0, 16, 1], "rotation": 90, "texture": "#0"}
+			}
+		},
+		{
+			"name": "horizontalwood04",
+			"from": [2, 0, 0],
+			"to": [6, 2, 16],
+			"faces": {
+				"north": {"uv": [8, 1.5, 9, 2], "texture": "#0"},
+				"east": {"uv": [8, 1.5, 12, 2], "texture": "#0"},
+				"south": {"uv": [8, 1.5, 9, 2], "texture": "#0"},
+				"west": {"uv": [8, 1.5, 12, 2], "texture": "#0"},
+				"up": {"uv": [8, 0, 12, 1], "rotation": 270, "texture": "#0"},
+				"down": {"uv": [12, 0, 16, 1], "rotation": 90, "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [75, -135, 0],
+			"translation": [0, 2.5, 0],
+			"scale": [0.275, 0.275, 0.275]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [75, -135, 0],
+			"translation": [0, 2.5, 0],
+			"scale": [0.275, 0.275, 0.275]
+		},
+		"firstperson_righthand": {
+			"rotation": [0, -45, 0],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"firstperson_lefthand": {
+			"rotation": [0, -45, 0],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"ground": {
+			"translation": [0, 3, 0],
+			"scale": [0.25, 0.25, 0.25]
+		},
+		"gui": {
+			"rotation": [30, -45, 0],
+			"translation": [0, -2.75, 0],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"fixed": {
+			"rotation": [0, -180, 0],
+			"translation": [0, -4, 0],
+			"scale": [0.5, 0.5, 0.5]
+		}
+	},
+	"groups": [
+		{
+			"name": "cagebottom",
+			"children": [0, 1, 2, 3, 4, 5]
+		},
+		{
+			"name": "standbottom",
+			"children": [6, 7]
+		}
+	]
+}

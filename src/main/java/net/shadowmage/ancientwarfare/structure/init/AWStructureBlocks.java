@@ -28,8 +28,10 @@ import net.shadowmage.ancientwarfare.structure.block.BlockCoinStack;
 import net.shadowmage.ancientwarfare.structure.block.BlockDraftingStation;
 import net.shadowmage.ancientwarfare.structure.block.BlockFirePit;
 import net.shadowmage.ancientwarfare.structure.block.BlockGateProxy;
+import net.shadowmage.ancientwarfare.structure.block.BlockGibbet;
 import net.shadowmage.ancientwarfare.structure.block.BlockGoldenIdol;
 import net.shadowmage.ancientwarfare.structure.block.BlockGoldenThrone;
+import net.shadowmage.ancientwarfare.structure.block.BlockIronCage;
 import net.shadowmage.ancientwarfare.structure.block.BlockLootBasket;
 import net.shadowmage.ancientwarfare.structure.block.BlockProtectionFlag;
 import net.shadowmage.ancientwarfare.structure.block.BlockScissorSeat;
@@ -37,6 +39,7 @@ import net.shadowmage.ancientwarfare.structure.block.BlockSoundBlock;
 import net.shadowmage.ancientwarfare.structure.block.BlockStake;
 import net.shadowmage.ancientwarfare.structure.block.BlockStatue;
 import net.shadowmage.ancientwarfare.structure.block.BlockStool;
+import net.shadowmage.ancientwarfare.structure.block.BlockStretchingRack;
 import net.shadowmage.ancientwarfare.structure.block.BlockStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.block.BlockStructureScanner;
 import net.shadowmage.ancientwarfare.structure.block.BlockTable;
@@ -59,7 +62,9 @@ import net.shadowmage.ancientwarfare.structure.item.ItemBlockChair;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockCoffin;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockColored;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockFirePit;
+import net.shadowmage.ancientwarfare.structure.item.ItemBlockPosts;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockProtectionFlag;
+import net.shadowmage.ancientwarfare.structure.item.ItemBlockStretchingRack;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockTotemPart;
 import net.shadowmage.ancientwarfare.structure.item.ItemLootChestPlacer;
@@ -125,6 +130,9 @@ public class AWStructureBlocks {
 	public static final Block WOODEN_THRONE = InjectionTools.nullValue();
 	public static final Block GOLDEN_THRONE = InjectionTools.nullValue();
 	public static final Block WOODEN_POST = InjectionTools.nullValue();
+	public static final Block IRON_CAGE = InjectionTools.nullValue();
+	public static final Block GIBBET = InjectionTools.nullValue();
+	public static final Block STRETCHING_RACK = InjectionTools.nullValue();
 	public static final Block STAKE = InjectionTools.nullValue();
 	public static final Block BENCH = InjectionTools.nullValue();
 	public static final Block TRIBAL_CHAIR = InjectionTools.nullValue();
@@ -176,7 +184,10 @@ public class AWStructureBlocks {
 		registry.register(new ItemBlockBase(TRIBAL_STOOL));
 		registry.register(new ItemBlockBase(WOODEN_THRONE));
 		registry.register(new ItemBlockBase(GOLDEN_THRONE));
-		registry.register(new ItemBlockBase(WOODEN_POST));
+		registry.register(new ItemBlockPosts(WOODEN_POST));
+		registry.register(new ItemBlockPosts(IRON_CAGE));
+		registry.register(new ItemBlockPosts(GIBBET));
+		registry.register(new ItemBlockStretchingRack(STRETCHING_RACK));
 		registry.register(new ItemMultiBlock(STAKE, new Vec3i(0, 0, 0), new Vec3i(0, 2, 0)));
 		registry.register(new WoodItemBlock(BENCH));
 		registry.register(new ItemMultiBlock(TRIBAL_CHAIR, new Vec3i(0, 0, 0), new Vec3i(0, 1, 0)));
@@ -257,7 +268,6 @@ public class AWStructureBlocks {
 
 		registry.register(new BlockCoffin());
 		registerTile(TileCoffin.class, "coffin");
-
 		registry.register(new BlockStool());
 
 		registry.register(new BlockUrn());
@@ -273,6 +283,9 @@ public class AWStructureBlocks {
 		registry.register(new BlockWoodenThrone());
 		registry.register(new BlockGoldenThrone());
 		registry.register(new BlockWoodenPost());
+		registry.register(new BlockIronCage());
+		registry.register(new BlockGibbet());
+		registry.register(new BlockStretchingRack());
 		registry.register(new BlockStake());
 		registerTile(TileStake.class, "stake_tile");
 

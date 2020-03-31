@@ -2,6 +2,7 @@
 	"credit": "Made by Silentine, with Blockbench",
 	"textures": {
 		"0": "ancientwarfare:blocks/structure/brazier_flame_on",
+		"1": "blocks/fire_layer_0",
 		"particle": "ancientwarfare:blocks/structure/brazier_flame_on"
 	},
 	"elements": [
@@ -564,6 +565,34 @@
 			"to": [13, 6.5, 13],
 			"faces": {
 				"up": {"uv": [6, 0, 11, 5], "rotation": 180, "texture": "#0"}
+			}
+		},
+		{
+			"name": "fire1",
+			"from": [8, 6, 2],
+			"to": [8, 18, 14],
+			"rotation": {"angle": -45, "axis": "y", "origin": [8, 6, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 0, 12], "texture": "#1"},
+				"east": {"uv": [2, 1, 14, 13], "texture": "#1"},
+				"south": {"uv": [0, 0, 0, 12], "texture": "#1"},
+				"west": {"uv": [2, 1, 14, 13], "texture": "#1"},
+				"up": {"uv": [0, 0, 0, 12], "texture": "#1"},
+				"down": {"uv": [0, 0, 0, 12], "texture": "#1"}
+			}
+		},
+		{
+			"name": "fire2",
+			"from": [8, 6, 2],
+			"to": [8, 18, 14],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 6, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 0, 12], "texture": "#1"},
+				"east": {"uv": [2, 1, 14, 13], "texture": "#1"},
+				"south": {"uv": [0, 0, 0, 12], "texture": "#1"},
+				"west": {"uv": [2, 1, 14, 13], "texture": "#1"},
+				"up": {"uv": [0, 0, 0, 12], "texture": "#1"},
+				"down": {"uv": [0, 0, 0, 12], "texture": "#1"}
 			}
 		},
 		{

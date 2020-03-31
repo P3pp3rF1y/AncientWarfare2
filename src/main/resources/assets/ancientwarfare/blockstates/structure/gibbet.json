@@ -1,10 +1,12 @@
 {
     "forge_marker": 1,
     "defaults": {
-        "model": "ancientwarfare:structure/wooden_post_bottom"
+        "model": "ancientwarfare:structure/gibbet_bottom"
     },
     "variants": {
-        "normal": [{}],
+        "normal": [
+            {}
+        ],
         "facing": {
             "north": {
                 "y": 180
@@ -20,7 +22,7 @@
         },
         "part": {
             "top": {
-                "model": "ancientwarfare:structure/wooden_post_top"
+                "model": "ancientwarfare:structure/gibbet_top"
             },
             "bottom": {}
         },
@@ -36,7 +38,7 @@
                 }
             },
             "textures": {
-                "layer0": "ancientwarfare:items/structure/wooden_post"
+                "layer0": "ancientwarfare:items/structure/gibbet"
             }
         }
     }
