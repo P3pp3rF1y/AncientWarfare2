@@ -50,6 +50,7 @@ public class AWAutomationTab extends CreativeTabs {
 					WAREHOUSE_INTERFACE, WAREHOUSE_CRAFTING,
 					BlockWarehouseStorage.class,
 					WAREHOUSE_STOCK_VIEWER,
+					WAREHOUSE_STOCK_LINKER,
 					MAILBOX,
 					BlockTorqueBase.class,
 					BlockFlywheelStorage.class,

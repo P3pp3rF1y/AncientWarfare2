@@ -39,7 +39,7 @@ public abstract class TileControlled extends TileUpdatable implements IControlle
 
 	protected abstract void updateTile();
 
-	private void searchForController() {
+	public void searchForController() {
 		BlockPos min = pos.add(-16, -4, -16);
 		BlockPos max = pos.add(16, 4, 16);
 		for (TileEntity te : WorldTools.getTileEntitiesInArea(world, min.getX(), min.getY(), min.getZ(), max.getX(), max.getY(), max.getZ())) {

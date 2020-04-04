@@ -1,0 +1,23 @@
+{
+    "type": "ancientwarfare:research_recipe",
+    "research": "trade",
+    "pattern": [
+        "R",
+        "P",
+        "S"
+    ],
+    "key": {
+        "R": {
+            "item": "ancientwarfarenpc:routing_order"
+        },
+        "P": {
+            "item": "#PAPER"
+        },
+        "S": {
+            "item": "minecraft:sign"
+        }
+    },
+    "result": {
+        "item": "ancientwarfareautomation:warehouse_stock_linker"
+    }
+}
