@@ -44,7 +44,6 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
 	@Override
 	protected void onBoundsSet() {
 		super.onBoundsSet();
-		height = pos.getY();
 		offsetBounds();
 	}
 
@@ -151,7 +150,7 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
 		if (isMaxInChunk(current.getX()) || current.getX() >= getWorkBoundsMax().getX()) {
 			int startX = Math.max(getWorkBoundsMin().getX(), getMinChunkX());
 			if (isMaxInChunk(current.getZ()) || current.getZ() >= getWorkBoundsMax().getZ()) {
-				if (current.getY() <= (pos.getY() - (height + 1))) {
+				if (current.getY() <= (pos.getY() - (height))) {
 					return moveToStartOfNextChunk();
 				} else {
 					int startZ = Math.max(getWorkBoundsMin().getZ(), getMinChunkZ());
@@ -242,6 +241,7 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
 	}
 
 	private void initWorkSite() {
+		height = pos.getY() - 1;
 		BlockPos boundsMin = getWorkBoundsMin();
 		setWorkBoundsMin(boundsMin.up(pos.getY() - height - boundsMin.getY()));
 		current = new BlockPos(getWorkBoundsMin().getX(), getWorkBoundsMax().getY(), getWorkBoundsMin().getZ());
