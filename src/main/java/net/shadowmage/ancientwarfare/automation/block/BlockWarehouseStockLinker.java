@@ -19,6 +19,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseStockLinker;
+import net.shadowmage.ancientwarfare.automation.item.ItemBlockWarehouseStockLinker;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStockLinker;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStockLinker.WarehouseStockFilter;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
@@ -65,28 +66,42 @@ public class BlockWarehouseStockLinker extends BlockBaseAutomation implements IR
 	public boolean canProvidePower(IBlockState iBlockState) {
 		return true;
 	}
+
+	@Override
+	public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+		return isPowered(blockAccess, pos) ? 15 : 0;
+	}
+
 	@Override
 	public int getStrongPower(IBlockState state, IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
+		boolean doPower = isPowered(worldIn, pos);
+
+		if (!doPower) {
+			return 0;
+		} else {
+			return state.getValue(FACING) == side ? 15 : 0;
+		}
+	}
+
+	private boolean isPowered(IBlockAccess worldIn, BlockPos pos) {
 		boolean doPower = false;
 		TileEntity tileentity = worldIn.getTileEntity(pos);
 		if (tileentity instanceof TileWarehouseStockLinker) {
 			TileWarehouseStockLinker tileWarehouseStockLinker = (TileWarehouseStockLinker) tileentity;
 			doPower = tileWarehouseStockLinker.getEqualityHandle();
 		}
-		return doPower ? 15 : 0;
+		return doPower;
 	}
 
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack stack) {
 		super.onBlockPlacedBy(world, pos, state, player, stack);
-		if (!world.isRemote) {
-			if (stack.getTagCompound() != null){
-				TileEntity tileentity = world.getTileEntity(pos);
-				if (tileentity instanceof TileWarehouseStockLinker) {
-					TileWarehouseStockLinker tileWarehouseStockLinker = (TileWarehouseStockLinker) tileentity;
-					NBTTagCompound tag = stack.getTagCompound().getCompoundTag("warehousePosTag");
-					tileWarehouseStockLinker.setWarehousePos(NBTUtil.getPosFromTag(tag));
-				}
+		if (!world.isRemote && stack.getTagCompound() != null) {
+			TileEntity tileentity = world.getTileEntity(pos);
+			if (tileentity instanceof TileWarehouseStockLinker) {
+				TileWarehouseStockLinker tileWarehouseStockLinker = (TileWarehouseStockLinker) tileentity;
+				NBTTagCompound tag = stack.getTagCompound().getCompoundTag(ItemBlockWarehouseStockLinker.WAREHOUSE_POS_TAG);
+				tileWarehouseStockLinker.setWarehousePos(NBTUtil.getPosFromTag(tag));
 			}
 		}
 	}

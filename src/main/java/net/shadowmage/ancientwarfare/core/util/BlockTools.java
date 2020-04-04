@@ -282,6 +282,12 @@ public class BlockTools {
 		notifyBlockUpdate(tile.getWorld(), tile.getPos());
 	}
 
+	public static void notifyNeighbors(TileEntity tile) {
+		World world = tile.getWorld();
+		BlockPos pos = tile.getPos();
+		tile.getWorld().notifyNeighborsRespectDebug(pos, world.getBlockState(pos).getBlock(), true);
+	}
+
 	public static JsonElement serializeToJson(IBlockState state) {
 		JsonObject serializedState = new JsonObject();
 		//noinspection ConstantConditions

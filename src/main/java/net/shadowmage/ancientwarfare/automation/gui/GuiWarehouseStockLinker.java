@@ -41,10 +41,6 @@ public class GuiWarehouseStockLinker extends GuiContainerBase<ContainerWarehouse
 		Label label;
 		String text;
 
-//		label = new Label (8, 7, "Warehouse Coords: " + (getContainer().warehousePos) );
-//		area.addGuiElement(label);
-//		AncientWarfareAutomation.LOG.info("findme - pos = " + getContainer().warehousePos);
-
 		for (WarehouseStockFilter filter : getContainer().filters) {
 			//Item Slot
 			slot = new FilterItemSlot(8, totalHeight, filter, this);
