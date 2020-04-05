@@ -42,7 +42,7 @@ public class TownGeneratorStructures {
 		}
 
 		WorldGenTickHandler.INSTANCE.addStructureGenCallback(() -> {
-			TownGeneratorStructures.generateLamps(blocks, gen.template.getLamp(), gen);
+			gen.template.getLamp().ifPresent(lamp -> TownGeneratorStructures.generateLamps(blocks, lamp, gen));
 			WorldStructureGenerator.sprinkleSnow(gen.world, gen.maximalBounds, 0);
 			gen.generateVillagers();
 		});
@@ -89,11 +89,11 @@ public class TownGeneratorStructures {
 	}
 
 	private static void generateHouses(List<TownPartBlock> blocks, List<StructureTemplate> templatesToGenerate, TownGenerator gen) {
+		if (templatesToGenerate.isEmpty()) {
+			return;
+		}
 		for (TownPartBlock block : blocks) {
 			for (TownPartPlot plot : block.plots) {
-				if (templatesToGenerate.isEmpty()) {
-					return;
-				}
 				if (plot.closed || !plot.hasRoadBorder()) {
 					continue;
 				}
@@ -126,7 +126,7 @@ public class TownGeneratorStructures {
 		float maxDistance = Trig.getDistance(l1, 0, l2, 0, 0, 0);
 		l1 = gen.wallsBounds.getXSize() / 2.f;
 		l2 = gen.wallsBounds.getZSize() / 2.f;
-		float minDistance = l1 < l2 ? l1 : l2;
+		float minDistance = Math.min(l1, l2);
 		float minMaxDelta = maxDistance - minDistance;
 
 		for (TownPartBlock block : blocks) {
@@ -149,9 +149,6 @@ public class TownGeneratorStructures {
 	}
 
 	private static void generateLamps(List<TownPartBlock> blocks, TownStructureEntry templateToGenerate, final TownGenerator gen) {
-		if (templateToGenerate == null) {
-			return;
-		}
 		StructureTemplateManager.getTemplate(templateToGenerate.templateName).ifPresent(lamp -> {
 			for (TownPartBlock block : blocks) {
 				generateLamps(gen.world, block, lamp, gen.structureDoors);
@@ -258,9 +255,7 @@ public class TownGeneratorStructures {
 		int x1 = x + dir.xDirection;
 		int z1 = z + dir.zDirection;
 		for (BlockPos p : doors) {
-			if (p.getX() == x && p.getZ() == z) {
-				return true;
-			} else if (p.getX() == x1 && p.getZ() == z1) {
+			if (p.getX() == x && p.getZ() == z || p.getX() == x1 && p.getZ() == z1) {
 				return true;
 			}
 		}

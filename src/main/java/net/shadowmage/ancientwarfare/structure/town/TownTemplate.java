@@ -5,12 +5,15 @@ import net.minecraft.init.Blocks;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
+import java.util.StringJoiner;
 
 public final class TownTemplate {
 	private String townTypeName;//
@@ -173,8 +176,8 @@ public final class TownTemplate {
 		this.clusterValue = clusterValue;
 	}
 
-	public final TownStructureEntry getLamp() {
-		return lamp;
+	public final Optional<TownStructureEntry> getLamp() {
+		return Optional.ofNullable(lamp);
 	}
 
 	public final void setLamp(TownStructureEntry lamp) {
@@ -185,7 +188,7 @@ public final class TownTemplate {
 		return roadFillBlock;
 	}
 
-	public final void setRoadFillBlock(Block roadFillBlock) {
+	public final void setRoadFillBlock(@Nullable Block roadFillBlock) {
 		this.roadFillBlock = roadFillBlock == null ? this.roadFillBlock : roadFillBlock;
 	}
 
@@ -199,10 +202,6 @@ public final class TownTemplate {
 
 	public final int getExteriorSize() {
 		return exteriorSize;
-	}
-
-	public final int getExteriorPlotSize() {
-		return exteriorPlotSize;
 	}
 
 	public final void setExteriorSize(int exteriorSize) {
@@ -321,7 +320,7 @@ public final class TownTemplate {
 				return e.templateName;
 			}
 		}
-		return null;
+		throw new IllegalArgumentException("Getting random wall from empty list of walls. Such list shouldn't have been loaded at all.");
 	}
 
 	public final void validateStructureEntries() {
@@ -330,9 +329,9 @@ public final class TownTemplate {
 		validateStructureList(houseStructureEntries);
 		validateStructureList(cosmeticStructureEntries);
 		validateStructureList(exteriorStructureEntries);
-		TownStructureEntry e = getLamp();
-		if (e != null && StructureTemplateManager.getTemplate(e.templateName) == null) {
-			AncientWarfareStructure.LOG.error("Error loading lamp template: " + e.templateName);
+		Optional<TownStructureEntry> e = getLamp();
+		if (e.isPresent() && !StructureTemplateManager.getTemplate(e.get().templateName).isPresent()) {
+			AncientWarfareStructure.LOG.error("Error loading lamp template: {}", e.get().templateName);
 		}
 		wallTotalWeights = validateWallList(walls, wallTotalWeights);
 		cornersTotalWeight = validateWallList(cornerWalls, cornersTotalWeight);
@@ -345,8 +344,8 @@ public final class TownTemplate {
 		Iterator<TownStructureEntry> it = entries.iterator();
 		TownStructureEntry e;
 		while (it.hasNext() && (e = it.next()) != null) {
-			if (StructureTemplateManager.getTemplate(e.templateName) == null) {
-				AncientWarfareStructure.LOG.error("Error loading structure template: " + e.templateName + " for town: " + townTypeName);
+			if (!StructureTemplateManager.getTemplate(e.templateName).isPresent()) {
+				AncientWarfareStructure.LOG.error("Error loading structure template: {} for town: {}", e.templateName, townTypeName);
 				it.remove();
 			}
 		}
@@ -356,8 +355,8 @@ public final class TownTemplate {
 		Iterator<TownWallEntry> it = entries.iterator();
 		TownWallEntry e;
 		while (it.hasNext() && (e = it.next()) != null) {
-			if (StructureTemplateManager.getTemplate(e.templateName) == null) {
-				AncientWarfareStructure.LOG.error("Error loading structure template: " + e.templateName + " for town: " + townTypeName);
+			if (!StructureTemplateManager.getTemplate(e.templateName).isPresent()) {
+				AncientWarfareStructure.LOG.error("Error loading structure template: {} for town: {}", e.templateName, townTypeName);
 				it.remove();
 				originalWeight -= e.weight;
 			}
@@ -366,14 +365,32 @@ public final class TownTemplate {
 	}
 
 	public final boolean isValid() {
+		List<String> missingWallTypes = new ArrayList<>();
 		if (wallStyle > 0 && cornerWalls.isEmpty()) {
-			AncientWarfareStructure.LOG.error("Town template of: " + townTypeName + " is missing corner wall type for specified wall style of: " + wallStyle);
+			missingWallTypes.add("corner");
+		}
+		if (wallStyle > 1) {
+			if (walls.isEmpty()) {
+				missingWallTypes.add("wall");
+			}
+			if (gateCenterWalls.isEmpty()) {
+				missingWallTypes.add("gate");
+			}
+			if (gateLeftWalls.isEmpty()) {
+				missingWallTypes.add("lgate");
+			}
+			if (gateRightWalls.isEmpty()) {
+				missingWallTypes.add("rgate");
+			}
+		}
+
+		if (!missingWallTypes.isEmpty()) {
+			StringJoiner missingTypes = new StringJoiner(", ");
+			missingWallTypes.forEach(missingTypes::add);
+			AncientWarfareStructure.LOG.error("Town template of: {} is missing {} wall types for specified wall style of: {}", townTypeName, missingTypes, wallStyle);
 			return false;
 		}
-		if (wallStyle > 1 && (walls.isEmpty() || gateCenterWalls.isEmpty() || gateLeftWalls.isEmpty() || gateRightWalls.isEmpty())) {
-			AncientWarfareStructure.LOG.error("Town template of: " + townTypeName + " is missing one or more wall types for specified wall style of: " + wallStyle);
-			return false;
-		}
+
 		return townTypeName != null && !townTypeName.isEmpty();
 	}
 
