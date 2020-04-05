@@ -57,8 +57,9 @@ public class TileWarehouseStockLinker extends TileControlled implements IOwnable
 	public void setFilters(List<WarehouseStockFilter> filters) {
 		this.filters.clear();
 		this.filters.addAll(filters);
-		recountFilters();//recount filters, do not send update
-		BlockTools.notifyNeighbors(this); //to re-send description packet to client with new filters
+		BlockTools.notifyBlockUpdate(this);
+		recountFilters();
+		BlockTools.notifyNeighbors(this);
 	}
 
 	public boolean getEqualityHandle() {

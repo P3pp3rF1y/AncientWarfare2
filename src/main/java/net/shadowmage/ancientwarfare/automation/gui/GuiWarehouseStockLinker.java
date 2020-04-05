@@ -31,8 +31,6 @@ public class GuiWarehouseStockLinker extends GuiContainerBase<ContainerWarehouse
 	@Override
 	public void setupElements() {
 		area.clearElements();
-		getContainer().filters.clear();
-		getContainer().filters.addAll(getContainer().tileEntity.getFilters());
 		int totalHeight = 8;
 
 		ItemSlot slot;
@@ -61,7 +59,7 @@ public class GuiWarehouseStockLinker extends GuiContainerBase<ContainerWarehouse
 			area.addGuiElement(label);
 
 			//Equality Sign Button
-			Button EqualitySign = new Button(xSize - 80 , totalHeight + 4, 10, 12, filter.equalitySignType.getTranslationKey()) {
+			Button equalitySign = new Button(xSize - 80, totalHeight + 4, 10, 12, filter.equalitySignType.getTranslationKey()) {
 				@Override
 				protected void onPressed(int mButton) {
 					filter.changeEqualitySign(mButton == 1);
@@ -69,7 +67,7 @@ public class GuiWarehouseStockLinker extends GuiContainerBase<ContainerWarehouse
 					refreshGui();
 				}
 			};
-			area.addGuiElement(EqualitySign);
+			area.addGuiElement(equalitySign);
 
 			//Compare Value Number Input
 			NumberInput compareValue = new NumberInput(xSize - 70, totalHeight + 4, 50, filter.compareValue, this) {
