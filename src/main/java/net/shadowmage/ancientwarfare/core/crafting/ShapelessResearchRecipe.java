@@ -47,7 +47,7 @@ public class ShapelessResearchRecipe extends ResearchRecipeBase {
 
 	@Override
 	public IRecipe getCraftingRecipe() {
-		//noinspection ConstantConditions
-		return new ShapelessOreRecipe(null, getRecipeOutput(), (Object) getIngredients().toArray(new Ingredient[] {})).setRegistryName(getRegistryName());
+		//noinspection ConstantConditions,ConfusingArgumentToVarargsMethod - using varargs
+		return new ShapelessOreRecipe(null, getRecipeOutput(), getIngredients().toArray(new Ingredient[] {})).setRegistryName(getRegistryName());
 	}
 }
