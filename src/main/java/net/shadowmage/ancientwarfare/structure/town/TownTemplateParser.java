@@ -1,8 +1,10 @@
 package net.shadowmage.ancientwarfare.structure.town;
 
-import net.minecraft.block.Block;
+import com.google.gson.JsonParser;
+import net.minecraft.init.Blocks;
 import net.shadowmage.ancientwarfare.core.util.CompatUtils;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
+import net.shadowmage.ancientwarfare.core.util.parsing.JsonHelper;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplate.TownStructureEntry;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplate.TownWallEntry;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -12,10 +14,11 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 public class TownTemplateParser {
 
-	public static TownTemplate parseTemplate(List<String> lines) {
+	public static Optional<TownTemplate> parseTemplate(List<String> lines) {
 		TownTemplate template = new TownTemplate();
 		Iterator<String> it = lines.iterator();
 		String line;
@@ -41,9 +44,9 @@ public class TownTemplateParser {
 			}
 		}
 		if (template.isValid()) {
-			return template;
+			return Optional.of(template);
 		}
-		return null;
+		return Optional.empty();
 	}
 
 	private static void parseHeader(Iterator<String> it, TownTemplate template) {
@@ -85,10 +88,12 @@ public class TownTemplateParser {
 				template.setInteriorEmtpyPlotChance(StringTools.safeParseInt("=", line));
 			} else if (lower.startsWith("randomvillagersperchunk")) {
 				template.setRandomVillagersPerChunk(StringTools.safeParseFloat("=", line));
-			} else if (lower.startsWith("roadblock")) {
-				template.setRoadFillBlock(Block.getBlockFromName(StringTools.safeParseString("=", line)));
-			} else if (lower.startsWith("roadmeta")) {
-				template.setRoadFillMeta(StringTools.safeParseInt("=", line));
+			} else if (lower.startsWith("roadblocks")) {
+				String[] roadFillBlocks = StringTools.safeParseString("=", line).split("\\|");
+				JsonParser parser = new JsonParser();
+				for (String roadFillBlock : roadFillBlocks) {
+					template.addRoadFillBlock(JsonHelper.getBlockState(parser.parse(roadFillBlock)));
+				}
 			} else if (lower.startsWith("biomewhitelist")) {
 				template.setBiomeWhiteList(StringTools.safeParseBoolean("=", line));
 			} else if (lower.startsWith("biomelist")) {
@@ -101,6 +106,9 @@ public class TownTemplateParser {
 				template.setLamp(new TownStructureEntry(StringTools.safeParseString("=", line), 1));
 			}
 		}
+		if (template.getRoadFillBlocks().isEmpty()) {
+			template.addRoadFillBlock(Blocks.GRAVEL.getDefaultState());
+		}
 	}
 
 	private static void parseUniqueStructures(Iterator<String> it, TownTemplate template) {
@@ -110,9 +118,7 @@ public class TownTemplateParser {
 				break;
 			} else {
 				TownStructureEntry e = parseStructureName(line);
-				if (e != null) {
-					template.getUniqueStructureEntries().add(e);
-				}
+				template.getUniqueStructureEntries().add(e);
 			}
 		}
 	}
@@ -124,9 +130,7 @@ public class TownTemplateParser {
 				break;
 			} else {
 				TownStructureEntry e = parseStructureName(line);
-				if (e != null) {
-					template.getMainStructureEntries().add(e);
-				}
+				template.getMainStructureEntries().add(e);
 			}
 		}
 	}
@@ -138,9 +142,7 @@ public class TownTemplateParser {
 				break;
 			} else {
 				TownStructureEntry e = parseStructureWeight(line);
-				if (e != null) {
-					template.getHouseStructureEntries().add(e);
-				}
+				template.getHouseStructureEntries().add(e);
 			}
 		}
 	}
@@ -152,9 +154,7 @@ public class TownTemplateParser {
 				break;
 			} else {
 				TownStructureEntry e = parseStructureWeight(line);
-				if (e != null) {
-					template.getCosmeticEntries().add(e);
-				}
+				template.getCosmeticEntries().add(e);
 			}
 		}
 	}
@@ -166,9 +166,7 @@ public class TownTemplateParser {
 				break;
 			} else {
 				TownStructureEntry e = parseStructureWeight(line);
-				if (e != null) {
-					template.getExteriorStructureEntries().add(e);
-				}
+				template.getExteriorStructureEntries().add(e);
 			}
 		}
 	}
@@ -180,9 +178,7 @@ public class TownTemplateParser {
 				break;
 			} else {
 				TownWallEntry e = parseWall(line);
-				if (e != null) {
-					template.addWall(e);
-				}
+				template.addWall(e);
 			}
 		}
 	}
@@ -203,7 +199,7 @@ public class TownTemplateParser {
 
 	private static List<String> parseBiomeList(String line) {
 		String[] bits = line.split(",", -1);
-		if (bits == null || bits.length <= 0) {
+		if (bits.length <= 0) {
 			return Collections.emptyList();
 		}
 		List<String> names = new ArrayList<>();
@@ -215,7 +211,7 @@ public class TownTemplateParser {
 
 	private static List<Integer> parseDimensionList(String line) {
 		String[] bits = line.split(",", -1);
-		if (bits == null || bits.length <= 0) {
+		if (bits.length <= 0) {
 			return Collections.emptyList();
 		}
 		List<Integer> dims = new ArrayList<>();

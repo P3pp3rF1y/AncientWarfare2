@@ -1,6 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.town;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
@@ -40,6 +40,7 @@ public class TownGenerator {
 	public final List<StructureTemplate> exteriorTemplatesToGenerate = new ArrayList<>();//weighted list
 	public final List<BlockPos> structureDoors = new ArrayList<>();//list of all positions for generated doors.  used during lamp-post generation to not generate directly in front of a door
 
+	@SuppressWarnings("squid:S2245")
 	public TownGenerator(World world, TownBoundingArea area, TownTemplate template) {
 		this.world = world;
 		this.template = template;
@@ -62,7 +63,7 @@ public class TownGenerator {
 	 * Call this to initialize and start the generation of the town
 	 */
 	public void generate() {
-		AncientWarfareStructure.LOG.info("Generating town at: " + townBounds.getCenterX() + " : " + townBounds.getCenterZ());
+		AncientWarfareStructure.LOG.info("Generating town at: {} : {}", townBounds.getCenterX(), townBounds.getCenterZ());
 		determineStructuresToGenerate();
 		TownGeneratorBorders.generateBorders(world, exteriorBounds, wallsBounds, maximalBounds);
 		TownGeneratorBorders.levelTownArea(world, wallsBounds);
@@ -439,10 +440,15 @@ public class TownGenerator {
 	}
 
 	private void genRoadBlock(int x, int y, int z) {
-		Block block = template.getRoadFillBlock();
-		int meta = template.getRoadFillMeta();
+		List<IBlockState> roadBlocks = template.getRoadFillBlocks();
+		IBlockState roadBlock;
+		if (roadBlocks.size() == 1) {
+			roadBlock = roadBlocks.get(0);
+		} else {
+			roadBlock = roadBlocks.get(world.rand.nextInt(roadBlocks.size()));
+		}
 		BlockPos pos = new BlockPos(x, y, z);
-		world.setBlockState(pos, block.getStateFromMeta(meta), 3);
+		world.setBlockState(pos, roadBlock, 3);
 		world.setBlockState(pos.down(), Blocks.COBBLESTONE.getDefaultState(), 3);
 	}
 

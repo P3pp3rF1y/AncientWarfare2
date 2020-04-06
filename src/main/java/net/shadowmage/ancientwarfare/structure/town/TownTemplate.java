@@ -1,11 +1,9 @@
 package net.shadowmage.ancientwarfare.structure.town;
 
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.state.IBlockState;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -38,8 +36,7 @@ public final class TownTemplate {
 	private int townPlotSize;//
 	private int townBuildingWidthExpansion;//used to expand buildings by a set size, for use with structure templates that have no surrounding space in them, to ensure room between structures
 
-	private Block roadFillBlock = Blocks.GRAVEL;//
-	private int roadFillMeta = 0;
+	private List<IBlockState> roadFillBlocks = new ArrayList<>();
 
 	private int wallStyle;//0==no wall, 1==corner only, 2==random walls, 3==by pattern//
 	private int wallSize;//size in blocks//
@@ -182,22 +179,6 @@ public final class TownTemplate {
 
 	public final void setLamp(TownStructureEntry lamp) {
 		this.lamp = lamp;
-	}
-
-	public final Block getRoadFillBlock() {
-		return roadFillBlock;
-	}
-
-	public final void setRoadFillBlock(@Nullable Block roadFillBlock) {
-		this.roadFillBlock = roadFillBlock == null ? this.roadFillBlock : roadFillBlock;
-	}
-
-	public final void setRoadFillMeta(int roadFillMeta) {
-		this.roadFillMeta = roadFillMeta;
-	}
-
-	public final int getRoadFillMeta() {
-		return roadFillMeta;
 	}
 
 	public final int getExteriorSize() {
@@ -392,6 +373,14 @@ public final class TownTemplate {
 		}
 
 		return townTypeName != null && !townTypeName.isEmpty();
+	}
+
+	public List<IBlockState> getRoadFillBlocks() {
+		return roadFillBlocks;
+	}
+
+	public void addRoadFillBlock(IBlockState state) {
+		roadFillBlocks.add(state);
 	}
 
 	public static final class TownStructureEntry {

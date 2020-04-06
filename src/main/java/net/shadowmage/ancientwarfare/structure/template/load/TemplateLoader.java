@@ -1,7 +1,7 @@
 package net.shadowmage.ancientwarfare.structure.template.load;
 
 import net.minecraftforge.fml.common.Loader;
-import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
+import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
 import net.shadowmage.ancientwarfare.core.util.FileUtils;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
@@ -30,8 +30,8 @@ import java.util.stream.Collectors;
 public class TemplateLoader {
 
 	private static final String DEFAULT_TEMPLATE_DIRECTORY = "assets/ancientwarfare/template";
-	public static final String OUTPUT_DIRECTORY = AWCoreStatics.configPathForFiles + "structures/export/";
-	public static final String INCLUDE_DIRECTORY = AWCoreStatics.configPathForFiles + "structures/included/";
+	public static final String OUTPUT_DIRECTORY = ModConfiguration.configPathForFiles + "structures/export/";
+	public static final String INCLUDE_DIRECTORY = ModConfiguration.configPathForFiles + "structures/included/";
 
 	private List<TownTemplate> parsedTownTemplates = new ArrayList<>();
 
@@ -44,7 +44,7 @@ public class TemplateLoader {
 	public void initializeAndExportDefaults() {
 		/*
 		 * create default dirs if they don't exist...
-         */
+		 */
 		File existTest = new File(OUTPUT_DIRECTORY);
 		if (!existTest.exists()) {
 			existTest.mkdirs();
@@ -132,17 +132,14 @@ public class TemplateLoader {
 	}
 
 	private void loadTownTemplate(List<String> lines) {
-		TownTemplate template = TownTemplateParser.parseTemplate(lines);
-		if (template != null) {
-			parsedTownTemplates.add(template);
-		}
+		TownTemplateParser.parseTemplate(lines).ifPresent(t -> parsedTownTemplates.add(t));
 	}
 
 	private void validateTownTemplates() {
 		if (!this.parsedTownTemplates.isEmpty()) {
 			AncientWarfareStructure.LOG.info("Loading Town Templates: ");
 			for (TownTemplate t : this.parsedTownTemplates) {
-				AncientWarfareStructure.LOG.info("Loading town template: " + t.getTownTypeName());
+				AncientWarfareStructure.LOG.info("Loading town template: {}", t.getTownTypeName());
 				t.validateStructureEntries();
 				TownTemplateManager.INSTANCE.loadTemplate(t);
 			}
