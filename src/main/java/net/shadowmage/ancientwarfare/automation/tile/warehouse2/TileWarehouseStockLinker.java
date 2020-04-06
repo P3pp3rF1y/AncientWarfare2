@@ -173,6 +173,7 @@ public class TileWarehouseStockLinker extends TileControlled implements IOwnable
 		if (!world.isRemote) {
 			recountFilters();
 			BlockTools.notifyNeighbors(this);
+			BlockTools.notifyBlockUpdate(this);
 		}
 	}
 
