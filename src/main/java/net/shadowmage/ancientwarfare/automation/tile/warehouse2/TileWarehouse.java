@@ -34,7 +34,7 @@ public class TileWarehouse extends TileWarehouseBase {
 
 	@Override
 	public void handleSlotClick(EntityPlayer player, ItemStack filter, boolean shiftClick, boolean rightClick) {
-		if (!shiftClick && !player.inventory.getItemStack().isEmpty() && cachedItemMap.getTotalItemCount() != getMaxStorage()) {
+		if (!shiftClick && !player.inventory.getItemStack().isEmpty()) {
 			tryAddItem(player, player.inventory.getItemStack());
 		} else if (!filter.isEmpty()) {
 			tryGetItem(player, filter, shiftClick, rightClick);
@@ -66,7 +66,7 @@ public class TileWarehouse extends TileWarehouseBase {
 		}
 
 		ItemStack result = stack.copy();
-		result.shrink(count - addedTotal);
+		result.shrink(addedTotal);
 		return result;
 	}
 
