@@ -10,6 +10,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.util.Zone;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructureEntry;
 
 import java.util.ArrayList;
@@ -49,6 +50,16 @@ public class StructureMap extends WorldSavedData {
 		return map.getEntriesNear(world.provider.getDimension(), cx, cz, chunkRadius, expandBySize, list);
 	}
 
+	public Set<StructureEntry> getStructuresIn(World world, Zone zone) {
+		Set<StructureEntry> ret = new HashSet<>();
+		for (StructureEntry structure : getEntriesNear(world, zone.min.getX(), zone.min.getZ(), 1, true, new ArrayList<>())) {
+			if (structure.getBB().crossWith(zone)) {
+				ret.add(structure);
+			}
+		}
+		return ret;
+	}
+
 	public Optional<StructureEntry> getStructureAt(World world, BlockPos pos) {
 		for (StructureEntry structure : getEntriesNear(world, pos.getX(), pos.getZ(), 1, true, new ArrayList<>())) {
 			if (structure.getBB().contains(pos)) {
@@ -62,7 +73,7 @@ public class StructureMap extends WorldSavedData {
 		return map.getEntryAt(world.provider.getDimension(), chunkX, chunkZ);
 	}
 
-	public void setGeneratedAt(World world, int worldX, int worldY, int worldZ, EnumFacing face, StructureEntry entry, boolean unique) {
+	public void setGeneratedAt(World world, int worldX, int worldZ, EnumFacing face, StructureEntry entry, boolean unique) {
 		int cx = worldX >> 4;
 		int cz = worldZ >> 4;
 		int dimension = world.provider.getDimension();

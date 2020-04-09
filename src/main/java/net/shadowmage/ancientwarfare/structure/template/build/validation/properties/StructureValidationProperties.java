@@ -22,6 +22,7 @@ public class StructureValidationProperties {
 	public static final StructureValidationPropertyBool WORLD_GEN = new StructureValidationPropertyBool("worldGenEnabled", false);
 	public static final StructureValidationPropertyBool UNIQUE = new StructureValidationPropertyBool("unique", false);
 	public static final StructureValidationPropertyBool PRESERVE_BLOCKS = new StructureValidationPropertyBool("preserveBlocks", false);
+	public static final StructureValidationPropertyBool PREVENT_NATURAL_HOSTILE_SPAWNS = new StructureValidationPropertyBool("preventNaturalHostileSpawns", false);
 
 	public static final StructureValidationPropertyInteger SELECTION_WEIGHT = new StructureValidationPropertyInteger("selectionWeight", 1);
 	public static final StructureValidationPropertyInteger CLUSTER_VALUE = new StructureValidationPropertyInteger("clusterValue", 1);

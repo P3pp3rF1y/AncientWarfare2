@@ -57,11 +57,19 @@ public class WorldGenStructureManager {
 		return Optional.ofNullable(biomesByTerritoryNames.get(territoryName));
 	}
 
+	public void clearCachedTemplates() {
+		templatesByBiome.clear();
+		territoryNamesByBiome.clear();
+		biomesByTerritoryNames.clear();
+		templatesByTerritoryName.clear();
+	}
+
 	public void loadBiomeList() {
 		for (Biome biome : Biome.REGISTRY) {
 			if (biome == null) {
 				continue;
 			}
+			//noinspection ConstantConditions
 			templatesByBiome.put(biome.getRegistryName().toString(), new HashSet<>());
 		}
 	}

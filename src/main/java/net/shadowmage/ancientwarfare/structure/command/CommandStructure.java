@@ -43,6 +43,7 @@ public class CommandStructure extends ParentCommand {
 		registerSubCommand(new SaveCommand());
 		registerSubCommand(new SimpleSubCommand("reload",
 				(server, sender, args) -> {
+					WorldGenStructureManager.INSTANCE.clearCachedTemplates();
 					WorldGenStructureManager.INSTANCE.loadBiomeList(); //reset biome to template cache
 					TemplateLoader.INSTANCE.reloadAll();
 					sender.sendMessage(new TextComponentTranslation("command.aw.structure.reloaded"));
@@ -78,7 +79,7 @@ public class CommandStructure extends ParentCommand {
 		return "command.aw.structure.usage";
 	}
 
-	private class SaveCommand implements ISubCommand {
+	private static class SaveCommand implements ISubCommand {
 		@Override
 		public String getName() {
 			return "save";
@@ -194,7 +195,7 @@ public class CommandStructure extends ParentCommand {
 		}
 	}
 
-	private class ReexportCommand implements ISubCommand {
+	private static class ReexportCommand implements ISubCommand {
 		@Override
 		public String getName() {
 			return "scannersReexport";
@@ -205,7 +206,7 @@ public class CommandStructure extends ParentCommand {
 			if (sender instanceof EntityPlayer) {
 				boolean reloadMainSettings = false;
 				if (args.length == 1) {
-					reloadMainSettings = Boolean.valueOf(args[0]);
+					reloadMainSettings = Boolean.parseBoolean(args[0]);
 				}
 				ScannerTracker.reexportAll((EntityPlayer) sender, reloadMainSettings);
 			}

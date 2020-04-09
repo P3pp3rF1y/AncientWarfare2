@@ -260,6 +260,10 @@ public abstract class StructureValidator {
 		return getPropertyValue(PRESERVE_BLOCKS);
 	}
 
+	public final boolean shouldPreventHostileSpawns() {
+		return getPropertyValue(PREVENT_NATURAL_HOSTILE_SPAWNS);
+	}
+
 	public final boolean isBiomeWhiteList() {
 		return getPropertyValue(BIOME_WHITE_LIST);
 	}

@@ -21,6 +21,7 @@ import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.bl
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleTotemPart;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleVanillaSkull;
+import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleVanillaSpawner;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.blockrules.TemplateRuleVine;
 import net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.entityrules.TemplateRuleGates;
 
@@ -37,7 +38,7 @@ public class StructurePluginVanillaHandler implements StructureContentPlugin {
 		manager.registerBlockHandler(TemplateRuleVine.PLUGIN_NAME, Blocks.VINE, TemplateRuleVine::new, TemplateRuleVine::new);
 		manager.registerBlockHandler(TemplateRuleBlockSign.PLUGIN_NAME, Blocks.WALL_SIGN, TemplateRuleBlockSign::new, TemplateRuleBlockSign::new);
 		manager.registerBlockHandler(TemplateRuleBlockSign.PLUGIN_NAME, Blocks.STANDING_SIGN, TemplateRuleBlockSign::new, TemplateRuleBlockSign::new);
-		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, Blocks.MOB_SPAWNER, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
+		manager.registerBlockHandler(TemplateRuleVanillaSpawner.PLUGIN_NAME, Blocks.MOB_SPAWNER, TemplateRuleVanillaSpawner::new, TemplateRuleVanillaSpawner::new);
 		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, Blocks.COMMAND_BLOCK, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
 		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, Blocks.BEACON, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
 		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, Blocks.COMMAND_BLOCK, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);

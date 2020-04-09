@@ -1,17 +1,22 @@
 package net.shadowmage.ancientwarfare.npc.event;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAITasks.EntityAITaskEntry;
+import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -22,21 +27,28 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.util.TextUtils;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
+import net.shadowmage.ancientwarfare.core.util.Zone;
+import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
 import net.shadowmage.ancientwarfare.npc.registry.NpcDefaultsRegistry;
+import net.shadowmage.ancientwarfare.structure.gamedata.StructureEntry;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
 import net.shadowmage.ancientwarfare.structure.tile.ISpecialLootContainer;
 import net.shadowmage.ancientwarfare.structure.tile.TileProtectionFlag;
+import net.shadowmage.ancientwarfare.structure.util.CapabilityRespawnData;
+import net.shadowmage.ancientwarfare.structure.util.IRespawnData;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
 public class EventHandler {
@@ -73,6 +85,61 @@ public class EventHandler {
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void onEntityJoinWorld(EntityJoinWorldEvent event) {
+		injectAi(event);
+		preventHostileSpawnsInStructures(event);
+	}
+
+	private static final Cache<Zone, Set<StructureEntry>> CHUNK_STRUCTURE_ENTRIES = CacheBuilder.newBuilder().expireAfterAccess(10, TimeUnit.MINUTES).build();
+
+	private void preventHostileSpawnsInStructures(EntityJoinWorldEvent event) {
+		Entity entity = event.getEntity();
+		if (entity.getEntityWorld().isRemote || !IMob.MOB_SELECTOR.apply(entity) || isSpawnedFromSpawner(entity)) {
+			return;
+		}
+
+		World world = event.getWorld();
+
+		BlockPos pos = event.getEntity().getPosition();
+
+		Set<StructureEntry> structures = getStructuresInChunk(world, pos);
+
+		for (StructureEntry entry : structures) {
+			if (entry.getBB().contains(pos) && entry.shouldPreventHostileNaturalSpawns()) {
+				event.setCanceled(true);
+			}
+		}
+	}
+
+	private Set<StructureEntry> getStructuresInChunk(World world, BlockPos pos) {
+		Set<StructureEntry> structures;
+		ChunkPos chunkPos = new ChunkPos(pos);
+		BlockPos min = new BlockPos(chunkPos.x * 16, 1, chunkPos.z * 16);
+		BlockPos max = new BlockPos(chunkPos.x * 16 + 15, 255, chunkPos.z * 16 + 15);
+		Zone chunkZone = new Zone(min, max);
+		try {
+			structures = CHUNK_STRUCTURE_ENTRIES.get(chunkZone, () -> AWGameData.INSTANCE.getData(world, StructureMap.class).getStructuresIn(world, chunkZone));
+		}
+		catch (ExecutionException e) {
+			AncientWarfareNPC.LOG.error("Error getting structure entries in chunk for hostile entity check: ", e);
+			return new HashSet<>();
+		}
+		return structures;
+	}
+
+	private boolean isSpawnedFromSpawner(Entity entity) {
+		if (entity.getTags().contains("vanillaSpawner")) {
+			return true;
+		}
+		if (entity.hasCapability(CapabilityRespawnData.RESPAWN_DATA_CAPABILITY, null)) {
+			IRespawnData respawnData = entity.getCapability(CapabilityRespawnData.RESPAWN_DATA_CAPABILITY, null);
+
+			//noinspection ConstantConditions
+			return respawnData.canRespawn();
+		}
+		return false;
+	}
+
+	private void injectAi(EntityJoinWorldEvent event) {
 		if (event.getEntity() instanceof NpcBase)
 			return;
 		if (!(event.getEntity() instanceof EntityCreature))
@@ -142,13 +209,12 @@ public class EventHandler {
 		}
 
 		World world = evt.getEntityPlayer().world;
-		AWGameData.INSTANCE.getData(world, StructureMap.class).getStructureAt(world, evt.getPos()).ifPresent(
-				structureEntry -> WorldTools.getTile(world, structureEntry.getProtectionFlagPos(), TileProtectionFlag.class).ifPresent(tile -> {
-					if (tile.shouldProtectAgainst(evt.getEntityPlayer()) && shouldBlockSlowDownDigging(world, evt.getPos())) {
-						evt.setNewSpeed(evt.getOriginalSpeed() * 0.01f);
-					}
-				})
-		);
+		AWGameData.INSTANCE.getData(world, StructureMap.class).getStructureAt(world, evt.getPos())
+				.flatMap(structureEntry -> WorldTools.getTile(world, structureEntry.getProtectionFlagPos(), TileProtectionFlag.class)).ifPresent(tile -> {
+			if (tile.shouldProtectAgainst(evt.getEntityPlayer()) && shouldBlockSlowDownDigging(world, evt.getPos())) {
+				evt.setNewSpeed(evt.getOriginalSpeed() * 0.01f);
+			}
+		});
 	}
 
 	private boolean shouldBlockSlowDownDigging(World world, BlockPos pos) {

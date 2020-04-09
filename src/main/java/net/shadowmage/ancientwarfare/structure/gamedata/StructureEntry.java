@@ -11,6 +11,7 @@ public class StructureEntry {
 	private int value;
 	public final StructureBB bb;
 	private BlockPos protectionFlagPos = BlockPos.ORIGIN;
+	private boolean preventHostileNaturalSpawns = false;
 	private int cx;
 	private int cz;
 
@@ -24,6 +25,7 @@ public class StructureEntry {
 		cx = x >> 4;
 		cz = z >> 4;
 		value = template.getValidationSettings().getClusterValue();
+		preventHostileNaturalSpawns = template.getValidationSettings().shouldPreventHostileSpawns();
 	}
 
 	public StructureEntry(StructureBB bb, String name, int value, int cx, int cz) {
@@ -45,6 +47,7 @@ public class StructureEntry {
 		tag.setLong("protectionFlagPos", protectionFlagPos.toLong());
 		tag.setInteger("cx", cx);
 		tag.setInteger("cz", cz);
+		tag.setBoolean("preventHostile", preventHostileNaturalSpawns);
 	}
 
 	public void readFromNBT(NBTTagCompound tag) {
@@ -58,6 +61,7 @@ public class StructureEntry {
 		protectionFlagPos = BlockPos.fromLong(tag.getLong("protectionFlagPos"));
 		cx = tag.getInteger("cx");
 		cz = tag.getInteger("cz");
+		preventHostileNaturalSpawns = tag.getBoolean("preventHostile");
 	}
 
 	public String getName() {
@@ -82,5 +86,9 @@ public class StructureEntry {
 
 	public int getChunkX() {
 		return cx;
+	}
+
+	public boolean shouldPreventHostileNaturalSpawns() {
+		return preventHostileNaturalSpawns;
 	}
 }

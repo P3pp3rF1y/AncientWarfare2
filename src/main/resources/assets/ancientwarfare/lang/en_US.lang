@@ -1248,6 +1248,7 @@ structure.validation.biomeList=Biome List
 structure.validation.blockList=Block List
 structure.validation.dimensionList=Dimension List
 structure.validation.blockSwap=Dynamic Block Reassignment
+structure.validation.preventNaturalHostileSpawns=Prevent Hostile Spawns
 
 #gate names
 item.gateBasicWood.name=Wooden Gate (vert. open)

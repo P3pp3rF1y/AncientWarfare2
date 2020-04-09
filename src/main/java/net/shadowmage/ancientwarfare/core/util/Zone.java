@@ -17,6 +17,10 @@ public class Zone implements INBTSerializable<NBTTagCompound> {
 
 	}
 
+	private boolean crossWith(BlockPos min, BlockPos max) {
+		return crossWith(min.getX(), min.getY(), min.getZ(), max.getX(), max.getY(), max.getZ());
+	}
+
 	public boolean crossWith(int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
 		return !(max.getX() < minX || max.getY() < minY || max.getZ() < minZ || min.getX() > maxX || min.getY() > maxY || min.getZ() > maxZ);
 	}
@@ -24,18 +28,11 @@ public class Zone implements INBTSerializable<NBTTagCompound> {
 	 * does the input share any block position with this zone ?
 	 */
 	public boolean crossWith(Zone z) {
-		return crossWith(z.min.getX(), z.min.getY(), z.min.getZ(), z.max.getX(), z.max.getY(), z.max.getZ());
+		return crossWith(z.min, z.max);
 	}
 
 	public boolean isPositionIn(int x, int y, int z) {
-		if (x < min.getX() || y < min.getY() || z < min.getZ() || x > max.getX() || z > max.getZ() || y > max.getY()) {
-			return false;
-		}
-		return true;
-	}
-
-	public boolean isPositionIn(BlockPos pos) {
-		return isPositionIn(pos.getX(), pos.getY(), pos.getZ());
+		return x >= min.getX() && y >= min.getY() && z >= min.getZ() && x <= max.getX() && z <= max.getZ() && y <= max.getY();
 	}
 
 	public boolean equals(BlockPos min, BlockPos max) {
