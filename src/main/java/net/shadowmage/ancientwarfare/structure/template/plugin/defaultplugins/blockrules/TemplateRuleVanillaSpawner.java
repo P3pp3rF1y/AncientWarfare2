@@ -12,6 +12,8 @@ import net.minecraftforge.common.util.Constants;
 
 import java.util.stream.StreamSupport;
 
+import static net.shadowmage.ancientwarfare.npc.event.EventHandler.NO_SPAWN_PREVENTION_TAG;
+
 public class TemplateRuleVanillaSpawner extends TemplateRuleBlockTile<TileEntityMobSpawner> {
 	public static final String PLUGIN_NAME = "vanillaSpawner";
 	private static final String SPAWN_DATA_TAG = "SpawnData";
@@ -34,14 +36,14 @@ public class TemplateRuleVanillaSpawner extends TemplateRuleBlockTile<TileEntity
 
 	private NBTTagList getTags(NBTTagCompound compound) {
 		NBTTagList tags = compound.hasKey(TAGS_TAG) ? compound.getTagList(TAGS_TAG, Constants.NBT.TAG_STRING) : new NBTTagList();
-		if (!hasVanillaSpawnerTag(tags)) {
-			tags.appendTag(new NBTTagString(PLUGIN_NAME));
+		if (!hasNoSpawnPreventionTag(tags)) {
+			tags.appendTag(new NBTTagString(NO_SPAWN_PREVENTION_TAG));
 		}
 		return tags;
 	}
 
-	private boolean hasVanillaSpawnerTag(NBTTagList tags) {
-		return StreamSupport.stream(tags.spliterator(), false).anyMatch(n -> ((NBTTagString) n).getString().equals(TemplateRuleVanillaSpawner.PLUGIN_NAME));
+	private boolean hasNoSpawnPreventionTag(NBTTagList tags) {
+		return StreamSupport.stream(tags.spliterator(), false).anyMatch(n -> ((NBTTagString) n).getString().equals(NO_SPAWN_PREVENTION_TAG));
 	}
 
 	public TemplateRuleVanillaSpawner() {

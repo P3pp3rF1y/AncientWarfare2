@@ -30,7 +30,7 @@ public class TemplateRuleGates extends TemplateRuleEntityBase {
 	private BlockPos pos2;
 
 	public TemplateRuleGates(World world, Entity entity, int turns, int x, int y, int z) {
-		super(world, entity, turns, x, y, z);
+		super();
 		EntityGate gate = (EntityGate) entity;
 
 		this.pos1 = BlockTools.rotateAroundOrigin(gate.pos1.add(-x, -y, -z), turns);
@@ -63,7 +63,7 @@ public class TemplateRuleGates extends TemplateRuleEntityBase {
 				EnumFacing.HORIZONTALS[Ints.constrainToRange((orientation.getHorizontalIndex() + turns) % 4, 0, 4)],
 				owner.isEmpty() ? Owner.EMPTY : new Owner(world, owner));
 		if (!gate.isPresent()) {
-			AncientWarfareStructure.LOG.warn("Could not create gate for type: " + gateType);
+			AncientWarfareStructure.LOG.warn("Could not create gate for type: {}", gateType);
 			return;
 		}
 		world.spawnEntity(gate.get());

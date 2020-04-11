@@ -52,6 +52,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
 public class EventHandler {
+	public static final String NO_SPAWN_PREVENTION_TAG = "noSpawnPrevention";
 	private Set<Predicate<EntityAIBase>> additionalHostileAIChecks = new HashSet<>();
 	public static final EventHandler INSTANCE = new EventHandler();
 
@@ -93,7 +94,7 @@ public class EventHandler {
 
 	private void preventHostileSpawnsInStructures(EntityJoinWorldEvent event) {
 		Entity entity = event.getEntity();
-		if (entity.getEntityWorld().isRemote || !IMob.MOB_SELECTOR.apply(entity) || isSpawnedFromSpawner(entity)) {
+		if (entity.getEntityWorld().isRemote || !IMob.MOB_SELECTOR.apply(entity) || isMarkedWithNoPreventionTag(entity)) {
 			return;
 		}
 
@@ -126,8 +127,8 @@ public class EventHandler {
 		return structures;
 	}
 
-	private boolean isSpawnedFromSpawner(Entity entity) {
-		if (entity.getTags().contains("vanillaSpawner")) {
+	private boolean isMarkedWithNoPreventionTag(Entity entity) {
+		if (entity.getTags().contains(NO_SPAWN_PREVENTION_TAG)) {
 			return true;
 		}
 		if (entity.hasCapability(CapabilityRespawnData.RESPAWN_DATA_CAPABILITY, null)) {

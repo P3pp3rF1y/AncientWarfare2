@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.e
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
+import net.minecraft.entity.monster.IMob;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -15,6 +16,8 @@ import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntityBase;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+
+import static net.shadowmage.ancientwarfare.npc.event.EventHandler.NO_SPAWN_PREVENTION_TAG;
 
 public class TemplateRuleEntity extends TemplateRuleEntityBase {
 	public static final String PLUGIN_NAME = "entity";
@@ -31,7 +34,7 @@ public class TemplateRuleEntity extends TemplateRuleEntityBase {
 	}
 
 	public TemplateRuleEntity(World world, Entity entity, int turns, int x, int y, int z) {
-		super(world, entity, turns, x, y, z);
+		super();
 
 		registryName = EntityList.getKey(entity);
 
@@ -55,18 +58,25 @@ public class TemplateRuleEntity extends TemplateRuleEntityBase {
 
 	@Override
 	public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
-		createEntity(world, turns, pos, builder).ifPresent(world::spawnEntity);
+		createEntity(world, turns, pos).ifPresent(world::spawnEntity);
 	}
 
-	protected Optional<Entity> createEntity(World world, int turns, BlockPos pos, IStructureBuilder builder) {
+	private Optional<Entity> createEntity(World world, int turns, BlockPos pos) {
 		Entity e = EntityList.createEntityByIDFromName(registryName, world);
 		if (e == null) {
-			AncientWarfareStructure.LOG.warn("Could not create entity for name: " + registryName.toString() + " Entity skipped during structure creation.");
+			AncientWarfareStructure.LOG.warn("Could not create entity for name: {} Entity skipped during structure creation.", registryName.toString());
 			return Optional.empty();
 		}
 		e.readFromNBT(getEntityNBT(pos, turns));
 		updateEntityOnPlacement(turns, pos, e);
+		addNoSpawnPreventionTag(e);
 		return Optional.of(e);
+	}
+
+	private void addNoSpawnPreventionTag(Entity e) {
+		if (IMob.MOB_SELECTOR.apply(e)) {
+			e.getTags().add(NO_SPAWN_PREVENTION_TAG);
+		}
 	}
 
 	@SuppressWarnings("unused") //parameters used in overrides
