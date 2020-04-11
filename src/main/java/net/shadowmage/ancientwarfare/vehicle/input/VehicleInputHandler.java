@@ -147,8 +147,6 @@ public class VehicleInputHandler {
 
 	private static void handleFireAction(VehicleBase vehicle) {
 		if (!vehicle.isAmmoLoaded()) {
-		String configName = vehicle.vehicleType.getConfigName();
-		if (!vehicle.isAmmoLoaded() && !(configName.equals("battering_ram") || configName.equals("boat_transport") || configName.equals("chest_cart"))) {
 			Minecraft.getMinecraft().player.sendStatusMessage(new TextComponentTranslation("gui.ancientwarfarevehicles.ammo.no_ammo"), true);
 		}
 		if (vehicle.isAimable()) {

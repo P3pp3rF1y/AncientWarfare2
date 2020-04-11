@@ -42,10 +42,7 @@ public class RenderOverlay extends Gui {
 					count > 0 ? white : red);
 			this.drawString(fontRenderer, "Count: " + count, 10, 60, count > 0 ? white : red);
 		} else {
-			String configName = vehicle.vehicleType.getConfigName();
-			if (!(configName.equals("battering_ram") || configName.equals("boat_transport") || configName.equals("chest_cart"))) {
-				this.drawString(fontRenderer, "No Ammo Selected", 10, 50, red);
-			}
+			this.drawString(fontRenderer, "No Ammo Selected", 10, 50, red);
 		}
 		if (AWVehicleStatics.renderAdvOverlay) {
 			float velocity = Trig.getVelocity(vehicle.motionX, 0, vehicle.motionZ);
