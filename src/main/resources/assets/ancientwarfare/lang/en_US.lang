@@ -1582,11 +1582,11 @@ keybind.vehicle.mouse.aim=Enable/Disable Mouse Aim
 keybind.vehicle.ammo.select=Open Ammo Selection GUI
 
 gui.ancientwarfarevehicles.ammo.no_ammo=Vehicle is not loaded with any ammo
-gui.ancientwarfarenpc.no_chest_access=This inventory belongs to the %s. It will not open for you! Closest enemy marked.
+gui.ancientwarfarenpc.no_chest_access=This inventory belongs to the %s. It will not open for you! The closest enemy marked for a bit.
 gui.ancientwarfarenpc.no_chest_access_flag_not_claimed=You can't open the inventory until you claim the flag at: %s
 
-gui.ancientwarfarestructure.structure_hostile_alive=Can't conquer structure with hostile entity inside at: %s
-gui.ancientwarfarestructure.structure_spawner_present=Can't conquer structure with spawner block inside at: %s
+gui.ancientwarfarestructure.structure_hostile_alive=Can't conquer structure with hostile entity inside. The closest enemy marked for a bit.
+gui.ancientwarfarestructure.structure_spawner_present=Can't conquer structure with spawner block inside. The spawner marked for a bit.
 gui.ancientwarfarestructure.structure_conquered=You have conquered %s
 
 gui.ancientwarfarenpc.skin_info.default=Default Skin

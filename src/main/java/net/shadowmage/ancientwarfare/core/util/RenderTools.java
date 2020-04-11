@@ -82,9 +82,9 @@ public class RenderTools {
 		GlStateManager.glBegin(GL11.GL_QUADS);
 		GlStateManager.color(colorRed, colorGreen, colorBlue);
 		GL11.glVertex2f(renderStartX, renderStartY);
-		GL11.glVertex2f(renderStartX, renderStartY + renderHeight);
-		GL11.glVertex2f(renderStartX + renderWidth, renderStartY + renderHeight);
-		GL11.glVertex2f(renderStartX + renderWidth, renderStartY);
+		GL11.glVertex2f(renderStartX, (float) renderStartY + renderHeight);
+		GL11.glVertex2f((float) renderStartX + renderWidth, (float) renderStartY + renderHeight);
+		GL11.glVertex2f((float) renderStartX + renderWidth, renderStartY);
 		GlStateManager.color(1, 1, 1);
 		GlStateManager.glEnd();
 	}
@@ -115,7 +115,7 @@ public class RenderTools {
 		GlStateManager.disableBlend();
 	}
 
-	public static void drawCuboid(float x, float y, float z, float mx, float my, float mz) {
+	private static void drawCuboid(float x, float y, float z, float mx, float my, float mz) {
 		GlStateManager.glBegin(GL11.GL_QUADS);
 		//z+ side
 		GlStateManager.glNormal3f(0, 0, 1);
@@ -240,15 +240,27 @@ public class RenderTools {
 	}
 
 	public static void drawOutlinedBoundingBox(AxisAlignedBB bb, Color color) {
-		drawOutlinedBoundingBox(bb, color.getRed(), color.getGreen(), color.getBlue());
+		drawOutlinedBoundingBox(bb, color, false);
+	}
+
+	public static void drawOutlinedBoundingBox(AxisAlignedBB bb, Color color, boolean disableDepth) {
+		drawOutlinedBoundingBox(bb, color.getRed(), color.getGreen(), color.getBlue(), disableDepth);
 	}
 
 	public static void drawOutlinedBoundingBox(AxisAlignedBB bb, float r, float g, float b) {
+		drawOutlinedBoundingBox(bb, r, g, b, false);
+	}
+
+	private static void drawOutlinedBoundingBox(AxisAlignedBB bb, float r, float g, float b, boolean disabledDepth) {
+
 		GlStateManager.enableBlend();
 		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GlStateManager.color(r, g, b, 0.4F);
 		GlStateManager.glLineWidth(8.0F);
 		GlStateManager.disableTexture2D();
+		if (disabledDepth) {
+			GlStateManager.disableDepth();
+		}
 		GlStateManager.depthMask(false);
 
 		Tessellator tess = Tessellator.getInstance();
@@ -324,8 +336,6 @@ public class RenderTools {
 			World dispatcherWorld = TileEntityRendererDispatcher.instance.world;
 			//noinspection ConstantConditions
 			TileEntityRendererDispatcher.instance.setWorld(te.getWorld());
-
-			//noinspection ConstantConditions
 			renderer.render(te, pos.getX(), pos.getY(), pos.getZ(), 0, -1, 1);
 			TileEntityRendererDispatcher.instance.setWorld(dispatcherWorld);
 		}

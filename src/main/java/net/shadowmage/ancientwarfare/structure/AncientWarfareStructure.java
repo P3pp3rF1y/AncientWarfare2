@@ -45,6 +45,7 @@ import net.shadowmage.ancientwarfare.structure.datafixes.TileLootFixer;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.entity.EntitySeat;
 import net.shadowmage.ancientwarfare.structure.event.OneShotEntityDespawnListener;
+import net.shadowmage.ancientwarfare.structure.network.PacketHighlightBlock;
 import net.shadowmage.ancientwarfare.structure.network.PacketSoundBlockPlayerSpecValues;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructure;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructureRemove;
@@ -110,6 +111,7 @@ public class AncientWarfareStructure {
 		PacketBase.registerPacketType(NetworkHandler.PACKET_STRUCTURE, PacketStructure.class, PacketStructure::new);
 		PacketBase.registerPacketType(NetworkHandler.PACKET_STRUCTURE_REMOVE, PacketStructureRemove.class, PacketStructureRemove::new);
 		PacketBase.registerPacketType(NetworkHandler.PACKET_SOUND_BLOCK_PLAYER_SPEC_VALUES, PacketSoundBlockPlayerSpecValues.class, PacketSoundBlockPlayerSpecValues::new);
+		PacketBase.registerPacketType(NetworkHandler.PACKET_HIGHLIGHT_BLOCK, PacketHighlightBlock.class, PacketHighlightBlock::new);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_SCANNER, ContainerStructureScanner.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_BUILDER, ContainerStructureSelection.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_TOWN_BUILDER, ContainerTownSelection.class);

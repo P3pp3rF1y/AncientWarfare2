@@ -67,6 +67,8 @@ public final class NetworkHandler implements IGuiHandler {
 	public static final int PACKET_TEAM_STANDINGS_UPDATE = 32;
 	public static final int PACKET_TEAM_STANDING_UPDATE = 33;
 
+	public static final int PACKET_HIGHLIGHT_BLOCK = 34;
+
 	public static final int GUI_CRAFTING = 0;
 	public static final int GUI_SCANNER = 1;
 	public static final int GUI_BUILDER = 2;
@@ -138,7 +140,7 @@ public final class NetworkHandler implements IGuiHandler {
 
 	public final void registerNetwork() {
 		channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(CHANNELNAME);
-		channel.register(new PacketHandlerServer());
+		channel.register(new PacketHandler());
 		PacketBase.registerPacketType(PACKET_GUI, PacketGui.class, PacketGui::new);
 		PacketBase.registerPacketType(PACKET_ITEM_KEY_INTERFACE, PacketItemInteraction.class, PacketItemInteraction::new);
 		PacketBase.registerPacketType(PACKET_ENTITY, PacketEntity.class, PacketEntity::new);

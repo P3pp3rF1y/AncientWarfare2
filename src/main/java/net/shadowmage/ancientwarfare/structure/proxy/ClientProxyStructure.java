@@ -20,12 +20,13 @@ import net.shadowmage.ancientwarfare.core.proxy.IClientRegister;
 import net.shadowmage.ancientwarfare.structure.client.AWStructureBlockColors;
 import net.shadowmage.ancientwarfare.structure.client.AWStructureItemColors;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
-import net.shadowmage.ancientwarfare.structure.event.StructureBoundingBoxRenderer;
 import net.shadowmage.ancientwarfare.structure.gui.GuiGateControl;
 import net.shadowmage.ancientwarfare.structure.gui.GuiGateControlCreative;
+import net.shadowmage.ancientwarfare.structure.render.BlockHighlightRenderer;
 import net.shadowmage.ancientwarfare.structure.render.ParticleDummyModel;
 import net.shadowmage.ancientwarfare.structure.render.PreviewRenderer;
 import net.shadowmage.ancientwarfare.structure.render.RenderGateInvisible;
+import net.shadowmage.ancientwarfare.structure.render.StructureBoundingBoxRenderer;
 import net.shadowmage.ancientwarfare.structure.sounds.SoundLoader;
 
 import java.util.HashMap;
@@ -61,7 +62,8 @@ public class ClientProxyStructure extends CommonProxyStructure {
 
 		NetworkHandler.registerGui(NetworkHandler.GUI_GATE_CONTROL, GuiGateControl.class);
 		NetworkHandler.registerGui(NetworkHandler.GUI_GATE_CONTROL_CREATIVE, GuiGateControlCreative.class);
-		MinecraftForge.EVENT_BUS.register(StructureBoundingBoxRenderer.INSTANCE);
+		MinecraftForge.EVENT_BUS.register(new StructureBoundingBoxRenderer());
+		MinecraftForge.EVENT_BUS.register(new BlockHighlightRenderer());
 		MinecraftForge.EVENT_BUS.register(this);
 
 		RenderingRegistry.registerEntityRenderingHandler(EntityGate.class, RenderGateInvisible::new);

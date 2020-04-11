@@ -91,4 +91,8 @@ public class StructureEntry {
 	public boolean shouldPreventHostileNaturalSpawns() {
 		return preventHostileNaturalSpawns;
 	}
+
+	public void stopHostileNaturalSpawnsPrevention() {
+		preventHostileNaturalSpawns = false;
+	}
 }

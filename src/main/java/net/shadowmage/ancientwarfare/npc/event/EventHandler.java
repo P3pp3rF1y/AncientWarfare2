@@ -25,7 +25,6 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
-import net.shadowmage.ancientwarfare.core.util.TextUtils;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.core.util.Zone;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
@@ -88,6 +87,10 @@ public class EventHandler {
 	public void onEntityJoinWorld(EntityJoinWorldEvent event) {
 		injectAi(event);
 		preventHostileSpawnsInStructures(event);
+	}
+
+	public static void invalidatedChunkStructureEntriesCache() {
+		CHUNK_STRUCTURE_ENTRIES.invalidateAll();
 	}
 
 	private static final Cache<Zone, Set<StructureEntry>> CHUNK_STRUCTURE_ENTRIES = CacheBuilder.newBuilder().expireAfterAccess(10, TimeUnit.MINUTES).build();
@@ -182,15 +185,14 @@ public class EventHandler {
 					evt.setCanceled(true);
 					evt.setCancellationResult(EnumActionResult.FAIL);
 					if (world.isRemote) {
-						player.sendStatusMessage(new TextComponentTranslation("gui.ancientwarfarenpc.no_chest_access_flag_not_claimed",
-								TextUtils.getSimpleBlockPosString(structure.getProtectionFlagPos())), true);
+						player.sendStatusMessage(new TextComponentTranslation("gui.ancientwarfarenpc.no_chest_access_flag_not_claimed"), true);
 					}
 				} else {
 					for (NpcFaction factionNpc : world.getEntitiesWithinAABB(NpcFaction.class, structure.getBB().getAABB())) {
 						if (!factionNpc.isPassive()) {
 							evt.setCanceled(true);
 							evt.setCancellationResult(EnumActionResult.FAIL);
-							factionNpc.addPotionEffect(new PotionEffect(MobEffects.GLOWING, 100));
+							factionNpc.addPotionEffect(new PotionEffect(MobEffects.GLOWING, 200));
 							if (world.isRemote) {
 								player.sendStatusMessage(new TextComponentTranslation("gui.ancientwarfarenpc.no_chest_access",
 										StringUtils.capitalize(factionNpc.getFaction())), true);
