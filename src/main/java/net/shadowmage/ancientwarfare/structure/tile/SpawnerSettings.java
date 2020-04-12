@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.tile;
 
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityList;
@@ -13,13 +14,20 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionArcher;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionLeader;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionMounted;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionPriest;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionSiegeEngineer;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionSoldier;
 import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
@@ -35,6 +43,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.Predicate;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class SpawnerSettings {
@@ -55,7 +64,7 @@ public class SpawnerSettings {
 	private static final String SPAWN_GROUPS_TAG = "spawnGroups";
 	private static final String INVENTORY_TAG = "inventory";
 	private static final String HOSTILE_TAG = "hostile";
-	public static final String FACTION_NAME_TAG = "factionName";
+	private static final String FACTION_NAME_TAG = "factionName";
 	private List<EntitySpawnGroup> spawnGroups = new ArrayList<>();
 
 	private ItemStackHandler inventory = new ItemStackHandler(9);
@@ -157,22 +166,8 @@ public class SpawnerSettings {
 	}
 
 	private void spawnEntities() {
-		if (lightSensitive) {
-			int light = world.getBlockState(pos).getLightValue(world, pos);
-
-			if (light >= 8) {
-				return;
-			}
-		}
-		if (!checkPlayerConditions())
+		if (checkSpawnConditions()) {
 			return;
-
-		if (maxNearbyMonsters > 0 && mobRange > 0) {
-			int nearbyCount = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos, pos.add(1, 1, 1)).grow(mobRange, mobRange, mobRange)).size();
-			if (nearbyCount >= maxNearbyMonsters) {
-				AncientWarfareStructure.LOG.debug("skipping spawning because of too many nearby entities");
-				return;
-			}
 		}
 
 		int totalWeight = 0;
@@ -201,6 +196,37 @@ public class SpawnerSettings {
 				spawnGroups.remove(toSpawn);
 			}
 		}
+	}
+
+	private boolean checkSpawnConditions() {
+		if (checkLight()) {
+			return true;
+		}
+		if (!checkPlayerConditions()) {
+			return true;
+		}
+
+		return checkNearbyMobs();
+	}
+
+	private boolean checkLight() {
+		if (lightSensitive) {
+			int light = world.getBlockState(pos).getLightValue(world, pos);
+
+			return light >= 8;
+		}
+		return false;
+	}
+
+	private boolean checkNearbyMobs() {
+		if (maxNearbyMonsters > 0 && mobRange > 0) {
+			int nearbyCount = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos, pos.add(1, 1, 1)).grow(mobRange, mobRange, mobRange)).size();
+			if (nearbyCount >= maxNearbyMonsters) {
+				AncientWarfareStructure.LOG.debug("skipping spawning because of too many nearby entities");
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private boolean checkPlayerConditions() {
@@ -450,6 +476,34 @@ public class SpawnerSettings {
 		this.pos = posIn;
 	}
 
+	public static boolean spawnsHostileNpcs(SpawnerSettings spawnerSettings) {
+		return spawnerSettings.spawnsEntity(spawnerSettings::isHostileNpc);
+	}
+
+	private static final Set<Class<? extends Entity>> HOSTILE_NPC_CLASS_TYPES = ImmutableSet.of(
+			NpcFactionLeader.class, NpcFactionPriest.class, NpcFactionArcher.class, NpcFactionSiegeEngineer.class, NpcFactionMounted.class, NpcFactionSoldier.class
+	);
+
+	private boolean isHostileNpc(Class<? extends Entity> entityClass) {
+		return HOSTILE_NPC_CLASS_TYPES.stream().anyMatch(entityClass::isAssignableFrom);
+	}
+
+	private boolean spawnsEntity(Predicate<Class<? extends Entity>> isEntityOfType) {
+		List<EntitySpawnGroup> groups = getSpawnGroups();
+		if (groups.isEmpty()) {
+			return false;
+		}
+		EntitySpawnGroup firstGroup = groups.get(0);
+		List<EntitySpawnSettings> spawnEntities = firstGroup.getEntitiesToSpawn();
+		if (spawnEntities.isEmpty()) {
+			return false;
+		}
+
+		EntityEntry entityEntry = ForgeRegistries.ENTITIES.getValue(spawnEntities.get(0).getEntityId());
+
+		return entityEntry != null && isEntityOfType.test(entityEntry.getEntityClass());
+	}
+
 	public static final class EntitySpawnGroup {
 		private int groupWeight = 1;
 		private List<EntitySpawnSettings> entitiesToSpawn = new ArrayList<>();
@@ -585,7 +639,7 @@ public class SpawnerSettings {
 			this.entityId = entityId;
 			if (!ForgeRegistries.ENTITIES.containsKey(this.entityId)) {
 				if (hostile) {
-					AncientWarfareStructure.LOG.debug(entityId + " is not a valid entityId.  Spawner default to Zombie.");
+					AncientWarfareStructure.LOG.debug("{} is not a valid entityId.  Spawner default to Zombie.", entityId);
 					this.entityId = new ResourceLocation("zombie");
 				} else {
 					remainingSpawnCount = 0;
@@ -593,7 +647,7 @@ public class SpawnerSettings {
 			}
 			if (AWStructureStatics.excludedSpawnerEntities.contains(this.entityId.toString())) {
 				if (hostile) {
-					AncientWarfareStructure.LOG.warn(entityId + " has been set as an invalid entity for spawners!  Spawner default to Zombie.");
+					AncientWarfareStructure.LOG.warn("{} has been set as an invalid entity for spawners!  Spawner default to Zombie.", entityId);
 					this.entityId = new ResourceLocation("zombie");
 				} else {
 					remainingSpawnCount = 0;
@@ -610,10 +664,7 @@ public class SpawnerSettings {
 		}
 
 		public final void setSpawnCountMax(int max) {
-			if (minToSpawn < max)
-				this.maxToSpawn = max;
-			else
-				this.maxToSpawn = this.minToSpawn;
+			this.maxToSpawn = Math.max(minToSpawn, max);
 		}
 
 		public final void setSpawnLimitTotal(int total) {
@@ -672,20 +723,7 @@ public class SpawnerSettings {
 				Entity e = EntityList.createEntityByIDFromName(entityId, world);
 				if (e == null)
 					return;
-				boolean doSpawn = false;
-				int spawnTry = 0;
-				while (!doSpawn && spawnTry < range + 5) {
-					int x = spawnPos.getX() - range + world.rand.nextInt(range * 2 + 1);
-					int z = spawnPos.getZ() - range + world.rand.nextInt(range * 2 + 1);
-					for (int y = spawnPos.getY() - range; y <= spawnPos.getY() + range; y++) {
-						e.setLocationAndAngles(x + 0.5d, y, z + 0.5d, world.rand.nextFloat() * 360, 0);
-						if (range == 0 || checkEntityIsNotColliding(e)) {
-							doSpawn = true;
-							break;
-						}
-					}
-					spawnTry++;
-				}
+				boolean doSpawn = findAndSetSpawnLocation(world, spawnPos, range, e);
 				if (doSpawn) {
 					spawnEntityAt(e, world);
 					if (remainingSpawnCount > 0) {
@@ -695,11 +733,27 @@ public class SpawnerSettings {
 			}
 		}
 
+		private boolean findAndSetSpawnLocation(World world, BlockPos spawnPos, int range, Entity e) {
+			int spawnTry = 0;
+			while (spawnTry < range + 5) {
+				int x = spawnPos.getX() - range + world.rand.nextInt(range * 2 + 1);
+				int z = spawnPos.getZ() - range + world.rand.nextInt(range * 2 + 1);
+				for (int y = spawnPos.getY() - range; y <= spawnPos.getY() + range; y++) {
+					e.setLocationAndAngles(x + 0.5d, y, z + 0.5d, world.rand.nextFloat() * 360, 0);
+					if (range == 0 || checkEntityIsNotColliding(e)) {
+						return true;
+					}
+				}
+				spawnTry++;
+			}
+			return false;
+		}
+
 		private boolean checkEntityIsNotColliding(Entity e) {
 			return e.world.getCollisionBoxes(e, e.getEntityBoundingBox()).isEmpty() && e.world.checkNoEntityCollision(e.getEntityBoundingBox(), e);
 		}
 
-		private static final Method CAN_DESPAWN = ReflectionHelper.findMethod(EntityLiving.class, "canDespawn", "func_70692_ba");
+		private static final Method CAN_DESPAWN = ObfuscationReflectionHelper.findMethod(EntityLiving.class, "func_70692_ba", boolean.class);
 
 		private boolean canDespawn(Entity e) {
 			if (!(e instanceof EntityLiving)) {
@@ -710,7 +764,7 @@ public class SpawnerSettings {
 				return (boolean) CAN_DESPAWN.invoke(e);
 			}
 			catch (IllegalAccessException | InvocationTargetException ex) {
-				AncientWarfareStructure.LOG.error("Error calling canDespawn on entity: {}", ex);
+				AncientWarfareStructure.LOG.error("Error calling canDespawn on entity: ", ex);
 			}
 			return true;
 		}
