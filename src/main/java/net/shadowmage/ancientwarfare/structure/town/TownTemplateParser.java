@@ -1,10 +1,12 @@
 package net.shadowmage.ancientwarfare.structure.town;
 
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import net.minecraft.init.Blocks;
 import net.shadowmage.ancientwarfare.core.util.CompatUtils;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.core.util.parsing.JsonHelper;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplate.TownStructureEntry;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplate.TownWallEntry;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -14,6 +16,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.MissingResourceException;
 import java.util.Optional;
 
 public class TownTemplateParser {
@@ -92,7 +95,12 @@ public class TownTemplateParser {
 				String[] roadFillBlocks = StringTools.safeParseString("=", line).split("\\|");
 				JsonParser parser = new JsonParser();
 				for (String roadFillBlock : roadFillBlocks) {
-					template.addRoadFillBlock(JsonHelper.getBlockState(parser.parse(roadFillBlock)));
+					try {
+						template.addRoadFillBlock(JsonHelper.getBlockState(parser.parse(roadFillBlock)));
+					}
+					catch (JsonSyntaxException | MissingResourceException ex) {
+						AncientWarfareStructure.LOG.error("Error parsing roadBlock JSON \"{}\": ", roadFillBlock, ex);
+					}
 				}
 			} else if (lower.startsWith("biomewhitelist")) {
 				template.setBiomeWhiteList(StringTools.safeParseBoolean("=", line));
