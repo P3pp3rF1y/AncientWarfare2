@@ -11,12 +11,20 @@ public class StructureEntry {
 	private int value;
 	public final StructureBB bb;
 	private BlockPos protectionFlagPos = BlockPos.ORIGIN;
+	private boolean hasProtectionFlag = false;
+	private boolean isConquered = false;
 	private boolean preventHostileNaturalSpawns = false;
 	private int cx;
 	private int cz;
 
 	public void setProtectionFlagPos(BlockPos protectionFlagPos) {
 		this.protectionFlagPos = protectionFlagPos;
+		hasProtectionFlag = true;
+	}
+
+	public void setConquered() {
+		isConquered = true;
+		preventHostileNaturalSpawns = false;
 	}
 
 	public StructureEntry(int x, int y, int z, EnumFacing face, StructureTemplate template) {
@@ -92,7 +100,11 @@ public class StructureEntry {
 		return preventHostileNaturalSpawns;
 	}
 
-	public void stopHostileNaturalSpawnsPrevention() {
-		preventHostileNaturalSpawns = false;
+	public boolean hasProtectionFlag() {
+		return hasProtectionFlag;
+	}
+
+	public boolean getConquered() {
+		return isConquered;
 	}
 }

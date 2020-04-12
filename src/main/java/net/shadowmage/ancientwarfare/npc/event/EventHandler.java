@@ -36,9 +36,11 @@ import net.shadowmage.ancientwarfare.npc.registry.NpcDefaultsRegistry;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureEntry;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
+import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.tile.ISpecialLootContainer;
 import net.shadowmage.ancientwarfare.structure.tile.TileProtectionFlag;
 import net.shadowmage.ancientwarfare.structure.util.CapabilityRespawnData;
+import net.shadowmage.ancientwarfare.structure.util.ConquerHelper;
 import net.shadowmage.ancientwarfare.structure.util.IRespawnData;
 import org.apache.commons.lang3.StringUtils;
 
@@ -89,11 +91,8 @@ public class EventHandler {
 		preventHostileSpawnsInStructures(event);
 	}
 
-	public static void invalidatedChunkStructureEntriesCache() {
-		CHUNK_STRUCTURE_ENTRIES.invalidateAll();
-	}
-
 	private static final Cache<Zone, Set<StructureEntry>> CHUNK_STRUCTURE_ENTRIES = CacheBuilder.newBuilder().expireAfterAccess(10, TimeUnit.MINUTES).build();
+	private static final Cache<StructureBB, Boolean> STRUCTURE_BB_CONQUERED = CacheBuilder.newBuilder().expireAfterWrite(10, TimeUnit.SECONDS).build();
 
 	private void preventHostileSpawnsInStructures(EntityJoinWorldEvent event) {
 		Entity entity = event.getEntity();
@@ -108,10 +107,29 @@ public class EventHandler {
 		Set<StructureEntry> structures = getStructuresInChunk(world, pos);
 
 		for (StructureEntry entry : structures) {
-			if (entry.getBB().contains(pos) && entry.shouldPreventHostileNaturalSpawns()) {
+			if (entry.getBB().contains(pos) && entry.shouldPreventHostileNaturalSpawns() && (entry.hasProtectionFlag() || checkNotConquered(world, entry))) {
 				event.setCanceled(true);
 			}
 		}
+	}
+
+	private boolean checkNotConquered(World world, StructureEntry entry) {
+		boolean conquered = entry.getConquered();
+		if (!conquered) {
+			try {
+				conquered = STRUCTURE_BB_CONQUERED.get(entry.getBB(), () -> ConquerHelper.checkBBConquered(world, entry.getBB()));
+			}
+			catch (ExecutionException e) {
+				AncientWarfareNPC.LOG.error("Error getting conquered structureBB info ", e);
+				return false;
+			}
+		}
+
+		if (conquered) {
+			entry.setConquered();
+		}
+
+		return !conquered;
 	}
 
 	private Set<StructureEntry> getStructuresInChunk(World world, BlockPos pos) {
@@ -144,10 +162,12 @@ public class EventHandler {
 	}
 
 	private void injectAi(EntityJoinWorldEvent event) {
-		if (event.getEntity() instanceof NpcBase)
+		if (event.getEntity() instanceof NpcBase) {
 			return;
-		if (!(event.getEntity() instanceof EntityCreature))
+		}
+		if (!(event.getEntity() instanceof EntityCreature)) {
 			return;
+		}
 		// Use new "auto injection"
 		EntityCreature entity = (EntityCreature) event.getEntity();
 
