@@ -106,12 +106,12 @@ public class AncientWarfareNPC {
 		/* optional dependency for EBWizardry spell casters
 		 * References to the EBWizardry specific class can only be here, to avoid class loading if the mod is no present.
 		 * Any reference outside of the lambdas will crash the game if EBWizardry is not present */
-		Supplier<Runnable> register_wizardry_spellcaster = () -> () -> {
+		Supplier<Runnable> registerWizardrySpellcaster = () -> () -> {
 			NetworkHandler.registerContainer(NetworkHandler.GUI_NPC_FACTION_SPELLCASTER_WIZARDRY, ContainerNpcFactionSpellcasterWizardry.class);
 		};
 
 		if (Loader.isModLoaded("ebwizardry")) {
-			register_wizardry_spellcaster.get().run();
+			registerWizardrySpellcaster.get().run();
 		}
 
 		PacketBase.registerPacketType(NetworkHandler.PACKET_NPC_COMMAND, PacketNpcCommand.class, PacketNpcCommand::new);

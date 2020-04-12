@@ -101,12 +101,12 @@ public class NpcClientProxy extends NpcCommonProxy {
 		/* optional dependency for EBWizardry spell casters
 		 * References to the EBWizardry specific class can only be here, to avoid class loading if the mod is no present.
 		 * Any reference outside of the lambdas will crash the game if EBWizardry is not present */
-		Supplier<Runnable> register_gui_npc_faction_spellcaster_wizardry = () -> () -> {
+		Supplier<Runnable> registerGuiNpcFactionSpellcasterWizardry = () -> () -> {
 			NetworkHandler.registerGui(NetworkHandler.GUI_NPC_FACTION_SPELLCASTER_WIZARDRY, GuiNpcFactionSpellcasterWizardry.class);
 		};
 
 		if (Loader.isModLoaded("ebwizardry")) {
-			register_gui_npc_faction_spellcaster_wizardry.get().run();
+			registerGuiNpcFactionSpellcasterWizardry.get().run();
 		}
 
 		RenderingRegistry.registerEntityRenderingHandler(NpcBase.class, RenderNpcBase::new);

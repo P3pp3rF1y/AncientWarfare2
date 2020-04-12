@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.npc.entity.faction;
 import electroblob.wizardry.entity.living.EntityAIAttackSpell;
 import electroblob.wizardry.entity.living.ISpellCaster;
 import electroblob.wizardry.spell.Spell;
-import electroblob.wizardry.util.NBTExtras;
 import electroblob.wizardry.util.SpellModifiers;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIRestrictOpenDoor;
@@ -16,6 +15,7 @@ import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.util.NBTHelper;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackNearest;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIDoor;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
@@ -132,26 +132,26 @@ public class NpcFactionSpellcasterWizardry extends NpcFaction implements ISpellC
 	@Override
 	public void writeEntityToNBT(NBTTagCompound nbt) {
 		super.writeEntityToNBT(nbt);
-		nbt.setTag("spells", NBTExtras.listToNBT(getSpells(), spell -> new NBTTagString(spell.getRegistryName().toString())));
+		nbt.setTag("spells", NBTHelper.getTagList(getSpells(), spell -> new NBTTagString(spell.getRegistryName().toString())));
 	}
 
 	@Override
 	public void writeAdditionalItemData(NBTTagCompound nbt) {
-		nbt.setTag("spells", NBTExtras.listToNBT(getSpells(), spell -> new NBTTagString(spell.getRegistryName().toString())));
+		nbt.setTag("spells", NBTHelper.getTagList(getSpells(), spell -> new NBTTagString(spell.getRegistryName().toString())));
 		super.writeAdditionalItemData(nbt);
 	}
 
 	@Override
 	public void readEntityFromNBT(NBTTagCompound nbt) {
 		super.readEntityFromNBT(nbt);
-		spells = ((List<Spell>) NBTExtras.NBTToList(nbt.getTagList("spells", Constants.NBT.TAG_STRING),
-				(NBTTagString tag) -> Spell.get(tag.getString())));
+		spells = (NBTHelper.getList(nbt.getTagList("spells", Constants.NBT.TAG_STRING),
+				tag -> Spell.get(((NBTTagString) tag).getString())));
 	}
 
 	@Override
 	public void readAdditionalItemData(NBTTagCompound nbt) {
-		spells = ((List<Spell>) NBTExtras.NBTToList(nbt.getTagList("spells", Constants.NBT.TAG_STRING),
-				(NBTTagString tag) -> Spell.get(tag.getString())));
+		spells = ((List<Spell>) NBTHelper.getList(nbt.getTagList("spells", Constants.NBT.TAG_STRING),
+				tag -> Spell.get(((NBTTagString) tag).getString())));
 		super.readAdditionalItemData(nbt);
 	}
 

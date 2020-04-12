@@ -24,6 +24,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.event.entity.living.PotionEvent;
 import net.shadowmage.ancientwarfare.core.util.NBTHelper;
 import net.shadowmage.ancientwarfare.npc.ai.AIHelper;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionFleeSun;
@@ -50,6 +51,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+
+import static net.minecraftforge.common.MinecraftForge.EVENT_BUS;
+import static net.minecraftforge.fml.common.eventhandler.Event.Result.ALLOW;
 
 @SuppressWarnings({"squid:MaximumInheritanceDepth", "squid:S2160"})
 public abstract class NpcFaction extends NpcBase {
@@ -175,11 +179,11 @@ public abstract class NpcFaction extends NpcBase {
 	}
 
 	@Override
-	public boolean isPotionApplicable(PotionEffect potioneffectIn) { // makes lizardman and coven immune to poison
+	public boolean isPotionApplicable(PotionEffect potioneffectIn) { // makes lizardmen and coven immune to poison
 		if (potioneffectIn.getPotion() == MobEffects.POISON && getFaction().equals("lizardman|coven")) {
-			net.minecraftforge.event.entity.living.PotionEvent.PotionApplicableEvent event = new net.minecraftforge.event.entity.living.PotionEvent.PotionApplicableEvent(this, potioneffectIn);
-			net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(event);
-			return event.getResult() == net.minecraftforge.fml.common.eventhandler.Event.Result.ALLOW;
+			PotionEvent.PotionApplicableEvent event = new PotionEvent.PotionApplicableEvent(this, potioneffectIn);
+			EVENT_BUS.post(event);
+			return event.getResult() == ALLOW;
 		}
 		return super.isPotionApplicable(potioneffectIn);
 	}

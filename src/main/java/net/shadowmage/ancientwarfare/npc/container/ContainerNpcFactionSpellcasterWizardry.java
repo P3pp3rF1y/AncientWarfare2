@@ -93,18 +93,12 @@ public class ContainerNpcFactionSpellcasterWizardry extends ContainerNpcBase<Npc
 		// add each spell to entity
 		String[] spells = (NpcDefaultsRegistry.getFactionNpcDefault(entity.getFaction(), presetSubtypeName).getSpells()).split(",");
 		for (String spell : spells) {
-			try {
 				Spell spellObj = Spell.get(spell);
 				addSpell(spellObj);
-			}
-			catch (NullPointerException n) {
-				AncientWarfareNPC.LOG.warn("Couldn't assign spell " + spell + " in preset of " + nameTag);
-			}
 		}
 
 		// set health
 		int basehealth = (int) NpcDefaultsRegistry.getFactionNpcDefault(entity.getFaction(), presetSubtypeName).getBaseHealth();
-		System.out.println("basehealth: " + basehealth);
 		maxHealth = (int) (basehealth);
 
 		// set skin

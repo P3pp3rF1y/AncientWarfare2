@@ -155,13 +155,13 @@ public class AWNPCEntities {
 		/* optional dependency for EBWizardry spell casters
 		 * References to the EBWizardry specific class can only be here, to avoid class loading if the mod is no present.
 		 * Any reference outside of the lambdas will crash the game if EBWizardry is not present */
-		Supplier<Runnable> register_wizardry_spellcaster = () -> () -> {
+		Supplier<Runnable> registerWizardrySpellcaster = () -> () -> {
 			wizreg = new NpcFactionDeclaration(NpcFactionSpellcasterWizardry.class, AWEntityRegistry.NPC_FACTION_SPELLCASTER, SPELLCASTER_SUBTYPE);
 			addNpcRegistration(wizreg);
 		};
 
 		if (Loader.isModLoaded("ebwizardry")) {
-			register_wizardry_spellcaster.get().run();
+			registerWizardrySpellcaster.get().run();
 		} else {
 			reg = new NpcFactionDeclaration(NpcFactionSpellcaster.class, AWEntityRegistry.NPC_FACTION_SPELLCASTER, SPELLCASTER_SUBTYPE);
 			addNpcRegistration(reg);

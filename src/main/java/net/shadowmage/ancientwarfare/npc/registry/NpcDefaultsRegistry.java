@@ -221,6 +221,8 @@ public class NpcDefaultsRegistry {
 			npcSubtypeDefault = getLootTable(data).map(npcSubtypeDefault::setLootTable).orElse(npcSubtypeDefault);
 			npcSubtypeDefault = getHeightRange(data).map(npcSubtypeDefault::setHeightRange).orElse(npcSubtypeDefault);
 			npcSubtypeDefault = getThinness(data).map(npcSubtypeDefault::setThinness).orElse(npcSubtypeDefault);
+
+			//TODO This should be moved to a compatibility class, rather than having it in one of the core mod classes
 			if (subtype.contains("spellcaster")) {
 				npcSubtypeDefault = getSpells(data).map(npcSubtypeDefault::setSpells).orElse(npcSubtypeDefault);
 			}
