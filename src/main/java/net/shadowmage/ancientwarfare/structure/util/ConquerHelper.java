@@ -1,5 +1,7 @@
 package net.shadowmage.ancientwarfare.structure.util;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.MobEffects;
@@ -11,6 +13,7 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.TextUtils;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
+import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
 import net.shadowmage.ancientwarfare.structure.network.PacketHighlightBlock;
@@ -18,12 +21,16 @@ import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 public class ConquerHelper {
+	private static final Cache<StructureBB, Boolean> STRUCTURE_BB_CONQUERED = CacheBuilder.newBuilder().expireAfterWrite(10, TimeUnit.SECONDS).build();
+
 	private ConquerHelper() {}
 
-	public static boolean checkBBConquered(World world, StructureBB bb) {
+	private static boolean checkBBConquered(World world, StructureBB bb) {
 		return checkBBConquered(world, bb, npc -> {}, pos -> {});
 	}
 
@@ -62,5 +69,15 @@ public class ConquerHelper {
 			}
 		}
 		return true;
+	}
+
+	public static boolean checkBBNotConquered(World world, StructureBB bb) {
+		try {
+			return !STRUCTURE_BB_CONQUERED.get(bb, () -> checkBBConquered(world, bb));
+		}
+		catch (ExecutionException e) {
+			AncientWarfareNPC.LOG.error("Error getting conquered structureBB info ", e);
+			return false;
+		}
 	}
 }

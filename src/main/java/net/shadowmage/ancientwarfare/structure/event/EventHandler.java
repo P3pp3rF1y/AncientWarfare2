@@ -22,7 +22,7 @@ public class EventHandler {
 		Chunk chunk = evt.getChunkInstance();
 		EntityPlayerMP player = evt.getPlayer();
 
-		AWGameData.INSTANCE.getData(player.world, StructureMap.class).getStructureAt(player.world, chunk.x, chunk.z)
+		AWGameData.INSTANCE.getPerWorldData(player.world, StructureMap.class).getStructureAt(player.world, chunk.x, chunk.z)
 				.ifPresent(structureEntry -> NetworkHandler.sendToPlayer(player,
 						new PacketStructureEntry(player.world.provider.getDimension(), chunk.x, chunk.z, structureEntry)
 				));

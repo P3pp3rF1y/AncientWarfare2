@@ -61,7 +61,7 @@ public class CommandStructure extends ParentCommand {
 			}
 		});
 		registerSubCommand(new SimpleSubCommand("name", (server, sender, args) -> {
-			Optional<StructureEntry> structure = AWGameData.INSTANCE.getData(sender.getEntityWorld(), StructureMap.class)
+			Optional<StructureEntry> structure = AWGameData.INSTANCE.getPerWorldData(sender.getEntityWorld(), StructureMap.class)
 					.getStructureAt(sender.getEntityWorld(), sender.getPosition());
 
 			sender.sendMessage(structure.map(structureEntry -> new TextComponentTranslation("command.aw.structure.name", structureEntry.getName()))
@@ -202,7 +202,7 @@ public class CommandStructure extends ParentCommand {
 		}
 
 		@Override
-		public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+		public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
 			if (sender instanceof EntityPlayer) {
 				boolean reloadMainSettings = false;
 				if (args.length == 1) {

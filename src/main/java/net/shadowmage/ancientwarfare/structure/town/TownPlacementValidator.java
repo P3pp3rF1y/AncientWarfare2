@@ -51,7 +51,7 @@ public class TownPlacementValidator {
 
 		TownBoundingArea area = new TownBoundingArea();
 		area.minY = Math.max(minY, height - 2);
-		area.maxY = Math.min(255, area.minY + 17);
+		area.maxY = Math.min(255, area.minY + 40);
 		area.chunkMinX = cx;
 		area.chunkMaxX = cx;
 		area.chunkMinZ = cz;
@@ -227,7 +227,7 @@ public class TownPlacementValidator {
 				return -1;//return invalid Y if liquid block is too low
 			}
 			if (!AWStructureStatics.isValidTargetBlock(state)) {
-				AncientWarfareStructure.LOG.debug("rejecting town chunk for non-target block: " + block + " :: " + chunk.x + ":" + chunk.z);
+				AncientWarfareStructure.LOG.debug("rejecting town chunk for non-target block: {} :: {}:{}", block, chunk.x, chunk.z);
 				return -1;
 			}
 			return y;//if not skippable and is valid target block, return that y-level

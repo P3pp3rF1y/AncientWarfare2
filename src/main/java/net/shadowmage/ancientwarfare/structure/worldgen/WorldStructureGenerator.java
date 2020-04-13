@@ -50,8 +50,9 @@ public class WorldStructureGenerator implements IWorldGenerator {
 		if (AWStructureStatics.withinProtectionRange(distSq)) {
 			return;
 		}
-		if (rng.nextFloat() < AWStructureStatics.randomGenerationChance)
+		if (rng.nextFloat() < AWStructureStatics.randomGenerationChance) {
 			WorldGenTickHandler.INSTANCE.addChunkForGeneration(world, chunkX, chunkZ);
+		}
 	}
 
 	void generateAt(int chunkX, int chunkZ, World world) {
@@ -74,7 +75,7 @@ public class WorldStructureGenerator implements IWorldGenerator {
 			if (template == null) {
 				return;
 			}
-			StructureMap map = AWGameData.INSTANCE.getData(world, StructureMap.class);
+			StructureMap map = AWGameData.INSTANCE.getPerWorldData(world, StructureMap.class);
 
 			world.profiler.startSection("AWTemplateGeneration");
 			if (attemptStructureGenerationAt(world, new BlockPos(x, y, z), face, template, map)) {
@@ -211,7 +212,7 @@ public class WorldStructureGenerator implements IWorldGenerator {
 	}
 
 	private void generateStructureAt(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureMap map) {
-		map.setGeneratedAt(world, pos.getX(), pos.getZ(), face, new StructureEntry(pos.getX(), pos.getY(), pos.getZ(), face, template), template.getValidationSettings().isUnique());
+		map.setGeneratedAt(world, pos.getX(), pos.getZ(), new StructureEntry(pos.getX(), pos.getY(), pos.getZ(), face, template), template.getValidationSettings().isUnique());
 		WorldGenTickHandler.INSTANCE.addStructureForGeneration(new StructureBuilderWorldGen(world, template, face, pos));
 	}
 

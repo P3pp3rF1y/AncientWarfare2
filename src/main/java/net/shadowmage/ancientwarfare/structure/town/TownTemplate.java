@@ -72,6 +72,7 @@ public final class TownTemplate {
 	private List<TownStructureEntry> houseStructureEntries = new ArrayList<>();
 	private List<TownStructureEntry> cosmeticStructureEntries = new ArrayList<>();
 	private List<TownStructureEntry> exteriorStructureEntries = new ArrayList<>();
+	private boolean preventNaturalHostileSpawns;
 
 	public void setTownTypeName(String townTypeName) {
 		this.townTypeName = townTypeName;
@@ -381,6 +382,14 @@ public final class TownTemplate {
 
 	public void addRoadFillBlock(IBlockState state) {
 		roadFillBlocks.add(state);
+	}
+
+	public void setPreventNaturalHostileSpawns(boolean preventNaturalHostileSpawns) {
+		this.preventNaturalHostileSpawns = preventNaturalHostileSpawns;
+	}
+
+	public boolean shouldPreventNaturalHostileSpawns() {
+		return preventNaturalHostileSpawns;
 	}
 
 	public static final class TownStructureEntry {

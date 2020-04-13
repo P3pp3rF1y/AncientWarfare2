@@ -72,7 +72,7 @@ public class TileProtectionFlag extends TileUpdatable {
 	@Override
 	public void validate() {
 		super.validate();
-		AWGameData.INSTANCE.getData(world, StructureMap.class).getStructureAt(world, pos).ifPresent(structure -> {
+		AWGameData.INSTANCE.getPerWorldData(world, StructureMap.class).getStructureAt(world, pos).ifPresent(structure -> {
 			if (!structure.getProtectionFlagPos().equals(pos)) {
 				structure.setProtectionFlagPos(pos);
 				if (!world.isRemote) {
@@ -127,7 +127,7 @@ public class TileProtectionFlag extends TileUpdatable {
 			return;
 		}
 
-		Optional<StructureEntry> structure = AWGameData.INSTANCE.getData(world, StructureMap.class).getStructureAt(world, pos);
+		Optional<StructureEntry> structure = AWGameData.INSTANCE.getPerWorldData(world, StructureMap.class).getStructureAt(world, pos);
 		if (!structure.isPresent()) {
 			return;
 		}

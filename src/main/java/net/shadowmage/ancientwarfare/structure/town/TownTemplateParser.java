@@ -20,6 +20,7 @@ import java.util.MissingResourceException;
 import java.util.Optional;
 
 public class TownTemplateParser {
+	private TownTemplateParser() {}
 
 	public static Optional<TownTemplate> parseTemplate(List<String> lines) {
 		TownTemplate template = new TownTemplate();
@@ -91,6 +92,8 @@ public class TownTemplateParser {
 				template.setInteriorEmtpyPlotChance(StringTools.safeParseInt("=", line));
 			} else if (lower.startsWith("randomvillagersperchunk")) {
 				template.setRandomVillagersPerChunk(StringTools.safeParseFloat("=", line));
+			} else if (lower.startsWith("preventnaturalhostilespawns")) {
+				template.setPreventNaturalHostileSpawns(StringTools.safeParseBoolean("=", line));
 			} else if (lower.startsWith("roadblocks")) {
 				String[] roadFillBlocks = StringTools.safeParseString("=", line).split("\\|");
 				JsonParser parser = new JsonParser();

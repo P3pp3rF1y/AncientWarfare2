@@ -46,7 +46,7 @@ public class ItemTownBuilder extends ItemBaseStructure implements IItemKeyInterf
 
 	@Override
 	public void onKeyAction(EntityPlayer player, ItemStack stack, ItemAltFunction altFunction) {
-		if (player == null || player.world.isRemote) {
+		if (player.world.isRemote) {
 			return;
 		}
 
@@ -64,12 +64,12 @@ public class ItemTownBuilder extends ItemBaseStructure implements IItemKeyInterf
 		long t1 = System.nanoTime();
 		WorldTownGenerator.INSTANCE.generate(player.world, getTownArea(rayTraceResult.getBlockPos(), player.getHorizontalFacing(), getLength(stack), getWidth(stack)), template.get());
 		long t2 = System.nanoTime();
-		AncientWarfareStructure.LOG.debug("Total Town gen nanos (incl. validation): " + (t2 - t1));
+		AncientWarfareStructure.LOG.debug("Total Town gen nanos (incl. validation): {}", t2 - t1);
 	}
 
 	private TownBoundingArea getTownArea(BlockPos pos, EnumFacing horizontalFacing, int chunkLength, int chunkWidth) {
-		int minY = pos.getY() - 3;
-		int maxY = Math.min(pos.getY() + 14, 255);
+		int minY = Math.max(pos.getY() - 3, 0);
+		int maxY = Math.min(minY + 40, 255);
 
 		if (horizontalFacing.getAxis() == EnumFacing.Axis.X) {
 			int chunkMinX = (pos.getX() >> 4) - (horizontalFacing.getFrontOffsetX() < 0 ? chunkLength : 0);

@@ -13,18 +13,31 @@ public class StructureEntry {
 	private BlockPos protectionFlagPos = BlockPos.ORIGIN;
 	private boolean hasProtectionFlag = false;
 	private boolean isConquered = false;
-	private boolean preventHostileNaturalSpawns = false;
+	private boolean preventNaturalHostileSpawns = false;
 	private int cx;
 	private int cz;
+	private StructureMap structureMap = null;
 
 	public void setProtectionFlagPos(BlockPos protectionFlagPos) {
 		this.protectionFlagPos = protectionFlagPos;
 		hasProtectionFlag = true;
+		markStructureMapDirty();
+	}
+
+	public void setStructureMap(StructureMap structureMap) {
+		this.structureMap = structureMap;
 	}
 
 	public void setConquered() {
 		isConquered = true;
-		preventHostileNaturalSpawns = false;
+		preventNaturalHostileSpawns = false;
+		markStructureMapDirty();
+	}
+
+	private void markStructureMapDirty() {
+		if (structureMap != null) {
+			structureMap.markDirty();
+		}
 	}
 
 	public StructureEntry(int x, int y, int z, EnumFacing face, StructureTemplate template) {
@@ -33,7 +46,7 @@ public class StructureEntry {
 		cx = x >> 4;
 		cz = z >> 4;
 		value = template.getValidationSettings().getClusterValue();
-		preventHostileNaturalSpawns = template.getValidationSettings().shouldPreventHostileSpawns();
+		preventNaturalHostileSpawns = template.getValidationSettings().shouldPreventHostileSpawns();
 	}
 
 	public StructureEntry(StructureBB bb, String name, int value, int cx, int cz) {
@@ -55,7 +68,7 @@ public class StructureEntry {
 		tag.setLong("protectionFlagPos", protectionFlagPos.toLong());
 		tag.setInteger("cx", cx);
 		tag.setInteger("cz", cz);
-		tag.setBoolean("preventHostile", preventHostileNaturalSpawns);
+		tag.setBoolean("preventHostile", preventNaturalHostileSpawns);
 	}
 
 	public void readFromNBT(NBTTagCompound tag) {
@@ -69,7 +82,7 @@ public class StructureEntry {
 		protectionFlagPos = BlockPos.fromLong(tag.getLong("protectionFlagPos"));
 		cx = tag.getInteger("cx");
 		cz = tag.getInteger("cz");
-		preventHostileNaturalSpawns = tag.getBoolean("preventHostile");
+		preventNaturalHostileSpawns = tag.getBoolean("preventHostile");
 	}
 
 	public String getName() {
@@ -96,8 +109,8 @@ public class StructureEntry {
 		return cx;
 	}
 
-	public boolean shouldPreventHostileNaturalSpawns() {
-		return preventHostileNaturalSpawns;
+	public boolean shouldPreventNaturalHostileSpawns() {
+		return preventNaturalHostileSpawns;
 	}
 
 	public boolean hasProtectionFlag() {

@@ -12,8 +12,6 @@ import net.shadowmage.ancientwarfare.core.util.PacketHelper;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureEntry;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
 
-import java.io.IOException;
-
 public class PacketStructureEntry extends PacketBase {
 	private int dimension;
 	private int cx;
@@ -40,7 +38,7 @@ public class PacketStructureEntry extends PacketBase {
 	}
 
 	@Override
-	protected void readFromStream(ByteBuf data) throws IOException {
+	protected void readFromStream(ByteBuf data) {
 		dimension = data.readInt();
 		cx = data.readInt();
 		cz = data.readInt();
@@ -54,7 +52,7 @@ public class PacketStructureEntry extends PacketBase {
 		WorldClient world = Minecraft.getMinecraft().world;
 		if (world != null) {
 			//passing false to unique as it's not needed client side, but client side still uses the same structure data storage that needs some value there
-			AWGameData.INSTANCE.getData(world, StructureMap.class).setGeneratedAt(dimension, cx, cz, entry, false);
+			AWGameData.INSTANCE.getPerWorldData(world, StructureMap.class).setGeneratedAt(dimension, cx, cz, entry, false);
 		}
 	}
 }
