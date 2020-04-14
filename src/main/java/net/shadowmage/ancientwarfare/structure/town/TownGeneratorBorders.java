@@ -11,7 +11,7 @@ import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.ITree;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.ITreeScanner;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
-import net.shadowmage.ancientwarfare.structure.worldgen.WorldStructureGenerator;
+import net.shadowmage.ancientwarfare.structure.template.build.validation.border.SmoothingMatrixBuilder;
 
 import java.util.Optional;
 
@@ -20,62 +20,19 @@ public class TownGeneratorBorders {
 
 	private TownGeneratorBorders() {}
 
-	public static void generateBorders(World world, StructureBB exterior, StructureBB walls, StructureBB max) {
-		int minX;
-		int maxX;
-		int minZ;
-		int maxZ;
-		int step;
-		int fillBase = max.min.getY() - 1;
+	public static void generateBorders(World world, StructureBB exterior) {
+		BlockTools.getAllInBoxTopDown(exterior.min, exterior.max.add(0, 50, 0)).forEach(pos -> handleClearing(world, pos));
 
-		int eminx = exterior.min.getX();
-		int eminz = exterior.min.getZ();
-		int emaxx = exterior.max.getX();
-		int emaxz = exterior.max.getZ();
-
-		minX = max.min.getX();
-		maxX = walls.min.getX() - 1;
-		for (int px = minX; px <= maxX; px++) {
-			for (int pz = max.min.getZ(); pz <= max.max.getZ(); pz++) {
-				step = WorldStructureGenerator.getStepNumber(px, pz, eminx, emaxx, eminz, emaxz);
-				handleBorderBlock(world, px, pz, fillBase - step, fillBase + step, getFillBlock(world, px, pz, false), getFillBlock(world, px, pz, true));
-			}
-		}
-
-		minX = walls.max.getX() + 1;
-		maxX = max.max.getX();
-		for (int px = minX; px <= maxX; px++) {
-			for (int pz = max.min.getZ(); pz <= max.max.getZ(); pz++) {
-				step = WorldStructureGenerator.getStepNumber(px, pz, eminx, emaxx, eminz, emaxz);
-				handleBorderBlock(world, px, pz, fillBase - step, fillBase + step, getFillBlock(world, px, pz, false), getFillBlock(world, px, pz, true));
-			}
-		}
-
-		minZ = max.min.getZ();
-		maxZ = walls.min.getZ() - 1;
-		for (int pz = minZ; pz <= maxZ; pz++) {
-			for (int px = max.min.getX(); px <= max.max.getX(); px++) {
-				step = WorldStructureGenerator.getStepNumber(px, pz, eminx, emaxx, eminz, emaxz);
-				handleBorderBlock(world, px, pz, fillBase - step, fillBase + step, getFillBlock(world, px, pz, false), getFillBlock(world, px, pz, true));
-			}
-		}
-
-		minZ = walls.max.getZ() + 1;
-		maxZ = max.max.getZ();
-		for (int pz = minZ; pz <= maxZ; pz++) {
-			for (int px = max.min.getX(); px <= max.max.getX(); px++) {
-				step = WorldStructureGenerator.getStepNumber(px, pz, eminx, emaxx, eminz, emaxz);
-				handleBorderBlock(world, px, pz, fillBase - step, fillBase + step, getFillBlock(world, px, pz, false), getFillBlock(world, px, pz, true));
-			}
-		}
+		new SmoothingMatrixBuilder(world, exterior, Math.max(exterior.getXSize(), exterior.getZSize()) / 8).build()
+				.apply(world, pos -> handleClearing(world, pos));
 	}
 
-	public static void levelTownArea(World world, StructureBB walls) {
-		int minX = walls.min.getX();
-		int minZ = walls.min.getZ();
-		int maxX = walls.max.getX();
-		int maxZ = walls.max.getZ();
-		int desiredTopBlockHeight = walls.min.getY() - 1;
+	public static void levelTownArea(World world, StructureBB bb) {
+		int minX = bb.min.getX();
+		int minZ = bb.min.getZ();
+		int maxX = bb.max.getX();
+		int maxZ = bb.max.getZ();
+		int desiredTopBlockHeight = bb.min.getY() - 1;
 		for (int x = minX; x <= maxX; x++) {
 			for (int z = minZ; z <= maxZ; z++) {
 				handleBorderBlock(world, x, z, desiredTopBlockHeight, desiredTopBlockHeight, getFillBlock(world, x, z, false), getFillBlock(world, x, z, true));

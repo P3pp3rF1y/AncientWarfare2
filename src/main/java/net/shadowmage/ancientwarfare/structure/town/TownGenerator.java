@@ -65,8 +65,8 @@ public class TownGenerator {
 	public void generate() {
 		AncientWarfareStructure.LOG.info("Generating town at: {} : {}", townBounds.getCenterX(), townBounds.getCenterZ());
 		determineStructuresToGenerate();
-		TownGeneratorBorders.generateBorders(world, exteriorBounds, wallsBounds, maximalBounds);
-		TownGeneratorBorders.levelTownArea(world, wallsBounds);
+		TownGeneratorBorders.levelTownArea(world, exteriorBounds);
+		TownGeneratorBorders.generateBorders(world, exteriorBounds);
 
 		generateGrid();
 		TownGeneratorWalls.generateWalls(world, this, template, rng);

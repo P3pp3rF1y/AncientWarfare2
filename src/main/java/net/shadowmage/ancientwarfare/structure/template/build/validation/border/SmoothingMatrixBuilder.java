@@ -24,18 +24,20 @@ public class SmoothingMatrixBuilder {
 	private final World world;
 	private StructureBB bb;
 	private final int borderSize;
-	private final int turns;
 	private final int groundY;
-	private StructureTemplate template;
-	private final SmoothingMatrix smoothingMatrix;
+	private int turns = 0;
+	private StructureTemplate template = null;
+	private SmoothingMatrix smoothingMatrix;
 
-	public SmoothingMatrixBuilder(World world, StructureBB bb, int borderSize, EnumFacing face, StructureTemplate template) {
+	public SmoothingMatrixBuilder(World world, StructureBB bb, int borderSize) {
+		this(world, bb, borderSize, bb.min.getY() - 1);
+	}
+
+	private SmoothingMatrixBuilder(World world, StructureBB bb, int borderSize, int groundY) {
 		this.world = world;
 		this.bb = bb;
 		this.borderSize = borderSize;
-		this.turns = (face.getHorizontalIndex() + 2) % 4;
-		this.groundY = bb.min.getY() + template.getOffset().getY() - 1;
-		this.template = template;
+		this.groundY = groundY;
 
 		BorderMatrix borderMatrix = BorderMatrixCache.getBorderMatrix(bb.getXSize(), bb.getZSize(), borderSize);
 		smoothingMatrix = new SmoothingMatrix(borderMatrix, bb.min, borderSize);
@@ -44,6 +46,12 @@ public class SmoothingMatrixBuilder {
 		convertPointsToSmoothingMatrix(0, borderMatrix, PointType.REFERENCE_POINT);
 		convertPointsToSmoothingMatrix(0, borderMatrix, PointType.OUTER_BORDER);
 		convertPointsToSmoothingMatrix(0, borderMatrix, PointType.SMOOTHED_BORDER);
+	}
+
+	public SmoothingMatrixBuilder(World world, StructureBB bb, int borderSize, EnumFacing face, StructureTemplate template) {
+		this(world, bb, borderSize, bb.min.getY() + template.getOffset().getY() - 1);
+		this.turns = (face.getHorizontalIndex() + 2) % 4;
+		this.template = template;
 	}
 
 	private void convertPointsToSmoothingMatrix(int groundY, BorderMatrix borderMatrix, PointType type) {
@@ -189,7 +197,7 @@ public class SmoothingMatrixBuilder {
 	);
 
 	private Optional<IBlockState> getPointBlockState(BlockPos pos, PointType type) {
-		IBlockState state = type == PointType.STRUCTURE_BORDER ? getStateFromTemplate(pos) : world.getBlockState(pos);
+		IBlockState state = type == PointType.STRUCTURE_BORDER && template != null ? getStateFromTemplate(pos) : world.getBlockState(pos);
 		if (type == PointType.STRUCTURE_BORDER && !STRUCTURE_BORDER_BLOCK_WHITELIST.contains(state.getBlock())) {
 			return Optional.empty();
 		}

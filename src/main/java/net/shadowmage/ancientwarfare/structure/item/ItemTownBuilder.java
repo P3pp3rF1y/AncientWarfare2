@@ -51,7 +51,7 @@ public class ItemTownBuilder extends ItemBaseStructure implements IItemKeyInterf
 		}
 
 		RayTraceResult rayTraceResult = rayTrace(player.world, player, false);
-		if (rayTraceResult.typeOfHit != RayTraceResult.Type.BLOCK) {
+		if (rayTraceResult == null || rayTraceResult.typeOfHit != RayTraceResult.Type.BLOCK) {
 			return;
 		}
 
