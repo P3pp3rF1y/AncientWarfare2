@@ -5,13 +5,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.MoverType;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -297,7 +295,7 @@ public class VehicleMoveHelper implements INBTSerializable<NBTTagCompound> {
 	}
 
 	protected void tearUpGrass() {
-		if (vehicle.world.isRemote || !vehicle.onGround || !AWVehicleStatics.vehiclesTearUpGrass) {
+		if (vehicle.world.isRemote || !vehicle.onGround || !AWVehicleStatics.generalSettings.vehiclesTearUpGrass) {
 			return;
 		}
 		for (int var24 = 0; var24 < 4; ++var24) {

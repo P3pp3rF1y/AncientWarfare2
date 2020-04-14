@@ -5,6 +5,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 
 public class AmmoHwachaRocket extends Ammo {
 
@@ -13,8 +14,8 @@ public class AmmoHwachaRocket extends Ammo {
 
 	public AmmoHwachaRocket() {
 		super("ammo_hwacha_rocket");
-		this.entityDamage = 6;
-		this.vehicleDamage = 6;
+		this.entityDamage = AWVehicleStatics.vehicleStats.ammoHwachaRocketDamage;
+		this.vehicleDamage = AWVehicleStatics.vehicleStats.ammoHwachaRocketDamage;
 		this.isArrow = true;
 		this.isPersistent = true;
 		this.isRocket = true;

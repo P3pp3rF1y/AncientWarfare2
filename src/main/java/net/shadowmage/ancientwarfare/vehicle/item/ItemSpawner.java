@@ -106,7 +106,7 @@ public class ItemSpawner extends ItemBaseVehicle {
 		vehicle.setPosition(hitVec.x, hitVec.y, hitVec.z);
 		vehicle.prevRotationYaw = vehicle.rotationYaw = -player.rotationYaw + 180;
 		vehicle.localTurretDestRot = vehicle.localTurretRotation = vehicle.localTurretRotationHome = vehicle.rotationYaw;
-		if (AWVehicleStatics.useVehicleSetupTime) {
+		if (AWVehicleStatics.generalSettings.useVehicleSetupTime) {
 			vehicle.setSetupState(true, 100);
 		}
 		world.spawnEntity(vehicle);

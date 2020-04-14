@@ -6,6 +6,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
+import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeBatteringRam;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
@@ -106,10 +107,11 @@ public class BatteringRamVarHelper extends VehicleFiringVarsHelper {
 					}
 				}
 			}
-			// nerfing the battering ram to only break a block with a 25% chance
-			Random rand = new Random();
-			if (rand.nextDouble() < 0.20) {
-				BlockTools.breakBlockAndDrop(vehicle.world, pos);
+			if (AWVehicleStatics.generalSettings.batteringRamBreaksBlocks) {
+				Random rand = new Random();
+				if (rand.nextDouble() < (AWVehicleStatics.generalSettings.batteringRamBlockBreakPercentageChance / 100)) {
+					BlockTools.breakBlockAndDrop(vehicle.world, pos);
+				}
 			}
 		}
 	}

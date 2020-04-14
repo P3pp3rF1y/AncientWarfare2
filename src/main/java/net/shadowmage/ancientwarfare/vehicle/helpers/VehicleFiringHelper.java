@@ -138,7 +138,7 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 					power = Math.min(vehicle.localLaunchPower, maxPower);
 					yaw = vehicle.localTurretRotation;
 					pitch = vehicle.localTurretPitch + vehicle.rotationPitch;
-					if (AWVehicleStatics.adjustMissilesForAccuracy) {
+					if (AWVehicleStatics.clientSettings.adjustMissilesForAccuracy) {
 						accuracy = getAccuracyAdjusted();
 						yaw += (float) rng.nextGaussian() * (1.f - accuracy) * 10.f;
 						if (vehicle.canAimPower() && !ammo.isRocket()) {

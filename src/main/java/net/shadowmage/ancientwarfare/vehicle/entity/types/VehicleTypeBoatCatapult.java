@@ -17,6 +17,7 @@ public class VehicleTypeBoatCatapult extends VehicleType {
 	public VehicleTypeBoatCatapult(int typeNum) {
 		super(typeNum);
 		configName = "boat_catapult";
+		baseHealth = AWVehicleStatics.vehicleStats.vehicleCatapultBoatHealth;
 		vehicleMaterial = VehicleMaterial.materialWood;
 		materialCount = 5;
 		movementType = VehicleMovementType.WATER;
@@ -40,7 +41,7 @@ public class VehicleTypeBoatCatapult extends VehicleType {
 		validAmmoTypes.add(AmmoRegistry.ammoArrowIron);
 		validAmmoTypes.add(AmmoRegistry.ammoArrowIronFlame);
 
-		if (AWVehicleStatics.oversizeAmmoEnabled) {
+		if (AWVehicleStatics.generalSettings.oversizeAmmoEnabled) {
 			validAmmoTypes.add(AmmoRegistry.ammoStoneShot30);
 			validAmmoTypes.add(AmmoRegistry.ammoStoneShot45);
 			validAmmoTypes.add(AmmoRegistry.ammoFireShot30);

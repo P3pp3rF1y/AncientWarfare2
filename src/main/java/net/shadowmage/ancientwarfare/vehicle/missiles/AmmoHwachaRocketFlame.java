@@ -5,13 +5,14 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 
 public class AmmoHwachaRocketFlame extends Ammo {
 
 	public AmmoHwachaRocketFlame() {
 		super("ammo_hwacha_rocket_flame");
-		this.entityDamage = 5;
-		this.vehicleDamage = 5;
+		this.entityDamage = AWVehicleStatics.vehicleStats.ammoHwachaRocketFlameDamage;
+		this.vehicleDamage = AWVehicleStatics.vehicleStats.ammoHwachaRocketFlameDamage;
 		this.isArrow = true;
 		this.isPersistent = true;
 		this.isRocket = true;

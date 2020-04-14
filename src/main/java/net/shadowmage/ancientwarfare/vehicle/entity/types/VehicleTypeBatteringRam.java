@@ -5,6 +5,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.vehicle.VehicleVarHelpers.BatteringRamVarHelper;
+import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.materials.VehicleMaterial;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
@@ -16,6 +17,7 @@ public class VehicleTypeBatteringRam extends VehicleType {
 	public VehicleTypeBatteringRam(int typeNum) {
 		super(typeNum);
 		this.configName = "battering_ram";
+		this.baseHealth = AWVehicleStatics.vehicleStats.vehicleBatteringRamHealth;
 		this.vehicleMaterial = VehicleMaterial.materialWood;
 		this.validArmors.add(ArmorRegistry.armorStone);
 		this.validArmors.add(ArmorRegistry.armorIron);

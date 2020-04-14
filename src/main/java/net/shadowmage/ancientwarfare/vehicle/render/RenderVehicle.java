@@ -72,7 +72,7 @@ public class RenderVehicle extends Render<VehicleBase> {
 	@Override
 	public void doRender(VehicleBase vehicle, double x, double y, double z, float renderYaw, float partialTicks) {
 		boolean useAlpha = false;
-		if (!AWVehicleStatics.renderVehiclesInFirstPerson && vehicle.getControllingPassenger() == Minecraft.getMinecraft().player && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0) {
+		if (!AWVehicleStatics.clientSettings.renderVehiclesInFirstPerson && vehicle.getControllingPassenger() == Minecraft.getMinecraft().player && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0) {
 			useAlpha = true;
 			GlStateManager.color(1.f, 1.f, 1.f, 0.2f);
 			GlStateManager.enableBlend();
@@ -96,7 +96,7 @@ public class RenderVehicle extends Render<VehicleBase> {
 		}
 
 		// dont' render nameplate for the vehicle that thePlayer is on
-		if (isInWorld(vehicle) && AWVehicleStatics.renderVehicleNameplates && vehicle.getControllingPassenger() != Minecraft.getMinecraft().player) {
+		if (isInWorld(vehicle) && AWVehicleStatics.clientSettings.renderVehicleNameplates && vehicle.getControllingPassenger() != Minecraft.getMinecraft().player) {
 			renderNamePlate(vehicle, x, y, z);
 		}
 
@@ -111,7 +111,10 @@ public class RenderVehicle extends Render<VehicleBase> {
 	private void renderNamePlate(VehicleBase vehicle, double x, double y, double z) {
 		double var10 = vehicle.getDistanceSq(this.renderManager.renderViewEntity);
 		int par9 = 64;
-		String par2Str = vehicle.vehicleType.getLocalizedName() + " " + formatter1d.format(vehicle.getHealth()) + "/" + formatter1d.format(vehicle.baseHealth);
+		String par2Str = vehicle.vehicleType.getLocalizedName();
+		if (AWVehicleStatics.clientSettings.renderVehicleNameplateHealth) {
+			par2Str = par2Str + " " + formatter1d.format(vehicle.getHealth()) + "/" + formatter1d.format(vehicle.baseHealth);
+		}
 		if (var10 <= (double) (par9 * par9)) {
 			FontRenderer var12 = this.getFontRendererFromRenderManager();
 			float var13 = 1.6F;

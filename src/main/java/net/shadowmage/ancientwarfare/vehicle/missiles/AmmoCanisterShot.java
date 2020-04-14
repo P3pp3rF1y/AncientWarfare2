@@ -5,6 +5,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.registry.AmmoRegistry;
 
 public class AmmoCanisterShot extends Ammo {
@@ -16,8 +17,8 @@ public class AmmoCanisterShot extends Ammo {
 		this.renderScale = (weight / scaleFactor) * 2;
 		this.configName = "canister_shot_" + weight;
 		this.modelTexture = new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/model/vehicle/ammo/ammo_stone_shot.png");
-		this.entityDamage = 8;
-		this.vehicleDamage = 8;
+		this.entityDamage = AWVehicleStatics.vehicleStats.ammoCanisterDamage;
+		this.vehicleDamage = AWVehicleStatics.vehicleStats.ammoCanisterDamage;
 	}
 
 	@Override

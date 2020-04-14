@@ -42,6 +42,7 @@ public class VehicleTypeCatapult extends VehicleType {
 		vehicleMaterial = VehicleMaterial.materialWood;
 		materialCount = 5;
 		maxMissileWeight = 10.f;
+		baseHealth = AWVehicleStatics.vehicleStats.vehicleCatapultHealth;
 
 		validAmmoTypes.add(AmmoRegistry.ammoStoneShot10);
 		validAmmoTypes.add(AmmoRegistry.ammoStoneShot15);
@@ -63,7 +64,7 @@ public class VehicleTypeCatapult extends VehicleType {
 		validAmmoTypes.add(AmmoRegistry.ammoArrowIron);
 		validAmmoTypes.add(AmmoRegistry.ammoArrowIronFlame);
 
-		if (AWVehicleStatics.oversizeAmmoEnabled) {
+		if (AWVehicleStatics.generalSettings.oversizeAmmoEnabled) {
 			validAmmoTypes.add(AmmoRegistry.ammoStoneShot30);
 			validAmmoTypes.add(AmmoRegistry.ammoStoneShot45);
 			validAmmoTypes.add(AmmoRegistry.ammoFireShot30);

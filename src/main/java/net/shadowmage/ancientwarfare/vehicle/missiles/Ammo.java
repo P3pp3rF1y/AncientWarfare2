@@ -180,14 +180,14 @@ public abstract class Ammo implements IAmmo {
 	}
 
 	private void breakBlockAndDrop(World world, BlockPos pos) {
-		if (!AWVehicleStatics.blockDestruction) {
+		if (!AWVehicleStatics.generalSettings.shotsDestroysBlocks) {
 			return;
 		}
 		BlockTools.breakBlockAndDrop(world, pos);
 	}
 
 	protected void igniteBlock(World world, int x, int y, int z, int maxSearch) {
-		if (!AWVehicleStatics.blockFires) {
+		if (!AWVehicleStatics.generalSettings.blockFires) {
 			return;
 		}
 		for (int i = 0; i < maxSearch && y - i >= 1; i++) {
@@ -199,7 +199,7 @@ public abstract class Ammo implements IAmmo {
 	}
 
 	public static boolean shouldEffectEntity(World world, Entity entity, MissileBase missile) {
-		if (!AWVehicleStatics.allowFriendlyFire && missile.shooterLiving instanceof NpcBase) {
+		if (!AWVehicleStatics.generalSettings.allowFriendlyFire && missile.shooterLiving instanceof NpcBase) {
 			@Nonnull NpcBase npc = ((NpcBase) missile.shooterLiving);
 			if (entity instanceof NpcBase) {
 				Owner targetNpcOwner = ((NpcBase) entity).getOwner();
@@ -212,7 +212,7 @@ public abstract class Ammo implements IAmmo {
 	}
 
 	protected void setBlockToLava(World world, int x, int y, int z, int maxSearch) {
-		if (!AWVehicleStatics.blockFires) {
+		if (!AWVehicleStatics.generalSettings.blockFires) {
 			return;
 		}
 		for (int i = 0; i < maxSearch && y - i >= 1; i++) {
@@ -227,8 +227,8 @@ public abstract class Ammo implements IAmmo {
 	}
 
 	protected void createExplosion(World world, @Nullable MissileBase missile, float x, float y, float z, float power) {
-		boolean destroyBlocks = AWVehicleStatics.blockDestruction;
-		boolean fires = AWVehicleStatics.blockFires;
+		boolean destroyBlocks = AWVehicleStatics.generalSettings.shotsDestroysBlocks;
+		boolean fires = AWVehicleStatics.generalSettings.blockFires;
 
 		world.newExplosion(missile, x, y, z, power, fires, destroyBlocks);
 	}

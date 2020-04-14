@@ -123,7 +123,7 @@ public class VehicleInputHandler {
 
 	private static void initCallbacks() {
 		InputHandler.registerCallBack(MOUSE_AIM,
-				() -> AWVehicleStatics.enableMouseAim = !AWVehicleStatics.enableMouseAim); //TODO add code to update config once mouseAim is made into config setting
+				() -> AWVehicleStatics.clientSettings.enableMouseAim = !AWVehicleStatics.clientSettings.enableMouseAim); //TODO add code to update config once mouseAim is made into config setting
 		InputHandler.registerCallBack(FIRE, new VehicleCallback(VehicleInputHandler::handleFireAction));
 		InputHandler.registerCallBack(ASCEND_AIM_UP, new VehicleCallback(v -> v.firingHelper.handleAimKeyInput(-1, 0)));
 		InputHandler.registerCallBack(DESCEND_AIM_DOWN, new VehicleCallback(v -> v.firingHelper.handleAimKeyInput(1, 0)));
@@ -146,7 +146,8 @@ public class VehicleInputHandler {
 	}
 
 	private static void handleFireAction(VehicleBase vehicle) {
-		if (!vehicle.isAmmoLoaded()) {
+		String configName = vehicle.vehicleType.getConfigName();
+		if (!vehicle.isAmmoLoaded() && !(configName.equals("battering_ram") || configName.equals("boat_transport") || configName.equals("chest_cart"))) {
 			Minecraft.getMinecraft().player.sendStatusMessage(new TextComponentTranslation("gui.ancientwarfarevehicles.ammo.no_ammo"), true);
 		}
 		if (vehicle.isAimable()) {
@@ -201,7 +202,7 @@ public class VehicleInputHandler {
 		if (mc.player != null && mc.player.getRidingEntity() instanceof VehicleBase) {
 			VehicleBase vehicle = (VehicleBase) mc.player.getRidingEntity();
 			handleTickInput(vehicle);
-			if (AWVehicleStatics.enableMouseAim) {
+			if (AWVehicleStatics.clientSettings.enableMouseAim) {
 				handleMouseAimUpdate(vehicle);
 			}
 		}

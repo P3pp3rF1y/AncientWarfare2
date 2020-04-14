@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.vehicle.entity.types;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.materials.VehicleMaterial;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
@@ -17,6 +18,7 @@ public class VehicleTypeChestCart extends VehicleType {
 		this.configName = "chest_cart";
 		this.vehicleMaterial = VehicleMaterial.materialWood;
 		this.materialCount = 3;
+		baseHealth = AWVehicleStatics.vehicleStats.vehicleChestCartHealth;
 		this.validArmors.add(ArmorRegistry.armorStone);
 		this.validArmors.add(ArmorRegistry.armorObsidian);
 		this.validArmors.add(ArmorRegistry.armorIron);

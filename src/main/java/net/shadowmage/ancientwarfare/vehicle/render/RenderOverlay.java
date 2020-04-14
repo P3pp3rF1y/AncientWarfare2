@@ -44,7 +44,7 @@ public class RenderOverlay extends Gui {
 		} else {
 			this.drawString(fontRenderer, "No Ammo Selected", 10, 50, red);
 		}
-		if (AWVehicleStatics.renderAdvOverlay) {
+		if (AWVehicleStatics.clientSettings.renderAdvOverlay) {
 			float velocity = Trig.getVelocity(vehicle.motionX, 0, vehicle.motionZ);
 			this.drawString(fontRenderer, "Velocity: " + velocity * 20.f + "m/s  max: " + vehicle.currentForwardSpeedMax * 20, 10, 70, white);
 			this.drawString(fontRenderer, "Yaw Rate: " + vehicle.moveHelper.getRotationSpeed() * 20.f, 10, 80, white);
@@ -53,7 +53,7 @@ public class RenderOverlay extends Gui {
 
 	@SubscribeEvent
 	public void tickEnd(TickEvent.RenderTickEvent event) {
-		if (!AWVehicleStatics.renderOverlay) {
+		if (!AWVehicleStatics.clientSettings.renderOverlay) {
 			return;
 		}
 		Minecraft mc = Minecraft.getMinecraft();
