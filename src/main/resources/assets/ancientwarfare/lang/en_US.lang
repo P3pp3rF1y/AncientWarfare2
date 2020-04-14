@@ -159,11 +159,11 @@ item.coin.ancient.tooltip=%1$s"Of Minossia, only its coins remain - Sic transit 
 
 #blocks
 #core
-tile.engineering_station.0.name=Engineering Station
-tile.research_station.0.name=Research Station
+tile.engineering_station.0.name=Engineering Bench
+tile.research_station.0.name=Research Bench
 #automation
-tile.auto_crafting.name=Auto Crafting Station
-tile.auto_crafting.0.name=Auto Crafting Station
+tile.auto_crafting.name=Auto Crafting Table
+tile.auto_crafting.0.name=Auto Crafting Table
 tile.quarry.name=Quarry
 tile.tree_farm.name=Tree Farm
 tile.crop_farm.name=Crop Farm
@@ -175,7 +175,7 @@ tile.warehouse_storage.0.name=Small Warehouse Storage
 tile.warehouse_storage.1.name=Medium Warehouse Storage
 tile.warehouse_storage.2.name=Large Warehouse Storage
 tile.warehouse_interface.name=Warehouse Interface
-tile.warehouse_crafting.name=Warehouse Crafting Station
+tile.warehouse_crafting.name=Warehouse Crafting Table
 tile.warehouse_stock_viewer.name=Warehouse Stock Viewer
 tile.warehouse_stock_linker.name=Warehouse Stock Linker
 tile.warehouse_stock_linker.tooltip=Linked to warehouse at %s
@@ -204,7 +204,7 @@ tile.windmill_generator.0.name=Windmill Controller
 tile.windmill_blade.name=Windmill Blade
 #structure
 tile.advanced_spawner.name=Advanced Monster Spawner
-tile.drafting_station.name=Drafting Station
+tile.drafting_station.name=Drafting Bench
 tile.structure_builder_ticked.name=Survival Structure Builder
 tile.sound_block.name=Sound Block
 tile.gate_proxy.name=Gate Proxy Block
@@ -417,7 +417,7 @@ guistrings.core.backpack.click_to_open=Use Item To Open
 guistrings.core.hammer.use_primary_item_key=Press '%s' to toggle Work/Rotate Mode
 guistrings.core.hammer.work_mode=Use Item to Work at Worksite
 guistrings.core.hammer.rotate_mode=Use Item to Rotate blocks
-guistrings.core.quill.work_mode=Use Item to Research at Research Station
+guistrings.core.quill.work_mode=Use Item to Research at Research Bench
 guistrings.modeler.right_click_to_open=Use Item To Open GUI
 guistrings.spawner.delay=Next Spawn Delay
 guistrings.spawner.min_spawn_delay=Min Spawn Delay
