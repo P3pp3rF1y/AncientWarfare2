@@ -6,6 +6,11 @@
             "type": "ancientwarfare:item_count",
             "item": "ancientwarfarevehicle:iron_casing",
             "count": 4
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "gunpowder",
+            "count": 2
         }
     ],
     "result": {
