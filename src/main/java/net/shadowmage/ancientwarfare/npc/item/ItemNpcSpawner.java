@@ -46,6 +46,7 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 
 	public ItemNpcSpawner() {
 		super("npc_spawner");
+		maxStackSize = 16;
 	}
 
 	@Override
