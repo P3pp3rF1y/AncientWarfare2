@@ -52,6 +52,9 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		if (getNpcDisplayNameFromTag(stack).isPresent()) {
+			tooltip.add(I18n.format(getUnlocalizedName(stack) + ".name"));
+		}
 		tooltip.add(I18n.format("guistrings.npc.spawner.right_click_to_place"));
 	}
 
@@ -67,6 +70,19 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 			return "entity.ancientwarfarenpc." + (getFaction(stack).map(s -> s + ".").orElse("")) + npcName;
 		}
 		return super.getUnlocalizedName(stack);
+	}
+
+	@Override
+	public String getItemStackDisplayName(ItemStack stack) {
+		return getNpcDisplayNameFromTag(stack).isPresent() ? getNpcDisplayNameFromTag(stack).get() : super.getItemStackDisplayName(stack);
+	}
+
+	private static Optional<String> getNpcDisplayNameFromTag(ItemStack stack) {
+		if (stack.hasTagCompound() && stack.getTagCompound().hasKey(NPC_STORED_DATA_TAG) &&
+				stack.getTagCompound().getCompoundTag(NPC_STORED_DATA_TAG).hasKey("name")) {
+			return Optional.of(stack.getTagCompound().getCompoundTag(NPC_STORED_DATA_TAG).getString("name"));
+		} else
+			return Optional.empty();
 	}
 
 	@Override
@@ -213,9 +229,9 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 
 		AWNPCEntities.getNpcMap().values().stream().map(AWNPCEntities.NpcDeclaration::getItemModelVariants).flatMap(Collection::stream).distinct()
 				.forEach(v -> {
-			modelLocations.put(v, getModelLocation(v));
-			ModelLoader.registerItemVariants(this, modelLocations.get(v));
-		});
+					modelLocations.put(v, getModelLocation(v));
+					ModelLoader.registerItemVariants(this, modelLocations.get(v));
+				});
 
 		ModelLoader.setCustomMeshDefinition(this, stack -> {
 			String npcType = getNpcType(stack);
