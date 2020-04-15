@@ -23,6 +23,7 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStac
 import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack.SortOrder;
 
 import javax.annotation.Nonnull;
+import java.awt.*;
 import java.util.Arrays;
 import java.util.Locale;
 
@@ -105,6 +106,7 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
 		area.clearElements();
 		addInventoryViewElements();
 		storedLabel.setText(I18n.format("guistrings.warehouse.storage", getContainer().currentStored, getContainer().maxStorage));
+		storedLabel.setColor((getContainer().currentStored == getContainer().maxStorage) ? Color.RED.getRGB() : 4210752); // red if full, gray otherwise
 	}
 
 	private void addInventoryViewElements() {
