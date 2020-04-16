@@ -266,16 +266,6 @@ public class Gate implements IGateType {
 	}
 
 	@Override
-	public void onGateStartOpen(EntityGate gate) {
-		if (gate.world.isRemote) {
-			return;
-		}
-		BlockPos min = BlockTools.getMin(gate.pos1, gate.pos2);
-		BlockPos max = BlockTools.getMax(gate.pos1, gate.pos2);
-		openBetween(gate.world, min, max);
-	}
-
-	@Override
 	public void onGateFinishOpen(EntityGate gate) {
 		//overriden in subclass
 	}
@@ -295,36 +285,16 @@ public class Gate implements IGateType {
 		closeBetween(gate, min, max);
 	}
 
-	public final void openBetween(World world, BlockPos min, BlockPos max) {
-		Block id;
-		for (int x = min.getX(); x <= max.getX(); x++) {
-			for (int y = min.getY(); y <= max.getY(); y++) {
-				for (int z = min.getZ(); z <= max.getZ(); z++) {
-					id = world.getBlockState(new BlockPos(x, y, z)).getBlock();
-					if (id == AWStructureBlocks.GATE_PROXY) {
-						WorldTools.getTile(world, new BlockPos(x, y, z), TEGateProxy.class).ifPresent(t -> t.setOpen(true));
-					}
-				}
-			}
-		}
-	}
-
 	public final void closeBetween(EntityGate gate, BlockPos min, BlockPos max) {
-		for (int x = min.getX(); x <= max.getX(); x++) {
-			for (int y = min.getY(); y <= max.getY(); y++) {
-				for (int z = min.getZ(); z <= max.getZ(); z++) {
-					BlockPos pos = new BlockPos(x, y, z);
-					placeProxyIfNotPresent(gate, pos, false);
-					if (!gate.getRenderedTile().isPresent()) {
-						WorldTools.getTile(gate.world, pos, TEGateProxy.class).ifPresent(te -> {
-							te.setRender();
-							gate.setRenderedTile(te);
-						});
-					}
-
-				}
+		BlockPos.getAllInBox(min, max).forEach(pos -> {
+			placeProxyIfNotPresent(gate, pos);
+			if (!gate.getRenderedTile().isPresent()) {
+				WorldTools.getTile(gate.world, pos, TEGateProxy.class).ifPresent(te -> {
+					te.setRender();
+					gate.setRenderedTile(te);
+				});
 			}
-		}
+		});
 	}
 
 	public void setRenderedTileIfNotPresent(EntityGate gate) {
@@ -333,7 +303,7 @@ public class Gate implements IGateType {
 		}
 		BlockPos min = BlockTools.getMin(gate.pos1, gate.pos2);
 		BlockPos max = BlockTools.getMax(gate.pos1, gate.pos2);
-		BlockPos.getAllInBox(min, max).forEach(pos -> placeProxyIfNotPresent(gate, pos, true));
+		BlockPos.getAllInBox(min, max).forEach(pos -> placeProxyIfNotPresent(gate, pos));
 		Optional<TEGateProxy> renderedTe = StreamSupport.stream(BlockPos.getAllInBox(min, max).spliterator(), false)
 				.map(pos -> WorldTools.getTile(gate.world, pos, TEGateProxy.class)).filter(te -> te.isPresent() && te.get().doesRender()).map(Optional::get).findFirst();
 		if (renderedTe.isPresent()) {
@@ -346,7 +316,7 @@ public class Gate implements IGateType {
 		}
 	}
 
-	private boolean placeProxyIfNotPresent(EntityGate gate, BlockPos pos, boolean openDefault) {
+	private void placeProxyIfNotPresent(EntityGate gate, BlockPos pos) {
 		IBlockState state = gate.world.getBlockState(pos);
 		Block block = state.getBlock();
 		if (block != AWStructureBlocks.GATE_PROXY) {
@@ -354,13 +324,10 @@ public class Gate implements IGateType {
 				block.dropBlockAsItem(gate.world, pos, state, 0);
 			}
 			gate.world.setBlockState(pos, AWStructureBlocks.GATE_PROXY.getDefaultState());
-			WorldTools.getTile(gate.world, pos, TEGateProxy.class).ifPresent(t -> {
-				t.setOwner(gate);
-				t.setOpen(openDefault);
-			});
-			return true;
 		}
-		return false;
+		WorldTools.getTile(gate.world, pos, TEGateProxy.class).ifPresent(t -> {
+			t.setOwner(gate);
+		});
 	}
 
 	/*
@@ -374,7 +341,7 @@ public class Gate implements IGateType {
 				for (int z = min.getZ(); z <= max.getZ(); z++) {
 					BlockPos pos = new BlockPos(x, y, z);
 					if (!world.isAirBlock(pos)) {
-						AncientWarfareStructure.LOG.info("could not create gate for non-air block at: " + x + "," + y + "," + z + " block: " + world.getBlockState(pos).getBlock());
+						AncientWarfareStructure.LOG.info("could not create gate for non-air block at: {},{},{} block: {}", x, y, z, world.getBlockState(pos).getBlock());
 						return Optional.empty();
 					}
 				}

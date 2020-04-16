@@ -23,7 +23,6 @@ public class TEGateProxy extends TileUpdatable implements ITickable {
 	private int clientEntityID = 0;
 	private int noParentTicks = 0;
 	private boolean render = false;
-	private boolean open = false;
 
 	public void setOwner(EntityGate gate) {
 		this.owner = gate;
@@ -40,7 +39,6 @@ public class TEGateProxy extends TileUpdatable implements ITickable {
 			entityID = new UUID(msb, lsb);
 		}
 		render = tag.getBoolean(RENDER_TAG);
-		open = tag.getBoolean("open");
 		markDirty();
 	}
 
@@ -52,7 +50,6 @@ public class TEGateProxy extends TileUpdatable implements ITickable {
 			tag.setLong("lsb", entityID.getLeastSignificantBits());
 		}
 		tag.setBoolean(RENDER_TAG, render);
-		tag.setBoolean("open", open);
 		return tag;
 	}
 
@@ -60,16 +57,12 @@ public class TEGateProxy extends TileUpdatable implements ITickable {
 	protected void writeUpdateNBT(NBTTagCompound tag) {
 		tag.setBoolean(RENDER_TAG, render);
 		tag.setInteger("owner", owner != null ? owner.getEntityId() : 0);
-		tag.setBoolean("open", open);
-		tag.setBoolean("render", render);
 	}
 
 	@Override
 	protected void handleUpdateNBT(NBTTagCompound tag) {
 		render = tag.getBoolean(RENDER_TAG);
 		clientEntityID = tag.getInteger("owner");
-		open = tag.getBoolean("open");
-		render = tag.getBoolean("render");
 	}
 
 	@Override
@@ -134,12 +127,7 @@ public class TEGateProxy extends TileUpdatable implements ITickable {
 		return Optional.ofNullable(owner);
 	}
 
-	public void setOpen(boolean open) {
-		this.open = open;
-		BlockTools.notifyBlockUpdate(this);
-	}
-
 	public boolean isOpen() {
-		return open;
+		return owner == null || !owner.isClosed();
 	}
 }

@@ -42,6 +42,7 @@ import java.util.Optional;
  *
  * @author Shadowmage
  */
+@SuppressWarnings("squid:S2160") // no reason to override equals because the default implementation comparing entityId is enough
 public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IEntityPacketHandler {
 	private static final String HEALTH_TAG = "health";
 	public BlockPos pos1;
@@ -116,7 +117,6 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 		if (world.isRemote || isDead) {
 			return;
 		}
-		gateType.onGateStartOpen(this);//catch gates that have proxy blocks still in the world
 		gateType.onGateStartClose(this);//
 		@Nonnull ItemStack item = Gate.getItemToConstruct(this.gateType.getGlobalID());
 		EntityItem entity = new EntityItem(world, posX, posY + 0.5d, posZ, item);
@@ -129,7 +129,6 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 		super.setDead();
 		if (!this.world.isRemote) {
 			//catch gates that have proxy blocks still in the world
-			gateType.onGateStartOpen(this);
 			gateType.onGateStartClose(this);
 			playSound(gateType.breakSound, 1, 1);
 		}
@@ -142,8 +141,6 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 		}
 		if (op == -1) {
 			this.gateType.onGateStartClose(this);
-		} else if (op == 1) {
-			this.gateType.onGateStartOpen(this);
 		}
 	}
 
@@ -153,10 +150,12 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 		int i = MathHelper.floor(this.posX);
 		int j = MathHelper.floor(this.posZ);
 		int k = MathHelper.floor(this.posY);
-		if (pos1.getY() > k)
+		if (pos1.getY() > k) {
 			k = pos1.getY();
-		if (pos2.getY() > k)
+		}
+		if (pos2.getY() > k) {
 			k = pos2.getY();
+		}
 		return this.world.getCombinedLight(new BlockPos(i, k, j), 0);
 	}
 
@@ -300,8 +299,8 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 			int xSize = max.getX() - min.getX() + 1;
 			int zSize = max.getZ() - min.getZ() + 1;
 			int ySize = max.getY() - min.getY() + 1;
-			int largest = xSize > ySize ? xSize : ySize;
-			largest = largest > zSize ? largest : zSize;
+			int largest = Math.max(xSize, ySize);
+			largest = Math.max(largest, zSize);
 			largest = (largest / 2) + 1;
 			if (World.MAX_ENTITY_RADIUS < largest) {
 				World.MAX_ENTITY_RADIUS = largest;
@@ -424,14 +423,16 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 	@Override
 	public void applyEntityCollision(Entity entity) {
 		super.applyEntityCollision(entity);
-		if (isInside(entity))
+		if (isInside(entity)) {
 			entity.addVelocity(0, -gateStatus * 0.5, 0);
+		}
 	}
 
 	@Override
 	public void onCollideWithPlayer(EntityPlayer entity) {
-		if (isInside(entity))
+		if (isInside(entity)) {
 			entity.addVelocity(0, -gateStatus * 0.5, 0);
+		}
 	}
 
 	private boolean isInside(Entity entity) {

@@ -33,11 +33,11 @@ public class GateRotatingBridge extends Gate {
 		BlockPos max = BlockTools.getMax(gate.pos1, gate.pos2);
 		updateRenderBoundingBox(gate);
 		if (gate.edgePosition == 0) {
-			gate.setEntityBoundingBox(new AxisAlignedBB(min.getX(), min.getY(), min.getZ(), max.getX() + 1, max.getY() + 1, max.getZ() + 1));
+			gate.setEntityBoundingBox(new AxisAlignedBB(min.getX(), min.getY(), min.getZ(), (double) max.getX() + 1, (double) max.getY() + 1, (double) max.getZ() + 1));
 		} else if (gate.edgePosition < gate.edgeMax) {
 			if (!(gate.getEntityBoundingBox() instanceof RotateBoundingBox)) {
 				try {
-					ObfuscationReflectionHelper.setPrivateValue(Entity.class, gate, new RotateBoundingBox(gate.gateOrientation, min, max.add(1, 1, 1)), "boundingBox", "field_70121_D");
+					ObfuscationReflectionHelper.setPrivateValue(Entity.class, gate, new RotateBoundingBox(gate.gateOrientation, min, max.add(1, 1, 1)), "field_70121_D");
 				}
 				catch (Exception ignored) {
 					//noop
@@ -106,16 +106,6 @@ public class GateRotatingBridge extends Gate {
 		max = BlockTools.getMax(max, pos3).add(1, 1, 1);
 		min = BlockTools.getMin(min, pos3);
 		return new AxisAlignedBB(min, max);
-	}
-
-	@Override
-	public void onGateStartOpen(EntityGate gate) {
-		if (gate.world.isRemote) {
-			return;
-		}
-		BlockPos min = BlockTools.getMin(gate.pos1, gate.pos2).add(0, 1, 0);
-		BlockPos max = BlockTools.getMax(gate.pos1, gate.pos2);
-		openBetween(gate.world, min, max);
 	}
 
 	@Override
