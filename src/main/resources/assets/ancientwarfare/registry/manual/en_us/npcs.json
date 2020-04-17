@@ -159,7 +159,7 @@
         },
         {
             "content_type": "text",
-            "text": "The Researcher works at Research Stations, to enable continual research progress without player interaction.  Required equipment is a Quill, of any material level, in the main-hand slot.  Offhand and armor may be configured as desired. Under default configs, the Researcher serves no real purpose, since researches do not require large amounts of power, and the player can easily supply it quickly. However, config options exist to make the researches’ power consumption greater, thus making the Researcher worthwhile."
+            "text": "The Researcher works at the Research Bench, to enable continual research progress without player interaction.  Required equipment is a Quill, of any material level, in the main-hand slot.  Offhand and armor may be configured as desired. Under default configs, the Researcher serves no real purpose, since researches do not require large amounts of power, and the player can easily supply it quickly. However, config options exist to make the researches’ power consumption greater, thus making the Researcher worthwhile."
         },
         {
             "content_type": "item",
@@ -256,7 +256,7 @@
         },
         {
             "content_type": "text",
-            "text": "The Siege Engineer is spawned from its own type of spawner item, which can be crafted in the Engineering Station. The Siege Engineer will automatically pilot nearby Siege Vehicles. It does not need anything in its main hand to perform its function. Offhand, armor slots, and order slots can be set up however you like."
+            "text": "The Siege Engineer is spawned from its own type of spawner item, which can be crafted in the Engineering Bench. The Siege Engineer will automatically pilot nearby Siege Vehicles. It does not need anything in its main hand to perform its function. Offhand, armor slots, and order slots can be set up however you like."
         },
         {
             "content_type": "heading",
@@ -265,7 +265,7 @@
         },
         {
             "content_type": "text",
-            "text": "Each of the Utility NPCs have their own individual spawning item, all of which can be crafted at the Engineering Station with the proper research. The role of these individual NPCs cannot be changed, but some still require certain items in their mainhand to function correctly."
+            "text": "Each of the Utility NPCs have their own individual spawning item, all of which can be crafted at the Engineering Bench with the proper research. The role of these individual NPCs cannot be changed, but some still require certain items in their mainhand to function correctly."
         },
         {
             "content_type": "item",
@@ -306,7 +306,7 @@
         },
         {
             "content_type": "text",
-            "text": "The Trader is a player-configurable mobile bartering station. The trader must be equipped with a Backpack in his main-hand for item storage. Any items to be traded, and proceeds from trades, are stored in this backpack. A Trader must also be equipped with a Trade Orders item in his Orders slot. Through this you may assign him a withdraw and deposit point for his traded goods, assign the specific trades he will have available, the route he should take for trading, and how long he should linger at each stop on his route. The Trader will seek shelter at night or in the rain, he will seek shelter at the nearest waypoint specified in his trade orders item. If a Trader is not equipped with a trade orders item he will fall back to default AI regarding upkeep and night/rain. As an owner of the NPC, right-clicking the Trader will open its usual GUI, so, to see the trades of a trader as another player would see it, use the “Adv. Options” button."
+            "text": "The Trader is a player-configurable mobile bartering npc. The trader must be equipped with a Backpack in his main-hand for item storage. Any items to be traded, and proceeds from trades, are stored in this backpack. A Trader must also be equipped with a Trade Orders item in his Orders slot. Through this you may assign him a withdraw and deposit point for his traded goods, assign the specific trades he will have available, the route he should take for trading, and how long he should linger at each stop on his route. The Trader will seek shelter at night or in the rain, he will seek shelter at the nearest waypoint specified in his trade orders item. If a Trader is not equipped with a trade orders item he will fall back to default AI regarding upkeep and night/rain. As an owner of the NPC, right-clicking the Trader will open its usual GUI, so, to see the trades of a trader as another player would see it, use the “Adv. Options” button."
         },
         {
             "content_type": "item",
