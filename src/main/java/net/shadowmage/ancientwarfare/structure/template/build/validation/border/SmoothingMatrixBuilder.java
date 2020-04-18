@@ -30,14 +30,16 @@ public class SmoothingMatrixBuilder {
 	private SmoothingMatrix smoothingMatrix;
 
 	public SmoothingMatrixBuilder(World world, StructureBB bb, int borderSize) {
-		this(world, bb, borderSize, bb.min.getY() - 1);
+		this(world, bb, borderSize, bb.min.getY() - 1, EnumFacing.SOUTH, null);
 	}
 
-	private SmoothingMatrixBuilder(World world, StructureBB bb, int borderSize, int groundY) {
+	private SmoothingMatrixBuilder(World world, StructureBB bb, int borderSize, int groundY, EnumFacing face, StructureTemplate template) {
 		this.world = world;
 		this.bb = bb;
 		this.borderSize = borderSize;
 		this.groundY = groundY;
+		this.turns = (face.getHorizontalIndex() + 2) % 4;
+		this.template = template;
 
 		BorderMatrix borderMatrix = BorderMatrixCache.getBorderMatrix(bb.getXSize(), bb.getZSize(), borderSize);
 		smoothingMatrix = new SmoothingMatrix(borderMatrix, bb.min, borderSize);
@@ -49,9 +51,7 @@ public class SmoothingMatrixBuilder {
 	}
 
 	public SmoothingMatrixBuilder(World world, StructureBB bb, int borderSize, EnumFacing face, StructureTemplate template) {
-		this(world, bb, borderSize, bb.min.getY() + template.getOffset().getY() - 1);
-		this.turns = (face.getHorizontalIndex() + 2) % 4;
-		this.template = template;
+		this(world, bb, borderSize, bb.min.getY() + template.getOffset().getY() - 1, face, template);
 	}
 
 	private void convertPointsToSmoothingMatrix(int groundY, BorderMatrix borderMatrix, PointType type) {
