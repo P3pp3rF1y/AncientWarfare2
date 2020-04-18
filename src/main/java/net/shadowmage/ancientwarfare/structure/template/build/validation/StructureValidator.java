@@ -160,7 +160,7 @@ public abstract class StructureValidator {
 		}
 
 		//defaulting templates to whitelist overworld dimension if no dimension list provided and set to blacklist
-		if (!validator.isDimensionWhiteList() && validator.getAcceptedDimensions().length == 0) {
+		if (validator.getAcceptedDimensions().length == 0) {
 			validator.setPropertyValue(DIMENSION_WHITE_LIST, true);
 			validator.setPropertyValue(DIMENSION_LIST, new int[] {0});
 		}
