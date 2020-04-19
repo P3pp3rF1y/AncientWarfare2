@@ -66,7 +66,7 @@ public class TileWarehouse extends TileWarehouseBase {
 		}
 
 		ItemStack result = stack.copy();
-		result.shrink(count - addedTotal);
+		result.shrink(addedTotal);
 		return result;
 	}
 
