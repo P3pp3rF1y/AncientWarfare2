@@ -11,10 +11,14 @@ buildscript {
             name = "sonatype"
             url = "https://oss.sonatype.org/content/repositories/snapshots/"
         }
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1+"
+        classpath "com.wynprice.cursemaven:CurseMaven:2.1.1"
     }
 }
 
@@ -22,6 +26,7 @@ plugins {
     id "com.jfrog.bintray" version "1.8.1"
     id "org.sonarqube" version "2.6.2"
     id "maven-publish"
+    id "com.wynprice.cursemaven" version "2.1.1"
 }
 
 // We apply the 'forge' plugin, so ForgeGradle can do it's stuff.
@@ -76,7 +81,7 @@ dependencies {
     deobfCompile "com.feed_the_beast.mods:FTBLib:${ftblib_version}"
     deobfCompile "infinitylib:infinitylib:${infinitylib_version}"
     deobfCompile "agricraft:AgriCraft${agricraft_version}"
-    compile fileTree(include: ['*.jar'], dir: 'libraries')
+    compile "curse.maven:ElectroblobsWizardry:${eb_cf_fileid}"
 }
 
 processResources{

@@ -4,12 +4,10 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
@@ -80,7 +78,7 @@ public class NBTHelper {
 		return ret;
 	}
 
-	public static <T> ArrayList<T> getList(NBTTagList tagList, Function<NBTBase, T> getElement) {
+	public static <T> List<T> getList(NBTTagList tagList, Function<NBTBase, T> getElement) {
 		ArrayList<T> ret = new ArrayList<>();
 		for (NBTBase tag : tagList) {
 			ret.add(getElement.apply(tag));
@@ -127,26 +125,10 @@ public class NBTHelper {
 			}
 		}
 		catch (ClassCastException classcastexception) {
-			AncientWarfareCore.LOG.error("Error casting tag to taglist: ", tag.toString());
+			AncientWarfareCore.LOG.error("Error casting tag to taglist: {}", tag);
 		}
 
 		return new NBTTagList();
-	}
-
-	public static NBTTagList serializeItemStackList(List<ItemStack> stacks) {
-		NBTTagList nbtStacks = new NBTTagList();
-		for (ItemStack stack : stacks) {
-			nbtStacks.appendTag(stack.writeToNBT(new NBTTagCompound()));
-		}
-		return nbtStacks;
-	}
-
-	public static List<ItemStack> deserializeItemStackList(NBTTagList nbtStacks) {
-		List<ItemStack> stacks = NonNullList.create();
-		for (NBTBase nbtStack : nbtStacks) {
-			stacks.add(new ItemStack((NBTTagCompound) nbtStack));
-		}
-		return stacks;
 	}
 
 	public static final Collector<NBTBase, NBTTagList, NBTTagList> NBTLIST_COLLECTOR =
