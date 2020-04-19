@@ -13,6 +13,7 @@ import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.fml.client.config.DummyConfigElement.DummyCategoryElement;
 import net.minecraftforge.fml.client.config.IConfigElement;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -30,6 +31,7 @@ import net.shadowmage.ancientwarfare.npc.gui.GuiCombatOrder;
 import net.shadowmage.ancientwarfare.npc.gui.GuiNpcBard;
 import net.shadowmage.ancientwarfare.npc.gui.GuiNpcCreativeControls;
 import net.shadowmage.ancientwarfare.npc.gui.GuiNpcFactionBard;
+import net.shadowmage.ancientwarfare.npc.gui.GuiNpcFactionSpellcasterWizardry;
 import net.shadowmage.ancientwarfare.npc.gui.GuiNpcFactionTradeSetup;
 import net.shadowmage.ancientwarfare.npc.gui.GuiNpcFactionTradeView;
 import net.shadowmage.ancientwarfare.npc.gui.GuiNpcInventory;
@@ -55,6 +57,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Supplier;
 
 @SideOnly(Side.CLIENT)
 public class NpcClientProxy extends NpcCommonProxy {
@@ -94,6 +97,17 @@ public class NpcClientProxy extends NpcCommonProxy {
 		NetworkHandler.registerGui(NetworkHandler.GUI_NPC_TRADE_ORDER, GuiTradeOrder.class);
 		NetworkHandler.registerGui(NetworkHandler.GUI_NPC_PLAYER_OWNED_TRADE, GuiNpcPlayerOwnedTrade.class);
 		NetworkHandler.registerGui(NetworkHandler.GUI_NPC_FACTION_BARD, GuiNpcFactionBard.class);
+
+		/* optional dependency for EBWizardry spell casters
+		 * References to the EBWizardry specific class can only be here, to avoid class loading if the mod is no present.
+		 * Any reference outside of the lambdas will crash the game if EBWizardry is not present */
+		Supplier<Runnable> registerGuiNpcFactionSpellcasterWizardry = () -> () -> {
+			NetworkHandler.registerGui(NetworkHandler.GUI_NPC_FACTION_SPELLCASTER_WIZARDRY, GuiNpcFactionSpellcasterWizardry.class);
+		};
+
+		if (Loader.isModLoaded("ebwizardry")) {
+			registerGuiNpcFactionSpellcasterWizardry.get().run();
+		}
 
 		RenderingRegistry.registerEntityRenderingHandler(NpcBase.class, RenderNpcBase::new);
 		RenderingRegistry.registerEntityRenderingHandler(NpcFaction.class, RenderNpcFaction::new);

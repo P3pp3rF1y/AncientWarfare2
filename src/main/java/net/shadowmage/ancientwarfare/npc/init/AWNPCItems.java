@@ -69,22 +69,22 @@ public class AWNPCItems {
 
 		registry.register(new ItemBardInstrument("bard_instrument"));
 
-		registry.register(new ItemShield("wooden_shield", Item.ToolMaterial.WOOD));
-		registry.register(new ItemShield("stone_shield", Item.ToolMaterial.WOOD));
-		registry.register(new ItemShield("iron_shield", Item.ToolMaterial.WOOD));
-		registry.register(new ItemShield("gold_shield", Item.ToolMaterial.WOOD));
-		registry.register(new ItemShield("diamond_shield", Item.ToolMaterial.WOOD));
-		registry.register(new ItemShield("shield_tribal_1", Item.ToolMaterial.WOOD));
-		registry.register(new ItemShield("shield_tribal_2", Item.ToolMaterial.WOOD));
-		registry.register(new ItemShield("shield_round_1", Item.ToolMaterial.WOOD));
-		registry.register(new ItemShield("shield_round_2", Item.ToolMaterial.WOOD));
-		registry.register(new ItemShield("shield_round_3", Item.ToolMaterial.WOOD));
-		registry.register(new ItemShield("shield_round_4", Item.ToolMaterial.WOOD));
-		registry.register(new ItemShield("shield_round_5", Item.ToolMaterial.WOOD));
-		registry.register(new ItemShield("shield_round_6", Item.ToolMaterial.WOOD));
-		registry.register(new ItemShield("shield_witchbane_1", Item.ToolMaterial.WOOD));
-		registry.register(new ItemShield("shield_witchbane_2", Item.ToolMaterial.WOOD));
-		registry.register(new ItemShield("shield_buffloka", Item.ToolMaterial.WOOD));
+		registry.register(new ItemShield("wooden_shield", Item.ToolMaterial.WOOD, 336));
+		registry.register(new ItemShield("stone_shield", Item.ToolMaterial.STONE,506));
+		registry.register(new ItemShield("iron_shield", Item.ToolMaterial.IRON,759));
+		registry.register(new ItemShield("gold_shield", Item.ToolMaterial.GOLD,64));
+		registry.register(new ItemShield("diamond_shield", Item.ToolMaterial.DIAMOND,1138));
+		registry.register(new ItemShield("shield_tribal_1", Item.ToolMaterial.WOOD, 336));
+		registry.register(new ItemShield("shield_tribal_2", Item.ToolMaterial.WOOD,336));
+		registry.register(new ItemShield("shield_round_1", Item.ToolMaterial.WOOD,336));
+		registry.register(new ItemShield("shield_round_2", Item.ToolMaterial.WOOD,336));
+		registry.register(new ItemShield("shield_round_3", Item.ToolMaterial.WOOD,336));
+		registry.register(new ItemShield("shield_round_4", Item.ToolMaterial.WOOD,336));
+		registry.register(new ItemShield("shield_round_5", Item.ToolMaterial.WOOD,336));
+		registry.register(new ItemShield("shield_round_6", Item.ToolMaterial.WOOD,336));
+		registry.register(new ItemShield("shield_witchbane_1", Item.ToolMaterial.IRON,759));
+		registry.register(new ItemShield("shield_witchbane_2", Item.ToolMaterial.IRON,759));
+		registry.register(new ItemShield("shield_buffloka", Item.ToolMaterial.WOOD,336));
 
 		registry.register(new ItemWorkOrder());
 		registry.register(new ItemUpkeepOrder());

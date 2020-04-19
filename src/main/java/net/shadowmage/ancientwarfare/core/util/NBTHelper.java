@@ -80,6 +80,14 @@ public class NBTHelper {
 		return ret;
 	}
 
+	public static <T> ArrayList<T> getList(NBTTagList tagList, Function<NBTBase, T> getElement) {
+		ArrayList<T> ret = new ArrayList<>();
+		for (NBTBase tag : tagList) {
+			ret.add(getElement.apply(tag));
+		}
+		return ret;
+	}
+
 	public static Set<String> getStringSet(NBTTagList tagList) {
 		return getSet(tagList, tag -> ((NBTTagString) tag).getString());
 	}

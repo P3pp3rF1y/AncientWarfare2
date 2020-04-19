@@ -76,6 +76,7 @@ dependencies {
     deobfCompile "com.feed_the_beast.mods:FTBLib:${ftblib_version}"
     deobfCompile "infinitylib:infinitylib:${infinitylib_version}"
     deobfCompile "agricraft:AgriCraft${agricraft_version}"
+    compile fileTree(include: ['*.jar'], dir: 'libraries')
 }
 
 processResources{

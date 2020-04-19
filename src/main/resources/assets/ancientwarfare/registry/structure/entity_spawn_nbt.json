@@ -11,6 +11,9 @@
         ],
         "net.shadowmage.ancientwarfare.npc.entity.NpcBase": [
             "skinSettings"
+        ],
+        "net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionSpellcasterWizardry": [
+            "spells"
         ]
     }
 }
