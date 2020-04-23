@@ -31,6 +31,7 @@ import net.shadowmage.ancientwarfare.structure.block.BlockGateProxy;
 import net.shadowmage.ancientwarfare.structure.block.BlockGibbet;
 import net.shadowmage.ancientwarfare.structure.block.BlockGoldenIdol;
 import net.shadowmage.ancientwarfare.structure.block.BlockGoldenThrone;
+import net.shadowmage.ancientwarfare.structure.block.BlockGravestone;
 import net.shadowmage.ancientwarfare.structure.block.BlockIronCage;
 import net.shadowmage.ancientwarfare.structure.block.BlockLootBasket;
 import net.shadowmage.ancientwarfare.structure.block.BlockProtectionFlag;
@@ -62,6 +63,7 @@ import net.shadowmage.ancientwarfare.structure.item.ItemBlockChair;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockCoffin;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockColored;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockFirePit;
+import net.shadowmage.ancientwarfare.structure.item.ItemBlockGravestone;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockPosts;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockProtectionFlag;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockStretchingRack;
@@ -78,6 +80,7 @@ import net.shadowmage.ancientwarfare.structure.tile.TileChair;
 import net.shadowmage.ancientwarfare.structure.tile.TileCoffin;
 import net.shadowmage.ancientwarfare.structure.tile.TileColored;
 import net.shadowmage.ancientwarfare.structure.tile.TileDraftingStation;
+import net.shadowmage.ancientwarfare.structure.tile.TileGravestone;
 import net.shadowmage.ancientwarfare.structure.tile.TileLootBasket;
 import net.shadowmage.ancientwarfare.structure.tile.TileProtectionFlag;
 import net.shadowmage.ancientwarfare.structure.tile.TileSoundBlock;
@@ -142,6 +145,7 @@ public class AWStructureBlocks {
 	public static final Block COIN_STACK_SILVER = InjectionTools.nullValue();
 	public static final Block COIN_STACK_GOLD = InjectionTools.nullValue();
 	public static final Block COIN_STACK_ANCIENT = InjectionTools.nullValue();
+	public static final Block GRAVESTONE = InjectionTools.nullValue();
 
 	@SuppressWarnings("ConstantConditions")
 	@SubscribeEvent
@@ -197,6 +201,7 @@ public class AWStructureBlocks {
 		registry.register(new ItemBlockBase(COIN_STACK_SILVER));
 		registry.register(new ItemBlockBase(COIN_STACK_GOLD));
 		registry.register(new ItemBlockBase(COIN_STACK_ANCIENT));
+		registry.register(new ItemBlockGravestone(GRAVESTONE));
 
 		registerLootContainers();
 	}
@@ -206,6 +211,7 @@ public class AWStructureBlocks {
 		ItemLootChestPlacer.registerLootContainer(new ItemStack(LOOT_BASKET));
 		NonNullList<ItemStack> subBlocks = NonNullList.create();
 		COFFIN.getSubBlocks(AncientWarfareStructure.TAB, subBlocks);
+		GRAVESTONE.getSubBlocks(AncientWarfareStructure.TAB, subBlocks);
 		subBlocks.forEach(ItemLootChestPlacer::registerLootContainer);
 		ItemLootChestPlacer.registerLootContainer(new ItemStack(URN));
 	}
@@ -301,6 +307,9 @@ public class AWStructureBlocks {
 		registry.register(new BlockCoinStack("coin_stack_silver", ItemCoin.CoinMetal.SILVER));
 		registry.register(new BlockCoinStack("coin_stack_gold", ItemCoin.CoinMetal.GOLD));
 		registry.register(new BlockCoinStack("coin_stack_ancient", ItemCoin.CoinMetal.ANCIENT));
+
+		registry.register(new BlockGravestone());
+		registerTile(TileGravestone.class, "gravestone_tile");
 	}
 
 	private static void registerTile(Class<? extends TileEntity> teClass, String teId) {

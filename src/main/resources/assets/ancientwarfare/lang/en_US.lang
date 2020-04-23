@@ -293,6 +293,14 @@ tile.coin_stack_copper.name=Copper Owl Stack
 tile.coin_stack_silver.name=Silver Stag Stack
 tile.coin_stack_gold.name=Gold Dragon Stack
 tile.coin_stack_ancient.name=Ancient Coin Stack
+tile.gravestone.1.name=Gravestone
+tile.gravestone.2.name=Mossy Gravestone
+tile.gravestone.3.name=Gravestone
+tile.gravestone.4.name=Mossy Gravestone
+tile.gravestone.5.name=Sandstone Gravestone
+tile.gravestone.6.name=Runestone
+tile.gravestone.7.name=Runestone
+tile.gravestone.8.name=Runestone
 
 #colors
 black=Black
@@ -549,6 +557,8 @@ guistrings.loot_placer.potion=Potion
 guistrings.loot_placer.strength=Strength
 guistrings.loot_placer.duration=Duration (s)
 guistring.loot_placer.entity_nbt=Entity NBT
+guistrings.loot_placer.player_message=Player Message
+guistrings.loot_placer.message=Message
 guistrings.stake.show_entity=Show Entity
 guistrings.stake.entity_on_fire=Entity On Fire
 guistrings.stake.burns=Burns
