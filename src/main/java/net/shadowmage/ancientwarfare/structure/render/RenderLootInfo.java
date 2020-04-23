@@ -57,7 +57,12 @@ public class RenderLootInfo<T extends TileEntity & ISpecialLootContainer> extend
 				if (lt.isPresent()) {
 					String str = te.getLootSettings().getLootRolls() + " x " + lt.get().toString();
 					renderString((float) x, (float) y + verticalOffset, (float) z, f, f1, 0, str);
+					verticalOffset += 0.3;
 				}
+			}
+
+			if (lootSettings.hasMessage()) {
+				renderString((float) x, (float) y + verticalOffset, (float) z, f, f1, 0, "Message: \"" + lootSettings.getPlayerMessage() + "\"");
 			}
 		}
 	}

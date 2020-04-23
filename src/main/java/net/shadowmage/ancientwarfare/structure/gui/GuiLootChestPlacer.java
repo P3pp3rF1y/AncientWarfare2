@@ -39,6 +39,7 @@ public class GuiLootChestPlacer extends GuiContainerBase<ContainerLootChestPlace
 
 	private Checkbox setLootTable;
 	private Checkbox splashPotion;
+	private Checkbox playerMessage;
 
 	public GuiLootChestPlacer(ContainerBase container) {
 		super(container, FORM_WIDTH, FORM_HEIGHT);
@@ -91,7 +92,7 @@ public class GuiLootChestPlacer extends GuiContainerBase<ContainerLootChestPlace
 			}
 		});
 
-		return totalHeight;
+		return totalHeight + 16;
 	}
 
 	private int addSetLootTableElements(int totalHeight) {
@@ -164,6 +165,19 @@ public class GuiLootChestPlacer extends GuiContainerBase<ContainerLootChestPlace
 			});
 			totalHeight += 16;
 		}
+		return totalHeight;
+	}
+
+	private int addPlayerMessageElements(int totalHeight) {
+		int x = 28;
+		addGuiElement(new Label(x, totalHeight + 2, "guistrings.loot_placer.message"));
+		addGuiElement(new Text(x + 60, totalHeight, 190, getLootSetting(s -> s.getPlayerMessage()).orElse(""), this) {
+			@Override
+			public void onTextUpdated(String oldText, String newText) {
+				setLootSettings(s -> s.setPlayerMessage(newText));
+			}
+		});
+
 		return totalHeight;
 	}
 
@@ -251,10 +265,15 @@ public class GuiLootChestPlacer extends GuiContainerBase<ContainerLootChestPlace
 					}
 				}
 			};
+			button.addTooltip(container.getDisplayName()); // tooltip for hovering loot items
 			button.setToggled(ItemStack.areItemStacksEqual(container, selectedStack));
 			stackToggles.add(button);
 			addGuiElement(button);
 			x += 24;
+			if (x >= 296) { // shift loot items a row down if the line is full, 12 fits in with FORM_WIDTH = 300
+				x = 8;
+				totalHeight = +40;
+			}
 		}
 		if (selectedStack.isEmpty() && !stackToggles.isEmpty()) {
 			stackToggles.iterator().next().setToggled(true);
@@ -315,5 +334,21 @@ public class GuiLootChestPlacer extends GuiContainerBase<ContainerLootChestPlace
 		if (spawnEntity.checked()) {
 			totalHeight = addSpawnEntityElements(totalHeight);
 		}
+
+		playerMessage = new Checkbox(8, totalHeight, 16, 16, "guistrings.loot_placer.player_message") {
+			@Override
+			public void onToggled() {
+				setLootSettings(settings -> settings.setHasMessage(playerMessage.checked()));
+				refreshGui();
+			}
+		};
+		playerMessage.setChecked(getLootSetting(LootSettings::hasMessage).orElse(false));
+		addGuiElement(playerMessage); // add the checkbox
+		totalHeight += 20;
+
+		if (playerMessage.checked()) {
+			totalHeight = addPlayerMessageElements(totalHeight); // display message elements if checkbox is checked
+		}
+
 	}
 }
