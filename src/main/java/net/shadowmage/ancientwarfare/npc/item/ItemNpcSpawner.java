@@ -78,11 +78,13 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 	}
 
 	private static Optional<String> getNpcDisplayNameFromTag(ItemStack stack) {
-		if (stack.hasTagCompound() && stack.getTagCompound().hasKey(NPC_STORED_DATA_TAG) &&
-				stack.getTagCompound().getCompoundTag(NPC_STORED_DATA_TAG).hasKey("name")) {
-			return Optional.of(stack.getTagCompound().getCompoundTag(NPC_STORED_DATA_TAG).getString("name"));
-		} else
-			return Optional.empty();
+		if (stack.hasTagCompound()) {
+			NBTTagCompound tag = stack.getTagCompound();
+			if (tag.hasKey(NPC_STORED_DATA_TAG) && tag.getCompoundTag(NPC_STORED_DATA_TAG).hasKey("name")) {
+				return Optional.of(tag.getCompoundTag(NPC_STORED_DATA_TAG).getString("name"));
+			}
+		}
+		return Optional.empty();
 	}
 
 	@Override

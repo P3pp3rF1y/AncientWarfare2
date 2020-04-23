@@ -106,7 +106,7 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
 		area.clearElements();
 		addInventoryViewElements();
 		storedLabel.setText(I18n.format("guistrings.warehouse.storage", getContainer().currentStored, getContainer().maxStorage));
-		storedLabel.setColor((getContainer().currentStored == getContainer().maxStorage) ? Color.RED.getRGB() : 4210752); // red if full, gray otherwise
+		storedLabel.setColor(getContainer().isWarehouseFull() ? Color.RED.getRGB() : 4210752);
 	}
 
 	private void addInventoryViewElements() {

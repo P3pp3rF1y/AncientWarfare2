@@ -67,12 +67,6 @@ public class AWVehicleStatics extends ModConfiguration {
 
 	public static class GeneralSettings {
 
-		// unused
-		//	@Config.Name("fire_block_break_events")
-		//	@Config.Comment("")
-		//	@Config.Ignore // unused
-		//	public boolean fireBlockBreakEvents = true;
-
 		@Config.Name("oversize_ammo_enabled")
 		@Config.Comment("Determines whether over sized ammunition (30kg, 45kg) can be fired from the regular sized vehicles (e.g. not the Giant Trebuchet)\n" + ClientAndServerSideNote)
 		@Config.RequiresMcRestart
@@ -148,8 +142,6 @@ public class AWVehicleStatics extends ModConfiguration {
 		@Config.Comment("Determines whether to show the advanced vehicle info overlay while driving a vehicle.")
 		public boolean renderAdvOverlay = true;
 
-		//	@Config.Name("enable_mouse_aim")
-		//	@Config.Comment("enableMouseAim comment")
 		@Config.Ignore // TODO: this probably needs code changes, unused now
 		public boolean enableMouseAim = true;
 	}
@@ -218,8 +210,6 @@ public class AWVehicleStatics extends ModConfiguration {
 		@Config.Comment("Hwacha Rocket Explosive Damage")
 		@Config.RangeInt(min = 1, max = 80)
 		public int ammoHwachaRocketExplosiveDamage = 4;
-
-		//		TODO hp config for all
 
 		@Config.Name("vehicle_ballista_health")
 		@Config.Comment("Determines the health of the Ballista vehicles (mobile fixed, stand turret and stand fixed)")
