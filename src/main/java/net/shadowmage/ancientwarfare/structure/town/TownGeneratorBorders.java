@@ -17,13 +17,14 @@ import java.util.Optional;
 
 public class TownGeneratorBorders {
 	private static final int CLEAR_TREE_MAX_BORDER_DISTANCE = 10;
+	public static final int MAX_BORDER_WIDTH = 20;
 
 	private TownGeneratorBorders() {}
 
 	public static void generateBorders(World world, StructureBB exterior) {
 		BlockTools.getAllInBoxTopDown(exterior.min, exterior.max.add(0, 50, 0)).forEach(pos -> handleClearing(world, pos));
 
-		new SmoothingMatrixBuilder(world, exterior, Math.max(exterior.getXSize(), exterior.getZSize()) / 8).build()
+		new SmoothingMatrixBuilder(world, exterior, Math.min(Math.max(exterior.getXSize(), exterior.getZSize()) / 8, MAX_BORDER_WIDTH)).build()
 				.apply(world, pos -> handleClearing(world, pos));
 	}
 

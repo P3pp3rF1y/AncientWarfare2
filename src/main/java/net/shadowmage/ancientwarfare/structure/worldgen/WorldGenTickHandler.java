@@ -84,12 +84,14 @@ public final class WorldGenTickHandler {
 	}
 
 	private void genTowns() {
-		if (!townChunksToGen.isEmpty()) {
+		int countGenerated = 0;
+		while (!townChunksToGen.isEmpty() && countGenerated < 20) {
 			ChunkGenerationTicket tk = townChunksToGen.remove(0);
 			World world = tk.getWorld();
 			if (world != null) {
 				WorldTownGenerator.INSTANCE.attemptGeneration(world, tk.chunkX * 16, tk.chunkZ * 16);
 			}
+			countGenerated++;
 		}
 		if (!newTownGenTickets.isEmpty()) {
 			townChunksToGen.addAll(newTownGenTickets);
@@ -138,7 +140,7 @@ public final class WorldGenTickHandler {
 	private static final class StructureGenerationTicket implements StructureTicket {
 		private final StructureBuilder builder;
 
-		public StructureGenerationTicket(StructureBuilder builder) {
+		private StructureGenerationTicket(StructureBuilder builder) {
 			this.builder = builder;
 		}
 

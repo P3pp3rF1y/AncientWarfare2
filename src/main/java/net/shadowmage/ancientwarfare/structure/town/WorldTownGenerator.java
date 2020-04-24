@@ -44,26 +44,23 @@ public class WorldTownGenerator implements IWorldGenerator {
 			return;
 		}
 
-		TownBoundingArea area = TownPlacementValidator.findGenerationPosition(world, blockX, blockZ);
-		if (area == null) {
-			return;
-		}
-
-		Optional<TownTemplate> t = TownTemplateManager.INSTANCE.selectTemplateFittingArea(world, area, templates);
-		if (!t.isPresent()) {
-			return;
-		}
-		TownTemplate template = t.get();
-		if (area.getChunkWidth() - 1 > template.getMaxSize())//shrink width down to town max size
+		TownPlacementValidator.findGenerationPosition(world, blockX, blockZ).ifPresent(area ->
 		{
-			area.chunkMaxX = area.chunkMinX + template.getMaxSize();
-		}
-		if (area.getChunkLength() - 1 > template.getMaxSize())//shrink length down to town max size
-		{
-			area.chunkMaxZ = area.chunkMinZ + template.getMaxSize();
-		}
-		generate(world, area, template);
-
+			Optional<TownTemplate> t = TownTemplateManager.INSTANCE.selectTemplateFittingArea(world, area, templates);
+			if (!t.isPresent()) {
+				return;
+			}
+			TownTemplate template = t.get();
+			if (area.getChunkWidth() - 1 > template.getMaxSize())//shrink width down to town max size
+			{
+				area.chunkMaxX = area.chunkMinX + template.getMaxSize();
+			}
+			if (area.getChunkLength() - 1 > template.getMaxSize())//shrink length down to town max size
+			{
+				area.chunkMaxZ = area.chunkMinZ + template.getMaxSize();
+			}
+			generate(world, area, template);
+		});
 	}
 
 	public void generate(World world, TownBoundingArea area, TownTemplate template) {
