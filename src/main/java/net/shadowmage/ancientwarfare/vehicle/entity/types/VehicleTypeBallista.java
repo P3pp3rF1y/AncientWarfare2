@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.vehicle.entity.types;
 
 import net.shadowmage.ancientwarfare.vehicle.VehicleVarHelpers.BallistaVarHelper;
+import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.materials.VehicleMaterial;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
@@ -21,6 +22,7 @@ public abstract class VehicleTypeBallista extends VehicleType {
 
 		vehicleMaterial = VehicleMaterial.materialWood;
 		materialCount = 5;
+		baseHealth = AWVehicleStatics.vehicleStats.vehicleBallistaHealth;
 
 		maxMissileWeight = 2.f;
 

@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.vehicle.entity.types;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.materials.VehicleMaterial;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
@@ -18,7 +19,7 @@ public class VehicleTypeTrebuchetLarge extends VehicleType {
 		vehicleMaterial = VehicleMaterial.materialWood;
 		materialCount = 20;
 		maxMissileWeight = 30.f;
-		baseHealth = 175;
+		baseHealth = AWVehicleStatics.vehicleStats.vehicleGiantTrebuchetHealth;
 		validAmmoTypes.add(AmmoRegistry.ammoStoneShot10);
 		validAmmoTypes.add(AmmoRegistry.ammoStoneShot15);
 		validAmmoTypes.add(AmmoRegistry.ammoFireShot10);
@@ -130,7 +131,7 @@ public class VehicleTypeTrebuchetLarge extends VehicleType {
 
 	@Override
 	public void playReloadSound(VehicleBase vehicleBase) {
-		vehicleBase.playSound(AWVehicleSounds.TREBUCHET_RELOAD, 2, 1);
+		vehicleBase.playSound(AWVehicleSounds.TREBUCHET_RELOAD, 1, 1);
 	}
 
 	public class TrebuchetLargeVarHelper extends VehicleFiringVarsHelper {

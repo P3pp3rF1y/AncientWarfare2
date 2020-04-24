@@ -25,11 +25,13 @@ public class GuiSelectFromList<T> extends GuiContainerBase {
 
 	public GuiSelectFromList(GuiContainerBase parent, @Nullable T entry, Function<T, String> getDisplayName, Supplier<List<T>> getList, Consumer<T> setEntry) {
 		this(parent, entry, getDisplayName, getList, setEntry, true);
+		this.xSize = 350;
 	}
 
 	public GuiSelectFromList(GuiContainerBase parent,
 			@Nullable T entry, Function<T, String> getDisplayName, Supplier<List<T>> getList, Consumer<T> setEntry, boolean showFilter) {
 		this(parent, entry, getDisplayName, getList, setEntry, showFilter, parent.getContainer());
+		this.xSize = 350;
 	}
 
 	public GuiSelectFromList(GuiContainerBase parent, @Nullable
@@ -41,12 +43,13 @@ public class GuiSelectFromList<T> extends GuiContainerBase {
 		this.getList = getList;
 		this.setEntry = setEntry;
 		this.showFilter = showFilter;
+		this.xSize = 350;
 	}
 
 	@Override
 	public void initElements() {
 		if (showFilter) {
-			selectionLabel = new Text(8, 30, 240, getDisplayName.apply(entry), this) {
+			selectionLabel = new Text(8, 30, 350 - 8 - 16, getDisplayName.apply(entry), this) {
 				@Override
 				protected void handleKeyInput(int keyCode, char ch) {
 					String old = getText();
@@ -65,7 +68,7 @@ public class GuiSelectFromList<T> extends GuiContainerBase {
 			addGuiElement(selectionLabel);
 		}
 
-		area = new CompositeScrolled(this, 0, 40, 256, 200);
+		area = new CompositeScrolled(this, 0, 40, 350, 200);
 		addGuiElement(area);
 	}
 
@@ -75,7 +78,7 @@ public class GuiSelectFromList<T> extends GuiContainerBase {
 		int totalHeight = 8;
 		Button button;
 		for (T listEntry : getFilteredList()) {
-			button = new Button(8, totalHeight, 256 - 8 - 16, 12, getDisplayName.apply(listEntry)) {
+			button = new Button(8, totalHeight, 350 - 8 - 16, 12, getDisplayName.apply(listEntry)) {
 				@Override
 				protected void onPressed() {
 					setEntry.accept(listEntry);

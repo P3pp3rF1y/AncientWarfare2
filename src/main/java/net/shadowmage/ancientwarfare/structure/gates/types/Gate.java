@@ -16,6 +16,7 @@ import net.shadowmage.ancientwarfare.core.owner.Owner;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
+import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.entity.DualBoundingBox;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.gates.IGateType;
@@ -33,16 +34,16 @@ public class Gate implements IGateType {
 
 	private static final Gate[] gateTypes = new Gate[16];
 
-	private static final Gate basicWood = new Gate(0, "_wood_1.png", AWStructureSounds.WOODEN_GATE, SoundEvents.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD, AWStructureSounds.WOODEN_GATE_BREAK).setName("gateBasicWood").setVariant(Variant.WOOD_BASIC);
-	private static final Gate basicIron = new Gate(1, "_iron_1.png", AWStructureSounds.IRON_GATE, SoundEvents.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, AWStructureSounds.IRON_GATE_BREAK).setName("gateBasicIron").setVariant(Variant.IRON_BASIC).setModel(1);
+	private static final Gate basicWood = new Gate(0, "_wood_1.png", AWStructureSounds.WOODEN_GATE, SoundEvents.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD, AWStructureSounds.WOODEN_GATE_BREAK, AWStructureStatics.gateVerticalWoodenMaxHealth).setName("gateBasicWood").setVariant(Variant.WOOD_BASIC);
+	private static final Gate basicIron = new Gate(1, "_iron_1.png", AWStructureSounds.IRON_GATE, SoundEvents.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, AWStructureSounds.IRON_GATE_BREAK, AWStructureStatics.gateVerticalIronMaxHealth).setName("gateBasicIron").setVariant(Variant.IRON_BASIC).setModel(1);
 
-	private static final Gate singleWood = new GateSingle(4, "_wood_1.png", AWStructureSounds.WOODEN_GATE, SoundEvents.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD, AWStructureSounds.WOODEN_GATE_BREAK).setName("gateSingleWood").setVariant(Variant.WOOD_SINGLE);
-	private static final Gate singleIron = new GateSingle(5, "_iron_1.png", AWStructureSounds.IRON_GATE, SoundEvents.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, AWStructureSounds.IRON_GATE_BREAK).setName("gateSingleIron").setVariant(Variant.IRON_SINGLE).setModel(1);
+	private static final Gate singleWood = new GateSingle(4, "_wood_1.png", AWStructureSounds.WOODEN_GATE, SoundEvents.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD, AWStructureSounds.WOODEN_GATE_BREAK, AWStructureStatics.gateSingleWoodMaxHealth).setName("gateSingleWood").setVariant(Variant.WOOD_SINGLE);
+	private static final Gate singleIron = new GateSingle(5, "_iron_1.png", AWStructureSounds.IRON_GATE, SoundEvents.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, AWStructureSounds.IRON_GATE_BREAK, AWStructureStatics.gateSingleIronMaxHealth).setName("gateSingleIron").setVariant(Variant.IRON_SINGLE).setModel(1);
 
-	private static final Gate doubleWood = new GateDouble(8, "_wood_1.png", AWStructureSounds.WOODEN_GATE, SoundEvents.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD, AWStructureSounds.WOODEN_GATE_BREAK).setName("gateDoubleWood").setVariant(Variant.WOOD_DOUBLE);
-	private static final Gate doubleIron = new GateDouble(9, "_iron_1.png", AWStructureSounds.IRON_GATE, SoundEvents.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, AWStructureSounds.IRON_GATE_BREAK).setName("gateDoubleIron").setVariant(Variant.IRON_DOUBLE).setModel(1);
+	private static final Gate doubleWood = new GateDouble(8, "_wood_1.png", AWStructureSounds.WOODEN_GATE, SoundEvents.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD, AWStructureSounds.WOODEN_GATE_BREAK, AWStructureStatics.gateDoubleWoodMaxHealth).setName("gateDoubleWood").setVariant(Variant.WOOD_DOUBLE);
+	private static final Gate doubleIron = new GateDouble(9, "_iron_1.png", AWStructureSounds.IRON_GATE, SoundEvents.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, AWStructureSounds.IRON_GATE_BREAK, AWStructureStatics.gateDoubleIronMaxHealth).setName("gateDoubleIron").setVariant(Variant.IRON_DOUBLE).setModel(1);
 
-	private static final Gate rotatingBridge = new GateRotatingBridge(12, "_bridge_wood_1.png", AWStructureSounds.WOODEN_GATE, SoundEvents.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD, AWStructureSounds.WOODEN_GATE_BREAK);
+	private static final Gate rotatingBridge = new GateRotatingBridge(12, "_bridge_wood_1.png", AWStructureSounds.WOODEN_GATE, SoundEvents.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD, AWStructureSounds.WOODEN_GATE_BREAK, AWStructureStatics.drawbridgeMaxHealth);
 
 	private static final HashMap<String, Integer> gateIDByName = new HashMap<>();
 
@@ -98,7 +99,7 @@ public class Gate implements IGateType {
 	/*
 	 *
 	 */
-	public Gate(int id, String textureLocation, SoundEvent moveSound, SoundEvent hurtSound, SoundEvent breakSound) {
+	public Gate(int id, String textureLocation, SoundEvent moveSound, SoundEvent hurtSound, SoundEvent breakSound, int maxHealth) {
 		this.globalID = id;
 		this.tooltip = "item.gate." + id + ".tooltip";
 		if (id >= 0 && id < gateTypes.length && gateTypes[id] == null) {
@@ -110,6 +111,7 @@ public class Gate implements IGateType {
 		this.moveSound = moveSound;
 		this.hurtSound = hurtSound;
 		this.breakSound = breakSound;
+		this.maxHealth = maxHealth;
 	}
 
 	protected final Gate setName(String name) {

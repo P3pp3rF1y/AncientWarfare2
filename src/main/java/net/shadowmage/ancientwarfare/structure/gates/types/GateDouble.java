@@ -11,8 +11,9 @@ public class GateDouble extends Gate {
 	 * @param id
 	 * @param textureLocation
 	 */
-	public GateDouble(int id, String textureLocation, SoundEvent moveSound, SoundEvent hurtSound, SoundEvent breakSound) {
-		super(id, textureLocation, moveSound, hurtSound, breakSound);
+
+	public GateDouble(int id, String textureLocation, SoundEvent moveSound, SoundEvent hurtSound, SoundEvent breakSound, int maxHealth) {
+		super(id, textureLocation, moveSound, hurtSound, breakSound, maxHealth);
 	}
 
 	@Override

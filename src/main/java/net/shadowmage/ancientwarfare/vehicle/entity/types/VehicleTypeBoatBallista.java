@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.vehicle.entity.types;
 import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.vehicle.VehicleVarHelpers.BallistaVarHelper;
+import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleMovementType;
 import net.shadowmage.ancientwarfare.vehicle.entity.materials.VehicleMaterial;
@@ -16,6 +17,7 @@ public class VehicleTypeBoatBallista extends VehicleType {
 	public VehicleTypeBoatBallista(int typeNum) {
 		super(typeNum);
 		configName = "boat_ballista";
+		baseHealth = AWVehicleStatics.vehicleStats.vehicleBallistaBoatHealth;
 		vehicleMaterial = VehicleMaterial.materialWood;
 		materialCount = 5;
 		movementType = VehicleMovementType.WATER;

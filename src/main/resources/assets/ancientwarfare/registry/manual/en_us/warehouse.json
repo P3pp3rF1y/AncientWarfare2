@@ -10,7 +10,7 @@
         },
         {
             "content_type": "text",
-            "text": "The Warehouse is meant as an upgradeable self-sorting and auto-organizing mass item storage area. It has work bounds like other Worksites, but is also a Multi-block structure in that it requires other blocks for its functionality. The Warehouse comprises four different types of blocks – the Warehouse Control Block, Warehouse Storage blocks, Warehouse Interface blocks, and Warehouse Stock Viewer Signs. Additionally there is a Warehouse Crafting Station to allow a Player to use items directly from the warehouse for crafting. \n \n \n"
+            "text": "The Warehouse is meant as an upgradeable self-sorting and auto-organizing mass item storage area. It has work bounds like other Worksites, but is also a Multi-block structure in that it requires other blocks for its functionality. The Warehouse comprises four different types of blocks – the Warehouse Control Block, Warehouse Storage blocks, Warehouse Interface blocks, and Warehouse Stock Viewer Signs. Additionally there is a Warehouse Crafting Table to allow a Player to use items directly from the warehouse for crafting. \n \n \n"
         },
         {
             "content_type": "item",
@@ -70,12 +70,12 @@
         },
         {
             "content_type": "heading",
-            "text": "Crafting Station",
+            "text": "Crafting Table",
             "level": 2
         },
         {
             "content_type": "text",
-            "text": "The Warehouse Crafting Station must be placed on top of a Warehouse Control block (not within the bounds), and works with materials from a single Warehouse. Like other crafting stations, the recipe may be laid out in the recipe grid. Results may be pulled from the result slot. Any resources needed from crafting will be pulled from the Warehouse’s Storage blocks. \n \n \n "
+            "text": "The Warehouse Crafting Table must be placed on top of a Warehouse Control block (not within the bounds), and works with materials from a single Warehouse. Like other crafting benches and tables in the mod, the recipe may be laid out in the recipe grid. Results may be pulled from the result slot. Any resources needed from crafting will be pulled from the Warehouse’s Storage blocks. \n \n \n "
         },
         {
             "content_type": "item",

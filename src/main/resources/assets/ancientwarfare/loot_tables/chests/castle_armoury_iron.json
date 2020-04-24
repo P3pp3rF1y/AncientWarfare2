@@ -3,8 +3,8 @@
         {
             "name":"main", 
             "rolls": {
-                "min": 3,
-                "max": 4
+                "min": 2,
+                "max": 3
             },
             "entries": [
                 {

@@ -16,8 +16,8 @@ public class GateRotatingBridge extends Gate {
 	/*
 	 * @param id
 	 */
-	public GateRotatingBridge(int id, String tex, SoundEvent moveSound, SoundEvent hurtSound, SoundEvent breakSound) {
-		super(id, tex, moveSound, hurtSound, breakSound);
+	public GateRotatingBridge(int id, String tex, SoundEvent moveSound, SoundEvent hurtSound, SoundEvent breakSound, int maxHealth) {
+		super(id, tex, moveSound, hurtSound, breakSound, maxHealth);
 		setName("gateDrawbridge");
 		this.moveSpeed = 1.f;
 		this.canSoldierInteract = false;

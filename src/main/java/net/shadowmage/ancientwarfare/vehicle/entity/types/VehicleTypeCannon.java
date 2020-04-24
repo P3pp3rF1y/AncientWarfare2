@@ -17,6 +17,7 @@ public class VehicleTypeCannon extends VehicleType {
 	public VehicleTypeCannon(int typeNum) {
 		super(typeNum);
 		configName = "cannon_base";
+		baseHealth = AWVehicleStatics.vehicleStats.vehicleCannonHealth;
 		vehicleMaterial = VehicleMaterial.materialIron;
 		materialCount = 5;
 		maxMissileWeight = 10.f;
@@ -28,7 +29,7 @@ public class VehicleTypeCannon extends VehicleType {
 		validAmmoTypes.add(AmmoRegistry.ammoCanisterShot5);
 		validAmmoTypes.add(AmmoRegistry.ammoCanisterShot10);
 
-		if (AWVehicleStatics.oversizeAmmoEnabled) {
+		if (AWVehicleStatics.generalSettings.oversizeAmmoEnabled) {
 			validAmmoTypes.add(AmmoRegistry.ammoIronShot15);
 			validAmmoTypes.add(AmmoRegistry.ammoIronShot25);
 			validAmmoTypes.add(AmmoRegistry.ammoGrapeShot15);

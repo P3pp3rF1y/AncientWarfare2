@@ -183,4 +183,8 @@ public class ContainerWarehouseControl extends ContainerTileBase<TileWarehouse> 
 		tag.setByte(SORT_ORDER_TAG, (byte) sortOrder.ordinal());
 		sendDataToServer(tag);
 	}
+
+	public boolean isWarehouseFull() {
+		return currentStored == maxStorage;
+	}
 }

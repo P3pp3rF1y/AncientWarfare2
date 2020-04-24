@@ -131,7 +131,7 @@ public interface IVehicleType {
 
 	ItemStack getStackForLevel(int level);
 
-	IAmmo getAmmoForSoldierRank(int rank);//what ammo type should soldiers use if !Config.soldiersUseAmmo
+	IAmmo getAmmoForSoldierRank(int rank);//what ammo type should soldiers use if !Config.ownedSoldiersUseAmmo
 
 	String getIconTexture();
 

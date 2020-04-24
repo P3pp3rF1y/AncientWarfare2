@@ -42,6 +42,14 @@ public class AWStructureStatics extends ModConfiguration {
 	private static HashSet<String> worldGenTargetBlocks = new HashSet<>();
 	private static HashSet<String> scannerSkippedBlocks = new HashSet<>();
 
+	public static int gateVerticalWoodenMaxHealth = 80;
+	public static int gateVerticalIronMaxHealth = 80;
+	public static int gateSingleWoodMaxHealth = 80;
+	public static int gateSingleIronMaxHealth = 80;
+	public static int gateDoubleWoodMaxHealth = 80;
+	public static int gateDoubleIronMaxHealth = 80;
+	public static int drawbridgeMaxHealth = 80;
+
 	private static final String worldGenCategory = "a_world-gen_settings";
 	private static final String villageGenCategory = "b_village-gen_settings";
 	private static final String excludedEntitiesCategory = "c_excluded_spawner_entities";
@@ -75,6 +83,14 @@ public class AWStructureStatics extends ModConfiguration {
 
 		townClosestDistance = config.get(worldGenCategory, "town_min_distance", townClosestDistance, "Default=" + townClosestDistance + "\n" + "Minimum distance between towns.  This should be set to a value quite a bit larger than the largest town" + "that you have configured for generation.  E.G.  Max town size=16, this value should be >= 40.").getInt(townClosestDistance);
 		townGenerationChance = (float) config.get(worldGenCategory, "town_generation_chance", townGenerationChance, "Default=" + townGenerationChance + "\n" + "Accepts values between 0 and 1.0.  Decimal percent chance to -attempt- town generation for any given chunk.  Higher settings may result in" + "more towns being generated, but may come with a performance hit during new chunk generation.  Lower values WILL result in fewer towns, and" + "-may- improve performance during chunk generation.").getDouble(townGenerationChance);
+
+		duplicateStructureSearchRange = config.get(worldGenCategory, "gate_vertical_wooden_max_health", gateVerticalWoodenMaxHealth, "Default=" + gateVerticalWoodenMaxHealth + "\n" + "Determines the maximum health of the Vertical Wooden Gate.").getInt(gateVerticalWoodenMaxHealth);
+		duplicateStructureSearchRange = config.get(worldGenCategory, "gate_vertical_iron_max_health", gateVerticalIronMaxHealth, "Default=" + gateVerticalIronMaxHealth + "\n" + "Determines the maximum health of the Vertical Iron Gate.").getInt(gateVerticalIronMaxHealth);
+		duplicateStructureSearchRange = config.get(worldGenCategory, "gate_single_wood_max_health", gateSingleWoodMaxHealth, "Default=" + gateSingleWoodMaxHealth + "\n" + "Determines the maximum health of the Single Wood Gate.").getInt(gateSingleWoodMaxHealth);
+		duplicateStructureSearchRange = config.get(worldGenCategory, "gate_single_iron_max_health", gateSingleIronMaxHealth, "Default=" + gateSingleIronMaxHealth + "\n" + "Determines the maximum health of the Single Iron Gate.").getInt(gateSingleIronMaxHealth);
+		duplicateStructureSearchRange = config.get(worldGenCategory, "gate_double_wood_max_health", gateDoubleWoodMaxHealth, "Default=" + gateDoubleWoodMaxHealth + "\n" + "Determines the maximum health of the Double Wood Gate.").getInt(gateDoubleWoodMaxHealth);
+		duplicateStructureSearchRange = config.get(worldGenCategory, "gate_double_iron_max_health", gateDoubleIronMaxHealth, "Default=" + gateDoubleIronMaxHealth + "\n" + "Determines the maximum health of the Double Iron Gate.").getInt(gateDoubleIronMaxHealth);
+		duplicateStructureSearchRange = config.get(worldGenCategory, "drawbridge_max_health", drawbridgeMaxHealth, "Default=" + drawbridgeMaxHealth + "\n" + "Determines the maximum health of the Drawbridge.").getInt(drawbridgeMaxHealth);
 
 		initializeDefaultSkippableBlocks();
 		initializeDefaultSkippedEntities();

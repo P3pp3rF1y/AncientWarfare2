@@ -6,6 +6,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.init.AWVehicleSounds;
 
 public class AmmoBallistaBoltFlame extends Ammo {
@@ -14,8 +15,8 @@ public class AmmoBallistaBoltFlame extends Ammo {
 		super("ammo_ballista_bolt_flame");
 		ammoWeight = 2.2f;
 		renderScale = 0.3f;
-		vehicleDamage = 16;
-		entityDamage = 16;
+		vehicleDamage = AWVehicleStatics.vehicleStats.ammoBallistaBoltFlameDamage;
+		entityDamage = AWVehicleStatics.vehicleStats.ammoBallistaBoltFlameDamage;
 		isArrow = true;
 		isRocket = false;
 		isPersistent = true;

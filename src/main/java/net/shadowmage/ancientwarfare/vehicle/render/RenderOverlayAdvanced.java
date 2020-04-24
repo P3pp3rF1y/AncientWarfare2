@@ -25,7 +25,7 @@ public class RenderOverlayAdvanced {
 	@SubscribeEvent
 	public void renderLast(RenderWorldLastEvent event) {
 		EntityPlayer player = Minecraft.getMinecraft().player;
-		if (AWVehicleStatics.renderAdvOverlay && player.getRidingEntity() instanceof VehicleBase && Minecraft.getMinecraft().currentScreen == null) {
+		if (AWVehicleStatics.clientSettings.renderAdvOverlay && player.getRidingEntity() instanceof VehicleBase && Minecraft.getMinecraft().currentScreen == null) {
 			RenderOverlayAdvanced.renderAdvancedVehicleOverlay((VehicleBase) player.getRidingEntity(), player, event.getPartialTicks());
 		}
 	}

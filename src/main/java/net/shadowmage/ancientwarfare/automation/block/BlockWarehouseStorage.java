@@ -34,7 +34,7 @@ public class BlockWarehouseStorage extends BlockBaseAutomation {
 	private static final PropertyEnum<Size> SIZE = PropertyEnum.create("size", Size.class);
 
 	public BlockWarehouseStorage(String regName) {
-		super(Material.ROCK, regName);
+		super(Material.WOOD, regName);
 		setHardness(2.f);
 	}
 

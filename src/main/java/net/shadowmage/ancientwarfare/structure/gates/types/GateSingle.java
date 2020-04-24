@@ -11,8 +11,8 @@ public class GateSingle extends Gate {
 	 * @param id
 	 * @param textureLocation
 	 */
-	public GateSingle(int id, String textureLocation, SoundEvent moveSound, SoundEvent hurtSound, SoundEvent breakSound) {
-		super(id, textureLocation, moveSound, hurtSound, breakSound);
+	public GateSingle(int id, String textureLocation, SoundEvent moveSound, SoundEvent hurtSound, SoundEvent breakSound, int maxHealth) {
+		super(id, textureLocation, moveSound, hurtSound, breakSound, maxHealth);
 	}
 
 	@Override

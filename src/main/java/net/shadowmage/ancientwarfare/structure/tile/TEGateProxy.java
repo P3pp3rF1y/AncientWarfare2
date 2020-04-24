@@ -106,6 +106,12 @@ public class TEGateProxy extends TileUpdatable implements ITickable {
 		}
 	}
 
+	@SideOnly(Side.CLIENT)
+	public double getMaxRenderDistanceSquared()
+	{
+		return 65536.0D;
+	}
+
 	public boolean isGateClosed() {
 		return getOwner().map(EntityGate::isClosed).orElse(false);
 	}
