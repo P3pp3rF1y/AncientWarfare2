@@ -1259,6 +1259,66 @@
                     "additional_attributes": {
                         "entity_sound": "human_female"
                     }
+                },
+                "spellcaster": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:banish"
+                },
+                "spellcaster.1": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:book"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:banish,ebwizardry:firebolt,ebwizardry:smoke_bomb"
+                },
+                "spellcaster.2": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 35
+                    },
+                    "experience_drop": 40,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:banish,ebwizardry:fireball,ebwizardry:cobwebs,ebwizardry:poison"
+                },
+                "spellcaster.3": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 40
+                    },
+                    "experience_drop": 50,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:banish,ebwizardry:slime,ebwizardry:greater_fireball,ebwizardry:wither,ebwizardry:summon_skeleton"
+                },
+                "spellcaster.4": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 50
+                    },
+                    "experience_drop": 80,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:black_hole,ebwizardry:banish,ebwizardry:darkness_orb,ebwizardry:disintegration,ebwizardry:summon_wither_skeleton"
                 }
             }
         },
