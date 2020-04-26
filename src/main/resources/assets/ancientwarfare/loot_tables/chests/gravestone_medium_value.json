@@ -1,0 +1,869 @@
+{
+    "pools": [
+        {
+            "name": "main",
+            "rolls": {
+                "min": 1,
+                "max": 3
+            },
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 10
+                },
+                {
+                    "type": "item",
+                    "name": "bone",
+                    "weight": 18,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 0,
+                                "max": 3
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "rotten_flesh",
+                    "weight": 18,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 0,
+                                "max": 3
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:dye",
+                    "entryName": "bone_meal",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_data",
+                            "data": 15
+                        },
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 0,
+                                "max": 3
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "flint",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 0,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "stick",
+                    "weight": 3,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 0,
+                                "max": 5
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "potion",
+                    "entryName": "water_bottle",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 0,
+                                "max": 2
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{Potion:\"minecraft:water\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "arrow",
+                    "entryName": "arrows",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 0,
+                                "max": 5
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "skull",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 0,
+                                "max": 1
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "leather",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 4
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "weapons",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 15
+                },
+                {
+                    "type": "item",
+                    "name": "iron_pickaxe",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Rusty Iron Pickaxe\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "iron_hoe",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Rusty Iron Hoe\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "iron_shovel",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Rusty Iron Shovel\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "stone_pickaxe",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Chipped Stone Pickaxe\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "stone_hoe",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Chipped Stone Hoe\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "stone_shovel",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Chipped Stone Shovel\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "wooden_sword",
+                    "entryName": "wooden_sword_corroded",
+                    "weight": 3,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Rotted Wooden Sword\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "arrow",
+                    "entryName": "arrow",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 6
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "stone_sword",
+                    "entryName": "chipped_stone_sword",
+                    "weight": 3,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Chipped Wooden Axe\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "iron_sword",
+                    "entryName": "rusty_iron_sword",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.4
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Rusty Iron Sword\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "iron_sword",
+                    "entryName": "enchanted_rusty_iron_sword",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.4
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Rusty Iron Sword\"}}"
+                        },
+                        {
+                            "function": "enchant_with_levels",
+                            "levels": {
+                                "min": 1,
+                                "max": 10
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "iron_sword",
+                    "entryName": "blunt_iron_sword",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Blunt Iron Sword\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "wooden_axe",
+                    "entryName": "wooden_axe",
+                    "weight": 3
+                },
+                {
+                    "type": "item",
+                    "name": "stone_axe",
+                    "entryName": "cracked_stone_axe",
+                    "weight": 3,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Cracked Stone Axe\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "iron_axe",
+                    "entryName": "cracked_iron_axe",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Cracked Iron Axe\"}}"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "shield",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 20
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfarenpc:stone_shield",
+                    "entryName": "stone_shield_chipped",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.4,
+                                "max": 0.7
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Chipped Stone Shield\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfarenpc:stone_shield",
+                    "entryName": "stone_shield_crumbling",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.4
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Crumbling Wooden Shield\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfarenpc:iron_shield",
+                    "entryName": "iron_shield_rusty",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.3,
+                                "max": 0.6
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Rusty Iron Shield\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfarenpc:iron_shield",
+                    "entryName": "iron_shield_broken",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Corroded Iron Shield\"}}"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "helmet",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 20
+                },
+                {
+                    "type": "item",
+                    "name": "iron_helmet",
+                    "entryName": "iron_helmet_corroded",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.4,
+                                "max": 0.7
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Corroded Iron Helmet\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "iron_helmet",
+                    "entryName": "iron_helmet_broken",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.4
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Broken Iron Helmet\"}}"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "chestplate",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 20
+                },
+                {
+                    "type": "item",
+                    "name": "iron_chestplate",
+                    "entryName": "iron_chestplate_corroded",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.4,
+                                "max": 0.7
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Corroded Iron Chestplate\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "iron_chestplate",
+                    "entryName": "iron_chestplate_broken",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.4
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Broken Iron Chestplate\"}}"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "leggings",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 20
+                },
+                {
+                    "type": "item",
+                    "name": "iron_leggings",
+                    "entryName": "iron_leggings_corroded",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.4,
+                                "max": 0.7
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Corroded Iron Leggings\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "iron_leggings",
+                    "entryName": "iron_leggings_broken",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.4
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Broken Iron Leggings\"}}"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "boots",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 20
+                },
+                {
+                    "type": "item",
+                    "name": "iron_boots",
+                    "entryName": "iron_boots_corroded",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.4,
+                                "max": 0.7
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Corroded Iron Boots\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "iron_boots",
+                    "entryName": "iron_boots_broken",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.4
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Broken Iron Boots\"}}"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "treasure",
+            "rolls": 2,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 20
+                },
+                {
+                    "type": "loot_table",
+                    "name": "ancientwarfare:chests/potion_harmful",
+                    "weight": 1
+                },
+                {
+                    "type": "loot_table",
+                    "name": "ancientwarfare:chests/potion_beneficial",
+                    "weight": 1
+                },
+                {
+                    "type": "item",
+                    "name": "gold_nugget",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 5
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "loot_table",
+                    "name": "ancientwarfare:chests/enchanted_book",
+                    "weight": 1
+                },
+                {
+                    "type": "item",
+                    "name": "experience_bottle",
+                    "weight": 1
+                },
+                {
+                    "type": "item",
+                    "name": "iron_nugget",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 5
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "emerald",
+                    "weight": 1
+                },
+                {
+                    "type": "item",
+                    "name": "saddle",
+                    "weight": 1
+                },
+                {
+                    "type": "item",
+                    "name": "diamond",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 3
+                            }
+                        }
+                    ],
+                    "conditions": [
+                        {
+                            "condition": "random_chance",
+                            "chance": 0.2
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "coins",
+            "rolls": {
+                "min": 1,
+                "max": 2
+            },
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 20
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfarenpc:coin",
+                    "entryName": "coin_copper",
+                    "weight": 3,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 12
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{metal:\"copper\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfarenpc:coin",
+                    "entryName": "coin_silver",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{metal:\"silver\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfarenpc:coin",
+                    "entryName": "coin_gold",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{metal:\"gold\"}"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
