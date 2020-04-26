@@ -32,10 +32,9 @@ public class AWStructureStatics extends ModConfiguration {
 	public static boolean enableTownGeneration = true;
 	public static boolean enableStructureGeneration = true;
 	public static boolean loadDefaultPack = true;
-	public static int duplicateStructureSearchRange = 40;
 	public static float randomGenerationChance = 0.075f;
-	public static int spawnProtectionRange = 24;
-	public static int townClosestDistance = 90;
+	public static int spawnProtectionRange = 400;
+	public static int townClosestDistance = 90 * 16;
 	public static float townGenerationChance = 0.125f;
 	public static Set<String> excludedSpawnerEntities = new HashSet<>();
 	private static HashSet<String> skippableWorldGenBlocks = new HashSet<>();
@@ -75,22 +74,21 @@ public class AWStructureStatics extends ModConfiguration {
 		enableStructureGeneration = config.get(worldGenCategory, "enable_structure_generation", enableStructureGeneration, "Default=" + enableStructureGeneration + "\n" + "Enable or disable structure (not town) generation.").getBoolean(enableStructureGeneration);
 		enableTownGeneration = config.get(worldGenCategory, "enable_town_generation", enableTownGeneration, "Default=" + enableTownGeneration + "\n" + "Enable or disable custom town generation e.g. walls and additional buildings.").getBoolean(enableTownGeneration);
 		loadDefaultPack = config.get(worldGenCategory, "load_default_structure_pack", loadDefaultPack, "If true the default structure pack will be loaded and enabled for world-gen.").getBoolean(loadDefaultPack);
-		duplicateStructureSearchRange = config.get(worldGenCategory, "validation_duplicate_search_radius", duplicateStructureSearchRange, "Default=" + duplicateStructureSearchRange + "\n" + "The minimum radius in chunks to be searched for duplicate structures.\n" + "This setting should generally not need to be adjusted unless you have templates with extremely\n" + "large 'minDuplicateDistance' values\n" + "Extremely large values may introduce extra lag during generation.  Lower values may reduce lag during generation,\n" + "at the cost of some accuracy in the min duplicate distance tests.").getInt(duplicateStructureSearchRange);
 		randomGenerationChance = (float) config.get(worldGenCategory, "random_generation_chance", randomGenerationChance, "Default=" + randomGenerationChance + "\n" + "Accepts values between 0 and 1.\n" + "Determines the chance that a structure will attempt to be generated in any given chunk.\n" + "Number is specified as a percentage -- e.g. 0.75 == 75% chance to attempt generation.\n" + "Higher values will result in more attempts to generate structures.  Actual number\n" + "generated will depend upon your specific templates and their validation settings.\n" + "Values of 0 or lower will result in no structures generating.  Values higher than 1\n" + "will result in a generation attempt in every chunk.").getDouble(randomGenerationChance);
 		chunkClusterValue = (float) config.get(worldGenCategory, "chunk_cluster_value", chunkClusterValue, "Default=" + chunkClusterValue + "\n" + "Accepts values greater than 0.\n" + "Determines how much total cluster value territory gets per chunk. When structures spawn the total territory cluster value is used to determine how many points remain and thus it influences how big and how many structures can spawn").getDouble(chunkClusterValue);
-		spawnProtectionRange = config.get(worldGenCategory, "spawn_protection_chunk_radius", spawnProtectionRange, "Default=" + spawnProtectionRange + "\n" + "Determines the area around the central spawn coordinate that will be excluded from random structure generation.\n" + "Larger values will see a larger area around spawn that is devoid of structures.").getInt(spawnProtectionRange);
+		spawnProtectionRange = config.get(worldGenCategory, "spawn_protection_radius", spawnProtectionRange, "Default=" + spawnProtectionRange + "\n" + "Determines the area around the central spawn coordinate that will be excluded from random structure generation.\n" + "Larger values will see a larger area around spawn that is devoid of structures.").getInt(spawnProtectionRange);
 		enableWorldGen = config.get(serverOptions, "enable_world_generation", enableWorldGen, "Default=" + enableWorldGen + "\n" + "Enable or disable world generation entirely. If disabled, all other options will have no effect.").getBoolean(enableWorldGen);
 
-		townClosestDistance = config.get(worldGenCategory, "town_min_distance", townClosestDistance, "Default=" + townClosestDistance + "\n" + "Minimum distance between towns.  This should be set to a value quite a bit larger than the largest town" + "that you have configured for generation.  E.G.  Max town size=16, this value should be >= 40.").getInt(townClosestDistance);
+		townClosestDistance = config.get(worldGenCategory, "town_min_distance", townClosestDistance, "Default=" + townClosestDistance + "\n" + "Minimum distance between towns.  This should be set to a value quite a bit larger than the largest town" + "that you have configured for generation.  E.G.  Max town size=16, this value should be >= 40 * 16.").getInt(townClosestDistance);
 		townGenerationChance = (float) config.get(worldGenCategory, "town_generation_chance", townGenerationChance, "Default=" + townGenerationChance + "\n" + "Accepts values between 0 and 1.0.  Decimal percent chance to -attempt- town generation for any given chunk.  Higher settings may result in" + "more towns being generated, but may come with a performance hit during new chunk generation.  Lower values WILL result in fewer towns, and" + "-may- improve performance during chunk generation.").getDouble(townGenerationChance);
 
-		duplicateStructureSearchRange = config.get(worldGenCategory, "gate_vertical_wooden_max_health", gateVerticalWoodenMaxHealth, "Default=" + gateVerticalWoodenMaxHealth + "\n" + "Determines the maximum health of the Vertical Wooden Gate.").getInt(gateVerticalWoodenMaxHealth);
-		duplicateStructureSearchRange = config.get(worldGenCategory, "gate_vertical_iron_max_health", gateVerticalIronMaxHealth, "Default=" + gateVerticalIronMaxHealth + "\n" + "Determines the maximum health of the Vertical Iron Gate.").getInt(gateVerticalIronMaxHealth);
-		duplicateStructureSearchRange = config.get(worldGenCategory, "gate_single_wood_max_health", gateSingleWoodMaxHealth, "Default=" + gateSingleWoodMaxHealth + "\n" + "Determines the maximum health of the Single Wood Gate.").getInt(gateSingleWoodMaxHealth);
-		duplicateStructureSearchRange = config.get(worldGenCategory, "gate_single_iron_max_health", gateSingleIronMaxHealth, "Default=" + gateSingleIronMaxHealth + "\n" + "Determines the maximum health of the Single Iron Gate.").getInt(gateSingleIronMaxHealth);
-		duplicateStructureSearchRange = config.get(worldGenCategory, "gate_double_wood_max_health", gateDoubleWoodMaxHealth, "Default=" + gateDoubleWoodMaxHealth + "\n" + "Determines the maximum health of the Double Wood Gate.").getInt(gateDoubleWoodMaxHealth);
-		duplicateStructureSearchRange = config.get(worldGenCategory, "gate_double_iron_max_health", gateDoubleIronMaxHealth, "Default=" + gateDoubleIronMaxHealth + "\n" + "Determines the maximum health of the Double Iron Gate.").getInt(gateDoubleIronMaxHealth);
-		duplicateStructureSearchRange = config.get(worldGenCategory, "drawbridge_max_health", drawbridgeMaxHealth, "Default=" + drawbridgeMaxHealth + "\n" + "Determines the maximum health of the Drawbridge.").getInt(drawbridgeMaxHealth);
+		gateVerticalWoodenMaxHealth = config.get(worldGenCategory, "gate_vertical_wooden_max_health", gateVerticalWoodenMaxHealth, "Default=" + gateVerticalWoodenMaxHealth + "\n" + "Determines the maximum health of the Vertical Wooden Gate.").getInt(gateVerticalWoodenMaxHealth);
+		gateVerticalIronMaxHealth = config.get(worldGenCategory, "gate_vertical_iron_max_health", gateVerticalIronMaxHealth, "Default=" + gateVerticalIronMaxHealth + "\n" + "Determines the maximum health of the Vertical Iron Gate.").getInt(gateVerticalIronMaxHealth);
+		gateSingleWoodMaxHealth = config.get(worldGenCategory, "gate_single_wood_max_health", gateSingleWoodMaxHealth, "Default=" + gateSingleWoodMaxHealth + "\n" + "Determines the maximum health of the Single Wood Gate.").getInt(gateSingleWoodMaxHealth);
+		gateSingleIronMaxHealth = config.get(worldGenCategory, "gate_single_iron_max_health", gateSingleIronMaxHealth, "Default=" + gateSingleIronMaxHealth + "\n" + "Determines the maximum health of the Single Iron Gate.").getInt(gateSingleIronMaxHealth);
+		gateDoubleWoodMaxHealth = config.get(worldGenCategory, "gate_double_wood_max_health", gateDoubleWoodMaxHealth, "Default=" + gateDoubleWoodMaxHealth + "\n" + "Determines the maximum health of the Double Wood Gate.").getInt(gateDoubleWoodMaxHealth);
+		gateDoubleIronMaxHealth = config.get(worldGenCategory, "gate_double_iron_max_health", gateDoubleIronMaxHealth, "Default=" + gateDoubleIronMaxHealth + "\n" + "Determines the maximum health of the Double Iron Gate.").getInt(gateDoubleIronMaxHealth);
+		drawbridgeMaxHealth = config.get(worldGenCategory, "drawbridge_max_health", drawbridgeMaxHealth, "Default=" + drawbridgeMaxHealth + "\n" + "Determines the maximum health of the Drawbridge.").getInt(drawbridgeMaxHealth);
 
 		initializeDefaultSkippableBlocks();
 		initializeDefaultSkippedEntities();
@@ -989,6 +987,6 @@ public class AWStructureStatics extends ModConfiguration {
 	} //TODO are there blocks that would have registry name set to null (C&B perhaps)?
 
 	public static boolean withinProtectionRange(double dist) {
-		return dist < spawnProtectionRange * spawnProtectionRange * 16 * 16;
+		return dist < spawnProtectionRange * spawnProtectionRange;
 	}
 }

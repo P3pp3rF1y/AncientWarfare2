@@ -23,6 +23,7 @@ import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilderWo
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.Random;
 
 public class WorldStructureGenerator implements IWorldGenerator {
@@ -69,12 +70,13 @@ public class WorldStructureGenerator implements IWorldGenerator {
 		TerritoryManager.getTerritory(chunkX, chunkZ, world).ifPresent(territory -> {
 			EnumFacing face = EnumFacing.HORIZONTALS[rng.nextInt(4)];
 			world.profiler.startSection("AWTemplateSelection");
-			StructureTemplate template = WorldGenStructureManager.INSTANCE.selectTemplateForGeneration(world, rng, x, y, z, face, territory);
+			Optional<StructureTemplate> t = WorldGenStructureManager.INSTANCE.selectTemplateForGeneration(world, rng, x, y, z, face, territory);
 			world.profiler.endSection();
 			AncientWarfareStructure.LOG.debug("Template selection took: {} ms.", System.currentTimeMillis() - t1);
-			if (template == null) {
+			if (!t.isPresent()) {
 				return;
 			}
+			StructureTemplate template = t.get();
 			StructureMap map = AWGameData.INSTANCE.getPerWorldData(world, StructureMap.class);
 
 			world.profiler.startSection("AWTemplateGeneration");

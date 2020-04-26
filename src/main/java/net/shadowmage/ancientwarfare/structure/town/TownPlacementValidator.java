@@ -106,7 +106,7 @@ public class TownPlacementValidator {
 
 	private static boolean isTownClose(World world, int x, int z) {
 		TownMap tm = AWGameData.INSTANCE.getPerWorldData(world, TownMap.class);
-		int minDist = AWStructureStatics.townClosestDistance * 16;
+		int minDist = AWStructureStatics.townClosestDistance;
 		float dist = tm.getClosestTown(x, z, minDist * 2);
 		return dist < minDist;
 	}

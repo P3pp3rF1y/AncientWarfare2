@@ -135,47 +135,46 @@ public class WorldGenStructureManager {
 		}
 	}
 
-	public StructureTemplate selectTemplateForGeneration(World world, Random rng, int x, int y, int z, EnumFacing face, Territory territory) {
+	public Optional<StructureTemplate> selectTemplateForGeneration(World world, Random rng, int x, int y, int z, EnumFacing face, Territory territory) {
 		searchCache.clear();
 		trimmedPotentialStructures.clear();
 		distancesFound.clear();
 		StructureMap map = AWGameData.INSTANCE.getPerWorldData(world, StructureMap.class);
-		if (map == null) {
-			return null;
-		}
-		int chunkDistance;
-		float foundDistance;
 
 		Biome biome = world.provider.getBiomeForCoords(new BlockPos(x, 1, z));
 
 		//noinspection ConstantConditions
 		String biomeName = biome.getRegistryName().toString();
-		Collection<StructureEntry> duplicateSearchEntries = map.getEntriesNear(world, x, z, AWStructureStatics.duplicateStructureSearchRange, false, searchCache);
-		for (StructureEntry entry : duplicateSearchEntries) {
-			int mx = entry.getBB().getCenterX() - x;
-			int mz = entry.getBB().getCenterZ() - z;
-			foundDistance = MathHelper.sqrt((float) mx * mx + mz * mz);
-			chunkDistance = (int) (foundDistance / 16.f);
-			if (distancesFound.containsKey(entry.getName())) {
-				int dist = distancesFound.get(entry.getName());
-				if (chunkDistance < dist) {
-					distancesFound.put(entry.getName(), chunkDistance);
-				}
-			} else {
-				distancesFound.put(entry.getName(), chunkDistance);
-			}
-		}
-
 		Set<StructureTemplate> potentialStructures = new HashSet<>();
 		getTerritoryTemplates(territory.getTerritoryName()).ifPresent(potentialStructures::addAll);
 		getTerritoryTemplates(GENERIC_TERRITORY_NAME).ifPresent(potentialStructures::addAll);
 		Set<StructureTemplate> biomeTemplates = templatesByBiome.get(biomeName);
 		potentialStructures.removeIf(t -> !biomeTemplates.contains(t));
 		if (potentialStructures.isEmpty()) {
-			return null;
+			return Optional.empty();
 		}
 
 		int remainingValueCache = (int) (AWStructureStatics.chunkClusterValue * territory.getNumberOfChunks()) - territory.getTotalClusterValue();
+
+		int duplicateSearchDistance = 0;
+		for (StructureTemplate template : potentialStructures) {
+			duplicateSearchDistance = Math.max(duplicateSearchDistance, template.getValidationSettings().getMinDuplicateDistance());
+		}
+
+		Collection<StructureEntry> duplicateSearchEntries = map.getEntriesNear(world, x, z, duplicateSearchDistance / 16, false, searchCache);
+		for (StructureEntry entry : duplicateSearchEntries) {
+			int mx = entry.getBB().getCenterX() - x;
+			int mz = entry.getBB().getCenterZ() - z;
+			int foundDistance = (int) MathHelper.sqrt((float) mx * mx + mz * mz);
+			if (distancesFound.containsKey(entry.getName())) {
+				int dist = distancesFound.get(entry.getName());
+				if (foundDistance < dist) {
+					distancesFound.put(entry.getName(), foundDistance);
+				}
+			} else {
+				distancesFound.put(entry.getName(), foundDistance);
+			}
+		}
 
 		int dim = world.provider.getDimension();
 		for (StructureTemplate template : potentialStructures)//loop through initial structures, only adding to 2nd list those which meet biome, unique, value, and minDuplicate distance settings
@@ -185,12 +184,12 @@ public class WorldGenStructureManager {
 			}
 		}
 		if (trimmedPotentialStructures.isEmpty()) {
-			return null;
+			return Optional.empty();
 		}
 		StructureTemplate toReturn = CollectionUtils.getWeightedRandomElement(rng, this.trimmedPotentialStructures, e -> getStructureWeight(x, y, z, territory, e)).orElse(null);
 		distancesFound.clear();
 		trimmedPotentialStructures.clear();
-		return toReturn;
+		return Optional.of(toReturn);
 	}
 
 	private int getStructureWeight(int x, int y, int z, Territory territory, StructureTemplate e) {
