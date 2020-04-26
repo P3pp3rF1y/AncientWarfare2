@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -117,7 +118,22 @@ public class SmoothingMatrix {
 	}
 
 	public void apply(World world, Consumer<BlockPos> handleClearing) {
-		typePoints.get(PointType.SMOOTHED_BORDER).forEach(point -> levelTerrain(world, point, handleClearing));
+		Set<BlockPos> chunkPoints = new HashSet<>();
+		typePoints.get(PointType.SMOOTHED_BORDER).forEach(point -> {
+			levelTerrain(world, point, handleClearing);
+			chunkPoints.add(new BlockPos(getChunkCornerCoord(point.getSmoothedPos().getX()), 0, getChunkCornerCoord(point.getSmoothedPos().getZ())));
+		});
+		chunkPoints.forEach(pos -> decorate(world, pos));
+	}
+
+	private int getChunkCornerCoord(int coord) {
+		return (coord >> 4) * 16;
+	}
+
+	@SuppressWarnings("squid:S2245")
+	private void decorate(World world, BlockPos point) {
+		Random random = new Random((long) (point.getX() >> 4) * 341873128712L + (long) (point.getZ() >> 4) * 132897987541L);
+		world.getBiome(point).decorate(world, random, point);
 	}
 
 	private void levelTerrain(World world, SmoothingPoint point, Consumer<BlockPos> handleClearing) {
