@@ -17,6 +17,8 @@ public class SmoothingPoint {
 	private SmoothingPoint closestBorderPoint;
 	private int structureBorderDistance;
 
+	private int waterLevel = 0;
+
 	public SmoothingPoint(int x, int z, BlockPos worldPos, PointType type) {
 		this.x = x;
 		this.z = z;
@@ -91,5 +93,13 @@ public class SmoothingPoint {
 
 	public PointType getType() {
 		return type;
+	}
+
+	public void setWaterLevel(int waterLevel) {
+		this.waterLevel = waterLevel;
+	}
+
+	public int getWaterLevel() {
+		return waterLevel;
 	}
 }

@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.structure.template.build.validation.border
 
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
@@ -25,8 +26,8 @@ public class SmoothingMatrixBuilder {
 	private StructureBB bb;
 	private final int borderSize;
 	private final int groundY;
-	private int turns = 0;
-	private StructureTemplate template = null;
+	private int turns;
+	private StructureTemplate template;
 	private SmoothingMatrix smoothingMatrix;
 
 	public SmoothingMatrixBuilder(World world, StructureBB bb, int borderSize) {
@@ -72,9 +73,28 @@ public class SmoothingMatrixBuilder {
 			}
 			if (type == PointType.OUTER_BORDER || type == PointType.SMOOTHED_BORDER) {
 				BorderPoint borderPoint = point.getClosestBorderPoint();
-				smoothingMatrix.getPoint(borderPoint.getX(), borderPoint.getZ()).ifPresent(p -> smoothingPoint.setStructureBorder(p, point.getStructureBorderDistance()));
+				smoothingMatrix.getPoint(borderPoint.getX(), borderPoint.getZ()).ifPresent(p -> {
+					smoothingPoint.setStructureBorder(p, point.getStructureBorderDistance());
+					if (type == PointType.OUTER_BORDER) {
+						smoothingPoint.setWaterLevel(getWaterLevel(smoothingPoint.getWorldPos()));
+					}
+				});
 			}
 		}
+	}
+
+	private int getWaterLevel(BlockPos worldPos) {
+		BlockPos tempPos = worldPos.up();
+		while (tempPos.getY() <= groundY && isWaterMaterial(world.getBlockState(tempPos).getMaterial())) {
+			tempPos = tempPos.up();
+		}
+		tempPos = tempPos.down();
+
+		return tempPos.getY() > worldPos.getY() ? tempPos.getY() : 0;
+	}
+
+	private boolean isWaterMaterial(Material material) {
+		return material == Material.WATER || material == Material.ICE;
 	}
 
 	public SmoothingMatrix build() {
