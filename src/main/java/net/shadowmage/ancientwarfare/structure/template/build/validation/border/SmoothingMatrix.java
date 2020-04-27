@@ -124,6 +124,12 @@ public class SmoothingMatrix {
 			chunkPoints.add(new BlockPos(getChunkCornerCoord(point.getSmoothedPos().getX()), 0, getChunkCornerCoord(point.getSmoothedPos().getZ())));
 		});
 		chunkPoints.forEach(pos -> decorate(world, pos));
+		typePoints.get(PointType.SMOOTHED_BORDER).forEach(point -> {
+			BlockPos posAbove = point.getSmoothedPos().up();
+			if (world.canSnowAt(posAbove, true)) {
+				world.setBlockState(posAbove, Blocks.SNOW_LAYER.getDefaultState(), 2);
+			}
+		});
 	}
 
 	private int getChunkCornerCoord(int coord) {
