@@ -1,0 +1,1654 @@
+{
+    "pools": [
+        {
+            "name": "main",
+            "rolls": {
+                "min": 1,
+                "max": 3
+            },
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 10
+                },
+                {
+                    "type": "item",
+                    "name": "bone",
+                    "weight": 18,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 0,
+                                "max": 3
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "rotten_flesh",
+                    "weight": 18,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 0,
+                                "max": 3
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:dye",
+                    "entryName": "bone_meal",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_data",
+                            "data": 15
+                        },
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 0,
+                                "max": 3
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "flint",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 0,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "stick",
+                    "weight": 3,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 0,
+                                "max": 5
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "potion",
+                    "entryName": "water_bottle",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 0,
+                                "max": 2
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{Potion:\"minecraft:water\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "arrow",
+                    "entryName": "arrows",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 0,
+                                "max": 5
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "skull",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 0,
+                                "max": 1
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "leather",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 4
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "weapons",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 15
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_pickaxe",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Cursed Diamond Pickaxe\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_pickaxe",
+                    "entryName": "diamond_pickaxe_binding_cursed",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Cursed Diamond Pickaxe\"}}"
+                        },
+                        {
+                            "function": "enchant_randomly",
+                            "enchantments": [
+                                "binding_curse"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_pickaxe",
+                    "entryName": "diamond_pickaxe_vanishing_cursed",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Cursed Diamond Pickaxe\"}}"
+                        },
+                        {
+                            "function": "enchant_randomly",
+                            "enchantments": [
+                                "vanishing_curse"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_pickaxe",
+                    "entryName": "diamond_pickaxe_enchanted",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Enchanted Diamond Pickaxe\"}}"
+                        },
+                        {
+                            "function": "enchant_with_levels",
+                            "levels": {
+                                "min": 1,
+                                "max": 10
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_axe",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Cursed Diamond Axe\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_axe",
+                    "entryName": "diamond_axe_binding_cursed",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Cursed Diamond Axe\"}}"
+                        },
+                        {
+                            "function": "enchant_randomly",
+                            "enchantments": [
+                                "binding_curse"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_axe",
+                    "entryName": "diamond_axe_vanishing_cursed",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Cursed Diamond Axe\"}}"
+                        },
+                        {
+                            "function": "enchant_randomly",
+                            "enchantments": [
+                                "vanishing_curse"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_axe",
+                    "entryName": "diamond_axe_enchanted",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Enchanted Diamond Axe\"}}"
+                        },
+                        {
+                            "function": "enchant_with_levels",
+                            "levels": {
+                                "min": 1,
+                                "max": 10
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_hoe",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Cursed Diamond Hoe\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_hoe",
+                    "entryName": "diamond_hoe_binding_cursed",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Cursed Diamond Hoe\"}}"
+                        },
+                        {
+                            "function": "enchant_randomly",
+                            "enchantments": [
+                                "binding_curse"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_hoe",
+                    "entryName": "diamond_hoe_vanishing_cursed",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Cursed Diamond Hoe\"}}"
+                        },
+                        {
+                            "function": "enchant_randomly",
+                            "enchantments": [
+                                "vanishing_curse"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_hoe",
+                    "entryName": "diamond_hoe_enchanted",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Enchanted Diamond Hoe\"}}"
+                        },
+                        {
+                            "function": "enchant_with_levels",
+                            "levels": {
+                                "min": 1,
+                                "max": 10
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_shovel",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Cursed Diamond Shovel\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_shovel",
+                    "entryName": "diamond_shovel_binding_cursed",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Cursed Diamond Shovel\"}}"
+                        },
+                        {
+                            "function": "enchant_randomly",
+                            "enchantments": [
+                                "binding_curse"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_shovel",
+                    "entryName": "diamond_shovel_vanishing_cursed",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Cursed Diamond Shovel\"}}"
+                        },
+                        {
+                            "function": "enchant_randomly",
+                            "enchantments": [
+                                "vanishing_curse"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_shovel",
+                    "entryName": "diamond_shovel_enchanted",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Enchanted Diamond Shovel\"}}"
+                        },
+                        {
+                            "function": "enchant_with_levels",
+                            "levels": {
+                                "min": 1,
+                                "max": 10
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "iron_pickaxe",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Rusty Iron Pickaxe\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "iron_hoe",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Rusty Iron Hoe\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "iron_shovel",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Rusty Iron Shovel\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "golden_pickaxe",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Tarnished Golden Pickaxe\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "golden_hoe",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Tarnished Golden Hoe\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "golden_shovel",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Tarnished Golden Shovel\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "golden_sword",
+                    "entryName": "golden_sword_tarnished",
+                    "weight": 3,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Tarnished Golden Sword\"}}"
+                        },
+                        {
+                            "function": "enchant_with_levels",
+                            "levels": {
+                                "min": 1,
+                                "max": 10
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "arrow",
+                    "entryName": "arrow",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 6
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "iron_sword",
+                    "entryName": "rusty_iron_sword",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.4
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Rusty Iron Sword\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "iron_sword",
+                    "entryName": "enchanted_rusty_iron_sword",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.4
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Rusty Iron Sword\"}}"
+                        },
+                        {
+                            "function": "enchant_with_levels",
+                            "levels": {
+                                "min": 1,
+                                "max": 10
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "iron_sword",
+                    "entryName": "blunt_iron_sword",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Blunt Iron Sword\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "wooden_axe",
+                    "entryName": "wooden_axe",
+                    "weight": 3
+                },
+                {
+                    "type": "item",
+                    "name": "stone_axe",
+                    "entryName": "cracked_stone_axe",
+                    "weight": 3,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Cracked Stone Axe\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "iron_axe",
+                    "entryName": "cracked_iron_axe",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Cracked Iron Axe\"}}"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "shield",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 8
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfarenpc:diamond_shield",
+                    "entryName": "diamond_shield_rotted",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Broken Diamond Shield\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "shield",
+                    "entryName": "vanilla_wooden_shield_rotted",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Rotted Wooden Shield\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfarenpc:stone_shield",
+                    "entryName": "stone_shield_chipped",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.4,
+                                "max": 0.7
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Chipped Stone Shield\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfarenpc:wooden_shield",
+                    "entryName": "wooden_shield_broken",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Broken Wooden Shield\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfarenpc:stone_shield",
+                    "entryName": "stone_shield_crumbling",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.4
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Crumbling Wooden Shield\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "iron_sword",
+                    "entryName": "rusty_iron_sword",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Rusty Iron Sword\"}}"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "helmet",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 40
+                },
+                {
+                    "type": "item",
+                    "name": "iron_helmet",
+                    "entryName": "iron_helmet_corroded",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.4,
+                                "max": 0.7
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Corroded Iron Helmet\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "iron_helmet",
+                    "entryName": "iron_helmet_broken",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.4
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Broken Iron Helmet\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_helmet",
+                    "entryName": "diamond_helmet_corroded",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Diamond Helmet\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_helmet",
+                    "entryName": "diamond_helmet_broken",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.4
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Broken Diamond Helmet\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_helmet",
+                    "entryName": "diamond_helmet_vanishing_cursed",
+                    "weight": 4,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.2,
+                                "max": 0.7
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Cursed Diamond Helmet\"}}"
+                        },
+                        {
+                            "function": "enchant_randomly",
+                            "enchantments": [
+                                "vanishing_curse"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_helmet",
+                    "entryName": "diamond_helmet_binding_cursed",
+                    "weight": 4,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.2,
+                                "max": 0.7
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Cursed Diamond Helmet\"}}"
+                        },
+                        {
+                            "function": "enchant_randomly",
+                            "enchantments": [
+                                "binding_curse"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "chestplate",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 40
+                },
+                {
+                    "type": "item",
+                    "name": "iron_chestplate",
+                    "entryName": "iron_chestplate_corroded",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.4,
+                                "max": 0.7
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Corroded Iron Chestplate\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "iron_chestplate",
+                    "entryName": "iron_chestplate_broken",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.4
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Broken Iron Chestplate\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_chestplate",
+                    "entryName": "diamond_chestplate_corroded",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Diamond Chestplate\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_chestplate",
+                    "entryName": "diamond_chestplate_broken",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.4
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Broken Diamond Chestplate\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_chestplate",
+                    "entryName": "diamond_chestplate_vanishing_cursed",
+                    "weight": 4,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.2,
+                                "max": 0.7
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Cursed Diamond Chestplate\"}}"
+                        },
+                        {
+                            "function": "enchant_randomly",
+                            "enchantments": [
+                                "vanishing_curse"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_chestplate",
+                    "entryName": "diamond_chestplate_binding_cursed",
+                    "weight": 4,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.2,
+                                "max": 0.7
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Cursed Diamond Chestplate\"}}"
+                        },
+                        {
+                            "function": "enchant_randomly",
+                            "enchantments": [
+                                "binding_curse"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "leggings",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 40
+                },
+                {
+                    "type": "item",
+                    "name": "iron_leggings",
+                    "entryName": "iron_leggings_corroded",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.4,
+                                "max": 0.7
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Corroded Iron Leggings\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "iron_leggings",
+                    "entryName": "iron_leggings_broken",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.4
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Broken Iron Leggings\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_leggings",
+                    "entryName": "diamond_leggings_corroded",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Diamond Leggings\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_leggings",
+                    "entryName": "diamond_leggings_broken",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.4
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Broken Diamond Leggings\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_leggings",
+                    "entryName": "diamond_leggings_vanishing_cursed",
+                    "weight": 4,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.2,
+                                "max": 0.7
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Cursed Diamond Leggings\"}}"
+                        },
+                        {
+                            "function": "enchant_randomly",
+                            "enchantments": [
+                                "vanishing_curse"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_leggings",
+                    "entryName": "diamond_leggings_binding_cursed",
+                    "weight": 4,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.2,
+                                "max": 0.7
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Cursed Diamond Leggings\"}}"
+                        },
+                        {
+                            "function": "enchant_randomly",
+                            "enchantments": [
+                                "binding_curse"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "boots",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 40
+                },
+                {
+                    "type": "item",
+                    "name": "iron_boots",
+                    "entryName": "iron_boots_corroded",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.4,
+                                "max": 0.7
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Corroded Iron Boots\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "iron_boots",
+                    "entryName": "iron_boots_broken",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.4
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Broken Iron Boots\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_boots",
+                    "entryName": "diamond_boots_corroded",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Diamond Boots\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_boots",
+                    "entryName": "diamond_boots_broken",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.4
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Broken Diamond Boots\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_boots",
+                    "entryName": "diamond_boots_vanishing_cursed",
+                    "weight": 4,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.2,
+                                "max": 0.7
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Cursed Diamond Boots\"}}"
+                        },
+                        {
+                            "function": "enchant_randomly",
+                            "enchantments": [
+                                "vanishing_curse"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "diamond_boots",
+                    "entryName": "diamond_boots_binding_cursed",
+                    "weight": 4,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.2,
+                                "max": 0.7
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Cursed Diamond Boots\"}}"
+                        },
+                        {
+                            "function": "enchant_randomly",
+                            "enchantments": [
+                                "binding_curse"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "treasure",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 20
+                },
+                {
+                    "type": "loot_table",
+                    "name": "ancientwarfare:chests/potion_harmful",
+                    "weight": 1
+                },
+                {
+                    "type": "loot_table",
+                    "name": "ancientwarfare:chests/potion_beneficial",
+                    "weight": 1
+                },
+                {
+                    "type": "item",
+                    "name": "gold_nugget",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 5
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "glowstone_dust",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 3
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "redstone",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 3
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "loot_table",
+                    "name": "ancientwarfare:chests/enchanted_book",
+                    "weight": 1
+                },
+                {
+                    "type": "item",
+                    "name": "experience_bottle",
+                    "weight": 1
+                },
+                {
+                    "type": "item",
+                    "name": "iron_nugget",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 5
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "emerald",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 3
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "saddle",
+                    "weight": 1
+                },
+                {
+                    "type": "item",
+                    "name": "diamond",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 3
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "coins",
+            "rolls": {
+                "min": 1,
+                "max": 2
+            },
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 20
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfarenpc:coin",
+                    "entryName": "coin_copper",
+                    "weight": 3,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 12
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{metal:\"copper\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfarenpc:coin",
+                    "entryName": "coin_silver",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 12
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{metal:\"silver\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfarenpc:coin",
+                    "entryName": "coin_gold",
+                    "weight": 4,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 12
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{metal:\"gold\"}"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
