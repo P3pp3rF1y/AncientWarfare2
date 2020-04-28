@@ -68,6 +68,7 @@ public final class NetworkHandler implements IGuiHandler {
 	public static final int PACKET_TEAM_STANDING_UPDATE = 33;
 
 	public static final int PACKET_HIGHLIGHT_BLOCK = 34;
+	public static final int PACKET_SHOW_BBS = 35;
 
 	public static final int GUI_CRAFTING = 0;
 	public static final int GUI_SCANNER = 1;
@@ -213,8 +214,9 @@ public final class NetworkHandler implements IGuiHandler {
 		if (clz != null) {
 			Object container = getServerGuiElement(id, player, world, x, y, z);
 			try {
-				if (container != null)
+				if (container != null) {
 					return clz.getConstructor(ContainerBase.class).newInstance(container);
+				}
 			}
 			catch (Exception e) {
 				AncientWarfareCore.LOG.error("Error instantiating client GUI: ", e);

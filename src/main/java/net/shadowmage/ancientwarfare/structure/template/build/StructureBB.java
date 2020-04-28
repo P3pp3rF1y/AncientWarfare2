@@ -72,6 +72,10 @@ public class StructureBB extends Zone {
 		return max.getZ() - min.getZ() + 1;
 	}
 
+	public BlockPos getCenter() {
+		return new BlockPos((min.getX() + max.getX()) / 2, (min.getY() + max.getY()) / 2, (min.getZ() + max.getZ()) / 2);
+	}
+
 	public int getCenterX() {
 		return min.getX() + (getXSize() / 2) - 1;
 	}
@@ -217,7 +221,7 @@ public class StructureBB extends Zone {
 	public double getDistanceTo(StructureBB bb) {
 		int xDistance = Math.abs(getCenterX() - bb.getCenterX());
 		int zDistance = Math.abs(getCenterZ() - bb.getCenterZ());
-		return Math.sqrt(xDistance * xDistance + zDistance * zDistance);
+		return Math.sqrt((double) xDistance * xDistance + zDistance * zDistance);
 	}
 
 	public AxisAlignedBB getAABB() {

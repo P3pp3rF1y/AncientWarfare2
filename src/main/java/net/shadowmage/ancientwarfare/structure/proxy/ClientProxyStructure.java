@@ -27,6 +27,7 @@ import net.shadowmage.ancientwarfare.structure.render.ParticleDummyModel;
 import net.shadowmage.ancientwarfare.structure.render.PreviewRenderer;
 import net.shadowmage.ancientwarfare.structure.render.RenderGateInvisible;
 import net.shadowmage.ancientwarfare.structure.render.StructureBoundingBoxRenderer;
+import net.shadowmage.ancientwarfare.structure.render.StructureEntryBBRenderer;
 import net.shadowmage.ancientwarfare.structure.sounds.SoundLoader;
 
 import java.util.HashMap;
@@ -64,6 +65,7 @@ public class ClientProxyStructure extends CommonProxyStructure {
 		NetworkHandler.registerGui(NetworkHandler.GUI_GATE_CONTROL_CREATIVE, GuiGateControlCreative.class);
 		MinecraftForge.EVENT_BUS.register(new StructureBoundingBoxRenderer());
 		MinecraftForge.EVENT_BUS.register(new BlockHighlightRenderer());
+		MinecraftForge.EVENT_BUS.register(new StructureEntryBBRenderer());
 		MinecraftForge.EVENT_BUS.register(this);
 
 		RenderingRegistry.registerEntityRenderingHandler(EntityGate.class, RenderGateInvisible::new);

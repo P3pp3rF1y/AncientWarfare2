@@ -95,7 +95,7 @@ public class TownPlacementValidator {
 
 	private static boolean isStructureInside(Collection<StructureEntry> structureList, int x, int z, int minY, int maxY) {
 		for (StructureEntry structure : structureList) {
-			if (structure.getBB().crossWith(x - MIN_STRUCTURE_DISTANCE, minY, z - MIN_STRUCTURE_DISTANCE,
+			if (structure.getBB().intersects(x - MIN_STRUCTURE_DISTANCE, minY, z - MIN_STRUCTURE_DISTANCE,
 					x + 16 + MIN_STRUCTURE_DISTANCE, maxY, z + 16 + MIN_STRUCTURE_DISTANCE)) {
 				return true;
 			}
@@ -121,7 +121,7 @@ public class TownPlacementValidator {
 			didExpand = false;
 			if (xneg && area.getChunkWidth() <= maxSize) {
 				xneg = tryExpandXNeg(world, area, structureList);
-				didExpand = didExpand || xneg;
+				didExpand = xneg;
 			}
 			if (xpos && area.getChunkWidth() <= maxSize) {
 				xpos = tryExpandXPos(world, area, structureList);
@@ -152,7 +152,7 @@ public class TownPlacementValidator {
 	private static boolean tryExpandXPos(World world, TownBoundingArea area, Collection<StructureEntry> structureList) {
 		int cx = area.chunkMaxX + 1;
 		for (int z = area.chunkMinZ; z <= area.chunkMaxZ; z++) {
-			if (!isAverageHeightWithin(world, cx, z, area.minY, area.maxY) || isStructureInside(structureList, cx, z, area.minY, area.maxY)) {
+			if (!isAverageHeightWithin(world, cx, z, area.minY, area.maxY) || isStructureInside(structureList, cx << 4, z << 4, area.minY, area.maxY)) {
 				return false;
 			}
 		}
@@ -163,7 +163,7 @@ public class TownPlacementValidator {
 	private static boolean tryExpandZNeg(World world, TownBoundingArea area, Collection<StructureEntry> structureList) {
 		int cz = area.chunkMinZ - 1;
 		for (int x = area.chunkMinX; x <= area.chunkMaxX; x++) {
-			if (!isAverageHeightWithin(world, x, cz, area.minY, area.maxY) || isStructureInside(structureList, x, cz, area.minY, area.maxY)) {
+			if (!isAverageHeightWithin(world, x, cz, area.minY, area.maxY) || isStructureInside(structureList, x << 4, cz << 4, area.minY, area.maxY)) {
 				return false;
 			}
 		}
@@ -174,7 +174,7 @@ public class TownPlacementValidator {
 	private static boolean tryExpandZPos(World world, TownBoundingArea area, Collection<StructureEntry> structureList) {
 		int cz = area.chunkMaxZ + 1;
 		for (int x = area.chunkMinX; x <= area.chunkMaxX; x++) {
-			if (!isAverageHeightWithin(world, x, cz, area.minY, area.maxY) || isStructureInside(structureList, x, cz, area.minY, area.maxY)) {
+			if (!isAverageHeightWithin(world, x, cz, area.minY, area.maxY) || isStructureInside(structureList, x << 4, cz << 4, area.minY, area.maxY)) {
 				return false;
 			}
 		}

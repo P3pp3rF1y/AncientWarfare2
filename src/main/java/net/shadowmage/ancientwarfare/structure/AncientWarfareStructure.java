@@ -46,6 +46,7 @@ import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.entity.EntitySeat;
 import net.shadowmage.ancientwarfare.structure.event.OneShotEntityDespawnListener;
 import net.shadowmage.ancientwarfare.structure.network.PacketHighlightBlock;
+import net.shadowmage.ancientwarfare.structure.network.PacketShowBoundingBoxes;
 import net.shadowmage.ancientwarfare.structure.network.PacketSoundBlockPlayerSpecValues;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructure;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructureRemove;
@@ -100,10 +101,12 @@ public class AncientWarfareStructure {
 
 		if (AWStructureStatics.enableWorldGen) {
 			MinecraftForge.EVENT_BUS.register(WorldGenTickHandler.INSTANCE);
-			if (AWStructureStatics.enableStructureGeneration)
+			if (AWStructureStatics.enableStructureGeneration) {
 				GameRegistry.registerWorldGenerator(WorldStructureGenerator.INSTANCE, 1);
-			if (AWStructureStatics.enableTownGeneration)
+			}
+			if (AWStructureStatics.enableTownGeneration) {
 				GameRegistry.registerWorldGenerator(WorldTownGenerator.INSTANCE, 2);
+			}
 		}
 		EntityRegistry.registerModEntity(new ResourceLocation(AncientWarfareStructure.MOD_ID, "aw_gate"), EntityGate.class, "aw_gate", 0, this, 250, 200, false);
 		EntityRegistry.registerModEntity(new ResourceLocation(AncientWarfareStructure.MOD_ID, "seat"), EntitySeat.class, "AWSeat", 1, this, 20, 10, false);
@@ -112,6 +115,7 @@ public class AncientWarfareStructure {
 		PacketBase.registerPacketType(NetworkHandler.PACKET_STRUCTURE_REMOVE, PacketStructureRemove.class, PacketStructureRemove::new);
 		PacketBase.registerPacketType(NetworkHandler.PACKET_SOUND_BLOCK_PLAYER_SPEC_VALUES, PacketSoundBlockPlayerSpecValues.class, PacketSoundBlockPlayerSpecValues::new);
 		PacketBase.registerPacketType(NetworkHandler.PACKET_HIGHLIGHT_BLOCK, PacketHighlightBlock.class, PacketHighlightBlock::new);
+		PacketBase.registerPacketType(NetworkHandler.PACKET_SHOW_BBS, PacketShowBoundingBoxes.class, PacketShowBoundingBoxes::new);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_SCANNER, ContainerStructureScanner.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_BUILDER, ContainerStructureSelection.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_TOWN_BUILDER, ContainerTownSelection.class);
@@ -193,8 +197,9 @@ public class AncientWarfareStructure {
 
 	@EventHandler
 	public void serverStop(FMLServerStoppingEvent evt) {
-		if (AWStructureStatics.enableWorldGen)
+		if (AWStructureStatics.enableWorldGen) {
 			WorldGenTickHandler.INSTANCE.finalTick();
+		}
 	}
 
 }

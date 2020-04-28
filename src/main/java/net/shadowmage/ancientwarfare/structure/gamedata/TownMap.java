@@ -69,7 +69,7 @@ public class TownMap extends WorldSavedData {
 	private Set<TownEntry> getTownsIn(Zone zone) {
 		Set<TownEntry> ret = new HashSet<>();
 		for (TownEntry townEntry : townEntries) {
-			if (townEntry.getBB().crossWith(zone)) {
+			if (townEntry.getBB().intersects(zone)) {
 				ret.add(townEntry);
 			}
 		}
@@ -93,7 +93,7 @@ public class TownMap extends WorldSavedData {
 
 	public boolean intersectsWithTown(StructureBB bb) {
 		for (TownEntry townEntry : townEntries) {
-			if (townEntry.getBB().crossWith(bb)) {
+			if (townEntry.getBB().intersects(bb)) {
 				return true;
 			}
 		}

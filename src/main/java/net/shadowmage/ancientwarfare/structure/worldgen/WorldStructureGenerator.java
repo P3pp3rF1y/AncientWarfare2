@@ -202,7 +202,7 @@ public class WorldStructureGenerator implements IWorldGenerator {
 		double maxDistance = 0;
 		StructureBB bbWithBorder = new StructureBB(bb.min, bb.max).expand(borderSize, 0, borderSize);
 		for (StructureEntry entry : bbCheckList) {
-			if (bbWithBorder.crossWith(entry.getBB())) {
+			if (bbWithBorder.intersects(entry.getBB())) {
 				return false;
 			}
 			double distance = bb.getDistanceTo(entry.getBB());

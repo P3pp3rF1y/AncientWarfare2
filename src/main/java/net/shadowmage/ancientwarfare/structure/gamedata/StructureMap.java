@@ -92,7 +92,7 @@ public class StructureMap extends WorldSavedData {
 	private Set<StructureEntry> getStructuresIn(World world, Zone zone) {
 		Set<StructureEntry> ret = new HashSet<>();
 		for (StructureEntry structure : getEntriesNear(world, zone.min.getX(), zone.min.getZ(), 1, true, new ArrayList<>())) {
-			if (structure.getBB().crossWith(zone)) {
+			if (structure.getBB().intersects(zone)) {
 				ret.add(structure);
 			}
 		}
