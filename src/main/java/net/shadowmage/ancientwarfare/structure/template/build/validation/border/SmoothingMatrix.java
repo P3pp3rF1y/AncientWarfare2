@@ -145,12 +145,11 @@ public class SmoothingMatrix {
 		BlockPos originalPos = point.getWorldPos();
 		BlockPos smoothedPos = point.getSmoothedPos();
 
-		int topSolidY = WorldStructureGenerator.getTargetY(world, originalPos.getX(), originalPos.getZ(), false, originalPos.getY());
 		Biome biome = world.getBiome(originalPos);
 		int topNonWaterY = WorldStructureGenerator.getTargetY(world, originalPos.getX(), originalPos.getZ(), true, originalPos.getY());
 		int topOuterBorderWaterY = point.getOuterBorderPoint().getWaterLevel();
 
-		if (originalPos.getY() == smoothedPos.getY() && topSolidY == originalPos.getY()) {
+		if (originalPos.getY() == smoothedPos.getY() && topNonWaterY == originalPos.getY()) {
 			return;
 		}
 
