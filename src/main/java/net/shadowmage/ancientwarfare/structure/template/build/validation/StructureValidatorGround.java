@@ -2,16 +2,20 @@ package net.shadowmage.ancientwarfare.structure.template.build.validation;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
+import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.border.SmoothingMatrixBuilder;
 import net.shadowmage.ancientwarfare.structure.worldgen.WorldStructureGenerator;
+
+import java.util.Optional;
 
 public class StructureValidatorGround extends StructureValidator {
 
@@ -53,10 +57,21 @@ public class StructureValidatorGround extends StructureValidator {
 
 	private void smoothoutBorder(World world, StructureBB bb, EnumFacing face, StructureTemplate template) {
 		int borderSize = getBorderSize();
+		int turns = (face.getHorizontalIndex() + 2) % 4;
+
 		if (borderSize > 0) {
-			new SmoothingMatrixBuilder(world, bb, borderSize, face, template).build()
+			new SmoothingMatrixBuilder(world, bb, borderSize, bb.min.getY() + template.getOffset().getY() - 1,
+					p -> getStateFromTemplate(template, bb, turns, p)).build()
 					.apply(world, pos -> handleClearAction(world, pos, template, bb));
 		}
+	}
+
+	private IBlockState getStateFromTemplate(StructureTemplate template, StructureBB bb, int turns, BlockPos pos) {
+		int xSize = turns % 2 == 0 ? template.getSize().getX() : template.getSize().getZ();
+		int zSize = turns % 2 == 0 ? template.getSize().getZ() : template.getSize().getX();
+
+		Optional<TemplateRuleBlock> rule = template.getRuleAt(BlockTools.rotateInArea(pos.add(-bb.min.getX(), -bb.min.getY(), -bb.min.getZ()), xSize, zSize, -turns));
+		return rule.map(r -> r.getState(turns)).orElse(Blocks.DIRT.getDefaultState());
 	}
 
 	private void clearBB(World world, StructureTemplate template, StructureBB bb) {

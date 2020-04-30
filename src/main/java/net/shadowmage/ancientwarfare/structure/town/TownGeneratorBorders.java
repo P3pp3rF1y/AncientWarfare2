@@ -24,7 +24,8 @@ public class TownGeneratorBorders {
 	public static void generateBorders(World world, StructureBB exterior) {
 		BlockTools.getAllInBoxTopDown(exterior.min, exterior.max.add(0, 50, 0)).forEach(pos -> handleClearing(world, pos));
 
-		new SmoothingMatrixBuilder(world, exterior, Math.min(Math.max(exterior.getXSize(), exterior.getZSize()) / 8, MAX_BORDER_WIDTH)).build()
+		new SmoothingMatrixBuilder(world, exterior, Math.min(Math.max(exterior.getXSize(), exterior.getZSize()) / 8, MAX_BORDER_WIDTH),
+				exterior.min.getY() - 1, p -> world.getBiome(p).topBlock).build()
 				.apply(world, pos -> handleClearing(world, pos));
 	}
 

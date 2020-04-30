@@ -5,12 +5,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
-import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
-import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.border.points.BorderPoint;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.border.points.PointType;
@@ -19,28 +16,21 @@ import net.shadowmage.ancientwarfare.structure.worldgen.WorldStructureGenerator;
 
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.function.IntBinaryOperator;
 
 public class SmoothingMatrixBuilder {
 	private final World world;
-	private StructureBB bb;
 	private final int borderSize;
 	private final int groundY;
-	private int turns;
-	private StructureTemplate template;
 	private SmoothingMatrix smoothingMatrix;
+	private Function<BlockPos, IBlockState> getStructureBorderState;
 
-	public SmoothingMatrixBuilder(World world, StructureBB bb, int borderSize) {
-		this(world, bb, borderSize, bb.min.getY() - 1, EnumFacing.SOUTH, null);
-	}
-
-	private SmoothingMatrixBuilder(World world, StructureBB bb, int borderSize, int groundY, EnumFacing face, StructureTemplate template) {
+	public SmoothingMatrixBuilder(World world, StructureBB bb, int borderSize, int groundY, Function<BlockPos, IBlockState> getStructureBorderState) {
 		this.world = world;
-		this.bb = bb;
 		this.borderSize = borderSize;
 		this.groundY = groundY;
-		this.turns = (face.getHorizontalIndex() + 2) % 4;
-		this.template = template;
+		this.getStructureBorderState = getStructureBorderState;
 
 		BorderMatrix borderMatrix = BorderMatrixCache.getBorderMatrix(bb.getXSize(), bb.getZSize(), borderSize);
 		smoothingMatrix = new SmoothingMatrix(borderMatrix, bb.min, borderSize);
@@ -49,10 +39,6 @@ public class SmoothingMatrixBuilder {
 		convertPointsToSmoothingMatrix(0, borderMatrix, PointType.REFERENCE_POINT);
 		convertPointsToSmoothingMatrix(0, borderMatrix, PointType.OUTER_BORDER);
 		convertPointsToSmoothingMatrix(0, borderMatrix, PointType.SMOOTHED_BORDER);
-	}
-
-	public SmoothingMatrixBuilder(World world, StructureBB bb, int borderSize, EnumFacing face, StructureTemplate template) {
-		this(world, bb, borderSize, bb.min.getY() + template.getOffset().getY() - 1, face, template);
 	}
 
 	private void convertPointsToSmoothingMatrix(int groundY, BorderMatrix borderMatrix, PointType type) {
@@ -217,19 +203,11 @@ public class SmoothingMatrixBuilder {
 	);
 
 	private Optional<IBlockState> getPointBlockState(BlockPos pos, PointType type) {
-		IBlockState state = type == PointType.STRUCTURE_BORDER && template != null ? getStateFromTemplate(pos) : world.getBlockState(pos);
+		IBlockState state = type == PointType.STRUCTURE_BORDER ? getStructureBorderState.apply(pos) : world.getBlockState(pos);
 		if (type == PointType.STRUCTURE_BORDER && !STRUCTURE_BORDER_BLOCK_WHITELIST.contains(state.getBlock())) {
 			return Optional.empty();
 		}
 		return Optional.of(state);
-	}
-
-	private IBlockState getStateFromTemplate(BlockPos pos) {
-		int xSize = turns % 2 == 0 ? template.getSize().getX() : template.getSize().getZ();
-		int zSize = turns % 2 == 0 ? template.getSize().getZ() : template.getSize().getX();
-
-		Optional<TemplateRuleBlock> rule = template.getRuleAt(BlockTools.rotateInArea(pos.add(-bb.min.getX(), -bb.min.getY(), -bb.min.getZ()), xSize, zSize, -turns));
-		return rule.map(r -> r.getState(turns)).orElse(Blocks.DIRT.getDefaultState());
 	}
 
 	private int getYBelowFloatingIsland(int x, int y, int z) {

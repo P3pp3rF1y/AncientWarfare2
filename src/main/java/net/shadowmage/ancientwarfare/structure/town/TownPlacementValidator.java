@@ -44,10 +44,10 @@ public class TownPlacementValidator {
 			return Optional.empty();
 		}
 
-		int minY = Math.max(0, world.getSeaLevel() - 3);
+		int minY = Math.max(0, world.getSeaLevel() - 4);
 
 		TownBoundingArea area = new TownBoundingArea();
-		area.minY = Math.max(minY, height - 2);
+		area.minY = Math.max(minY, height - 3);
 		area.maxY = Math.min(255, area.minY + 40);
 		area.chunkMinX = cx;
 		area.chunkMaxX = cx;
