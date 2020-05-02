@@ -6,6 +6,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
@@ -65,6 +68,7 @@ public class TownGenerator {
 	public void generate() {
 		AncientWarfareStructure.LOG.info("Generating town at: {} : {}", townBounds.getCenterX(), townBounds.getCenterZ());
 		determineStructuresToGenerate();
+		changeBiome(exteriorBounds);
 		TownGeneratorBorders.generateBorders(world, exteriorBounds);
 		TownGeneratorBorders.levelTownArea(world, exteriorBounds);
 
@@ -73,6 +77,20 @@ public class TownGenerator {
 		WorldGenTickHandler.INSTANCE.addStructureGenCallback(() -> {
 			generateRoads();
 			TownGeneratorStructures.generateStructures(TownGenerator.this);
+		});
+	}
+
+	private void changeBiome(StructureBB bb) {
+		template.getBiomeReplacement().ifPresent(biomeRegistryName -> {
+			if (!ForgeRegistries.BIOMES.containsKey(biomeRegistryName)) {
+				return;
+			}
+
+			Biome replacementBiome = ForgeRegistries.BIOMES.getValue(biomeRegistryName);
+
+			BlockPos minPos = bb.min;
+			BlockPos maxPos = new BlockPos(bb.max.getX(), bb.min.getY(), bb.max.getZ());
+			BlockPos.getAllInBox(minPos, maxPos).forEach(pos -> WorldTools.changeBiome(world, pos, replacementBiome));
 		});
 	}
 

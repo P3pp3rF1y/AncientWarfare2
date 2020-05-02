@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.structure.town;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 
@@ -73,6 +74,8 @@ public final class TownTemplate {
 	private List<TownStructureEntry> cosmeticStructureEntries = new ArrayList<>();
 	private List<TownStructureEntry> exteriorStructureEntries = new ArrayList<>();
 	private boolean preventNaturalHostileSpawns;
+	private ResourceLocation biomeReplacement = null;
+	private String territoryName;
 
 	public void setTownTypeName(String townTypeName) {
 		this.townTypeName = townTypeName;
@@ -390,6 +393,22 @@ public final class TownTemplate {
 
 	public boolean shouldPreventNaturalHostileSpawns() {
 		return preventNaturalHostileSpawns;
+	}
+
+	public void setBiomeReplacement(ResourceLocation biomeReplacement) {
+		this.biomeReplacement = biomeReplacement;
+	}
+
+	public Optional<ResourceLocation> getBiomeReplacement() {
+		return Optional.ofNullable(biomeReplacement);
+	}
+
+	public void setTerritoryName(String territoryName) {
+		this.territoryName = territoryName;
+	}
+
+	public String getTerritoryName() {
+		return territoryName;
 	}
 
 	public static final class TownStructureEntry {
