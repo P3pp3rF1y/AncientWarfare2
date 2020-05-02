@@ -11,6 +11,7 @@ import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureEntry;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
 import net.shadowmage.ancientwarfare.structure.gamedata.TownMap;
+import net.shadowmage.ancientwarfare.structure.worldgen.WorldStructureGenerator;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -62,10 +63,47 @@ public class TownPlacementValidator {
 		}
 
 		expandBoundingArea(world, area, structureList);
+		shrinkTooLongArea(area);
+		levelToAverageBorderHeight(world, area);
+		return Optional.of(area);
+	}
 
-        /*
-		 * Shrink town along x or z axis if ratio of sizes is > 2:1
-         */
+	private static final int STEP = 4;
+
+	private static void levelToAverageBorderHeight(World world, TownBoundingArea area) {
+		int minX = area.getBlockMinX() - 1;
+		int maxX = area.getBlockMaxX() + 1;
+		int minZ = area.getBlockMinZ() - 1;
+		int maxZ = area.getBlockMaxZ() + 1;
+
+		int totalLevel = 0;
+		int totalPoints = 0;
+
+		for (int x = minX + STEP; x < maxX; x += STEP) {
+			totalLevel += WorldStructureGenerator.getTargetY(world, x, minZ, false);
+			totalPoints++;
+		}
+
+		for (int z = minZ + STEP; z < maxZ; z += STEP) {
+			totalLevel += WorldStructureGenerator.getTargetY(world, minX, z, false);
+			totalPoints++;
+		}
+
+		for (int x = maxX - STEP; x > minX; x -= STEP) {
+			totalLevel += WorldStructureGenerator.getTargetY(world, x, maxZ, false);
+			totalPoints++;
+		}
+
+		for (int z = maxZ - STEP; z > minZ; z -= STEP) {
+			totalLevel += WorldStructureGenerator.getTargetY(world, maxX, z, false);
+			totalPoints++;
+		}
+		if (totalPoints > 0) {
+			area.setSurfaceY(totalLevel / totalPoints);
+		}
+	}
+
+	private static void shrinkTooLongArea(TownBoundingArea area) {
 		int cw = area.getChunkWidth();
 		int cl = area.getChunkLength();
 		if (cw > cl * 2) {
@@ -90,7 +128,6 @@ public class TownPlacementValidator {
 				}
 			}
 		}
-		return Optional.of(area);
 	}
 
 	private static boolean isStructureInside(Collection<StructureEntry> structureList, int x, int z, int minY, int maxY) {
