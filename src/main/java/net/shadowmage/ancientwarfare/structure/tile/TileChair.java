@@ -65,7 +65,8 @@ public class TileChair extends TileMulti implements BlockRotationHandler.IRotata
 
 	@Override
 	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
-		return oldState.getValue(BlockStateProperties.VARIANT) != newState.getValue(BlockStateProperties.VARIANT)
+		return oldState.getBlock() != newState.getBlock()
+				|| oldState.getValue(BlockStateProperties.VARIANT) != newState.getValue(BlockStateProperties.VARIANT)
 				|| !oldState.getValue(CoreProperties.VISIBLE).equals(newState.getValue(CoreProperties.VISIBLE));
 	}
 }
