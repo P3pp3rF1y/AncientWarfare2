@@ -404,7 +404,7 @@ public final class TownTemplate {
 	}
 
 	public void setTerritoryName(String territoryName) {
-		this.territoryName = territoryName;
+		this.territoryName = territoryName.trim();
 	}
 
 	public String getTerritoryName() {

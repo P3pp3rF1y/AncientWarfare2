@@ -1,15 +1,18 @@
 package net.shadowmage.ancientwarfare.structure.worldgen;
 
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.WorldGenStructureManager;
 import net.shadowmage.ancientwarfare.structure.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,6 +22,9 @@ import java.util.Optional;
 import java.util.Set;
 
 public class TerritoryManager {
+	private static HashMap<Biome, List<String>> territoryNamesByBiome = new HashMap<>();
+	private static HashMap<String, Set<Biome>> biomesByTerritoryNames = new HashMap<>();
+
 	private TerritoryManager() {}
 
 	public static Optional<Territory> getTerritory(int chunkX, int chunkZ, World world) {
@@ -43,6 +49,26 @@ public class TerritoryManager {
 		return new BlockPos(x, 1, z);
 	}
 
+	public static void clearTerritoryCache() {
+		territoryNamesByBiome.clear();
+		biomesByTerritoryNames.clear();
+	}
+
+	public static void addTerritoryInBiome(String territoryName, String biomeName) {
+		Biome biome = ForgeRegistries.BIOMES.getValue(new ResourceLocation(biomeName));
+		if (biome != null) {
+			List<String> territoryNames = territoryNamesByBiome.getOrDefault(biome, new ArrayList<>());
+			if (!territoryNames.contains(territoryName)) {
+				territoryNames.add(territoryName);
+				territoryNamesByBiome.put(biome, territoryNames);
+			}
+
+			Set<Biome> biomes = biomesByTerritoryNames.getOrDefault(territoryName, new HashSet<>());
+			biomes.add(biome);
+			biomesByTerritoryNames.put(territoryName, biomes);
+		}
+	}
+
 	private static class TerritoryGenerator {
 		private Map<Long, ProcessedChunk> chunksToProcess = new HashMap<>();
 		private Map<Long, BlockPos> includedChunks = new HashMap<>();
@@ -53,27 +79,32 @@ public class TerritoryManager {
 			this.world = world;
 		}
 
-		private void generateTerritory(int chunkX, int chunkZ, long chunkPosValue, ITerritoryData territoryData) {
+		private static Optional<Set<Biome>> getTerritoryBiomes(String territoryName) {
+			return Optional.ofNullable(biomesByTerritoryNames.get(territoryName));
+		}
 
+		private void generateTerritory(int chunkX, int chunkZ, long chunkPosValue, ITerritoryData territoryData) {
 			BlockPos firstPos = getChunkCenterPos(chunkX, chunkZ);
 			Biome biome = world.getBiome(firstPos);
-			Optional<List<String>> territoryNames = WorldGenStructureManager.INSTANCE.getBiomeTerritoryNames(biome);
-			if (territoryNames.isPresent()) {
-				String territoryName = getRandomTerritory(territoryNames.get());
-				String territoryId = territoryName + territoryData.getNextTerritoryId(territoryName);
-
-				includedChunks.put(chunkPosValue, firstPos);
-
-				chunksToProcess.put(chunkPosValue, new ProcessedChunk(chunkPosValue, firstPos, chunkX, chunkZ));
-				WorldGenStructureManager.INSTANCE.getTerritoryBiomes(territoryName).ifPresent(biomes -> processChunks(biomes, territoryData));
-
-				if (includedChunks.size() < 3) {
-					territoryId = getFirstDifferentTerritoryIdFromNeighbors(chunkX, chunkZ, territoryId, territoryData);
-				}
-
-				String finalTerritoryId = territoryId;
-				includedChunks.forEach((hash, pos) -> territoryData.setOwned(hash, finalTerritoryId, territoryName));
+			if (!territoryNamesByBiome.containsKey(biome)) {
+				return;
 			}
+			List<String> territoryNames = territoryNamesByBiome.get(biome);
+
+			String territoryName = getRandomTerritory(territoryNames);
+			String territoryId = territoryName + territoryData.getNextTerritoryId(territoryName);
+
+			includedChunks.put(chunkPosValue, firstPos);
+
+			chunksToProcess.put(chunkPosValue, new ProcessedChunk(chunkPosValue, firstPos, chunkX, chunkZ));
+			getTerritoryBiomes(territoryName).ifPresent(biomes -> processChunks(biomes, territoryData));
+
+			if (includedChunks.size() < 3) {
+				territoryId = getFirstDifferentTerritoryIdFromNeighbors(chunkX, chunkZ, territoryId, territoryData);
+			}
+
+			String finalTerritoryId = territoryId;
+			includedChunks.forEach((hash, pos) -> territoryData.setOwned(hash, finalTerritoryId, territoryName));
 		}
 
 		private BlockPos getTerritoryCenter() {

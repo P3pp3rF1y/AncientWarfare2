@@ -12,10 +12,11 @@ import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
 import net.shadowmage.ancientwarfare.structure.gamedata.TownEntry;
 import net.shadowmage.ancientwarfare.structure.gamedata.TownMap;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
+import net.shadowmage.ancientwarfare.structure.worldgen.Territory;
+import net.shadowmage.ancientwarfare.structure.worldgen.TerritoryManager;
 import net.shadowmage.ancientwarfare.structure.worldgen.WorldGenTickHandler;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 public class WorldTownGenerator implements IWorldGenerator {
@@ -45,22 +46,29 @@ public class WorldTownGenerator implements IWorldGenerator {
 		}
 
 		TownPlacementValidator.findGenerationPosition(world, blockX, blockZ).ifPresent(area ->
-		{
-			Optional<TownTemplate> t = TownTemplateManager.INSTANCE.selectTemplateFittingArea(world, area, templates);
-			if (!t.isPresent()) {
-				return;
-			}
-			TownTemplate template = t.get();
-			if (area.getChunkWidth() - 1 > template.getMaxSize())//shrink width down to town max size
-			{
-				area.chunkMaxX = area.chunkMinX + template.getMaxSize();
-			}
-			if (area.getChunkLength() - 1 > template.getMaxSize())//shrink length down to town max size
-			{
-				area.chunkMaxZ = area.chunkMinZ + template.getMaxSize();
-			}
-			generate(world, area, template);
-		});
+				selectTerritoryTemplate(world, blockX, blockZ, templates, area));
+	}
+
+	private void selectTerritoryTemplate(World world, int blockX, int blockZ, List<TownTemplate> templates, TownBoundingArea area) {
+		TerritoryManager.getTerritory(blockX >> 4, blockZ >> 4, world).ifPresent(territory ->
+				selectTemplateAndShrinkToMax(world, templates, area, territory));
+	}
+
+	private void selectTemplateAndShrinkToMax(World world, List<TownTemplate> templates, TownBoundingArea area, Territory territory) {
+		TownTemplateManager.INSTANCE.selectTemplateFittingArea(world, area, templates, territory).ifPresent(
+				template -> {
+					if (area.getChunkWidth() - 1 > template.getMaxSize())//shrink width down to town max size
+					{
+						area.chunkMaxX = area.chunkMinX + template.getMaxSize();
+					}
+					if (area.getChunkLength() - 1 > template.getMaxSize())//shrink length down to town max size
+					{
+						area.chunkMaxZ = area.chunkMinZ + template.getMaxSize();
+					}
+					generate(world, area, template);
+					territory.addClusterValue(template.getClusterValue());
+				}
+		);
 	}
 
 	public void generate(World world, TownBoundingArea area, TownTemplate template) {

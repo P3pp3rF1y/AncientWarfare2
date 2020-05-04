@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.template.load;
 
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.common.Loader;
 import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
 import net.shadowmage.ancientwarfare.core.util.FileUtils;
@@ -12,6 +13,7 @@ import net.shadowmage.ancientwarfare.structure.template.save.TemplateExporter;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplate;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplateManager;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplateParser;
+import net.shadowmage.ancientwarfare.structure.worldgen.TerritoryManager;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.BufferedReader;
@@ -132,7 +134,28 @@ public class TemplateLoader {
 	}
 
 	private void loadTownTemplate(List<String> lines) {
-		TownTemplateParser.parseTemplate(lines).ifPresent(t -> parsedTownTemplates.add(t));
+		TownTemplateParser.parseTemplate(lines).ifPresent(t -> {
+					parsedTownTemplates.add(t);
+					registerTerritoryBiomes(t);
+				}
+		);
+	}
+
+	private void registerTerritoryBiomes(TownTemplate t) {
+		if (t.isBiomeWhiteList()) {
+			t.getBiomeList().forEach(biomeName -> TerritoryManager.addTerritoryInBiome(t.getTerritoryName(), biomeName));
+		} else {
+			for (Biome biome : Biome.REGISTRY) {
+				if (biome == null) {
+					continue;
+				}
+				//noinspection ConstantConditions
+				String biomeName = biome.getRegistryName().toString();
+				if (!t.getBiomeList().contains(biomeName)) {
+					TerritoryManager.addTerritoryInBiome(t.getTerritoryName(), biomeName);
+				}
+			}
+		}
 	}
 
 	private void validateTownTemplates() {

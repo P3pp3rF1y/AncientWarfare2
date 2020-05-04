@@ -7,7 +7,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
@@ -17,6 +16,7 @@ import net.shadowmage.ancientwarfare.structure.registry.BiomeGroupRegistry;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
 import net.shadowmage.ancientwarfare.structure.util.CollectionUtils;
 import net.shadowmage.ancientwarfare.structure.worldgen.Territory;
+import net.shadowmage.ancientwarfare.structure.worldgen.TerritoryManager;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,8 +33,6 @@ import static net.shadowmage.ancientwarfare.structure.template.build.validation.
 public class WorldGenStructureManager {
 	public static final String GENERIC_TERRITORY_NAME = "";
 	private HashMap<String, Set<StructureTemplate>> templatesByBiome = new HashMap<>();
-	private HashMap<Biome, List<String>> territoryNamesByBiome = new HashMap<>();
-	private HashMap<String, Set<Biome>> biomesByTerritoryNames = new HashMap<>();
 	private HashMap<String, Set<StructureTemplate>> templatesByTerritoryName = new HashMap<>();
 
 	/*
@@ -49,18 +47,8 @@ public class WorldGenStructureManager {
 	private WorldGenStructureManager() {
 	}
 
-	public Optional<List<String>> getBiomeTerritoryNames(Biome biome) {
-		return Optional.ofNullable(territoryNamesByBiome.get(biome));
-	}
-
-	public Optional<Set<Biome>> getTerritoryBiomes(String territoryName) {
-		return Optional.ofNullable(biomesByTerritoryNames.get(territoryName));
-	}
-
 	public void clearCachedTemplates() {
 		templatesByBiome.clear();
-		territoryNamesByBiome.clear();
-		biomesByTerritoryNames.clear();
 		templatesByTerritoryName.clear();
 	}
 
@@ -109,18 +97,7 @@ public class WorldGenStructureManager {
 
 	private void addBiomeTemplate(StructureTemplate template, String territoryName, String biomeName) {
 		templatesByBiome.get(biomeName).add(template);
-		Biome biome = ForgeRegistries.BIOMES.getValue(new ResourceLocation(biomeName));
-		if (biome != null) {
-			List<String> territoryNames = territoryNamesByBiome.getOrDefault(biome, new ArrayList<>());
-			if (!territoryNames.contains(territoryName)) {
-				territoryNames.add(territoryName);
-				territoryNamesByBiome.put(biome, territoryNames);
-			}
-
-			Set<Biome> biomes = biomesByTerritoryNames.getOrDefault(territoryName, new HashSet<>());
-			biomes.add(biome);
-			biomesByTerritoryNames.put(territoryName, biomes);
-		}
+		TerritoryManager.addTerritoryInBiome(territoryName, biomeName);
 	}
 
 	private void blacklistBiomes(StructureTemplate template, Set<String> biomes, Set<String> biomeGroupBiomes, String territoryName) {
@@ -189,7 +166,7 @@ public class WorldGenStructureManager {
 		StructureTemplate toReturn = CollectionUtils.getWeightedRandomElement(rng, this.trimmedPotentialStructures, e -> getStructureWeight(x, y, z, territory, e)).orElse(null);
 		distancesFound.clear();
 		trimmedPotentialStructures.clear();
-		return Optional.of(toReturn);
+		return Optional.ofNullable(toReturn);
 	}
 
 	private int getStructureWeight(int x, int y, int z, Territory territory, StructureTemplate e) {

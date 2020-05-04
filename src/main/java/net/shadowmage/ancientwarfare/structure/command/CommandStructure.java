@@ -31,6 +31,7 @@ import net.shadowmage.ancientwarfare.structure.template.WorldGenStructureManager
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
 import net.shadowmage.ancientwarfare.structure.template.load.TemplateLoader;
 import net.shadowmage.ancientwarfare.structure.tile.ScannerTracker;
+import net.shadowmage.ancientwarfare.structure.worldgen.TerritoryManager;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -49,6 +50,7 @@ public class CommandStructure extends ParentCommand {
 		registerSubCommand(new SimpleSubCommand("reload",
 				(server, sender, args) -> {
 					WorldGenStructureManager.INSTANCE.clearCachedTemplates();
+					TerritoryManager.clearTerritoryCache();
 					WorldGenStructureManager.INSTANCE.loadBiomeList(); //reset biome to template cache
 					TemplateLoader.INSTANCE.reloadAll();
 					sender.sendMessage(new TextComponentTranslation("command.aw.structure.reloaded"));

@@ -5,6 +5,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
+import net.shadowmage.ancientwarfare.structure.worldgen.Territory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -53,7 +54,7 @@ public class TownTemplateManager {
 		return templates.values().stream().filter(t -> isDimensionValid(world.provider.getDimension(), t) && isBiomeValid(biomeName, t)).collect(Collectors.toList());
 	}
 
-	Optional<TownTemplate> selectTemplateFittingArea(World world, TownBoundingArea area, List<TownTemplate> templates) {
+	Optional<TownTemplate> selectTemplateFittingArea(World world, TownBoundingArea area, List<TownTemplate> templates, Territory territory) {
 		TownTemplate selection = null;
 		int width = area.getChunkWidth();
 		int length = area.getChunkLength();
@@ -64,7 +65,7 @@ public class TownTemplateManager {
 		int totalWeight = 0;
 		for (TownTemplate t : templates) {
 			templateMinimumSize = t.getMinSize();
-			if (min >= templateMinimumSize) {
+			if (min >= templateMinimumSize && isCorrectTerritory(territory.getTerritoryName(), t) && territory.getRemainingClusterValue() > t.getClusterValue()) {
 				searchCache.add(t);
 				totalWeight += t.getSelectionWeight();
 			}
@@ -81,6 +82,10 @@ public class TownTemplateManager {
 		}
 		searchCache.clear();
 		return Optional.ofNullable(selection);
+	}
+
+	private boolean isCorrectTerritory(String territoryName, TownTemplate t) {
+		return t.getTerritoryName().equals(territoryName) || t.getTerritoryName().isEmpty();
 	}
 
 	private boolean isBiomeValid(String biome, TownTemplate t) {
