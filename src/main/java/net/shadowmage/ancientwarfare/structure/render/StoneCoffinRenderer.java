@@ -8,15 +8,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
-import net.shadowmage.ancientwarfare.core.util.RenderTools;
-import net.shadowmage.ancientwarfare.structure.block.BlockStoneCoffin;
+import net.shadowmage.ancientwarfare.structure.block.BlockMulti;
+import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
+import net.shadowmage.ancientwarfare.structure.item.ItemBlockStoneCoffin;
 import net.shadowmage.ancientwarfare.structure.model.ModelStoneCoffin;
 import net.shadowmage.ancientwarfare.structure.tile.TileStoneCoffin;
 
@@ -24,14 +23,16 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
-public class StoneCoffinRenderer extends TileEntitySpecialRenderer<TileStoneCoffin> implements IItemRenderer {
+public class StoneCoffinRenderer extends RenderLootInfo<TileStoneCoffin> implements IItemRenderer {
 	public static final ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.MOD_ID + ":structure/stone_coffin", "normal");
-	private static final ModelStoneCoffin COFFIN_MODEL = new ModelStoneCoffin();
+	private static final ModelStoneCoffin STONE_COFFIN_MODEL = new ModelStoneCoffin();
 
 	private static final Map<Integer, ResourceLocation> TEXTURES = new HashMap<>();
 
-	public static void setTexture(int variantId, ResourceLocation textureLocation) {
-		TEXTURES.put(variantId, textureLocation);
+	static {
+		for (int id = 1; id <= 6; id++) {
+			TEXTURES.put(id, new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/model/structure/stone_coffin_" + id + ".png"));
+		}
 	}
 
 	private static final IModelState TRANSFORMS;
@@ -41,53 +42,66 @@ public class StoneCoffinRenderer extends TileEntitySpecialRenderer<TileStoneCoff
 		TRSRTransformation thirdPerson;
 
 		map = new EnumMap<>(ItemCameraTransforms.TransformType.class);
-		thirdPerson = TransformUtils.create(0F, 2.5F, 0F, 75F, 45F, 0F, 0.375F);
-		map.put(ItemCameraTransforms.TransformType.GUI, TransformUtils.create(0F, 0F, 0F, 30F, 45F, 0F, 0.625F));
-		map.put(ItemCameraTransforms.TransformType.GROUND, TransformUtils.create(0F, 3F, 0F, 0F, 0F, 0F, 0.25F));
-		map.put(ItemCameraTransforms.TransformType.FIXED, TransformUtils.create(0F, 0F, 0F, 0F, 0F, 0F, 0.5F));
+		thirdPerson = TransformUtils.create(0F, 3F, 5F, 75F, 180F, 180F, 0.015F);
+		map.put(ItemCameraTransforms.TransformType.GUI, TransformUtils.create(1F, 4F, 0F, 60F, 225F, 200F, 0.019F));
+		map.put(ItemCameraTransforms.TransformType.GROUND, TransformUtils.create(0F, 8F, 0F, 0F, 0F, 180F, 0.017F));
+		map.put(ItemCameraTransforms.TransformType.FIXED, TransformUtils.create(0F, -4F, -12F, 90F, 180F, 0F, 0.035F));
 		map.put(ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, thirdPerson);
 		map.put(ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, TransformUtils.flipLeft(thirdPerson));
-		map.put(ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND, TransformUtils.create(0F, 0F, 0F, 0F, 45F, 0F, 0.4F));
-		map.put(ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, TransformUtils.create(0F, 0F, 0F, 0F, 225F, 0F, 0.4F));
+		map.put(ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND, TransformUtils.create(25F, -15F, -10F, 50F, 170F, 170F, 0.08F));
+		map.put(ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, TransformUtils.create(25F, -15F, -10F, 50F, 170F, 170F, 0.08F));
 		TRANSFORMS = new CCModelState(map);
 	}
 
 	@Override
 	public void render(TileStoneCoffin te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
-
+		super.render(te, x, y, z, partialTicks, destroyStage, alpha);
 		IBlockState state = te.getWorld().getBlockState(te.getPos());
-		float rotation = state.getValue(BlockStoneCoffin.DIRECTION).getRotationAngle();
-//		boolean upright = state.getValue(BlockStoneCoffin.UPRIGHT);
+		if (state.getBlock() != AWStructureBlocks.STONE_COFFIN || state.getValue(BlockMulti.INVISIBLE)) {
+			return;
+		}
+		float rotation = te.getDirection().getRotationAngle();
 
-		RenderTools.setFullColorLightmap();
 		GlStateManager.pushMatrix();
-		GlStateManager.translate(x - 0F, y + 1.835F, z + 0.25F);
+		GlStateManager.translate(x, y + 1.78F, z);
 		GlStateManager.rotate(-rotation, 0, 1, 0); //passing in negative value because of the flipping of the model below
-
 		GlStateManager.pushMatrix();
 
-		GlStateManager.translate(0, 0, -0.22f);
+		switch ((int) rotation) {
+			case 0: // north
+				GlStateManager.translate(0, 0, -1F);
+				break;
+			case 90: // east
+				GlStateManager.translate(0, 0, -2F);
+				break;
+			case 180: //south
+				GlStateManager.translate(-1F, 0, -2F);
+				break;
+			case 270: // west
+				GlStateManager.translate(-1F, 0, -1F);
+				break;
+		}
+
 		GlStateManager.rotate(180, 1, 0, 0);
-		GlStateManager.scale(0.076f, 0.076f, 0.076f);
-		bindTexture(new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/model/structure/stone_coffin_1.png"));
-		COFFIN_MODEL.renderAll();
+		GlStateManager.scale(0.074f, 0.074f, 0.074f);
+		bindTexture(TEXTURES.get(te.getVariant()));
+		float lidAngle = te.getPrevLidAngle() + (te.getLidAngle() - te.getPrevLidAngle()) * partialTicks;
+		STONE_COFFIN_MODEL.renderAll((float) (-lidAngle / 180F * Math.PI));
 		GlStateManager.popMatrix();
-
-		GlStateManager.popMatrix();
-
-		GlStateManager.pushMatrix();
-		GlStateManager.translate((float) x + 0.5F, (float) y + 0.3F, (float) z + 0.5F);
-		GlStateManager.rotate(90, 1, 0, 0);
 		GlStateManager.popMatrix();
 	}
 
 	@Override
 	public void renderItem(ItemStack stack, ItemCameraTransforms.TransformType transformType) {
+		int variant = ItemBlockStoneCoffin.getVariant(stack);
+		if (variant < 1) {
+			return;
+		}
 		GlStateManager.pushMatrix();
 
-		bindTexture(TEXTURES.get(1));
+		Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURES.get(variant));
 
-		COFFIN_MODEL.renderAll();
+		STONE_COFFIN_MODEL.renderAll();
 
 		//Fixes issues with inventory rendering.
 		//The Portal renderer modifies blend and disables it.

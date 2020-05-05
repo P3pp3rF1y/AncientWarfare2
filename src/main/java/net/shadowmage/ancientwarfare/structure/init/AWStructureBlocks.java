@@ -67,7 +67,6 @@ import net.shadowmage.ancientwarfare.structure.item.ItemBlockFirePit;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockGravestone;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockPosts;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockProtectionFlag;
-//import net.shadowmage.ancientwarfare.structure.item.ItemBlockStoneCoffin;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockStoneCoffin;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockStretchingRack;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockStructureBuilder;
@@ -217,7 +216,7 @@ public class AWStructureBlocks {
 		ItemLootChestPlacer.registerLootContainer(new ItemStack(LOOT_BASKET));
 		NonNullList<ItemStack> subBlocks = NonNullList.create();
 		COFFIN.getSubBlocks(AncientWarfareStructure.TAB, subBlocks);
-//		STONE_COFFIN.getSubBlocks(AncientWarfareStructure.TAB, subBlocks);
+		STONE_COFFIN.getSubBlocks(AncientWarfareStructure.TAB, subBlocks);
 		GRAVESTONE.getSubBlocks(AncientWarfareStructure.TAB, subBlocks);
 		subBlocks.forEach(ItemLootChestPlacer::registerLootContainer);
 		ItemLootChestPlacer.registerLootContainer(new ItemStack(URN));

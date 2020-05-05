@@ -29,7 +29,7 @@ import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockCoffin;
 import net.shadowmage.ancientwarfare.structure.render.CoffinRenderer;
-import net.shadowmage.ancientwarfare.structure.render.ParticleDummyModel;
+import net.shadowmage.ancientwarfare.structure.render.ParticleOnlyModel;
 import net.shadowmage.ancientwarfare.structure.tile.TileCoffin;
 
 import java.util.Map;
@@ -113,7 +113,7 @@ public class BlockCoffin extends BlockMulti<TileCoffin> {
 				return CoffinRenderer.MODEL_LOCATION;
 			}
 		});
-		ModelRegistryHelper.register(CoffinRenderer.MODEL_LOCATION, ParticleDummyModel.INSTANCE);
+		ModelRegistryHelper.register(CoffinRenderer.MODEL_LOCATION, ParticleOnlyModel.INSTANCE);
 		ModelRegistryHelper.registerItemRenderer(Item.getItemFromBlock(this), new CoffinRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileCoffin.class, new CoffinRenderer());
 	}
