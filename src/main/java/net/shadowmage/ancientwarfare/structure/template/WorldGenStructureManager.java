@@ -131,7 +131,7 @@ public class WorldGenStructureManager {
 			return Optional.empty();
 		}
 
-		int remainingValueCache = (int) (AWStructureStatics.chunkClusterValue * territory.getNumberOfChunks()) - territory.getTotalClusterValue();
+		int remainingValueCache = territory.getRemainingClusterValue();
 
 		int duplicateSearchDistance = 0;
 		for (StructureTemplate template : potentialStructures) {

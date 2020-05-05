@@ -6,6 +6,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.shadowmage.ancientwarfare.core.util.NBTHelper;
+import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -29,10 +30,6 @@ public class Territory implements INBTSerializable<NBTTagCompound> {
 
 	public String getTerritoryId() {
 		return territoryId;
-	}
-
-	public int getTotalClusterValue() {
-		return totalClusterValue;
 	}
 
 	public void addClusterValue(int value) {
@@ -62,10 +59,6 @@ public class Territory implements INBTSerializable<NBTTagCompound> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(territoryId);
-	}
-
-	public int getNumberOfChunks() {
-		return chunkPositions.size();
 	}
 
 	public String getTerritoryName() {
@@ -99,5 +92,9 @@ public class Territory implements INBTSerializable<NBTTagCompound> {
 
 	public BlockPos getTerritoryCenter() {
 		return territoryCenter;
+	}
+
+	public int getRemainingClusterValue() {
+		return (int) (AWStructureStatics.chunkClusterValue * chunkPositions.size()) - totalClusterValue;
 	}
 }
