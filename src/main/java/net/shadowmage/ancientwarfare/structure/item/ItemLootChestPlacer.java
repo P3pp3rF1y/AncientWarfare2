@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -15,15 +16,22 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.gui.GuiLootChestPlacer;
+import net.shadowmage.ancientwarfare.structure.registry.EntitySpawnNBTRegistry;
 import net.shadowmage.ancientwarfare.structure.tile.ISpecialLootContainer;
 import net.shadowmage.ancientwarfare.structure.tile.LootSettings;
 
@@ -36,7 +44,7 @@ public class ItemLootChestPlacer extends ItemBaseStructure implements IItemKeyIn
 	private static final String LOOT_SETTINGS_TAG = "lootSettings";
 
 	private static final List<ItemStack> LOOT_CONTAINERS = new ArrayList<>();
-	public static final String BLOCK_STACK_TAG = "blockStack";
+	private static final String BLOCK_STACK_TAG = "blockStack";
 
 	public static List<ItemStack> getLootContainers() {
 		return LOOT_CONTAINERS;
@@ -49,6 +57,7 @@ public class ItemLootChestPlacer extends ItemBaseStructure implements IItemKeyIn
 	public ItemLootChestPlacer() {
 		super("loot_chest_placer");
 		setMaxStackSize(1);
+		MinecraftForge.EVENT_BUS.register(this);
 	}
 
 	@Override
@@ -57,6 +66,34 @@ public class ItemLootChestPlacer extends ItemBaseStructure implements IItemKeyIn
 			NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_LOOT_CHEST_PLACER, 0, 0, 0);
 		}
 		return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
+	}
+
+	@SubscribeEvent
+	public void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
+		EntityPlayer player = event.getEntityPlayer();
+		ItemStack lootChestPlacer = EntityTools.getItemFromEitherHand(player, ItemLootChestPlacer.class);
+		if (lootChestPlacer.isEmpty()) {
+			return;
+		}
+		event.setCanceled(true);
+		event.setCancellationResult(EnumActionResult.SUCCESS);
+
+		if (player.world.isRemote) {
+			return;
+		}
+
+		Entity entity = event.getTarget();
+
+		LootSettings lootSettings = getLootSettings(lootChestPlacer).orElse(new LootSettings());
+
+		lootSettings.setSpawnEntity(true);
+		//noinspection ConstantConditions
+		lootSettings.setEntity(EntityRegistry.getEntry(entity.getClass()).getRegistryName());
+		lootSettings.setEntityNBT(EntitySpawnNBTRegistry.getEntitySpawnNBT(entity));
+		setLootSettings(lootChestPlacer, lootSettings);
+		entity.setDead();
+
+		event.getEntityPlayer().sendMessage(new TextComponentTranslation("guistrings.spawner.entity_set", entity.getName()));
 	}
 
 	@Override

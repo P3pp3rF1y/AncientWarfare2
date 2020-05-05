@@ -29,14 +29,16 @@ public class EntitySpawnNBTRegistry {
 		entityNBT.put(Entity.class, Collections.singleton("CustomName"));
 	}
 
-	public static NBTTagCompound getEntitySpawnNBT(Entity entity, NBTTagCompound entityTag) {
+	public static NBTTagCompound getEntitySpawnNBT(Entity entity) {
 		NBTTagCompound ret = new NBTTagCompound();
+		NBTTagCompound fullEntityNbt = new NBTTagCompound();
+		entity.writeToNBT(fullEntityNbt);
 
 		for (Map.Entry<Class, Set<String>> entry : entityNBT.entrySet()) {
 			if (entry.getKey().isInstance(entity)) {
 				for (String tag : entry.getValue()) {
-					if (entityTag.hasKey(tag)) {
-						ret.setTag(tag, entityTag.getTag(tag));
+					if (fullEntityNbt.hasKey(tag)) {
+						ret.setTag(tag, fullEntityNbt.getTag(tag));
 					}
 				}
 			}
@@ -66,5 +68,4 @@ public class EntitySpawnNBTRegistry {
 			}
 		}
 	}
-
 }
