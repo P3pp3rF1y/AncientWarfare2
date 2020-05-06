@@ -45,9 +45,10 @@ public class ShapelessResearchRecipe extends ResearchRecipeBase {
 		return !ingredientsMatched.contains(false);
 	}
 
+	@SuppressWarnings("ConstantConditions")
 	@Override
 	public IRecipe getCraftingRecipe() {
-		//noinspection ConstantConditions,ConfusingArgumentToVarargsMethod - using varargs
-		return new ShapelessOreRecipe(null, getRecipeOutput(), getIngredients().toArray(new Ingredient[] {})).setRegistryName(getRegistryName());
+		Object[] ingredients = getIngredients().toArray(new Ingredient[] {});
+		return new ShapelessOreRecipe(null, getRecipeOutput(), ingredients).setRegistryName(getRegistryName());
 	}
 }
