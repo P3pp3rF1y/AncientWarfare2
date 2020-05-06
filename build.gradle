@@ -44,15 +44,6 @@ repositories {
     maven { 
         url "http://dvs1.progwml6.com/files/maven" 
     }
-    maven {
-        url "http://tehnut.info/maven"
-    }
-    maven {
-        url 'http://minecraft.curseforge.com/api/maven/'
-    }
-    flatDir {
-        dirs 'libs'
-    }
 }
 
 minecraft{
@@ -79,9 +70,9 @@ dependencies {
     deobfCompile "mezz.jei:jei_${minecraft_version}:${jei_version}"
     deobfCompile "codechicken:CodeChickenLib:${ccl_version}:deobf"
     deobfCompile "com.feed_the_beast.mods:FTBLib:${ftblib_version}"
-    deobfCompile "infinitylib:infinitylib:${infinitylib_version}"
-    deobfCompile "agricraft:AgriCraft${agricraft_version}"
     compile "curse.maven:ElectroblobsWizardry:${eb_cf_fileid}"
+    compile "curse.maven:infinitylib:${infinitylib_cf_fileid}"
+    compile "curse.maven:agricraft:${agricraft_cf_fileid}"
 }
 
 processResources{
