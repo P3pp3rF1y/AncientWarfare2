@@ -148,7 +148,7 @@ public class EventHandler {
 		World world = evt.getWorld();
 		BlockPos pos = evt.getPos();
 		EntityPlayer player = evt.getEntityPlayer();
-		if (!player.capabilities.isCreativeMode && isContainer(world, pos)) {
+		if (!player.capabilities.isCreativeMode && isLockedContainer(world, pos)) {
 			AWGameData.INSTANCE.getPerWorldData(world, StructureMap.class).getStructureAt(world, pos).ifPresent(structure -> {
 				Optional<TileProtectionFlag> tile = WorldTools.getTile(world, structure.getProtectionFlagPos(), TileProtectionFlag.class);
 				if (tile.isPresent() && tile.get().shouldProtectAgainst(player)) {
@@ -193,16 +193,22 @@ public class EventHandler {
 	private boolean shouldBlockSlowDownDigging(World world, BlockPos pos) {
 		IBlockState state = world.getBlockState(pos);
 		if (!state.isFullBlock()) {
-			return isContainer(world, pos);
+			return isLockedContainer(world, pos);
 		}
 
 		Block block = state.getBlock();
 		return !(block == Blocks.MOB_SPAWNER || block == AWStructureBlocks.ADVANCED_SPAWNER);
 	}
 
-	private boolean isContainer(World world, BlockPos pos) {
+	public static final String GENERATED_INVENTORY_TAG = "generatedInventory";
+
+	private boolean isLockedContainer(World world, BlockPos pos) {
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
-		return block == Blocks.CHEST || (state.getBlock().hasTileEntity(state) && WorldTools.getTile(world, pos, ISpecialLootContainer.class).isPresent());
+		if (!block.hasTileEntity(state)) {
+			return false;
+		}
+
+		return WorldTools.getTile(world, pos).map(te -> te.getTileData().getBoolean(GENERATED_INVENTORY_TAG) || te instanceof ISpecialLootContainer).orElse(false);
 	}
 }

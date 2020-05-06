@@ -25,6 +25,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static net.shadowmage.ancientwarfare.npc.event.EventHandler.GENERATED_INVENTORY_TAG;
+
 public class TemplateRuleBlockInventory extends TemplateRuleBlockTile {
 
 	private static final String INVENTORY_DATA_TAG = "inventoryData";
@@ -104,6 +106,7 @@ public class TemplateRuleBlockInventory extends TemplateRuleBlockTile {
 			WorldTools.getItemHandlerFromTile(world, pos, null)
 					.ifPresent(itemHandler -> InventoryTools.insertItems(itemHandler, inventoryStacks.get(null), false));
 		}
+		WorldTools.getTile(world, pos).ifPresent(te -> te.getTileData().setBoolean(GENERATED_INVENTORY_TAG, true));
 		BlockTools.notifyBlockUpdate(world, pos);
 	}
 
