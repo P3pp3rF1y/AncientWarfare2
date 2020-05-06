@@ -13,27 +13,32 @@
             "oak": {},
             "spruce": {
                 "textures": {
-                    "0": "minecraft:blocks/planks_spruce"
+                    "0": "minecraft:blocks/planks_spruce",
+                    "particle": "minecraft:blocks/planks_spruce"
                 }
             },
             "birch": {
                 "textures": {
-                    "0": "minecraft:blocks/planks_birch"
+                    "0": "minecraft:blocks/planks_birch",
+                    "particle": "minecraft:blocks/planks_birch"
                 }
             },
             "jungle": {
                 "textures": {
-                    "0": "minecraft:blocks/planks_jungle"
+                    "0": "minecraft:blocks/planks_jungle",
+                    "particle": "minecraft:blocks/planks_jungle"
                 }
             },
             "acacia": {
                 "textures": {
-                    "0": "minecraft:blocks/planks_acacia"
+                    "0": "minecraft:blocks/planks_acacia",
+                    "particle": "minecraft:blocks/planks_acacia"
                 }
             },
             "dark_oak": {
                 "textures": {
-                    "0": "minecraft:blocks/planks_big_oak"
+                    "0": "minecraft:blocks/planks_big_oak",
+                    "particle": "minecraft:blocks/planks_big_oak"
                 }
             }
         },
