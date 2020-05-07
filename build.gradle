@@ -17,20 +17,20 @@ buildscript {
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1+"
         classpath "com.wynprice.cursemaven:CurseMaven:2.1.1"
     }
 }
 
 plugins {
-    id "com.jfrog.bintray" version "1.8.1"
     id "org.sonarqube" version "2.6.2"
     id "maven-publish"
     id "com.wynprice.cursemaven" version "2.1.1"
+    id "de.fuerstenau.buildconfig" version "1.1.8"
 }
 
 // We apply the 'forge' plugin, so ForgeGradle can do it's stuff.
 apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'idea'
 
 repositories {
     maven {
@@ -75,6 +75,17 @@ dependencies {
     compile "curse.maven:agricraft:${agricraft_cf_fileid}"
 }
 
+buildConfig {
+    appName = project.name       // sets value of NAME field
+    version = project.version // sets value of VERSION field,
+
+    clsName = 'BuildConfig'      // sets the name of the BuildConfig class
+    packageName = 'net.shadowmage.ancientwarfare'  // sets the package of the BuildConfig class,
+    charset = 'UTF-8'            // sets charset of the generated class,
+
+    buildConfigField 'boolean', 'UNSTABLE', {isUnstable()}
+}
+
 processResources{
     // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
@@ -105,11 +116,14 @@ def getBuildNumber() {
 }
 
 def getStable() {
-    if ((System.getenv("GITHUB_REF") == null || System.getenv("GITHUB_REF").endsWith("-dev"))
-            && (System.getenv("TRAVIS_BRANCH") == null || System.getenv("TRAVIS_BRANCH").endsWith("-dev"))) {
+    if (isUnstable()) {
         return "unstable"
     }
     return ""
+}
+
+def isUnstable() {
+    return (System.getenv("GITHUB_REF") == null || System.getenv("GITHUB_REF").endsWith("-dev"));
 }
 
 task minifyStructureTemplates(type: MinifyStructuresTask) {
