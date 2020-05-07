@@ -9,6 +9,8 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.shadowmage.ancientwarfare.BuildConfig;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -124,12 +126,15 @@ public class SongPlayData {
 	}
 
 	public static final class SongEntry {
+		private static final String AUTO_LOAD_PREFIX = "auto_load/";
+		private ResourceLocation soundRegistryName;
 		@Nullable
 		private SoundEvent sound;
 		private float length;//length in seconds, used to determine when count down for next tune should start
 		private int volume;// percentage, as integer 0 = 0%, 100=100%, 150=150%
 
 		private SongEntry() {
+			soundRegistryName = null;
 			sound = null;
 			length = 5;
 			volume = 100;
@@ -142,10 +147,12 @@ public class SongPlayData {
 		@SideOnly(Side.CLIENT)
 		public void setSound(@Nullable SoundEvent sound) {
 			this.sound = sound;
+			soundRegistryName = sound == null ? null : sound.getRegistryName();
 			if (sound != null) {
 				boolean isRecord = sound.getSoundName().getResourcePath().startsWith("records.") || ItemRecord.getBySound(sound) != null;
-				if (isRecord && length() < 120)
+				if (isRecord && length() < 120) {
 					setLength(120);
+				}
 			}
 		}
 
@@ -172,16 +179,51 @@ public class SongPlayData {
 
 		public void readFromNBT(NBTTagCompound tag) {
 			if (tag.hasKey("name")) {
-				sound = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(tag.getString("name")));
+				soundRegistryName = new ResourceLocation(tag.getString("name"));
+				sound = ForgeRegistries.SOUND_EVENTS.getValue(soundRegistryName);
+				if (BuildConfig.UNSTABLE && sound == null) {
+					trySoundLookup();
+				}
 			}
 			length = tag.getFloat("length");
 			volume = tag.getInteger("volume");
 		}
 
-		public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-			if (sound != null) {
+		private void trySoundLookup() {
+			if (!soundRegistryName.getResourceDomain().startsWith(AncientWarfareCore.MOD_ID) || !soundRegistryName.getResourcePath().startsWith(AUTO_LOAD_PREFIX)) {
+				return;
+			}
+
+			String soundDomain = soundRegistryName.getResourceDomain();
+			String soundName = soundRegistryName.getResourcePath().substring(AUTO_LOAD_PREFIX.length());
+
+			SoundEvent found = null;
+			for (SoundEvent soundEvent : ForgeRegistries.SOUND_EVENTS) {
+				ResourceLocation soundEventRegistryName = soundEvent.getRegistryName();
 				//noinspection ConstantConditions
-				tag.setString("name", sound.getRegistryName().toString());
+				String resPath = soundEventRegistryName.getResourcePath();
+				if (soundEventRegistryName.getResourceDomain().equals(soundDomain)
+						&& (resPath.equals(soundName) || resPath.endsWith("/" + soundName))) {
+					found = soundEvent;
+					if (!resPath.startsWith(AUTO_LOAD_PREFIX)) {
+						break;
+					}
+				}
+			}
+
+			if (found != null) {
+				AncientWarfareCore.LOG.info("Sound {} replaced with automatically found {}", soundRegistryName, found.getRegistryName());
+				sound = found;
+				soundRegistryName = found.getRegistryName();
+			} else {
+				AncientWarfareCore.LOG.error("Sound {} no longer exists in the sound registry and no replacement was automatically found.\n"
+						+ "The sound name will be saved in case the sound is reregistered.", soundRegistryName);
+			}
+		}
+
+		public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+			if (soundRegistryName != null) {
+				tag.setString("name", soundRegistryName.toString());
 			}
 			tag.setFloat("length", length);
 			tag.setInteger("volume", volume);
