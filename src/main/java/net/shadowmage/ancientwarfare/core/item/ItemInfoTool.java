@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.core.item;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
@@ -162,7 +163,10 @@ public class ItemInfoTool extends ItemBaseCore {
 		}
 		//noinspection ConstantConditions
 		LootEntry lootEntry = new LootEntryItem(stack.getItem(), 1, 0, functions.toArray(new LootFunction[0]), new LootCondition[0], stack.getItem().getRegistryName().toString());
-		printAndCopyToClipboard(player, GSON.toJson(lootEntry));
+		JsonObject json = GSON.toJsonTree(lootEntry).getAsJsonObject();
+		json.remove("quality");
+		json.remove("entryName");
+		printAndCopyToClipboard(player, GSON.toJson(json));
 	}
 
 	private ItemStack cycleMode(ItemStack stack) {
