@@ -1,7 +1,7 @@
 {
     "pools": [
         {
-            "name": "main",
+            "name": "ancientwarfare_inject_pool",
             "rolls": 1,
             "entries": [
                 {
