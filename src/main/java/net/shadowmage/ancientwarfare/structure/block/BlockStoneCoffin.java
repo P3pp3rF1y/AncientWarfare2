@@ -4,6 +4,7 @@ import codechicken.lib.model.ModelRegistryHelper;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.creativetab.CreativeTabs;
@@ -16,6 +17,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
@@ -25,24 +27,27 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
-import net.shadowmage.ancientwarfare.core.util.Trig;
+import net.shadowmage.ancientwarfare.core.util.ParticleUtils;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
-import net.shadowmage.ancientwarfare.structure.item.ItemBlockCoffin;
-import net.shadowmage.ancientwarfare.structure.render.CoffinRenderer;
+import net.shadowmage.ancientwarfare.structure.item.ItemBlockStoneCoffin;
 import net.shadowmage.ancientwarfare.structure.render.ParticleOnlyModel;
-import net.shadowmage.ancientwarfare.structure.tile.TileCoffin;
+import net.shadowmage.ancientwarfare.structure.render.StoneCoffinRenderer;
+import net.shadowmage.ancientwarfare.structure.tile.TileStoneCoffin;
 
 import java.util.Map;
 
-public class BlockCoffin extends BlockMulti<TileCoffin> {
-	public BlockCoffin() {
-		super(Material.WOOD, "coffin", TileCoffin::new, TileCoffin.class);
+public class BlockStoneCoffin extends BlockMulti<TileStoneCoffin> {
+
+	protected static final AxisAlignedBB AABB = new AxisAlignedBB(0, 0D, 0D, 1D, 14.1 / 16D, 1D);
+
+	public BlockStoneCoffin() {
+		super(Material.ROCK, "stone_coffin", TileStoneCoffin::new, TileStoneCoffin.class);
 	}
 
 	@Override
 	public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
-		for (int variant = 1; variant <= 6; variant++) {
-			items.add(ItemBlockCoffin.getVariantStack(variant));
+		for (int variant = 1; variant <= 4; variant++) {
+			items.add(ItemBlockStoneCoffin.getVariantStack(variant));
 		}
 	}
 
@@ -78,10 +83,13 @@ public class BlockCoffin extends BlockMulti<TileCoffin> {
 	}
 
 	@Override
-	protected void setPlacementProperties(World world, BlockPos pos, EntityLivingBase placer, ItemStack stack, TileCoffin te) {
-		boolean upright = !ItemBlockCoffin.canPlaceHorizontal(world, pos, placer.getHorizontalFacing(), placer);
-		te.setUpright(upright);
-		te.setVariant(ItemBlockCoffin.getVariant(stack));
+	protected void setPlacementProperties(World world, BlockPos pos, EntityLivingBase placer, ItemStack stack, TileStoneCoffin te) {
+		te.setVariant(ItemBlockStoneCoffin.getVariant(stack));
+	}
+
+	@Override
+	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
+		return super.canPlaceBlockAt(worldIn, pos);
 	}
 
 	@Override
@@ -89,13 +97,14 @@ public class BlockCoffin extends BlockMulti<TileCoffin> {
 		if (player.capabilities.isCreativeMode) {
 			return;
 		}
-		WorldTools.getTile(world, pos, TileCoffin.class)
-				.ifPresent(te -> InventoryTools.dropItemInWorld(world, ItemBlockCoffin.getVariantStack(te.getVariant()), pos));
+
+		WorldTools.getTile(world, pos, TileStoneCoffin.class)
+				.ifPresent(te -> InventoryTools.dropItemInWorld(world, ItemBlockStoneCoffin.getVariantStack(te.getVariant()), pos));
 	}
 
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		return ItemBlockCoffin.getVariantStack(WorldTools.getTile(world, pos, TileCoffin.class).map(TileCoffin::getVariant).orElse(1));
+		return ItemBlockStoneCoffin.getVariantStack(WorldTools.getTile(world, pos, TileStoneCoffin.class).map(TileStoneCoffin::getVariant).orElse(1));
 	}
 
 	@Override
@@ -103,24 +112,43 @@ public class BlockCoffin extends BlockMulti<TileCoffin> {
 		//drops handled in onBlockHarvested
 	}
 
-	@Override
+	private static final Map<Integer, Integer> PARTICLES = ImmutableMap.of(
+			1, 1,
+			2, 24,
+			3, 168,
+			4, 112
+	);
+
 	@SideOnly(Side.CLIENT)
 	public void registerClient() {
 		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
 			@Override
 			@SideOnly(Side.CLIENT)
 			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-				return CoffinRenderer.MODEL_LOCATION;
+				return StoneCoffinRenderer.MODEL_LOCATION;
 			}
 		});
-		ModelRegistryHelper.register(CoffinRenderer.MODEL_LOCATION, ParticleOnlyModel.INSTANCE);
-		ModelRegistryHelper.registerItemRenderer(Item.getItemFromBlock(this), new CoffinRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileCoffin.class, new CoffinRenderer());
+		ModelRegistryHelper.register(StoneCoffinRenderer.MODEL_LOCATION, ParticleOnlyModel.INSTANCE);
+		ModelRegistryHelper.registerItemRenderer(Item.getItemFromBlock(this), new StoneCoffinRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileStoneCoffin.class, new StoneCoffinRenderer());
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager manager) {
+		int particle = 1;
+		if (WorldTools.getTile(world, pos, TileStoneCoffin.class).isPresent()) {
+			particle = PARTICLES.get(WorldTools.getTile(world, pos, TileStoneCoffin.class).get().getVariant());
+		} else {
+
+		}
+		ParticleUtils.playDestroyEffects(world, pos, particle);
+		return true;
 	}
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		WorldTools.getTile(world, pos, TileCoffin.class).ifPresent(te -> te.open(player));
+		WorldTools.getTile(world, pos, TileStoneCoffin.class).ifPresent(te -> te.open(player));
 		return true;
 	}
 
@@ -128,11 +156,7 @@ public class BlockCoffin extends BlockMulti<TileCoffin> {
 		NORTH(0, "north", EnumFacing.NORTH),
 		EAST(90, "east", EnumFacing.EAST),
 		SOUTH(180, "south", EnumFacing.SOUTH),
-		WEST(270, "west", EnumFacing.WEST),
-		NORTH_EAST(45, "north_east", EnumFacing.NORTH),
-		SOUTH_EAST(135, "south_east", EnumFacing.NORTH),
-		SOUTH_WEST(225, "south_west", EnumFacing.NORTH),
-		NORTH_WEST(315, "north_west", EnumFacing.NORTH);
+		WEST(270, "west", EnumFacing.WEST);
 
 		private int rotationAngle;
 		private String name;
@@ -144,15 +168,11 @@ public class BlockCoffin extends BlockMulti<TileCoffin> {
 			this.facing = facing;
 		}
 
-		public static CoffinDirection fromYaw(float rotationYaw) {
-			return fromRotation((int) Trig.wrapTo360(rotationYaw + 180 + 23) / 45 * 45);
-		}
-
 		public int getRotationAngle() {
 			return rotationAngle;
 		}
 
-		public static CoffinDirection fromFacing(EnumFacing facing) {
+		public static BlockStoneCoffin.CoffinDirection fromFacing(EnumFacing facing) {
 			switch (facing) {
 				case SOUTH:
 					return SOUTH;
@@ -166,28 +186,6 @@ public class BlockCoffin extends BlockMulti<TileCoffin> {
 			}
 		}
 
-		public CoffinDirection rotateY() {
-			switch (this) {
-				case EAST:
-					return SOUTH;
-				case SOUTH:
-					return WEST;
-				case WEST:
-					return NORTH;
-				case NORTH_EAST:
-					return SOUTH_EAST;
-				case SOUTH_EAST:
-					return SOUTH_WEST;
-				case SOUTH_WEST:
-					return NORTH_WEST;
-				case NORTH_WEST:
-					return NORTH_EAST;
-				default:
-				case NORTH:
-					return EAST;
-			}
-		}
-
 		public EnumFacing getFacing() {
 			return facing;
 		}
@@ -197,13 +195,13 @@ public class BlockCoffin extends BlockMulti<TileCoffin> {
 			return name;
 		}
 
-		private static final Map<String, CoffinDirection> NAME_VALUES;
-		private static final Map<Integer, CoffinDirection> ROTATION_VALUES;
+		private static final Map<String, BlockStoneCoffin.CoffinDirection> NAME_VALUES;
+		private static final Map<Integer, BlockStoneCoffin.CoffinDirection> ROTATION_VALUES;
 
 		static {
-			ImmutableMap.Builder<String, CoffinDirection> builder = ImmutableMap.builder();
-			ImmutableMap.Builder<Integer, CoffinDirection> builderRotation = ImmutableMap.builder();
-			for (CoffinDirection coffinDirection : values()) {
+			ImmutableMap.Builder<String, BlockStoneCoffin.CoffinDirection> builder = ImmutableMap.builder();
+			ImmutableMap.Builder<Integer, BlockStoneCoffin.CoffinDirection> builderRotation = ImmutableMap.builder();
+			for (BlockStoneCoffin.CoffinDirection coffinDirection : values()) {
 				builder.put(coffinDirection.getName(), coffinDirection);
 				builderRotation.put(coffinDirection.getRotationAngle(), coffinDirection);
 			}
@@ -211,12 +209,13 @@ public class BlockCoffin extends BlockMulti<TileCoffin> {
 			ROTATION_VALUES = builderRotation.build();
 		}
 
-		public static CoffinDirection fromName(String name) {
+		public static BlockStoneCoffin.CoffinDirection fromName(String name) {
 			return NAME_VALUES.getOrDefault(name, NORTH);
 		}
+	}
 
-		static CoffinDirection fromRotation(int rotationAngle) {
-			return ROTATION_VALUES.getOrDefault(rotationAngle, NORTH);
-		}
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return AABB;
 	}
 }

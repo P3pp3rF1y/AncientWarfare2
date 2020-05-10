@@ -15,8 +15,8 @@ import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.Set;
 
-public class ParticleDummyModel extends DummyBakedModel implements IModelParticleProvider, IResourceManagerReloadListener {
-	public static final ParticleDummyModel INSTANCE = new ParticleDummyModel();
+public class ParticleOnlyModel extends DummyBakedModel implements IModelParticleProvider, IResourceManagerReloadListener {
+	public static final ParticleOnlyModel INSTANCE = new ParticleOnlyModel();
 	private Set<TextureAtlasSprite> sprite;
 
 	private Set<TextureAtlasSprite> getSprite() {

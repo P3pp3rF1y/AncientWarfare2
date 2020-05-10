@@ -34,7 +34,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.util.NBTBuilder;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
-import net.shadowmage.ancientwarfare.structure.render.ParticleDummyModel;
+import net.shadowmage.ancientwarfare.structure.render.ParticleOnlyModel;
 import net.shadowmage.ancientwarfare.structure.render.ProtectionFlagRenderer;
 import net.shadowmage.ancientwarfare.structure.tile.TileProtectionFlag;
 
@@ -223,7 +223,7 @@ public class BlockProtectionFlag extends BlockBaseStructure {
 		//noinspection ConstantConditions
 		ModelResourceLocation modelLocation = new ModelResourceLocation(getRegistryName(), "normal");
 		ModelRegistryHelper.registerItemRenderer(Item.getItemFromBlock(this), new ProtectionFlagRenderer());
-		ModelRegistryHelper.register(modelLocation, ParticleDummyModel.INSTANCE);
+		ModelRegistryHelper.register(modelLocation, ParticleOnlyModel.INSTANCE);
 		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
 			@Override
 			@SideOnly(Side.CLIENT)

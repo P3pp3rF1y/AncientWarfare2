@@ -39,6 +39,7 @@ import net.shadowmage.ancientwarfare.structure.block.BlockScissorSeat;
 import net.shadowmage.ancientwarfare.structure.block.BlockSoundBlock;
 import net.shadowmage.ancientwarfare.structure.block.BlockStake;
 import net.shadowmage.ancientwarfare.structure.block.BlockStatue;
+import net.shadowmage.ancientwarfare.structure.block.BlockStoneCoffin;
 import net.shadowmage.ancientwarfare.structure.block.BlockStool;
 import net.shadowmage.ancientwarfare.structure.block.BlockStretchingRack;
 import net.shadowmage.ancientwarfare.structure.block.BlockStructureBuilder;
@@ -66,6 +67,7 @@ import net.shadowmage.ancientwarfare.structure.item.ItemBlockFirePit;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockGravestone;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockPosts;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockProtectionFlag;
+import net.shadowmage.ancientwarfare.structure.item.ItemBlockStoneCoffin;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockStretchingRack;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockTotemPart;
@@ -86,6 +88,7 @@ import net.shadowmage.ancientwarfare.structure.tile.TileProtectionFlag;
 import net.shadowmage.ancientwarfare.structure.tile.TileSoundBlock;
 import net.shadowmage.ancientwarfare.structure.tile.TileStake;
 import net.shadowmage.ancientwarfare.structure.tile.TileStatue;
+import net.shadowmage.ancientwarfare.structure.tile.TileStoneCoffin;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureScanner;
 import net.shadowmage.ancientwarfare.structure.tile.TileTotemPart;
@@ -125,6 +128,7 @@ public class AWStructureBlocks {
 	public static final Block BRAZIER_EMBER = InjectionTools.nullValue();
 	public static final Block BRAZIER_FLAME = InjectionTools.nullValue();
 	public static final Block COFFIN = InjectionTools.nullValue();
+	public static final Block STONE_COFFIN = InjectionTools.nullValue();
 	public static final Block STOOL = InjectionTools.nullValue();
 	public static final Block URN = InjectionTools.nullValue();
 	public static final Block TABLE = InjectionTools.nullValue();
@@ -181,6 +185,7 @@ public class AWStructureBlocks {
 
 		registry.register(new ItemBlockBase(LOOT_BASKET));
 		registry.register(new ItemBlockCoffin(COFFIN));
+		registry.register(new ItemBlockStoneCoffin(STONE_COFFIN));
 		registry.register(new WoodItemBlock(STOOL));
 		registry.register(new ItemBlockBase(URN));
 		registry.register(new WoodItemBlock(TABLE));
@@ -211,6 +216,7 @@ public class AWStructureBlocks {
 		ItemLootChestPlacer.registerLootContainer(new ItemStack(LOOT_BASKET));
 		NonNullList<ItemStack> subBlocks = NonNullList.create();
 		COFFIN.getSubBlocks(AncientWarfareStructure.TAB, subBlocks);
+		STONE_COFFIN.getSubBlocks(AncientWarfareStructure.TAB, subBlocks);
 		GRAVESTONE.getSubBlocks(AncientWarfareStructure.TAB, subBlocks);
 		subBlocks.forEach(ItemLootChestPlacer::registerLootContainer);
 		ItemLootChestPlacer.registerLootContainer(new ItemStack(URN));
@@ -274,6 +280,10 @@ public class AWStructureBlocks {
 
 		registry.register(new BlockCoffin());
 		registerTile(TileCoffin.class, "coffin");
+
+		registry.register(new BlockStoneCoffin());
+		registerTile(TileStoneCoffin.class, "stone_coffin");
+
 		registry.register(new BlockStool());
 
 		registry.register(new BlockUrn());

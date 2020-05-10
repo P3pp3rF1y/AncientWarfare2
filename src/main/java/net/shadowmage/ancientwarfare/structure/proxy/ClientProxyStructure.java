@@ -23,7 +23,7 @@ import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.gui.GuiGateControl;
 import net.shadowmage.ancientwarfare.structure.gui.GuiGateControlCreative;
 import net.shadowmage.ancientwarfare.structure.render.BlockHighlightRenderer;
-import net.shadowmage.ancientwarfare.structure.render.ParticleDummyModel;
+import net.shadowmage.ancientwarfare.structure.render.ParticleOnlyModel;
 import net.shadowmage.ancientwarfare.structure.render.PreviewRenderer;
 import net.shadowmage.ancientwarfare.structure.render.RenderGateInvisible;
 import net.shadowmage.ancientwarfare.structure.render.StructureBoundingBoxRenderer;
@@ -70,7 +70,7 @@ public class ClientProxyStructure extends CommonProxyStructure {
 
 		RenderingRegistry.registerEntityRenderingHandler(EntityGate.class, RenderGateInvisible::new);
 
-		ResourceUtils.registerReloadListener(ParticleDummyModel.INSTANCE);
+		ResourceUtils.registerReloadListener(ParticleOnlyModel.INSTANCE);
 	}
 
 	@Override

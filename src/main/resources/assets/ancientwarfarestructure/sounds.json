@@ -17,6 +17,40 @@
             }
         ]
     },
+    "stone_coffin_opens": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:stone_coffin",
+                "stream": false
+            }
+        ]
+    },
+    "sandstone_sarcophagus_opens": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:sandstone_sarcophagus",
+                "stream": false
+            }
+        ]
+    },
+    "prismarine_coffin_opens": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:prismarine_coffin",
+                "stream": false
+            }
+        ]
+    },
+    "demonic_coffin_opens": {
+        "category": "neutral",
+        "sounds": [
+            "ancientwarfarestructure:demonic_coffin",
+            "ancientwarfarestructure:demonic_coffin_2"
+        ]
+    },
     "urn_break": {
         "category": "neutral",
         "sounds": [
