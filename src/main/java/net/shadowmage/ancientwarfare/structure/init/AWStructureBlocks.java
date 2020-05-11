@@ -23,7 +23,6 @@ import net.shadowmage.ancientwarfare.structure.block.BlockBench;
 import net.shadowmage.ancientwarfare.structure.block.BlockBrazierEmber;
 import net.shadowmage.ancientwarfare.structure.block.BlockBrazierFlame;
 import net.shadowmage.ancientwarfare.structure.block.BlockChair;
-import net.shadowmage.ancientwarfare.structure.block.BlockCoffin;
 import net.shadowmage.ancientwarfare.structure.block.BlockCoinStack;
 import net.shadowmage.ancientwarfare.structure.block.BlockDraftingStation;
 import net.shadowmage.ancientwarfare.structure.block.BlockFirePit;
@@ -50,6 +49,7 @@ import net.shadowmage.ancientwarfare.structure.block.BlockTotemPart;
 import net.shadowmage.ancientwarfare.structure.block.BlockTribalChair;
 import net.shadowmage.ancientwarfare.structure.block.BlockTribalStool;
 import net.shadowmage.ancientwarfare.structure.block.BlockUrn;
+import net.shadowmage.ancientwarfare.structure.block.BlockWoodenCoffin;
 import net.shadowmage.ancientwarfare.structure.block.BlockWoodenPost;
 import net.shadowmage.ancientwarfare.structure.block.BlockWoodenThrone;
 import net.shadowmage.ancientwarfare.structure.block.altar.BlockAltarCandle;
@@ -79,7 +79,6 @@ import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedLootChest;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
 import net.shadowmage.ancientwarfare.structure.tile.TileAltarCandle;
 import net.shadowmage.ancientwarfare.structure.tile.TileChair;
-import net.shadowmage.ancientwarfare.structure.tile.TileCoffin;
 import net.shadowmage.ancientwarfare.structure.tile.TileColored;
 import net.shadowmage.ancientwarfare.structure.tile.TileDraftingStation;
 import net.shadowmage.ancientwarfare.structure.tile.TileGravestone;
@@ -93,6 +92,7 @@ import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureScanner;
 import net.shadowmage.ancientwarfare.structure.tile.TileTotemPart;
 import net.shadowmage.ancientwarfare.structure.tile.TileUrn;
+import net.shadowmage.ancientwarfare.structure.tile.TileWoodenCoffin;
 
 import static net.shadowmage.ancientwarfare.structure.AncientWarfareStructure.MOD_ID;
 
@@ -278,8 +278,8 @@ public class AWStructureBlocks {
 		registry.register(new BlockLootBasket());
 		registerTile(TileLootBasket.class, "loot_basket");
 
-		registry.register(new BlockCoffin());
-		registerTile(TileCoffin.class, "coffin");
+		registry.register(new BlockWoodenCoffin());
+		registerTile(TileWoodenCoffin.class, "coffin");
 
 		registry.register(new BlockStoneCoffin());
 		registerTile(TileStoneCoffin.class, "stone_coffin");

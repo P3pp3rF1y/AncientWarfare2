@@ -17,13 +17,13 @@ import net.shadowmage.ancientwarfare.structure.block.BlockMulti;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockCoffin;
 import net.shadowmage.ancientwarfare.structure.model.ModelCoffin;
-import net.shadowmage.ancientwarfare.structure.tile.TileCoffin;
+import net.shadowmage.ancientwarfare.structure.tile.TileWoodenCoffin;
 
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CoffinRenderer extends RenderLootInfo<TileCoffin> implements IItemRenderer {
+public class CoffinRenderer extends RenderLootInfo<TileWoodenCoffin> implements IItemRenderer {
 	public static final ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.MOD_ID + ":structure/coffin", "normal");
 	private static final ModelCoffin COFFIN_MODEL = new ModelCoffin();
 
@@ -54,7 +54,7 @@ public class CoffinRenderer extends RenderLootInfo<TileCoffin> implements IItemR
 	}
 
 	@Override
-	public void render(TileCoffin te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(TileWoodenCoffin te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		super.render(te, x, y, z, partialTicks, destroyStage, alpha);
 		IBlockState state = te.getWorld().getBlockState(te.getPos());
 		if (state.getBlock() != AWStructureBlocks.COFFIN || state.getValue(BlockMulti.INVISIBLE)) {
@@ -87,7 +87,7 @@ public class CoffinRenderer extends RenderLootInfo<TileCoffin> implements IItemR
 	}
 
 	@Override
-	protected double getNameplateOffsetZ(TileCoffin te, double z) {
+	protected double getNameplateOffsetZ(TileWoodenCoffin te, double z) {
 		if (!te.getUpright()) {
 			return super.getNameplateOffsetZ(te, z);
 
@@ -98,7 +98,7 @@ public class CoffinRenderer extends RenderLootInfo<TileCoffin> implements IItemR
 	}
 
 	@Override
-	protected double getNameplateOffsetX(TileCoffin te, double x) {
+	protected double getNameplateOffsetX(TileWoodenCoffin te, double x) {
 		if (!te.getUpright()) {
 			return super.getNameplateOffsetX(te, x);
 
