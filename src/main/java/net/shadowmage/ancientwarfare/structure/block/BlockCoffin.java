@@ -24,6 +24,7 @@ import net.shadowmage.ancientwarfare.structure.tile.TileCoffin;
 import java.util.Map;
 import java.util.function.Supplier;
 
+@SuppressWarnings("squid:MaximumInheritanceDepth")
 public abstract class BlockCoffin<T extends TileCoffin> extends BlockMulti<T> {
 	public BlockCoffin(Material material, String regName, Supplier<T> instantiateTe, Class<T> teClass) {
 		super(material, regName, instantiateTe, teClass);
@@ -31,7 +32,7 @@ public abstract class BlockCoffin<T extends TileCoffin> extends BlockMulti<T> {
 
 	@Override
 	public EnumBlockRenderType getRenderType(IBlockState state) {
-		return state.getValue(INVISIBLE) ? EnumBlockRenderType.INVISIBLE : EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
+		return Boolean.TRUE.equals(state.getValue(INVISIBLE)) ? EnumBlockRenderType.INVISIBLE : EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 
 	@Override
@@ -50,7 +51,7 @@ public abstract class BlockCoffin<T extends TileCoffin> extends BlockMulti<T> {
 	}
 
 	@Override
-	public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+	public boolean isSideSolid(IBlockState baseState, IBlockAccess world, BlockPos pos, EnumFacing side) {
 		return false;
 	}
 
@@ -69,12 +70,13 @@ public abstract class BlockCoffin<T extends TileCoffin> extends BlockMulti<T> {
 				.ifPresent(te -> InventoryTools.dropItemInWorld(world, getVariantStack(te.getVariant()), pos));
 	}
 
-	protected abstract ItemStack getVariantStack(int variant);
+	protected abstract ItemStack getVariantStack(IVariant variant);
+
+	protected abstract IVariant getDefaultVariant();
 
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		int variant = WorldTools.getTile(world, pos, TileCoffin.class).map(TileCoffin::getVariant).orElse(1);
-		return getVariantStack(variant);
+		return getVariantStack(WorldTools.getTile(world, pos, TileCoffin.class).map(TileCoffin::getVariant).orElse(getDefaultVariant()));
 	}
 
 	@Override
@@ -84,7 +86,7 @@ public abstract class BlockCoffin<T extends TileCoffin> extends BlockMulti<T> {
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		WorldTools.getTile(world, pos, TileCoffin.class).ifPresent(te -> te.open());
+		WorldTools.getTile(world, pos, TileCoffin.class).ifPresent(TileCoffin::open);
 		return true;
 	}
 
@@ -182,6 +184,9 @@ public abstract class BlockCoffin<T extends TileCoffin> extends BlockMulti<T> {
 		static CoffinDirection fromRotation(int rotationAngle) {
 			return ROTATION_VALUES.getOrDefault(rotationAngle, NORTH);
 		}
+	}
 
+	public interface IVariant {
+		String getName();
 	}
 }

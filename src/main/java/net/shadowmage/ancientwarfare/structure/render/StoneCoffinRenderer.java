@@ -13,7 +13,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+import net.shadowmage.ancientwarfare.structure.block.BlockCoffin;
 import net.shadowmage.ancientwarfare.structure.block.BlockMulti;
+import net.shadowmage.ancientwarfare.structure.block.BlockStoneCoffin;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockStoneCoffin;
 import net.shadowmage.ancientwarfare.structure.model.ModelStoneCoffin;
@@ -27,11 +29,11 @@ public class StoneCoffinRenderer extends RenderLootInfo<TileStoneCoffin> impleme
 	public static final ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.MOD_ID + ":structure/stone_coffin", "normal");
 	private static final ModelStoneCoffin STONE_COFFIN_MODEL = new ModelStoneCoffin();
 
-	private static final Map<Integer, ResourceLocation> TEXTURES = new HashMap<>();
+	private static final Map<BlockCoffin.IVariant, ResourceLocation> TEXTURES = new HashMap<>();
 
 	static {
-		for (int id = 1; id <= 6; id++) {
-			TEXTURES.put(id, new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/model/structure/stone_coffin_" + id + ".png"));
+		for (BlockStoneCoffin.Variant variant : BlockStoneCoffin.Variant.values()) {
+			TEXTURES.put(variant, new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/model/structure/stone_coffin_" + variant.getName() + ".png"));
 		}
 	}
 
@@ -57,7 +59,7 @@ public class StoneCoffinRenderer extends RenderLootInfo<TileStoneCoffin> impleme
 	public void render(TileStoneCoffin te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		super.render(te, x, y, z, partialTicks, destroyStage, alpha);
 		IBlockState state = te.getWorld().getBlockState(te.getPos());
-		if (state.getBlock() != AWStructureBlocks.STONE_COFFIN || state.getValue(BlockMulti.INVISIBLE)) {
+		if (state.getBlock() != AWStructureBlocks.STONE_COFFIN || Boolean.TRUE.equals(state.getValue(BlockMulti.INVISIBLE))) {
 			return;
 		}
 		float rotation = te.getDirection().getRotationAngle();
@@ -78,6 +80,7 @@ public class StoneCoffinRenderer extends RenderLootInfo<TileStoneCoffin> impleme
 				GlStateManager.translate(-1F, 0, -2F);
 				break;
 			case 270: // west
+			default:
 				GlStateManager.translate(-1F, 0, -1F);
 				break;
 		}
@@ -93,10 +96,8 @@ public class StoneCoffinRenderer extends RenderLootInfo<TileStoneCoffin> impleme
 
 	@Override
 	public void renderItem(ItemStack stack, ItemCameraTransforms.TransformType transformType) {
-		int variant = ItemBlockStoneCoffin.getVariant(stack);
-		if (variant < 1) {
-			return;
-		}
+		BlockStoneCoffin.Variant variant = ItemBlockStoneCoffin.getVariant(stack);
+
 		GlStateManager.pushMatrix();
 
 		Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURES.get(variant));

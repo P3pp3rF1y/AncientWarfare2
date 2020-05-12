@@ -9,14 +9,13 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.shadowmage.ancientwarfare.structure.block.BlockCoffin;
+import net.shadowmage.ancientwarfare.structure.block.BlockStoneCoffin;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureSounds;
 
 import java.util.Map;
 import java.util.Set;
 
 public class TileStoneCoffin extends TileCoffin {
-
-	private BlockCoffin.CoffinDirection direction = BlockCoffin.CoffinDirection.NORTH;
 	private static final int TOTAL_OPEN_TIME = 60;
 
 	@Override
@@ -33,14 +32,24 @@ public class TileStoneCoffin extends TileCoffin {
 				);
 	}
 
-	private static final Map<Integer, SoundEvent> COFFIN_SOUNDS = ImmutableMap.of(
-			1, AWStructureSounds.STONE_COFFIN_OPENS,
-			2, AWStructureSounds.SANDSTONE_SARCOPHAGUS_OPENS,
-			3, AWStructureSounds.PRISMARINE_COFFIN_OPENS,
-			4, AWStructureSounds.DEMONIC_COFFIN_OPENS);
+	private static final Map<BlockCoffin.IVariant, SoundEvent> COFFIN_SOUNDS = ImmutableMap.of(
+			BlockStoneCoffin.Variant.STONE, AWStructureSounds.STONE_COFFIN_OPENS,
+			BlockStoneCoffin.Variant.SANDSTONE, AWStructureSounds.SANDSTONE_SARCOPHAGUS_OPENS,
+			BlockStoneCoffin.Variant.PRISMARINE, AWStructureSounds.PRISMARINE_COFFIN_OPENS,
+			BlockStoneCoffin.Variant.DEMONIC, AWStructureSounds.DEMONIC_COFFIN_OPENS);
 
 	@Override
-	protected void playSound(int variant) {
+	protected BlockCoffin.IVariant getDefaultVariant() {
+		return BlockStoneCoffin.Variant.getDefault();
+	}
+
+	@Override
+	protected BlockCoffin.IVariant deserializeVariant(String name) {
+		return BlockStoneCoffin.Variant.fromName(name);
+	}
+
+	@Override
+	protected void playSound(BlockCoffin.IVariant variant) {
 		world.playSound(null, pos, COFFIN_SOUNDS.get(variant), SoundCategory.BLOCKS, 1, 1);
 	}
 

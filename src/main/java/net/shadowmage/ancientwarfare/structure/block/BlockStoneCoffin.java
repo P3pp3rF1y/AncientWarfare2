@@ -29,8 +29,9 @@ import net.shadowmage.ancientwarfare.structure.tile.TileStoneCoffin;
 
 import java.util.Map;
 
+@SuppressWarnings("squid:MaximumInheritanceDepth")
 public class BlockStoneCoffin extends BlockCoffin<TileStoneCoffin> {
-	protected static final AxisAlignedBB AABB = new AxisAlignedBB(0, 0D, 0D, 1D, 14.1 / 16D, 1D);
+	private static final AxisAlignedBB AABB = new AxisAlignedBB(0, 0D, 0D, 1D, 14.1 / 16D, 1D);
 
 	public BlockStoneCoffin() {
 		super(Material.ROCK, "stone_coffin", TileStoneCoffin::new, TileStoneCoffin.class);
@@ -38,7 +39,7 @@ public class BlockStoneCoffin extends BlockCoffin<TileStoneCoffin> {
 
 	@Override
 	public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
-		for (int variant = 1; variant <= 4; variant++) {
+		for (Variant variant : Variant.values()) {
 			items.add(ItemBlockStoneCoffin.getVariantStack(variant));
 		}
 	}
@@ -49,8 +50,13 @@ public class BlockStoneCoffin extends BlockCoffin<TileStoneCoffin> {
 	}
 
 	@Override
-	protected ItemStack getVariantStack(int variant) {
+	protected ItemStack getVariantStack(IVariant variant) {
 		return ItemBlockStoneCoffin.getVariantStack(variant);
+	}
+
+	@Override
+	protected IVariant getDefaultVariant() {
+		return Variant.getDefault();
 	}
 
 	private static final Map<Integer, Integer> PARTICLES = ImmutableMap.of(
@@ -91,5 +97,41 @@ public class BlockStoneCoffin extends BlockCoffin<TileStoneCoffin> {
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		return AABB;
+	}
+
+	public enum Variant implements IVariant {
+		STONE("stone"),
+		SANDSTONE("sandstone"),
+		PRISMARINE("prismarine"),
+		DEMONIC("demonic");
+
+		private String name;
+
+		Variant(String name) {
+			this.name = name;
+		}
+
+		@Override
+		public String getName() {
+			return name;
+		}
+
+		public static Variant getDefault() {
+			return STONE;
+		}
+
+		private static final ImmutableMap<String, Variant> NAME_TO_VARIANT;
+
+		static {
+			ImmutableMap.Builder<String, Variant> builder = new ImmutableMap.Builder<>();
+			for (Variant variant : values()) {
+				builder.put(variant.name, variant);
+			}
+			NAME_TO_VARIANT = builder.build();
+		}
+
+		public static Variant fromName(String name) {
+			return NAME_TO_VARIANT.getOrDefault(name, STONE);
+		}
 	}
 }

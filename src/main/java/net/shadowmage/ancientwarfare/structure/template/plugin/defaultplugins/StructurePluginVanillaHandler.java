@@ -85,7 +85,7 @@ public class StructurePluginVanillaHandler implements StructureContentPlugin {
 
 		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, AWStructureBlocks.ADVANCED_SPAWNER, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
 		manager.registerBlockHandler(TemplateRuleTotemPart.PLUGIN_NAME, AWStructureBlocks.TOTEM_PART, TemplateRuleTotemPart::new, TemplateRuleTotemPart::new);
-		manager.registerBlockHandler(TemplateRuleCoffin.PLUGIN_NAME, AWStructureBlocks.COFFIN, TemplateRuleCoffin::new, TemplateRuleCoffin::new);
+		manager.registerBlockHandler(TemplateRuleCoffin.PLUGIN_NAME, AWStructureBlocks.WOODEN_COFFIN, TemplateRuleCoffin::new, TemplateRuleCoffin::new);
 		manager.registerBlockHandler(TemplateRuleCoffin.PLUGIN_NAME, AWStructureBlocks.STONE_COFFIN, TemplateRuleCoffin::new, TemplateRuleCoffin::new);
 		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, AWCoreBlocks.ENGINEERING_STATION, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);
 		manager.registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, AWCoreBlocks.RESEARCH_STATION, TemplateRuleBlockTile::new, TemplateRuleBlockTile::new);

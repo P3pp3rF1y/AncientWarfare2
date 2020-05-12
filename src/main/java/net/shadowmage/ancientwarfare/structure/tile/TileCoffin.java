@@ -5,14 +5,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.block.BlockCoffin;
-import net.shadowmage.ancientwarfare.structure.init.AWStructureSounds;
 import net.shadowmage.ancientwarfare.structure.util.LootHelper;
 
 import javax.annotation.Nullable;
@@ -28,15 +26,17 @@ public abstract class TileCoffin extends TileMulti implements ITickable, ISpecia
 	private LootSettings lootSettings = new LootSettings();
 	private static final float OPEN_ANGLE = 15F;
 
-	public int getVariant() {
+	public BlockCoffin.IVariant getVariant() {
 		return variant;
 	}
 
-	public void setVariant(int variant) {
+	public void setVariant(BlockCoffin.IVariant variant) {
 		this.variant = variant;
 	}
 
-	private int variant = 1;
+	private BlockCoffin.IVariant variant = getDefaultVariant();
+
+	protected abstract BlockCoffin.IVariant getDefaultVariant();
 
 	@Override
 	public void setPlacementDirection(World world, BlockPos pos, IBlockState state, EnumFacing horizontalFacing, float rotationYaw) {
@@ -51,7 +51,7 @@ public abstract class TileCoffin extends TileMulti implements ITickable, ISpecia
 
 	protected void readNBT(NBTTagCompound compound) {
 		direction = BlockCoffin.CoffinDirection.fromName(compound.getString("direction"));
-		variant = compound.getInteger("variant");
+		variant = deserializeVariant(compound.getString("variant"));
 		opening = compound.getBoolean("opening");
 		open = compound.getBoolean("open");
 		if (open) {
@@ -59,6 +59,8 @@ public abstract class TileCoffin extends TileMulti implements ITickable, ISpecia
 		}
 		lootSettings = LootSettings.deserializeNBT(compound.getCompoundTag("lootSettings"));
 	}
+
+	protected abstract BlockCoffin.IVariant deserializeVariant(String name);
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
@@ -69,7 +71,7 @@ public abstract class TileCoffin extends TileMulti implements ITickable, ISpecia
 
 	protected void writeNBT(NBTTagCompound compound) {
 		compound.setString("direction", direction.getName());
-		compound.setInteger("variant", variant);
+		compound.setString("variant", variant.getName());
 		compound.setBoolean("opening", opening);
 		compound.setBoolean("open", open);
 		compound.setTag("lootSettings", lootSettings.serializeNBT());
@@ -108,9 +110,7 @@ public abstract class TileCoffin extends TileMulti implements ITickable, ISpecia
 		WorldTools.getTile(world, mainPos.get(), TileCoffin.class).ifPresent(TileCoffin::open);
 	}
 
-	protected void playSound(int variant) {
-		world.playSound(null, pos, AWStructureSounds.COFFIN_OPENS, SoundCategory.BLOCKS, 1, 1);
-	}
+	protected abstract void playSound(BlockCoffin.IVariant variant);
 
 	private void dropLoot(@Nullable EntityPlayer player) {
 		if (world.isRemote || isOpen()) {
