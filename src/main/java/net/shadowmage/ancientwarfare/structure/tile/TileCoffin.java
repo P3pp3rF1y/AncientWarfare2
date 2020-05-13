@@ -27,11 +27,7 @@ public abstract class TileCoffin extends TileMulti implements ITickable, ISpecia
 	private static final float OPEN_ANGLE = 15F;
 
 	public BlockCoffin.IVariant getVariant() {
-		Optional<BlockPos> mainPos = getMainBlockPos();
-		if (!mainPos.isPresent() || mainPos.get().equals(pos)) {
-			return variant;
-		}
-		return WorldTools.getTile(world, mainPos.get(), TileCoffin.class).map(TileCoffin::getVariant).orElse(getDefaultVariant());
+		return getValueFromMain(TileCoffin.class, TileCoffin::getVariant, this.variant, this::getDefaultVariant);
 	}
 
 	public void setVariant(BlockCoffin.IVariant variant) {
@@ -48,12 +44,8 @@ public abstract class TileCoffin extends TileMulti implements ITickable, ISpecia
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
-		super.readFromNBT(compound);
-		readNBT(compound);
-	}
-
 	protected void readNBT(NBTTagCompound compound) {
+		super.readNBT(compound);
 		direction = BlockCoffin.CoffinDirection.fromName(compound.getString("direction"));
 		variant = deserializeVariant(compound.getString("variant"));
 		opening = compound.getBoolean("opening");
@@ -67,30 +59,13 @@ public abstract class TileCoffin extends TileMulti implements ITickable, ISpecia
 	protected abstract BlockCoffin.IVariant deserializeVariant(String name);
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		compound = super.writeToNBT(compound);
-		writeNBT(compound);
-		return compound;
-	}
-
 	protected void writeNBT(NBTTagCompound compound) {
+		super.writeNBT(compound);
 		compound.setString("direction", direction.getName());
 		compound.setString("variant", variant.getName());
 		compound.setBoolean("opening", opening);
 		compound.setBoolean("open", open);
 		compound.setTag("lootSettings", lootSettings.serializeNBT());
-	}
-
-	@Override
-	protected void writeUpdateNBT(NBTTagCompound tag) {
-		super.writeUpdateNBT(tag);
-		writeNBT(tag);
-	}
-
-	@Override
-	protected void handleUpdateNBT(NBTTagCompound tag) {
-		super.handleUpdateNBT(tag);
-		readNBT(tag);
 	}
 
 	public void setDirection(BlockCoffin.CoffinDirection direction) {
@@ -129,7 +104,7 @@ public abstract class TileCoffin extends TileMulti implements ITickable, ISpecia
 	}
 
 	private boolean isOpen() {
-		return getMainBlockPos().map(mp -> mp.equals(pos) ? open : WorldTools.getTile(world, mp, TileCoffin.class).map(te -> te.open).orElse(true)).orElse(open);
+		return getValueFromMain(TileCoffin.class, TileCoffin::isOpen, open, () -> true);
 	}
 
 	@Override
@@ -178,6 +153,6 @@ public abstract class TileCoffin extends TileMulti implements ITickable, ISpecia
 
 	@Override
 	public LootSettings getLootSettings() {
-		return lootSettings;
+		return getValueFromMain(TileCoffin.class, TileCoffin::getLootSettings, lootSettings, LootSettings::new);
 	}
 }

@@ -16,36 +16,15 @@ public class TileChair extends TileMulti implements BlockRotationHandler.IRotata
 	private EnumFacing facing = EnumFacing.NORTH;
 
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
-		super.readFromNBT(compound);
-		readNBT(compound);
-	}
-
-	@Override
-	protected void writeUpdateNBT(NBTTagCompound tag) {
-		super.writeUpdateNBT(tag);
-		writeNBT(tag);
-	}
-
-	@Override
-	protected void handleUpdateNBT(NBTTagCompound tag) {
-		super.handleUpdateNBT(tag);
-		readNBT(tag);
-	}
-
-	private void readNBT(NBTTagCompound compound) {
+	protected void readNBT(NBTTagCompound compound) {
+		super.readNBT(compound);
 		facing = EnumFacing.byName(compound.getString("facing"));
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		return writeNBT(compound);
-	}
-
-	private NBTTagCompound writeNBT(NBTTagCompound compound) {
+	protected void writeNBT(NBTTagCompound compound) {
 		compound = super.writeToNBT(compound);
 		compound.setString("facing", facing.getName());
-		return compound;
 	}
 
 	@Override
