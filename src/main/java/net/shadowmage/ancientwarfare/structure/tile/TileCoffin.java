@@ -27,7 +27,11 @@ public abstract class TileCoffin extends TileMulti implements ITickable, ISpecia
 	private static final float OPEN_ANGLE = 15F;
 
 	public BlockCoffin.IVariant getVariant() {
-		return variant;
+		Optional<BlockPos> mainPos = getMainBlockPos();
+		if (!mainPos.isPresent() || mainPos.get().equals(pos)) {
+			return variant;
+		}
+		return WorldTools.getTile(world, mainPos.get(), TileCoffin.class).map(TileCoffin::getVariant).orElse(getDefaultVariant());
 	}
 
 	public void setVariant(BlockCoffin.IVariant variant) {

@@ -59,11 +59,11 @@ public class BlockStoneCoffin extends BlockCoffin<TileStoneCoffin> {
 		return Variant.getDefault();
 	}
 
-	private static final Map<Integer, Integer> PARTICLES = ImmutableMap.of(
-			1, 1,
-			2, 24,
-			3, 168,
-			4, 112
+	private static final Map<Variant, Integer> PARTICLES = ImmutableMap.of(
+			Variant.STONE, 1,
+			Variant.SANDSTONE, 24,
+			Variant.PRISMARINE, 168,
+			Variant.DEMONIC, 112
 	);
 
 	@Override
