@@ -7,7 +7,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.model.IModelState;
@@ -25,8 +24,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CoffinRenderer extends RenderLootInfo<TileWoodenCoffin> implements IItemRenderer {
-	public static final ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.MOD_ID + ":structure/coffin", "normal");
+public class WoodenCoffinRenderer extends RenderLootInfo<TileWoodenCoffin> implements IItemRenderer {
 	private static final ModelCoffin COFFIN_MODEL = new ModelCoffin();
 
 	private static final Map<BlockCoffin.IVariant, ResourceLocation> TEXTURES = new HashMap<>();

@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.structure.tile;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -17,6 +18,16 @@ import java.util.Set;
 
 public class TileStoneCoffin extends TileCoffin {
 	private static final int TOTAL_OPEN_TIME = 60;
+	private BlockStoneCoffin.Variant variant = BlockStoneCoffin.Variant.STONE;
+
+	public void setVariant(BlockStoneCoffin.Variant variant) {
+		this.variant = variant;
+	}
+
+	@Override
+	public BlockStoneCoffin.Variant getVariant() {
+		return getValueFromMain(TileStoneCoffin.class, TileStoneCoffin::getVariant, variant, () -> BlockStoneCoffin.Variant.STONE);
+	}
 
 	@Override
 	public Set<BlockPos> getAdditionalPositions(IBlockState state) {
@@ -39,17 +50,7 @@ public class TileStoneCoffin extends TileCoffin {
 			BlockStoneCoffin.Variant.DEMONIC, AWStructureSounds.DEMONIC_COFFIN_OPENS);
 
 	@Override
-	protected BlockCoffin.IVariant getDefaultVariant() {
-		return BlockStoneCoffin.Variant.getDefault();
-	}
-
-	@Override
-	protected BlockCoffin.IVariant deserializeVariant(String name) {
-		return BlockStoneCoffin.Variant.fromName(name);
-	}
-
-	@Override
-	protected void playSound(BlockCoffin.IVariant variant) {
+	protected void playSound() {
 		world.playSound(null, pos, COFFIN_SOUNDS.get(variant), SoundCategory.BLOCKS, 1, 1);
 	}
 
@@ -62,5 +63,17 @@ public class TileStoneCoffin extends TileCoffin {
 	public AxisAlignedBB getRenderBoundingBox() {
 		Vec3i vec = direction.getFacing().getDirectionVec();
 		return new AxisAlignedBB(pos.add(-3, 0, -3), pos.add(3, 2, 3)).expand(vec.getX(), vec.getY(), vec.getZ());
+	}
+
+	@Override
+	protected void readNBT(NBTTagCompound compound) {
+		super.readNBT(compound);
+		variant = BlockStoneCoffin.Variant.fromName(compound.getString("variant"));
+	}
+
+	@Override
+	protected void writeNBT(NBTTagCompound compound) {
+		super.writeNBT(compound);
+		compound.setString("variant", variant.getName());
 	}
 }

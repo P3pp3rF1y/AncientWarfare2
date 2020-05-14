@@ -6,22 +6,30 @@ import codechicken.lib.texture.TextureUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.IResourceManager;
-import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.resource.IResourceType;
+import net.minecraftforge.client.resource.ISelectiveResourceReloadListener;
+import net.minecraftforge.client.resource.VanillaResourceType;
 
 import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.Set;
+import java.util.function.Predicate;
 
-public class ParticleOnlyModel extends DummyBakedModel implements IModelParticleProvider, IResourceManagerReloadListener {
-	public static final ParticleOnlyModel INSTANCE = new ParticleOnlyModel();
+public class ParticleOnlyModel extends DummyBakedModel implements IModelParticleProvider, ISelectiveResourceReloadListener {
+	public static final ParticleOnlyModel INSTANCE = new ParticleOnlyModel("planks_oak");
 	private Set<TextureAtlasSprite> sprite;
+	private String blockTexture;
+
+	public ParticleOnlyModel(String blockTexture) {
+		this.blockTexture = blockTexture;
+	}
 
 	private Set<TextureAtlasSprite> getSprite() {
 		if (sprite == null) {
-			sprite = Collections.singleton(TextureUtils.getBlockTexture("planks_oak"));
+			sprite = Collections.singleton(TextureUtils.getBlockTexture(blockTexture));
 		}
 		return sprite;
 	}
@@ -42,7 +50,9 @@ public class ParticleOnlyModel extends DummyBakedModel implements IModelParticle
 	}
 
 	@Override
-	public void onResourceManagerReload(IResourceManager resourceManager) {
-		sprite = null;
+	public void onResourceManagerReload(IResourceManager resourceManager, Predicate<IResourceType> resourcePredicate) {
+		if (resourcePredicate.test(VanillaResourceType.TEXTURES)) {
+			sprite = null;
+		}
 	}
 }

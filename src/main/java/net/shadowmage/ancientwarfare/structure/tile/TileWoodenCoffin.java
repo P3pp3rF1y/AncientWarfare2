@@ -18,6 +18,7 @@ import java.util.Set;
 public class TileWoodenCoffin extends TileCoffin {
 	private static final int TOTAL_OPEN_TIME = 20;
 
+	private BlockWoodenCoffin.Variant variant = BlockWoodenCoffin.Variant.OAK;
 	private boolean upright = false;
 
 	@Override
@@ -31,9 +32,13 @@ public class TileWoodenCoffin extends TileCoffin {
 				ImmutableSet.of(pos.offset(direction.getFacing()), pos.offset(direction.getFacing()).offset(direction.getFacing()));
 	}
 
+	public void setVariant(BlockWoodenCoffin.Variant variant) {
+		this.variant = variant;
+	}
+
 	@Override
-	protected BlockCoffin.IVariant getDefaultVariant() {
-		return BlockWoodenCoffin.Variant.getDefault();
+	public BlockWoodenCoffin.Variant getVariant() {
+		return getValueFromMain(TileWoodenCoffin.class, TileWoodenCoffin::getVariant, variant, () -> BlockWoodenCoffin.Variant.OAK);
 	}
 
 	@Override
@@ -55,21 +60,18 @@ public class TileWoodenCoffin extends TileCoffin {
 	protected void readNBT(NBTTagCompound compound) {
 		super.readNBT(compound);
 		upright = compound.getBoolean("upright");
-	}
-
-	@Override
-	protected BlockCoffin.IVariant deserializeVariant(String name) {
-		return BlockWoodenCoffin.Variant.fromName(name);
+		variant = BlockWoodenCoffin.Variant.fromName(compound.getString("variant"));
 	}
 
 	@Override
 	protected void writeNBT(NBTTagCompound compound) {
 		super.writeNBT(compound);
 		compound.setBoolean("upright", upright);
+		compound.setString("variant", variant.getName());
 	}
 
 	@Override
-	protected void playSound(BlockCoffin.IVariant variant) {
+	protected void playSound() {
 		world.playSound(null, pos, AWStructureSounds.COFFIN_OPENS, SoundCategory.BLOCKS, 1, 1);
 	}
 

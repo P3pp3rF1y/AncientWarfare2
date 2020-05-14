@@ -3,14 +3,16 @@ package net.shadowmage.ancientwarfare.structure.block;
 import codechicken.lib.model.ModelRegistryHelper;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -20,17 +22,22 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.shadowmage.ancientwarfare.core.util.ParticleUtils;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockStoneCoffin;
 import net.shadowmage.ancientwarfare.structure.render.ParticleOnlyModel;
 import net.shadowmage.ancientwarfare.structure.render.StoneCoffinRenderer;
 import net.shadowmage.ancientwarfare.structure.tile.TileStoneCoffin;
 
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("squid:MaximumInheritanceDepth")
 public class BlockStoneCoffin extends BlockCoffin<TileStoneCoffin> {
+	private static final PropertyEnum<Variant> VARIANT = PropertyEnum.create("variant", Variant.class);
+
 	private static final AxisAlignedBB AABB = new AxisAlignedBB(0, 0D, 0D, 1D, 14.1 / 16D, 1D);
 
 	public BlockStoneCoffin() {
@@ -42,6 +49,11 @@ public class BlockStoneCoffin extends BlockCoffin<TileStoneCoffin> {
 		for (Variant variant : Variant.values()) {
 			items.add(ItemBlockStoneCoffin.getVariantStack(variant));
 		}
+	}
+
+	@Override
+	protected List<IProperty> getAdditionalProperties() {
+		return Collections.singletonList(VARIANT);
 	}
 
 	@Override
@@ -59,39 +71,30 @@ public class BlockStoneCoffin extends BlockCoffin<TileStoneCoffin> {
 		return Variant.getDefault();
 	}
 
-	private static final Map<Variant, Integer> PARTICLES = ImmutableMap.of(
-			Variant.STONE, 1,
-			Variant.SANDSTONE, 24,
-			Variant.PRISMARINE, 168,
-			Variant.DEMONIC, 112
-	);
-
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerClient() {
-		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
-			@Override
-			@SideOnly(Side.CLIENT)
-			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-				return StoneCoffinRenderer.MODEL_LOCATION;
-			}
-		});
-		ModelRegistryHelper.register(StoneCoffinRenderer.MODEL_LOCATION, ParticleOnlyModel.INSTANCE);
-		ModelRegistryHelper.registerItemRenderer(Item.getItemFromBlock(this), new StoneCoffinRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileStoneCoffin.class, new StoneCoffinRenderer());
+	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return state.withProperty(VARIANT, WorldTools.getTile(world, pos, TileStoneCoffin.class).map(TileStoneCoffin::getVariant).orElse(Variant.STONE));
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager manager) {
-		int particle = 1;
-		if (WorldTools.getTile(world, pos, TileStoneCoffin.class).isPresent()) {
-			particle = PARTICLES.get(WorldTools.getTile(world, pos, TileStoneCoffin.class).get().getVariant());
-		} else {
-
+	public void registerClient() {
+		Map<Variant, ModelResourceLocation> variantModels = new EnumMap<>(Variant.class);
+		for (Variant variant : Variant.values()) {
+			ModelResourceLocation modelLocation = new ModelResourceLocation(AncientWarfareCore.MOD_ID + ":structure/wooden_coffin", variant.getName());
+			variantModels.put(variant, modelLocation);
+			ModelRegistryHelper.register(modelLocation, new ParticleOnlyModel(variant.getBlockTexture()));
 		}
-		ParticleUtils.playDestroyEffects(world, pos, particle);
-		return true;
+
+		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
+			@Override
+			@SideOnly(Side.CLIENT)
+			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+				return variantModels.get(state.getValue(VARIANT));
+			}
+		});
+		ModelRegistryHelper.registerItemRenderer(Item.getItemFromBlock(this), new StoneCoffinRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileStoneCoffin.class, new StoneCoffinRenderer());
 	}
 
 	@Override
@@ -99,16 +102,18 @@ public class BlockStoneCoffin extends BlockCoffin<TileStoneCoffin> {
 		return AABB;
 	}
 
-	public enum Variant implements IVariant {
-		STONE("stone"),
-		SANDSTONE("sandstone"),
-		PRISMARINE("prismarine"),
-		DEMONIC("demonic");
+	public enum Variant implements IVariant, IStringSerializable {
+		STONE("stone", "stone"),
+		SANDSTONE("sandstone", "sandstone_top"),
+		PRISMARINE("prismarine", "prismarine_bricks"),
+		DEMONIC("demonic", "nether_brick");
 
 		private String name;
+		private String blockTexture;
 
-		Variant(String name) {
+		Variant(String name, String blockTexture) {
 			this.name = name;
+			this.blockTexture = blockTexture;
 		}
 
 		@Override
@@ -132,6 +137,10 @@ public class BlockStoneCoffin extends BlockCoffin<TileStoneCoffin> {
 
 		public static Variant fromName(String name) {
 			return NAME_TO_VARIANT.getOrDefault(name, STONE);
+		}
+
+		public String getBlockTexture() {
+			return blockTexture;
 		}
 	}
 }

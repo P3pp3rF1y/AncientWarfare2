@@ -26,17 +26,7 @@ public abstract class TileCoffin extends TileMulti implements ITickable, ISpecia
 	private LootSettings lootSettings = new LootSettings();
 	private static final float OPEN_ANGLE = 15F;
 
-	public BlockCoffin.IVariant getVariant() {
-		return getValueFromMain(TileCoffin.class, TileCoffin::getVariant, this.variant, this::getDefaultVariant);
-	}
-
-	public void setVariant(BlockCoffin.IVariant variant) {
-		this.variant = variant;
-	}
-
-	private BlockCoffin.IVariant variant = getDefaultVariant();
-
-	protected abstract BlockCoffin.IVariant getDefaultVariant();
+	public abstract BlockCoffin.IVariant getVariant();
 
 	@Override
 	public void setPlacementDirection(World world, BlockPos pos, IBlockState state, EnumFacing horizontalFacing, float rotationYaw) {
@@ -47,7 +37,6 @@ public abstract class TileCoffin extends TileMulti implements ITickable, ISpecia
 	protected void readNBT(NBTTagCompound compound) {
 		super.readNBT(compound);
 		direction = BlockCoffin.CoffinDirection.fromName(compound.getString("direction"));
-		variant = deserializeVariant(compound.getString("variant"));
 		opening = compound.getBoolean("opening");
 		open = compound.getBoolean("open");
 		if (open) {
@@ -56,13 +45,10 @@ public abstract class TileCoffin extends TileMulti implements ITickable, ISpecia
 		lootSettings = LootSettings.deserializeNBT(compound.getCompoundTag("lootSettings"));
 	}
 
-	protected abstract BlockCoffin.IVariant deserializeVariant(String name);
-
 	@Override
 	protected void writeNBT(NBTTagCompound compound) {
 		super.writeNBT(compound);
 		compound.setString("direction", direction.getName());
-		compound.setString("variant", variant.getName());
 		compound.setBoolean("opening", opening);
 		compound.setBoolean("open", open);
 		compound.setTag("lootSettings", lootSettings.serializeNBT());
@@ -80,7 +66,7 @@ public abstract class TileCoffin extends TileMulti implements ITickable, ISpecia
 		Optional<BlockPos> mainPos = getMainBlockPos();
 		if (!mainPos.isPresent() || mainPos.get().equals(pos)) {
 			if (!open && !opening) {
-				playSound(variant);
+				playSound();
 				opening = true;
 				BlockTools.notifyBlockUpdate(this);
 			}
@@ -89,7 +75,7 @@ public abstract class TileCoffin extends TileMulti implements ITickable, ISpecia
 		WorldTools.getTile(world, mainPos.get(), TileCoffin.class).ifPresent(TileCoffin::open);
 	}
 
-	protected abstract void playSound(BlockCoffin.IVariant variant);
+	protected abstract void playSound();
 
 	private void dropLoot(@Nullable EntityPlayer player) {
 		if (world.isRemote || isOpen()) {

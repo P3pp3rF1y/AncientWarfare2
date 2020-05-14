@@ -3,6 +3,8 @@ package net.shadowmage.ancientwarfare.structure.block;
 import codechicken.lib.model.ModelRegistryHelper;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
@@ -10,20 +12,31 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockWoodenCoffin;
-import net.shadowmage.ancientwarfare.structure.render.CoffinRenderer;
 import net.shadowmage.ancientwarfare.structure.render.ParticleOnlyModel;
+import net.shadowmage.ancientwarfare.structure.render.WoodenCoffinRenderer;
 import net.shadowmage.ancientwarfare.structure.tile.TileWoodenCoffin;
+
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
 
 @SuppressWarnings("squid:MaximumInheritanceDepth")
 public class BlockWoodenCoffin extends BlockCoffin<TileWoodenCoffin> {
+	private static final PropertyEnum<Variant> VARIANT = PropertyEnum.create("variant", Variant.class);
+
 	public BlockWoodenCoffin() {
 		super(Material.WOOD, "wooden_coffin", TileWoodenCoffin::new, TileWoodenCoffin.class);
 	}
@@ -33,6 +46,11 @@ public class BlockWoodenCoffin extends BlockCoffin<TileWoodenCoffin> {
 		for (Variant variant : Variant.values()) {
 			items.add(ItemBlockWoodenCoffin.getVariantStack(variant));
 		}
+	}
+
+	@Override
+	protected List<IProperty> getAdditionalProperties() {
+		return Collections.singletonList(VARIANT);
 	}
 
 	@Override
@@ -52,32 +70,46 @@ public class BlockWoodenCoffin extends BlockCoffin<TileWoodenCoffin> {
 	}
 
 	@Override
+	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return state.withProperty(VARIANT, WorldTools.getTile(world, pos, TileWoodenCoffin.class).map(TileWoodenCoffin::getVariant).orElse(Variant.OAK));
+	}
+
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerClient() {
+		Map<Variant, ModelResourceLocation> variantModels = new EnumMap<>(Variant.class);
+		for (Variant variant : Variant.values()) {
+			ModelResourceLocation modelLocation = new ModelResourceLocation(AncientWarfareCore.MOD_ID + ":structure/wooden_coffin", variant.getName());
+			variantModels.put(variant, modelLocation);
+			ModelRegistryHelper.register(modelLocation, new ParticleOnlyModel(variant.getBlockTexture()));
+		}
+
 		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
 			@Override
 			@SideOnly(Side.CLIENT)
 			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-				return CoffinRenderer.MODEL_LOCATION;
+				return variantModels.get(state.getValue(VARIANT));
 			}
 		});
-		ModelRegistryHelper.register(CoffinRenderer.MODEL_LOCATION, ParticleOnlyModel.INSTANCE);
-		ModelRegistryHelper.registerItemRenderer(Item.getItemFromBlock(this), new CoffinRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileWoodenCoffin.class, new CoffinRenderer());
+
+		ModelRegistryHelper.registerItemRenderer(Item.getItemFromBlock(this), new WoodenCoffinRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileWoodenCoffin.class, new WoodenCoffinRenderer());
 	}
 
-	public enum Variant implements IVariant {
-		OAK("oak"),
-		BIRCH("birch"),
-		SPRUCE("spruce"),
-		JUNGLE("jungle"),
-		DARK_OAK("dark_oak"),
-		ACACIA("acacia");
+	public enum Variant implements IVariant, IStringSerializable {
+		OAK("oak", "planks_oak"),
+		BIRCH("birch", "planks_birch"),
+		SPRUCE("spruce", "planks_spruce"),
+		JUNGLE("jungle", "planks_jungle"),
+		DARK_OAK("dark_oak", "planks_big_oak"),
+		ACACIA("acacia", "planks_acacia");
 
 		private String name;
+		private String blockTexture;
 
-		Variant(String name) {
+		Variant(String name, String blockTexture) {
 			this.name = name;
+			this.blockTexture = blockTexture;
 		}
 
 		@Override
@@ -101,6 +133,10 @@ public class BlockWoodenCoffin extends BlockCoffin<TileWoodenCoffin> {
 
 		public static Variant fromName(String name) {
 			return NAME_TO_VARIANT.getOrDefault(name, OAK);
+		}
+
+		public String getBlockTexture() {
+			return blockTexture;
 		}
 	}
 }
