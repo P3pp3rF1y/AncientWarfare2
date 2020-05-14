@@ -12,7 +12,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -96,7 +95,7 @@ public class BlockWoodenCoffin extends BlockCoffin<TileWoodenCoffin> {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileWoodenCoffin.class, new WoodenCoffinRenderer());
 	}
 
-	public enum Variant implements IVariant, IStringSerializable {
+	public enum Variant implements IVariant {
 		OAK("oak", "planks_oak"),
 		BIRCH("birch", "planks_birch"),
 		SPRUCE("spruce", "planks_spruce"),

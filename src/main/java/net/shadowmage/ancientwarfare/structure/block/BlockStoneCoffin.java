@@ -12,7 +12,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -102,7 +101,7 @@ public class BlockStoneCoffin extends BlockCoffin<TileStoneCoffin> {
 		return AABB;
 	}
 
-	public enum Variant implements IVariant, IStringSerializable {
+	public enum Variant implements IVariant {
 		STONE("stone", "stone"),
 		SANDSTONE("sandstone", "sandstone_top"),
 		PRISMARINE("prismarine", "prismarine_bricks"),

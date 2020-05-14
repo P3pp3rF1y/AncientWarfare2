@@ -186,7 +186,6 @@ public abstract class BlockCoffin<T extends TileCoffin> extends BlockMulti<T> {
 		}
 	}
 
-	public interface IVariant {
-		String getName();
+	public interface IVariant extends IStringSerializable {
 	}
 }

@@ -46,6 +46,21 @@ public class WoodenCoffinFixer extends TileRuleDataFixer implements IFixableData
 	}
 
 	@Override
+	public NBTTagCompound fixTagCompound(NBTTagCompound compound) {
+		String oldId = compound.getString("id");
+		if (oldId.equals(OLD_COFFIN_REG_NAME)) {
+			compound.setString("id", "ancientwarfarestructure:wooden_coffin");
+			compound.setString("variant", mapToNewVariant(compound.getInteger("variant")));
+		}
+		return compound;
+	}
+
+	@Override
+	public NBTTagCompound fixRuleCompoundTag(NBTTagCompound compound) {
+		return fixTagCompound(compound);
+	}
+
+	@Override
 	protected String getFixerName() {
 		return "WoodenCoffinFixer";
 	}
@@ -60,16 +75,6 @@ public class WoodenCoffinFixer extends TileRuleDataFixer implements IFixableData
 			}
 		}
 		return super.fixJSONData(data, tag);
-	}
-
-	@Override
-	public NBTTagCompound fixTagCompound(NBTTagCompound compound) {
-		String oldId = compound.getString("id");
-		if (oldId.equals(OLD_COFFIN_REG_NAME)) {
-			compound.setString("id", "ancientwarfarestructure:wooden_coffin");
-			compound.setString("variant", mapToNewVariant(compound.getInteger("variant")));
-		}
-		return compound;
 	}
 
 	private String mapToNewVariant(int variant) {

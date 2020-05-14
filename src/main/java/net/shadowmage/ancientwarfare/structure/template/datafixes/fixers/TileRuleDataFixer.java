@@ -27,7 +27,7 @@ public abstract class TileRuleDataFixer extends RuleDataFixerBase {
 
 	protected FixResult<String> fixJSONData(String data, NBTTagCompound tag) {
 		if (tag.hasKey(TE_DATA_TAG)) {
-			tag.setTag(TE_DATA_TAG, fixTagCompound(tag.getCompoundTag(TE_DATA_TAG)));
+			tag.setTag(TE_DATA_TAG, fixRuleCompoundTag(tag.getCompoundTag(TE_DATA_TAG)));
 			return new FixResult.Modified<>(JSON_PREFIX + tag.toString(), getFixerName());
 		}
 		return new FixResult.NotModified<>(data);
@@ -35,5 +35,5 @@ public abstract class TileRuleDataFixer extends RuleDataFixerBase {
 
 	protected abstract String getFixerName();
 
-	protected abstract NBTTagCompound fixTagCompound(NBTTagCompound compoundTag);
+	protected abstract NBTTagCompound fixRuleCompoundTag(NBTTagCompound compoundTag);
 }

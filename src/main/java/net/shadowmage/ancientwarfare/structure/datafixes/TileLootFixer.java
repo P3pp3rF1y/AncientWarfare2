@@ -31,6 +31,11 @@ public class TileLootFixer extends TileRuleDataFixer implements IFixableData {
 		return compound;
 	}
 
+	@Override
+	public NBTTagCompound fixRuleCompoundTag(NBTTagCompound compound) {
+		return fixTagCompound(compound);
+	}
+
 	private static final StructureTemplate.Version VERSION = new StructureTemplate.Version(2, 9);
 
 	@Override
