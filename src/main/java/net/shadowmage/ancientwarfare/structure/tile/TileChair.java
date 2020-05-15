@@ -23,7 +23,7 @@ public class TileChair extends TileMulti implements BlockRotationHandler.IRotata
 
 	@Override
 	protected void writeNBT(NBTTagCompound compound) {
-		compound = super.writeToNBT(compound);
+		super.writeNBT(compound);
 		compound.setString("facing", facing.getName());
 	}
 
