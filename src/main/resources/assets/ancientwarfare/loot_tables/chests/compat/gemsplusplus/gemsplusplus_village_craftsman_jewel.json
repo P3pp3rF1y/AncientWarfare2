@@ -3,217 +3,16 @@
         {
             "name":"main", 
             "rolls": {
-                "min": 2,
+                "min": 3,
                 "max": 4
             },
             "entries": [
-                {
-                    "type": "item",
-                    "name": "sand",
-                    "weight": 6,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 2
-                            }
-                        }
-                    ]
-                },
 				{
-                    "type": "item",
-                    "name": "gunpowder",
-                    "weight": 4,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 5
-                            }
-                        }
-                    ]
-                },
-				{
-				   "type": "item",
-				   "name": "potion",
-				   "entryName": "water_bottle",
-				   "weight": 5,
-				   "functions": [
-						{
-							"function": "set_count",
-							"count": {
-								"min": 1,
-								"max": 3
-							}
-						},
-						{
-						 "function": "set_nbt",
-						 "tag": "{Potion:\"minecraft:water\"}"
-						}
-				   ]
-},
-				{
-                    "type": "item",
-                    "name": "beef",
-                    "weight": 6,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 5
-                            }
-                        }
-                    ]
-                },
-				{
-                    "type": "item",
-                    "name": "cooked_beef",
-                    "weight": 5,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 5
-                            }
-                        }
-                    ]
-                },
-				{
-                    "type": "item",
-                    "name": "cactus",
-                    "weight": 5,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 5
-                            }
-                        }
-                    ]
-                },
-				{
-                    "type": "item",
-                    "name": "baked_potato",
-                    "weight": 5,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 5
-                            }
-                        }
-                    ]
-                },
-				{
-                    "type": "item",
-                    "name": "bucket",
-                    "weight": 4,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 2
-                            }
-                        }
-                    ]
-                },
-				{
-                    "type": "item",
-                    "name": "water_bucket",
-                    "weight": 3,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 2
-                            }
-                        }
-                    ]
-                },
-                {
-                    "type": "item",
-                    "name": "gold_nugget",
-                    "weight": 4,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 5
-                            }
-                        }
-                    ]
-                },
-				{
-                    "type": "item",
-                    "name": "bow",
-                    "weight": 3,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 2
-                            }
-                        }
-                    ]
-                },
-				{
-                    "type": "item",
-                    "name": "golden_sword",
-                    "weight": 3,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 2
-                            }
-                        }
-                    ]
-                },
-				{
-                    "type": "item",
-                    "name": "arrow",
-                    "weight": 5,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 5
-                            }
-                        }
-                    ]
-                },
-                {
                     "type": "item",
                     "name": "gold_ingot",
                     "weight": 4,
                     "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 6
-                            }
-                        }
-                    ]
-                },
-                {
-                    "type": "item",
-                    "name": "ancientwarfarenpc:golden_spear",
-                    "weight": 2,
-                    "functions": [
-                        {
+						{
                             "function": "set_count",
                             "count": {
                                 "min": 1,
@@ -224,10 +23,10 @@
                 },
 				{
                     "type": "item",
-                    "name": "ancientwarfarenpc:golden_lance",
-                    "weight": 2,
+                    "name": "diamond",
+                    "weight": 1,
                     "functions": [
-                        {
+						{
                             "function": "set_count",
                             "count": {
                                 "min": 1,
@@ -238,10 +37,10 @@
                 },
 				{
                     "type": "item",
-                    "name": "ancientwarfarenpc:golden_halberd",
-                    "weight": 2,
+                    "name": "emerald",
+                    "weight": 1,
                     "functions": [
-                        {
+						{
                             "function": "set_count",
                             "count": {
                                 "min": 1,
@@ -252,10 +51,10 @@
                 },
 				{
                     "type": "item",
-                    "name": "ancientwarfarenpc:gold_shield",
-                    "weight": 2,
+                    "name": "gemsplusplus:ruby",
+                    "weight": 1,
                     "functions": [
-                        {
+						{
                             "function": "set_count",
                             "count": {
                                 "min": 1,
@@ -266,20 +65,211 @@
                 },
 				{
                     "type": "item",
-                    "name": "ancientwarfarenpc:coin",
-                    "entryName": "coin_copper",
-                    "weight": 5,
+                    "name": "gemsplusplus:sapphire",
+                    "weight": 1,
                     "functions": [
-                        {
+						{
                             "function": "set_count",
                             "count": {
                                 "min": 1,
-                                "max": 10
+                                "max": 2
                             }
-                        },
-                        {
-                            "function": "set_nbt",
-                            "tag": "{metal:\"copper\"}"
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "gemsplusplus:amethyst",
+                    "weight": 1,
+                    "functions": [
+						{
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "gemsplusplus:topaz",
+                    "weight": 1,
+                    "functions": [
+						{
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "gemsplusplus:phoenixite",
+                    "weight": 1,
+                    "functions": [
+						{
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 1
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "gemsplusplus:jade",
+                    "weight": 1,
+                    "functions": [
+						{
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "gemsplusplus:citrine",
+                    "weight": 1,
+                    "functions": [
+						{
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "gemsplusplus:garnet",
+                    "weight": 1,
+                    "functions": [
+						{
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "gemsplusplus:spinel",
+                    "weight": 1,
+                    "functions": [
+						{
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "gemsplusplus:sugilite",
+                    "weight": 1,
+                    "functions": [
+						{
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "gemsplusplus:jasper",
+                    "weight": 1,
+                    "functions": [
+						{
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "gemsplusplus:chrysocolla",
+                    "weight": 1,
+                    "functions": [
+						{
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "gemsplusplus:tourmaline",
+                    "weight": 1,
+                    "functions": [
+						{
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "gemsplusplus:malachite",
+                    "weight": 1,
+                    "functions": [
+						{
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "gemsplusplus:agate",
+                    "weight": 1,
+                    "functions": [
+						{
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "gemsplusplus:onyx",
+                    "weight": 1,
+                    "functions": [
+						{
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
                         }
                     ]
                 }
