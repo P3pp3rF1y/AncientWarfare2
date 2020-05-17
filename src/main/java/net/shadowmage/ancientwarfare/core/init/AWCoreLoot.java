@@ -82,7 +82,7 @@ public class AWCoreLoot {
 					injectTables.put(lootTableName, file);
 					return;
 				} else {
-					LootTableList.register(new ResourceLocation(AncientWarfareCore.MOD_ID, convertToRegistryName(root.resolve(COMPAT_FOLDER).resolve(modName).relativize(file))));
+					LootTableList.register(new ResourceLocation(AncientWarfareCore.MOD_ID, convertToRegistryName(relative)));
 					return;
 				}
 			} else if (relative.getName(0).toString().equals(INJECT_FOLDER)) {
