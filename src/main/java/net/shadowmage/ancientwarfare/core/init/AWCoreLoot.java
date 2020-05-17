@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.core.init;
 
 import com.google.common.io.Files;
+import com.google.common.io.Resources;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -107,8 +108,14 @@ public class AWCoreLoot {
 			String jsonContents;
 			String jsonPath = injectTables.get(resPath).toString();
 			try {
-				//noinspection UnstableApiUsage
-				jsonContents = Files.toString(new File(jsonPath), StandardCharsets.UTF_8);
+				File file = new File(jsonPath);
+				if (file.exists()) {
+					//noinspection UnstableApiUsage
+					jsonContents = Files.toString(file, StandardCharsets.UTF_8);
+				} else {
+					//noinspection UnstableApiUsage
+					jsonContents = Resources.toString(AWCoreLoot.class.getResource(jsonPath), StandardCharsets.UTF_8);
+				}
 			}
 			catch (IOException e) {
 				AncientWarfareCore.LOG.error("Error reading loot table json {}", jsonPath, e);
