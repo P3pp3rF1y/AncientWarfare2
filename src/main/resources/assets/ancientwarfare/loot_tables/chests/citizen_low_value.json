@@ -3,98 +3,14 @@
         {
             "name":"main", 
             "rolls": {
-                "min": 5,
-                "max": 10
+                "min": 4,
+                "max": 6
             },
             "entries": [
                 {
                     "type": "item",
-                    "name": "paper",
+                    "name": "chest",
                     "weight": 6,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 2
-                            }
-                        }
-                    ]
-                },
-				{
-                    "type": "item",
-                    "name": "name_tag",
-                    "weight": 4,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 2
-                            }
-                        }
-                    ]
-                },
-				{
-				   "type": "item",
-				   "name": "iron_nugget",
-				   "weight": 6,
-				   "functions": [
-						{
-							"function": "set_count",
-							"count": {
-								"min": 1,
-								"max": 3
-							}
-						}
-				   ]
-},
-				{
-                    "type": "item",
-                    "name": "iron_ingot",
-                    "weight": 6,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 5
-                            }
-                        }
-                    ]
-                },
-				{
-                    "type": "item",
-                    "name": "gold_ingot",
-                    "weight": 5,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 5
-                            }
-                        }
-                    ]
-                },
-				{
-                    "type": "item",
-                    "name": "gold_nugget",
-                    "weight": 6,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 5
-                            }
-                        }
-                    ]
-                },
-				{
-                    "type": "item",
-                    "name": "ancientwarfare:steel_ingot",
-                    "weight": 5,
                     "functions": [
                         {
                             "function": "set_count",
@@ -107,36 +23,130 @@
                 },
 				{
                     "type": "item",
-                    "name": "coal",
+                    "name": "sign",
                     "weight": 6,
                     "functions": [
                         {
                             "function": "set_count",
                             "count": {
                                 "min": 1,
-                                "max": 10
+                                "max": 5
                             }
                         }
                     ]
                 },
 				{
+				   "type": "item",
+				   "name": "potion",
+				   "entryName": "water_bottle",
+				   "weight": 5,
+				   "functions": [
+						{
+							"function": "set_count",
+							"count": {
+								"min": 1,
+								"max": 3
+							}
+						},
+						{
+						 "function": "set_nbt",
+						 "tag": "{Potion:\"minecraft:water\"}"
+						}
+				   ]
+				},
+				{
                     "type": "item",
-                    "name": "arrow",
+                    "name": "ancientwarfarenpc:coin",
+                    "entryName": "coin_copper",
+                    "weight": 4,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 7
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{metal:\"copper\"}"
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "stick",
                     "weight": 6,
                     "functions": [
                         {
                             "function": "set_count",
                             "count": {
-                                "min": 6,
-                                "max": 12
+                                "min": 1,
+                                "max": 5
                             }
                         }
                     ]
                 },
-                {
+				{
                     "type": "item",
-                    "name": "diamond",
-                    "weight": 1,
+                    "name": "string",
+                    "weight": 6,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 5
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "bowl",
+                    "weight": 6,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 5
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "bread",
+                    "weight": 6,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 3
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "paper",
+                    "weight": 4,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 5
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "crafting_table",
+                    "weight": 4,
                     "functions": [
                         {
                             "function": "set_count",
@@ -149,77 +159,7 @@
                 },
 				{
                     "type": "item",
-                    "name": "bow",
-                    "weight": 3,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 2
-                            }
-                        }
-                    ]
-                },
-				{
-                    "type": "item",
-                    "name": "iron_sword",
-                    "weight": 3,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 2
-                            }
-                        }
-                    ]
-                },
-				{
-                    "type": "item",
-                    "name": "ancientwarfarenpc:iron_halberd",
-                    "weight": 2,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 2
-                            }
-                        }
-                    ]
-                },
-				{
-                    "type": "item",
-                    "name": "ancientwarfarenpc:iron_shield",
-                    "weight": 2,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 2
-                            }
-                        }
-                    ]
-                },
-				{
-                    "type": "item",
-                    "name": "ancientwarfarenpc:iron_lance",
-                    "weight": 2,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 2
-                            }
-                        }
-                    ]
-                },
-				{
-                    "type": "item",
-                    "name": "ancientwarfarenpc:iron_spear",
+                    "name": "flower_pot",
                     "weight": 2,
                     "functions": [
                         {

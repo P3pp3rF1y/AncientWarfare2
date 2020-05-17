@@ -3,28 +3,28 @@
         {
             "name":"main", 
             "rolls": {
-                "min": 2,
-                "max": 4
+                "min": 6,
+                "max": 8
             },
             "entries": [
                 {
                     "type": "item",
-                    "name": "sand",
+                    "name": "chest",
                     "weight": 6,
                     "functions": [
                         {
                             "function": "set_count",
                             "count": {
                                 "min": 1,
-                                "max": 2
+                                "max": 3
                             }
                         }
                     ]
                 },
 				{
                     "type": "item",
-                    "name": "gunpowder",
-                    "weight": 4,
+                    "name": "sign",
+                    "weight": 6,
                     "functions": [
                         {
                             "function": "set_count",
@@ -53,10 +53,29 @@
 						 "tag": "{Potion:\"minecraft:water\"}"
 						}
 				   ]
-},
+				},
 				{
                     "type": "item",
-                    "name": "beef",
+                    "name": "ancientwarfarenpc:coin",
+                    "entryName": "coin_copper",
+                    "weight": 4,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 7
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{metal:\"copper\"}"
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "stick",
                     "weight": 6,
                     "functions": [
                         {
@@ -70,8 +89,8 @@
                 },
 				{
                     "type": "item",
-                    "name": "cooked_beef",
-                    "weight": 5,
+                    "name": "string",
+                    "weight": 6,
                     "functions": [
                         {
                             "function": "set_count",
@@ -84,8 +103,8 @@
                 },
 				{
                     "type": "item",
-                    "name": "cactus",
-                    "weight": 5,
+                    "name": "bowl",
+                    "weight": 6,
                     "functions": [
                         {
                             "function": "set_count",
@@ -98,49 +117,21 @@
                 },
 				{
                     "type": "item",
-                    "name": "baked_potato",
-                    "weight": 5,
+                    "name": "bread",
+                    "weight": 6,
                     "functions": [
                         {
                             "function": "set_count",
                             "count": {
                                 "min": 1,
-                                "max": 5
+                                "max": 3
                             }
                         }
                     ]
                 },
 				{
                     "type": "item",
-                    "name": "bucket",
-                    "weight": 4,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 2
-                            }
-                        }
-                    ]
-                },
-				{
-                    "type": "item",
-                    "name": "water_bucket",
-                    "weight": 3,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 2
-                            }
-                        }
-                    ]
-                },
-                {
-                    "type": "item",
-                    "name": "gold_nugget",
+                    "name": "paper",
                     "weight": 4,
                     "functions": [
                         {
@@ -154,50 +145,50 @@
                 },
 				{
                     "type": "item",
-                    "name": "bow",
-                    "weight": 3,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 2
-                            }
-                        }
-                    ]
-                },
-				{
-                    "type": "item",
-                    "name": "golden_sword",
-                    "weight": 3,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 2
-                            }
-                        }
-                    ]
-                },
-				{
-                    "type": "item",
-                    "name": "arrow",
-                    "weight": 5,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 5
-                            }
-                        }
-                    ]
-                },
-                {
-                    "type": "item",
-                    "name": "gold_ingot",
+                    "name": "crafting_table",
                     "weight": 4,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "flower_pot",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "compass",
+                    "weight": 3,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "cooked_chicken",
+                    "weight": 6,
                     "functions": [
                         {
                             "function": "set_count",
@@ -208,10 +199,10 @@
                         }
                     ]
                 },
-                {
+				{
                     "type": "item",
-                    "name": "ancientwarfarenpc:golden_spear",
-                    "weight": 2,
+                    "name": "milk_bucket",
+                    "weight": 3,
                     "functions": [
                         {
                             "function": "set_count",
@@ -224,8 +215,8 @@
                 },
 				{
                     "type": "item",
-                    "name": "ancientwarfarenpc:golden_lance",
-                    "weight": 2,
+                    "name": "book",
+                    "weight": 6,
                     "functions": [
                         {
                             "function": "set_count",
@@ -238,8 +229,8 @@
                 },
 				{
                     "type": "item",
-                    "name": "ancientwarfarenpc:golden_halberd",
-                    "weight": 2,
+                    "name": "furnace",
+                    "weight": 4,
                     "functions": [
                         {
                             "function": "set_count",
@@ -252,8 +243,22 @@
                 },
 				{
                     "type": "item",
-                    "name": "ancientwarfarenpc:gold_shield",
-                    "weight": 2,
+                    "name": "ancientwarfarenpc:food_bundle",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 4
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "ancientwarfare:wooden_quill",
+                    "weight": 4,
                     "functions": [
                         {
                             "function": "set_count",
@@ -267,19 +272,19 @@
 				{
                     "type": "item",
                     "name": "ancientwarfarenpc:coin",
-                    "entryName": "coin_copper",
-                    "weight": 5,
+                    "entryName": "coin_silver",
+                    "weight": 4,
                     "functions": [
                         {
                             "function": "set_count",
                             "count": {
                                 "min": 1,
-                                "max": 10
+                                "max": 4
                             }
                         },
                         {
                             "function": "set_nbt",
-                            "tag": "{metal:\"copper\"}"
+                            "tag": "{metal:\"silver\"}"
                         }
                     ]
                 }

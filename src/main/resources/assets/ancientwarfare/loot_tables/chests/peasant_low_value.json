@@ -3,27 +3,13 @@
         {
             "name":"main", 
             "rolls": {
-                "min": 5,
-                "max": 10
+                "min": 2,
+                "max": 4
             },
             "entries": [
                 {
                     "type": "item",
-                    "name": "paper",
-                    "weight": 6,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 2
-                            }
-                        }
-                    ]
-                },
-				{
-                    "type": "item",
-                    "name": "name_tag",
+                    "name": "bow",
                     "weight": 4,
                     "functions": [
                         {
@@ -36,65 +22,41 @@
                     ]
                 },
 				{
-				   "type": "item",
-				   "name": "iron_nugget",
-				   "weight": 6,
-				   "functions": [
+                    "type": "item",
+                    "name": "arrow",
+                    "weight": 4,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 5
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "coal",
+                    "weight": 6,
+                    "functions": [
 						{
-							"function": "set_count",
-							"count": {
-								"min": 1,
-								"max": 3
-							}
-						}
-				   ]
-},
+                            "function": "set_data",
+                            "data": 1
+                        },
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 5
+                            }
+                        }
+                    ]
+                },
 				{
                     "type": "item",
-                    "name": "iron_ingot",
+                    "name": "bucket",
                     "weight": 6,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 5
-                            }
-                        }
-                    ]
-                },
-				{
-                    "type": "item",
-                    "name": "gold_ingot",
-                    "weight": 5,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 5
-                            }
-                        }
-                    ]
-                },
-				{
-                    "type": "item",
-                    "name": "gold_nugget",
-                    "weight": 6,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 5
-                            }
-                        }
-                    ]
-                },
-				{
-                    "type": "item",
-                    "name": "ancientwarfare:steel_ingot",
-                    "weight": 5,
                     "functions": [
                         {
                             "function": "set_count",
@@ -107,36 +69,8 @@
                 },
 				{
                     "type": "item",
-                    "name": "coal",
+                    "name": "stone_hoe",
                     "weight": 6,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 10
-                            }
-                        }
-                    ]
-                },
-				{
-                    "type": "item",
-                    "name": "arrow",
-                    "weight": 6,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 6,
-                                "max": 12
-                            }
-                        }
-                    ]
-                },
-                {
-                    "type": "item",
-                    "name": "diamond",
-                    "weight": 1,
                     "functions": [
                         {
                             "function": "set_count",
@@ -149,7 +83,35 @@
                 },
 				{
                     "type": "item",
-                    "name": "bow",
+                    "name": "stone_shovel",
+                    "weight": 6,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "dirt",
+                    "weight": 6,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 6
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "bowl",
                     "weight": 3,
                     "functions": [
                         {
@@ -163,8 +125,8 @@
                 },
 				{
                     "type": "item",
-                    "name": "iron_sword",
-                    "weight": 3,
+                    "name": "ancientwarfarenpc:sickle",
+                    "weight": 6,
                     "functions": [
                         {
                             "function": "set_count",
@@ -177,8 +139,8 @@
                 },
 				{
                     "type": "item",
-                    "name": "ancientwarfarenpc:iron_halberd",
-                    "weight": 2,
+                    "name": "ancientwarfarenpc:pitchfork",
+                    "weight": 6,
                     "functions": [
                         {
                             "function": "set_count",
@@ -191,36 +153,8 @@
                 },
 				{
                     "type": "item",
-                    "name": "ancientwarfarenpc:iron_shield",
-                    "weight": 2,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 2
-                            }
-                        }
-                    ]
-                },
-				{
-                    "type": "item",
-                    "name": "ancientwarfarenpc:iron_lance",
-                    "weight": 2,
-                    "functions": [
-                        {
-                            "function": "set_count",
-                            "count": {
-                                "min": 1,
-                                "max": 2
-                            }
-                        }
-                    ]
-                },
-				{
-                    "type": "item",
-                    "name": "ancientwarfarenpc:iron_spear",
-                    "weight": 2,
+                    "name": "ancientwarfarenpc:scythe",
+                    "weight": 6,
                     "functions": [
                         {
                             "function": "set_count",
