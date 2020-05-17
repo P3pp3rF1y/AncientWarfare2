@@ -26,7 +26,6 @@ public class ItemBlockGravestone extends ItemBlockBase {
 	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
 		if (stack.hasTagCompound()) {
-			//noinspection ConstantConditions
 			String name = "tile.gravestone." + getVariant(stack) + ".name";
 			return I18n.translateToLocal(name);
 		}

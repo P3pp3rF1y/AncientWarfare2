@@ -12,7 +12,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -28,9 +27,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
-import net.shadowmage.ancientwarfare.core.util.NBTBuilder;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
-import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
+import net.shadowmage.ancientwarfare.structure.item.ItemBlockGravestone;
 import net.shadowmage.ancientwarfare.structure.render.RenderLootInfo;
 import net.shadowmage.ancientwarfare.structure.tile.TileGravestone;
 
@@ -45,7 +43,6 @@ public class BlockGravestone extends BlockBaseStructure {
 	private static final AxisAlignedBB AABB_EAST = new AxisAlignedBB(6 / 16D, 0, 0, 10 / 16D, 19 / 16D, 1D);
 
 	private static final PropertyInteger VARIANT = PropertyInteger.create("variant", 1, 8);
-	private static final String VARIANT_TAG = "variant";
 
 	public BlockGravestone() {
 		super(Material.ROCK, "gravestone");
@@ -61,19 +58,8 @@ public class BlockGravestone extends BlockBaseStructure {
 	@Override
 	public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
 		for (int variant = 1; variant <= 8; variant++) {
-			items.add(getVariantStack(variant));
+			items.add(ItemBlockGravestone.getVariantStack(variant));
 		}
-	}
-
-	public static ItemStack getVariantStack(int variant) {
-		ItemStack stack = new ItemStack(AWStructureBlocks.GRAVESTONE);
-		stack.setTagCompound(new NBTBuilder().setInteger("variant", variant).build());
-		return stack;
-	}
-
-	public static int getVariant(ItemStack stack) {
-		//noinspection ConstantConditions
-		return stack.hasTagCompound() && stack.getTagCompound().hasKey(VARIANT_TAG) ? stack.getTagCompound().getInteger("variant") : 1;
 	}
 
 	@Override
@@ -108,9 +94,9 @@ public class BlockGravestone extends BlockBaseStructure {
 			return;
 		}
 
-		world.setBlockState(pos, state.withProperty(VARIANT, getVariant(stack)));
+		world.setBlockState(pos, state.withProperty(VARIANT, ItemBlockGravestone.getVariant(stack)));
 		WorldTools.getTile(world, pos, TileGravestone.class).ifPresent(te -> te.setPrimaryFacing(placer.getHorizontalFacing().getOpposite()));
-		WorldTools.getTile(world, pos, TileGravestone.class).ifPresent(te -> te.setVariant(getVariant(stack)));
+		WorldTools.getTile(world, pos, TileGravestone.class).ifPresent(te -> te.setVariant(ItemBlockGravestone.getVariant(stack)));
 		super.onBlockPlacedBy(world, pos, state, placer, stack);
 	}
 
@@ -120,7 +106,7 @@ public class BlockGravestone extends BlockBaseStructure {
 			return;
 		}
 		WorldTools.getTile(world, pos, TileGravestone.class)
-				.ifPresent(te -> InventoryTools.dropItemInWorld(world, getVariantStack(te.getVariant()), pos));
+				.ifPresent(te -> InventoryTools.dropItemInWorld(world, ItemBlockGravestone.getVariantStack(te.getVariant()), pos));
 	}
 
 	@Override
@@ -136,7 +122,7 @@ public class BlockGravestone extends BlockBaseStructure {
 
 	@Override
 	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(VARIANT, getVariant(placer.getActiveItemStack()));
+		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(VARIANT, ItemBlockGravestone.getVariant(placer.getActiveItemStack()));
 	}
 
 	@Override
@@ -189,10 +175,7 @@ public class BlockGravestone extends BlockBaseStructure {
 				return new ModelResourceLocation(baseLocation, String.format(modelPropString, 8));
 			}
 
-			NBTTagCompound tag = stack.getTagCompound();
-			int variant = tag.getInteger("variant");
-			//noinspection ConstantConditions
-			return new ModelResourceLocation(baseLocation, String.format(modelPropString, variant));
+			return new ModelResourceLocation(baseLocation, String.format(modelPropString, ItemBlockGravestone.getVariant(stack)));
 		});
 
 		for (int variant = 1; variant < 9; variant++) {

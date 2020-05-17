@@ -21,7 +21,11 @@ public class ItemBlockWoodenCoffin extends ItemBlockCoffin {
 	}
 
 	@Override
-	protected boolean mayPlace(World world, BlockPos pos, EnumFacing sidePlacedOn, EntityPlayer placer) {
+	public boolean mayPlace(World world, BlockPos pos, EnumFacing sidePlacedOn, EntityPlayer placer) {
+		return canPlace(world, pos, sidePlacedOn, placer);
+	}
+
+	public static boolean canPlace(World world, BlockPos pos, EnumFacing sidePlacedOn, EntityPlayer placer) {
 		return canPlaceHorizontal(world, pos, sidePlacedOn, placer) || canPlaceVertical(world, pos, sidePlacedOn);
 	}
 

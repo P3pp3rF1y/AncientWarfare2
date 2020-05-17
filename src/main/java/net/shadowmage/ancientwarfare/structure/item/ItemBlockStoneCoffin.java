@@ -21,6 +21,10 @@ public class ItemBlockStoneCoffin extends ItemBlockCoffin {
 
 	@Override
 	protected boolean mayPlace(World world, BlockPos pos, EnumFacing sidePlacedOn, EntityPlayer placer) {
+		return canPlace(world, pos, sidePlacedOn, placer);
+	}
+
+	public static boolean canPlace(World world, BlockPos pos, EnumFacing sidePlacedOn, EntityPlayer placer) {
 		EnumFacing facing = placer.getHorizontalFacing();
 		for (int offset = 1; offset < 4; offset++) {
 			if (!mayPlaceAt(world, pos.offset(facing, offset), sidePlacedOn, false)) {

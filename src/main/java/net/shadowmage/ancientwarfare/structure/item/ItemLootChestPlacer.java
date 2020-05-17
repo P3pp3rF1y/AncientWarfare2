@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -36,22 +37,23 @@ import net.shadowmage.ancientwarfare.structure.tile.ISpecialLootContainer;
 import net.shadowmage.ancientwarfare.structure.tile.LootSettings;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class ItemLootChestPlacer extends ItemBaseStructure implements IItemKeyInterface {
 	private static final String LOOT_SETTINGS_TAG = "lootSettings";
 
-	private static final List<ItemStack> LOOT_CONTAINERS = new ArrayList<>();
-	private static final String BLOCK_STACK_TAG = "blockStack";
+	private static final Map<String, LootContainerInfo> LOOT_CONTAINERS = new LinkedHashMap<>();
+	private static final String LOOT_CONTAINER_NAME_TAG = "lootContainerName";
 
-	public static List<ItemStack> getLootContainers() {
+	public static Map<String, LootContainerInfo> getLootContainers() {
 		return LOOT_CONTAINERS;
 	}
 
-	public static void registerLootContainer(ItemStack lootContainer) {
-		LOOT_CONTAINERS.add(lootContainer);
+	public static void registerLootContainer(String name, ItemStack stack, LootContainerInfo.IPlacementChecker mayPlace) {
+		LOOT_CONTAINERS.put(name, new LootContainerInfo(name, stack, mayPlace));
 	}
 
 	public ItemLootChestPlacer() {
@@ -125,10 +127,11 @@ public class ItemLootChestPlacer extends ItemBaseStructure implements IItemKeyIn
 		}
 
 		BlockPos placePos = pos.offset(facing);
-		ItemStack itemBlockStack = getBlockStack(placer);
+		LootContainerInfo lootContainerInfo = getLootContainerInfo(placer);
+		ItemStack itemBlockStack = lootContainerInfo.getStack();
 		ItemBlock itemBlock = (ItemBlock) itemBlockStack.getItem();
 		Block block = itemBlock.getBlock();
-		if (block.canPlaceBlockAt(world, placePos)) {
+		if (lootContainerInfo.canPlace(block, world, placePos, facing, player)) {
 			itemBlock.placeBlockAt(itemBlockStack, player, world, placePos, facing, hitX, hitY, hitZ,
 					block.getStateForPlacement(world, placePos, facing, hitX, hitY, hitZ, itemBlockStack.getMetadata(), player, hand));
 			WorldTools.getTile(world, placePos, ISpecialLootContainer.class).ifPresent(t -> lootSettings.get().transferToContainer(t));
@@ -137,14 +140,23 @@ public class ItemLootChestPlacer extends ItemBaseStructure implements IItemKeyIn
 		return EnumActionResult.FAIL;
 	}
 
-	@SuppressWarnings("ConstantConditions")
-	public static ItemStack getBlockStack(ItemStack placer) {
-		return placer.hasTagCompound() && placer.getTagCompound().hasKey(BLOCK_STACK_TAG) ?
-				new ItemStack(placer.getTagCompound().getCompoundTag(BLOCK_STACK_TAG)) : LOOT_CONTAINERS.get(0);
+	public static LootContainerInfo getLootContainerInfo(ItemStack placer) {
+		if (placer.hasTagCompound()) {
+			NBTTagCompound compound = placer.getTagCompound();
+			//noinspection ConstantConditions
+			if (compound.hasKey(LOOT_CONTAINER_NAME_TAG)) {
+				return LOOT_CONTAINERS.getOrDefault(compound.getString(LOOT_CONTAINER_NAME_TAG), getFirstLootContainer());
+			}
+		}
+		return getFirstLootContainer();
 	}
 
-	public static void setBlockStack(ItemStack placer, ItemStack blockStack) {
-		placer.setTagInfo(BLOCK_STACK_TAG, blockStack.writeToNBT(new NBTTagCompound()));
+	public static void setContainerName(ItemStack placer, String name) {
+		placer.setTagInfo(LOOT_CONTAINER_NAME_TAG, new NBTTagString(name));
+	}
+
+	private static LootContainerInfo getFirstLootContainer() {
+		return LOOT_CONTAINERS.values().iterator().next();
 	}
 
 	public static Optional<LootSettings> getLootSettings(ItemStack placer) {
@@ -170,18 +182,58 @@ public class ItemLootChestPlacer extends ItemBaseStructure implements IItemKeyIn
 		return altFunction == ItemAltFunction.ALT_FUNCTION_1 || altFunction == ItemAltFunction.ALT_FUNCTION_2;
 	}
 
+	@SuppressWarnings("ConstantConditions")
 	@Override
 	public void onKeyAction(EntityPlayer player, ItemStack placer, ItemAltFunction altFunction) {
 		BlockPos hit = BlockTools.getBlockClickedOn(player, player.world, false);
 		WorldTools.getTile(player.world, hit, ISpecialLootContainer.class).ifPresent(te -> {
 			if (altFunction == ItemAltFunction.ALT_FUNCTION_1) {
 				IBlockState state = player.world.getBlockState(hit);
-				setBlockStack(placer, state.getBlock().getPickBlock(state, new RayTraceResult(new Vec3d(0, 0, 0), EnumFacing.UP, hit), player.world, hit, player));
+				getLootContainerInfoByStack(state.getBlock().getPickBlock(state, new RayTraceResult(new Vec3d(0, 0, 0), EnumFacing.UP, hit), player.world, hit, player))
+						.ifPresent(container -> setContainerName(placer, container.getName()));
 				getLootSettings(placer).ifPresent(s -> setLootSettings(placer, s.transferFromContainer(te)));
 			} else if (altFunction == ItemAltFunction.ALT_FUNCTION_2) {
 				getLootSettings(placer).ifPresent(s -> s.transferToContainer(te));
 				BlockTools.notifyBlockUpdate(player.world, hit);
 			}
 		});
+	}
+
+	private Optional<LootContainerInfo> getLootContainerInfoByStack(ItemStack stack) {
+		for (LootContainerInfo container : LOOT_CONTAINERS.values()) {
+			if (ItemStack.areItemStacksEqual(container.getStack(), stack)) {
+				return Optional.of(container);
+			}
+		}
+		return Optional.empty();
+	}
+
+	public static class LootContainerInfo {
+		public static final IPlacementChecker SINGLE_BLOCK_PLACEMENT_CHECKER = (block, world, pos, sidePlacedOn, placer) -> block.canPlaceBlockAt(world, pos);
+		private final String name;
+		private final ItemStack stack;
+		private final IPlacementChecker placementChecker;
+
+		private LootContainerInfo(String name, ItemStack stack, IPlacementChecker placementChecker) {
+			this.name = name;
+			this.stack = stack;
+			this.placementChecker = placementChecker;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public ItemStack getStack() {
+			return stack;
+		}
+
+		private boolean canPlace(Block block, World world, BlockPos pos, EnumFacing sidePlacedOn, EntityPlayer placer) {
+			return placementChecker.mayPlace(block, world, pos, sidePlacedOn, placer);
+		}
+
+		public interface IPlacementChecker {
+			boolean mayPlace(Block block, World world, BlockPos pos, EnumFacing sidePlacedOn, EntityPlayer placer);
+		}
 	}
 }

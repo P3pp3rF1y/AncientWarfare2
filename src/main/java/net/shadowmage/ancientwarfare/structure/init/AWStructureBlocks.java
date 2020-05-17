@@ -72,6 +72,7 @@ import net.shadowmage.ancientwarfare.structure.item.ItemBlockStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockTotemPart;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockWoodenCoffin;
 import net.shadowmage.ancientwarfare.structure.item.ItemLootChestPlacer;
+import net.shadowmage.ancientwarfare.structure.item.ItemLootChestPlacer.LootContainerInfo;
 import net.shadowmage.ancientwarfare.structure.item.ItemMultiBlock;
 import net.shadowmage.ancientwarfare.structure.item.WoodItemBlock;
 import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
@@ -210,15 +211,26 @@ public class AWStructureBlocks {
 		registerLootContainers();
 	}
 
+	@SuppressWarnings("ConstantConditions")
 	private static void registerLootContainers() {
-		ItemLootChestPlacer.registerLootContainer(new ItemStack(ADVANCED_LOOT_CHEST));
-		ItemLootChestPlacer.registerLootContainer(new ItemStack(LOOT_BASKET));
+		ItemLootChestPlacer.registerLootContainer(ADVANCED_LOOT_CHEST.getRegistryName().toString(), new ItemStack(ADVANCED_LOOT_CHEST), LootContainerInfo.SINGLE_BLOCK_PLACEMENT_CHECKER);
+		ItemLootChestPlacer.registerLootContainer(LOOT_BASKET.getRegistryName().toString(), new ItemStack(LOOT_BASKET), LootContainerInfo.SINGLE_BLOCK_PLACEMENT_CHECKER);
 		NonNullList<ItemStack> subBlocks = NonNullList.create();
 		WOODEN_COFFIN.getSubBlocks(AncientWarfareStructure.TAB, subBlocks);
+		subBlocks.forEach(subBlock -> ItemLootChestPlacer.registerLootContainer(
+				subBlock.getItem().getRegistryName().toString() + "_" + ItemBlockWoodenCoffin.getVariant(subBlock), subBlock,
+				(block, world, pos, sidePlacedOn, placer) -> ItemBlockWoodenCoffin.canPlace(world, pos, sidePlacedOn, placer)));
+		subBlocks = NonNullList.create();
 		STONE_COFFIN.getSubBlocks(AncientWarfareStructure.TAB, subBlocks);
+		subBlocks.forEach(subBlock -> ItemLootChestPlacer.registerLootContainer(
+				subBlock.getItem().getRegistryName().toString() + "_" + ItemBlockStoneCoffin.getVariant(subBlock), subBlock,
+				(block, world, pos, sidePlacedOn, placer) -> ItemBlockStoneCoffin.canPlace(world, pos, sidePlacedOn, placer)));
+		subBlocks = NonNullList.create();
 		GRAVESTONE.getSubBlocks(AncientWarfareStructure.TAB, subBlocks);
-		subBlocks.forEach(ItemLootChestPlacer::registerLootContainer);
-		ItemLootChestPlacer.registerLootContainer(new ItemStack(URN));
+		subBlocks.forEach(subBlock -> ItemLootChestPlacer.registerLootContainer(
+				subBlock.getItem().getRegistryName().toString() + "_" + ItemBlockGravestone.getVariant(subBlock), subBlock,
+				LootContainerInfo.SINGLE_BLOCK_PLACEMENT_CHECKER));
+		ItemLootChestPlacer.registerLootContainer(URN.getRegistryName().toString(), new ItemStack(URN), LootContainerInfo.SINGLE_BLOCK_PLACEMENT_CHECKER);
 	}
 
 	@SubscribeEvent

@@ -17,7 +17,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ContainerLootChestPlacer extends ContainerBase {
-	private static final String BLOCK_STACK_TAG = "blockStack";
+	private static final String LOOT_CONTAINER_NAME_TAG = "lootContainerName";
 	private final ItemStack placer;
 
 	public ContainerLootChestPlacer(EntityPlayer player, int x, int y, int z) {
@@ -32,8 +32,8 @@ public class ContainerLootChestPlacer extends ContainerBase {
 
 	@Override
 	public void handlePacketData(NBTTagCompound tag) {
-		if (tag.hasKey(BLOCK_STACK_TAG)) {
-			setBlockStack(new ItemStack(tag.getCompoundTag(BLOCK_STACK_TAG)));
+		if (tag.hasKey(LOOT_CONTAINER_NAME_TAG)) {
+			setContainer(tag.getString(LOOT_CONTAINER_NAME_TAG));
 			return;
 		}
 
@@ -52,15 +52,15 @@ public class ContainerLootChestPlacer extends ContainerBase {
 		return ItemLootChestPlacer.getLootSettings(placer);
 	}
 
-	public ItemStack getBlockStack() {
-		return ItemLootChestPlacer.getBlockStack(placer);
+	public ItemLootChestPlacer.LootContainerInfo getLootContainerInfo() {
+		return ItemLootChestPlacer.getLootContainerInfo(placer);
 	}
 
-	public void setBlockStack(ItemStack blockStack) {
+	public void setContainer(String blockName) {
 		if (player.world.isRemote) {
-			sendDataToServer(new NBTBuilder().setTag(BLOCK_STACK_TAG, blockStack.writeToNBT(new NBTTagCompound())).build());
+			sendDataToServer(new NBTBuilder().setString(LOOT_CONTAINER_NAME_TAG, blockName).build());
 		}
 
-		ItemLootChestPlacer.setBlockStack(placer, blockStack);
+		ItemLootChestPlacer.setContainerName(placer, blockName);
 	}
 }

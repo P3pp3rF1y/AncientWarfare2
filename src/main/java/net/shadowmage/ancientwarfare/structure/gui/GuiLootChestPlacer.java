@@ -10,6 +10,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiSelectFromList;
@@ -36,6 +37,8 @@ import java.util.stream.Collectors;
 public class GuiLootChestPlacer extends GuiContainerBase<ContainerLootChestPlacer> {
 	private static final int FORM_WIDTH = 300;
 	private static final int FORM_HEIGHT = 240;
+	private static final String LOOT_TABLE_PREFIX = AncientWarfareCore.MOD_ID + ":chests/";
+	private static final String COMPAT_LOOT_TABLE_PREFIX = LOOT_TABLE_PREFIX + "compat/";
 
 	private Checkbox setLootTable;
 	private Checkbox splashPotion;
@@ -95,19 +98,28 @@ public class GuiLootChestPlacer extends GuiContainerBase<ContainerLootChestPlace
 		return totalHeight + 16;
 	}
 
+	private String shortenCompatLootTables(String s) {
+		if (s.startsWith(COMPAT_LOOT_TABLE_PREFIX)) {
+			return LOOT_TABLE_PREFIX + s.substring(s.indexOf('/', COMPAT_LOOT_TABLE_PREFIX.length()) + 1);
+		}
+		return s;
+	}
+
 	private int addSetLootTableElements(int totalHeight) {
 		int x = 28;
 
-		Button selection = new Button(x, totalHeight, 250, 12, getLootSetting(s -> s.getLootTableName().map(ResourceLocation::toString).orElse("")).orElse("")) {
+		Button selection = new Button(x, totalHeight, 250, 12, getLootSetting(s -> s.getLootTableName().map(lootTable -> this.shortenCompatLootTables(lootTable.toString())).orElse("")).orElse("")) {
 			@Override
 			protected void onPressed() {
-				Minecraft.getMinecraft().displayGuiScreen(new GuiSelectFromList<>(GuiLootChestPlacer.this, text, s -> s,
+				Minecraft.getMinecraft().displayGuiScreen(new GuiSelectFromList<>(GuiLootChestPlacer.this,
+						getLootSetting(settings -> settings.getLootTableName().map(ResourceLocation::toString).orElse("")).orElse(""), GuiLootChestPlacer.this::shortenCompatLootTables,
 						() -> getContainer().getLootTableNames().stream().sorted(Comparator.naturalOrder()).collect(Collectors.toList()), s -> {
-					setText(s);
+					setText(shortenCompatLootTables(s));
 					setLootSettings(settings -> settings.setLootTableName(new ResourceLocation(s)));
 				}));
 				refreshGui();
 			}
+
 		};
 		addGuiElement(selection);
 
@@ -146,6 +158,7 @@ public class GuiLootChestPlacer extends GuiContainerBase<ContainerLootChestPlace
 				}));
 				addGuiElement(new Button(x + 230, totalHeight, 20, 12, "-") {
 					@Override
+					@SuppressWarnings("squid:S5413") // remove is used in a button callback so terchnically outside of the loop
 					protected void onPressed() {
 						effects.remove(effectIndex);
 						refreshGui();
@@ -171,7 +184,7 @@ public class GuiLootChestPlacer extends GuiContainerBase<ContainerLootChestPlace
 	private int addPlayerMessageElements(int totalHeight) {
 		int x = 28;
 		addGuiElement(new Label(x, totalHeight + 2, "guistrings.loot_placer.message"));
-		addGuiElement(new Text(x + 60, totalHeight, 190, getLootSetting(s -> s.getPlayerMessage()).orElse(""), this) {
+		addGuiElement(new Text(x + 60, totalHeight, 190, getLootSetting(LootSettings::getPlayerMessage).orElse(""), this) {
 			@Override
 			public void onTextUpdated(String oldText, String newText) {
 				setLootSettings(s -> s.setPlayerMessage(newText));
@@ -184,7 +197,7 @@ public class GuiLootChestPlacer extends GuiContainerBase<ContainerLootChestPlace
 	private static class PotionEffectElement extends Composite {
 		private PotionEffect potionEffect;
 
-		public PotionEffectElement(int topLeftX, int topLeftY, PotionEffect effect, GuiContainerBase parent, Consumer<PotionEffect> onEffectUpdated) {
+		private PotionEffectElement(int topLeftX, int topLeftY, PotionEffect effect, GuiContainerBase parent, Consumer<PotionEffect> onEffectUpdated) {
 			super(parent, topLeftX, topLeftY, 230, 12);
 			potionEffect = effect;
 
@@ -205,7 +218,7 @@ public class GuiLootChestPlacer extends GuiContainerBase<ContainerLootChestPlace
 			addGuiElement(selectEffect);
 
 			@SuppressWarnings("squid:S2184") //really just want to floor the value so no need to cast to float
-					NumberInput duration = new NumberInput(170, 0, 22, potionEffect.getDuration() / 20, parent) {
+					NumberInput duration = new NumberInput(170, 0, 22, potionEffect.getDuration() / 20f, parent) {
 				@Override
 				public void onValueUpdated(float value) {
 					potionEffect = new PotionEffect(potionEffect.getPotion(), (int) value * 20, potionEffect.getAmplifier());
@@ -250,13 +263,14 @@ public class GuiLootChestPlacer extends GuiContainerBase<ContainerLootChestPlace
 		int x = 8;
 		Set<ItemToggleButton> stackToggles = new LinkedHashSet<>();
 
-		ItemStack selectedStack = getContainer().getBlockStack();
-		for (ItemStack container : ItemLootChestPlacer.getLootContainers()) {
-			ItemToggleButton button = new ItemToggleButton(x, totalHeight, container.copy(), false) {
+		ItemLootChestPlacer.LootContainerInfo selectedContainer = getContainer().getLootContainerInfo();
+		for (ItemLootChestPlacer.LootContainerInfo container : ItemLootChestPlacer.getLootContainers().values()) {
+			final ItemStack containerStack = container.getStack();
+			ItemToggleButton button = new ItemToggleButton(x, totalHeight, containerStack.copy(), false) {
 				@Override
 				protected void onPressed(int mButton) {
 					if (isToggled()) {
-						getContainer().setBlockStack(container.copy());
+						getContainer().setContainer(container.getName());
 						for (ItemToggleButton btn : stackToggles) {
 							if (btn != this) {
 								btn.setToggled(false);
@@ -265,8 +279,8 @@ public class GuiLootChestPlacer extends GuiContainerBase<ContainerLootChestPlace
 					}
 				}
 			};
-			button.addTooltip(container.getDisplayName()); // tooltip for hovering loot items
-			button.setToggled(ItemStack.areItemStacksEqual(container, selectedStack));
+			button.addTooltip(containerStack.getDisplayName()); // tooltip for hovering loot items
+			button.setToggled(container.getName().equals(selectedContainer.getName()));
 			stackToggles.add(button);
 			addGuiElement(button);
 			x += 24;
@@ -275,10 +289,6 @@ public class GuiLootChestPlacer extends GuiContainerBase<ContainerLootChestPlace
 				totalHeight = +40;
 			}
 		}
-		if (selectedStack.isEmpty() && !stackToggles.isEmpty()) {
-			stackToggles.iterator().next().setToggled(true);
-		}
-
 		return totalHeight + 30;
 	}
 
