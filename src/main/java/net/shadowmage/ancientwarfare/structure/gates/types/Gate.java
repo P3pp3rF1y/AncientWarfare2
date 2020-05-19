@@ -100,14 +100,14 @@ public class Gate implements IGateType {
 	 *
 	 */
 	public Gate(int id, String textureLocation, SoundEvent moveSound, SoundEvent hurtSound, SoundEvent breakSound, int maxHealth) {
-		this.globalID = id;
-		this.tooltip = "item.gate." + id + ".tooltip";
+		globalID = id;
+		tooltip = "item.gate." + id + ".tooltip";
 		if (id >= 0 && id < gateTypes.length && gateTypes[id] == null) {
 			gateTypes[id] = this;
 		}
-		this.displayStack = new ItemStack(AWStructureItems.GATE_SPAWNER, 1, id);
+		displayStack = new ItemStack(AWStructureItems.GATE_SPAWNER, 1, id);
 		this.textureLocation = new ResourceLocation("ancientwarfare:textures/model/structure/gate/gate" + textureLocation);
-		this.textureLocationHurt = new ResourceLocation("ancientwarfare:textures/model/structure/gate/gate_wood_1_damaged_2.png");
+		textureLocationHurt = new ResourceLocation("ancientwarfare:textures/model/structure/gate/gate_wood_1_damaged_2.png");
 		this.moveSound = moveSound;
 		this.hurtSound = hurtSound;
 		this.breakSound = breakSound;
@@ -151,7 +151,7 @@ public class Gate implements IGateType {
 
 	@Override
 	public ItemStack getConstructingItem() {
-		return new ItemStack(AWStructureItems.GATE_SPAWNER, 1, this.globalID);
+		return new ItemStack(AWStructureItems.GATE_SPAWNER, 1, globalID);
 	}
 
 	@Override
@@ -287,20 +287,22 @@ public class Gate implements IGateType {
 		closeBetween(gate, min, max);
 	}
 
-	public final void closeBetween(EntityGate gate, BlockPos min, BlockPos max) {
+	final void closeBetween(EntityGate gate, BlockPos min, BlockPos max) {
 		BlockPos.getAllInBox(min, max).forEach(pos -> {
 			placeProxyIfNotPresent(gate, pos);
-			if (!gate.getRenderedTile().isPresent()) {
+			if (!gate.getRenderedTilePos().isPresent()) {
 				WorldTools.getTile(gate.world, pos, TEGateProxy.class).ifPresent(te -> {
 					te.setRender();
-					gate.setRenderedTile(te);
+					gate.setRenderedTilePos(pos);
 				});
+			} else {
+				WorldTools.getTile(gate.world, pos, TEGateProxy.class).filter(te -> !te.doesRender()).ifPresent(TEGateProxy::setRender);
 			}
 		});
 	}
 
 	public void setRenderedTileIfNotPresent(EntityGate gate) {
-		if (gate.getRenderedTile().isPresent()) {
+		if (gate.getRenderedTilePos().isPresent()) {
 			return;
 		}
 		BlockPos min = BlockTools.getMin(gate.pos1, gate.pos2);
@@ -309,11 +311,11 @@ public class Gate implements IGateType {
 		Optional<TEGateProxy> renderedTe = StreamSupport.stream(BlockPos.getAllInBox(min, max).spliterator(), false)
 				.map(pos -> WorldTools.getTile(gate.world, pos, TEGateProxy.class)).filter(te -> te.isPresent() && te.get().doesRender()).map(Optional::get).findFirst();
 		if (renderedTe.isPresent()) {
-			gate.setRenderedTile(renderedTe.get());
+			gate.setRenderedTilePos(renderedTe.get().getPos());
 		} else {
 			WorldTools.getTile(gate.world, min, TEGateProxy.class).ifPresent(te -> {
 				te.setRender();
-				gate.setRenderedTile(te);
+				gate.setRenderedTilePos(min);
 			});
 		}
 	}

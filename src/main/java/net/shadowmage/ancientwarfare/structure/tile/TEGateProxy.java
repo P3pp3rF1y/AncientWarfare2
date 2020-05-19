@@ -25,8 +25,8 @@ public class TEGateProxy extends TileUpdatable implements ITickable {
 	private boolean render = false;
 
 	public void setOwner(EntityGate gate) {
-		this.owner = gate;
-		this.entityID = owner.getPersistentID();
+		owner = gate;
+		entityID = owner.getPersistentID();
 		BlockTools.notifyBlockUpdate(this);
 	}
 
@@ -39,13 +39,12 @@ public class TEGateProxy extends TileUpdatable implements ITickable {
 			entityID = new UUID(msb, lsb);
 		}
 		render = tag.getBoolean(RENDER_TAG);
-		markDirty();
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
-		if (this.entityID != null) {
+		if (entityID != null) {
 			tag.setLong("msb", entityID.getMostSignificantBits());
 			tag.setLong("lsb", entityID.getLeastSignificantBits());
 		}
@@ -86,23 +85,23 @@ public class TEGateProxy extends TileUpdatable implements ITickable {
 	}
 
 	private void handleMissingOwner() {
-		if (this.entityID == null) {
-			this.noParentTicks++;
+		if (entityID == null) {
+			noParentTicks++;
 		} else if (!getOwner().isPresent()) {
-			this.noParentTicks++;
+			noParentTicks++;
 
-			List<Entity> entities = this.world.loadedEntityList;
+			List<Entity> entities = world.loadedEntityList;
 			for (Entity ent : entities) {
 				if (ent.getPersistentID().equals(entityID) && ent instanceof EntityGate) {
 					setOwner((EntityGate) ent);
-					this.noParentTicks = 0;
+					noParentTicks = 0;
 					break;
 				}
 			}
 		}
-		if (this.noParentTicks >= 100 || getOwner().map(o -> o.isDead).orElse(false)) {
+		if (noParentTicks >= 100 || getOwner().map(o -> o.isDead).orElse(false)) {
 			owner = null;
-			this.world.setBlockToAir(pos);
+			world.setBlockToAir(pos);
 		}
 	}
 
