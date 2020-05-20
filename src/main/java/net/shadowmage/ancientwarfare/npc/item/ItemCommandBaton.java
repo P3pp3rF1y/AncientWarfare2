@@ -21,6 +21,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.Constants;
@@ -59,28 +60,22 @@ public class ItemCommandBaton extends ItemBaseNPC implements IItemKeyInterface {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		if (stack.getTagCompound() == null){
+			stack.setTagInfo("baton_mode", stack.serializeNBT());
+			stack.getTagCompound().setByte("baton_mode", (byte) BatonMode.CLEAR_COMMAND.ordinal());
+		}
+
 		String keyText, text;
 		text = "RMB" + " = " + I18n.format("guistrings.npc.baton.add_remove");
 		tooltip.add(text);
 
 		keyText = InputHandler.ALT_ITEM_USE_1.getDisplayName();
-		text = keyText + " = " + I18n.format("guistrings.npc.baton.clear");
+		BatonMode mode = BatonMode.values()[stack.getTagCompound().getByte("baton_mode")];
+		text = keyText + " = " + "Execute Command: " + I18n.format(mode.getTranslationKey());
 		tooltip.add(text);
 
 		keyText = InputHandler.ALT_ITEM_USE_2.getDisplayName();
-		text = keyText + " = " + I18n.format("guistrings.npc.baton.attack");
-		tooltip.add(text);
-
-		keyText = InputHandler.ALT_ITEM_USE_3.getDisplayName();
-		text = keyText + " = " + I18n.format("guistrings.npc.baton.move");
-		tooltip.add(text);
-
-		keyText = InputHandler.ALT_ITEM_USE_4.getDisplayName();
-		text = keyText + " = " + I18n.format("guistrings.npc.baton.home");
-		tooltip.add(text);
-
-		keyText = InputHandler.ALT_ITEM_USE_5.getDisplayName();
-		text = keyText + " = " + I18n.format("guistrings.npc.baton.upkeep");
+		text = keyText + " = " + "Lock/Unlock Hotbar, use scroll wheel to change mode when locked";
 		tooltip.add(text);
 	}
 
@@ -165,45 +160,74 @@ public class ItemCommandBaton extends ItemBaseNPC implements IItemKeyInterface {
 	@Override
 	public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemAltFunction altFunction) {
 		switch (altFunction) {
-			case ALT_FUNCTION_1: {
-				RayTraceResult hit = new RayTraceResult(player);
-				NpcCommand.handleCommandClient(CommandType.CLEAR_COMMAND, hit);
-			}
+			case ALT_FUNCTION_1: // Lock/Unlock Hotbar scroll
+				{
+					BatonMode mode = BatonMode.values()[stack.getTagCompound().getByte("baton_mode")];
+					switch (mode) {
+						case CLEAR_COMMAND: //Clear Command
+						{
+							RayTraceResult hit = new RayTraceResult(player);
+							CommandType c = CommandType.CLEAR_COMMAND;
+							NpcCommand.handleCommandClient(c, hit);
+						}
+						break;
+						case ATTACK: //Attack Command
+						{
+							RayTraceResult hit = RayTraceUtils.getPlayerTarget(player, range, 0);
+							if (hit != null) {
+								CommandType c = hit.typeOfHit == Type.ENTITY ? CommandType.ATTACK : CommandType.ATTACK_AREA;
+								NpcCommand.handleCommandClient(c, hit);
+							}
+						}
+						break;
+						case MOVE: //Move/Guard Command
+						{
+							RayTraceResult hit = RayTraceUtils.getPlayerTarget(player, range, 0);
+							if (hit != null) {
+								CommandType c = hit.typeOfHit == Type.ENTITY ? CommandType.GUARD : CommandType.MOVE;
+								NpcCommand.handleCommandClient(c, hit);
+							}
+						}
+						break;
+						case SET_HOME:  //Set Home Command
+						{
+							RayTraceResult hit = RayTraceUtils.getPlayerTarget(player, range, 0);
+							if (hit != null && hit.typeOfHit == Type.BLOCK) {
+								CommandType c = CommandType.SET_HOME;
+								NpcCommand.handleCommandClient(c, hit);
+							}
+						}
+						break;
+						case CLEAR_HOME: //Clear Home Command
+						{
+							RayTraceResult hit = RayTraceUtils.getPlayerTarget(player, range, 0);
+							CommandType c = CommandType.CLEAR_HOME;
+							NpcCommand.handleCommandClient(c, hit);
+						}
+						break;
+						case SET_UPKEEP: //Set Upkeep Command
+						{
+							RayTraceResult hit = RayTraceUtils.getPlayerTarget(player, range, 0);
+							if (hit != null && hit.typeOfHit == Type.BLOCK) {
+								CommandType c = CommandType.SET_UPKEEP;
+								NpcCommand.handleCommandClient(c, hit);
+							}
+						}
+						break;
+						case CLEAR_UPKEEP: //Clear Upkeep Command
+						{
+							RayTraceResult hit = RayTraceUtils.getPlayerTarget(player, range, 0);
+							CommandType c = CommandType.CLEAR_UPKEEP;
+							NpcCommand.handleCommandClient(c, hit);
+						}
+						break;
+					}
+				}
 			break;
-			case ALT_FUNCTION_2://attack
+			case ALT_FUNCTION_2:// Execute Mode
 			{
-				RayTraceResult hit = RayTraceUtils.getPlayerTarget(player, range, 0);
-				if (hit != null) {
-					CommandType c = hit.typeOfHit == Type.ENTITY ? CommandType.ATTACK : CommandType.ATTACK_AREA;
-					NpcCommand.handleCommandClient(c, hit);
-				}
+				changeScrollLock(stack);
 			}
-			break;
-			case ALT_FUNCTION_3://move/guard
-			{
-				RayTraceResult hit = RayTraceUtils.getPlayerTarget(player, range, 0);
-				if (hit != null) {
-					CommandType c = hit.typeOfHit == Type.ENTITY ? CommandType.GUARD : CommandType.MOVE;
-					NpcCommand.handleCommandClient(c, hit);
-				}
-			}
-			break;
-			case ALT_FUNCTION_4: {
-				RayTraceResult hit = RayTraceUtils.getPlayerTarget(player, range, 0);
-				if (hit != null && hit.typeOfHit == Type.BLOCK) {
-					CommandType c = player.isSneaking() ? CommandType.CLEAR_HOME : CommandType.SET_HOME;
-					NpcCommand.handleCommandClient(c, hit);
-				}
-			}
-			break;
-			case ALT_FUNCTION_5: {
-				RayTraceResult hit = RayTraceUtils.getPlayerTarget(player, range, 0);
-				if (hit != null && hit.typeOfHit == Type.BLOCK) {
-					CommandType c = player.isSneaking() ? CommandType.CLEAR_UPKEEP : CommandType.SET_UPKEEP;
-					NpcCommand.handleCommandClient(c, hit);
-				}
-			}
-			break;
 		}
 		return false;
 	}
@@ -317,7 +341,64 @@ public class ItemCommandBaton extends ItemBaseNPC implements IItemKeyInterface {
 				}
 			}
 		}
-
 	}
 
+	public void changeMode(int dWheel, EntityPlayer player, ItemStack stack){
+		if (stack.getTagCompound() != null){
+			BatonMode mode = BatonMode.values()[stack.getTagCompound().getByte("baton_mode")];
+			mode = dWheel < 0 ? mode.next() : mode.previous();
+			player.sendMessage(new TextComponentTranslation(mode.getTranslationKey()));
+			stack.getTagCompound().setByte("baton_mode", (byte) mode.ordinal());
+		}
+	}
+
+	public void changeScrollLock(ItemStack stack){
+		boolean scrollLock = stack.getTagCompound().getBoolean("scroll_lock");
+		if (stack.getTagCompound() == null){
+			stack.setTagInfo("scroll_lock", stack.serializeNBT());
+			stack.getTagCompound().setBoolean("scroll_lock", false);
+		}
+		scrollLock = !scrollLock;
+		stack.getTagCompound().setBoolean("scroll_lock", scrollLock);
+	}
+
+	public boolean getScrollLock (ItemStack stack){
+		return stack.getTagCompound().getBoolean("scroll_lock");
+	}
+
+	public enum BatonMode {
+		CLEAR_COMMAND("guistrings.npc.baton.clear"),
+		ATTACK("guistrings.npc.baton.attack"),
+		MOVE("guistrings.npc.baton.move"),
+		SET_HOME("guistrings.npc.baton.set_home"),
+		CLEAR_HOME("guistrings.npc.baton.clear_home"),
+		SET_UPKEEP("guistrings.npc.baton.set_upkeep"),
+		CLEAR_UPKEEP("guistrings.npc.baton.clear_upkeep");
+
+		final String key;
+
+		BatonMode(String key) {
+			this.key = key;
+		}
+
+		public String getTranslationKey() {
+			return key;
+		}
+
+		public BatonMode next() {
+			int ordinal = ordinal() + 1;
+			if (ordinal >= BatonMode.values().length) {
+				ordinal = 0;
+			}
+			return BatonMode.values()[ordinal];
+		}
+
+		public BatonMode previous() {
+			int ordinal = ordinal() - 1;
+			if (ordinal < 0) {
+				ordinal = BatonMode.values().length - 1;
+			}
+			return BatonMode.values()[ordinal];
+		}
+	}
 }

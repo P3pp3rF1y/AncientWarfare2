@@ -20,7 +20,7 @@ public class NpcAIWander extends NpcAI<NpcBase> {
 
 	@Override
 	public boolean shouldExecute() {
-		if (!npc.getIsAIEnabled() || npc.shouldBeAtHome() || npc.getRNG().nextInt(120) != 0) {
+		if (!npc.getIsAIEnabled() || npc.shouldBeAtHome() || npc.getRNG().nextInt(120) != 0 || npc.hasPath()) {
 			return false;
 		} else {
 			vec3 = RandomPositionGenerator.findRandomTarget(npc, MIN_RANGE, 7);
