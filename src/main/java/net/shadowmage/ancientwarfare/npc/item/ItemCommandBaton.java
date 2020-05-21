@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.item;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import net.minecraft.block.state.IBlockState;
@@ -30,6 +31,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
+import net.shadowmage.ancientwarfare.core.util.NBTBuilder;
 import net.shadowmage.ancientwarfare.core.util.RayTraceUtils;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand;
@@ -60,9 +62,9 @@ public class ItemCommandBaton extends ItemBaseNPC implements IItemKeyInterface {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		if (stack.getTagCompound() == null){
-			stack.setTagInfo("baton_mode", stack.serializeNBT());
-			stack.getTagCompound().setByte("baton_mode", (byte) BatonMode.CLEAR_COMMAND.ordinal());
+		if (!stack.hasTagCompound()){
+			stack.setTagInfo("baton_mode", new NBTBuilder().setString("baton_mode", BatonMode.getDefault().getTranslationKey()).build());
+			stack.setTagInfo("scroll_lock", new NBTBuilder().setBoolean("scroll_lock", false).build());
 		}
 
 		String keyText, text;
@@ -70,8 +72,8 @@ public class ItemCommandBaton extends ItemBaseNPC implements IItemKeyInterface {
 		tooltip.add(text);
 
 		keyText = InputHandler.ALT_ITEM_USE_1.getDisplayName();
-		BatonMode mode = BatonMode.values()[stack.getTagCompound().getByte("baton_mode")];
-		text = keyText + " = " + "Execute Command: " + I18n.format(mode.getTranslationKey());
+		;
+		text = keyText + " = " + "Execute Command: " + I18n.format(getMode(stack).getTranslationKey());
 		tooltip.add(text);
 
 		keyText = InputHandler.ALT_ITEM_USE_2.getDisplayName();
@@ -162,8 +164,7 @@ public class ItemCommandBaton extends ItemBaseNPC implements IItemKeyInterface {
 		switch (altFunction) {
 			case ALT_FUNCTION_1: // Lock/Unlock Hotbar scroll
 				{
-					BatonMode mode = BatonMode.values()[stack.getTagCompound().getByte("baton_mode")];
-					switch (mode) {
+					switch (getMode(stack)) {
 						case CLEAR_COMMAND: //Clear Command
 						{
 							RayTraceResult hit = new RayTraceResult(player);
@@ -344,20 +345,19 @@ public class ItemCommandBaton extends ItemBaseNPC implements IItemKeyInterface {
 	}
 
 	public void changeMode(int dWheel, EntityPlayer player, ItemStack stack){
-		if (stack.getTagCompound() != null){
-			BatonMode mode = BatonMode.values()[stack.getTagCompound().getByte("baton_mode")];
-			mode = dWheel < 0 ? mode.next() : mode.previous();
-			player.sendMessage(new TextComponentTranslation(mode.getTranslationKey()));
-			stack.getTagCompound().setByte("baton_mode", (byte) mode.ordinal());
-		}
+		BatonMode mode = getMode(stack);
+		mode = dWheel < 0 ? mode.next() : mode.previous();
+		player.sendMessage(new TextComponentTranslation(mode.getTranslationKey()));
+		stack.getTagCompound().setString("baton_mode", mode.getTranslationKey());
+
+	}
+
+	public BatonMode getMode(ItemStack stack){
+		return BatonMode.fromKey(stack.getTagCompound().getString("baton_mode"));
 	}
 
 	public void changeScrollLock(ItemStack stack){
-		boolean scrollLock = stack.getTagCompound().getBoolean("scroll_lock");
-		if (stack.getTagCompound() == null){
-			stack.setTagInfo("scroll_lock", stack.serializeNBT());
-			stack.getTagCompound().setBoolean("scroll_lock", false);
-		}
+		boolean scrollLock = getScrollLock(stack);
 		scrollLock = !scrollLock;
 		stack.getTagCompound().setBoolean("scroll_lock", scrollLock);
 	}
@@ -385,6 +385,10 @@ public class ItemCommandBaton extends ItemBaseNPC implements IItemKeyInterface {
 			return key;
 		}
 
+		public static BatonMode getDefault() {
+			return CLEAR_COMMAND;
+		}
+
 		public BatonMode next() {
 			int ordinal = ordinal() + 1;
 			if (ordinal >= BatonMode.values().length) {
@@ -399,6 +403,20 @@ public class ItemCommandBaton extends ItemBaseNPC implements IItemKeyInterface {
 				ordinal = BatonMode.values().length - 1;
 			}
 			return BatonMode.values()[ordinal];
+		}
+
+		private static final ImmutableMap<String, BatonMode> KEY_TO_MODE;
+
+		static {
+			ImmutableMap.Builder<String, BatonMode> builder = new ImmutableMap.Builder<>();
+			for (BatonMode mode : values()) {
+				builder.put(mode.key, mode);
+			}
+			KEY_TO_MODE = builder.build();
+		}
+
+		public static BatonMode fromKey(String name) {
+			return KEY_TO_MODE.getOrDefault(name, CLEAR_COMMAND);
 		}
 	}
 }
