@@ -69,6 +69,7 @@ public final class NetworkHandler implements IGuiHandler {
 
 	public static final int PACKET_HIGHLIGHT_BLOCK = 34;
 	public static final int PACKET_SHOW_BBS = 35;
+	public static final int PACKET_ITEM_MOUSE_SCROLL = 36;
 
 	public static final int GUI_CRAFTING = 0;
 	public static final int GUI_SCANNER = 1;
@@ -151,6 +152,7 @@ public final class NetworkHandler implements IGuiHandler {
 		PacketBase.registerPacketType(PACKET_RESEARCH_START, PacketResearchStart.class, PacketResearchStart::new);
 		PacketBase.registerPacketType(PACKET_BLOCK_EVENT, PacketBlockEvent.class, PacketBlockEvent::new);
 		PacketBase.registerPacketType(PACKET_MANUAL_RELOAD, PacketManualReload.class, PacketManualReload::new);
+		PacketBase.registerPacketType(PACKET_ITEM_MOUSE_SCROLL, PacketItemMouseScroll.class, PacketItemMouseScroll::new);
 		NetworkRegistry.INSTANCE.registerGuiHandler(AncientWarfareCore.instance, this);
 
 		if (Loader.isModLoaded("jei")) {
@@ -210,7 +212,7 @@ public final class NetworkHandler implements IGuiHandler {
 
 	@Override
 	public final Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
-		Class<?> clz = this.guiClasses.get(id);
+		Class<?> clz = guiClasses.get(id);
 		if (clz != null) {
 			Object container = getServerGuiElement(id, player, world, x, y, z);
 			try {

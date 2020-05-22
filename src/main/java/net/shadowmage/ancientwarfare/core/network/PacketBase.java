@@ -15,7 +15,7 @@ public abstract class PacketBase {
 	private static HashMap<Integer, Supplier<? extends PacketBase>> packetTypes = new HashMap<>();
 	private static HashMap<Class<? extends PacketBase>, Integer> packetIDs = new HashMap<>();
 
-	public static void registerPacketType(int typeNum, Class<? extends PacketBase> packetClz, Supplier<? extends PacketBase> instantiate) {
+	public static <T extends PacketBase> void registerPacketType(int typeNum, Class<T> packetClz, Supplier<T> instantiate) {
 		packetTypes.put(typeNum, instantiate);
 		packetIDs.put(packetClz, typeNum);
 	}
@@ -24,7 +24,7 @@ public abstract class PacketBase {
 	}
 
 	private void writeHeaderToStream(ByteBuf data) {
-		data.writeByte(packetIDs.get(this.getClass()));
+		data.writeByte(packetIDs.get(getClass()));
 	}
 
 	private static PacketBase readHeaderFromStream(ByteBuf data) {
@@ -49,13 +49,13 @@ public abstract class PacketBase {
 		execute();
 	}
 
-	public static PacketBase readPacket(ByteBuf data) throws IOException {
+	static PacketBase readPacket(ByteBuf data) throws IOException {
 		PacketBase pkt = readHeaderFromStream(data);
 		pkt.readFromStream(data);
 		return pkt;
 	}
 
-	public final FMLProxyPacket getFMLPacket() {
+	final FMLProxyPacket getFMLPacket() {
 		PacketBuffer buf = new PacketBuffer(Unpooled.buffer());
 		writeHeaderToStream(buf);
 		writeToStream(buf);

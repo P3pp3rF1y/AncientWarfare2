@@ -33,7 +33,7 @@ public class NpcCommand {
 	/*
 	 * client-side handle command. called from command baton key handler
 	 */
-	public static void handleCommandClient(CommandType type, RayTraceResult hit) {
+	public static void handleCommandClient(CommandType type, @Nullable RayTraceResult hit) {
 		if (hit != null && hit.typeOfHit != RayTraceResult.Type.MISS) {
 			if (hit.typeOfHit == RayTraceResult.Type.ENTITY && hit.entityHit != null) {
 				NetworkHandler.sendToServer(new PacketNpcCommand(type, hit.entityHit));
@@ -83,23 +83,23 @@ public class NpcCommand {
 		public Command(CommandType type, BlockPos pos) {
 			this.type = type;
 			this.pos = pos;
-			this.blockTarget = true;
+			blockTarget = true;
 		}
 
 		public Command(CommandType type, int entityID) {
 			this.type = type;
 			this.entityID = entityID;
-			this.blockTarget = false;
+			blockTarget = false;
 		}
 
 		public Command copy() {
 			Command cmd = new Command();
-			cmd.type = this.type;
-			cmd.pos = this.pos;
-			cmd.entity = this.entity;
-			cmd.entityID = this.entityID;
-			cmd.entityUUID = this.entityUUID;
-			cmd.blockTarget = this.blockTarget;
+			cmd.type = type;
+			cmd.pos = pos;
+			cmd.entity = entity;
+			cmd.entityID = entityID;
+			cmd.entityUUID = entityUUID;
+			cmd.blockTarget = blockTarget;
 			return cmd;
 		}
 

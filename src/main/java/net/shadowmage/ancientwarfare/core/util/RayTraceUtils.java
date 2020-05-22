@@ -16,6 +16,7 @@ import java.util.List;
 
 public class RayTraceUtils {
 
+	@Nullable
 	public static RayTraceResult getPlayerTarget(EntityPlayer player, float range, float border) {
 		HashSet<Entity> excluded = new HashSet<>();
 		excluded.add(player);
@@ -29,6 +30,7 @@ public class RayTraceUtils {
 		return tracePath(player.world, player.posX, player.posY + yOffset, player.posZ, look.x, look.y, look.z, border, excluded);
 	}
 
+	@Nullable
 	public static RayTraceResult tracePathWithYawPitch(World world, float x, float y, float z, float yaw, float pitch, float range, float borderSize, HashSet<Entity> excluded) {
 		float tx = x + (Trig.sinDegrees(yaw + 180) * range * Trig.cosDegrees(pitch));
 		float ty = (-Trig.sinDegrees(pitch) * range) + y;
@@ -48,7 +50,8 @@ public class RayTraceUtils {
      * @return a RayTraceResult of either the block hit (no entity hit), the entity hit (hit an entity), or null for nothing hit
      */
 
-	public static RayTraceResult tracePath(World world, double x, double y, double z, double tx, double ty, double tz, float borderSize, HashSet<Entity> excluded) {
+	@Nullable
+    public static RayTraceResult tracePath(World world, double x, double y, double z, double tx, double ty, double tz, float borderSize, HashSet<Entity> excluded) {
 		double minX = x < tx ? x : tx;
 		double minY = y < ty ? y : ty;
 		double minZ = z < tz ? z : tz;
@@ -140,10 +143,10 @@ public class RayTraceUtils {
 
 	@Nullable
 	private static RayTraceResult rayTraceAABBIntercept(BlockPos pos, Vec3d start, Vec3d end, AxisAlignedBB boundingBox) {
-		Vec3d vecA = start.subtract((double) pos.getX(), (double) pos.getY(), (double) pos.getZ());
-		Vec3d vecB = end.subtract((double) pos.getX(), (double) pos.getY(), (double) pos.getZ());
+		Vec3d vecA = start.subtract(pos.getX(), pos.getY(), pos.getZ());
+		Vec3d vecB = end.subtract(pos.getX(), pos.getY(), pos.getZ());
 		RayTraceResult raytraceresult = boundingBox.calculateIntercept(vecA, vecB);
-		return raytraceresult == null ? null : new RayTraceResult(raytraceresult.hitVec.addVector((double) pos.getX(), (double) pos.getY(), (double) pos.getZ()), raytraceresult.sideHit, pos);
+		return raytraceresult == null ? null : new RayTraceResult(raytraceresult.hitVec.addVector(pos.getX(), pos.getY(), pos.getZ()), raytraceresult.sideHit, pos);
 	}
 
 	public static AxisAlignedBB getSelectedBoundingBox(List<AxisAlignedBB> aabbs, BlockPos pos, EntityPlayer player) {

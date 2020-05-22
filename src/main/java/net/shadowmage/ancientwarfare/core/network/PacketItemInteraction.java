@@ -4,8 +4,8 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
-import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
-import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface.ItemAltFunction;
+import net.shadowmage.ancientwarfare.core.input.IItemKeyInterface;
+import net.shadowmage.ancientwarfare.core.input.IItemKeyInterface.ItemAltFunction;
 
 import javax.annotation.Nonnull;
 
