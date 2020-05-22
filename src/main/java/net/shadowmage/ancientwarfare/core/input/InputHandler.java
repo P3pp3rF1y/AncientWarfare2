@@ -3,6 +3,9 @@ package net.shadowmage.ancientwarfare.core.input;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -11,6 +14,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface.ItemAltFunction;
+import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 import org.lwjgl.input.Keyboard;
 
 import java.util.HashSet;
@@ -78,4 +82,18 @@ public class InputHandler {
 		}
 	}
 
+	@SubscribeEvent
+	public void onMouseEvent(MouseEvent event){
+		EntityPlayer player = Minecraft.getMinecraft().player;
+		if (event.getDwheel() != 0){
+			ItemStack stack = player.getHeldItemMainhand();
+			Item item = stack.getItem();
+			if (item instanceof ItemCommandBaton){
+				if (((ItemCommandBaton) item).getScrollLock(stack)){
+					((ItemCommandBaton) item).changeMode(event.getDwheel(), player, stack);
+					event.setCanceled(true);
+				}
+			}
+		}
+	}
 }

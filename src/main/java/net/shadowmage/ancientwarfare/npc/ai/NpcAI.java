@@ -84,20 +84,20 @@ public abstract class NpcAI<T extends NpcBase> extends EntityAIBase {
 	}
 
 	protected final void moveToPosition(double x, double y, double z, double sqDist) {
-		moveRetryDelay--;
+		moveRetryDelay -= 10;
 		if (moveRetryDelay <= 0) {
 			if (sqDist > maxPFDistSq) {
 				moveLongDistance(x, y, z);
-				moveRetryDelay = 60;//3 second delay between PF attempts, give the entity time to get a bit closer to target
+				moveRetryDelay = 30;
 			} else {
 				setPath(x, y, z);
-				moveRetryDelay = 10;//base .5 second retry delay
+				moveRetryDelay = 5;
 				if (sqDist > 256) {
-					moveRetryDelay += 10;
-				}//add .5 seconds if distance>16
+					moveRetryDelay += 5;
+				}
 				if (sqDist > 1024) {
-					moveRetryDelay += 20;
-				}//add another 1 second if distance>32 (delay will be 2 seconds total at this point)
+					moveRetryDelay += 10;
+				}
 			}
 		}
 	}
