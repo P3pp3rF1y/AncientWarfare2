@@ -15,9 +15,9 @@ import java.util.Random;
 import java.util.StringJoiner;
 
 public final class TownTemplate {
-	private String townTypeName;//
+	private String townTypeName = "";//
 
-	private boolean biomeWhiteList;//
+	private boolean biomeWhiteList = false;//
 	private List<String> biomeList = new ArrayList<>();//
 
 	private boolean dimensionWhiteList;//
@@ -26,28 +26,28 @@ public final class TownTemplate {
 	private int minSize = 3;//size in chunks//
 	private int maxSize = 9;//size in chunks//
 
-	private int selectionWeight;
+	private int selectionWeight = 0;
 
-	private int clusterValue;//value inserted into template gen map to discourage nearby random structure spawns
+	private int clusterValue = 0;//value inserted into template gen map to discourage nearby random structure spawns
 
 	/*
 	 * the nominal size of a town-block, in blocks
 	 */
-	private int townBlockSize;//
-	private int townPlotSize;//
-	private int townBuildingWidthExpansion;//used to expand buildings by a set size, for use with structure templates that have no surrounding space in them, to ensure room between structures
+	private int townBlockSize = 0;
+	private int townPlotSize = 0;
+	private int townBuildingWidthExpansion = 0;//used to expand buildings by a set size, for use with structure templates that have no surrounding space in them, to ensure room between structures
 
 	private List<IBlockState> roadFillBlocks = new ArrayList<>();
 
-	private int wallStyle;//0==no wall, 1==corner only, 2==random walls, 3==by pattern//
-	private int wallSize;//size in blocks//
+	private int wallStyle = 0;//0==no wall, 1==corner only, 2==random walls, 3==by pattern//
+	private int wallSize = 0;//size in blocks//
 
-	private int exteriorSize;//area outside of the walls, in blocks
-	private int exteriorPlotSize;//size of each plot in the area outside of the walls
+	private int exteriorSize = 0;//area outside of the walls, in blocks
+	private int exteriorPlotSize = 0;//size of each plot in the area outside of the walls
 
-	private int interiorEmtpyPlotChance;
+	private int interiorEmtpyPlotChance = 0;
 
-	private float randomVillagersPerChunk;
+	private float randomVillagersPerChunk = 0;
 
 	private HashMap<Integer, TownWallEntry> wallsByID = new HashMap<>();
 	private HashMap<Integer, int[]> wallPatterns = new HashMap<>();
@@ -73,9 +73,9 @@ public final class TownTemplate {
 	private List<TownStructureEntry> houseStructureEntries = new ArrayList<>();
 	private List<TownStructureEntry> cosmeticStructureEntries = new ArrayList<>();
 	private List<TownStructureEntry> exteriorStructureEntries = new ArrayList<>();
-	private boolean preventNaturalHostileSpawns;
+	private boolean preventNaturalHostileSpawns = false;
 	private ResourceLocation biomeReplacement = null;
-	private String territoryName;
+	private String territoryName = "";
 
 	public void setTownTypeName(String townTypeName) {
 		this.townTypeName = townTypeName;
