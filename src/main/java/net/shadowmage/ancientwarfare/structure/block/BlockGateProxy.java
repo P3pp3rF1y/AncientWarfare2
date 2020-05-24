@@ -7,6 +7,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -41,6 +42,7 @@ public final class BlockGateProxy extends BlockContainer implements IClientRegis
 		setUnlocalizedName("gate_proxy");
 		setRegistryName(new ResourceLocation(AncientWarfareStructure.MOD_ID, "gate_proxy"));
 		setBlockUnbreakable();
+		setResistance(6000000);
 		AncientWarfareStructure.proxy.addClientRegister(this);
 	}
 
@@ -127,5 +129,10 @@ public final class BlockGateProxy extends BlockContainer implements IClientRegis
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		return WorldTools.getTile(source, pos, TEGateProxy.class).map(TEGateProxy::isOpen).orElse(false) ? NO_AABB : FULL_BLOCK_AABB;
+	}
+
+	@Override
+	public boolean canEntityDestroy(IBlockState state, IBlockAccess world, BlockPos pos, Entity entity) {
+		return false;
 	}
 }

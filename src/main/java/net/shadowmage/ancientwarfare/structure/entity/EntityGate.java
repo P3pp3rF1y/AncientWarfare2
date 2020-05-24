@@ -346,6 +346,8 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 				return false;
 			}
 			hurtInvulTicks = 10;
+		} else {
+			amount *= 10;
 		}
 
 		playSound(gateType.hurtSound, 1, 1);
