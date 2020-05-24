@@ -45,6 +45,13 @@ import java.util.function.Function;
 import static net.minecraft.block.BlockRailBase.EnumRailDirection.*;
 
 public class BlockTools {
+	public static BlockPos rotateHorizontal(BlockPos offset, int turns) {
+		BlockPos.MutableBlockPos ret = new BlockPos.MutableBlockPos(offset);
+		for (int i=0; i < turns; i++) {
+			ret.setPos(-ret.getZ(), ret.getY(), ret.getX());
+		}
+		return ret;
+	}
 
 	/*
 	 * rotate a float X offset (-1<=x<=1) within a block

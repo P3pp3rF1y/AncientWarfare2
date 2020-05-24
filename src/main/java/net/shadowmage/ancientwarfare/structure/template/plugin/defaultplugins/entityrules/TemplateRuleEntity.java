@@ -19,7 +19,7 @@ import java.util.Optional;
 
 import static net.shadowmage.ancientwarfare.npc.event.EventHandler.NO_SPAWN_PREVENTION_TAG;
 
-public class TemplateRuleEntity extends TemplateRuleEntityBase {
+public class TemplateRuleEntity<T extends Entity> extends TemplateRuleEntityBase {
 	public static final String PLUGIN_NAME = "entity";
 	private NBTTagCompound tag;
 
@@ -33,7 +33,7 @@ public class TemplateRuleEntity extends TemplateRuleEntityBase {
 		super();
 	}
 
-	public TemplateRuleEntity(World world, Entity entity, int turns, int x, int y, int z) {
+	public TemplateRuleEntity(World world, T entity, int turns, int x, int y, int z) {
 		super();
 
 		registryName = EntityList.getKey(entity);
@@ -61,8 +61,8 @@ public class TemplateRuleEntity extends TemplateRuleEntityBase {
 		createEntity(world, turns, pos).ifPresent(world::spawnEntity);
 	}
 
-	private Optional<Entity> createEntity(World world, int turns, BlockPos pos) {
-		Entity e = EntityList.createEntityByIDFromName(registryName, world);
+	private Optional<T> createEntity(World world, int turns, BlockPos pos) {
+		T e = (T) EntityList.createEntityByIDFromName(registryName, world);
 		if (e == null) {
 			AncientWarfareStructure.LOG.warn("Could not create entity for name: {} Entity skipped during structure creation.", registryName.toString());
 			return Optional.empty();
@@ -73,7 +73,7 @@ public class TemplateRuleEntity extends TemplateRuleEntityBase {
 		return Optional.of(e);
 	}
 
-	private void addNoSpawnPreventionTag(Entity e) {
+	private void addNoSpawnPreventionTag(T e) {
 		if (IMob.MOB_SELECTOR.apply(e)) {
 			e.getTags().add(NO_SPAWN_PREVENTION_TAG);
 		}
@@ -84,7 +84,7 @@ public class TemplateRuleEntity extends TemplateRuleEntityBase {
 		return tag;
 	}
 
-	protected void updateEntityOnPlacement(int turns, BlockPos pos, Entity e) {
+	protected void updateEntityOnPlacement(int turns, BlockPos pos, T e) {
 		e.setPositionAndRotation(pos.getX() + BlockTools.rotateFloatX(xOffset, zOffset, turns), pos.getY() + yOffset,
 				pos.getZ() + BlockTools.rotateFloatZ(xOffset, zOffset, turns), (rotation + 90.f * turns) % 360.f, 0);
 	}

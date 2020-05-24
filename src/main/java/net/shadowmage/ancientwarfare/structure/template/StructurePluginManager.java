@@ -69,14 +69,13 @@ public class StructurePluginManager implements IStructurePluginRegister {
 			loadAutomationPlugin();
 		}
 
-		for (StructureContentPlugin plugin : this.loadedContentPlugins) {
+		for (StructureContentPlugin plugin : loadedContentPlugins) {
 			plugin.addHandledBlocks(this);
 			plugin.addHandledEntities(this);
 		}
 
 		MinecraftForge.EVENT_BUS.post(new StructurePluginRegistrationEvent(this));
 
-		//noinspection ConstantConditions
 		registerBlockHandler(TemplateRuleBlockInventory.PLUGIN_NAME, (world, pos, state) -> state.getBlock().hasTileEntity(state) && WorldTools.hasItemHandler(world, pos),
 				TemplateRuleBlockInventory::new, TemplateRuleBlockInventory::new);
 		registerBlockHandler(TemplateRuleBlockTile.PLUGIN_NAME, (world, pos, state) -> state.getBlock().hasTileEntity(state) && !WorldTools.hasItemHandler(world, pos),
@@ -84,7 +83,7 @@ public class StructurePluginManager implements IStructurePluginRegister {
 		registerBlockHandler(TemplateRuleVanillaBlocks.PLUGIN_NAME, (world, pos, state) -> !state.getBlock().hasTileEntity(state),
 				TemplateRuleVanillaBlocks::new, TemplateRuleVanillaBlocks::new);
 
-		registerEntityHandler(TemplateRuleEntityHanging.PLUGIN_NAME, EntityHanging.class::isAssignableFrom, TemplateRuleEntityHanging::new, TemplateRuleEntityHanging::new);
+		this.<EntityHanging>registerEntityHandler(TemplateRuleEntityHanging.PLUGIN_NAME, EntityHanging.class::isAssignableFrom, TemplateRuleEntityHanging::new, TemplateRuleEntityHanging::new);
 		registerEntityHandler(TemplateRuleEntity.PLUGIN_NAME, clazz -> Entity.class.isAssignableFrom(clazz) && !EntityPlayer.class.isAssignableFrom(clazz) && EntityList.getKey(clazz) != null,
 				TemplateRuleEntity::new, TemplateRuleEntity::new);
 	}
@@ -112,7 +111,7 @@ public class StructurePluginManager implements IStructurePluginRegister {
 		return getRuleHandler(world, pos, state).map(h -> h.pluginName);
 	}
 
-	public Optional<TemplateRule> getRuleByName(String name) {
+	Optional<TemplateRule> getRuleByName(String name) {
 		Optional<TemplateRule> result = blockRuleHandlers.stream().filter(h -> h.pluginName.equals(name)).findFirst().map(h -> h.getRule.get());
 		if (result.isPresent()) {
 			return result;
@@ -134,7 +133,7 @@ public class StructurePluginManager implements IStructurePluginRegister {
 				.map(c -> c.create(world, entity, turns, x, y, z));
 	}
 
-	public void registerEntityHandler(String pluginName, IEntityMatcher entityMatcher, IEntityRuleCreator creator, Supplier<TemplateRule> getParser) {
+	public <T extends Entity> void registerEntityHandler(String pluginName, IEntityMatcher<T> entityMatcher, IEntityRuleCreator<T> creator, Supplier<TemplateRule> getParser) {
 		entityRuleHandlers.add(new RuleHandler<>(entityMatcher, pluginName, creator, getParser));
 	}
 	public void registerEntityHandler(String pluginName, Class<? extends Entity> entityClass, IEntityRuleCreator creator, Supplier<TemplateRule> getParser) {
@@ -235,7 +234,7 @@ public class StructurePluginManager implements IStructurePluginRegister {
 		return new NBTTagCompound();
 	}
 
-	private class RuleHandler<T, U extends IRuleCreator> {
+	private static class RuleHandler<T, U extends IRuleCreator> {
 		private final T obj;
 		private final String pluginName;
 		private U ruleCreator;
@@ -244,7 +243,7 @@ public class StructurePluginManager implements IStructurePluginRegister {
 		private RuleHandler(T obj, String pluginName, U creator, Supplier<TemplateRule> getRule) {
 			this.obj = obj;
 			this.pluginName = pluginName;
-			this.ruleCreator = creator;
+			ruleCreator = creator;
 			this.getRule = getRule;
 		}
 	}
@@ -255,15 +254,15 @@ public class StructurePluginManager implements IStructurePluginRegister {
 		TemplateRuleBlock create(World world, BlockPos pos, IBlockState state, int turns);
 	}
 
-	public interface IEntityRuleCreator extends IRuleCreator {
-		TemplateRuleEntityBase create(World world, Entity entity, int turns, int x, int y, int z);
+	public interface IEntityRuleCreator<T extends Entity> extends IRuleCreator {
+		TemplateRuleEntityBase create(World world, T entity, int turns, int x, int y, int z);
 	}
 
 	public interface IBlockDataMatcher {
 		boolean matches(World world, BlockPos pos, IBlockState state);
 	}
 
-	public interface IEntityMatcher {
-		boolean matches(Class<? extends Entity> entityClass);
+	public interface IEntityMatcher<T extends Entity> {
+		boolean matches(Class<? extends T> entityClass);
 	}
 }
