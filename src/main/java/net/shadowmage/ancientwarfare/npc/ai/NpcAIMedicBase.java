@@ -13,7 +13,7 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class NpcAIMedicBase extends NpcAI<NpcBase> {
+public class NpcAIMedicBase<T extends NpcBase> extends NpcAI<T> {
 	private static final int HEAL_DELAY_MAX = 20;
 	private static final int INJURED_RECHECK_DELAY_MAX = 20;
 	private static final float AMOUNT_TO_HEAL_EACH_TRY = 0.5f;
@@ -26,7 +26,7 @@ public class NpcAIMedicBase extends NpcAI<NpcBase> {
 	private final EntityAINearestAttackableTarget.Sorter sorter;
 	private Predicate<EntityLivingBase> selector;
 
-	public NpcAIMedicBase(NpcBase npc) {
+	public NpcAIMedicBase(T npc) {
 		super(npc);
 		sorter = new Sorter(npc);
 		selector = entity -> entity != null && entity.isEntityAlive() && entity.getHealth() < entity.getMaxHealth() && !NpcAIMedicBase.this.npc.isHostileTowards(entity);
@@ -99,9 +99,13 @@ public class NpcAIMedicBase extends NpcAI<NpcBase> {
 			if (healDelay < 0) {
 				healDelay = HEAL_DELAY_MAX;
 				npc.swingArm(EnumHand.MAIN_HAND);
-				targetToHeal.heal(AMOUNT_TO_HEAL_EACH_TRY);
+				targetToHeal.heal(getAmountToHealEachTry());
 			}
 		}
+	}
+
+	protected float getAmountToHealEachTry() {
+		return AMOUNT_TO_HEAL_EACH_TRY;
 	}
 
 	@Override

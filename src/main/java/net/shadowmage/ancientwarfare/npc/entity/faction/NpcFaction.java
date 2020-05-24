@@ -125,7 +125,7 @@ public abstract class NpcFaction extends NpcBase {
 		additionalAttributes.put(attribute, value);
 	}
 
-	<T> Optional<T> getAdditionalAttributeValue(IAdditionalAttribute<T> attribute) {
+	public <T> Optional<T> getAdditionalAttributeValue(IAdditionalAttribute<T> attribute) {
 		return Optional.ofNullable(attribute.getValueClass().cast(additionalAttributes.get(attribute)));
 	}
 
@@ -174,8 +174,9 @@ public abstract class NpcFaction extends NpcBase {
 	public EnumCreatureAttribute getCreatureAttribute() {
 		if (isUndead()) {
 			return EnumCreatureAttribute.UNDEAD;
-		} else
+		} else {
 			return EnumCreatureAttribute.UNDEFINED;
+		}
 	}
 
 	@Override
@@ -224,10 +225,12 @@ public abstract class NpcFaction extends NpcBase {
 	@Override
 	public int getMaxFallHeight() {
 		int i = super.getMaxFallHeight();
-		if (i > 4)
+		if (i > 4) {
 			i += world.getDifficulty().getDifficultyId() * getMaxHealth() / 5;
-		if (i >= getHealth())
+		}
+		if (i >= getHealth()) {
 			return (int) getHealth();
+		}
 		return i;
 	}
 
@@ -267,7 +270,7 @@ public abstract class NpcFaction extends NpcBase {
 		if (e instanceof EntityPlayer || e instanceof NpcPlayerOwned) {
 			String playerName = e instanceof EntityPlayer ? e.getName() : ((NpcBase) e).getOwner().getName();
 			UUID playerUUID = e instanceof EntityPlayer ? e.getUniqueID() : ((NpcBase) e).getOwner().getUUID();
-			return revengePlayers.keySet().contains(playerName) || FactionTracker.INSTANCE.isHostileToPlayer(world, playerUUID, playerName, getFaction());
+			return revengePlayers.containsKey(playerName) || FactionTracker.INSTANCE.isHostileToPlayer(world, playerUUID, playerName, getFaction());
 		} else if (e instanceof NpcFaction) {
 			NpcFaction npc = (NpcFaction) e;
 			return !npc.getFaction().equals(factionName) && FactionRegistry.getFaction(getFaction()).isHostileTowards(npc.getFaction());
@@ -302,8 +305,9 @@ public abstract class NpcFaction extends NpcBase {
 		}
 		if (suffix.equals("_death")) {
 			return SoundEvents.ENTITY_GENERIC_DEATH;
-		} else
+		} else {
 			return SoundEvents.ENTITY_GENERIC_HURT;
+		}
 	}
 
 	@Override

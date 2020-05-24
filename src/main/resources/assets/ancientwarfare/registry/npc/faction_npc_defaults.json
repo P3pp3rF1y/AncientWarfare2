@@ -125,6 +125,9 @@
                     "generic.movementSpeed": 0.375,
                     "generic.attackDamage": 0
                 },
+                "additional_attributes": {
+                    "heal_per_try": 0.5
+                },
                 "experience_drop": 40,
                 "equipment": {
                     "mainhand": "minecraft:book"
