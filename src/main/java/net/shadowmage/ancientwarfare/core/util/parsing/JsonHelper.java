@@ -59,7 +59,7 @@ public class JsonHelper {
 	}
 
 	public static ItemStack getItemStack(JsonElement json) {
-		return getItemStack(json, (i, c, m, t) -> {
+		return getItemStack(json, (i, c, m, t, n) -> {
 			ItemStack stack = new ItemStack(i, c, m);
 			stack.setTagCompound(t);
 			return stack;
@@ -80,7 +80,7 @@ public class JsonHelper {
 
 	private static <T> T getItemStack(JsonElement element, ItemStackCreator<T> creator) {
 		if (element.isJsonPrimitive()) {
-			return creator.instantiate(RegistryTools.getItem(element.getAsString()), 1, -1, null);
+			return creator.instantiate(RegistryTools.getItem(element.getAsString()), 1, -1, null, false);
 		}
 
 		JsonObject obj = element.getAsJsonObject();
@@ -103,11 +103,13 @@ public class JsonHelper {
 			}
 		}
 
-		return creator.instantiate(item, count, meta, tagCompound);
+		boolean ignoreNbt = JsonUtils.hasField(obj,"ignore_nbt") && JsonUtils.getBoolean(obj, "ignore_nbt");
+
+		return creator.instantiate(item, count, meta, tagCompound, ignoreNbt);
 	}
 
 	public static ItemStackMatcher getItemStackMatcher(JsonElement element) {
-		return getItemStack(element, (i, c, m, t) -> new ItemStackMatcher.Builder(i).setMeta(m).setTagCompound(t).build());
+		return getItemStack(element, (i, c, m, t, n) -> new ItemStackMatcher.Builder(i).setMeta(m).setTagCompound(t).setIgnoreNbt(n).build());
 	}
 
 	public static ItemStackMatcher getItemStackMatcher(JsonObject parent, String elementName) {
@@ -270,6 +272,6 @@ public class JsonHelper {
 	}
 
 	private interface ItemStackCreator<R> {
-		R instantiate(Item item, int count, int meta, @Nullable NBTTagCompound tagCompound);
+		R instantiate(Item item, int count, int meta, @Nullable NBTTagCompound tagCompound, boolean ignoreNbt);
 	}
 }
