@@ -26,6 +26,7 @@ import net.shadowmage.ancientwarfare.npc.command.CommandFaction;
 import net.shadowmage.ancientwarfare.npc.command.CommandTeams;
 import net.shadowmage.ancientwarfare.npc.compat.EpicSiegeCompat;
 import net.shadowmage.ancientwarfare.npc.compat.TwilightForestCompat;
+import net.shadowmage.ancientwarfare.npc.compat.ebwizardry.EBWizardryCompat;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.container.ContainerCombatOrder;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcBard;
@@ -124,6 +125,7 @@ public class AncientWarfareNPC {
 
 		CompatLoader.registerCompat(new EpicSiegeCompat());
 		CompatLoader.registerCompat(new TwilightForestCompat());
+		CompatLoader.registerCompat(new EBWizardryCompat());
 
 		RegistryLoader.registerParser(new FactionRegistry.FactionParser());
 		RegistryLoader.registerParser(new TargetRegistry.TargetListParser());
