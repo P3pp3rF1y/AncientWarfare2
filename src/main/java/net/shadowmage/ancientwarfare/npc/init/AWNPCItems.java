@@ -36,7 +36,7 @@ import net.shadowmage.ancientwarfare.npc.item.ItemUpkeepOrder;
 import net.shadowmage.ancientwarfare.npc.item.ItemWorkOrder;
 import net.shadowmage.ancientwarfare.npc.registry.FactionDefinition;
 import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
-import net.shadowmage.ancientwarfare.structure.block.BlockProtectionFlag;
+import net.shadowmage.ancientwarfare.structure.block.BlockFlag;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockColored;
 
@@ -133,8 +133,11 @@ public class AWNPCItems {
 
 	public static void addFactionBlocks() {
 		for (FactionDefinition definition : FactionRegistry.getFactionDefinitions()) {
-			AWStructureBlocks.PROTECTION_FLAG.addFlagDefinition(new BlockProtectionFlag.FlagDefinition(
-					definition.getName(), 0xEF5757, definition.getColor()));
+				AWStructureBlocks.PROTECTION_FLAG.addFlagDefinition(new BlockFlag.FlagDefinition(
+						definition.getName(), 0xEF5757, definition.getColor()));
+
+				AWStructureBlocks.DECORATIVE_FLAG.addFlagDefinition(new BlockFlag.FlagDefinition(
+						definition.getName(), 0xEF5757, definition.getColor()));
 
 			for (Map.Entry<String, NBTTagCompound> blockData : definition.getThemedBlocksTags().entrySet()) {
 				Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockData.getKey()));

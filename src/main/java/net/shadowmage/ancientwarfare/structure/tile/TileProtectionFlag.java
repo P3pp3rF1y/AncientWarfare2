@@ -14,7 +14,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.owner.Owner;
-import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureEntry;
@@ -26,33 +25,12 @@ import net.shadowmage.ancientwarfare.structure.util.ConquerHelper;
 
 import java.util.Optional;
 
-public class TileProtectionFlag extends TileUpdatable {
-	private static final String NAME_TAG = "name";
+public class TileProtectionFlag extends TileFlag {
 	private static final String PLAYER_PROFILE_TAG = "playerProfile";
 	private static final String OWNER_TAG = "owner";
 	private static final float UNBREAKABLE = -1F;
-
-	private int topColor = -1;
-	private int bottomColor = -1;
-	private String name = "";
 	private Owner owner = Owner.EMPTY;
 	private GameProfile playerProfile;
-
-	@Override
-	protected void writeUpdateNBT(NBTTagCompound tag) {
-		super.writeUpdateNBT(tag);
-		writeNBT(tag);
-	}
-
-	private NBTTagCompound writeNBT(NBTTagCompound tag) {
-		tag.setInteger("topColor", topColor);
-		tag.setInteger("bottomColor", bottomColor);
-		if (owner != Owner.EMPTY) {
-			tag.setTag(OWNER_TAG, owner.serializeToNBT(new NBTTagCompound()));
-			tag.setTag(PLAYER_PROFILE_TAG, NBTUtil.writeGameProfile(new NBTTagCompound(), playerProfile));
-		}
-		return tag;
-	}
 
 	@Override
 	protected void handleUpdateNBT(NBTTagCompound tag) {
@@ -63,10 +41,42 @@ public class TileProtectionFlag extends TileUpdatable {
 	private void readNBT(NBTTagCompound tag) {
 		topColor = tag.getInteger("topColor");
 		bottomColor = tag.getInteger("bottomColor");
+		name = tag.getString("name");
 		if (tag.hasKey(OWNER_TAG)) {
 			owner = Owner.deserializeFromNBT(tag.getCompoundTag(OWNER_TAG));
 			playerProfile = NBTUtil.readGameProfileFromNBT(tag.getCompoundTag(PLAYER_PROFILE_TAG));
 		}
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound compound) {
+		super.readFromNBT(compound);
+		readNBT(compound);
+		name = compound.getString(NAME_TAG);
+	}
+
+	@Override
+	protected void writeUpdateNBT(NBTTagCompound tag) {
+		super.writeUpdateNBT(tag);
+		writeNBT(tag);
+	}
+
+	private NBTTagCompound writeNBT(NBTTagCompound tag) {
+		tag.setInteger("topColor", topColor);
+		tag.setInteger("bottomColor", bottomColor);
+		tag.setString("name", name);
+		if (owner != Owner.EMPTY) {
+			tag.setTag(OWNER_TAG, owner.serializeToNBT(new NBTTagCompound()));
+			tag.setTag(PLAYER_PROFILE_TAG, NBTUtil.writeGameProfile(new NBTTagCompound(), playerProfile));
+		}
+		return tag;
+	}
+
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+		NBTTagCompound tag = writeNBT(super.writeToNBT(compound));
+		tag.setString(NAME_TAG, name);
+		return tag;
 	}
 
 	@Override
@@ -80,20 +90,6 @@ public class TileProtectionFlag extends TileUpdatable {
 				}
 			}
 		});
-	}
-
-	@Override
-	public void readFromNBT(NBTTagCompound compound) {
-		super.readFromNBT(compound);
-		readNBT(compound);
-		name = compound.getString(NAME_TAG);
-	}
-
-	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		NBTTagCompound tag = writeNBT(super.writeToNBT(compound));
-		tag.setString(NAME_TAG, name);
-		return tag;
 	}
 
 	public ItemStack getItemStack() {
@@ -112,14 +108,6 @@ public class TileProtectionFlag extends TileUpdatable {
 			readNBT(tag);
 			name = tag.getString(NAME_TAG);
 		}
-	}
-
-	public int getTopColor() {
-		return topColor;
-	}
-
-	public int getBottomColor() {
-		return bottomColor;
 	}
 
 	public void onActivatedBy(EntityPlayer player) {
