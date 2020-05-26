@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.structure.render;
 
 import codechicken.lib.render.CCModelState;
 import codechicken.lib.render.item.IItemRenderer;
-import com.google.common.collect.ImmutableList;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import net.minecraft.client.Minecraft;
@@ -21,48 +20,46 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
-import net.shadowmage.ancientwarfare.structure.tile.TileProtectionFlag;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+import net.shadowmage.ancientwarfare.structure.tile.TileFlag;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import static codechicken.lib.util.TransformUtils.create;
 import static codechicken.lib.util.TransformUtils.flipLeft;
 
-public class ProtectionFlagRenderer extends TileEntitySpecialRenderer<TileProtectionFlag> implements IItemRenderer {
-	private static final ResourceLocation BASE_BANNER_TEXTURE = new ResourceLocation("minecraft:textures/entity/banner_base.png");
+public class ProtectionFlagRenderer extends TileEntitySpecialRenderer<TileFlag> implements IItemRenderer {
 	private final ModelBanner bannerModel = new ModelBanner();
-	private static final Map<String, ResourceLocation> flagTextures = new HashMap<>();
 	private final ModelSkeletonHead humanoidHead = new ModelHumanoidHead();
 
 	private static final IModelState TRANSFORMS;
 
 	static {
 		Map<ItemCameraTransforms.TransformType, TRSRTransformation> map = new HashMap<>();
-		TRSRTransformation thirdPerson = create(0F, 2.5F, 0F, 75F, 45F, 0F, 0.375F);
+		TRSRTransformation thirdPerson = create(0F, 2.5F, 0F, 75F, -45F, 0F, 0.6F);
 		map.put(ItemCameraTransforms.TransformType.GUI, create(0F, -3F, 0F, 30F, 45F, 0F, 0.525F));
 		map.put(ItemCameraTransforms.TransformType.GROUND, create(0F, 3F, 0F, 0F, 0F, 0F, 0.25F));
 		map.put(ItemCameraTransforms.TransformType.FIXED, create(0F, 0F, 0F, 0F, 0F, 0F, 0.5F));
 		map.put(ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, thirdPerson);
 		map.put(ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, flipLeft(thirdPerson));
-		map.put(ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND, create(0F, 0F, 0F, 0F, 45F, 0F, 0.4F));
+		map.put(ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND, create(0F, 0F, 0F, 0F, -45F, 0F, 0.4F));
 		map.put(ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, create(0F, 0F, 0F, 0F, 225F, 0F, 0.4F));
 		TRANSFORMS = new CCModelState(map);
 	}
 
 	@Override
-	public void render(TileProtectionFlag te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(TileFlag te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		boolean flag = te.getWorld() != null;
 		int angle = flag ? te.getBlockMetadata() : 0;
 		long worldTime = flag ? te.getWorld().getTotalWorldTime() : 0L;
 		int topColor = te.getTopColor();
 		int bottomColor = te.getBottomColor();
+		String faction = te.getName();
 		BlockPos pos = te.getPos();
 
-		render((float) x, (float) y, (float) z, partialTicks, alpha, angle, worldTime, topColor, bottomColor, pos);
+		render((float) x, (float) y, (float) z, partialTicks, alpha, angle, worldTime, topColor, bottomColor, faction, pos);
 		if (te.isPlayerOwned()) {
 			renderPlayerHead(te.getPlayerProfile(), (float) x, (float) y, (float) z, partialTicks, angle);
 		}
@@ -97,7 +94,7 @@ public class ProtectionFlagRenderer extends TileEntitySpecialRenderer<TileProtec
 
 	}
 
-	private void render(float x, float y, float z, float partialTicks, float alpha, int rotation, float worldTime, int topColor, int bottomColor, BlockPos pos) {
+	private void render(float x, float y, float z, float partialTicks, float alpha, int rotation, float worldTime, int topColor, int bottomColor, String faction, BlockPos pos) {
 		GlStateManager.pushMatrix();
 
 		GlStateManager.translate(x + 0.5F, y + 0.5F, z + 0.5F);
@@ -108,37 +105,21 @@ public class ProtectionFlagRenderer extends TileEntitySpecialRenderer<TileProtec
 		float f3 = (float) (pos.getX() * 7 + pos.getY() * 9 + pos.getZ() * 13) + worldTime + partialTicks;
 		bannerModel.bannerSlate.rotateAngleX = (-0.0125F + 0.01F * MathHelper.cos(f3 * (float) Math.PI * 0.02F)) * (float) Math.PI;
 		GlStateManager.enableRescaleNormal();
-		ResourceLocation resourcelocation = getBannerResourceLocation(topColor, bottomColor);
+		ResourceLocation resourcelocation = getBannerResourceLocation(topColor, bottomColor, faction);
 
-		if (resourcelocation != null) {
-			Minecraft.getMinecraft().renderEngine.bindTexture(resourcelocation);
-			GlStateManager.pushMatrix();
-			GlStateManager.scale(0.6666667F, -0.6666667F, -0.6666667F);
-			bannerModel.renderBanner();
-			GlStateManager.popMatrix();
-		}
+		Minecraft.getMinecraft().renderEngine.bindTexture(resourcelocation);
+		GlStateManager.pushMatrix();
+		GlStateManager.scale(0.6666667F, -0.6666667F, -0.6666667F);
+		bannerModel.renderBanner();
+		GlStateManager.popMatrix();
 
 		GlStateManager.color(1.0F, 1.0F, 1.0F, alpha);
 		GlStateManager.popMatrix();
 	}
 
-	private ResourceLocation getBannerResourceLocation(int topColor, int bottomColor) {
-		String id = getBannerId(topColor, bottomColor);
-		ResourceLocation textureEntry = flagTextures.get(id);
-		if (textureEntry == null) {
-			List<String> list = new ArrayList<>();
-			list.add("textures/entity/banner/base.png");
-			list.add("textures/entity/banner/half_horizontal_bottom.png");
-			textureEntry = new ResourceLocation(id);
-			Minecraft.getMinecraft().getTextureManager().loadTexture(textureEntry, new LayeredCustomColorMaskTexture(BASE_BANNER_TEXTURE, list, ImmutableList.of(topColor, bottomColor)));
-			flagTextures.put(id, new ResourceLocation(id));
-		}
-
+	private ResourceLocation getBannerResourceLocation(int topColor, int bottomColor, String faction) {
+		ResourceLocation textureEntry = new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/entity/structure/banner/" + faction + ".png");
 		return textureEntry;
-	}
-
-	private String getBannerId(int topColor, int bottomColor) {
-		return Integer.toString(topColor) + "|" + Integer.toString(bottomColor);
 	}
 
 	@Override
@@ -151,7 +132,7 @@ public class ProtectionFlagRenderer extends TileEntitySpecialRenderer<TileProtec
 
 		NBTTagCompound tag = stack.getTagCompound();
 		//noinspection ConstantConditions
-		render(0, 0, 0, 0, 1, 0, 0, tag.getInteger("topColor"), tag.getInteger("bottomColor"), BlockPos.ORIGIN);
+		render(0, 0, 0, 0, 1, 0, 0, tag.getInteger("topColor"), tag.getInteger("bottomColor"), tag.getString("name"), BlockPos.ORIGIN);
 
 		//Fixes issues with inventory rendering.
 		//The Portal renderer modifies blend and disables it.

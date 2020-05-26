@@ -24,6 +24,7 @@ import net.shadowmage.ancientwarfare.structure.block.BlockBrazierEmber;
 import net.shadowmage.ancientwarfare.structure.block.BlockBrazierFlame;
 import net.shadowmage.ancientwarfare.structure.block.BlockChair;
 import net.shadowmage.ancientwarfare.structure.block.BlockCoinStack;
+import net.shadowmage.ancientwarfare.structure.block.BlockDecorativeFlag;
 import net.shadowmage.ancientwarfare.structure.block.BlockDraftingStation;
 import net.shadowmage.ancientwarfare.structure.block.BlockFirePit;
 import net.shadowmage.ancientwarfare.structure.block.BlockGateProxy;
@@ -63,9 +64,9 @@ import net.shadowmage.ancientwarfare.structure.item.ItemBlockBrazierFlame;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockChair;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockColored;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockFirePit;
+import net.shadowmage.ancientwarfare.structure.item.ItemBlockFlag;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockGravestone;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockPosts;
-import net.shadowmage.ancientwarfare.structure.item.ItemBlockProtectionFlag;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockStoneCoffin;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockStretchingRack;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockStructureBuilder;
@@ -81,6 +82,7 @@ import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
 import net.shadowmage.ancientwarfare.structure.tile.TileAltarCandle;
 import net.shadowmage.ancientwarfare.structure.tile.TileChair;
 import net.shadowmage.ancientwarfare.structure.tile.TileColored;
+import net.shadowmage.ancientwarfare.structure.tile.TileDecorativeFlag;
 import net.shadowmage.ancientwarfare.structure.tile.TileDraftingStation;
 import net.shadowmage.ancientwarfare.structure.tile.TileGravestone;
 import net.shadowmage.ancientwarfare.structure.tile.TileLootBasket;
@@ -118,6 +120,7 @@ public class AWStructureBlocks {
 	public static final Block ALTAR_LECTERN = InjectionTools.nullValue();
 	public static final Block ALTAR_SUN = InjectionTools.nullValue();
 	public static final BlockProtectionFlag PROTECTION_FLAG = InjectionTools.nullValue();
+	public static final BlockDecorativeFlag DECORATIVE_FLAG = InjectionTools.nullValue();
 	public static final Block GOLDEN_IDOL = InjectionTools.nullValue();
 	public static final Block ORC_TOTEM_1 = InjectionTools.nullValue();
 	public static final Block ORC_TOTEM_2 = InjectionTools.nullValue();
@@ -173,7 +176,8 @@ public class AWStructureBlocks {
 		registry.register(new ItemBlockColored(ALTAR_CANDLE));
 		registry.register(new ItemBlockBase(ALTAR_LECTERN));
 		registry.register(new ItemBlockBase(ALTAR_SUN));
-		registry.register(new ItemBlockProtectionFlag(PROTECTION_FLAG));
+		registry.register(new ItemBlockFlag(PROTECTION_FLAG));
+		registry.register(new ItemBlockFlag(DECORATIVE_FLAG));
 		registry.register(new ItemBlockBase(GOLDEN_IDOL));
 
 		registry.register(new ItemBlockBase(ORC_TOTEM_1));
@@ -274,7 +278,9 @@ public class AWStructureBlocks {
 		registry.register(new BlockAltarSun());
 
 		registry.register(new BlockProtectionFlag());
+		registry.register(new BlockDecorativeFlag());
 		registerTile(TileProtectionFlag.class, "protection_flag_tile");
+		registerTile(TileDecorativeFlag.class, "decorative_flag_tile"); //TODO
 
 		registry.register(new BlockGoldenIdol());
 

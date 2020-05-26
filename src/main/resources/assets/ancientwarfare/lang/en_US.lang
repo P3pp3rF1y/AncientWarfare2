@@ -249,6 +249,7 @@ tile.goblin_totem_2.name=Goblin Totem 2
 tile.goblin_totem_2_lit.name=Goblin Totem 2 Lit
 tile.golden_idol.name=Golden Idol
 tile.protection_flag.name=%s Protection Flag
+tile.decorative_flag.name=%s Banner
 tile.brazier_ember.lit.name=Ember Brazier Lit
 tile.brazier_ember.unlit.name=Ember Brazier Unlit
 tile.brazier_flame.lit.name=Flame Brazier Lit
