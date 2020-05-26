@@ -1446,7 +1446,8 @@
                     },
                     "thinness": 1.1,
                     "attributes": {
-                        "generic.maxHealth": 70
+                        "generic.maxHealth": 70,
+                        "generic.knockbackResistance" : 1.0
                     },
                     "equipment": {
                         "mainhand": "minecraft:iron_axe"
@@ -1940,7 +1941,8 @@
                     "attributes": {
                         "generic.maxHealth": 150,
                         "generic.movementSpeed": 0.4,
-                        "generic.attackDamage": 6
+                        "generic.attackDamage": 6,
+                        "generic.knockbackResistance" : 1.0
                     },
                     "experience_drop": 150
                 },
@@ -2591,7 +2593,8 @@
                         "generic.maxHealth": 100,
                         "generic.movementSpeed": 0.25,
                         "generic.armor": 4,
-                        "generic.attackDamage": 3
+                        "generic.attackDamage": 3,
+                        "generic.knockbackResistance" : 1.0
                     },
                     "equipment": {
                         "mainhand": "minecraft:air"
@@ -2635,7 +2638,8 @@
                         "generic.maxHealth": 75,
                         "generic.movementSpeed": 0.325,
                         "generic.armor": 3,
-                        "generic.attackDamage": 4
+                        "generic.attackDamage": 4,
+                        "generic.knockbackResistance" : 1.0
                     },
                     "equipment": {
                         "mainhand": "minecraft:air"
@@ -2817,7 +2821,8 @@
                         "generic.maxHealth": 80,
                         "generic.movementSpeed": 0.325,
                         "generic.armor": 8,
-                        "generic.attackDamage": 4
+                        "generic.attackDamage": 4,
+                        "generic.knockbackResistance" : 1.0
                     },
                     "equipment": {
                         "mainhand": "minecraft:air"
@@ -3276,7 +3281,8 @@
                         "generic.maxHealth": 100,
                         "generic.movementSpeed": 0.3,
                         "generic.armor": 20,
-                        "generic.attackDamage": 5
+                        "generic.attackDamage": 5,
+                        "generic.knockbackResistance" : 1.0
                     },
                     "equipment": {
                         "mainhand": "minecraft:air"
@@ -3292,7 +3298,8 @@
                         "generic.maxHealth": 150,
                         "generic.movementSpeed": 0.3,
                         "generic.armor": 30,
-                        "generic.attackDamage": 6
+                        "generic.attackDamage": 6,
+                        "generic.knockbackResistance" : 1.0
                     },
                     "equipment": {
                         "mainhand": "minecraft:air"
@@ -3564,6 +3571,9 @@
             }
         },
         "giant": {
+            "attributes": {
+                "generic.knockbackResistance" : 1.0
+            },
             "additional_attributes": {
                 "entity_sound": "giant"
             },
