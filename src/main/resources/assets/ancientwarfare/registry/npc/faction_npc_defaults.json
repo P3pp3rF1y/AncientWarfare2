@@ -114,9 +114,6 @@
                     "generic.followRange": 120
                 },
                 "experience_drop": 30,
-                "equipment": {
-                    "mainhand": "minecraft:air"
-                },
                 "loot_table": "ancientwarfare:entities/siege_engineer"
             },
             "priest": {
@@ -184,9 +181,6 @@
                     "generic.maxHealth": 10,
                     "generic.attackDamage": 0
                 },
-                "equipment": {
-                    "mainhand": "minecraft:air"
-                },
                 "can_break_doors": false,
                 "loot_table": "minecraft:empty"
             },
@@ -194,9 +188,6 @@
                 "attributes": {
                     "generic.maxHealth": 10,
                     "generic.attackDamage": 0
-                },
-                "equipment": {
-                    "mainhand": "minecraft:air"
                 },
                 "can_break_doors": false,
                 "loot_table": "minecraft:empty"
@@ -900,9 +891,6 @@
                         "generic.maxHealth": 100,
                         "generic.movementSpeed": 0.3,
                         "generic.attackDamage": 5
-                    },
-                    "equipment": {
-                        "mainhand": "minecraft:air"
                     }
                 },
                 "leader.elite": {
@@ -1348,9 +1336,6 @@
                     "attributes": {
                         "generic.maxHealth": 70
                     },
-                    "equipment": {
-                        "mainhand": "minecraft:air"
-                    },
                     "experience_drop": 70
                 },
                 "archer": {
@@ -1411,9 +1396,6 @@
                     "thinness": 1,
                     "attributes": {
                         "generic.maxHealth": 30
-                    },
-                    "equipment": {
-                        "mainhand": "minecraft:air"
                     },
                     "experience_drop": 30
                 },
@@ -2175,9 +2157,6 @@
                         "generic.maxHealth": 80,
                         "generic.attackDamage": 4
                     },
-                    "equipment": {
-                        "mainhand": "minecraft:air"
-                    },
                     "experience_drop": 80
                 },
                 "priest": {
@@ -2248,9 +2227,6 @@
                     "attributes": {
                         "generic.maxHealth": 40,
                         "generic.attackDamage": 2
-                    },
-                    "equipment": {
-                        "mainhand": "minecraft:air"
                     },
                     "experience_drop": 40
                 },
@@ -2469,9 +2445,6 @@
                     },
                     "additional_attributes": {
                         "entity_sound": "coven_puppet"
-                    },
-                    "equipment": {
-                        "mainhand": "minecraft:air"
                     }
                 },
                 "cavalry": {
@@ -2499,9 +2472,6 @@
                         "generic.maxHealth": 45,
                         "generic.movementSpeed": 0.355,
                         "generic.attackDamage": 2
-                    },
-                    "equipment": {
-                        "mainhand": "minecraft:air"
                     }
                 },
                 "leader.elite": {
@@ -2595,9 +2565,6 @@
                         "generic.armor": 4,
                         "generic.attackDamage": 3,
                         "generic.knockbackResistance" : 1.0
-                    },
-                    "equipment": {
-                        "mainhand": "minecraft:air"
                     }
                 },
                 "soldier.elite": {
@@ -2640,9 +2607,6 @@
                         "generic.armor": 3,
                         "generic.attackDamage": 4,
                         "generic.knockbackResistance" : 1.0
-                    },
-                    "equipment": {
-                        "mainhand": "minecraft:air"
                     }
                 },
                 "leader.elite": {
@@ -2693,9 +2657,6 @@
                         "generic.maxHealth": 45,
                         "generic.movementSpeed": 0.325,
                         "generic.attackDamage": 3
-                    },
-                    "equipment": {
-                        "mainhand": "minecraft:air"
                     }
                 },
                 "cavalry": {
@@ -2721,9 +2682,6 @@
                         "generic.movementSpeed": 0.3,
                         "generic.armor": 6,
                         "generic.attackDamage": 4
-                    },
-                    "equipment": {
-                        "mainhand": "minecraft:air"
                     }
                 },
                 "leader.elite": {
@@ -2823,9 +2781,6 @@
                         "generic.armor": 8,
                         "generic.attackDamage": 4,
                         "generic.knockbackResistance" : 1.0
-                    },
-                    "equipment": {
-                        "mainhand": "minecraft:air"
                     }
                 },
                 "archer.elite": {
@@ -2859,9 +2814,6 @@
                         "generic.movementSpeed": 0.3,
                         "generic.armor": 6,
                         "generic.attackDamage": 4
-                    },
-                    "equipment": {
-                        "mainhand": "minecraft:air"
                     }
                 },
                 "siege_engineer": {
@@ -3028,9 +2980,6 @@
                         "generic.movementSpeed": 0.355,
                         "generic.armor": 4,
                         "generic.attackDamage": 3
-                    },
-                    "equipment": {
-                        "mainhand": "minecraft:air"
                     }
                 },
                 "soldier.elite": {
@@ -3044,9 +2993,6 @@
                         "generic.movementSpeed": 0.3,
                         "generic.armor": 8,
                         "generic.attackDamage": 4
-                    },
-                    "equipment": {
-                        "mainhand": "minecraft:air"
                     }
                 },
                 "archer": {
@@ -3072,9 +3018,6 @@
                         "generic.movementSpeed": 0.3,
                         "generic.armor": 12,
                         "generic.attackDamage": 5
-                    },
-                    "equipment": {
-                        "mainhand": "minecraft:air"
                     }
                 },
                 "leader.elite": {
@@ -3088,9 +3031,6 @@
                         "generic.movementSpeed": 0.3,
                         "generic.armor": 16,
                         "generic.attackDamage": 6
-                    },
-                    "equipment": {
-                        "mainhand": "minecraft:air"
                     }
                 },
                 "siege_engineer": {
@@ -3151,9 +3091,6 @@
                     },
                     "additional_attributes": {
                         "entity_sound": "gargoyle"
-                    },
-                    "equipment": {
-                        "mainhand": "minecraft:air"
                     }
                 },
                 "archer": {
@@ -3182,9 +3119,6 @@
                     },
                     "additional_attributes": {
                         "entity_sound": "owlbear"
-                    },
-                    "equipment": {
-                        "mainhand": "minecraft:air"
                     }
                 },
                 "leader.elite": {
@@ -3201,9 +3135,6 @@
                     },
                     "additional_attributes": {
                         "entity_sound": "ent"
-                    },
-                    "equipment": {
-                        "mainhand": "minecraft:air"
                     }
                 },
                 "siege_engineer": {
@@ -3241,9 +3172,6 @@
                         "generic.maxHealth": 35,
                         "generic.movementSpeed": 0.355,
                         "generic.attackDamage": 2
-                    },
-                    "equipment": {
-                        "mainhand": "minecraft:air"
                     }
                 },
                 "soldier.elite": {
@@ -3257,9 +3185,6 @@
                         "generic.movementSpeed": 0.3,
                         "generic.armor": 10,
                         "generic.attackDamage": 4
-                    },
-                    "equipment": {
-                        "mainhand": "minecraft:air"
                     }
                 },
                 "archer.elite": {
@@ -3283,9 +3208,6 @@
                         "generic.armor": 20,
                         "generic.attackDamage": 5,
                         "generic.knockbackResistance" : 1.0
-                    },
-                    "equipment": {
-                        "mainhand": "minecraft:air"
                     }
                 },
                 "leader.elite": {
@@ -3300,9 +3222,6 @@
                         "generic.armor": 30,
                         "generic.attackDamage": 6,
                         "generic.knockbackResistance" : 1.0
-                    },
-                    "equipment": {
-                        "mainhand": "minecraft:air"
                     }
                 },
                 "siege_engineer": {
@@ -3387,9 +3306,6 @@
                         "generic.maxHealth": 100,
                         "generic.movementSpeed": 0.3,
                         "generic.attackDamage": 3
-                    },
-                    "equipment": {
-                        "mainhand": "minecraft:air"
                     }
                 },
                 "leader.elite": {
@@ -3402,9 +3318,6 @@
                         "generic.maxHealth": 60,
                         "generic.movementSpeed": 0.3,
                         "generic.attackDamage": 2
-                    },
-                    "equipment": {
-                        "mainhand": "minecraft:air"
                     }
                 },
                 "trader": {
@@ -3633,9 +3546,6 @@
                         "generic.movementSpeed": 0.3,
                         "generic.armor": 15,
                         "generic.attackDamage": 5
-                    },
-                    "equipment": {
-                        "mainhand": "minecraft:air"
                     }
                 },
                 "leader.elite": {
@@ -3692,9 +3602,6 @@
                         "burns_in_sun": false,
                         "can_swim": false,
                         "entity_sound": "monster"
-                    },
-                    "equipment": {
-                        "mainhand": "minecraft:air"
                     }
                 },
                 "soldier.elite": {
@@ -3714,9 +3621,6 @@
                         "can_swim": false,
                         "undead": true,
                         "entity_sound": "vampire_bride"
-                    },
-                    "equipment": {
-                        "mainhand": "minecraft:air"
                     }
                 },
                 "archer": {
@@ -3763,9 +3667,6 @@
                         "generic.attackDamage": 3
                     },
                     "experience_drop": 80,
-                    "equipment": {
-                        "mainhand": "minecraft:air"
-                    },
                     "additional_attributes": {
                         "burns_in_sun": true,
                         "can_swim": false,
