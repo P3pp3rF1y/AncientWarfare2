@@ -16,22 +16,20 @@ import javax.annotation.Nonnull;
 
 @SideOnly(Side.CLIENT)
 public class StructureBoundingBoxRenderer {
+	@SuppressWarnings("unused")
 	@SubscribeEvent
 	public void handleRenderLastEvent(RenderWorldLastEvent evt) {
 		Minecraft mc = Minecraft.getMinecraft();
-		if (mc == null) {
-			return;
-		}
 		EntityPlayer player = mc.player;
 		if (player == null) {
 			return;
 		}
 		for (EnumHand hand : EnumHand.values()) {
-			@Nonnull ItemStack stack = player.getHeldItem(hand);
-			Item item;
-			if (stack.isEmpty() || (item = stack.getItem()) == Items.AIR) {
-				return;
+			ItemStack stack = player.getHeldItem(hand);
+			if (stack.isEmpty()) {
+				continue;
 			}
+			Item item = stack.getItem();
 			if (item instanceof IBoxRenderer) {
 				((IBoxRenderer) item).renderBox(player, hand, stack, evt.getPartialTicks());
 			}

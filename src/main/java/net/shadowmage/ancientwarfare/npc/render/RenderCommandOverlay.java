@@ -36,14 +36,11 @@ public final class RenderCommandOverlay {
 		targetEntities = Collections.emptyList();
 	}
 
-	public RayTraceResult getClientTarget() {
-		return target;
-	}
-
+	@SuppressWarnings("unused")
 	@SubscribeEvent
 	public void onRenderTick(TickEvent.RenderTickEvent evt) {
 		Minecraft mc = Minecraft.getMinecraft();
-		if (mc == null || mc.player == null || mc.currentScreen != null) {
+		if (mc.player == null || mc.currentScreen != null) {
 			return;
 		}
 		ItemStack commandBaton = EntityTools.getItemFromEitherHand(mc.player, ItemCommandBaton.class);
@@ -80,10 +77,11 @@ public final class RenderCommandOverlay {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	@SubscribeEvent
 	public void onRenderLast(RenderWorldLastEvent evt) {
 		Minecraft mc = Minecraft.getMinecraft();
-		if (mc == null || mc.currentScreen != null || mc.player == null) {
+		if (mc.currentScreen != null || mc.player == null) {
 			return;
 		}
 		ItemStack commandBaton = EntityTools.getItemFromEitherHand(mc.player, ItemCommandBaton.class);
@@ -95,7 +93,7 @@ public final class RenderCommandOverlay {
 			AxisAlignedBB bb = null;
 			if (pos.typeOfHit == RayTraceResult.Type.BLOCK) {
 				bb = new AxisAlignedBB(pos.getBlockPos(), pos.getBlockPos().add(1, 1, 1)).grow(0.1d, 0.1d, 0.1d);
-			} else if (pos.typeOfHit == RayTraceResult.Type.ENTITY && pos.entityHit.getEntityBoundingBox() != null && pos.entityHit instanceof EntityLivingBase) {
+			} else if (pos.typeOfHit == RayTraceResult.Type.ENTITY && pos.entityHit instanceof EntityLivingBase) {
 				Entity e = pos.entityHit;
 				float t = 1.f - evt.getPartialTicks();
 				double dx = e.posX - e.lastTickPosX;
@@ -108,20 +106,15 @@ public final class RenderCommandOverlay {
 				RenderTools.drawOutlinedBoundingBox(bb, 1.f, 1.f, 1.f);
 			}
 		}
-		AxisAlignedBB bb = null;
 		for (Entity e : targetEntities) {
-			if (e.getEntityBoundingBox() == null) {
-				continue;
-			}
 			float t = 1.f - evt.getPartialTicks();
 			double dx = e.posX - e.lastTickPosX;
 			double dy = e.posY - e.lastTickPosY;
 			double dz = e.posZ - e.lastTickPosZ;
 			//TODO all this bb-rendering could potentially be moved to the entity itself
-			bb = e.getEntityBoundingBox().offset(t * -dx, t * -dy, t * -dz);
+			AxisAlignedBB bb = e.getEntityBoundingBox().offset(t * -dx, t * -dy, t * -dz);
 			bb = RenderTools.adjustBBForPlayerPos(bb, mc.player, evt.getPartialTicks());
 			RenderTools.drawOutlinedBoundingBox(bb, 1.f, 0.f, 0.f);
 		}
 	}
-
 }

@@ -16,17 +16,14 @@ public class BlockHighlightRenderer {
 		BlockHighlightRenderer.blockHighlightInfo = blockHighlightInfo;
 	}
 
+	@SuppressWarnings("unused")
 	@SubscribeEvent
 	public void handleRenderLastEvent(RenderWorldLastEvent evt) {
 		Minecraft mc = Minecraft.getMinecraft();
-		if (mc == null) {
-			return;
-		}
 		if (mc.world.getTotalWorldTime() < blockHighlightInfo.getExpirationTime()) {
 			AxisAlignedBB bb = new AxisAlignedBB(blockHighlightInfo.getPos()).expand(0.1, 0.1, 0.1);
 			bb = RenderTools.adjustBBForPlayerPos(bb, Minecraft.getMinecraft().player, evt.getPartialTicks());
 			RenderTools.drawOutlinedBoundingBox(bb, Color.WHITE, true);
 		}
 	}
-
 }
