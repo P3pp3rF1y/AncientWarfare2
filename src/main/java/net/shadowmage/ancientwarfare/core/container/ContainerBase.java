@@ -48,14 +48,14 @@ public class ContainerBase extends Container {
 		{
 			xPos = tx + x * 18;
 			yPos = ty + gap + 3 * 18;
-			this.addSlotToContainer(new SlotItemHandler(playerInventory, x, xPos, yPos));
+			addSlotToContainer(new SlotItemHandler(playerInventory, x, xPos, yPos));
 		}
 		for (y = 0; y < 3; ++y) {
 			for (x = 0; x < 9; ++x) {
 				slotNum = y * 9 + x + 9;// +9 is to increment past hotbar slots
 				xPos = tx + x * 18;
 				yPos = ty + y * 18;
-				this.addSlotToContainer(new SlotItemHandler(playerInventory, slotNum, xPos, yPos));
+				addSlotToContainer(new SlotItemHandler(playerInventory, slotNum, xPos, yPos));
 			}
 		}
 		playerSlots = 36;
@@ -114,8 +114,8 @@ public class ContainerBase extends Container {
 	 */
 	public final void onPacketData(NBTTagCompound data) {
 		if (data.hasKey("gui")) {
-			if (this.gui != null) {
-				this.gui.handlePacketData(data.getCompoundTag("gui"));
+			if (gui != null) {
+				gui.handlePacketData(data.getCompoundTag("gui"));
 			}
 		} else {
 			handlePacketData(data);
@@ -148,40 +148,37 @@ public class ContainerBase extends Container {
 	 * Causes the GUI to be re-setup on its next update tick
 	 */
 	public void refreshGui() {
-		if (this.gui != null) {
-			this.gui.refreshGui();
+		if (gui != null) {
+			gui.refreshGui();
 		}
 	}
 
-    /*
+	/*
 	 * remove the inventory slots from view on the screen, effectively disabling them
-     */
+	 */
 
 	public void removeSlots() {
-		for (Slot s : this.inventorySlots) {
+		for (Slot s : inventorySlots) {
 			if (s.yPos >= 0) {
 				s.yPos -= 10000;
 			}
 		}
 	}
 
-    /*
+	/*
 	 * add any removed from screen slots back into view
-     */
+	 */
 
 	public void addSlots() {
-		for (Slot s : this.inventorySlots) {
+		for (Slot s : inventorySlots) {
 			if (s.yPos < 0) {
 				s.yPos += 10000;
 			}
 		}
 	}
 
-	/*
-	 * override default CRASH with default DO NOTHING
-	 */
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slotClickedIndex) {
-		return ItemStack.EMPTY;
+		return ItemStack.EMPTY; //by default there's no shift click support, child containers need to implement this
 	}
 }
