@@ -47,4 +47,6 @@ public class StructureValidationProperties {
 	public static final StructureValidationPropertyString TERRITORY_NAME = new StructureValidationPropertyString("territoryName", "");
 
 	public static final StructureValidationPropertyResourceLocation BIOME_REPLACEMENT = new StructureValidationPropertyResourceLocation("biomeReplacement", EMPTY_REGISTRY_NAME);
+
+	public static final StructureValidationPropertyString STRUCTURE_AUTHOR = new StructureValidationPropertyString("structureAuthor", "");
 }

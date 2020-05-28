@@ -1323,6 +1323,7 @@ research.ballistics=Ballistics
 research.rocketry=Rocketry
 
 #structure validation translation stuff
+structure.validation.structureAuthor=Author
 structure.validation.survival=Survival
 structure.validation.minGenDepth=Min Generation Depth
 structure.validation.maxGenDepth=Max Generation Depth
