@@ -14,17 +14,18 @@ import net.minecraft.entity.INpc;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagByteArray;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
@@ -58,7 +59,6 @@ import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
-import net.shadowmage.ancientwarfare.npc.item.ItemShield;
 import net.shadowmage.ancientwarfare.npc.registry.NpcDefaultsRegistry;
 import net.shadowmage.ancientwarfare.npc.skin.NpcSkinSettings;
 import net.shadowmage.ancientwarfare.vehicle.entity.IPathableEntity;
@@ -79,10 +79,12 @@ import static net.shadowmage.ancientwarfare.npc.config.AWNPCStatics.npcLevelDama
 public abstract class NpcBase extends EntityCreature implements IEntityAdditionalSpawnData, IOwnable, IEntityPacketHandler, IPathableEntity, INpc {
 
 	private static final DataParameter<Integer> AI_TASKS = EntityDataManager.createKey(NpcBase.class, DataSerializers.VARINT);
+	private static final DataParameter<Integer> SHIELD_DISABLED_TICK = EntityDataManager.createKey(NpcBase.class, DataSerializers.VARINT);
 	private static final DataParameter<BlockPos> BED_POS = EntityDataManager.createKey(NpcBase.class, DataSerializers.BLOCK_POS);
 	private static final DataParameter<Byte> BED_DIRECTION = EntityDataManager.createKey(NpcBase.class, DataSerializers.BYTE);
 	private static final DataParameter<Boolean> IS_SLEEPING = EntityDataManager.createKey(NpcBase.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<Boolean> SWINGING_ARMS = EntityDataManager.createKey(NpcBase.class, DataSerializers.BOOLEAN);
+	private static final DataParameter<Boolean> BLOCKING = EntityDataManager.createKey(NpcBase.class, DataSerializers.BOOLEAN);
 	private static final String SLOT_NUM_TAG = "slotNum";
 	private static final String BED_DIRECTION_TAG = "bedDirection";
 	private static final String IS_SLEEPING_TAG = "isSleeping";
@@ -148,6 +150,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		dataManager.register(BED_DIRECTION, (byte) EnumFacing.NORTH.ordinal());
 		dataManager.register(IS_SLEEPING, false);
 		dataManager.register(SWINGING_ARMS, false);
+		dataManager.register(BLOCKING, false);
+		dataManager.register(SHIELD_DISABLED_TICK, 0);
 	}
 
 	@Override
@@ -290,15 +294,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 					armor.add(armorPiece);
 				}
 				float value = ISpecialArmor.ArmorProperties.applyArmor(this, armor, source, amount);
-				if (value > 0.0F && getShieldStack().getItem() instanceof ItemShield) {
-					float absorb = value * ((ItemShield) getShieldStack().getItem()).getArmorBonusValue() / 25F;
-					int dmg = Math.max((int) absorb, 1);
-					getShieldStack().damageItem(dmg, this);
-					value -= absorb;
-				}
-				if (value < 0.0F)
-					return 0;
-				return value;
+				return value < 0.0F ? 0 : value;
 			}
 		}
 		return amount;
@@ -312,12 +308,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		if (getArmorValueOverride() >= 0) {
 			return getArmorValueOverride();
 		}
-		int value = super.getTotalArmorValue();
-		if (getShieldStack().getItem() instanceof ItemShield) {
-			ItemShield shield = (ItemShield) getShieldStack().getItem();
-			value += shield.getArmorBonusValue();
-		}
-		return value;
+		return super.getTotalArmorValue();
 	}
 
 	@Override
@@ -492,6 +483,70 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	}
 
 	@Override
+	protected void blockUsingShield(EntityLivingBase attacker) {
+		attacker.knockBack(this, 0.1F, posX - attacker.posX, posZ - attacker.posZ);
+
+		if (attacker.getHeldItemMainhand().getItem().canDisableShield(attacker.getHeldItemMainhand(), getActiveItemStack(), this, attacker)) {
+			disableShield();
+		}
+	}
+
+	private void disableShield() {
+		float f = 0.25F + (float) EnchantmentHelper.getEfficiencyModifier(this) * 0.05F;
+		f += 0.75F;
+
+		if (rand.nextFloat() < f) {
+			setShieldDisabledTick(80);
+			resetActiveHand();
+			world.setEntityState(this, (byte) 30);
+		}
+	}
+
+	protected void damageShield(float damage) {
+		if (damage >= 3.0F && activeItemStack.getItem().isShield(activeItemStack, this)) {
+			int i = 1 + MathHelper.floor(damage);
+			getShieldStack().damageItem(i, this);
+			setActiveHand(EnumHand.OFF_HAND);
+
+			if (getShieldStack().isEmpty()) {  //shield breaks
+				setShieldStack(ItemStack.EMPTY);
+				playSound(SoundEvents.ITEM_SHIELD_BREAK, 0.8F, 0.8F + world.rand.nextFloat() * 0.4F);
+			}
+		}
+	}
+
+
+	// vanilla method with a check for shield items to ignore canContinueUsing
+	@Override
+	protected void updateActiveHand() {
+		{
+			if (isHandActive()) {
+				ItemStack itemstack = getHeldItem(getActiveHand());
+				if (net.minecraftforge.common.ForgeHooks.canContinueUsing(activeItemStack, itemstack) || itemstack.getItem().isShield(itemstack, this))
+					activeItemStack = itemstack;
+
+				if (itemstack == activeItemStack) {
+					if (!activeItemStack.isEmpty()) {
+						activeItemStackUseCount = net.minecraftforge.event.ForgeEventFactory.onItemUseTick(this, activeItemStack, activeItemStackUseCount);
+						if (activeItemStackUseCount > 0)
+							activeItemStack.getItem().onUsingTick(activeItemStack, this, activeItemStackUseCount);
+					}
+
+					if (getItemInUseCount() <= 25 && getItemInUseCount() % 4 == 0) {
+						updateItemUse(activeItemStack, 5);
+					}
+
+					if (--activeItemStackUseCount <= 0 && !world.isRemote) {
+						onItemUseFinish();
+					}
+				} else {
+					resetActiveHand();
+				}
+			}
+		}
+	}
+
+	@Override
 	public void setWorld(World world) {
 		super.setWorld(world);
 		((NpcNavigator) navigator).onWorldChange();
@@ -544,6 +599,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		super.setItemStackToSlot(slot, stack);
 		if (slot == EntityEquipmentSlot.MAINHAND) {
 			onWeaponInventoryChanged();
+		}
+		if (slot == EntityEquipmentSlot.OFFHAND) {
+			onOffhandInventoryChanged();
 		}
 	}
 
@@ -681,6 +739,14 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	}
 
 	/*
+	 * callback for when the offhand item slot has been changed.<br>
+	 * Implementations should re-set any subtype or inform any AI that need to know when
+	 * weapon was changed.
+	 */
+	public void onOffhandInventoryChanged() {
+	}
+
+	/*
 	 * return the NPCs subtype.<br>
 	 * this subtype may vary at runtime.
 	 */
@@ -758,6 +824,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	public void onUpdate() {
 		world.profiler.startSection("AWNpcTick");
 		updateArmSwingProgress();
+		if (getShieldDisabledTick() > 0) {
+			decrementShieldDisabledTick();
+		}
 		if (ticksExisted % 200 == 0 && getHealth() < getMaxHealth() && isEntityAlive() && (!requiresUpkeep() || getFoodRemaining() > 0)) {
 			setHealth(getHealth() + 1);
 		}
@@ -947,6 +1016,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
 		readBaseTags(tag);
 		onWeaponInventoryChanged();
+		onOffhandInventoryChanged();
 	}
 
 	@Override
@@ -1291,10 +1361,29 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		return dataManager.get(SWINGING_ARMS);
 	}
 
+	public boolean isBlockingWithShield() {
+		return dataManager.get(BLOCKING);
+	}
+
 	public void setSwingingArms(boolean swingingArms) {
 		dataManager.set(SWINGING_ARMS, swingingArms);
 	}
 
+	public void setShieldBlocking(boolean isBlocking) {
+		dataManager.set(BLOCKING, isBlocking);
+	}
+
+	public int getShieldDisabledTick() {
+		return dataManager.get(SHIELD_DISABLED_TICK);
+	}
+
+	public void setShieldDisabledTick(int count) {
+		dataManager.set(SHIELD_DISABLED_TICK, count);
+	}
+
+	public void decrementShieldDisabledTick() {
+		dataManager.set(SHIELD_DISABLED_TICK, (dataManager.get(SHIELD_DISABLED_TICK)) - 1);
+	}
 	//TODO refactor vehicle stuff out - perhaps capability??
 
 	@Nullable
@@ -1352,5 +1441,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	public void setSkinSettings(NpcSkinSettings skinSettings) {
 		this.skinSettings = skinSettings;
 		this.skinSettings.onNpcSet(this);
+	}
+
+	public boolean isBow(Item item) {
+		return item instanceof ItemBow;
 	}
 }
