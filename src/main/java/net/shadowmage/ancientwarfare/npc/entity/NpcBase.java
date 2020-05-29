@@ -14,10 +14,10 @@ import net.minecraft.entity.INpc;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagByteArray;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
@@ -83,6 +83,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	private static final DataParameter<Byte> BED_DIRECTION = EntityDataManager.createKey(NpcBase.class, DataSerializers.BYTE);
 	private static final DataParameter<Boolean> IS_SLEEPING = EntityDataManager.createKey(NpcBase.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<Boolean> SWINGING_ARMS = EntityDataManager.createKey(NpcBase.class, DataSerializers.BOOLEAN);
+	private static final DataParameter<Boolean> BLOCKING = EntityDataManager.createKey(NpcBase.class, DataSerializers.BOOLEAN);
 	private static final String SLOT_NUM_TAG = "slotNum";
 	private static final String BED_DIRECTION_TAG = "bedDirection";
 	private static final String IS_SLEEPING_TAG = "isSleeping";
@@ -148,6 +149,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		dataManager.register(BED_DIRECTION, (byte) EnumFacing.NORTH.ordinal());
 		dataManager.register(IS_SLEEPING, false);
 		dataManager.register(SWINGING_ARMS, false);
+		dataManager.register(BLOCKING, false);
 	}
 
 	@Override
@@ -489,6 +491,30 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 			return false;
 		}
 		return super.attackEntityFrom(source, damage);
+	}
+
+	protected void damageShield(float damage)
+	{
+		if (damage >= 3.0F && activeItemStack.getItem().isShield(activeItemStack, this))
+		{
+			int i = 1 + MathHelper.floor(damage);
+			activeItemStack.damageItem(i, this);
+			if (activeItemStack.isEmpty()) //shield breaks
+			{
+				EnumHand enumhand = getActiveHand();
+				if (enumhand == EnumHand.MAIN_HAND)
+				{
+					setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStack.EMPTY);
+				}
+				else
+				{
+					setItemStackToSlot(EntityEquipmentSlot.OFFHAND, ItemStack.EMPTY);
+				}
+
+				activeItemStack = ItemStack.EMPTY;
+				playSound(SoundEvents.ITEM_SHIELD_BREAK, 0.8F, 0.8F + world.rand.nextFloat() * 0.4F);
+			}
+		}
 	}
 
 	@Override
@@ -1295,6 +1321,14 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		dataManager.set(SWINGING_ARMS, swingingArms);
 	}
 
+	@SideOnly(Side.CLIENT)
+	public boolean isBlocking() {
+		return dataManager.get(BLOCKING);
+	}
+
+	public void setBlocking(boolean blocking) {
+		dataManager.set(BLOCKING, blocking);
+	}
 	//TODO refactor vehicle stuff out - perhaps capability??
 
 	@Nullable

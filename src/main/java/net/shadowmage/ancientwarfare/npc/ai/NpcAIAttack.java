@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.npc.ai;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.util.EnumHand;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 import java.util.Optional;
@@ -10,6 +11,8 @@ import java.util.Optional;
 public abstract class NpcAIAttack<T extends NpcBase> extends NpcAI<T> {
 	private EntityLivingBase target;
 	private int attackDelay = 35;
+	private int blockingDuration = 40;
+	private int maxBlockDuration = 40;
 
 	public NpcAIAttack(T npc) {
 		super(npc);
@@ -39,18 +42,32 @@ public abstract class NpcAIAttack<T extends NpcBase> extends NpcAI<T> {
 		moveRetryDelay = 0;
 		npc.removeAITask(TASK_MOVE + TASK_ATTACK);
 		npc.setSwingingArms(false);
+		npc.stopActiveHand();
 	}
 
 	@Override
 	public final void updateTask() {
 		npc.getLookHelper().setLookPositionWithEntity(target, 30.f, 30.f);
-		double distanceToEntity = this.npc.getDistanceSq(target.posX, target.getEntityBoundingBox().minY, target.posZ);
+		double distanceToEntity = npc.getDistanceSq(target.posX, target.getEntityBoundingBox().minY, target.posZ);
 		if (shouldCloseOnTarget(distanceToEntity)) {
 			npc.addAITask(TASK_MOVE);
 			moveToEntity(target, distanceToEntity);
+			if (hasShieldInOffhand() && blockingDuration > 0) {
+				blockingDuration--;
+				npc.setActiveHand(EnumHand.OFF_HAND);
+				npc.setBlocking(true);
+			} else {
+				npc.setBlocking(false);
+				npc.stopActiveHand();
+			}
 		} else {
 			attackDelay--;
 			doAttack(distanceToEntity);
+			if (hasShieldInOffhand()) {
+				npc.setActiveHand(EnumHand.OFF_HAND);
+				npc.setBlocking(true);
+				blockingDuration = maxBlockDuration;
+			}
 		}
 	}
 
@@ -98,5 +115,9 @@ public abstract class NpcAIAttack<T extends NpcBase> extends NpcAI<T> {
 
 	public final int getAttackDelay() {
 		return attackDelay;
+	}
+
+	public boolean hasShieldInOffhand() {
+		return npc.getHeldItemOffhand().getItem().isShield(npc.getHeldItemOffhand(), npc);
 	}
 }
