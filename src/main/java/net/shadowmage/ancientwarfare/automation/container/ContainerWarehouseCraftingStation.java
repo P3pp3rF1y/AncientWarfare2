@@ -198,10 +198,10 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 	private void synchItemMaps() {
 		/*
 		 * need to loop through this.itemMap and compare quantities to warehouse.itemMap
-         *    add any changes to change-list
-         * need to loop through warehouse.itemMap and find new entries
-         *    add any new entries to change-list
-         */
+		 *    add any changes to change-list
+		 * need to loop through warehouse.itemMap and find new entries
+		 *    add any new entries to change-list
+		 */
 
 		cache.clear();
 		TileWarehouseBase warehouse = tileEntity.getWarehouse();
@@ -265,8 +265,12 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 		}
 
 		if (InventoryTools.insertItems(inventories, craftingItems, true).isEmpty()) {
-			InventoryTools.insertItems(inventories, craftingItems, false);
-			InventoryTools.removeItems(craftMatrixWrapper, craftingItems);
+			List<ItemStack> remainingItems = InventoryTools.insertItems(inventories, craftingItems, false);
+			InventoryTools.emptyInventory(craftMatrixWrapper);
+			if (!remainingItems.isEmpty()) {
+				InventoryTools.insertItems(craftMatrixWrapper, remainingItems, false);
+				return false;
+			}
 			return true;
 		}
 
