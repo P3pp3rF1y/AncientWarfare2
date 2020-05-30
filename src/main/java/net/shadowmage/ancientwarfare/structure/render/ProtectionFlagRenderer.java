@@ -54,12 +54,10 @@ public class ProtectionFlagRenderer extends TileEntitySpecialRenderer<TileFlag> 
 		boolean flag = te.getWorld() != null;
 		int angle = flag ? te.getBlockMetadata() : 0;
 		long worldTime = flag ? te.getWorld().getTotalWorldTime() : 0L;
-		int topColor = te.getTopColor();
-		int bottomColor = te.getBottomColor();
 		String faction = te.getName();
 		BlockPos pos = te.getPos();
 
-		render((float) x, (float) y, (float) z, partialTicks, alpha, angle, worldTime, topColor, bottomColor, faction, pos);
+		render((float) x, (float) y, (float) z, partialTicks, alpha, angle, worldTime, faction, pos);
 		if (te.isPlayerOwned()) {
 			renderPlayerHead(te.getPlayerProfile(), (float) x, (float) y, (float) z, partialTicks, angle);
 		}
@@ -94,7 +92,7 @@ public class ProtectionFlagRenderer extends TileEntitySpecialRenderer<TileFlag> 
 
 	}
 
-	private void render(float x, float y, float z, float partialTicks, float alpha, int rotation, float worldTime, int topColor, int bottomColor, String faction, BlockPos pos) {
+	private void render(float x, float y, float z, float partialTicks, float alpha, int rotation, float worldTime, String faction, BlockPos pos) {
 		GlStateManager.pushMatrix();
 
 		GlStateManager.translate(x + 0.5F, y + 0.5F, z + 0.5F);
@@ -105,7 +103,7 @@ public class ProtectionFlagRenderer extends TileEntitySpecialRenderer<TileFlag> 
 		float f3 = (float) (pos.getX() * 7 + pos.getY() * 9 + pos.getZ() * 13) + worldTime + partialTicks;
 		bannerModel.bannerSlate.rotateAngleX = (-0.0125F + 0.01F * MathHelper.cos(f3 * (float) Math.PI * 0.02F)) * (float) Math.PI;
 		GlStateManager.enableRescaleNormal();
-		ResourceLocation resourcelocation = getBannerResourceLocation(topColor, bottomColor, faction);
+		ResourceLocation resourcelocation = getBannerResourceLocation(faction);
 
 		Minecraft.getMinecraft().renderEngine.bindTexture(resourcelocation);
 		GlStateManager.pushMatrix();
@@ -117,7 +115,7 @@ public class ProtectionFlagRenderer extends TileEntitySpecialRenderer<TileFlag> 
 		GlStateManager.popMatrix();
 	}
 
-	private ResourceLocation getBannerResourceLocation(int topColor, int bottomColor, String faction) {
+	private ResourceLocation getBannerResourceLocation(String faction) {
 		ResourceLocation textureEntry = new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/entity/structure/banner/" + faction + ".png");
 		return textureEntry;
 	}
@@ -132,7 +130,7 @@ public class ProtectionFlagRenderer extends TileEntitySpecialRenderer<TileFlag> 
 
 		NBTTagCompound tag = stack.getTagCompound();
 		//noinspection ConstantConditions
-		render(0, 0, 0, 0, 1, 0, 0, tag.getInteger("topColor"), tag.getInteger("bottomColor"), tag.getString("name"), BlockPos.ORIGIN);
+		render(0, 0, 0, 0, 1, 0, 0, tag.getString("name"), BlockPos.ORIGIN);
 
 		//Fixes issues with inventory rendering.
 		//The Portal renderer modifies blend and disables it.
