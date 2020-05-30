@@ -37,9 +37,6 @@ public class VehicleTypeBoatCatapult extends VehicleType {
 		validAmmoTypes.add(AmmoRegistry.ammoNapalm15);
 
 		validAmmoTypes.add(AmmoRegistry.ammoArrow);
-		validAmmoTypes.add(AmmoRegistry.ammoArrowFlame);
-		validAmmoTypes.add(AmmoRegistry.ammoArrowIron);
-		validAmmoTypes.add(AmmoRegistry.ammoArrowIronFlame);
 
 		if (AWVehicleStatics.generalSettings.oversizeAmmoEnabled) {
 			validAmmoTypes.add(AmmoRegistry.ammoStoneShot30);

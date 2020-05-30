@@ -221,21 +221,6 @@
                     "layer0": "ancientwarfare:items/vehicle/ammo/ammo_arrow"
                 }
             },
-            "ammo_arrow_flame": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_arrow_flame"
-                }
-            },
-            "ammo_arrow_iron": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_arrow_iron"
-                }
-            },
-            "ammo_arrow_iron_flame": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_arrow_iron_flame"
-                }
-            },
             "ammo_ballista_bolt": {
                 "textures": {
                     "layer0": "ancientwarfare:items/vehicle/ammo/ammo_bolt"
