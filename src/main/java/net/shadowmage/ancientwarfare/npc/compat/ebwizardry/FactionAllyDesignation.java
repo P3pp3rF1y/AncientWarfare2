@@ -10,9 +10,7 @@ public final class FactionAllyDesignation {
 	// Prevents any magic damage to friendly NPCs
 	@SubscribeEvent
 	public static void onLivingAttackEvent(LivingAttackEvent event) {
-		if (event.getSource() != null && event.getSource().getTrueSource() instanceof NpcFaction
-				&& event.getSource() instanceof IElementalDamage) {
-
+		if (event.getSource() instanceof IElementalDamage && event.getSource().getTrueSource() instanceof NpcFaction) {
 			if (event.getEntity() instanceof NpcFaction) {
 				NpcFaction caster = (NpcFaction) event.getSource().getTrueSource();
 				NpcFaction target = (NpcFaction) event.getEntity();
