@@ -108,8 +108,6 @@ public class BlockFlag extends BlockBaseStructure {
 		for (BlockFlag.FlagDefinition flagDefinition : flagDefinitions) {
 			ItemStack stack = new ItemStack(this);
 			stack.setTagCompound(new NBTBuilder()
-					.setInteger("topColor", flagDefinition.getTopColor())
-					.setInteger("bottomColor", flagDefinition.getBottomColor())
 					.setString("name", flagDefinition.getName())
 					.build());
 			items.add(stack);
@@ -129,25 +127,13 @@ public class BlockFlag extends BlockBaseStructure {
 	public static class FlagDefinition {
 
 		private String name;
-		private int topColor;
-		private int bottomColor;
 
-		public FlagDefinition(String name, int topColor, int bottomColor) {
+		public FlagDefinition(String name) {
 			this.name = name;
-			this.topColor = topColor;
-			this.bottomColor = bottomColor;
 		}
 
 		public String getName() {
 			return name;
-		}
-
-		private int getTopColor() {
-			return topColor;
-		}
-
-		private int getBottomColor() {
-			return bottomColor;
 		}
 	}
 

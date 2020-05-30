@@ -134,10 +134,10 @@ public class AWNPCItems {
 	public static void addFactionBlocks() {
 		for (FactionDefinition definition : FactionRegistry.getFactionDefinitions()) {
 				AWStructureBlocks.PROTECTION_FLAG.addFlagDefinition(new BlockFlag.FlagDefinition(
-						definition.getName(), 0xEF5757, definition.getColor()));
+						definition.getName()));
 
 				AWStructureBlocks.DECORATIVE_FLAG.addFlagDefinition(new BlockFlag.FlagDefinition(
-						definition.getName(), 0xEF5757, definition.getColor()));
+						definition.getName()));
 
 			for (Map.Entry<String, NBTTagCompound> blockData : definition.getThemedBlocksTags().entrySet()) {
 				Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockData.getKey()));

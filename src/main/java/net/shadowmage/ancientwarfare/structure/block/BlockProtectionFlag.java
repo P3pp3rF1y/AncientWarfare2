@@ -33,8 +33,6 @@ import net.shadowmage.ancientwarfare.structure.tile.TileProtectionFlag;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-import static net.shadowmage.ancientwarfare.core.render.property.CoreProperties.FACING;
-
 public class BlockProtectionFlag extends BlockFlag {
 	public BlockProtectionFlag() {
 		super(Material.WOOD, "protection_flag");
@@ -106,14 +104,13 @@ public class BlockProtectionFlag extends BlockFlag {
 	}
 
 	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
-	{
+	public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand) {
 		int maxParticles = worldIn.rand.nextInt(3);
 		for (int i = 0; i < maxParticles; i++) {
 
-		double d0 = (double)pos.getX() + worldIn.rand.nextFloat();
-		double d1 = (double)pos.getY() + 1.9D * worldIn.rand.nextFloat();
-		double d2 = (double)pos.getZ() + worldIn.rand.nextFloat();
+			double d0 = (double) pos.getX() + worldIn.rand.nextFloat();
+			double d1 = (double) pos.getY() + 1.9D * worldIn.rand.nextFloat();
+			double d2 = (double) pos.getZ() + worldIn.rand.nextFloat();
 			worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0, d1, d2, 0.0D, 0.0D, 0.0D);
 			Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleSun(worldIn, d0, d1, d2));
 		}

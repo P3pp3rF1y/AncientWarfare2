@@ -39,9 +39,7 @@ public class TileProtectionFlag extends TileFlag {
 	}
 
 	private void readNBT(NBTTagCompound tag) {
-		topColor = tag.getInteger("topColor");
-		bottomColor = tag.getInteger("bottomColor");
-		name = tag.getString("name");
+		name = tag.getString(NAME_TAG);
 		if (tag.hasKey(OWNER_TAG)) {
 			owner = Owner.deserializeFromNBT(tag.getCompoundTag(OWNER_TAG));
 			playerProfile = NBTUtil.readGameProfileFromNBT(tag.getCompoundTag(PLAYER_PROFILE_TAG));
@@ -52,7 +50,6 @@ public class TileProtectionFlag extends TileFlag {
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
 		readNBT(compound);
-		name = compound.getString(NAME_TAG);
 	}
 
 	@Override
@@ -62,9 +59,7 @@ public class TileProtectionFlag extends TileFlag {
 	}
 
 	private NBTTagCompound writeNBT(NBTTagCompound tag) {
-		tag.setInteger("topColor", topColor);
-		tag.setInteger("bottomColor", bottomColor);
-		tag.setString("name", name);
+		tag.setString(NAME_TAG, name);
 		if (owner != Owner.EMPTY) {
 			tag.setTag(OWNER_TAG, owner.serializeToNBT(new NBTTagCompound()));
 			tag.setTag(PLAYER_PROFILE_TAG, NBTUtil.writeGameProfile(new NBTTagCompound(), playerProfile));
@@ -75,7 +70,6 @@ public class TileProtectionFlag extends TileFlag {
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		NBTTagCompound tag = writeNBT(super.writeToNBT(compound));
-		tag.setString(NAME_TAG, name);
 		return tag;
 	}
 
@@ -96,7 +90,6 @@ public class TileProtectionFlag extends TileFlag {
 		ItemStack stack = new ItemStack(AWStructureBlocks.PROTECTION_FLAG);
 		NBTTagCompound tag = new NBTTagCompound();
 		writeNBT(tag);
-		tag.setString(NAME_TAG, name);
 		stack.setTagCompound(tag);
 		return stack;
 	}
@@ -106,7 +99,6 @@ public class TileProtectionFlag extends TileFlag {
 		if (stack.hasTagCompound()) {
 			NBTTagCompound tag = stack.getTagCompound();
 			readNBT(tag);
-			name = tag.getString(NAME_TAG);
 		}
 	}
 
