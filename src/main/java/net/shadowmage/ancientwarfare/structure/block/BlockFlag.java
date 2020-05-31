@@ -9,7 +9,9 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Mirror;
@@ -18,16 +20,19 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.NBTBuilder;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
+import net.shadowmage.ancientwarfare.structure.tile.TileFlag;
 
 import javax.annotation.Nullable;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class BlockFlag extends BlockBaseStructure {
-	protected static final AxisAlignedBB STANDING_AABB = new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 1.0D, 0.75D);
+	private static final AxisAlignedBB STANDING_AABB = new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 1.0D, 0.75D);
 	public static final PropertyInteger ROTATION = PropertyInteger.create("rotation", 0, 15);
 
 	private Set<BlockFlag.FlagDefinition> flagDefinitions = new LinkedHashSet<>();
@@ -112,6 +117,30 @@ public class BlockFlag extends BlockBaseStructure {
 					.build());
 			items.add(stack);
 		}
+	}
+
+	@Override
+	public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack) {
+		if (te instanceof TileFlag) {
+			spawnAsEntity(worldIn, pos, ((TileFlag) te).getItemStack());
+		} else {
+			super.harvestBlock(worldIn, player, pos, state, te, stack);
+		}
+	}
+
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+		return WorldTools.getTile(world, pos, TileFlag.class).map(TileFlag::getItemStack).orElse(new ItemStack(this));
+	}
+
+	@Override
+	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+		drops.add(WorldTools.getTile(world, pos, TileFlag.class).map(TileFlag::getItemStack).orElse(new ItemStack(this)));
+	}
+
+	@Override
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		WorldTools.getTile(world, pos, TileFlag.class).ifPresent(te -> te.setFromStack(stack));
 	}
 
 	@Override

@@ -23,6 +23,7 @@ import net.shadowmage.ancientwarfare.structure.init.AWStructureSounds;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructureEntry;
 import net.shadowmage.ancientwarfare.structure.util.ConquerHelper;
 
+import javax.annotation.Nullable;
 import java.util.Optional;
 
 public class TileProtectionFlag extends TileFlag {
@@ -33,13 +34,8 @@ public class TileProtectionFlag extends TileFlag {
 	private GameProfile playerProfile;
 
 	@Override
-	protected void handleUpdateNBT(NBTTagCompound tag) {
-		super.handleUpdateNBT(tag);
-		readNBT(tag);
-	}
-
-	private void readNBT(NBTTagCompound tag) {
-		name = tag.getString(NAME_TAG);
+	protected void readNBT(NBTTagCompound tag) {
+		super.readNBT(tag);
 		if (tag.hasKey(OWNER_TAG)) {
 			owner = Owner.deserializeFromNBT(tag.getCompoundTag(OWNER_TAG));
 			playerProfile = NBTUtil.readGameProfileFromNBT(tag.getCompoundTag(PLAYER_PROFILE_TAG));
@@ -47,29 +43,12 @@ public class TileProtectionFlag extends TileFlag {
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
-		super.readFromNBT(compound);
-		readNBT(compound);
-	}
-
-	@Override
-	protected void writeUpdateNBT(NBTTagCompound tag) {
-		super.writeUpdateNBT(tag);
-		writeNBT(tag);
-	}
-
-	private NBTTagCompound writeNBT(NBTTagCompound tag) {
-		tag.setString(NAME_TAG, name);
+	protected NBTTagCompound writeNBT(NBTTagCompound tag) {
+		super.writeNBT(tag);
 		if (owner != Owner.EMPTY) {
 			tag.setTag(OWNER_TAG, owner.serializeToNBT(new NBTTagCompound()));
 			tag.setTag(PLAYER_PROFILE_TAG, NBTUtil.writeGameProfile(new NBTTagCompound(), playerProfile));
 		}
-		return tag;
-	}
-
-	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		NBTTagCompound tag = writeNBT(super.writeToNBT(compound));
 		return tag;
 	}
 
@@ -86,20 +65,13 @@ public class TileProtectionFlag extends TileFlag {
 		});
 	}
 
+	@Override
 	public ItemStack getItemStack() {
 		ItemStack stack = new ItemStack(AWStructureBlocks.PROTECTION_FLAG);
 		NBTTagCompound tag = new NBTTagCompound();
 		writeNBT(tag);
 		stack.setTagCompound(tag);
 		return stack;
-	}
-
-	@SuppressWarnings("ConstantConditions")
-	public void setFromStack(ItemStack stack) {
-		if (stack.hasTagCompound()) {
-			NBTTagCompound tag = stack.getTagCompound();
-			readNBT(tag);
-		}
 	}
 
 	public void onActivatedBy(EntityPlayer player) {
@@ -141,14 +113,9 @@ public class TileProtectionFlag extends TileFlag {
 		return owner != Owner.EMPTY;
 	}
 
+	@Nullable
 	public GameProfile getPlayerProfile() {
 		return playerProfile;
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public AxisAlignedBB getRenderBoundingBox() {
-		return new AxisAlignedBB(pos, pos.add(1, 3, 1));
 	}
 
 	public float getPlayerRelativeBlockHardness(EntityPlayer player, float original) {

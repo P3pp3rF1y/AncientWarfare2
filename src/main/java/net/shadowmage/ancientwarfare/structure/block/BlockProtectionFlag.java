@@ -54,32 +54,6 @@ public class BlockProtectionFlag extends BlockFlag {
 	}
 
 	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		return WorldTools.getTile(world, pos, TileProtectionFlag.class)
-				.map(TileProtectionFlag::getItemStack).orElse(new ItemStack(AWStructureBlocks.PROTECTION_FLAG));
-	}
-
-	@Override
-	public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack) {
-		if (te instanceof TileProtectionFlag) {
-			spawnAsEntity(worldIn, pos, ((TileProtectionFlag) te).getItemStack());
-		} else {
-			super.harvestBlock(worldIn, player, pos, state, te, stack);
-		}
-	}
-
-	@Override
-	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-		drops.add(WorldTools.getTile(world, pos, TileProtectionFlag.class)
-				.map(TileProtectionFlag::getItemStack).orElse(new ItemStack(AWStructureBlocks.PROTECTION_FLAG)));
-	}
-
-	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		WorldTools.getTile(world, pos, TileProtectionFlag.class).ifPresent(te -> te.setFromStack(stack));
-	}
-
-	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		WorldTools.getTile(world, pos, TileProtectionFlag.class).ifPresent(te -> te.onActivatedBy(player));
 		return true;
@@ -115,5 +89,4 @@ public class BlockProtectionFlag extends BlockFlag {
 			Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleSun(worldIn, d0, d1, d2));
 		}
 	}
-
 }
