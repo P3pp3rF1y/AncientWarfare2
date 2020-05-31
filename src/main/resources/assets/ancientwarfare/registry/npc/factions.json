@@ -890,7 +890,7 @@
             }
         }, {
             "name": "coven",
-            "color": "FFC0CB",
+            "color": "000000",
             "player_default_standing": -9000,
             "hostile_towards_factions": {
                 "empire": true,
@@ -1122,7 +1122,7 @@
             }
         }, {
             "name": "lizardman",
-            "color": "FFC0CB",
+            "color": "576500",
             "player_default_standing": -9000,
             "hostile_towards_factions": {
                 "empire": true,
@@ -1170,7 +1170,7 @@
             }
         }, {
             "name": "rakshasa",
-            "color": "FFC0CB",
+            "color": "d7bf00",
             "player_default_standing": -9000,
             "hostile_towards_factions": {
                 "empire": true,
@@ -1266,7 +1266,7 @@
             }
         }, {
             "name": "ishtari",
-            "color": "FFC0CB",
+            "color": "fed000",
             "player_default_standing": -9000,
             "hostile_towards_factions": {
                 "empire": true,
@@ -1314,7 +1314,7 @@
             }
         }, {
             "name": "icelord",
-            "color": "FFC0CB",
+            "color": "3c9f9c",
             "player_default_standing": -9000,
             "hostile_towards_factions": {
                 "empire": true,
@@ -1362,7 +1362,7 @@
             }
         }, {
             "name": "guild",
-            "color": "FFC0CB",
+            "color": "007cc9",
             "player_default_standing": 50,
             "hostile_towards_factions": {
                 "empire": false,
@@ -1407,7 +1407,7 @@
             }
         }, {
             "name": "wizardly",
-            "color": "FFC0CB",
+            "color": "aa3fd8",
             "player_default_standing": 50,
             "hostile_towards_factions": {
                 "empire": false,
@@ -1452,7 +1452,7 @@
             }
         }, {
             "name": "amazon",
-            "color": "FFC0CB",
+            "color": "d34848",
             "player_default_standing": -50,
             "hostile_towards_factions": {
                 "empire": true,
@@ -1497,7 +1497,7 @@
             }
         }, {
             "name": "minossian",
-            "color": "FFC0CB",
+            "color": "456689",
             "player_default_standing": -9000,
             "hostile_towards_factions": {
                 "empire": true,
@@ -1913,7 +1913,7 @@
             }
         }, {
             "name": "vampire",
-            "color": "FFC0CB",
+            "color": "320000",
             "player_default_standing": -9000,
             "hostile_towards_factions": {
                 "empire": true,

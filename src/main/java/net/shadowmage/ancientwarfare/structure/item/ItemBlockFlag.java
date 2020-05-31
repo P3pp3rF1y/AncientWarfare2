@@ -6,8 +6,8 @@ import net.minecraft.util.text.translation.I18n;
 import net.shadowmage.ancientwarfare.core.item.ItemBlockBase;
 import org.apache.commons.lang3.StringUtils;
 
-public class ItemBlockProtectionFlag extends ItemBlockBase {
-	public ItemBlockProtectionFlag(Block block) {
+public class ItemBlockFlag extends ItemBlockBase {
+	public ItemBlockFlag(Block block) {
 		super(block);
 	}
 

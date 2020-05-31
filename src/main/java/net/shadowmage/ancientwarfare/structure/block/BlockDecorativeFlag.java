@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.structure.block;
 import codechicken.lib.model.ModelRegistryHelper;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.entity.EntityLivingBase;
@@ -11,9 +10,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -26,43 +22,34 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
 import net.shadowmage.ancientwarfare.structure.render.ParticleOnlyModel;
-import net.shadowmage.ancientwarfare.structure.render.ParticleSun;
 import net.shadowmage.ancientwarfare.structure.render.ProtectionFlagRenderer;
-import net.shadowmage.ancientwarfare.structure.tile.TileProtectionFlag;
+import net.shadowmage.ancientwarfare.structure.tile.TileDecorativeFlag;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 
-public class BlockProtectionFlag extends BlockFlag {
-	public BlockProtectionFlag() {
-		super(Material.WOOD, "protection_flag");
-		setResistance(6000000F);
-		setLightLevel(10 / 15F);
-	}
-
-	@Override
-	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World worldIn, BlockPos pos) {
-		float original = super.getPlayerRelativeBlockHardness(state, player, worldIn, pos);
-		return WorldTools.getTile(worldIn, pos, TileProtectionFlag.class).map(te -> te.getPlayerRelativeBlockHardness(player, original))
-				.orElse(original);
+public class BlockDecorativeFlag extends BlockFlag {
+	public BlockDecorativeFlag() {
+		super(Material.WOOD, "decorative_flag");
+		setResistance(5.0F);
+		setHardness(2.0F);
 	}
 
 	@Nullable
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
-		return new TileProtectionFlag();
+		return new TileDecorativeFlag();
 	}
 
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		return WorldTools.getTile(world, pos, TileProtectionFlag.class)
-				.map(TileProtectionFlag::getItemStack).orElse(new ItemStack(AWStructureBlocks.PROTECTION_FLAG));
+		return WorldTools.getTile(world, pos, TileDecorativeFlag.class)
+				.map(TileDecorativeFlag::getItemStack).orElse(new ItemStack(AWStructureBlocks.DECORATIVE_FLAG));
 	}
 
 	@Override
 	public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack) {
-		if (te instanceof TileProtectionFlag) {
-			spawnAsEntity(worldIn, pos, ((TileProtectionFlag) te).getItemStack());
+		if (te instanceof TileDecorativeFlag) {
+			spawnAsEntity(worldIn, pos, ((TileDecorativeFlag) te).getItemStack());
 		} else {
 			super.harvestBlock(worldIn, player, pos, state, te, stack);
 		}
@@ -70,19 +57,13 @@ public class BlockProtectionFlag extends BlockFlag {
 
 	@Override
 	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-		drops.add(WorldTools.getTile(world, pos, TileProtectionFlag.class)
-				.map(TileProtectionFlag::getItemStack).orElse(new ItemStack(AWStructureBlocks.PROTECTION_FLAG)));
+		drops.add(WorldTools.getTile(world, pos, TileDecorativeFlag.class)
+				.map(TileDecorativeFlag::getItemStack).orElse(new ItemStack(AWStructureBlocks.DECORATIVE_FLAG)));
 	}
 
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		WorldTools.getTile(world, pos, TileProtectionFlag.class).ifPresent(te -> te.setFromStack(stack));
-	}
-
-	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		WorldTools.getTile(world, pos, TileProtectionFlag.class).ifPresent(te -> te.onActivatedBy(player));
-		return true;
+		WorldTools.getTile(world, pos, TileDecorativeFlag.class).ifPresent(te -> te.setFromStack(stack));
 	}
 
 	@Override
@@ -100,20 +81,6 @@ public class BlockProtectionFlag extends BlockFlag {
 			}
 		});
 
-		ClientRegistry.bindTileEntitySpecialRenderer(TileProtectionFlag.class, new ProtectionFlagRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileDecorativeFlag.class, new ProtectionFlagRenderer());
 	}
-
-	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand) {
-		int maxParticles = worldIn.rand.nextInt(3);
-		for (int i = 0; i < maxParticles; i++) {
-
-			double d0 = (double) pos.getX() + worldIn.rand.nextFloat();
-			double d1 = (double) pos.getY() + 1.9D * worldIn.rand.nextFloat();
-			double d2 = (double) pos.getZ() + worldIn.rand.nextFloat();
-			worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0, d1, d2, 0.0D, 0.0D, 0.0D);
-			Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleSun(worldIn, d0, d1, d2));
-		}
-	}
-
 }
