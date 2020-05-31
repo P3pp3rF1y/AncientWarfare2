@@ -35,8 +35,6 @@ public class VehicleTypeTrebuchet extends VehicleType {
 		validAmmoTypes.add(AmmoRegistry.ammoNapalm10);
 		validAmmoTypes.add(AmmoRegistry.ammoNapalm15);
 
-		validAmmoTypes.add(AmmoRegistry.ammoArrow);
-
 		if (AWVehicleStatics.generalSettings.oversizeAmmoEnabled) {
 			validAmmoTypes.add(AmmoRegistry.ammoStoneShot30);
 			validAmmoTypes.add(AmmoRegistry.ammoStoneShot45);
