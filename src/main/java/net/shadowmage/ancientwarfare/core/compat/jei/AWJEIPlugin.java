@@ -54,16 +54,6 @@ public class AWJEIPlugin implements IModPlugin {
 
 	@Override
 	public void register(IModRegistry registry) {
-		// Blacklist exclusions from the JEI inventory
-		IIngredientBlacklist blackList = registry.getJeiHelpers().getIngredientBlacklist();
-		blackList.addIngredientToBlacklist(new ItemStack(AmmoRegistry.getItemForAmmo(AmmoRegistry.ammoBallShot)));
-		blackList.addIngredientToBlacklist(new ItemStack(AmmoRegistry.getItemForAmmo(AmmoRegistry.ammoBallIronShot)));
-		blackList.addIngredientToBlacklist(new ItemStack(AmmoRegistry.getItemForAmmo(AmmoRegistry.ammoArrow)));
-		blackList.addIngredientToBlacklist(new ItemStack(AmmoRegistry.getItemForAmmo(AmmoRegistry.ammoArrowFlame)));
-		blackList.addIngredientToBlacklist(new ItemStack(AmmoRegistry.getItemForAmmo(AmmoRegistry.ammoArrowIron)));
-		blackList.addIngredientToBlacklist(new ItemStack(AmmoRegistry.getItemForAmmo(AmmoRegistry.ammoArrowIronFlame)));
-
-
 		List<ResearchRecipeWrapper> shapedResearchRecipes = AWCraftingManager.getRecipes().stream().filter(r -> r instanceof ShapedResearchRecipe).map(r -> new ShapedResearchRecipeWrapper(registry.getJeiHelpers(), (ShapedResearchRecipe) r)).collect(Collectors.toList());
 		registry.addRecipes(shapedResearchRecipes, ShapedResearchRecipeCategory.UID);
 

@@ -98,22 +98,22 @@
             },
             "ammo_napalm_shot_10": {
                 "textures": {
-                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_napalm"
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_napalm_10"
                 }
             },
             "ammo_napalm_shot_15": {
                 "textures": {
-                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_napalm"
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_napalm_15"
                 }
             },
             "ammo_napalm_shot_30": {
                 "textures": {
-                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_napalm"
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_napalm_30"
                 }
             },
             "ammo_napalm_shot_45": {
                 "textures": {
-                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_napalm"
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_napalm_45"
                 }
             },
             "ammo_cluster_shot_10": {
@@ -219,21 +219,6 @@
             "ammo_arrow": {
                 "textures": {
                     "layer0": "ancientwarfare:items/vehicle/ammo/ammo_arrow"
-                }
-            },
-            "ammo_arrow_flame": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_arrow_flame"
-                }
-            },
-            "ammo_arrow_iron": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_arrow_iron"
-                }
-            },
-            "ammo_arrow_iron_flame": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_arrow_iron_flame"
                 }
             },
             "ammo_ballista_bolt": {
