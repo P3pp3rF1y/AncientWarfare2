@@ -1,9 +1,6 @@
 {
 	"credit": "Made by WinDanesz, with Blockbench",
-	"textures": {
-		"particle": "ancientwarfare:blocks/automation/warehouse_stock_linker_off",
-		"texture": "ancientwarfare:blocks/automation/warehouse_stock_linker_off"
-	},
+	"textures": {"particle": "#texture"},
 	"elements": [
 		{
 			"name": "22",
