@@ -13,7 +13,7 @@ import static net.shadowmage.ancientwarfare.structure.template.build.validation.
 
 public enum StructureValidationType {
 
-	GROUND(StructureValidatorGround::new),
+	GROUND(StructureValidatorGround::new, MIN_GENERATION_HEIGHT, MAX_GENERATION_HEIGHT),
 	UNDERGROUND(StructureValidatorUnderground::new, MIN_GENERATION_DEPTH, MAX_GENERATION_DEPTH, MIN_OVERFILL),
 	SKY(StructureValidatorSky::new, MIN_GENERATION_HEIGHT, MAX_GENERATION_HEIGHT, MIN_FLYING_HEIGHT),
 	WATER(StructureValidatorWater::new),

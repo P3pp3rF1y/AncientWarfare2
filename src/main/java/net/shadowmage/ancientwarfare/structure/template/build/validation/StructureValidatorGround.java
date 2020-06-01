@@ -17,9 +17,11 @@ import net.shadowmage.ancientwarfare.structure.worldgen.WorldStructureGenerator;
 
 import java.util.Optional;
 
-public class StructureValidatorGround extends StructureValidator {
+import static net.shadowmage.ancientwarfare.structure.template.build.validation.properties.StructureValidationProperties.MAX_GENERATION_HEIGHT;
+import static net.shadowmage.ancientwarfare.structure.template.build.validation.properties.StructureValidationProperties.MIN_GENERATION_HEIGHT;
 
-	public StructureValidatorGround() {
+public class StructureValidatorGround extends StructureValidator {
+	StructureValidatorGround() {
 		super(StructureValidationType.GROUND);
 	}
 
@@ -41,9 +43,22 @@ public class StructureValidatorGround extends StructureValidator {
 			AncientWarfareStructure.LOG.debug("Ground isn't deep enough for the structure- required: {}, found: {}", Math.abs(bb.min.getY()), y);
 			return false;
 		}
+
+		if (y < getMinGenerationHeight() || y > getMaxGenerationHeight()) {
+			return false;
+		}
+
 		int minY = getMinY(template, bb);
 		int maxY = getMaxY(template, bb);
 		return validateBorderBlocks(world, bb, minY, maxY, false);
+	}
+
+	private int getMaxGenerationHeight() {
+		return getPropertyValue(MAX_GENERATION_HEIGHT);
+	}
+
+	private int getMinGenerationHeight() {
+		return getPropertyValue(MIN_GENERATION_HEIGHT);
 	}
 
 	@Override

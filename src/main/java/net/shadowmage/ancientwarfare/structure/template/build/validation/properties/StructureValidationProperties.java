@@ -12,7 +12,7 @@ public class StructureValidationProperties {
 	public static final StructureValidationPropertyInteger MIN_OVERFILL = new StructureValidationPropertyInteger("minOverfill", 0);
 
 	public static final StructureValidationPropertyInteger MIN_GENERATION_HEIGHT = new StructureValidationPropertyInteger("minGenerationHeight", 0);
-	public static final StructureValidationPropertyInteger MAX_GENERATION_HEIGHT = new StructureValidationPropertyInteger("maxGenerationHeight", 0);
+	public static final StructureValidationPropertyInteger MAX_GENERATION_HEIGHT = new StructureValidationPropertyInteger("maxGenerationHeight", 255);
 	public static final StructureValidationPropertyInteger MIN_FLYING_HEIGHT = new StructureValidationPropertyInteger("minFlyingHeight", 0);
 
 	public static final StructureValidationPropertyInteger MIN_WATER_DEPTH = new StructureValidationPropertyInteger("minWaterDepth", 0);
