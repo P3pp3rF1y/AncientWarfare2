@@ -7,9 +7,6 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.item.ItemAmmo;
 import net.shadowmage.ancientwarfare.vehicle.missiles.AmmoArrow;
-import net.shadowmage.ancientwarfare.vehicle.missiles.AmmoArrowFlame;
-import net.shadowmage.ancientwarfare.vehicle.missiles.AmmoArrowIron;
-import net.shadowmage.ancientwarfare.vehicle.missiles.AmmoArrowIronFlame;
 import net.shadowmage.ancientwarfare.vehicle.missiles.AmmoBallShot;
 import net.shadowmage.ancientwarfare.vehicle.missiles.AmmoBallistaBolt;
 import net.shadowmage.ancientwarfare.vehicle.missiles.AmmoBallistaBoltExplosive;
@@ -88,9 +85,6 @@ public class AmmoRegistry {
 	public static IAmmo ammoGrapeShot15;
 	public static IAmmo ammoGrapeShot25;
 	public static IAmmo ammoArrow;
-	public static IAmmo ammoArrowFlame;
-	public static IAmmo ammoArrowIron;
-	public static IAmmo ammoArrowIronFlame;
 	public static IAmmo ammoBallistaBolt;
 	public static IAmmo ammoBallistaBoltFlame;
 	public static IAmmo ammoBallistaBoltExplosive;
@@ -151,9 +145,6 @@ public class AmmoRegistry {
 		ammoGrapeShot15 = registerAmmoType(new AmmoGrapeShot(15), registry);
 		ammoGrapeShot25 = registerAmmoType(new AmmoGrapeShot(25), registry);
 		ammoArrow = registerAmmoType(new AmmoArrow(), registry);
-		ammoArrowFlame = registerAmmoType(new AmmoArrowFlame(), registry);
-		ammoArrowIron = registerAmmoType(new AmmoArrowIron(), registry);
-		ammoArrowIronFlame = registerAmmoType(new AmmoArrowIronFlame(), registry);
 		ammoBallistaBolt = registerAmmoType(new AmmoBallistaBolt(), registry);
 		ammoBallistaBoltFlame = registerAmmoType(new AmmoBallistaBoltFlame(), registry);
 		ammoBallistaBoltExplosive = registerAmmoType(new AmmoBallistaBoltExplosive(), registry);
@@ -166,7 +157,7 @@ public class AmmoRegistry {
 
 	private static IAmmo registerAmmoType(IAmmo ammo, IForgeRegistry<Item> registry) {
 		ammoInstances.put(ammo.getRegistryName(), ammo);
-		ItemAmmo item = new ItemAmmo(ammo.getRegistryName());
+		ItemAmmo item = new ItemAmmo(ammo.getRegistryName(), ammo);
 		ammoItemInstances.put(ammo.getRegistryName(), item);
 		registry.register(item);
 		return ammo;

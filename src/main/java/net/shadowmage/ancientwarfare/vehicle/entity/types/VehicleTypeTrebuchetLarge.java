@@ -35,11 +35,6 @@ public class VehicleTypeTrebuchetLarge extends VehicleType {
 		validAmmoTypes.add(AmmoRegistry.ammoNapalm10);
 		validAmmoTypes.add(AmmoRegistry.ammoNapalm15);
 
-		validAmmoTypes.add(AmmoRegistry.ammoArrow);
-		validAmmoTypes.add(AmmoRegistry.ammoArrowFlame);
-		validAmmoTypes.add(AmmoRegistry.ammoArrowIron);
-		validAmmoTypes.add(AmmoRegistry.ammoArrowIronFlame);
-
 		validAmmoTypes.add(AmmoRegistry.ammoStoneShot30);
 		validAmmoTypes.add(AmmoRegistry.ammoStoneShot45);
 		validAmmoTypes.add(AmmoRegistry.ammoFireShot30);

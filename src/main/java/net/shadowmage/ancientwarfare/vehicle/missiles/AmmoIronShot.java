@@ -11,13 +11,13 @@ public class AmmoIronShot extends Ammo {
 
 	public AmmoIronShot(int weight, int damage) {
 		super("ammo_iron_shot_" + weight + "_" + damage);
-		this.ammoWeight = weight;
-		this.entityDamage = damage;
-		this.vehicleDamage = damage;
+		ammoWeight = weight;
+		entityDamage = damage;
+		vehicleDamage = damage;
 		float scaleFactor = weight + 45.f;
-		this.renderScale = (weight / scaleFactor) * 2;
-		this.configName = "iron_shot_" + weight;
-		this.modelTexture = new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/model/vehicle/ammo/ammo_stone_shot.png");
+		renderScale = (weight / scaleFactor) * 2;
+		configName = "iron_shot_" + weight;
+		modelTexture = new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/model/vehicle/ammo/ammo_stone_shot.png");
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class AmmoIronShot extends Ammo {
 	@Override
 	public void onImpactEntity(World world, Entity ent, float x, float y, float z, MissileBase missile) {
 		if (!world.isRemote) {
-			ent.attackEntityFrom(DamageType.causeEntityMissileDamage(missile.shooterLiving, false, false), this.getEntityDamage());
+			ent.attackEntityFrom(DamageType.causeEntityMissileDamage(missile.shooterLiving, false, false), getEntityDamage());
 		}
 	}
 

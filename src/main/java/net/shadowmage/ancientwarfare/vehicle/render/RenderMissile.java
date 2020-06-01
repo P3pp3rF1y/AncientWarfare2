@@ -66,9 +66,6 @@ public class RenderMissile extends Render<MissileBase> {
 		missileRenders.put(AmmoRegistry.ammoCanisterShot25, shotRender);
 
 		missileRenders.put(AmmoRegistry.ammoArrow, arrowRender);
-		missileRenders.put(AmmoRegistry.ammoArrowIron, arrowRender);
-		missileRenders.put(AmmoRegistry.ammoArrowFlame, arrowRender);
-		missileRenders.put(AmmoRegistry.ammoArrowIronFlame, arrowRender);
 		missileRenders.put(AmmoRegistry.ammoRocket, arrowRender);
 		missileRenders.put(AmmoRegistry.ammoHwachaRocketFlame, arrowRender);
 		missileRenders.put(AmmoRegistry.ammoHwachaRocketExplosive, arrowRender);
