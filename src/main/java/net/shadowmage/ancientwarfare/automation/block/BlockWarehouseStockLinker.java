@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.automation.block;
 
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -27,15 +28,18 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationTyp
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
+import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static net.shadowmage.ancientwarfare.core.render.property.CoreProperties.FACING;
 
 public class BlockWarehouseStockLinker extends BlockBaseAutomation implements IRotatableBlock {
+	private static final PropertyBool LIT = PropertyBool.create("lit");
 	private static final Map<EnumFacing, AxisAlignedBB> AABBS;
 	public final List<WarehouseStockFilter> filters = new ArrayList<>();
 
@@ -73,8 +77,8 @@ public class BlockWarehouseStockLinker extends BlockBaseAutomation implements IR
 	}
 
 	@Override
-	public int getStrongPower(IBlockState state, IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
-		boolean doPower = isPowered(worldIn, pos);
+	public int getStrongPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+		boolean doPower = isPowered(world, pos);
 
 		if (!doPower) {
 			return 0;
@@ -83,14 +87,32 @@ public class BlockWarehouseStockLinker extends BlockBaseAutomation implements IR
 		}
 	}
 
-	private boolean isPowered(IBlockAccess worldIn, BlockPos pos) {
+	private boolean isPowered(IBlockAccess world, BlockPos pos) {
 		boolean doPower = false;
-		TileEntity tileentity = worldIn.getTileEntity(pos);
+		TileEntity tileentity = world.getTileEntity(pos);
 		if (tileentity instanceof TileWarehouseStockLinker) {
 			TileWarehouseStockLinker tileWarehouseStockLinker = (TileWarehouseStockLinker) tileentity;
 			doPower = tileWarehouseStockLinker.getEqualityHandle();
 		}
 		return doPower;
+	}
+
+	public static void setState(boolean active, World world, BlockPos pos){
+		IBlockState state = world.getBlockState(pos);
+		TileEntity tile = world.getTileEntity(pos);
+
+		if (active){
+			world.setBlockState(pos, state.withProperty(LIT, true));
+		}
+		else {
+			world.setBlockState(pos, state.withProperty(LIT, false));
+		}
+
+		if (tile != null)
+		{
+			tile.validate();
+			world.setTileEntity(pos, tile);
+		}
 	}
 
 	@Override
@@ -108,7 +130,7 @@ public class BlockWarehouseStockLinker extends BlockBaseAutomation implements IR
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, FACING);
+		return new BlockStateContainer(this, FACING, LIT);
 	}
 
 	@Override
@@ -123,7 +145,7 @@ public class BlockWarehouseStockLinker extends BlockBaseAutomation implements IR
 
 	@Override
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing());
+		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(LIT, false);
 	}
 
 	@Override

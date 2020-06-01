@@ -1,15 +1,14 @@
 {
     "forge_marker": 1,
     "defaults": {
-        "model": "ancientwarfare:automation/sign",
-        "textures": {
-            "particle": "ancientwarfare:blocks/automation/warehouse_stock_viewer",
-            "texture": "ancientwarfare:blocks/automation/warehouse_stock_viewer"
-        },
         "transform": "forge:default-block"
     },
     "variants": {
-        "normal": [{}],
+        "normal": [{"model": "ancientwarfare:automation/warehouse_stock_linker_off"}],
+        "lit": {
+            "true": {"model": "ancientwarfare:automation/warehouse_stock_linker_on"},
+            "false": {"model": "ancientwarfare:automation/warehouse_stock_linker_off"}
+        },
         "facing": {
             "north": {},
             "south": {"y": 180},

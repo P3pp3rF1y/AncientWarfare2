@@ -1,5 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -7,7 +9,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.shadowmage.ancientwarfare.automation.block.BlockWarehouseStockLinker;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStockLinker;
+import net.shadowmage.ancientwarfare.automation.init.AWAutomationBlocks;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.owner.IOwnable;
@@ -31,6 +35,8 @@ public class TileWarehouseStockLinker extends TileControlled implements IOwnable
 
 	private final Set<ContainerWarehouseStockLinker> viewers = new HashSet<>();
 	private int searchCooldown = 0;
+	private int blockUpdateCooldown = 0;
+	private boolean currentEquality;
 
 	private void updateViewers() {
 		for (ContainerWarehouseStockLinker viewer : viewers) {
@@ -69,10 +75,8 @@ public class TileWarehouseStockLinker extends TileControlled implements IOwnable
 					return true;
 				}
 			}
-			return false;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	/*
@@ -160,10 +164,22 @@ public class TileWarehouseStockLinker extends TileControlled implements IOwnable
 			linkToWarehouse();
 			searchCooldown = 40;
 		}
+		if (blockUpdateCooldown > 0){
+			blockUpdateCooldown--;
+		}
+		if (canDoBlockUpdateAgain()){
+			BlockWarehouseStockLinker.setState(getEqualityHandle(), world, pos);
+			blockUpdateCooldown = 60;
+			currentEquality = getEqualityHandle();
+		}
 	}
 
 	private boolean canSearchForWarehouseAgain() {
 		return searchCooldown <= 0;
+	}
+
+	private boolean canDoBlockUpdateAgain() {
+		return blockUpdateCooldown <= 0 && currentEquality != getEqualityHandle();
 	}
 
 	/*
