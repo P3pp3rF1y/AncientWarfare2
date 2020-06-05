@@ -181,12 +181,13 @@ public class WorldStructureGenerator implements IWorldGenerator {
 		int zs = bb.getZSize();
 		int size = ((Math.max(xs, zs)) / 16) + 3;
 		if (!checkOtherStructureCrossAndCloseness(world, pos, map, bb, size, template.getValidationSettings().getBorderSize())) {
+			WorldGenDetailedLogHelper.log("Structure \"{}\" failed placement, because its bounding box {} intersects an existing structure", () -> template.name, () -> bb);
 			return false;
 		}
 
 		TownMap townMap = AWGameData.INSTANCE.getPerWorldData(world, TownMap.class);
 		if (townMap.intersectsWithTown(bb)) {
-			AncientWarfareStructure.LOG.debug("Skipping structure generation: {} at: {} for intersection with existing town", template.name, bb);
+			WorldGenDetailedLogHelper.log("Structure \"{}\" failed placement, because its bounding box {} intersects an existing town", () -> template.name, () -> bb);
 			return false;
 		}
 		if (template.getValidationSettings().validatePlacement(world, pos.getX(), pos.getY(), pos.getZ(), face, template, bb)) {

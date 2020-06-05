@@ -14,11 +14,11 @@ import net.minecraftforge.common.BiomeDictionary;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.DefaultTreeScanner;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.ITree;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.ITreeScanner;
-import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.properties.IStructureValidationProperty;
+import net.shadowmage.ancientwarfare.structure.worldgen.WorldGenDetailedLogHelper;
 import net.shadowmage.ancientwarfare.structure.worldgen.WorldStructureGenerator;
 
 import java.io.BufferedWriter;
@@ -58,7 +58,7 @@ public abstract class StructureValidator {
 	 * This method should be called on the NEW StructureValidator.
 	 */
 	public void inheritPropertiesFrom(StructureValidator validator) {
-		for (IStructureValidationProperty<?> property : this.properties.keySet()) {
+		for (IStructureValidationProperty<?> property : properties.keySet()) {
 			if (validator.properties.containsKey(property)) {
 				properties.put(property, validator.properties.get(property));
 			}
@@ -70,15 +70,15 @@ public abstract class StructureValidator {
 	 * child-classes that have additional validation data set through gui
 	 */
 	public final void readFromNBT(NBTTagCompound tag) {
-		for (Map.Entry<IStructureValidationProperty<?>, Object> entry : this.properties.entrySet()) {
+		for (Map.Entry<IStructureValidationProperty<?>, Object> entry : properties.entrySet()) {
 			entry.setValue(entry.getKey().deserializeNBT(tag));
 		}
 	}
 
 	public final NBTTagCompound serializeToNBT() {
 		NBTTagCompound tag = new NBTTagCompound();
-		tag.setString("validationType", this.validationType.getName());
-		for (Map.Entry<IStructureValidationProperty<?>, Object> entry : this.properties.entrySet()) {
+		tag.setString("validationType", validationType.getName());
+		for (Map.Entry<IStructureValidationProperty<?>, Object> entry : properties.entrySet()) {
 			serializePropertyNBT(tag, entry.getKey(), entry.getValue());
 		}
 		return tag;
@@ -324,6 +324,7 @@ public abstract class StructureValidator {
 		for (bx = bb.min.getX() - borderSize; bx <= bb.max.getX() + borderSize; bx++) {
 			bz = bb.min.getZ() - borderSize;
 			if (!validateBlockHeightTypeAndBiome(world, bx, bz, minY, maxY, skipWater)) {
+				WorldGenDetailedLogHelper.log("Failed for ");
 				return false;
 			}
 			bz = bb.max.getZ() + borderSize;
@@ -367,7 +368,7 @@ public abstract class StructureValidator {
 	private boolean validateBlockHeightTypeAndBiome(World world, int x, int z, int min, int max, boolean skipWater, Predicate<IBlockState> isValidState) {
 		BlockPos pos = new BlockPos(x, 1, z);
 		if (!canSpawnInRiverBiome() && BiomeDictionary.hasType(world.provider.getBiomeForCoords(pos), BiomeDictionary.Type.RIVER)) {
-			AncientWarfareStructure.LOG.debug("Rejected for placement into river biome at {}", pos);
+			WorldGenDetailedLogHelper.log("Rejected for placement into river biome at {}", () -> pos);
 			return false;
 		}
 
@@ -385,7 +386,7 @@ public abstract class StructureValidator {
 	private int validateBlockHeight(World world, int x, int z, int minimumAcceptableY, int maximumAcceptableY, boolean skipWater) {
 		int topFilledY = WorldStructureGenerator.getTargetY(world, x, z, skipWater);
 		if (topFilledY < minimumAcceptableY || topFilledY > maximumAcceptableY) {
-			AncientWarfareStructure.LOG.debug("rejected for leveling or depth test. foundY: {} min: {} max: {} at: {},{},{}", topFilledY, minimumAcceptableY, maximumAcceptableY, x, topFilledY, z);
+			WorldGenDetailedLogHelper.log("Rejected for leveling or depth test. foundY {} min {} max {} at: x {} y {} z {}", () -> topFilledY, () -> minimumAcceptableY, () -> maximumAcceptableY, () -> x, () -> topFilledY, () -> z);
 			return -1;
 		}
 		return topFilledY;
@@ -400,12 +401,8 @@ public abstract class StructureValidator {
 		}
 		IBlockState state = world.getBlockState(new BlockPos(x, y, z));
 		Block block = state.getBlock();
-		if (block == Blocks.AIR) {
-			AncientWarfareStructure.LOG.debug("rejected for non-matching block: air at: {},{},{} ", x, y, z);
-			return false;
-		}
 		if (!isValidState.test(state)) {
-			AncientWarfareStructure.LOG.debug("Rejected for non-matching block: {} at: {},{},{} ", block.getRegistryName(), x, y, z);
+			WorldGenDetailedLogHelper.log("Rejected because of invalid target block \"{}\" at: x {} y {} z {} ", block::getRegistryName, () -> x, () -> y, () -> z);
 			return false;
 		}
 		return true;
@@ -493,7 +490,7 @@ public abstract class StructureValidator {
 		}
 	}
 
-	protected void prePlacementBorder(World world, StructureTemplate template, StructureBB bb) {
+	void prePlacementBorder(World world, StructureTemplate template, StructureBB bb) {
 		int borderSize = getBorderSize();
 		if (borderSize <= 0) {
 			return;

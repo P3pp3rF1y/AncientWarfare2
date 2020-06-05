@@ -17,6 +17,7 @@ import net.shadowmage.ancientwarfare.structure.template.build.validation.Structu
 import net.shadowmage.ancientwarfare.structure.util.CollectionUtils;
 import net.shadowmage.ancientwarfare.structure.worldgen.Territory;
 import net.shadowmage.ancientwarfare.structure.worldgen.TerritoryManager;
+import net.shadowmage.ancientwarfare.structure.worldgen.WorldGenDetailedLogHelper;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,6 +27,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
+import java.util.StringJoiner;
 import java.util.function.Predicate;
 
 import static net.shadowmage.ancientwarfare.structure.template.build.validation.properties.StructureValidationProperties.TERRITORY_NAME;
@@ -62,7 +64,7 @@ public class WorldGenStructureManager {
 		}
 	}
 
-	public void registerWorldGenStructure(StructureTemplate template) {
+	void registerWorldGenStructure(StructureTemplate template) {
 		StructureValidator validation = template.getValidationSettings();
 		Set<String> biomes = validation.getBiomeList();
 		Set<String> biomeGroupBiomes = new HashSet<>();
@@ -133,6 +135,9 @@ public class WorldGenStructureManager {
 
 		int remainingValueCache = territory.getRemainingClusterValue();
 
+		WorldGenDetailedLogHelper.log("Selecting template at x {} z {} in biome \"{}\" and territory \"{}\" with remaining cluster value of {}",
+				() -> x, () -> z, () -> biomeName, territory::getTerritoryName, territory::getRemainingClusterValue);
+
 		int duplicateSearchDistance = 0;
 		for (StructureTemplate template : potentialStructures) {
 			duplicateSearchDistance = Math.max(duplicateSearchDistance, template.getValidationSettings().getMinDuplicateDistance());
@@ -163,7 +168,19 @@ public class WorldGenStructureManager {
 		if (trimmedPotentialStructures.isEmpty()) {
 			return Optional.empty();
 		}
-		StructureTemplate toReturn = CollectionUtils.getWeightedRandomElement(rng, this.trimmedPotentialStructures, e -> getStructureWeight(x, y, z, territory, e)).orElse(null);
+		StructureTemplate toReturn = CollectionUtils.getWeightedRandomElement(rng, trimmedPotentialStructures, e -> getStructureWeight(x, y, z, territory, e),
+				(totalWeight, selected) -> {
+					WorldGenDetailedLogHelper.log("Out of total of {} structures with weight total of {} structure \"{}\" with weight {} was selected",
+							trimmedPotentialStructures::size, () -> totalWeight, () -> selected == null ? "" : selected.name,
+							() -> selected == null ? "" : getStructureWeight(x, y, z, territory, selected));
+					WorldGenDetailedLogHelper.log("Following structures and weights were considered: \n {}",
+							() -> {
+								StringJoiner joiner = new StringJoiner(", ");
+								trimmedPotentialStructures.forEach(structure -> joiner.add(structure.name + ":" + getStructureWeight(x, y, z, territory, structure)));
+								return joiner.toString();
+							});
+				}
+		).orElse(null);
 		distancesFound.clear();
 		trimmedPotentialStructures.clear();
 		return Optional.ofNullable(toReturn);
@@ -188,21 +205,24 @@ public class WorldGenStructureManager {
 				break;
 			}
 		}
-		if (!dimensionMatch)//skip if dimension is blacklisted, or not present on whitelist
-		{
+		if (!dimensionMatch) {
+			WorldGenDetailedLogHelper.log("Structure \"{}\" is defined for different dimension", () -> template.name);
 			return false;
 		}
 		if (settings.isUnique() && map.isGeneratedUnique(template.name)) {
+			WorldGenDetailedLogHelper.log("Unique structure \"{}\" already generated", () -> template.name);
 			return false;
-		}//skip already generated uniques
+		}
 		if (settings.getClusterValue() > remainingValueCache) {
+			WorldGenDetailedLogHelper.log("Structure \"{}\" has too high cluster value {}", () -> template.name, () -> template.getValidationSettings().getClusterValue());
 			return false;
-		}//skip if cluster value is to high to place in given area
+		}
 		if (distancesFound.containsKey(template.name)) {
 			int dist = distancesFound.get(template.name);
 			if (dist < settings.getMinDuplicateDistance()) {
+				WorldGenDetailedLogHelper.log("Structure \"{}\" has duplicate {} blocks away", () -> template.name, () -> dist);
 				return false;
-			}//skip if minDuplicate distance is not met
+			}
 		}
 		return settings.shouldIncludeForSelection(world, x, y, z, face, template);
 	}

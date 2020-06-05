@@ -7,12 +7,12 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
-import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.border.SmoothingMatrixBuilder;
+import net.shadowmage.ancientwarfare.structure.worldgen.WorldGenDetailedLogHelper;
 import net.shadowmage.ancientwarfare.structure.worldgen.WorldStructureGenerator;
 
 import java.util.Optional;
@@ -31,7 +31,7 @@ public class StructureValidatorGround extends StructureValidator {
 		Block block = state.getBlock();
 		if (!AWStructureStatics.isValidTargetBlock(state)) {
 			//noinspection ConstantConditions
-			AncientWarfareStructure.LOG.debug("Rejecting due to target block mismatch of: {} at: {},{},{}", () -> block.getRegistryName().toString(), () -> x, () -> y, () -> z);
+			WorldGenDetailedLogHelper.log("Rejecting due to target block mismatch of: {} at: {},{},{}", () -> block.getRegistryName().toString(), () -> x, () -> y, () -> z);
 			return false;
 		}
 		return true;
@@ -40,11 +40,12 @@ public class StructureValidatorGround extends StructureValidator {
 	@Override
 	public boolean validatePlacement(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
 		if (y - template.offset.getY() <= 0) {
-			AncientWarfareStructure.LOG.debug("Ground isn't deep enough for the structure- required: {}, found: {}", Math.abs(bb.min.getY()), y);
+			WorldGenDetailedLogHelper.log("Ground isn't deep enough for the structure \"{}\" required: {}, found: {}", () -> template.name, () -> Math.abs(bb.min.getY()), () -> y);
 			return false;
 		}
 
 		if (y < getMinGenerationHeight() || y > getMaxGenerationHeight()) {
+			WorldGenDetailedLogHelper.log("Structure \"{}\" isn't within required Y level bounds of min {} and max {}", () -> template.name, this::getMinGenerationHeight, this::getMaxGenerationHeight);
 			return false;
 		}
 

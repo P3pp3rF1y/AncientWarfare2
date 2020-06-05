@@ -7,7 +7,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.WorldGenStructureManager;
 import net.shadowmage.ancientwarfare.structure.util.CollectionUtils;
@@ -20,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.StringJoiner;
 
 public class TerritoryManager {
 	private static HashMap<Biome, List<String>> territoryNamesByBiome = new HashMap<>();
@@ -42,7 +42,7 @@ public class TerritoryManager {
 		return territoryData.getTerritory(chunkPosValue);
 	}
 
-	public static BlockPos getChunkCenterPos(int chunkX, int chunkZ) {
+	static BlockPos getChunkCenterPos(int chunkX, int chunkZ) {
 		int x = chunkX * 16 + 8;
 		int z = chunkZ * 16 + 8;
 
@@ -89,6 +89,10 @@ public class TerritoryManager {
 			if (!territoryNamesByBiome.containsKey(biome)) {
 				return;
 			}
+
+			//noinspection ConstantConditions
+			WorldGenDetailedLogHelper.log("Generating new territory at x {} z {} in biome \"{}\"", firstPos::getX, firstPos::getZ, () -> biome.getRegistryName().toString());
+
 			List<String> territoryNames = territoryNamesByBiome.get(biome);
 
 			String territoryName = getRandomTerritory(territoryNames);
@@ -101,10 +105,12 @@ public class TerritoryManager {
 
 			if (includedChunks.size() < 3) {
 				territoryId = getFirstDifferentTerritoryIdFromNeighbors(chunkX, chunkZ, territoryId, territoryData);
+				WorldGenDetailedLogHelper.log("Too few chunks in new territory - connecting to existing territory");
 			}
 
 			String finalTerritoryId = territoryId;
 			includedChunks.forEach((hash, pos) -> territoryData.setOwned(hash, finalTerritoryId, territoryName));
+			WorldGenDetailedLogHelper.log("{} chunks included in territory \"{}\"", includedChunks::size, () -> finalTerritoryId);
 		}
 
 		private BlockPos getTerritoryCenter() {
@@ -125,7 +131,7 @@ public class TerritoryManager {
 		private void includeChunk(ProcessedChunk processedChunk) {
 			includedChunks.put(processedChunk.getChunkPosValue(), processedChunk.getCenterPos());
 			visitedChunks.add(processedChunk.getChunkPosValue());
-			AncientWarfareStructure.LOG.debug("Chunk #{} {}, territory center: {}", includedChunks.entrySet().size(), processedChunk.getCenterPos(), getTerritoryCenter());
+			WorldGenDetailedLogHelper.log("Chunk #{} {}, territory center: {}", () -> includedChunks.entrySet().size(), processedChunk::getCenterPos, this::getTerritoryCenter);
 		}
 
 		private void processChunks(Set<Biome> biomes, ITerritoryData territoryData) {
@@ -185,13 +191,26 @@ public class TerritoryManager {
 
 		private String getRandomTerritory(List<String> names) {
 			return CollectionUtils.getWeightedRandomElement(world.rand, names,
-					name -> WorldGenStructureManager.INSTANCE.getTerritoryTemplates(name).map(Set::size).orElse(0)
-							+ WorldGenStructureManager.INSTANCE.getTerritoryTemplates(WorldGenStructureManager.GENERIC_TERRITORY_NAME).map(Set::size).orElse(0))
+					this::getTerritoryWeight, (totalWeight, selected) -> {
+						WorldGenDetailedLogHelper.log("Out of total of {} territories with weight total of {} territory \"{}\" with weight {} was selected",
+								names::size, () -> totalWeight, () -> selected, () -> selected == null ? "" : getTerritoryWeight(selected));
+						WorldGenDetailedLogHelper.log("Following territories and weights were considered: \n{}",
+								() -> {
+									StringJoiner joiner = new StringJoiner(", ");
+									names.forEach(name -> joiner.add(name + ":" + getTerritoryWeight(name)));
+									return joiner.toString();
+								});
+					})
 					.orElse(WorldGenStructureManager.GENERIC_TERRITORY_NAME);
+		}
+
+		private int getTerritoryWeight(String territoryName) {
+			return WorldGenStructureManager.INSTANCE.getTerritoryTemplates(territoryName).map(Set::size).orElse(0)
+					+ (!territoryName.equals(WorldGenStructureManager.GENERIC_TERRITORY_NAME) ? WorldGenStructureManager.INSTANCE.getTerritoryTemplates(WorldGenStructureManager.GENERIC_TERRITORY_NAME).map(Set::size).orElse(0) : 0);
 		}
 	}
 
-	public static BlockPos getTerritoryCenter(Collection<BlockPos> positions) {
+	static BlockPos getTerritoryCenter(Collection<BlockPos> positions) {
 		BlockPos territoryCenterPos;
 		double averageX = 0;
 		double averageZ = 0;
