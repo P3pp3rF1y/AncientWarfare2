@@ -16,7 +16,7 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWatchClosest;
 
 public class NpcFactionSoldier extends NpcFaction {
-	private NpcAIAttackMeleeLongRange meleeAI;
+	private NpcAIAttackMeleeLongRange meleeAI = new NpcAIAttackMeleeLongRange(this);
 
 	public NpcFactionSoldier(World world) {
 		super(world);
@@ -29,7 +29,6 @@ public class NpcFactionSoldier extends NpcFaction {
 	}
 
 	private void addAI() {
-		meleeAI = new NpcAIAttackMeleeLongRange(this);
 		tasks.addTask(0, new EntityAISwimming(this));
 		tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
 		tasks.addTask(0, new NpcAIDoor(this, true));
