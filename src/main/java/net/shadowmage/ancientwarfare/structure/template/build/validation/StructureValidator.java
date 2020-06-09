@@ -20,6 +20,8 @@ import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.properties.IStructureValidationProperty;
 import net.shadowmage.ancientwarfare.structure.worldgen.WorldGenDetailedLogHelper;
 import net.shadowmage.ancientwarfare.structure.worldgen.WorldStructureGenerator;
+import net.shadowmage.ancientwarfare.structure.worldgen.stats.PlacementRejectionReason;
+import net.shadowmage.ancientwarfare.structure.worldgen.stats.WorldGenStatistics;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -324,7 +326,6 @@ public abstract class StructureValidator {
 		for (bx = bb.min.getX() - borderSize; bx <= bb.max.getX() + borderSize; bx++) {
 			bz = bb.min.getZ() - borderSize;
 			if (!validateBlockHeightTypeAndBiome(world, bx, bz, minY, maxY, skipWater)) {
-				WorldGenDetailedLogHelper.log("Failed for ");
 				return false;
 			}
 			bz = bb.max.getZ() + borderSize;

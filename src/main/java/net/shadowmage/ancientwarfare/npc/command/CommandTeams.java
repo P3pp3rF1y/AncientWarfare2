@@ -5,6 +5,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.shadowmage.ancientwarfare.core.command.ParentCommand;
+import net.shadowmage.ancientwarfare.core.command.RootCommand;
 import net.shadowmage.ancientwarfare.core.command.SimpleSubCommand;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
@@ -17,7 +18,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-public class CommandTeams extends ParentCommand {
+public class CommandTeams extends RootCommand {
 	public CommandTeams() {
 		registerSubCommand(new SimpleSubCommand("list", (server, sender, args) -> {
 			for (Team team : AWGameData.INSTANCE.getData(sender.getEntityWorld(), TeamData.class).getTeams()) {

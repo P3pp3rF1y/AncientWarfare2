@@ -20,6 +20,8 @@ import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.WorldGenStructureManager;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilderWorldGen;
+import net.shadowmage.ancientwarfare.structure.worldgen.stats.PlacementRejectionReason;
+import net.shadowmage.ancientwarfare.structure.worldgen.stats.WorldGenStatistics;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -181,16 +183,19 @@ public class WorldStructureGenerator implements IWorldGenerator {
 		int zs = bb.getZSize();
 		int size = ((Math.max(xs, zs)) / 16) + 3;
 		if (!checkOtherStructureCrossAndCloseness(world, pos, map, bb, size, template.getValidationSettings().getBorderSize())) {
+			WorldGenStatistics.addStructurePlacementRejection(template.name, PlacementRejectionReason.STRUCTURE_BB_OVERLAP);
 			WorldGenDetailedLogHelper.log("Structure \"{}\" failed placement, because its bounding box {} intersects an existing structure", () -> template.name, () -> bb);
 			return false;
 		}
 
 		TownMap townMap = AWGameData.INSTANCE.getPerWorldData(world, TownMap.class);
 		if (townMap.intersectsWithTown(bb)) {
+			WorldGenStatistics.addStructurePlacementRejection(template.name, PlacementRejectionReason.TOWN_BB_OVERLAP);
 			WorldGenDetailedLogHelper.log("Structure \"{}\" failed placement, because its bounding box {} intersects an existing town", () -> template.name, () -> bb);
 			return false;
 		}
 		if (template.getValidationSettings().validatePlacement(world, pos.getX(), pos.getY(), pos.getZ(), face, template, bb)) {
+			WorldGenStatistics.addStructureGeneratedInfo(template.name, world, pos);
 			AncientWarfareStructure.LOG.debug("Validation took: {} ms", System.currentTimeMillis() - t1);
 			generateStructureAt(world, pos, face, template, map);
 			return true;

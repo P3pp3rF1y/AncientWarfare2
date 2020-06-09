@@ -31,4 +31,14 @@ public class SimpleSubCommand implements ISubCommand {
 	public int getMaxArgs() {
 		return 0;
 	}
+
+	@Override
+	public int getMinArgs() {
+		return getMaxArgs();
+	}
+
+	@Override
+	public String getUsage(ICommandSender sender) {
+		return getName();
+	}
 }

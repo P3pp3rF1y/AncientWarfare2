@@ -18,6 +18,8 @@ import net.shadowmage.ancientwarfare.structure.util.CollectionUtils;
 import net.shadowmage.ancientwarfare.structure.worldgen.Territory;
 import net.shadowmage.ancientwarfare.structure.worldgen.TerritoryManager;
 import net.shadowmage.ancientwarfare.structure.worldgen.WorldGenDetailedLogHelper;
+import net.shadowmage.ancientwarfare.structure.worldgen.stats.ValidationRejectionReason;
+import net.shadowmage.ancientwarfare.structure.worldgen.stats.WorldGenStatistics;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,7 +35,7 @@ import java.util.function.Predicate;
 import static net.shadowmage.ancientwarfare.structure.template.build.validation.properties.StructureValidationProperties.TERRITORY_NAME;
 
 public class WorldGenStructureManager {
-	public static final String GENERIC_TERRITORY_NAME = "";
+	public static final String GENERIC_TERRITORY_NAME = "generic";
 	private HashMap<String, Set<StructureTemplate>> templatesByBiome = new HashMap<>();
 	private HashMap<String, Set<StructureTemplate>> templatesByTerritoryName = new HashMap<>();
 
@@ -71,6 +73,9 @@ public class WorldGenStructureManager {
 		validation.getBiomeGroupList().forEach(biomeGroup -> biomeGroupBiomes.addAll(BiomeGroupRegistry.getGroupBiomes(biomeGroup)));
 
 		String territoryName = template.getValidationSettings().getPropertyValue(TERRITORY_NAME);
+		if (territoryName.isEmpty()) {
+			territoryName = GENERIC_TERRITORY_NAME;
+		}
 		Set<StructureTemplate> templates = templatesByTerritoryName.getOrDefault(territoryName, new HashSet<>());
 		templates.add(template);
 		templatesByTerritoryName.put(territoryName, templates);
@@ -206,20 +211,24 @@ public class WorldGenStructureManager {
 			}
 		}
 		if (!dimensionMatch) {
+			WorldGenStatistics.addStructureValidationRejection(template.name, ValidationRejectionReason.WRONG_DIMENSION);
 			WorldGenDetailedLogHelper.log("Structure \"{}\" is defined for different dimension", () -> template.name);
 			return false;
 		}
 		if (settings.isUnique() && map.isGeneratedUnique(template.name)) {
+			WorldGenStatistics.addStructureValidationRejection(template.name, ValidationRejectionReason.UNIQUE_ALREADY_GENERATED);
 			WorldGenDetailedLogHelper.log("Unique structure \"{}\" already generated", () -> template.name);
 			return false;
 		}
 		if (settings.getClusterValue() > remainingValueCache) {
+			WorldGenStatistics.addStructureValidationRejection(template.name, ValidationRejectionReason.TOO_HIGH_CLUSTER_VALUE);
 			WorldGenDetailedLogHelper.log("Structure \"{}\" has too high cluster value {}", () -> template.name, () -> template.getValidationSettings().getClusterValue());
 			return false;
 		}
 		if (distancesFound.containsKey(template.name)) {
 			int dist = distancesFound.get(template.name);
 			if (dist < settings.getMinDuplicateDistance()) {
+				WorldGenStatistics.addStructureValidationRejection(template.name, ValidationRejectionReason.DUPLICATE_IN_RANGE);
 				WorldGenDetailedLogHelper.log("Structure \"{}\" has duplicate {} blocks away", () -> template.name, () -> dist);
 				return false;
 			}

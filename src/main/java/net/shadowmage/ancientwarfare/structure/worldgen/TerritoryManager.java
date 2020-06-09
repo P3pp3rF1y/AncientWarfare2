@@ -10,6 +10,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.WorldGenStructureManager;
 import net.shadowmage.ancientwarfare.structure.util.CollectionUtils;
+import net.shadowmage.ancientwarfare.structure.worldgen.stats.WorldGenStatistics;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -52,6 +53,10 @@ public class TerritoryManager {
 	public static void clearTerritoryCache() {
 		territoryNamesByBiome.clear();
 		biomesByTerritoryNames.clear();
+	}
+
+	public static Set<String> getTerritoryNames() {
+		return biomesByTerritoryNames.keySet();
 	}
 
 	public static void addTerritoryInBiome(String territoryName, String biomeName) {
@@ -103,7 +108,7 @@ public class TerritoryManager {
 			chunksToProcess.put(chunkPosValue, new ProcessedChunk(chunkPosValue, firstPos, chunkX, chunkZ));
 			getTerritoryBiomes(territoryName).ifPresent(biomes -> processChunks(biomes, territoryData));
 
-			if (includedChunks.size() < 3) {
+			if (isTooFewChunksForNewTerritory()) {
 				territoryId = getFirstDifferentTerritoryIdFromNeighbors(chunkX, chunkZ, territoryId, territoryData);
 				WorldGenDetailedLogHelper.log("Too few chunks in new territory - connecting to existing territory");
 			}
@@ -111,6 +116,14 @@ public class TerritoryManager {
 			String finalTerritoryId = territoryId;
 			includedChunks.forEach((hash, pos) -> territoryData.setOwned(hash, finalTerritoryId, territoryName));
 			WorldGenDetailedLogHelper.log("{} chunks included in territory \"{}\"", includedChunks::size, () -> finalTerritoryId);
+			if (!isTooFewChunksForNewTerritory()) {
+				//noinspection ConstantConditions
+				WorldGenStatistics.addTerritoryInfo(territoryName, biome.getRegistryName().toString());
+			}
+		}
+
+		private boolean isTooFewChunksForNewTerritory() {
+			return includedChunks.size() < 3;
 		}
 
 		private BlockPos getTerritoryCenter() {

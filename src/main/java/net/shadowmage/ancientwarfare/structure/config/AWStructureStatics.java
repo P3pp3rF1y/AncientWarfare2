@@ -40,6 +40,7 @@ public class AWStructureStatics extends ModConfiguration {
 	private static HashSet<String> skippableWorldGenBlocks = new HashSet<>();
 	private static HashSet<String> worldGenTargetBlocks = new HashSet<>();
 	private static HashSet<String> scannerSkippedBlocks = new HashSet<>();
+	public static boolean collectWorldGenStatistics = true;
 
 	public static int gateVerticalWoodenMaxHealth = 80;
 	public static int gateVerticalIronMaxHealth = 80;
@@ -89,6 +90,8 @@ public class AWStructureStatics extends ModConfiguration {
 		gateDoubleWoodMaxHealth = config.get(worldGenCategory, "gate_double_wood_max_health", gateDoubleWoodMaxHealth, "Default=" + gateDoubleWoodMaxHealth + "\n" + "Determines the maximum health of the Double Wood Gate.").getInt(gateDoubleWoodMaxHealth);
 		gateDoubleIronMaxHealth = config.get(worldGenCategory, "gate_double_iron_max_health", gateDoubleIronMaxHealth, "Default=" + gateDoubleIronMaxHealth + "\n" + "Determines the maximum health of the Double Iron Gate.").getInt(gateDoubleIronMaxHealth);
 		drawbridgeMaxHealth = config.get(worldGenCategory, "drawbridge_max_health", drawbridgeMaxHealth, "Default=" + drawbridgeMaxHealth + "\n" + "Determines the maximum health of the Drawbridge.").getInt(drawbridgeMaxHealth);
+
+		collectWorldGenStatistics = config.get(worldGenCategory, "collect_worldgen_statistics", collectWorldGenStatistics, "If true worldgen statistics are collected. These are useful to debug how often structures spawn, why they don't spawn etc...").getBoolean(collectWorldGenStatistics);
 
 		initializeDefaultSkippableBlocks();
 		initializeDefaultSkippedEntities();

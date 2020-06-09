@@ -1262,7 +1262,7 @@ entity.ancientwarfarenpc.wizardly.spellcaster.name=Wizardly Spellcaster
 entity.ancientwarfarenpc.faction.spellcaster.name=Faction Spellcaster
 
 #commands
-command.aw.structure.usage=/awstructure save [templateName] OR /awstructure delete <templateName> [true to remove the config file] OR /awstructure build <templateName> <x> <y> <z> [north:east:south:west] OR /awstructure reload OR /awstructure name OR /awstructure scannersReexport [true to reload main settings]
+command.aw.structure.usage=/awstructure save [templateName] OR /awstructure delete <templateName> [true to remove the aws file] OR /awstructure build <templateName> <x> <y> <z> [north:east:south:west] OR /awstructure reload OR /awstructure name OR /awstructure scannersReexport [true to reload main settings]
 command.aw.structure.not_found=Template could not be located: %s
 command.aw.structure.file_not_found=File could not be located: %s
 command.aw.structure.template_removed=Template was removed: %s

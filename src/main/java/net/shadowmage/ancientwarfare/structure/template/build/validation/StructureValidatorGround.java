@@ -14,6 +14,8 @@ import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.border.SmoothingMatrixBuilder;
 import net.shadowmage.ancientwarfare.structure.worldgen.WorldGenDetailedLogHelper;
 import net.shadowmage.ancientwarfare.structure.worldgen.WorldStructureGenerator;
+import net.shadowmage.ancientwarfare.structure.worldgen.stats.PlacementRejectionReason;
+import net.shadowmage.ancientwarfare.structure.worldgen.stats.WorldGenStatistics;
 
 import java.util.Optional;
 
@@ -40,18 +42,24 @@ public class StructureValidatorGround extends StructureValidator {
 	@Override
 	public boolean validatePlacement(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
 		if (y - template.offset.getY() <= 0) {
+			WorldGenStatistics.addStructurePlacementRejection(template.name, PlacementRejectionReason.TOO_SHALLOW_GROUND);
 			WorldGenDetailedLogHelper.log("Ground isn't deep enough for the structure \"{}\" required: {}, found: {}", () -> template.name, () -> Math.abs(bb.min.getY()), () -> y);
 			return false;
 		}
 
 		if (y < getMinGenerationHeight() || y > getMaxGenerationHeight()) {
+			WorldGenStatistics.addStructurePlacementRejection(template.name, PlacementRejectionReason.NOT_WITHIN_Y_LIMIT);
 			WorldGenDetailedLogHelper.log("Structure \"{}\" isn't within required Y level bounds of min {} and max {}", () -> template.name, this::getMinGenerationHeight, this::getMaxGenerationHeight);
 			return false;
 		}
 
 		int minY = getMinY(template, bb);
 		int maxY = getMaxY(template, bb);
-		return validateBorderBlocks(world, bb, minY, maxY, false);
+		boolean ret = validateBorderBlocks(world, bb, minY, maxY, false);
+		if (!ret) {
+			WorldGenStatistics.addStructurePlacementRejection(template.name, PlacementRejectionReason.INVALID_BORDER_HEIGHT_OR_BIOME);
+		}
+		return ret;
 	}
 
 	private int getMaxGenerationHeight() {

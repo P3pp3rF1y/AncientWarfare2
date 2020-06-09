@@ -14,7 +14,7 @@ import net.minecraft.util.Tuple;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.shadowmage.ancientwarfare.core.command.ISubCommand;
-import net.shadowmage.ancientwarfare.core.command.ParentCommand;
+import net.shadowmage.ancientwarfare.core.command.RootCommand;
 import net.shadowmage.ancientwarfare.core.command.SimpleSubCommand;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -42,7 +42,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-public class CommandStructure extends ParentCommand {
+public class CommandStructure extends RootCommand {
 	public CommandStructure() {
 		registerSubCommand(new DeleteCommand());
 		registerSubCommand(new BuildCommand());
@@ -57,14 +57,26 @@ public class CommandStructure extends ParentCommand {
 				}));
 		registerSubCommand(new ReexportCommand());
 		registerSubCommand(new SimpleSubCommand("scannerTp", (server, sender, args) -> {
-			if (args.length == 1 && sender instanceof EntityPlayer) {
+			if (sender instanceof EntityPlayer) {
 				Tuple<Integer, BlockPos> pos = ScannerTracker.getScannerPosByName(args[0]);
 				ScannerTracker.teleportAboveScannerBlock((EntityPlayer) sender, pos);
 			}
+
+
 		}) {
 			@Override
 			public int getMaxArgs() {
 				return 1;
+			}
+
+			@Override
+			public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
+				return CommandBase.getListOfStringsMatchingLastWord(args, ScannerTracker.getTrackedScannerNames().toArray(new String[0]));
+			}
+
+			@Override
+			public String getUsage(ICommandSender sender) {
+				return getName() + " <scannerTemplateName>";
 			}
 		});
 		registerSubCommand(new SimpleSubCommand("name", (server, sender, args) -> {
@@ -86,6 +98,7 @@ public class CommandStructure extends ParentCommand {
 				NetworkHandler.sendToPlayer(player, new PacketShowBoundingBoxes(false));
 			}
 		}));
+		registerSubCommand(new StatsCommand());
 	}
 
 	@Override
@@ -131,9 +144,14 @@ public class CommandStructure extends ParentCommand {
 		public int getMaxArgs() {
 			return 1;
 		}
+
+		@Override
+		public String getUsage(ICommandSender sender) {
+			return getName() + " [templateName]";
+		}
 	}
 
-	private class BuildCommand implements ISubCommand {
+	private static class BuildCommand implements ISubCommand {
 		@Override
 		public String getName() {
 			return "build";
@@ -169,9 +187,19 @@ public class CommandStructure extends ParentCommand {
 		public int getMaxArgs() {
 			return 5;
 		}
+
+		@Override
+		public String getUsage(ICommandSender sender) {
+			return getName() + " <templateName> <x> <y> <z> [north:east:south:west]";
+		}
+
+		@Override
+		public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
+			return args.length > 4 ? CommandBase.getListOfStringsMatchingLastWord(args, "north", "east", "south", "west") : Collections.emptyList();
+		}
 	}
 
-	private class DeleteCommand implements ISubCommand {
+	private static class DeleteCommand implements ISubCommand {
 		@Override
 		public String getName() {
 			return "delete";
@@ -224,6 +252,11 @@ public class CommandStructure extends ParentCommand {
 		public int getMaxArgs() {
 			return 2;
 		}
+
+		@Override
+		public String getUsage(ICommandSender sender) {
+			return getName() + " <templateName> [true to remove the aws file]";
+		}
 	}
 
 	private static class ReexportCommand implements ISubCommand {
@@ -247,22 +280,15 @@ public class CommandStructure extends ParentCommand {
 		public int getMaxArgs() {
 			return 1;
 		}
+
+		@Override
+		public String getUsage(ICommandSender sender) {
+			return getName() + " [true to reload main settings]";
+		}
 	}
 
 	@Override
 	public int getRequiredPermissionLevel() {
 		return 2;
-	}
-
-	@Override
-	public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
-		if (args.length == 1) {
-			return super.getTabCompletions(server, sender, args, targetPos);
-		} else if (args.length > 5 && args[0].equalsIgnoreCase("build")) {
-			return CommandBase.getListOfStringsMatchingLastWord(args, "north", "east", "south", "west");
-		} else if (args.length == 2 && args[0].equalsIgnoreCase("scannertp")) {
-			return CommandBase.getListOfStringsMatchingLastWord(args, ScannerTracker.getTrackedScannerNames().toArray(new String[0]));
-		}
-		return Collections.emptyList();
 	}
 }
