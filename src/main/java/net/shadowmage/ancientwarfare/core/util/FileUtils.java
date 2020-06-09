@@ -4,13 +4,16 @@ import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import org.apache.commons.io.IOUtils;
 
 import javax.annotation.Nullable;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Iterator;
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -38,13 +41,15 @@ public class FileUtils {
 				root = source.toPath().resolve(base);
 			}
 
-			if (root == null || !Files.exists(root))
+			if (root == null || !Files.exists(root)) {
 				return;
+			}
 
 			if (preprocessor != null) {
 				Boolean cont = preprocessor.apply(root);
-				if (cont == null || !cont)
+				if (cont == null || !cont) {
 					return;
+				}
 			}
 
 			if (processor != null) {
@@ -57,7 +62,7 @@ public class FileUtils {
 					return;
 				}
 
-				while (itr != null && itr.hasNext()) {
+				while (itr.hasNext()) {
 					processor.accept(root, itr.next());
 				}
 			}
@@ -65,5 +70,38 @@ public class FileUtils {
 		finally {
 			IOUtils.closeQuietly(fs);
 		}
+	}
+
+	public static void exportToFile(File exportFile, List<String> rows) {
+		if (!exportFile.exists()) {
+			if (createFile(exportFile)) { return; }
+		}
+		try (FileWriter fileWriter = new FileWriter(exportFile); BufferedWriter writer = new BufferedWriter(fileWriter)) {
+			for (String row : rows) {
+				writer.write(row);
+				writer.newLine();
+			}
+		}
+		catch (IOException e) {
+			AncientWarfareCore.LOG.error("Error exporting file: " + exportFile.getAbsolutePath(), e);
+		}
+	}
+
+	private static boolean createFile(File exportFile) {
+		try {
+			if (!exportFile.getParentFile().mkdirs()) {
+				AncientWarfareCore.LOG.error("Unable to create folders for file : " + exportFile.getAbsolutePath());
+				return true;
+			}
+			if (!exportFile.createNewFile()) {
+				AncientWarfareCore.LOG.error("Unable to open new file : " + exportFile.getAbsolutePath());
+				return true;
+			}
+		}
+		catch (IOException e) {
+			AncientWarfareCore.LOG.error("Error opening file : " + exportFile.getAbsolutePath(), e);
+			return true;
+		}
+		return false;
 	}
 }

@@ -25,13 +25,12 @@ import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketManualReload;
+import net.shadowmage.ancientwarfare.core.util.FileUtils;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -58,7 +57,8 @@ public class CommandUtils extends RootCommand {
 		public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
 			List<String> lines = getLines();
 			String fileName = args.length > 0 ? args[0] : getDefaultFileName();
-			File file = new File(AWCoreStatics.utilsExportPath, fileName);
+			String filePath = AWCoreStatics.utilsExportPath;
+			File file = new File(filePath, fileName);
 			exportToFile(file, getHeader(), lines);
 			notifyPlayer(sender, file);
 		}
@@ -69,33 +69,11 @@ public class CommandUtils extends RootCommand {
 
 		protected abstract List<String> getLines();
 
-		private static void exportToFile(File exportFile, String header, List<String> rows) {
-
-			if (!exportFile.exists()) {
-				try {
-					if (!exportFile.getParentFile().mkdirs()) {
-						AncientWarfareCore.LOG.error("Unable to create folders for file : " + exportFile.getAbsolutePath());
-					}
-					if (!exportFile.createNewFile()) {
-						AncientWarfareCore.LOG.error("Unable to open new file : " + exportFile.getAbsolutePath());
-					}
-				}
-				catch (IOException e) {
-					AncientWarfareCore.LOG.error("Error opening file : " + exportFile.getAbsolutePath(), e);
-					return;
-				}
-			}
-			try (FileWriter fileWriter = new FileWriter(exportFile); BufferedWriter writer = new BufferedWriter(fileWriter)) {
-				writer.write(header);
-				writer.newLine();
-				for (String row : rows) {
-					writer.write(row);
-					writer.newLine();
-				}
-			}
-			catch (IOException e) {
-				AncientWarfareCore.LOG.error("Error exporting file: " + exportFile.getAbsolutePath(), e);
-			}
+		private static void exportToFile(File exportFile, String header, List<String> data) {
+			ArrayList<String> rows = new ArrayList<>();
+			rows.add(header);
+			rows.addAll(data);
+			FileUtils.exportToFile(exportFile, rows);
 		}
 
 		private static void notifyPlayer(ICommandSender sender, File exportFile) {

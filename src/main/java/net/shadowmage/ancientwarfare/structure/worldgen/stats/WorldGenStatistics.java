@@ -6,6 +6,7 @@ import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.worldgen.Territory;
 import net.shadowmage.ancientwarfare.structure.worldgen.TerritoryManager;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
@@ -46,6 +47,10 @@ public class WorldGenStatistics {
 
 	public static Optional<TerritoryRecord> getTerritory(String territoryName) {
 		return Optional.ofNullable(territories.get(territoryName));
+	}
+
+	public static Collection<StructureRecord> getStructures() {
+		return structures.values();
 	}
 
 	public static class TerritoryRecord {
