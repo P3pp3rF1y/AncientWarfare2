@@ -41,6 +41,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -589,7 +590,7 @@ public class SpawnerSettings {
 		private static final String MIN_TO_SPAWN_TAG = "minToSpawn";
 		private static final String MAX_TO_SPAWN_TAG = "maxToSpawn";
 		private static final String REMAINING_SPAWN_COUNT_TAG = "remainingSpawnCount";
-		private static final String FACTION_NAME_TAG = SpawnerSettings.FACTION_NAME_TAG;
+		private static final String CUSTOM_NAME_TAG = "CustomName";
 		private ResourceLocation entityId = new ResourceLocation("pig");
 		private NBTTagCompound customTag;
 		private int minToSpawn = 2;
@@ -684,6 +685,13 @@ public class SpawnerSettings {
 				return EntityTools.getUnlocName(entityId).replace("faction", getCustomTag().getString(FACTION_NAME_TAG));
 			}
 			return EntityTools.getUnlocName(entityId);
+		}
+
+		public final Optional<String> getCustomName() {
+			if (customTag != null && customTag.hasKey(CUSTOM_NAME_TAG)) {
+				return Optional.of(customTag.getString(CUSTOM_NAME_TAG));
+			}
+			return Optional.empty();
 		}
 
 		public final int getSpawnMin() {
