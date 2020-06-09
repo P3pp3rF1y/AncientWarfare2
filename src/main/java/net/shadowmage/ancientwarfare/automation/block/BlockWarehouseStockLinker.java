@@ -95,22 +95,8 @@ public class BlockWarehouseStockLinker extends BlockBaseAutomation implements IR
 		return doPower;
 	}
 
-	public static void setState(boolean active, World world, BlockPos pos){
-		IBlockState state = world.getBlockState(pos);
-		TileEntity tile = world.getTileEntity(pos);
-
-		if (active){
-			world.setBlockState(pos, state.withProperty(LIT, true));
-		}
-		else {
-			world.setBlockState(pos, state.withProperty(LIT, false));
-		}
-
-		if (tile != null)
-		{
-			tile.validate();
-			world.setTileEntity(pos, tile);
-		}
+	public static void setActiveState(boolean active, World world, BlockPos pos){
+		world.setBlockState(pos, world.getBlockState(pos).withProperty(LIT, active));
 	}
 
 	@Override

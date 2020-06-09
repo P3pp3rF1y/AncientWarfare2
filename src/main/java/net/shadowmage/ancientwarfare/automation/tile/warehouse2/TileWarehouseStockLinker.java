@@ -1,11 +1,13 @@
 package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.shadowmage.ancientwarfare.automation.block.BlockWarehouseStockLinker;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStockLinker;
@@ -99,6 +101,11 @@ public class TileWarehouseStockLinker extends TileControlled implements IOwnable
 	}
 
 	@Override
+	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
+		return oldState.getBlock() != newState.getBlock();
+	}
+
+	@Override
 	public void searchForController() {
 		linkToWarehouse();
 	}
@@ -165,7 +172,7 @@ public class TileWarehouseStockLinker extends TileControlled implements IOwnable
 			blockUpdateCooldown--;
 		}
 		if (canDoBlockUpdateAgain()){
-			BlockWarehouseStockLinker.setState(getEqualityHandle(), world, pos);
+			BlockWarehouseStockLinker.setActiveState(getEqualityHandle(), world, pos);
 			blockUpdateCooldown = 60;
 			currentEquality = getEqualityHandle();
 		}
@@ -199,8 +206,8 @@ public class TileWarehouseStockLinker extends TileControlled implements IOwnable
 	@Override
 	protected void handleUpdateNBT(NBTTagCompound tag) {
 		super.handleUpdateNBT(tag);
-		this.filters.clear();
-		this.filters.addAll(NBTHelper.deserializeListFrom(tag, TileWarehouseStockLinker.FILTER_LIST_TAG, WarehouseStockFilter::new));
+		filters.clear();
+		filters.addAll(NBTHelper.deserializeListFrom(tag, TileWarehouseStockLinker.FILTER_LIST_TAG, WarehouseStockFilter::new));
 		BlockTools.notifyBlockUpdate(this);
 		updateViewers();
 	}
