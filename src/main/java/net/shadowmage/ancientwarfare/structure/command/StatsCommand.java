@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class StatsCommand extends ParentCommand {
@@ -40,6 +41,12 @@ public class StatsCommand extends ParentCommand {
 			String filePath = ModConfiguration.configPathForFiles + "structures/stats/";
 			File file = new File(filePath, "structures.txt");
 			exportStructureStats(file);
+			sendToChat(sender, "Exported statistics for all structures to: " + file.getAbsolutePath());
+		}));
+		registerSubCommand(new SimpleSubCommand("territories", (server, sender, args) -> {
+			String filePath = ModConfiguration.configPathForFiles + "structures/stats/";
+			File file = new File(filePath, "territories.txt");
+			exportTerritoryStats(file);
 			sendToChat(sender, "Exported statistics for all structures to: " + file.getAbsolutePath());
 		}));
 		registerSubCommand(new SimpleSubCommand("structure", (server, sender, args) -> printStructureStats(sender, args[0])) {
@@ -82,6 +89,16 @@ public class StatsCommand extends ParentCommand {
 		});
 	}
 
+	private void exportTerritoryStats(File file) {
+		List<String> rows = new ArrayList<>();
+		for (WorldGenStatistics.TerritoryRecord territoryRecord : WorldGenStatistics.getTerritories().stream()
+				.sorted((rec1, rec2) -> Integer.compare(rec2.getTimesGenerated(), rec1.getTimesGenerated())).collect(Collectors.toList())) {
+			rows.addAll(getTerritoryReport(territoryRecord));
+			rows.add("");
+		}
+		FileUtils.exportToFile(file, rows);
+	}
+
 	private void exportStructureStats(File file) {
 		List<String> rows = new ArrayList<>();
 		for (WorldGenStatistics.StructureRecord structureRecord : WorldGenStatistics.getStructures().stream()
@@ -122,6 +139,7 @@ public class StatsCommand extends ParentCommand {
 		rows.add(header);
 		rows.add(Strings.repeat('-', header.length() + 1));
 		rows.add("Number of times generated: " + structureRecord.getTimesGenerated());
+		rows.add("Number of times considered in random: " + structureRecord.getTimesConsideredInRandom());
 		rows.addAll(getCollectionStats("Generated in biomes: ", structureRecord.getBiomeGenerations()));
 		rows.addAll(getCollectionStats("Generated in territories: ", structureRecord.getTerritoryGenerations()));
 		rows.addAll(getCollectionStats("Failed template validation for reasons: ", structureRecord.getValidationRejectionReasons()));
@@ -135,16 +153,27 @@ public class StatsCommand extends ParentCommand {
 		rows.add(Strings.repeat('-', header.length() + 1));
 		rows.add(header);
 		rows.add(Strings.repeat('-', header.length() + 1));
+		//noinspection ConstantConditions
+		rows.add("Biomes generates in / expands into: " + TerritoryManager.getTerritoryBiomes(territoryRecord.getName()).map(biomes -> biomes.stream().map(biome -> biome.getRegistryName().toString()).collect(Collectors.joining(","))).orElse(""));
 		rows.add("Number of times generated: " + territoryRecord.getTimesGenerated());
-		rows.addAll(getCollectionStats("Generated in biomes: ", territoryRecord.getBiomeGenerations()));
+		rows.add(String.format("Average territory cluster value: %.1f", territoryRecord.getAverageClusterValue()));
+		rows.addAll(getCollectionStats("Generated in biomes: ", territoryRecord.getBiomeGenerations(),
+				entry -> String.format("%1$4s x %2$s | average cluster value: %3$.1f | chance to start generating in biome: %4$.1f%%", entry.getValue(), entry.getKey(),
+						territoryRecord.getAverageBiomeClusterValue(entry.getKey()),
+						TerritoryManager.getTerritoryChanceInBiome(territoryRecord.getName(), entry.getKey()) * 100)
+		));
 		return rows;
 	}
 
 	private <T> List<String> getCollectionStats(String header, Map<T, Integer> collection) {
+		return getCollectionStats(header, collection, entry -> String.format("%1$4s x %2$s", entry.getValue(), entry.getKey()));
+	}
+
+	private <T> List<String> getCollectionStats(String header, Map<T, Integer> collection, Function<Map.Entry<T, Integer>, String> getEntryStat) {
 		List<String> ret = new ArrayList<>();
 		ret.add(header);
 		for (Map.Entry<T, Integer> entry : collection.entrySet()) {
-			ret.add(String.format("%1$4s", entry.getValue()) + " x " + entry.getKey());
+			ret.add(getEntryStat.apply(entry));
 		}
 		return ret;
 	}

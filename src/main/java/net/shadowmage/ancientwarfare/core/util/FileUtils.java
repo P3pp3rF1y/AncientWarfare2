@@ -89,7 +89,7 @@ public class FileUtils {
 
 	private static boolean createFile(File exportFile) {
 		try {
-			if (!exportFile.getParentFile().mkdirs()) {
+			if (!exportFile.getParentFile().exists() && !exportFile.getParentFile().mkdirs()) {
 				AncientWarfareCore.LOG.error("Unable to create folders for file : " + exportFile.getAbsolutePath());
 				return true;
 			}

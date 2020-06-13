@@ -168,6 +168,7 @@ public class WorldGenStructureManager {
 		{
 			if (validateTemplate(world, x, y, z, face, map, remainingValueCache, dim, template)) {
 				trimmedPotentialStructures.add(template);
+				WorldGenStatistics.recordStructureConsideredInRandom(template.name);
 			}
 		}
 		if (trimmedPotentialStructures.isEmpty()) {

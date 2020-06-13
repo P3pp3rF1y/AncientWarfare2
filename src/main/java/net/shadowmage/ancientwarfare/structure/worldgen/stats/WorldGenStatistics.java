@@ -33,7 +33,7 @@ public class WorldGenStatistics {
 		return Optional.ofNullable(structures.get(structureName));
 	}
 
-	public static void addTerritoryInfo(String territoryName, String biomeName) {
+	public static void addTerritoryInfo(String territoryName, String biomeName, float clusterValue) {
 		if (!collectWorldGenStats) {
 			return;
 		}
@@ -42,6 +42,7 @@ public class WorldGenStatistics {
 		}
 		TerritoryRecord territoryRecord = territories.get(territoryName);
 		territoryRecord.addBiomeGen(biomeName);
+		territoryRecord.addClustervalue(biomeName, clusterValue);
 		territoryRecord.incrementTimesGenerated();
 	}
 
@@ -53,17 +54,23 @@ public class WorldGenStatistics {
 		return structures.values();
 	}
 
+	public static Collection<TerritoryRecord> getTerritories() {
+		return territories.values();
+	}
+
 	public static class TerritoryRecord {
 		private final String name;
 		private int timesGenerated = 0;
 		private final Map<String, Integer> biomeGenerations = new TreeMap<>();
+		private final Map<String, Float> biomeTotalClusterValues = new TreeMap<>();
+		private float totalClusterValue = 0;
 
 		TerritoryRecord(String name) {
 			this.name = name;
 		}
 
 		void addBiomeGen(String biomeName) {
-			biomeGenerations.put(biomeName, biomeGenerations.getOrDefault(biomeName, 0) + 1);
+			incrementMapKey(biomeGenerations, biomeName);
 		}
 
 		void incrementTimesGenerated() {
@@ -81,6 +88,19 @@ public class WorldGenStatistics {
 		public Map<String, Integer> getBiomeGenerations() {
 			return biomeGenerations;
 		}
+
+		public float getAverageBiomeClusterValue(String biomeName) {
+			return biomeTotalClusterValues.get(biomeName) / biomeGenerations.get(biomeName);
+		}
+
+		void addClustervalue(String biomeName, float clusterValue) {
+			addMapKeyValue(biomeTotalClusterValues, biomeName, clusterValue);
+			totalClusterValue += clusterValue;
+		}
+
+		public float getAverageClusterValue() {
+			return totalClusterValue / timesGenerated;
+		}
 	}
 
 	public static void addStructurePlacementRejection(String structureName, PlacementRejectionReason placementRejectionReason) {
@@ -97,6 +117,10 @@ public class WorldGenStatistics {
 		}
 		StructureRecord structureRecord = getStructureRecord(structureName);
 		structureRecord.addValidationRejectionReason(validationRejectionReason);
+	}
+
+	public static void recordStructureConsideredInRandom(String structureName) {
+		getStructureRecord(structureName).incrementTimesConsideredInRandom();
 	}
 
 	public static void addStructureGeneratedInfo(String structureName, World world, BlockPos pos) {
@@ -117,9 +141,18 @@ public class WorldGenStatistics {
 		return structures.get(structureName);
 	}
 
+	private static <T> void incrementMapKey(Map<T, Integer> map, T key) {
+		map.put(key, map.getOrDefault(key, 0) + 1);
+	}
+
+	private static <T> void addMapKeyValue(Map<T, Float> map, T key, float value) {
+		map.put(key, map.getOrDefault(key, 0f) + value);
+	}
+
 	public static class StructureRecord {
 		private final String name;
 		private int timesGenerated = 0;
+		private int timesConsideredInRandom = 0;
 
 		public Map<String, Integer> getBiomeGenerations() {
 			return biomeGenerations;
@@ -150,24 +183,24 @@ public class WorldGenStatistics {
 			timesGenerated++;
 		}
 
+		void incrementTimesConsideredInRandom() {
+			timesConsideredInRandom++;
+		}
+
 		void addBiomeGen(String biomeName) {
-			incrementMapValue(biomeGenerations, biomeName);
+			incrementMapKey(biomeGenerations, biomeName);
 		}
 
 		void addTerritoryGen(String territoryName) {
-			incrementMapValue(territoryGenerations, territoryName);
+			incrementMapKey(territoryGenerations, territoryName);
 		}
 
 		void addValidationRejectionReason(ValidationRejectionReason validationRejectionReason) {
-			incrementMapValue(validationRejectionReasons, validationRejectionReason);
-		}
-
-		private <T> void incrementMapValue(Map<T, Integer> map, T value) {
-			map.put(value, map.getOrDefault(value, 0) + 1);
+			incrementMapKey(validationRejectionReasons, validationRejectionReason);
 		}
 
 		void addPlacementRejectionReason(PlacementRejectionReason placementRejectionReason) {
-			incrementMapValue(placementRejectionReasons, placementRejectionReason);
+			incrementMapKey(placementRejectionReasons, placementRejectionReason);
 		}
 
 		public String getName() {
@@ -176,6 +209,10 @@ public class WorldGenStatistics {
 
 		public int getTimesGenerated() {
 			return timesGenerated;
+		}
+
+		public int getTimesConsideredInRandom() {
+			return timesConsideredInRandom;
 		}
 	}
 }

@@ -59,6 +59,35 @@ public class TerritoryManager {
 		return biomesByTerritoryNames.keySet();
 	}
 
+	public static Optional<Set<Biome>> getTerritoryBiomes(String territoryName) {
+		return Optional.ofNullable(biomesByTerritoryNames.get(territoryName));
+	}
+
+	private static int getTerritoryWeight(String territoryName) {
+		return WorldGenStructureManager.INSTANCE.getTerritoryTemplates(territoryName).map(Set::size).orElse(0)
+				+ (!territoryName.equals(WorldGenStructureManager.GENERIC_TERRITORY_NAME) ? WorldGenStructureManager.INSTANCE.getTerritoryTemplates(WorldGenStructureManager.GENERIC_TERRITORY_NAME).map(Set::size).orElse(0) : 0);
+	}
+
+	public static float getTerritoryChanceInBiome(String territoryName, String biomeName) {
+		Biome biome = ForgeRegistries.BIOMES.getValue(new ResourceLocation(biomeName));
+		if (!territoryNamesByBiome.containsKey(biome)) {
+			return 0;
+		}
+		List<String> territoryNames = territoryNamesByBiome.get(biome);
+		if (!territoryNames.contains(territoryName)) {
+			return 0;
+		}
+		int weight = getTerritoryWeight(territoryName);
+
+		float totalWeight = 0;
+
+		for (String name : territoryNames) {
+			totalWeight += getTerritoryWeight(name);
+		}
+
+		return weight / totalWeight;
+	}
+
 	public static void addTerritoryInBiome(String territoryName, String biomeName) {
 		Biome biome = ForgeRegistries.BIOMES.getValue(new ResourceLocation(biomeName));
 		if (biome != null) {
@@ -82,10 +111,6 @@ public class TerritoryManager {
 
 		private TerritoryGenerator(World world) {
 			this.world = world;
-		}
-
-		private static Optional<Set<Biome>> getTerritoryBiomes(String territoryName) {
-			return Optional.ofNullable(biomesByTerritoryNames.get(territoryName));
 		}
 
 		private void generateTerritory(int chunkX, int chunkZ, long chunkPosValue, ITerritoryData territoryData) {
@@ -118,7 +143,7 @@ public class TerritoryManager {
 			WorldGenDetailedLogHelper.log("{} chunks included in territory \"{}\"", includedChunks::size, () -> finalTerritoryId);
 			if (!isTooFewChunksForNewTerritory()) {
 				//noinspection ConstantConditions
-				WorldGenStatistics.addTerritoryInfo(territoryName, biome.getRegistryName().toString());
+				WorldGenStatistics.addTerritoryInfo(territoryName, biome.getRegistryName().toString(), includedChunks.size() * AWStructureStatics.chunkClusterValue);
 			}
 		}
 
@@ -204,22 +229,17 @@ public class TerritoryManager {
 
 		private String getRandomTerritory(List<String> names) {
 			return CollectionUtils.getWeightedRandomElement(world.rand, names,
-					this::getTerritoryWeight, (totalWeight, selected) -> {
+					TerritoryManager::getTerritoryWeight, (totalWeight, selected) -> {
 						WorldGenDetailedLogHelper.log("Out of total of {} territories with weight total of {} territory \"{}\" with weight {} was selected",
-								names::size, () -> totalWeight, () -> selected, () -> selected == null ? "" : getTerritoryWeight(selected));
+								names::size, () -> totalWeight, () -> selected, () -> selected == null ? "" : TerritoryManager.getTerritoryWeight(selected));
 						WorldGenDetailedLogHelper.log("Following territories and weights were considered: \n{}",
 								() -> {
 									StringJoiner joiner = new StringJoiner(", ");
-									names.forEach(name -> joiner.add(name + ":" + getTerritoryWeight(name)));
+									names.forEach(name -> joiner.add(name + ":" + TerritoryManager.getTerritoryWeight(name)));
 									return joiner.toString();
 								});
 					})
 					.orElse(WorldGenStructureManager.GENERIC_TERRITORY_NAME);
-		}
-
-		private int getTerritoryWeight(String territoryName) {
-			return WorldGenStructureManager.INSTANCE.getTerritoryTemplates(territoryName).map(Set::size).orElse(0)
-					+ (!territoryName.equals(WorldGenStructureManager.GENERIC_TERRITORY_NAME) ? WorldGenStructureManager.INSTANCE.getTerritoryTemplates(WorldGenStructureManager.GENERIC_TERRITORY_NAME).map(Set::size).orElse(0) : 0);
 		}
 	}
 
