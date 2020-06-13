@@ -30,25 +30,24 @@ public class TownGenerator {
 	public final TownTemplate template;
 	public final World world;
 	public final Random rng;
-	public final StructureBB maximalBounds;
-	public final StructureBB exteriorBounds;//maximal, shrunk by borderSize (16 blocks), maximal area encompassing extents of exterior buffer zone
-	public final StructureBB wallsBounds;//exterior shrunk by exteriorSize (configurable), maximal area encompassing extents of walls
-	public final StructureBB townBounds;//walls shrunk by wallSize (configurable), town generation area
-	public final TownPartQuadrant[] quadrants = new TownPartQuadrant[4];
-	public final TownPartQuadrant[] externalQuadrants = new TownPartQuadrant[8];//may be null refs if no exterior area is denoted
-	public final List<StructureTemplate> uniqueTemplatesToGenerate = new ArrayList<>();//depleted as used
-	public final List<StructureTemplate> mainTemplatesToGenerate = new ArrayList<>();//depleted as used
-	public final List<StructureTemplate> houseTemplatesToGenerate = new ArrayList<>();//weighted list
-	public final List<StructureTemplate> cosmeticTemplatesToGenerate = new ArrayList<>();//weighted list
-	public final List<StructureTemplate> exteriorTemplatesToGenerate = new ArrayList<>();//weighted list
-	public final List<BlockPos> structureDoors = new ArrayList<>();//list of all positions for generated doors.  used during lamp-post generation to not generate directly in front of a door
+	final StructureBB maximalBounds;
+	final StructureBB exteriorBounds;//maximal, shrunk by borderSize (16 blocks), maximal area encompassing extents of exterior buffer zone
+	final StructureBB wallsBounds;//exterior shrunk by exteriorSize (configurable), maximal area encompassing extents of walls
+	final StructureBB townBounds;//walls shrunk by wallSize (configurable), town generation area
+	final TownPartQuadrant[] quadrants = new TownPartQuadrant[4];
+	final TownPartQuadrant[] externalQuadrants = new TownPartQuadrant[8];//may be null refs if no exterior area is denoted
+	final List<StructureTemplate> uniqueTemplatesToGenerate = new ArrayList<>();//depleted as used
+	final List<StructureTemplate> mainTemplatesToGenerate = new ArrayList<>();//depleted as used
+	final List<StructureTemplate> houseTemplatesToGenerate = new ArrayList<>();//weighted list
+	final List<StructureTemplate> cosmeticTemplatesToGenerate = new ArrayList<>();//weighted list
+	final List<StructureTemplate> exteriorTemplatesToGenerate = new ArrayList<>();//weighted list
+	final List<BlockPos> structureDoors = new ArrayList<>();//list of all positions for generated doors.  used during lamp-post generation to not generate directly in front of a door
 
-	@SuppressWarnings("squid:S2245")
-	public TownGenerator(World world, TownBoundingArea area, TownTemplate template) {
+	TownGenerator(World world, TownBoundingArea area, TownTemplate template) {
 		this.world = world;
 		this.template = template;
 		long seed = (area.getCenterX() << 16) | area.getCenterZ();
-		this.rng = new Random(seed);
+		rng = new Random(seed);
 
 		int y1 = area.getSurfaceY() + 1;
 		int y2 = y1 + 20;
@@ -56,10 +55,10 @@ public class TownGenerator {
 		area.wallSize = template.getWallSize();
 		area.exteriorSize = template.getExteriorSize();
 
-		this.maximalBounds = new StructureBB(area.getBlockMinX(), y1, area.getBlockMinZ(), area.getBlockMaxX(), y2, area.getBlockMaxZ());
-		this.exteriorBounds = new StructureBB(area.getExteriorMinX(), y1, area.getExteriorMinZ(), area.getExteriorMaxX(), y2, area.getExteriorMaxZ());
-		this.wallsBounds = new StructureBB(area.getWallMinX(), y1, area.getWallMinZ(), area.getWallMaxX(), y2, area.getWallMaxZ());
-		this.townBounds = new StructureBB(area.getTownMinX(), y1, area.getTownMinZ(), area.getTownMaxX(), y2, area.getTownMaxZ());
+		maximalBounds = new StructureBB(area.getBlockMinX(), y1, area.getBlockMinZ(), area.getBlockMaxX(), y2, area.getBlockMaxZ());
+		exteriorBounds = new StructureBB(area.getExteriorMinX(), y1, area.getExteriorMinZ(), area.getExteriorMaxX(), y2, area.getExteriorMaxZ());
+		wallsBounds = new StructureBB(area.getWallMinX(), y1, area.getWallMinZ(), area.getWallMaxX(), y2, area.getWallMaxZ());
+		townBounds = new StructureBB(area.getTownMinX(), y1, area.getTownMinZ(), area.getTownMaxX(), y2, area.getTownMaxZ());
 	}
 
 	/*
@@ -74,9 +73,17 @@ public class TownGenerator {
 
 		generateGrid();
 		TownGeneratorWalls.generateWalls(world, this, template, rng);
-		WorldGenTickHandler.INSTANCE.addStructureGenCallback(() -> {
-			generateRoads();
-			TownGeneratorStructures.generateStructures(TownGenerator.this);
+		WorldGenTickHandler.INSTANCE.addStructureGenCallback(new WorldGenTickHandler.StructureTicket() {
+			@Override
+			public void call() {
+				generateRoads();
+				TownGeneratorStructures.generateStructures(TownGenerator.this);
+			}
+
+			@Override
+			public int getBlocksToGenerate() {
+				return 100;
+			}
 		});
 	}
 
@@ -94,7 +101,7 @@ public class TownGenerator {
 		});
 	}
 
-	public void generateVillagers() {
+	void generateVillagers() {
 		float villagers = template.getRandomVillagersPerChunk();
 		if (villagers > 0)//at least a chance to generate a villager per-chunk
 		{
@@ -161,7 +168,7 @@ public class TownGenerator {
 		for (TownStructureEntry e : template.getCosmeticEntries()) {
 			StructureTemplateManager.getTemplate(e.templateName).ifPresent(t -> {
 				for (int i = 0; i < e.min; i++) {
-					this.cosmeticTemplatesToGenerate.add(t);
+					cosmeticTemplatesToGenerate.add(t);
 				}
 			});
 		}

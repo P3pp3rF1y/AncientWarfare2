@@ -6,6 +6,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
+import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
 import net.shadowmage.ancientwarfare.structure.town.WorldTownGenerator;
 
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class WorldGenTickHandler {
-
+	private static final int MAX_BLOCKS_TO_GEN_PER_TICK = 10000;
 	public static final WorldGenTickHandler INSTANCE = new WorldGenTickHandler();
 	private final List<ChunkGenerationTicket> newWorldGenTickets;
 	private final List<ChunkGenerationTicket> newTownGenTickets;
@@ -32,7 +33,7 @@ public final class WorldGenTickHandler {
 		structuresToGen = new ArrayList<>();
 	}
 
-	public void addChunkForGeneration(World world, int chunkX, int chunkZ) {
+	void addChunkForGeneration(World world, int chunkX, int chunkZ) {
 		newWorldGenTickets.add(new ChunkGenerationTicket(world, chunkX, chunkZ));
 	}
 
@@ -44,10 +45,11 @@ public final class WorldGenTickHandler {
 		newStructureGenTickets.add(new StructureGenerationTicket(builder));
 	}
 
-	public void addStructureGenCallback(StructureGenerationCallbackTicket tk) {
+	public void addStructureGenCallback(StructureTicket tk) {
 		newStructureGenTickets.add(tk);
 	}
 
+	@SuppressWarnings("unused")
 	@SubscribeEvent
 	public void serverTick(ServerTickEvent evt) {
 		if (evt.phase == Phase.END) {
@@ -100,8 +102,11 @@ public final class WorldGenTickHandler {
 	}
 
 	private void genStructures() {
-		if (!structuresToGen.isEmpty()) {
-			structuresToGen.remove(0).call();
+		int totalBlocks = 0;
+		while (!structuresToGen.isEmpty() && totalBlocks < MAX_BLOCKS_TO_GEN_PER_TICK) {
+			StructureTicket structureTicket = structuresToGen.remove(0);
+			totalBlocks += structureTicket.getBlocksToGenerate();
+			structureTicket.call();
 		}
 		if (!newStructureGenTickets.isEmpty()) {
 			structuresToGen.addAll(newStructureGenTickets);
@@ -116,8 +121,8 @@ public final class WorldGenTickHandler {
 
 		private ChunkGenerationTicket(World world, int x, int z) {
 			this.world = world.provider.getDimension();
-			this.chunkX = x;
-			this.chunkZ = z;
+			chunkX = x;
+			chunkZ = z;
 		}
 
 		@Nullable
@@ -133,8 +138,9 @@ public final class WorldGenTickHandler {
 	 *
 	 * @author Shadowmage
 	 */
-	private interface StructureTicket {
+	public interface StructureTicket {
 		void call();
+		int getBlocksToGenerate();
 	}
 
 	private static final class StructureGenerationTicket implements StructureTicket {
@@ -150,13 +156,14 @@ public final class WorldGenTickHandler {
 				builder.instantConstruction();
 			}
 			catch (Exception ex) {
-				AncientWarfareStructure.LOG.error("Error building structure {}: /n{}", builder.getTemplate().name, ex);
+				AncientWarfareStructure.LOG.error("Error building structure {}: ", builder.getTemplate().name, ex);
 			}
 		}
+
+		@Override
+		public int getBlocksToGenerate() {
+			StructureBB bb = builder.getBoundingBox();
+			return bb.getXSize() * bb.getZSize() * bb.getYSize();
+		}
 	}
-
-	public interface StructureGenerationCallbackTicket extends StructureTicket {
-
-	}
-
 }

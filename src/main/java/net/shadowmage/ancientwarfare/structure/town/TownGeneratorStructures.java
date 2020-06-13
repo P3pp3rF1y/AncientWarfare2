@@ -18,10 +18,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-public class TownGeneratorStructures {
+class TownGeneratorStructures {
 	private TownGeneratorStructures() {}
 
-	public static void generateStructures(final TownGenerator gen) {
+	static void generateStructures(final TownGenerator gen) {
 		List<TownPartBlock> blocks = new ArrayList<>();
 		for (TownPartQuadrant tq : gen.quadrants) {
 			tq.addBlocks(blocks);
@@ -41,10 +41,18 @@ public class TownGeneratorStructures {
 			blocks.addAll(exteriorBlocks);
 		}
 
-		WorldGenTickHandler.INSTANCE.addStructureGenCallback(() -> {
-			gen.template.getLamp().ifPresent(lamp -> TownGeneratorStructures.generateLamps(blocks, lamp, gen));
-			WorldStructureGenerator.sprinkleSnow(gen.world, gen.maximalBounds, 0);
-			gen.generateVillagers();
+		WorldGenTickHandler.INSTANCE.addStructureGenCallback(new WorldGenTickHandler.StructureTicket() {
+			@Override
+			public void call() {
+				gen.template.getLamp().ifPresent(lamp -> TownGeneratorStructures.generateLamps(blocks, lamp, gen));
+				WorldStructureGenerator.sprinkleSnow(gen.world, gen.maximalBounds, 0);
+				gen.generateVillagers();
+			}
+
+			@Override
+			public int getBlocksToGenerate() {
+				return 100;
+			}
 		});
 	}
 

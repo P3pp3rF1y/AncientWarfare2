@@ -32,8 +32,8 @@ public class StructureBB extends Zone {
 		/*
 		 * finally, set the min/max of this BB to the min/max of the two corners
          */
-		this.min = BlockTools.getMin(c1, c2);
-		this.max = BlockTools.getMax(c1, c2);
+		min = BlockTools.getMin(c1, c2);
+		max = BlockTools.getMax(c1, c2);
 	}
 
 	public StructureBB(BlockPos pos1, BlockPos pos2) {
@@ -70,6 +70,10 @@ public class StructureBB extends Zone {
 
 	public int getZSize() {
 		return max.getZ() - min.getZ() + 1;
+	}
+
+	public int getYSize() {
+		return max.getY() - min.getY() + 1;
 	}
 
 	public BlockPos getCenter() {
