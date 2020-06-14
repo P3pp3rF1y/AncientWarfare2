@@ -2,18 +2,23 @@ package net.shadowmage.ancientwarfare.structure.template.plugin.defaultplugins.e
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntityBase;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,15 +67,36 @@ public class TemplateRuleEntity<T extends Entity> extends TemplateRuleEntityBase
 	}
 
 	private Optional<T> createEntity(World world, int turns, BlockPos pos) {
+		//noinspection unchecked
 		T e = (T) EntityList.createEntityByIDFromName(registryName, world);
 		if (e == null) {
-			AncientWarfareStructure.LOG.warn("Could not create entity for name: {} Entity skipped during structure creation.", registryName.toString());
+			AncientWarfareStructure.LOG.debug("Could not create entity for name: {} Entity skipped during structure creation.", registryName);
 			return Optional.empty();
 		}
-		e.readFromNBT(getEntityNBT(pos, turns));
+		NBTTagCompound entityNBT = getEntityNBT(pos, turns);
+		removeNonExistentAttributes(e, entityNBT);
+
+		e.readFromNBT(entityNBT);
 		updateEntityOnPlacement(turns, pos, e);
 		addNoSpawnPreventionTag(e);
 		return Optional.of(e);
+	}
+
+	private void removeNonExistentAttributes(T e, NBTTagCompound entityNBT) {
+		if (e instanceof EntityLivingBase) {
+			EntityLivingBase living = (EntityLivingBase) e;
+			NBTTagList attributes = entityNBT.getTagList("Attributes", Constants.NBT.TAG_COMPOUND);
+			Iterator<NBTBase> it = attributes.iterator();
+			while(it.hasNext()) {
+				NBTBase nbt = it.next();
+				if (nbt.getId() == Constants.NBT.TAG_COMPOUND) {
+					NBTTagCompound attribute = (NBTTagCompound) nbt;
+					if (living.getAttributeMap().getAttributeInstanceByName(attribute.getString("Name")) == null) {
+						it.remove();
+					}
+				}
+			}
+		}
 	}
 
 	private void addNoSpawnPreventionTag(T e) {
