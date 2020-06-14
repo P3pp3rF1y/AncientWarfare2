@@ -73,9 +73,9 @@ public class StructureValidatorGround extends StructureValidator {
 	@Override
 	public void preGeneration(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureBB bb) {
 		if (!isPreserveBlocks()) {
+			smoothoutBorder(world, bb, face, template);
 			clearAboveBB(world, template, bb);
 			prePlacementUnderfill(world, bb);
-			smoothoutBorder(world, bb, face, template);
 		}
 	}
 
