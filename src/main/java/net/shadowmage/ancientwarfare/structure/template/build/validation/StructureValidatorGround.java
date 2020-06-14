@@ -73,7 +73,7 @@ public class StructureValidatorGround extends StructureValidator {
 	@Override
 	public void preGeneration(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureBB bb) {
 		if (!isPreserveBlocks()) {
-			clearBB(world, template, bb);
+			clearAboveBB(world, template, bb);
 			prePlacementUnderfill(world, bb);
 			smoothoutBorder(world, bb, face, template);
 		}
@@ -98,8 +98,8 @@ public class StructureValidatorGround extends StructureValidator {
 		return rule.map(r -> r.getState(turns)).orElse(Blocks.DIRT.getDefaultState());
 	}
 
-	private void clearBB(World world, StructureTemplate template, StructureBB bb) {
-		BlockTools.getAllInBoxTopDown(bb.min.add(0, template.getOffset().getY(), 0), bb.max.add(0, 50 + getMaxLeveling(), 0)).forEach(pos -> handleClearAction(world, pos, template, bb));
+	private void clearAboveBB(World world, StructureTemplate template, StructureBB bb) {
+		BlockTools.getAllInBoxTopDown(bb.max.add(0, 1, 0), bb.max.add(0, 50 + getMaxLeveling(), 0)).forEach(pos -> handleClearAction(world, pos, template, bb));
 	}
 
 	@Override
