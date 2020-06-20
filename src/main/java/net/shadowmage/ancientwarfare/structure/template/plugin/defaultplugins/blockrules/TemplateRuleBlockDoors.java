@@ -24,7 +24,7 @@ public class TemplateRuleBlockDoors extends TemplateRuleVanillaBlocks {
 	@Override
 	public List<ItemStack> getResources() {
 		if (state.getValue(BlockDoor.HALF) == BlockDoor.EnumDoorHalf.UPPER) {
-			return getResources();
+			return super.getResources();
 		}
 
 		return Collections.emptyList();

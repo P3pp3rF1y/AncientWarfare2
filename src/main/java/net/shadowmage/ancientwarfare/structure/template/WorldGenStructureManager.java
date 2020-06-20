@@ -13,6 +13,7 @@ import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureEntry;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
 import net.shadowmage.ancientwarfare.structure.registry.BiomeGroupRegistry;
+import net.shadowmage.ancientwarfare.structure.registry.TerritorySettingRegistry;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
 import net.shadowmage.ancientwarfare.structure.util.CollectionUtils;
 import net.shadowmage.ancientwarfare.structure.worldgen.Territory;
@@ -196,7 +197,8 @@ public class WorldGenStructureManager {
 		boolean bigStructure = e.getValidationSettings().getClusterValue() > 50;
 		int weight = e.getValidationSettings().getSelectionWeight();
 		if (bigStructure) {
-			return Math.max(0, (int) (weight - ((territory.getTerritoryCenter().distanceSq(x, y, z) / AWStructureStatics.maxTerritoryCenterDistanceSq) * weight)));
+			return Math.max(0, (int) (weight - ((territory.getTerritoryCenter().distanceSq(x, y, z) /
+					TerritorySettingRegistry.getMaxTerritoryCenterDistanceSq(territory.getTerritoryName())) * weight)));
 		}
 		return weight;
 	}

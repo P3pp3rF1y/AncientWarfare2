@@ -8,6 +8,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
+import net.shadowmage.ancientwarfare.structure.registry.TerritorySettingRegistry;
 import net.shadowmage.ancientwarfare.structure.template.WorldGenStructureManager;
 import net.shadowmage.ancientwarfare.structure.util.CollectionUtils;
 import net.shadowmage.ancientwarfare.structure.worldgen.stats.WorldGenStatistics;
@@ -64,10 +65,12 @@ public class TerritoryManager {
 	}
 
 	private static int getTerritoryWeight(String territoryName) {
-		return WorldGenStructureManager.INSTANCE.getTerritoryTemplates(territoryName).map(Set::size).orElse(0)
-				+ (!territoryName.equals(WorldGenStructureManager.GENERIC_TERRITORY_NAME) ? WorldGenStructureManager.INSTANCE.getTerritoryTemplates(WorldGenStructureManager.GENERIC_TERRITORY_NAME).map(Set::size).orElse(0) : 0);
+		return (int) ((WorldGenStructureManager.INSTANCE.getTerritoryTemplates(territoryName).map(Set::size).orElse(0)
+				+ (!territoryName.equals(WorldGenStructureManager.GENERIC_TERRITORY_NAME) ? WorldGenStructureManager.INSTANCE.getTerritoryTemplates(WorldGenStructureManager.GENERIC_TERRITORY_NAME).map(Set::size).orElse(0) : 0))
+				* TerritorySettingRegistry.getTerritorySettings(territoryName).getTerritoryWeightMultiplier());
 	}
 
+	@SuppressWarnings("java:S3518")
 	public static float getTerritoryChanceInBiome(String territoryName, String biomeName) {
 		Biome biome = ForgeRegistries.BIOMES.getValue(new ResourceLocation(biomeName));
 		if (!territoryNamesByBiome.containsKey(biome)) {
@@ -108,6 +111,7 @@ public class TerritoryManager {
 		private Map<Long, BlockPos> includedChunks = new HashMap<>();
 		private Set<Long> visitedChunks = new HashSet<>();
 		private World world;
+		private double maxTerritoryCenterDistanceSq = 0;
 
 		private TerritoryGenerator(World world) {
 			this.world = world;
@@ -127,6 +131,7 @@ public class TerritoryManager {
 
 			String territoryName = getRandomTerritory(territoryNames);
 			String territoryId = territoryName + territoryData.getNextTerritoryId(territoryName);
+			maxTerritoryCenterDistanceSq = TerritorySettingRegistry.getMaxTerritoryCenterDistanceSq(territoryName);
 
 			includedChunks.put(chunkPosValue, firstPos);
 
@@ -143,7 +148,8 @@ public class TerritoryManager {
 			WorldGenDetailedLogHelper.log("{} chunks included in territory \"{}\"", includedChunks::size, () -> finalTerritoryId);
 			if (!isTooFewChunksForNewTerritory()) {
 				//noinspection ConstantConditions
-				WorldGenStatistics.addTerritoryInfo(territoryName, biome.getRegistryName().toString(), includedChunks.size() * AWStructureStatics.chunkClusterValue);
+				WorldGenStatistics.addTerritoryInfo(territoryName, biome.getRegistryName().toString(), includedChunks.size()
+						* TerritorySettingRegistry.getTerritorySettings(territoryName).getPerChunkClusterValueMultiplier() * AWStructureStatics.chunkClusterValue);
 			}
 		}
 
@@ -161,7 +167,7 @@ public class TerritoryManager {
 			if (territoryData.isOwned(chunkPosValue) || visitedChunks.contains(chunkPosValue) || chunksToProcess.containsKey(chunkPosValue)) {
 				return;
 			}
-			if (biomes.contains(world.getBiome(centerPos)) && centerPos.distanceSq(territoryCenterPos) < 1.1 * AWStructureStatics.maxTerritoryCenterDistanceSq) {
+			if (biomes.contains(world.getBiome(centerPos)) && centerPos.distanceSq(territoryCenterPos) < 1.1 * maxTerritoryCenterDistanceSq) {
 				chunksToProcess.put(chunkPosValue, new ProcessedChunk(chunkPosValue, centerPos, chunkPos.x, chunkPos.z));
 			}
 		}
@@ -195,7 +201,7 @@ public class TerritoryManager {
 				}
 			}
 			if (closestChunkToProcess != null) {
-				if (closestDist < AWStructureStatics.maxTerritoryCenterDistanceSq) {
+				if (closestDist < maxTerritoryCenterDistanceSq) {
 					includeChunk(closestChunkToProcess);
 
 					addChunkToProcess(biomes, territoryCenterPos, new ChunkPos(closestChunkToProcess.getChunkX() + 1, closestChunkToProcess.getChunkZ()), territoryData);

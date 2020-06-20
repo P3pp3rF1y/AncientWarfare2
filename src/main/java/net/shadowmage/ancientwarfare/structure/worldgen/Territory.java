@@ -7,6 +7,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.shadowmage.ancientwarfare.core.util.NBTHelper;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
+import net.shadowmage.ancientwarfare.structure.registry.TerritorySettingRegistry;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -28,7 +29,7 @@ public class Territory implements INBTSerializable<NBTTagCompound> {
 		this.territoryName = territoryName;
 	}
 
-	public String getTerritoryId() {
+	String getTerritoryId() {
 		return territoryId;
 	}
 
@@ -36,7 +37,7 @@ public class Territory implements INBTSerializable<NBTTagCompound> {
 		totalClusterValue += value;
 	}
 
-	public void addChunk(long chunkPos) {
+	void addChunk(long chunkPos) {
 		chunkPositions.add(chunkPos);
 		chunkCenters.add(getChunkCenter(chunkPos));
 		territoryCenter = TerritoryManager.getTerritoryCenter(chunkCenters);
@@ -48,10 +49,12 @@ public class Territory implements INBTSerializable<NBTTagCompound> {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o)
+		if (this == o) {
 			return true;
-		if (o == null || getClass() != o.getClass())
+		}
+		if (o == null || getClass() != o.getClass()) {
 			return false;
+		}
 		Territory territory = (Territory) o;
 		return territoryId.equals(territory.territoryId);
 	}
@@ -86,7 +89,7 @@ public class Territory implements INBTSerializable<NBTTagCompound> {
 		territoryCenter = TerritoryManager.getTerritoryCenter(chunkCenters);
 	}
 
-	public Set<Long> getChunkPositions() {
+	Set<Long> getChunkPositions() {
 		return chunkPositions;
 	}
 
@@ -95,6 +98,6 @@ public class Territory implements INBTSerializable<NBTTagCompound> {
 	}
 
 	public int getRemainingClusterValue() {
-		return (int) (AWStructureStatics.chunkClusterValue * chunkPositions.size()) - totalClusterValue;
+		return (int) (TerritorySettingRegistry.getTerritorySettings(territoryName).getPerChunkClusterValueMultiplier() * AWStructureStatics.chunkClusterValue * chunkPositions.size()) - totalClusterValue;
 	}
 }

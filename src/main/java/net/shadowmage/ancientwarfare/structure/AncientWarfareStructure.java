@@ -10,7 +10,6 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -55,6 +54,7 @@ import net.shadowmage.ancientwarfare.structure.proxy.CommonProxyStructure;
 import net.shadowmage.ancientwarfare.structure.registry.BiomeGroupRegistry;
 import net.shadowmage.ancientwarfare.structure.registry.EntitySpawnNBTRegistry;
 import net.shadowmage.ancientwarfare.structure.registry.StructureBlockRegistry;
+import net.shadowmage.ancientwarfare.structure.registry.TerritorySettingRegistry;
 import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 import net.shadowmage.ancientwarfare.structure.template.WorldGenStructureManager;
@@ -76,14 +76,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @Mod(name = "Ancient Warfare Structures", modid = AncientWarfareStructure.MOD_ID, version = "@VERSION@", dependencies = "required-after:ancientwarfare")
-
 public class AncientWarfareStructure {
 	public static final String MOD_ID = "ancientwarfarestructure";
 
 	public static final CreativeTabs TAB = new AWStructureTab();
-
-	@Instance(value = MOD_ID)
-	public static AncientWarfareStructure instance;
 
 	public static final Logger LOG = LogManager.getLogger(MOD_ID);
 
@@ -93,6 +89,7 @@ public class AncientWarfareStructure {
 
 	private AWStructureStatics statics;
 
+	@SuppressWarnings("unused")
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent evt) {
 		statics = new AWStructureStatics("AncientWarfareStructures");
@@ -140,11 +137,13 @@ public class AncientWarfareStructure {
 		RegistryLoader.registerParser(new EntitySpawnNBTRegistry.Parser());
 		RegistryLoader.registerParser(new BiomeGroupRegistry.Parser());
 		RegistryLoader.registerParser(new StructureBlockRegistry.Parser());
+		RegistryLoader.registerParser(new TerritorySettingRegistry.Parser());
 
 		CapabilityRespawnData.register();
 		CapabilityTerritoryData.register();
 	}
 
+	@SuppressWarnings("unused")
 	@EventHandler
 	public void init(FMLInitializationEvent evt) {
 		proxy.init();
@@ -161,6 +160,7 @@ public class AncientWarfareStructure {
 		DataFixManager.registerRuleFixer(new WoodenCoffinFixer());
 	}
 
+	@SuppressWarnings("unused")
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent evt) {
 		StructurePluginManager.INSTANCE.loadPlugins();
@@ -170,6 +170,7 @@ public class AncientWarfareStructure {
 		AWStructureStatics.logSkippableBlocksCoveredByMaterial();
 	}
 
+	@SuppressWarnings("unused")
 	@SubscribeEvent
 	public void onLogin(PlayerEvent.PlayerLoggedInEvent evt) {
 		if (!evt.player.world.isRemote) {
@@ -177,26 +178,31 @@ public class AncientWarfareStructure {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	@SubscribeEvent
 	public void onEntityCapabilityAttach(AttachCapabilitiesEvent<Entity> event) {
 		CapabilityRespawnData.onAttach(event);
 	}
 
+	@SuppressWarnings("unused")
 	@SubscribeEvent
 	public void onWorldCapabilityAttach(AttachCapabilitiesEvent<World> event) {
 		CapabilityTerritoryData.onAttach(event);
 	}
 
+	@SuppressWarnings("unused")
 	@SubscribeEvent
 	public void onWorldLoad(WorldEvent.Load event) {
 		event.getWorld().addEventListener(OneShotEntityDespawnListener.INSTANCE);
 	}
 
+	@SuppressWarnings("unused")
 	@EventHandler
 	public void serverStart(FMLServerStartingEvent evt) {
 		evt.registerServerCommand(new CommandStructure());
 	}
 
+	@SuppressWarnings("unused")
 	@EventHandler
 	public void serverStop(FMLServerStoppingEvent evt) {
 		if (AWStructureStatics.enableWorldGen) {

@@ -16,6 +16,7 @@ import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureEntry;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
 import net.shadowmage.ancientwarfare.structure.gamedata.TownMap;
+import net.shadowmage.ancientwarfare.structure.registry.TerritorySettingRegistry;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.WorldGenStructureManager;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
@@ -47,15 +48,16 @@ public class WorldStructureGenerator implements IWorldGenerator {
 			if (debugTerritoryBorders) {
 				generateTerritoryBorders(chunkX, chunkZ, world, territory.getTerritoryId());
 			}
+			BlockPos cc = world.getSpawnPoint();
+			double distSq = cc.distanceSq((double) chunkX * 16, cc.getY(), (double) chunkZ * 16);
+			if (AWStructureStatics.withinProtectionRange(distSq)) {
+				return;
+			}
+			if (rng.nextFloat() < (AWStructureStatics.randomGenerationChance
+					* TerritorySettingRegistry.getTerritorySettings(territory.getTerritoryName()).getStructureGenerationChanceMultiplier())) {
+				WorldGenTickHandler.INSTANCE.addChunkForGeneration(world, chunkX, chunkZ);
+			}
 		});
-		BlockPos cc = world.getSpawnPoint();
-		double distSq = cc.distanceSq((double) chunkX * 16, cc.getY(), (double) chunkZ * 16);
-		if (AWStructureStatics.withinProtectionRange(distSq)) {
-			return;
-		}
-		if (rng.nextFloat() < AWStructureStatics.randomGenerationChance) {
-			WorldGenTickHandler.INSTANCE.addChunkForGeneration(world, chunkX, chunkZ);
-		}
 	}
 
 	void generateAt(int chunkX, int chunkZ, World world) {
