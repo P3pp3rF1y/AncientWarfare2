@@ -140,7 +140,13 @@ public class StatsCommand extends ParentCommand {
 		rows.add(Strings.repeat('-', header.length() + 1));
 		rows.add("Number of times generated: " + structureRecord.getTimesGenerated());
 		rows.add("Number of times considered in random: " + structureRecord.getTimesConsideredInRandom());
+		rows.addAll(getCollectionStats("Biome generation chances:", structureRecord.getBiomeChances(), entry ->
+				String.format("%1$4s x %2$s | average chance: %3$.1f%%", entry.getValue().getNumberOfGenerations(), entry.getKey(), entry.getValue().getAverageChance() * 100)
+		));
 		rows.addAll(getCollectionStats("Generated in biomes: ", structureRecord.getBiomeGenerations()));
+		rows.addAll(getCollectionStats("Territory generation chances:", structureRecord.getTerritoryChances(), entry ->
+				String.format("%1$4s x %2$s | average chance: %3$.1f%%", entry.getValue().getNumberOfGenerations(), entry.getKey(), entry.getValue().getAverageChance() * 100)
+		));
 		rows.addAll(getCollectionStats("Generated in territories: ", structureRecord.getTerritoryGenerations()));
 		rows.addAll(getCollectionStats("Failed template validation for reasons: ", structureRecord.getValidationRejectionReasons()));
 		rows.addAll(getCollectionStats("Failed placement in world for reasons: ", structureRecord.getPlacementRejectionReasons()));
@@ -169,10 +175,10 @@ public class StatsCommand extends ParentCommand {
 		return getCollectionStats(header, collection, entry -> String.format("%1$4s x %2$s", entry.getValue(), entry.getKey()));
 	}
 
-	private <T> List<String> getCollectionStats(String header, Map<T, Integer> collection, Function<Map.Entry<T, Integer>, String> getEntryStat) {
+	private <K, V> List<String> getCollectionStats(String header, Map<K, V> collection, Function<Map.Entry<K, V>, String> getEntryStat) {
 		List<String> ret = new ArrayList<>();
 		ret.add(header);
-		for (Map.Entry<T, Integer> entry : collection.entrySet()) {
+		for (Map.Entry<K, V> entry : collection.entrySet()) {
 			ret.add(getEntryStat.apply(entry));
 		}
 		return ret;

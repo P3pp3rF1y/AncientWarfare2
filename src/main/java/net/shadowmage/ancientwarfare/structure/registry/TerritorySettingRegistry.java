@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TerritorySettingRegistry {
+	private TerritorySettingRegistry() {}
+
 	private static TerritorySettings defaultSettings = new TerritorySettings(11, 1, 1, 1);
 	private static Map<String, TerritorySettings> territorySettings = new HashMap<>();
 
@@ -22,7 +24,7 @@ public class TerritorySettingRegistry {
 	}
 
 	public static class TerritorySettings {
-		public int getMaxRadiusInChunks() {
+		int getMaxRadiusInChunks() {
 			return maxRadiusInChunks;
 		}
 

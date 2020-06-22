@@ -169,7 +169,6 @@ public class WorldGenStructureManager {
 		{
 			if (validateTemplate(world, x, y, z, face, map, remainingValueCache, dim, template)) {
 				trimmedPotentialStructures.add(template);
-				WorldGenStatistics.recordStructureConsideredInRandom(template.name);
 			}
 		}
 		if (trimmedPotentialStructures.isEmpty()) {
@@ -186,6 +185,7 @@ public class WorldGenStructureManager {
 								trimmedPotentialStructures.forEach(structure -> joiner.add(structure.name + ":" + getStructureWeight(x, y, z, territory, structure)));
 								return joiner.toString();
 							});
+					trimmedPotentialStructures.forEach(structure -> WorldGenStatistics.recordStructureConsideredInRandom(structure.name, getStructureWeight(x, y, z, territory, structure), totalWeight, biomeName, territory.getTerritoryName()));
 				}
 		).orElse(null);
 		distancesFound.clear();

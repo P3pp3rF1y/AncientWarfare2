@@ -10,8 +10,11 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
+import java.util.function.Function;
 
 public class WorldGenStatistics {
+	private WorldGenStatistics() {}
+
 	private static Map<String, TerritoryRecord> territories = new TreeMap<>();
 	private static Map<String, StructureRecord> structures = new TreeMap<>();
 	private static boolean collectWorldGenStats = AWStructureStatics.collectWorldGenStatistics;
@@ -119,8 +122,8 @@ public class WorldGenStatistics {
 		structureRecord.addValidationRejectionReason(validationRejectionReason);
 	}
 
-	public static void recordStructureConsideredInRandom(String structureName) {
-		getStructureRecord(structureName).incrementTimesConsideredInRandom();
+	public static void recordStructureConsideredInRandom(String structureName, int weight, int totalWeight, String biomeName, String territoryName) {
+		getStructureRecord(structureName).incrementTimesConsideredInRandom(biomeName, territoryName, weight == 0 ? 0 : (float) weight / totalWeight);
 	}
 
 	public static void addStructureGeneratedInfo(String structureName, World world, BlockPos pos) {
@@ -142,20 +145,37 @@ public class WorldGenStatistics {
 	}
 
 	private static <T> void incrementMapKey(Map<T, Integer> map, T key) {
-		map.put(key, map.getOrDefault(key, 0) + 1);
+		changeMapKeyValue(map, key, 0, v -> v + 1);
 	}
 
 	private static <T> void addMapKeyValue(Map<T, Float> map, T key, float value) {
-		map.put(key, map.getOrDefault(key, 0f) + value);
+		changeMapKeyValue(map, key, (float) 0, v -> v + value);
+	}
+
+	private static <K, V> void changeMapKeyValue(Map<K, V> map, K key, V defaultValue, Function<V, V> changeValue) {
+		map.put(key, changeValue.apply(map.getOrDefault(key, defaultValue)));
 	}
 
 	public static class StructureRecord {
 		private final String name;
 		private int timesGenerated = 0;
 		private int timesConsideredInRandom = 0;
+		private float totalChance = 0f;
 
 		public Map<String, Integer> getBiomeGenerations() {
 			return biomeGenerations;
+		}
+
+		public float getAverageChance() {
+			return totalChance / timesConsideredInRandom;
+		}
+
+		public Map<String, GenerationChance> getBiomeChances() {
+			return biomeChances;
+		}
+
+		public Map<String, GenerationChance> getTerritoryChances() {
+			return territoryChances;
 		}
 
 		public Map<String, Integer> getTerritoryGenerations() {
@@ -171,7 +191,9 @@ public class WorldGenStatistics {
 		}
 
 		private final Map<String, Integer> biomeGenerations = new TreeMap<>();
+		private final Map<String, GenerationChance> biomeChances = new TreeMap<>();
 		private final Map<String, Integer> territoryGenerations = new TreeMap<>();
+		private final Map<String, GenerationChance> territoryChances = new TreeMap<>();
 		private final Map<ValidationRejectionReason, Integer> validationRejectionReasons = new TreeMap<>();
 		private final Map<PlacementRejectionReason, Integer> placementRejectionReasons = new TreeMap<>();
 
@@ -183,8 +205,11 @@ public class WorldGenStatistics {
 			timesGenerated++;
 		}
 
-		void incrementTimesConsideredInRandom() {
+		void incrementTimesConsideredInRandom(String biomeName, String territoryName, float chance) {
 			timesConsideredInRandom++;
+			totalChance += chance;
+			changeMapKeyValue(biomeChances, biomeName, new GenerationChance(), v -> v.addChance(chance));
+			changeMapKeyValue(territoryChances, territoryName, new GenerationChance(), v -> v.addChance(chance));
 		}
 
 		void addBiomeGen(String biomeName) {
@@ -213,6 +238,26 @@ public class WorldGenStatistics {
 
 		public int getTimesConsideredInRandom() {
 			return timesConsideredInRandom;
+		}
+
+		public static class GenerationChance {
+			private float totalChance = 0f;
+
+			public int getNumberOfGenerations() {
+				return numberOfGenerations;
+			}
+
+			private int numberOfGenerations = 0;
+
+			GenerationChance addChance(float chance) {
+				totalChance += chance;
+				numberOfGenerations++;
+				return this;
+			}
+
+			public float getAverageChance() {
+				return totalChance / numberOfGenerations;
+			}
 		}
 	}
 }
