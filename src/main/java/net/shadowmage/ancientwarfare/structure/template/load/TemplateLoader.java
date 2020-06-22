@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.template.load;
 
+import net.minecraft.util.Tuple;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.common.Loader;
 import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
@@ -25,8 +26,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 public class TemplateLoader {
@@ -79,7 +81,7 @@ public class TemplateLoader {
 	}
 
 	private int loadTemplatesFromSource(File source, String base, boolean saveFixedTemplate) {
-		AtomicInteger loaded = new AtomicInteger(0);
+		Map<String, List<String>> loaded = new TreeMap<>();
 		FileUtils.findFiles(source, base, (root, file) -> {
 			String relative = root.relativize(file).toString();
 
@@ -95,7 +97,12 @@ public class TemplateLoader {
 					if (extension.equals(AWStructureStatics.townTemplateExtension)) {
 						loadTownTemplate(lines);
 					} else {
-						loaded.addAndGet(loadTemplate(file, lines, saveFixedTemplate));
+						loadTemplate(file, lines, saveFixedTemplate).ifPresent(res -> {
+							if (!loaded.containsKey(res.getFirst())) {
+								loaded.put(res.getFirst(), new ArrayList<>());
+							}
+							loaded.get(res.getFirst()).add(res.getSecond());
+						});
 					}
 				}
 				catch (IOException e) {
@@ -106,13 +113,21 @@ public class TemplateLoader {
 				}
 			}
 		});
-		return loaded.get();
+
+		for (Map.Entry<String, List<String>> entry : loaded.entrySet()) {
+			if (entry.getValue().size() > 1) {
+				AncientWarfareStructure.LOG.error("Template name \"{}\" is present in multiple locations only one of them was used:\n{}", entry::getKey,
+						() -> String.join("\n", entry.getValue()));
+			}
+		}
+
+		return loaded.size();
 	}
 
-	private int loadTemplate(Path fileName, List<String> lines, boolean saveFixedTemplate) {
+	private Optional<Tuple<String, String>> loadTemplate(Path fileName, List<String> lines, boolean saveFixedTemplate) {
 		Optional<FixResult<StructureTemplate>> result = TemplateParser.INSTANCE.parseTemplate(fileName.toString(), lines);
 		if (!result.isPresent()) {
-			return 0;
+			return Optional.empty();
 		}
 
 		FixResult<StructureTemplate> loadedTemplate = result.get();
@@ -130,7 +145,7 @@ public class TemplateLoader {
 
 		AncientWarfareStructure.LOG.info("Loaded Structure Template: [{}] WorldGen: {}  Survival: {}", template.name, template.getValidationSettings().isWorldGenEnabled(), template.getValidationSettings().isSurvival());
 		StructureTemplateManager.addTemplate(template);
-		return 1;
+		return Optional.of(new Tuple<>(template.name, fileName.toString()));
 	}
 
 	private void loadTownTemplate(List<String> lines) {
