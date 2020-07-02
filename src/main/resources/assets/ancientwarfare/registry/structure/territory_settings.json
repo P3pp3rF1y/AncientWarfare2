@@ -9,7 +9,7 @@
         "generic": {
             "max_radius_in_chunks": 6,
             "per_chunk_cluster_value_multiplier": 0.5,
-            "territory_weight_multiplier": 0.8
+            "territory_weight_multiplier": 0.2
         },
         "empire": {
             "per_chunk_cluster_value": 2.0,
