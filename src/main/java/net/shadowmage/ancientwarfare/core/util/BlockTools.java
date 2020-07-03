@@ -205,12 +205,6 @@ public class BlockTools {
 		int zSize1 = zSize;
 		int x = pos.getX();
 		int z = pos.getZ();
-		if (x >= xSize) {
-			x = 0;
-		}
-		if (z >= zSize) {
-			z = 0;
-		}
 		int x1 = x;
 		int z1 = z;
 		int positiveTurns = turns > 0 ? turns : 4 + turns;
@@ -353,7 +347,7 @@ public class BlockTools {
 		return toJUtilOptional(property.parseValue(valueString));
 	}
 
-	@SuppressWarnings({"OptionalUsedAsFieldOrParameterType", "Guava"})
+	@SuppressWarnings({"OptionalUsedAsFieldOrParameterType", "Guava", "java:S4738"})
 	private static <T> Optional<T> toJUtilOptional(com.google.common.base.Optional<T> optional) {
 		return optional.transform(Optional::of).or(Optional::empty);
 	}
@@ -362,7 +356,6 @@ public class BlockTools {
 		for (Map.Entry<IProperty<?>, Comparable<?>> property : state.getProperties().entrySet()) {
 			Class<?> valueClass = property.getKey().getValueClass();
 			if (ROTATORS.containsKey(valueClass)) {
-				//noinspection unchecked
 				state = rotateY(state, property.getKey(), turns);
 			}
 		}
@@ -376,7 +369,7 @@ public class BlockTools {
 	}
 
 	@SuppressWarnings({"Convert2Lambda", "squid:S1604"})
-	private static final Map<Class, IRotator<?>> ROTATORS = new ImmutableMap.Builder<Class, IRotator<?>>()
+	private static final Map<Class<?>, IRotator<?>> ROTATORS = new ImmutableMap.Builder<Class<?>, IRotator<?>>()
 			.put(EnumFacing.class, new IRotator<EnumFacing>() {
 				@Override
 				public EnumFacing rotateY(EnumFacing facing, int turns) {
@@ -512,6 +505,7 @@ public class BlockTools {
 			})
 			.build();
 
+	@SuppressWarnings("java:S3740") // this is a method that helps with turning raw property type into generic one
 	public static PropertyState getPropertyState(Block block, BlockStateContainer stateContainer, String propName, String propValue) {
 		IProperty<?> property = stateContainer.getProperty(propName);
 		if (property == null) {
@@ -577,27 +571,27 @@ public class BlockTools {
 			private int lastPosZ;
 
 			protected BlockPos computeNext() {
-				if (this.first) {
-					this.first = false;
-					this.lastPosX = x1;
-					this.lastPosY = y2;
-					this.lastPosZ = z1;
+				if (first) {
+					first = false;
+					lastPosX = x1;
+					lastPosY = y2;
+					lastPosZ = z1;
 					return new BlockPos(x1, y2, z1);
-				} else if (this.lastPosX == x2 && this.lastPosY == y1 && this.lastPosZ == z2) {
-					return this.endOfData();
+				} else if (lastPosX == x2 && lastPosY == y1 && lastPosZ == z2) {
+					return endOfData();
 				} else {
-					if (this.lastPosX < x2) {
-						++this.lastPosX;
-					} else if (this.lastPosZ < z2) {
-						this.lastPosX = x1;
-						++this.lastPosZ;
-					} else if (this.lastPosY > y1) {
-						this.lastPosX = x1;
-						this.lastPosZ = z1;
-						--this.lastPosY;
+					if (lastPosX < x2) {
+						++lastPosX;
+					} else if (lastPosZ < z2) {
+						lastPosX = x1;
+						++lastPosZ;
+					} else if (lastPosY > y1) {
+						lastPosX = x1;
+						lastPosZ = z1;
+						--lastPosY;
 					}
 
-					return new BlockPos(this.lastPosX, this.lastPosY, this.lastPosZ);
+					return new BlockPos(lastPosX, lastPosY, lastPosZ);
 				}
 			}
 		};
