@@ -16,18 +16,22 @@ public class ModelNpc extends ModelPlayer {
 
 	@Override
 	public void setLivingAnimations(EntityLivingBase entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTickTime) {
-		this.rightArmPose = ModelBiped.ArmPose.EMPTY;
-		this.leftArmPose = ModelBiped.ArmPose.EMPTY;
-		ItemStack itemstack = entitylivingbaseIn.getHeldItem(EnumHand.MAIN_HAND);
+		rightArmPose = ModelBiped.ArmPose.EMPTY;
+		leftArmPose = ModelBiped.ArmPose.EMPTY;
+		ItemStack mainHandItemStack = entitylivingbaseIn.getHeldItem(EnumHand.MAIN_HAND);
+		ItemStack leftHandItemStack = entitylivingbaseIn.getHeldItem(EnumHand.OFF_HAND);
 
-		if (itemstack.getItem() == Items.BOW && ((NpcBase) entitylivingbaseIn).isSwingingArms()) {
+		if (mainHandItemStack.getItem() == Items.BOW && ((NpcBase) entitylivingbaseIn).isSwingingArms()) {
 			if (entitylivingbaseIn.getPrimaryHand() == EnumHandSide.RIGHT) {
-				this.rightArmPose = ModelBiped.ArmPose.BOW_AND_ARROW;
+				rightArmPose = ModelBiped.ArmPose.BOW_AND_ARROW;
 			} else {
-				this.leftArmPose = ModelBiped.ArmPose.BOW_AND_ARROW;
+				leftArmPose = ModelBiped.ArmPose.BOW_AND_ARROW;
 			}
 		}
 
+		if ((leftHandItemStack.getItem().isShield(entitylivingbaseIn.getHeldItemOffhand(), entitylivingbaseIn) && ((NpcBase) entitylivingbaseIn).isBlockingWithShield())) {
+			leftArmPose = ArmPose.BLOCK;
+		}
 		super.setLivingAnimations(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTickTime);
 	}
 }

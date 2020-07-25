@@ -11,7 +11,6 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -23,6 +22,7 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIHurt;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMedicBase;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIBlockWithShield;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWatchClosest;
 import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIOwnerHurtByTarget;
@@ -48,6 +48,7 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
 	private NpcAIAttackMeleeLongRange meleeAI;
 	private EntityAIBase arrowAI;
 	private NpcAIPlayerOwnedPatrol patrolAI;
+	private NpcAIBlockWithShield shieldBlockAI;
 
 	private NpcBase distressedTarget;
 
@@ -58,6 +59,7 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
 		arrowAI = new NpcAIPlayerOwnedAttackRanged(this);
 		horseAI = new NpcAIPlayerOwnedRideHorse(this);
 		patrolAI = new NpcAIPlayerOwnedPatrol(this);
+		shieldBlockAI = new NpcAIBlockWithShield(this, shieldBlockingTickDuration(), 60);
 
 		//noinspection Guava
 		Predicate<Entity> selector = this::isHostileTowards;
@@ -70,6 +72,7 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
 		tasks.addTask(2, new NpcAIPlayerOwnedGetFood(this));
 		tasks.addTask(3, new NpcAIPlayerOwnedIdleWhenHungry(this));
 
+		//3==NpcAIShieldBlock
 		tasks.addTask(5, new NpcAIFollowPlayer(this));
 		tasks.addTask(6, new NpcAIPlayerOwnedAlarmResponse(this));
 
@@ -129,6 +132,18 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
 	}
 
 	@Override
+	public void onOffhandInventoryChanged() {
+		super.onOffhandInventoryChanged();
+		if (!world.isRemote) {
+			@Nonnull ItemStack mainhandStack = getHeldItemMainhand();
+			@Nonnull ItemStack offhandStack = getHeldItemOffhand();
+			if (offhandStack.getItem().isShield(offhandStack, this) && !isBow(mainhandStack.getItem())) {
+				tasks.addTask(3, shieldBlockAI);
+			}
+		}
+	}
+
+	@Override
 	public boolean canAttackClass(Class claz) {
 		return (isBow(getHeldItemMainhand().getItem())) || super.canAttackClass(claz);
 	}
@@ -146,10 +161,6 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
 	@Override
 	public boolean shouldSleep() {
 		return false;
-	}
-
-	private boolean isBow(Item item) {
-		return item instanceof ItemBow;
 	}
 
 	@Override
@@ -187,6 +198,7 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
 	public void readEntityFromNBT(NBTTagCompound tag) {
 		super.readEntityFromNBT(tag);
 		onWeaponInventoryChanged();
+		onOffhandInventoryChanged();
 		if (tag.hasKey(PATROL_AI_TAG)) {
 			patrolAI.readFromNBT(tag.getCompoundTag(PATROL_AI_TAG));
 		}
@@ -200,9 +212,14 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
 
 	@Override
 	public void attackEntityWithRangedAttack(EntityLivingBase target, float force) {
+		// FIXME: this is currently going to a negative value above lvl 3
 		// minimum inaccuracy = 3.0f, slowly reaches 0 (or close to it) as the NPC reaches max level
 		float inaccuracy = 3.0f - ((float) Math.sqrt(getLevelingStats().getBaseLevel()) / (float) Math.sqrt(AWNPCStatics.maxNpcLevel) * 5.0f);
 		RangeAttackHelper.doRangedAttack(this, target, force, inaccuracy);
+	}
+
+	public int shieldBlockingTickDuration() {
+		return (int) Math.round((getLevelingStats().getLevel() + 10) * 1.5);
 	}
 
 	public void respondToDistress(NpcBase source) {
