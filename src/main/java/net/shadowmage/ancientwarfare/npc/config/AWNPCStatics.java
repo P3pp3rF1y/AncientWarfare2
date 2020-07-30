@@ -127,7 +127,7 @@ public class AWNPCStatics extends ModConfiguration {
 	}
 
 	private void loadFoodValues() {
-		foodMultiplier = foodConfig.getInt("Food Multiplier", "Default", foodMultiplier, 0, Integer.MAX_VALUE / 10, "Food items which don't have a custom duration time set will have their nourishing amount multiplied by this number, to get the number of ticks feeding the npc.");
+		foodMultiplier = foodConfig.getInt("food_multiplier", "Default", foodMultiplier, 0, Integer.MAX_VALUE / 10, "Food items which don't have a custom duration time set will have their nourishing amount multiplied by this number, to get the number of ticks feeding the npc.");
 		foodConfig.get(foodSettings, "minecraft:apple", 3000, "Example of a food usual tick duration. Default food multiplier included.");
 		foodConfig.get(foodSettings, "minecraft:mushroom_stew", 4500, "Example of a food usual tick duration. Default food multiplier included.");
 		foodConfig.get(foodSettings, "minecraft:rotten_flesh", 0, "Rotten flesh is a rejected food by default.");
