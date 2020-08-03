@@ -201,7 +201,7 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
 	@Override
 	public void attackEntityWithRangedAttack(EntityLivingBase target, float force) {
 		// minimum inaccuracy = 3.0f, slowly reaches 0 (or close to it) as the NPC reaches max level
-		float inaccuracy = 3.0f - ((float) Math.sqrt(getLevelingStats().getBaseLevel()) / (float) Math.sqrt(AWNPCStatics.maxNpcLevel) * 5.0f);
+		float inaccuracy = 3.0f - ((float) Math.sqrt(getLevelingStats().getBaseLevel()) / (float) Math.sqrt(AWNPCStatics.maxNpcLevel) * 3.0f);
 		RangeAttackHelper.doRangedAttack(this, target, force, inaccuracy);
 	}
 

@@ -287,6 +287,7 @@ tile.stone_coffin.demonic.name=Demonic Coffin
 tile.loot_basket.name=Basket
 tile.wooden_throne.name=Wooden Throne
 tile.golden_throne.name=Golden Throne
+tile.stake.name=Stake
 tile.wooden_post.name=Wooden Post
 tile.iron_cage.name=Iron Cage
 tile.gibbet.name=Gibbet
