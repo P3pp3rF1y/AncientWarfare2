@@ -39,6 +39,10 @@
             "text": "To use a Upkeep Order, press the “z” key with the Upkeep Order in your hand while looking at the inventory block you want to have the NPC to draw from. You can only select one inventory per Upkeep Order. Once you have the inventory the NPC should draw from selected, right click to open the order. The GUI that opens will display that point, what it is, where it is, and a side-specific inventory option (for chests, this does not matter). Next to these options will be an entry for the minimum amount of time between food pickups in minutes. Place the Upkeep order in the Upkeep Order slot of an NPC to have it begin to follow that order"
         },
         {
+            "content_type": "text",
+            "text": "\n\n\n "
+        },
+        {
             "content_type": "item",
             "name": "ancientwarfarenpc:town_hall"
         },
@@ -62,7 +66,11 @@
         },
         {
             "content_type": "text",
-            "text": "The Command Baton gives a player the means to issue orders to owned or same-team NPCs.  Each Command Baton stores its own list of NPC targets; multiple Batons may be used for ‘command groups’. The Command Baton also functions as a sword, doing damage equivalent to a same-material sword. The list of commanded NPCs is displayed in the upper-left of the screen. The current target is displayed in the upper-right of the screen. To add or remove an NPC from the list of commanded NPCs, right click while targeting that NPC. Orders are issued to a Batons’ commanded NPCs through the item-interaction keybinds.  Orders are issued with the currently highlighted block or entity as the target. Orders are issued to the entire list of commanded NPCs for that Baton. To issue an order press the corresponding order key.  The currently available keys/commands are: \nZ – Clear current command \nX – Attack target, or move to target position while attacking any sighted enemies \nC – Follow target / Guard target / move to target position / Mount target Horse \nV – Set home point, will clear point if sneak is held while issuing order. \nB – Set upkeep point, will clear point if sneak is held while issuing order."
+            "text": "The Command Baton gives a player the means to issue orders to owned or same-team NPCs.  Each Command Baton stores its own list of NPC targets; multiple Batons may be used for ‘command groups’. The Command Baton also functions as a sword, doing damage equivalent to a same-material sword. The list of commanded NPCs is displayed in the upper-left of the screen. The current target is displayed in the upper-right of the screen. To add or remove an NPC from the list of commanded NPCs, right click while targeting that NPC. Orders are issued with the currently highlighted block or entity as the target. Orders are issued to the entire list of commanded NPCs for that Baton. To issue an order press the “Z” key. To cycle between commands, hold sneak and scroll the mouse wheel, the commands will pop up and the last one to show up is the selected Command. The available commands are as follows: \nClear Command will clear the current command. \nAttack/Move-Attack will have the NPC target the selected Entity, or move to the target position while attacking any sighted enemies \nMove/Guard/Mount will have the NPCs move to target position, or follow/guard the target Entity, or Mount target Horse \nSet Home will set the selected block to be the NPC’s home point. \nClear Home will clear the NPC home point. \nSet Upkeep will set the selected block to be the NPC’s upkeep point, this would have no proper effect if the selected block is not an inventory block with food. \nClear Upkeep will clear the NPC’s upkeep point."
+        },
+        {
+            "content_type": "text",
+            "text": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n "
         },
         {
             "content_type": "item",
@@ -79,6 +87,12 @@
             "text": "The Worker NPC is the generic survival spawned NPC. Without any equipped tools, the NPC does not have any role or job. They must be given a tool to give them a job and the ability to work at the appropriate Machines. The only thing this NPC does is eat your food, so make sure to give them a job as soon as possible. \nFor all Workers, the material quality of the equipment will contribute to the worker’s effectiveness and work output.  A workers level will also contribute to his effectiveness at his current task. Workers will automatically return to their home point at night or whenever it is raining. If a Worker NPC spots a hostile entity they will broadcast an alert and begin moving towards the nearest Town Hall/home point while attempting to evade the enemy.  If no Town Hall is present, or home point set, they will continue working like normal.  Other nearby NPCs may respond to this broadcast in different manners – other nearby Workers and Utility NPCs will begin to flee as well, while nearby Combat NPCs may move to attack the enemy."
         },
         {
+            "content_type": "image",
+            "path": "/images/NPC_Warning1.jpg",
+            "width": 722,
+            "height": 389
+        },
+        {
             "content_type": "item",
             "name": "ancientwarfarenpc:work_order"
         },
@@ -89,7 +103,7 @@
         },
         {
             "content_type": "text",
-            "text": "NPC Workers will automatically seek the nearest active worksite that has work to begin working at. If no worksites have work to be done, they will begin to wander around.  Automatic selection of worksite can be overridden by placing a properly configured ‘Work Order’ item in the workers ‘Orders’ slot. To use a Work Order, press the “z” key with the work order in your hand while looking at the machine you want to have the NPC work on. You can do this for multiple machines. Once you have the machine(s) the NPC should work at selected, right click to open the order. The GUI that opens will have a list of the points, what it is, where it is, a plus sign to raise it in the list, a minus sign to lower it in the list, and a remove button. Next to these options will be an entry for the minimum amount of time you want the worker to work at that point in seconds. For most cases, this can actually be left to zero, which will tell the NPC to spend as much time as it needs to work at that point. Above the whole list is two buttons, the top one is options for what the NPC should do at each point in the list, the bottom one determines if the NPC is the day shift or the night shift. \n \n \n \n"
+            "text": "NPC Workers will automatically seek the nearest active worksite that has work to begin working at. If no worksites have work to be done, they will begin to wander around.  Automatic selection of worksite can be overridden by placing a properly configured ‘Work Order’ item in the workers ‘Orders’ slot. To use a Work Order, press the “z” key with the work order in your hand while looking at the machine you want to have the NPC work on. You can do this for multiple machines. Once you have the machine(s) the NPC should work at selected, right click to open the order. The GUI that opens will have a list of the points, what it is, where it is, a plus sign to raise it in the list, a minus sign to lower it in the list, and a remove button. Next to these options will be an entry for the minimum amount of time you want the worker to work at that point in seconds. For most cases, this can actually be left to zero, which will tell the NPC to spend as much time as it needs to work at that point. Above the whole list is two buttons, the top one is options for what the NPC should do at each point in the list, the bottom one determines if the NPC is the day shift or the night shift."
         },
         {
             "content_type": "item",
@@ -103,7 +117,11 @@
         },
         {
             "content_type": "text",
-            "text": "The Farmer works at the Crop Farm, Fruit Farm, Animal Farm, and Fish Farm Machines. The Worker NPC requires a hoe of any material level placed in the main hand to become a Farmer. You should see the skin of the Worker change to the Farmer skin, and if this change does not occur, then the Worker is not a Farmer. Offhand, armor slots, and order slots can be set up however you like. \n \n \n \n"
+            "text": "The Farmer works at the Crop Farm, Fruit Farm, Animal Farm, and Fish Farm Machines. The Worker NPC requires a hoe of any material level placed in the main hand to become a Farmer. You should see the skin of the Worker change to the Farmer skin, and if this change does not occur, then the Worker is not a Farmer. Offhand, armor slots, and order slots can be set up however you like."
+        },
+        {
+            "content_type": "text",
+            "text": "\n\n\n\n\n "
         },
         {
             "content_type": "item",
@@ -117,7 +135,7 @@
         },
         {
             "content_type": "text",
-            "text": "The Lumberjack works at the Tree Farm Machine. The Worker NPC requires an axe of any material level placed in the main hand to become a Lumberjack. You should see the skin of the Worker change to the Lumberjack skin, and if this change does not occur, then the Worker is not a Lumberjack. Offhand, armor slots, and order slots can be set up however you like. \n \n \n \n"
+            "text": "The Lumberjack works at the Tree Farm Machine. The Worker NPC requires an axe of any material level placed in the main hand to become a Lumberjack. You should see the skin of the Worker change to the Lumberjack skin, and if this change does not occur, then the Worker is not a Lumberjack. Offhand, armor slots, and order slots can be set up however you like."
         },
         {
             "content_type": "item",
@@ -131,7 +149,7 @@
         },
         {
             "content_type": "text",
-            "text": "The Miner works at the Quarry Machine. The Worker NPC requires a pickaxe of any material level placed in the main hand to become a Miner. You should see the skin of the Worker change to the Miner skin, and if this change does not occur, then the Worker is not a Miner. Offhand, armor slots, and order slots can be set up however you like. \n \n \n \n"
+            "text": "The Miner works at the Quarry Machine. The Worker NPC requires a pickaxe of any material level placed in the main hand to become a Miner. You should see the skin of the Worker change to the Miner skin, and if this change does not occur, then the Worker is not a Miner. Offhand, armor slots, and order slots can be set up however you like."
         },
         {
             "content_type": "item",
@@ -145,7 +163,11 @@
         },
         {
             "content_type": "text",
-            "text": "The Craftsman works at the Autocrafting Table and the Warehouse Machines, as well as the Hand-Cranked Generator and any Survival Structure Builder. The Worker NPC requires a hammer of any material level placed in the main hand to become a Craftsman. You should see the skin of the Worker change to the Craftsman skin, and if this change does not occur, then the Worker is not a Craftsman. Offhand, armor slots, and order slots can be set up however you like. \n \n \n"
+            "text": "The Craftsman works at the Autocrafting Table and the Warehouse Machines, as well as the Hand-Cranked Generator and any Survival Structure Builder. The Worker NPC requires a hammer of any material level placed in the main hand to become a Craftsman. You should see the skin of the Worker change to the Craftsman skin, and if this change does not occur, then the Worker is not a Craftsman. Offhand, armor slots, and order slots can be set up however you like."
+        },
+        {
+            "content_type": "text",
+            "text": "\n\n\n "
         },
         {
             "content_type": "item",
@@ -160,6 +182,10 @@
         {
             "content_type": "text",
             "text": "The Researcher works at the Research Bench, to enable continual research progress without player interaction.  Required equipment is a Quill, of any material level, in the main-hand slot.  Offhand and armor may be configured as desired. Under default configs, the Researcher serves no real purpose, since researches do not require large amounts of power, and the player can easily supply it quickly. However, config options exist to make the researches’ power consumption greater, thus making the Researcher worthwhile."
+        },
+        {
+            "content_type": "text",
+            "text": "\n\n\n "
         },
         {
             "content_type": "item",
@@ -203,6 +229,10 @@
             "text": "Equipping a Combat NPC with a Sword of any material level will turn him into a Soldier. The Combat NPC’s skin will change to the Soldier’s Skin, and if this does not happen, then the Combat NPC is not a Soldier. His damage output is determined by the material level of the sword equipped. Offhand, armor slots, and order slots can be set up however you like. Placing another sword in the Soldier’s offhand will allow the Soldier to dual wield, and the offhand sword will do half as much damage as a sword in the main hand."
         },
         {
+            "content_type": "text",
+            "text": "\n\n\n "
+        },
+        {
             "content_type": "item",
             "name": "ancientwarfarenpc:npc_spawner",
             "nbt": "{npcSubtype:\"archer\",npcType:\"combat\"}"
@@ -214,7 +244,7 @@
         },
         {
             "content_type": "text",
-            "text": "Equipping a Combat NPC with a Bow will turn him into a Archer. The Combat NPC’s skin will change to the Archer’s Skin, and if this does not happen, then the Combat NPC is not a Archer. His range is the same as a vanilla Skeleton Mob. Offhand, armor slots, and order slots can be set up however you like."
+            "text": "Equipping a Combat NPC with a Bow will turn him into an Archer. The Combat NPC’s skin will change to the Archer’s Skin, and if this does not happen, then the Combat NPC is not an Archer. In the Archer NPC’s menu is a checkbox marked “Stand Ground”, which can be used to prevent the Archer from moving closer to their target when engaging with one. Offhand, armor slots, and order slots can be set up however you like."
         },
         {
             "content_type": "item",
@@ -295,6 +325,10 @@
             "text": "The Routing Order is used by Courier NPCs to denote the route they will travel, and what items should be transferred at each stop. Similarly to the Work Order and the Combat Order, adding points to the Routing Order is done by holding the Order in your hand, and pressing the “z” key while looking at the inventory you want to access. For Machines, recall that their inventories are side specific, and it is very important to be looking at the right side for the inventory you wish to access when adding points to the Order. Right-click the Routing Order to adjust the inventory side, items to be transferred, or to change the route-point ordering. To change the target side, open the Routing Orders GUI and click the button labeled with the current side (it will say: North, South, East, West, Up, or Down). The selected side will scroll through the side-list with each press of the button. Each point on the route is allowed a single type of item-transfer. The same block/inventory may be specified multiple times for more complex interactions. Add items to the filter bar by simply placing them as if it was a slot in a chest, you can specify numbers larger than a stack by continuing to click on the same slot. To decrease amounts, left click with the item in your hand. Different stack sizes increase and reduce appropriately. To change the route-type, press the button labeled with the current transfer type. The types of item transfers available are: \n\nFill Upto: The Courier will try and Fill the target inventory To these amounts. Courier will not deposit anything if the inventory already has these stack sizes, or more. \n\nTake Upto: The Courier will try and Take these amounts From the target inventory. Courier will not take anything if they are already carrying the specified amounts, or more in their inventory.  \n\nPut Any: The Courier will try to Put Any matches in the filter bar To the target inventory. Stack Sizes are ignored, the Courier will fill until the inventory is full, or the Courier no longer holds those items. \n\nTake Any: The Courier will try to Take Any matches in the filter bar From the target inventory. Stack Sizes are ignored, the courier will take all matches until its backpack is full, or the inventory no longer has any. \n\nPut Except: The Courier will try and Put All items EXCEPT the matches in the filter bar To the target inventory. Stack Sizes are ignored, the courier will fill target with the non-matches until it is full or the Courier no longer has any. \n\nTake Except: The Courier will try to Take All items EXCEPT the matches in the filter bar From the target inventory. Stack Sizes are ignored, the courier will take all non-matches until its backpack is full or the inventory no longer has any. \n\nPut Ratio: The Courier will try to Put a specified ratio of items in To the target inventory. Item stack size in the filter bar determines the ratio, where a stack size of 2 is half, 3 is a third, etc. \n\nTake Ratio: The Courier will try and Take a specified ratio From the target inventory.  Item stack size in the filter bar determines the ratio, where a stack size of 2 is half, 3 is a third, etc. \nPut Exact: The Courier will try to Put the EXACT amount specified in the filter bar To the target inventory. If the Courier does not have EXACTLY the correct amount, or it does not COMPLETELY fit in the destination, it will not transfer.  \n\nTake Exact: The Courier will try to Take the EXACT amount specified in the filter bar from the target inventory. If the inventory does not have EXACTLY the correct amount, or the Courier cannot COMPLETELY hold it, it will not transfer. \n\nFill Minimum: The Courier will try and Fill a minimum of the amount specified in the filter bar To the target inventory. This is the same as “Fill Upto” but it will only transfer items if the target will result in having AT LEAST this amount.  \n\nTake Minimum: The Courier will try to Take an minimum of the amount in the filter bar From the target inventory. This is the same as “Take Upto” but it will only transfer items if it results in the Courier having AT LEAST this amount."
         },
         {
+            "content_type": "text",
+            "text": "\n\n\n "
+        },
+        {
             "content_type": "item",
             "name": "ancientwarfarenpc:npc_spawner",
             "nbt": "{npcSubtype:\"\",npcType:\"trader\"}"
@@ -333,7 +367,11 @@
         },
         {
             "content_type": "text",
-            "text": "The Priest NPC is used to resurrect other NPCs that have died. In order to be eligible for resurrection, the slain NPC must have died within range of a Town Hall. Resurrected NPCs return unequipped – their equipment was dropped when they were slain, and must be manually retrieved and/or replaced.\n \n \n \n"
+            "text": "The Priest NPC is used to resurrect other NPCs that have died. In order to be eligible for resurrection, the slain NPC must have died within range of a Town Hall. Resurrected NPCs return unequipped – their equipment was dropped when they were slain, and must be manually retrieved and/or replaced."
+        },
+        {
+            "content_type": "text",
+            "text": "\n "
         },
         {
             "content_type": "item",

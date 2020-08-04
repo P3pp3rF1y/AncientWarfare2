@@ -168,21 +168,6 @@
             "content_type": "text",
             "text": "AW has a very nice Lake Creator wand that will fill an area by replacing all air blocks with water. But be warned – practise on a test world before using the lake gen wand – it’s very easy to make a mistake. (Which is where Torojima’s water deletion wand comes in handy). \nSimply right click with the lake gen wand on the top surface of the block above which you wish the water to replace all air blocks. It will fill ALL connected air blocks for a considerable distance, so ensure the area you want to fill is COMPLETELY enclosed."
         },
-        {
-            "content_type": "heading",
-            "text": "Structure Aesthetic Blocks",
-            "level": 2
-        },
-		{
-            "content_type": "text",
-            "text": "Ancient Warfare has an ever expanding amount of aesthetic blocks designed for use with the default Faction and Structure pack, but they can be used however you like, for whatever you like. \nFirepits \nThere are Firepits of three different types: Wood only, Circle Firepit, and Square Firepit, and come in unlit and lit versions in creative. Unlit Firepits may be lit using a flint and steel. \nTotems and Irminsuls \nTotems and Irminsuls are based on off Native American Totem Poles and Germanic Irminsul, and consist of Base Blocks, Middle blocks, and Top blocks. These may be arranged however you like, to whatever height you like. \nAltar Pieces \nThere are Altar pieces with their cloths in every vanilla color, and in two variations: Short and Long Cloths. There are also Altar Candles in every vanilla color, which provide the same light as a torch. Finally, there is the Altar Lectern, which simply provides a book on a lectern for completing your Church aesthetic. \nStompiLumpa and the Altar Sun \nStompiLumpa is the Elephant God Idol of the Zimba faction, but you may use his majestic presence however you wish. The Altar Sun piece is a centerpiece of the Xoltec faction’s temples, and they emit light and slight particle effects, use them however you like."
-        },
-		{
-            "content_type": "image",
-            "path": "/images/Structure_Aesthetics1.jpg",
-            "width": 756,
-            "height": 413
-        },
 		{
             "content_type": "heading",
             "text": "Structure Scanning and Building Mechanics",

@@ -5,7 +5,7 @@
     "content": [
         {
             "content_type": "heading",
-            "text": "Factions",
+            "text": "Tribes and Nations",
             "level": 1
         },
         {
@@ -15,20 +15,16 @@
         },
         {
             "content_type": "text",
-            "text": "Every Machine, Warehouse, and NPC placed by a Player belongs to that Player, and by default, are not accessible by other Players. In order to allow your friends to access your owned blocks and NPCs, you must add them to your team. This can be done by adding yourself and them to the same team using the vanilla scoreboard commands. Essentially, the commands you need are “/scoreboard teams add YOUR_TEAM_NAME” and “/scoreboard teams join YOUR_TEAM_NAME”. The command to add the team is only needed to be done once, and then you and any others may use the second join command to join the team. More advanced team options can be found out by looking up the usage of the scoreboard commands on the Minecraft Wiki. You can also join a team by using the Team features in the FTBUtils mod. \\nIf you want to change your relations with a faction, you may trade with Traders specific to that faction. This will eventually make them not hostile to you, but they will be merely friendly with you. There is no way to join a faction, and this is an intended feature. The factions in the world are meant to be a present, independent force in your world, not something you can just join or take over."
-        },
-        {
-            "content_type": "text",
-            "text": "Welcome to the Castellans Guide to the peoples and creatures of Ancient Warfare. In the world of AW players will meet many different civilisations and tribes with which to interact with. Some will be friendly, some neutral, and some hostile."
+            "text": "Every Machine, Warehouse, and NPC placed by a Player belongs to that Player, and by default, are not accessible by other Players. In order to allow your friends to access your owned blocks and NPCs, you must add them to your team. This can be done by adding yourself and them to the same team using the vanilla scoreboard commands. Essentially, the commands you need are “/scoreboard teams add YOUR_TEAM_NAME” and “/scoreboard teams join YOUR_TEAM_NAME”. The command to add the team is only needed to be done once, and then you and any others may use the second join command to join the team. More advanced team options can be found out by looking up the usage of the scoreboard commands on the Minecraft Wiki. You can also join a team by using the Team features in the FTBUtils mod.\nThere is no way to join a Nations or Tribes, and this is an intended feature. The factions in the world are meant to be a present, independent force in your world, not something you can just join or take over from the inside."
         },
         {
             "content_type": "heading",
-            "text": "Civilizations",
+            "text": "Nations",
             "level": 2
         },
         {
             "content_type": "text",
-            "text": "“Civilised” factions are categorised as civilisations because beside their structures appearing in normal world gen, they will also generate their own unwalled towns and walled cities – plus they will frequently use artillery siege engines to defend them. \nNoggs - Colour (Emerald Green) \nEmpire - Colour (Purple) \nWitchbane - Colour (White) \nXoltec - Colour (Orange) \nNorska - Colour (Light Blue) \nSarkonids - Colour (Red)"
+            "text": "“Civilised” factions are categorised as Nations because beside their structures appearing in normal world gen, they will also generate their own unwalled towns and walled cities – plus they will frequently use artillery siege engines to defend them. \nNoggs - Colour (Emerald Green) \nEmpire - Colour (Purple) \nWitchbane - Colour (White) \nXoltec - Colour (Orange) \nNorska - Colour (Light Blue) \nSarkonids - Colour (Red)"
         },
         {
             "content_type": "heading",
@@ -38,6 +34,10 @@
         {
             "content_type": "text",
             "text": "“Tribal” factions are categorised as Tribal because they do not generate unwalled towns or walled cities and generally have smaller tribal villages - and usually have no artillery siege engines. \nZimba - Colour (Yellow) \nKongs - Colour (Dark Green) \nBuffloka - Colour (Green) \nPirates - Colour (Ochre) \nBrigands - Colour (Brown) \nOrcs - Colour - (Dark Grey) \nDemons - Colour - (Scarlet) \nThe Undead - Colour - (Light Grey) \nThe Malice (Evil) - Colour (Black) \nThe Guardians (Good) - Colour (Light Green)"
+        },
+        {
+            "content_type": "text",
+            "text": "\n\n\n "
         },
         {
             "content_type": "heading",
