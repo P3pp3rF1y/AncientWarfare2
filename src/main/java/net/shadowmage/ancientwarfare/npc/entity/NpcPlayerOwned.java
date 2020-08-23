@@ -277,7 +277,7 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 		if (amount <= 0) {
 			return true;
 		}
-		@Nonnull ItemStack stack;
+		ItemStack stack;
 		int val;
 		int eaten = 0;
 		for (int slot = 0; slot < handler.getSlots(); slot++) {

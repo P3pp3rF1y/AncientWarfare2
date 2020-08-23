@@ -91,11 +91,11 @@ public class ContainerBackpack extends ContainerBase {
 
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex) {
-		@Nonnull ItemStack slotStackCopy = ItemStack.EMPTY;
+		ItemStack slotStackCopy = ItemStack.EMPTY;
 		Slot theSlot = this.getSlot(slotClickedIndex);
 		int size = handler.getSlots();
 		if (theSlot != null && theSlot.getHasStack()) {
-			@Nonnull ItemStack slotStack = theSlot.getStack();
+			ItemStack slotStack = theSlot.getStack();
 			slotStackCopy = slotStack.copy();
 			if (slotClickedIndex < size)//clicked in backpack
 			{

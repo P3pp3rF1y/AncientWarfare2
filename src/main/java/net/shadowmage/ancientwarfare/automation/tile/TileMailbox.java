@@ -64,7 +64,7 @@ public class TileMailbox extends TileOwned implements IRotatableTile, ITickable,
 	}
 
 	private void trySendItems(MailboxData data) {
-		@Nonnull ItemStack item;
+		ItemStack item;
 		String owner = privateBox ? getOwner().getName() : null;
 		int dim = world.provider.getDimension();
 		for (int slot = 0; slot < sendInventory.getSlots(); slot++) {

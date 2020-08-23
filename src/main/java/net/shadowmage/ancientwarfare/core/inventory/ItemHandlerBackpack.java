@@ -32,7 +32,7 @@ public class ItemHandlerBackpack implements IItemHandlerModifiable {
 
 	@Nonnull
 	@Override
-	public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+	public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 		ItemStack ret = stack;
 		if (stack.getItem() != AWCoreItems.BACKPACK) {
 			ret = backpackInventory.insertItem(slot, stack, simulate);
@@ -59,7 +59,7 @@ public class ItemHandlerBackpack implements IItemHandlerModifiable {
 	}
 
 	@Override
-	public void setStackInSlot(int slot, @Nonnull ItemStack stack) {
+	public void setStackInSlot(int slot, ItemStack stack) {
 		backpackInventory.setStackInSlot(slot, stack);
 		saveToStack(backpackInventory);
 	}

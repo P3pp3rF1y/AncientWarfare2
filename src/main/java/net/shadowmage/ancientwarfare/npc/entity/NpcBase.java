@@ -104,7 +104,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	public static final int UPKEEP_SLOT = 7;
 	private static final String ATTACK_TARGET_TAG = "attackTarget";
 
-	@Nonnull
 	public ItemStack ordersStack = ItemStack.EMPTY;
 	private NpcAIBlockWithShield shieldBlockAI = null;
 	private static final String DO_NOT_PURSUE = "donotpursue";
@@ -115,7 +114,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
 	private NpcSkinSettings skinSettings = new NpcSkinSettings();
 
-	@Nonnull
 	public ItemStack upkeepStack = ItemStack.EMPTY;
 
 	// used for flee/distress AI
@@ -700,7 +698,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	 */
 	public void readAdditionalItemData(NBTTagCompound tag) {
 		NBTTagList equipmentList = tag.getTagList("equipment", Constants.NBT.TAG_COMPOUND);
-		@Nonnull ItemStack stack;
+		ItemStack stack;
 		NBTTagCompound equipmentTag;
 		for (int i = 0; i < equipmentList.tagCount(); i++) {
 			equipmentTag = equipmentList.getCompoundTagAt(i);
@@ -718,7 +716,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	 */
 	public void writeAdditionalItemData(NBTTagCompound tag) {
 		NBTTagList equipmentList = new NBTTagList();
-		@Nonnull ItemStack stack;
+		ItemStack stack;
 		NBTTagCompound equipmentTag;
 		for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
 			stack = getItemStackFromSlot(slot);

@@ -120,7 +120,7 @@ public class CommandStructure extends RootCommand {
 		@Override
 		public void execute(MinecraftServer server, ICommandSender sender, String[] subArgs) {
 			if (sender instanceof EntityLivingBase) {
-				@Nonnull ItemStack stack = ((EntityLivingBase) sender).getHeldItemMainhand();
+				ItemStack stack = ((EntityLivingBase) sender).getHeldItemMainhand();
 				if (!stack.isEmpty()) {
 					ItemStructureSettings settings = ItemStructureSettings.getSettingsFor(stack);
 					if (settings.hasPos1() && settings.hasPos2() && settings.hasBuildKey() && (settings.hasName() || subArgs.length > 0)) {

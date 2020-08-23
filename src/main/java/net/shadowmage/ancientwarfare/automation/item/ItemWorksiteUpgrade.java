@@ -39,7 +39,7 @@ public class ItemWorksiteUpgrade extends ItemMulti {
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-		@Nonnull ItemStack stack = player.getHeldItem(hand);
+		ItemStack stack = player.getHeldItem(hand);
 
 		if (world.isRemote) {
 			return new ActionResult<>(EnumActionResult.SUCCESS, stack);

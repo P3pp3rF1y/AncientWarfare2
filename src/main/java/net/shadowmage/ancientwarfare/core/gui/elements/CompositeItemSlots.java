@@ -103,7 +103,7 @@ public class CompositeItemSlots extends CompositeScrolled {
 	}
 
 	private void renderSlotHighlight(ItemSlot slot, int mouseX, int mouseY) {
-		@Nonnull ItemStack stack = slot.getStack();
+		ItemStack stack = slot.getStack();
 		if (stack.isEmpty() || !slot.visible) {
 			return;
 		}
@@ -135,7 +135,7 @@ public class CompositeItemSlots extends CompositeScrolled {
 	}
 
 	private void renderOverlay(ItemSlot slot) {
-		@Nonnull ItemStack stack = slot.getStack();
+		ItemStack stack = slot.getStack();
 		if (stack.isEmpty() || !slot.visible) {
 			return;
 		}
@@ -151,7 +151,7 @@ public class CompositeItemSlots extends CompositeScrolled {
 	}
 
 	private void renderItemStack(ItemSlot slot) {
-		@Nonnull ItemStack stack = slot.getStack();
+		ItemStack stack = slot.getStack();
 		if (stack.isEmpty() || !slot.visible) {
 			return;
 		}

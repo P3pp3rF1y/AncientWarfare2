@@ -41,7 +41,6 @@ import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionSpellcasterWiz
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionTrader;
 import net.shadowmage.ancientwarfare.npc.entity.vehicle.NpcSiegeEngineer;
 
-import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -246,7 +245,7 @@ public class AWNPCEntities {
 		public NpcBase createEntity(World world, String subType, String factionName) {
 			NpcBase npc = (NpcBase) createEntity(world);
 			if (!subType.isEmpty()) {
-				@Nonnull ItemStack stack = spawnEquipment.get(subType);
+				ItemStack stack = spawnEquipment.get(subType);
 				if (!stack.isEmpty()) {
 					npc.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, stack.copy());
 				}

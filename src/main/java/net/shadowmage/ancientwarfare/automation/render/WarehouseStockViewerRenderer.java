@@ -66,7 +66,7 @@ public class WarehouseStockViewerRenderer extends TileEntitySpecialRenderer<Tile
 		GlStateManager.scale(1f, 1f, 0.0001f);//squash Z axis for 'flat' rendering of 3d blocks/items..LOLS
 		FontRenderer fr = getFontRenderer();
 		GlStateManager.disableLighting();
-		@Nonnull ItemStack filterItem;
+		ItemStack filterItem;
 		WarehouseStockFilter filter;
 		String name = "";
 		List<WarehouseStockFilter> filters = tile.getFilters();

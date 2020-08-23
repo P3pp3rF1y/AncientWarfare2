@@ -146,7 +146,7 @@ public class NpcWorker extends NpcPlayerOwned implements IWorker {
 	}
 
 	protected WorkType getWorkTypeFromEquipment() {
-		@Nonnull ItemStack stack = getHeldItemMainhand();
+		ItemStack stack = getHeldItemMainhand();
 		if (!stack.isEmpty()) {
 			if (stack.getItem() instanceof ItemHoe) {
 				return WorkType.FARMING;

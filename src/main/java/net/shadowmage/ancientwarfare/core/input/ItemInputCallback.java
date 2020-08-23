@@ -30,7 +30,7 @@ class ItemInputCallback implements IInputCallback {
 	}
 
 	private boolean runAction(Minecraft minecraft, EnumHand hand) {
-		@Nonnull ItemStack stack = minecraft.player.getHeldItem(hand);
+		ItemStack stack = minecraft.player.getHeldItem(hand);
 		if (stack.getItem() instanceof IItemKeyInterface && ((IItemKeyInterface) stack.getItem()).onKeyActionClient(minecraft.player, stack, altFunction)) {
 			PacketItemInteraction pkt = new PacketItemInteraction(altFunction);
 			NetworkHandler.sendToServer(pkt);

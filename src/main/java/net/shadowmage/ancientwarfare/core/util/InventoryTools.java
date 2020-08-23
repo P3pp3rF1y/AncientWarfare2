@@ -73,11 +73,11 @@ public class InventoryTools {
 		ItemStackHandler copy = new ItemStackHandler(handler.getSlots()) {
 			@Nonnull
 			@Override
-			public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+			public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 				return canInsert(slot, stack) ? super.insertItem(slot, stack.copy(), simulate) : stack;
 			}
 
-			private boolean canInsert(int slot, @Nonnull ItemStack stack) {
+			private boolean canInsert(int slot, ItemStack stack) {
 				ItemStack remainingStack = handler.insertItem(slot, stack, true);
 				return remainingStack.isEmpty() || remainingStack.getCount() != stack.getCount();
 			}
@@ -176,7 +176,7 @@ public class InventoryTools {
 			quantity = filter.getMaxStackSize();
 		}
 		int returnCount = 0;
-		@Nonnull ItemStack slotStack;
+		ItemStack slotStack;
 		for (int index = 0; index < handler.getSlots(); index++) {
 			slotStack = handler.getStackInSlot(index);
 			if (slotStack.isEmpty() || !doItemStacksMatchRelaxed(filter, slotStack)) {
@@ -192,7 +192,7 @@ public class InventoryTools {
 				break;
 			}
 		}
-		@Nonnull ItemStack returnStack = ItemStack.EMPTY;
+		ItemStack returnStack = ItemStack.EMPTY;
 		if (returnCount > 0) {
 			returnStack = filter.copy();
 			returnStack.setCount(returnCount);
@@ -234,7 +234,7 @@ public class InventoryTools {
 		int moved = 0;
 		int toMove = quantity;
 		for (int slot = 0; slot < from.getSlots() && toMove > 0; slot++) {
-			@Nonnull ItemStack stack = from.getStackInSlot(slot);
+			ItemStack stack = from.getStackInSlot(slot);
 			if (stack.isEmpty() || !filter.apply(stack)) {
 				continue;
 			}
@@ -264,7 +264,7 @@ public class InventoryTools {
 
 	public static int findItemSlot(IItemHandler handler, Predicate<ItemStack> filter) {
 		for (int slot = 0; slot < handler.getSlots(); slot++) {
-			@Nonnull ItemStack stack = handler.getStackInSlot(slot);
+			ItemStack stack = handler.getStackInSlot(slot);
 			if (filter.test(stack)) {
 				return slot;
 			}
@@ -282,7 +282,7 @@ public class InventoryTools {
 		}
 		int count = 0;
 		for (int slot = 0; slot < handler.getSlots(); slot++) {
-			@Nonnull ItemStack stack = handler.getStackInSlot(slot);
+			ItemStack stack = handler.getStackInSlot(slot);
 			if (filter.test(stack)) {
 				count += stack.getCount();
 			}
@@ -300,7 +300,7 @@ public class InventoryTools {
 		}
 		int count = 0;
 		for (int slot = 0; slot < handler.getSlots(); slot++) {
-			@Nonnull ItemStack stack = handler.getStackInSlot(slot);
+			ItemStack stack = handler.getStackInSlot(slot);
 			if (filter.test(stack)) {
 				count += stack.getCount();
 				if (count >= minimumCount) {
@@ -364,7 +364,7 @@ public class InventoryTools {
 	public static NBTTagCompound writeInventoryToNBT(IInventory inventory, NBTTagCompound tag) {
 		NBTTagList itemList = new NBTTagList();
 		NBTTagCompound itemTag;
-		@Nonnull ItemStack item;
+		ItemStack item;
 		for (int i = 0; i < inventory.getSizeInventory(); i++) {
 			item = inventory.getStackInSlot(i);
 			if (item.isEmpty()) {
@@ -386,7 +386,7 @@ public class InventoryTools {
 	public static void readInventoryFromNBT(IInventory inventory, NBTTagCompound tag) {
 		NBTTagList itemList = tag.getTagList("itemList", Constants.NBT.TAG_COMPOUND);
 		NBTTagCompound itemTag;
-		@Nonnull ItemStack item;
+		ItemStack item;
 		int slot;
 		for (int i = 0; i < itemList.tagCount(); i++) {
 			itemTag = itemList.getCompoundTagAt(i);

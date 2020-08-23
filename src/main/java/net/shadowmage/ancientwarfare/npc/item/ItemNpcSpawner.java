@@ -192,7 +192,7 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 	}
 
 	private static ItemStack getStackForNpcType(String type, String npcSubtype, String faction) {
-		@Nonnull ItemStack stack = new ItemStack(AWNPCItems.NPC_SPAWNER);
+		ItemStack stack = new ItemStack(AWNPCItems.NPC_SPAWNER);
 		stack.setTagInfo(NPC_TYPE_TAG, new NBTTagString(type));
 		stack.setTagInfo(NPC_SUBTYPE_TAG, new NBTTagString(npcSubtype));
 		if (!faction.isEmpty()) {

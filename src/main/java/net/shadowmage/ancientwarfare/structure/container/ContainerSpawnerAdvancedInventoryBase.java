@@ -36,7 +36,7 @@ public class ContainerSpawnerAdvancedInventoryBase extends ContainerBase {
 				slotNum = y * 3 + x;
 				addSlotToContainer(new SlotItemHandler(inventory, slotNum, xPos, yPos) {
 					@Override
-					public boolean isItemValid(@Nonnull ItemStack stack) {
+					public boolean isItemValid(ItemStack stack) {
 						if (stack.getItem() instanceof ItemBlock) {
 							ItemBlock block = (ItemBlock) stack.getItem();
 							if (block.getBlock() == AWStructureBlocks.ADVANCED_SPAWNER) {
@@ -61,10 +61,10 @@ public class ContainerSpawnerAdvancedInventoryBase extends ContainerBase {
 
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slotClickedIndex) {
-		@Nonnull ItemStack slotStackCopy = ItemStack.EMPTY;
+		ItemStack slotStackCopy = ItemStack.EMPTY;
 		Slot theSlot = this.getSlot(slotClickedIndex);
 		if (theSlot != null && theSlot.getHasStack()) {
-			@Nonnull ItemStack slotStack = theSlot.getStack();
+			ItemStack slotStack = theSlot.getStack();
 			slotStackCopy = slotStack.copy();
 			int playerSlotEnd = playerSlots;
 			int storageSlots = playerSlotEnd + 9;

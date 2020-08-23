@@ -63,10 +63,10 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
 
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex) {
-		@Nonnull ItemStack slotStackCopy = ItemStack.EMPTY;
+		ItemStack slotStackCopy = ItemStack.EMPTY;
 		Slot theSlot = this.getSlot(slotClickedIndex);
 		if (theSlot != null && theSlot.getHasStack()) {
-			@Nonnull ItemStack slotStack = theSlot.getStack();
+			ItemStack slotStack = theSlot.getStack();
 			slotStackCopy = slotStack.copy();
 
 			int playerSlotStart = tileEntity.bookInventory.getSlots() + tileEntity.resourceInventory.getSlots();

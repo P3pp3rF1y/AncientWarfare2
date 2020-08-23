@@ -17,7 +17,7 @@ public class UpgradeStackHandler extends ItemStackHandler {
 
 	@Nonnull
 	@Override
-	public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+	public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 		return isItemValid(stack) ? super.insertItem(slot, stack, simulate) : stack;
 	}
 

@@ -62,7 +62,7 @@ public class TileAutoCrafting extends TileWorksiteBase {
 
 	private void craftItem(NonNullList<ItemStack> resources, NonNullList<ItemStack> reusableStacks) {
 		InventoryCrafting invCrafting = AWCraftingManager.fillCraftingMatrixFromInventory(resources);
-		@Nonnull ItemStack result = craftingRecipeMemory.getCraftingResult(invCrafting);
+		ItemStack result = craftingRecipeMemory.getCraftingResult(invCrafting);
 		InventoryTools.removeItems(resourceInventory, resources);
 		NonNullList<ItemStack> remainingItems = InventoryTools.removeItems(craftingRecipeMemory.getRemainingItems(invCrafting), reusableStacks);
 
@@ -149,7 +149,7 @@ public class TileAutoCrafting extends TileWorksiteBase {
 	}
 
 	private boolean canHold() {
-		@Nonnull ItemStack test = craftingRecipeMemory.getRecipe().getRecipeOutput();
+		ItemStack test = craftingRecipeMemory.getRecipe().getRecipeOutput();
 		return !test.isEmpty() && InventoryTools.canInventoryHold(outputInventory, test);
 	}
 

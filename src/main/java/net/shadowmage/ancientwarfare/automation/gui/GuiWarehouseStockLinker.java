@@ -127,7 +127,7 @@ public class GuiWarehouseStockLinker extends GuiContainerBase<ContainerWarehouse
 
 		@Override
 		public void onSlotClicked(ItemStack stack, boolean rightClicked) {
-			@Nonnull ItemStack in = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
+			ItemStack in = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
 			this.setItem(in);
 			if (!in.isEmpty()) {
 				in.setCount(1);

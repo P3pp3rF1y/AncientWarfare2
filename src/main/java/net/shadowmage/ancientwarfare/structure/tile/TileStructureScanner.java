@@ -36,7 +36,7 @@ public class TileStructureScanner extends TileUpdatable implements IBlockBreakHa
 	private ItemStackHandler scannerInventory = new ItemStackHandler(1) {
 		@Nonnull
 		@Override
-		public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 			return stack.getItem() == AWStructureItems.STRUCTURE_SCANNER ? super.insertItem(slot, stack, simulate) : stack;
 		}
 

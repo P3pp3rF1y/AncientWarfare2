@@ -129,10 +129,10 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 			return ItemStack.EMPTY;
 		}
 
-		@Nonnull ItemStack slotStackCopy = ItemStack.EMPTY;
+		ItemStack slotStackCopy = ItemStack.EMPTY;
 		Slot theSlot = this.getSlot(slotClickedIndex);
 		if (theSlot.getHasStack()) {
-			@Nonnull ItemStack slotStack = theSlot.getStack();
+			ItemStack slotStack = theSlot.getStack();
 			slotStackCopy = slotStack.copy();
 			int playerSlotStart = 2 + tileEntity.craftingRecipeMemory.craftMatrix.getSizeInventory();
 			if (slotClickedIndex < playerSlotStart)//result slot, book slot

@@ -49,7 +49,7 @@ public class ContainerWarehouseControl extends ContainerTileBase<TileWarehouse> 
 		if (slot == null || !slot.getHasStack()) {
 			return ItemStack.EMPTY;
 		}
-		@Nonnull ItemStack stack = slot.getStack();
+		ItemStack stack = slot.getStack();
 		stack = tileEntity.tryAdd(stack);
 		if (stack.isEmpty()) {
 			slot.putStack(ItemStack.EMPTY);
@@ -62,7 +62,7 @@ public class ContainerWarehouseControl extends ContainerTileBase<TileWarehouse> 
 	public void handlePacketData(NBTTagCompound tag) {
 		if (tag.hasKey(SLOT_CLICK_TAG)) {
 			NBTTagCompound reqTag = tag.getCompoundTag(SLOT_CLICK_TAG);
-			@Nonnull ItemStack item = ItemStack.EMPTY;
+			ItemStack item = ItemStack.EMPTY;
 			if (reqTag.hasKey(REQ_ITEM_TAG)) {
 				item = new ItemStack(reqTag.getCompoundTag(REQ_ITEM_TAG));
 			}

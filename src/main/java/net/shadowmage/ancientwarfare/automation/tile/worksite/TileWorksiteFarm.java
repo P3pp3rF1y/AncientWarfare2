@@ -57,7 +57,7 @@ public abstract class TileWorksiteFarm extends TileWorksiteBoundedInventory {
 
 			@Nonnull
 			@Override
-			public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+			public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 				return isPlantable(stack) ? super.insertItem(slot, stack, simulate) : stack;
 			}
 		};
@@ -69,7 +69,7 @@ public abstract class TileWorksiteFarm extends TileWorksiteBoundedInventory {
 
 			@Nonnull
 			@Override
-			public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+			public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 				return isMiscItem(stack) ? super.insertItem(slot, stack, simulate) : stack;
 			}
 		};
@@ -181,9 +181,8 @@ public abstract class TileWorksiteFarm extends TileWorksiteBoundedInventory {
 
 	private void pickupItems() {
 		List<EntityItem> items = EntityTools.getEntitiesWithinBounds(world, EntityItem.class, getWorkBoundsMin(), getWorkBoundsMax());
-		if (items.isEmpty())
-			return;
-		@Nonnull ItemStack stack;
+		if (items.isEmpty()) { return; }
+		ItemStack stack;
 		for (EntityItem item : items) {
 			if (item.isEntityAlive()) {
 				stack = item.getItem();

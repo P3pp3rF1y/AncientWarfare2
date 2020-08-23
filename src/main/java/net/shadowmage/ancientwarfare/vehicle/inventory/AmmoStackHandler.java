@@ -5,8 +5,6 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.registry.AmmoRegistry;
 
-import javax.annotation.Nonnull;
-
 public class AmmoStackHandler extends ItemStackHandler {
 	private VehicleBase vehicle;
 
@@ -22,9 +20,8 @@ public class AmmoStackHandler extends ItemStackHandler {
 		}
 	}
 
-	@Nonnull
 	@Override
-	public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+	public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 		return isValidAmmo(stack) ? super.insertItem(slot, stack, simulate) : stack;
 	}
 

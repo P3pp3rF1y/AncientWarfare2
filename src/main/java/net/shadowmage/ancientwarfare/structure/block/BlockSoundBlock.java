@@ -36,8 +36,6 @@ import net.shadowmage.ancientwarfare.structure.gui.GuiSoundBlock;
 import net.shadowmage.ancientwarfare.structure.render.SoundBlockRenderer;
 import net.shadowmage.ancientwarfare.structure.tile.TileSoundBlock;
 
-import javax.annotation.Nonnull;
-
 public class BlockSoundBlock extends BlockBaseStructure implements IBakeryProvider {
 
 	public static final IUnlistedProperty<String> DISGUISE_BLOCK = new UnlistedStringProperty("disguise");
@@ -74,7 +72,7 @@ public class BlockSoundBlock extends BlockBaseStructure implements IBakeryProvid
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		@Nonnull ItemStack itemStack = player.getHeldItem(hand);
+		ItemStack itemStack = player.getHeldItem(hand);
 		if (!itemStack.isEmpty() && itemStack.getItem() instanceof ItemBlock) {
 			WorldTools.getTile(world, pos, TileSoundBlock.class).ifPresent(s -> s.setDisguiseState(itemStack));
 		}

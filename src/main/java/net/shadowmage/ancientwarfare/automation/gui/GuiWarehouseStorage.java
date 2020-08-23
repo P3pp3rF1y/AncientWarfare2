@@ -95,7 +95,7 @@ public class GuiWarehouseStorage extends GuiContainerBase<ContainerWarehouseStor
 	private void addInventoryViewElements() {
 		ItemSlot slot;
 		int qty;
-		@Nonnull ItemStack stack;
+		ItemStack stack;
 		int x = 0;
 		int y = 0;
 		NonNullList<ItemStack> displayStacks = NonNullList.create();
@@ -116,9 +116,10 @@ public class GuiWarehouseStorage extends GuiContainerBase<ContainerWarehouseStor
 			slot = new ItemSlot(4 + x * 18, 4 + y * 18, displayStack, this) {
 				@Override
 				public void onSlotClicked(ItemStack stack, boolean rightClicked) {
-					@Nonnull ItemStack reqStack = getStack();
-					if (!(rightClicked && isShiftKeyDown()) && !reqStack.isEmpty() && (reqStack.isItemEqual(stack) && ItemStack.areItemStackTagsEqual(stack, reqStack)))
+					ItemStack reqStack = getStack();
+					if (!(rightClicked && isShiftKeyDown()) && !reqStack.isEmpty() && (reqStack.isItemEqual(stack) && ItemStack.areItemStackTagsEqual(stack, reqStack))) {
 						reqStack = ItemStack.EMPTY;
+					}
 					getContainer().handleClientRequestSpecific(reqStack, isShiftKeyDown(), rightClicked);
 				}
 			};
@@ -154,7 +155,7 @@ public class GuiWarehouseStorage extends GuiContainerBase<ContainerWarehouseStor
 
 		@Override
 		public void onSlotClicked(ItemStack stack, boolean rightClicked) {
-			@Nonnull ItemStack in = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
+			ItemStack in = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
 			this.setItem(in);
 			if (!in.isEmpty()) {
 				in.setCount(1);

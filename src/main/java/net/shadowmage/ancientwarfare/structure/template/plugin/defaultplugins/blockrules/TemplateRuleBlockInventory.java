@@ -142,7 +142,7 @@ public class TemplateRuleBlockInventory extends TemplateRuleBlockTile {
 		invData.setInteger("length", stacks.size());
 		NBTTagCompound itemTag;
 		NBTTagList list = new NBTTagList();
-		@Nonnull ItemStack stack;
+		ItemStack stack;
 		for (int i = 0; i < stacks.size(); i++) {
 			stack = stacks.get(i);
 			if (stack.isEmpty()) {
@@ -182,7 +182,7 @@ public class TemplateRuleBlockInventory extends TemplateRuleBlockTile {
 		NBTTagCompound itemTag;
 		NBTTagList list = inventoryTag.getTagList("inventoryContents", Constants.NBT.TAG_COMPOUND);
 		int slot;
-		@Nonnull ItemStack stack;
+		ItemStack stack;
 		for (int i = 0; i < list.tagCount(); i++) {
 			itemTag = list.getCompoundTagAt(i);
 			stack = new ItemStack(itemTag);

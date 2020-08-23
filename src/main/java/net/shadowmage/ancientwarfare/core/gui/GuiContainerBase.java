@@ -42,7 +42,6 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
 	private int elementTooltipX;
 	private int elementTooltipY;
 
-	@Nonnull
 	private ItemStack tooltipStack = ItemStack.EMPTY;
 	private int tooltipX;
 	private int tooltipY;

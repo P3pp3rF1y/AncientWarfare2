@@ -23,7 +23,7 @@ public class ContainerUpkeepOrder extends ContainerBase {
 	public ContainerUpkeepOrder(EntityPlayer player, int x, int y, int z) {
 		super(player);
 		this.hand = EntityTools.getHandHoldingItem(player, AWNPCItems.UPKEEP_ORDER);
-		@Nonnull ItemStack stack = player.getHeldItem(hand);
+		ItemStack stack = player.getHeldItem(hand);
 		if (stack.isEmpty()) {
 			throw new IllegalArgumentException("Cannot open Work Order GUI for null stack/item.");
 		}

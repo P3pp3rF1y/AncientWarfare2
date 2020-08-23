@@ -110,7 +110,7 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
 	}
 
 	private void addInventoryViewElements() {
-		@Nonnull ItemStack stack;
+		ItemStack stack;
 		NonNullList<ItemStack> displayStacks = NonNullList.create();
 
 		for (ItemHashEntry entry : getContainer().itemMap.keySet()) {

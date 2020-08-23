@@ -322,7 +322,7 @@ public class MailboxData extends WorldSavedData {
 			int x, y, z;
 			Iterator<DeliverableItem> it;
 			DeliverableItem item;
-			@Nonnull ItemStack stack;
+			ItemStack stack;
 			for (TileMailbox box : receivers) {
 				dim = box.getWorld().provider.getDimension();
 				x = box.getPos().getX();
@@ -359,7 +359,6 @@ public class MailboxData extends WorldSavedData {
 
 	public final class DeliverableItem {
 		int originDimension, x, y, z;
-		@Nonnull
 		public ItemStack item;
 		int deliveryTime;//system milis at which this stack is deliverable
 

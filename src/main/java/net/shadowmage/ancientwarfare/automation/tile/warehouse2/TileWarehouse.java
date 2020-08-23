@@ -211,7 +211,7 @@ public class TileWarehouse extends TileWarehouseBase {
 		private WarehouseItemHandler(NonNullList<ItemStack> cachedItems) {this.cachedItems = cachedItems;}
 
 		@Override
-		public void setStackInSlot(int slot, @Nonnull ItemStack stack) {
+		public void setStackInSlot(int slot, ItemStack stack) {
 			ItemStack currentStack = cachedItems.get(slot);
 
 			if (currentStack.isEmpty()) {
@@ -246,7 +246,7 @@ public class TileWarehouse extends TileWarehouseBase {
 
 		@Nonnull
 		@Override
-		public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 			ItemStack cachedStack = cachedItems.get(slot);
 			if (cachedStack.isEmpty() || InventoryTools.doItemStacksMatchRelaxed(stack, cachedStack)) {
 				int maxToAdd = Math.min(stack.getMaxStackSize() - cachedStack.getCount(), stack.getCount());

@@ -128,10 +128,10 @@ public class ContainerTownHall extends ContainerTileBase<TileTownHall> {
 
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex) {
-		@Nonnull ItemStack slotStackCopy = ItemStack.EMPTY;
+		ItemStack slotStackCopy = ItemStack.EMPTY;
 		Slot theSlot = this.getSlot(slotClickedIndex);
 		if (theSlot.getHasStack()) {
-			@Nonnull ItemStack slotStack = theSlot.getStack();
+			ItemStack slotStack = theSlot.getStack();
 			slotStackCopy = slotStack.copy();
 			IItemHandler handler = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 			if (slotClickedIndex < handler.getSlots())//book slot

@@ -42,7 +42,7 @@ public final class RenderWorkLines {
 		if (player == null) {
 			return;
 		}
-		@Nonnull ItemStack stack = player.getHeldItemMainhand();
+		ItemStack stack = player.getHeldItemMainhand();
 		Item item = stack.getItem();
 		if (stack.isEmpty() || !(stack.getItem() instanceof ItemOrders)) {
 			stack = player.getHeldItemOffhand();

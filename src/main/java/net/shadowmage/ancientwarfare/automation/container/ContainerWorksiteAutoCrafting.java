@@ -59,7 +59,7 @@ public class ContainerWorksiteAutoCrafting extends ContainerTileBase<TileAutoCra
 			slotNum = x1;
 			slot = new SlotItemHandler(tileEntity.outputInventory, slotNum, x2, y2) {
 				@Override
-				public boolean isItemValid(@Nonnull ItemStack stack) {
+				public boolean isItemValid(ItemStack stack) {
 					return false;
 				}
 			};
@@ -97,10 +97,10 @@ public class ContainerWorksiteAutoCrafting extends ContainerTileBase<TileAutoCra
 
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex) {
-		@Nonnull ItemStack slotStackCopy = ItemStack.EMPTY;
+		ItemStack slotStackCopy = ItemStack.EMPTY;
 		Slot theSlot = this.getSlot(slotClickedIndex);
 		if (theSlot != null && theSlot.getHasStack()) {
-			@Nonnull ItemStack slotStack = theSlot.getStack();
+			ItemStack slotStack = theSlot.getStack();
 			slotStackCopy = slotStack.copy();
 
 			//TODO replace the reference to craftMatrix here with something like crafting size reference on subcontainer itself

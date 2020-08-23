@@ -84,7 +84,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 
 			@Nonnull
 			@Override
-			public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+			public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 				return isFood(stack.getItem()) ? super.insertItem(slot, stack, simulate) : stack;
 			}
 		};
@@ -98,7 +98,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 
 			@Nonnull
 			@Override
-			public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+			public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 				return isTool(stack.getItem()) ? super.insertItem(slot, stack, simulate) : stack;
 			}
 		};

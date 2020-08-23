@@ -37,7 +37,7 @@ public class PacketItemInteraction extends PacketBase {
 	}
 
 	private boolean executeKeyPress(EntityPlayer player, EnumHand hand) {
-		@Nonnull ItemStack stack = player.getHeldItem(hand);
+		ItemStack stack = player.getHeldItem(hand);
 		if (stack.isEmpty()) {
 			return false;
 		}

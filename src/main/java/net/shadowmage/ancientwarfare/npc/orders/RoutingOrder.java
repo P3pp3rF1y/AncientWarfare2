@@ -255,10 +255,9 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
 					continue;
 				}
 
-				@Nonnull ItemStack filterAdjusted = filter.copy();
+				ItemStack filterAdjusted = filter.copy();
 				filterAdjusted.setCount(toMove);
-				if (!InventoryTools.canInventoryHold(to, filterAdjusted))
-					continue;
+				if (!InventoryTools.canInventoryHold(to, filterAdjusted)) { continue; }
 				int moved = InventoryTools.transferItems(from, to, filterAdjusted, foundCount, ignoreDamage, ignoreTag);
 				movedTotal += (float) moved / filter.getMaxStackSize();
 			}

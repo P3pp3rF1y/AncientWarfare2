@@ -152,7 +152,7 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
 	}
 
 	private String getSubtypeFromEquipment() {
-		@Nonnull ItemStack stack = getHeldItemMainhand();
+		ItemStack stack = getHeldItemMainhand();
 		if (!stack.isEmpty()) {
 			Item item = stack.getItem();
 			Collection<String> tools = item.getToolClasses(stack);

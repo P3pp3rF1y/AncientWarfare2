@@ -117,7 +117,7 @@ public class ItemQuantityMap {
 	 */
 	public NonNullList<ItemStack> getItems() {
 		NonNullList<ItemStack> items = NonNullList.create();
-		@Nonnull ItemStack outStack;
+		ItemStack outStack;
 		int qty;
 		for (Map.Entry<ItemHashEntry, Integer> entry : map.entrySet()) {
 			qty = entry.getValue();

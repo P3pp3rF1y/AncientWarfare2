@@ -100,7 +100,7 @@ public class TileDraftingStation extends TileEntity implements ITickable, IBlock
 
 	private boolean tryFinish() {
 		if (outputSlot.getStackInSlot(0).isEmpty()) {
-			@Nonnull ItemStack item = new ItemStack(AWStructureBlocks.STRUCTURE_BUILDER_TICKED);
+			ItemStack item = new ItemStack(AWStructureBlocks.STRUCTURE_BUILDER_TICKED);
 			item.setTagInfo(STRUCTURE_NAME_TAG, new NBTTagString(structureName));
 			outputSlot.setStackInSlot(0, item);
 			return true;
