@@ -31,7 +31,6 @@ import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import org.apache.commons.lang3.Validate;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.Comparator;
@@ -71,7 +70,6 @@ public class InventoryTools {
 
 	public static IItemHandlerModifiable cloneItemHandler(IItemHandler handler) {
 		ItemStackHandler copy = new ItemStackHandler(handler.getSlots()) {
-			@Nonnull
 			@Override
 			public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 				return canInsert(slot, stack) ? super.insertItem(slot, stack.copy(), simulate) : stack;

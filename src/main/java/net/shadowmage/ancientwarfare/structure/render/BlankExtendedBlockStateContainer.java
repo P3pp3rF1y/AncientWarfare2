@@ -17,7 +17,6 @@ public class BlankExtendedBlockStateContainer extends ExtendedBlockState {
 		super(blockIn, new IProperty[] {}, new IUnlistedProperty[] {});
 	}
 
-	@Nonnull
 	@Override
 	protected StateImplementation createState(
 			@Nonnull Block block,

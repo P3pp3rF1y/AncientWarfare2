@@ -13,7 +13,6 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStac
 import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack.SortType;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 
 public class TileWarehouse extends TileWarehouseBase {
@@ -238,13 +237,11 @@ public class TileWarehouse extends TileWarehouseBase {
 			return cachedItems.size();
 		}
 
-		@Nonnull
 		@Override
 		public ItemStack getStackInSlot(int slot) {
 			return slot < cachedItems.size() ? cachedItems.get(slot) : ItemStack.EMPTY;
 		}
 
-		@Nonnull
 		@Override
 		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 			ItemStack cachedStack = cachedItems.get(slot);
@@ -273,7 +270,6 @@ public class TileWarehouse extends TileWarehouseBase {
 			return stack;
 		}
 
-		@Nonnull
 		@Override
 		public ItemStack extractItem(int slot, int amount, boolean simulate) {
 			ItemStack cachedStack = cachedItems.get(slot);

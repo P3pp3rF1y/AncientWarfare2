@@ -27,7 +27,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.Collections;
@@ -76,7 +75,6 @@ public abstract class BaseBakery implements ISimpleBlockBakery {
 		MODEL_PROPERTIES = new PerspectiveProperties(new CCModelState(defaultBlockBuilder.build()), true, true);
 	}
 
-	@Nonnull
 	@Override
 	public List<BakedQuad> bakeQuads(@Nullable EnumFacing face, IExtendedBlockState state) {
 		if (face != null) {
@@ -129,7 +127,6 @@ public abstract class BaseBakery implements ISimpleBlockBakery {
 		renderAllModels(ccrs, stack);
 	}
 
-	@Nonnull
 	@Override
 	public List<BakedQuad> bakeItemQuads(@Nullable EnumFacing face, ItemStack stack) {
 		BakingVertexBuffer buffer = BakingVertexBuffer.create();

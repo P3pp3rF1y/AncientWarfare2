@@ -7,8 +7,6 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.item.ItemUpkeepOrder;
 
-import javax.annotation.Nonnull;
-
 public class NpcEquipmentHandler implements IItemHandlerModifiable {
 
 	private static final int SIZE_INVENTORY = 8;
@@ -28,13 +26,11 @@ public class NpcEquipmentHandler implements IItemHandlerModifiable {
 		return slot;
 	}
 
-	@Nonnull
 	@Override
 	public ItemStack getStackInSlot(int slot) {
 		return npc.getItemStackFromSlot(validateSlotIndex(slot));
 	}
 
-	@Nonnull
 	@Override
 	public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 		if (stack.isEmpty()) {
@@ -77,7 +73,6 @@ public class NpcEquipmentHandler implements IItemHandlerModifiable {
 		return Math.min(getSlotLimit(slot), stack.getMaxStackSize());
 	}
 
-	@Nonnull
 	@Override
 	public ItemStack extractItem(int slot, int amount, boolean simulate) {
 		if (amount == 0) {

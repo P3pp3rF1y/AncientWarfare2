@@ -24,7 +24,6 @@ import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
 import net.shadowmage.ancientwarfare.structure.template.scan.TemplateScanner;
 
-import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -34,7 +33,6 @@ public class TileStructureScanner extends TileUpdatable implements IBlockBreakHa
 	private static final String FACING_TAG = "facing";
 
 	private ItemStackHandler scannerInventory = new ItemStackHandler(1) {
-		@Nonnull
 		@Override
 		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 			return stack.getItem() == AWStructureItems.STRUCTURE_SCANNER ? super.insertItem(slot, stack, simulate) : stack;

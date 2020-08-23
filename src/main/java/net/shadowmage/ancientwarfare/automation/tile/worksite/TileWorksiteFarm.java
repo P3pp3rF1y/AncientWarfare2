@@ -20,7 +20,6 @@ import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -55,7 +54,6 @@ public abstract class TileWorksiteFarm extends TileWorksiteBoundedInventory {
 				shouldCountResources = true;
 			}
 
-			@Nonnull
 			@Override
 			public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 				return isPlantable(stack) ? super.insertItem(slot, stack, simulate) : stack;
@@ -67,7 +65,6 @@ public abstract class TileWorksiteFarm extends TileWorksiteBoundedInventory {
 				shouldCountResources = true;
 			}
 
-			@Nonnull
 			@Override
 			public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 				return isMiscItem(stack) ? super.insertItem(slot, stack, simulate) : stack;

@@ -7,8 +7,6 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.core.init.AWCoreItems;
 import net.shadowmage.ancientwarfare.core.item.ItemBackpack;
 
-import javax.annotation.Nonnull;
-
 public class ItemHandlerBackpack implements IItemHandlerModifiable {
 	private static final String BACKPACK_ITEMS_TAG = "backpackItems";
 	private final ItemStackHandler backpackInventory;
@@ -24,13 +22,11 @@ public class ItemHandlerBackpack implements IItemHandlerModifiable {
 		return backpackInventory.getSlots();
 	}
 
-	@Nonnull
 	@Override
 	public ItemStack getStackInSlot(int slot) {
 		return backpackInventory.getStackInSlot(slot);
 	}
 
-	@Nonnull
 	@Override
 	public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 		ItemStack ret = stack;
@@ -43,7 +39,6 @@ public class ItemHandlerBackpack implements IItemHandlerModifiable {
 		return ret;
 	}
 
-	@Nonnull
 	@Override
 	public ItemStack extractItem(int slot, int amount, boolean simulate) {
 		ItemStack ret = backpackInventory.extractItem(slot, amount, simulate);

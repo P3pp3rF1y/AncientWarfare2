@@ -33,7 +33,6 @@ import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.Collections;
@@ -87,7 +86,6 @@ public class WindmillBladeRenderer extends AnimatedBlockRenderer {
 		cubeIconTransform = new IconTransformation(this.cubeSprite);
 	}
 
-	@Nonnull
 	@Override
 	public List<BakedQuad> bakeQuads(@Nullable EnumFacing face, IExtendedBlockState state) {
 		if (state.getValue(BlockWindmillBlade.FORMED) && (!state.getValue(AutomationProperties.DYNAMIC) || !state.getValue(AutomationProperties.IS_CONTROL))) {

@@ -37,7 +37,6 @@ import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.Collections;
@@ -142,7 +141,6 @@ public class FlywheelStorageRenderer implements ILayeredBlockBakery, ITESRRender
 		return groups.stream().map(e -> e.copy().apply(transform)).collect(Collectors.toSet());
 	}
 
-	@Nonnull
 	@Override
 	public List<BakedQuad> bakeItemQuads(@Nullable EnumFacing face, ItemStack stack) {
 		BakingVertexBuffer buffer = BakingVertexBuffer.create();
@@ -163,7 +161,6 @@ public class FlywheelStorageRenderer implements ILayeredBlockBakery, ITESRRender
 		return buffer.bake();
 	}
 
-	@Nonnull
 	@Override
 	public List<BakedQuad> bakeLayerFace(@Nullable EnumFacing face, BlockRenderLayer layer, IExtendedBlockState state) {
 		if (face != null || !state.getValue(AutomationProperties.IS_CONTROL)) {

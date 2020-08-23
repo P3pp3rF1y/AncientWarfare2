@@ -29,7 +29,6 @@ import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.ItemWrapper;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -82,7 +81,6 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 				shouldCountResources = true;
 			}
 
-			@Nonnull
 			@Override
 			public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 				return isFood(stack.getItem()) ? super.insertItem(slot, stack, simulate) : stack;
@@ -96,7 +94,6 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 				shouldCountResources = true;
 			}
 
-			@Nonnull
 			@Override
 			public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 				return isTool(stack.getItem()) ? super.insertItem(slot, stack, simulate) : stack;

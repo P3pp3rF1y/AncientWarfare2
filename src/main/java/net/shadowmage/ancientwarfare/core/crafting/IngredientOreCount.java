@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.core.crafting;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreIngredient;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
@@ -18,7 +17,6 @@ public class IngredientOreCount extends OreIngredient implements IIngredientCoun
 		this.count = count;
 	}
 
-	@Nonnull
 	@Override
 	public ItemStack[] getMatchingStacks() {
 		if (array == null) {

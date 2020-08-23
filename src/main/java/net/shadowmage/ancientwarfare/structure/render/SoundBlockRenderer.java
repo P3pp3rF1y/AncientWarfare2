@@ -20,7 +20,6 @@ import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.block.BlockSoundBlock;
 import net.shadowmage.ancientwarfare.structure.tile.TileSoundBlock;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
@@ -34,7 +33,6 @@ public class SoundBlockRenderer implements ISimpleBlockBakery {
 	private SoundBlockRenderer() {
 	}
 
-	@Nonnull
 	@Override
 	public List<BakedQuad> bakeQuads(@Nullable EnumFacing face, IExtendedBlockState state) {
 		IBlockState disguiseState = Blocks.JUKEBOX.getDefaultState();
@@ -58,7 +56,6 @@ public class SoundBlockRenderer implements ISimpleBlockBakery {
 		return state.withProperty(BlockSoundBlock.DISGUISE_BLOCK, registryName);
 	}
 
-	@Nonnull
 	@Override
 	public List<BakedQuad> bakeItemQuads(@Nullable EnumFacing face, ItemStack stack) {
 		IBlockState defaultState = Blocks.JUKEBOX.getDefaultState();
