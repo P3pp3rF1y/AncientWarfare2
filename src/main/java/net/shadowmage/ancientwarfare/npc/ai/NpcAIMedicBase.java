@@ -24,7 +24,8 @@ public class NpcAIMedicBase<T extends NpcBase> extends NpcAI<T> {
 	private EntityLivingBase targetToHeal = null;
 
 	private final EntityAINearestAttackableTarget.Sorter sorter;
-	private Predicate<EntityLivingBase> selector;
+	@SuppressWarnings({"java:S4738", "Guava"}) //need to use this because it's what vanilla uses
+	private final Predicate<EntityLivingBase> selector;
 
 	public NpcAIMedicBase(T npc) {
 		super(npc);
@@ -35,12 +36,18 @@ public class NpcAIMedicBase<T extends NpcBase> extends NpcAI<T> {
 
 	@Override
 	public boolean shouldExecute() {
-		if (!npc.getIsAIEnabled()) {
+		if (!super.shouldExecute()) {
 			return false;
 		}
+
 		if (!isProperSubtype()) {
 			return false;
 		}
+
+		if (validateTarget()) {
+			return true;
+		}
+
 		if (injuredRecheckDelay-- > 0) {
 			return false;
 		}
@@ -69,11 +76,6 @@ public class NpcAIMedicBase<T extends NpcBase> extends NpcAI<T> {
 
 	private boolean validateTarget() {
 		return targetToHeal != null && targetToHeal.isEntityAlive() && targetToHeal.getHealth() < targetToHeal.getMaxHealth();
-	}
-
-	@Override
-	public boolean shouldContinueExecuting() {
-		return npc.getIsAIEnabled() && isProperSubtype() && validateTarget();
 	}
 
 	protected boolean isProperSubtype() {

@@ -26,16 +26,17 @@ public class NpcAISing extends NpcAI<NpcBase> {
 
 	public NpcAISing(NpcBase npc) {
 		super(npc);
-		this.bard = (ISinger) npc;
+		bard = (ISinger) npc;
 	}
 
 	@Override
 	public boolean shouldExecute() {
-		return npc.getIsAIEnabled() && bard.getSongs().size() > 0;
+		return super.shouldExecute() && bard.getSongs().size() > 0;
 	}
 
 	@Override
 	public void startExecuting() {
+		//noop
 	}
 
 	@Override
@@ -57,7 +58,7 @@ public class NpcAISing extends NpcAI<NpcBase> {
 				if (playerCheckDelay <= 0) {
 					playerCheckDelay = PLAYER_DELAY;
 					AxisAlignedBB aabb = npc.getEntityBoundingBox().expand(PLAYER_RANGE, PLAYER_RANGE, PLAYER_RANGE);
-					List list = npc.world.getEntitiesWithinAABB(EntityPlayer.class, aabb);
+					List<EntityPlayer> list = npc.world.getEntitiesWithinAABB(EntityPlayer.class, aabb);
 					if (!list.isEmpty()) {
 						setNextSong(data);
 					}

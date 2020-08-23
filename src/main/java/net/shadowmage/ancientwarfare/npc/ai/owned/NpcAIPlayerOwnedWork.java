@@ -17,7 +17,7 @@ import java.util.Optional;
 public class NpcAIPlayerOwnedWork extends NpcAI<NpcBase> {
 	private int ticksAtSite;
 	private int workIndex;
-	public WorkOrder order;
+	private WorkOrder order;
 	private boolean init = false;
 
 	public NpcAIPlayerOwnedWork(NpcBase npc) {
@@ -25,12 +25,15 @@ public class NpcAIPlayerOwnedWork extends NpcAI<NpcBase> {
 		if (!(npc instanceof IWorker)) {
 			throw new IllegalArgumentException("cannot instantiate work ai task on non-worker npc");
 		}
-		this.setMutexBits(MOVE + ATTACK);
+		setMutexBits(MOVE + ATTACK);
 		ticksAtSite = 0;
 	}
 
 	@Override
 	public boolean shouldExecute() {
+		if (!super.shouldExecute()) {
+			return false;
+		}
 		if (!init) {
 			order = WorkOrder.getWorkOrder(npc.ordersStack);
 			init = true;
@@ -38,12 +41,7 @@ public class NpcAIPlayerOwnedWork extends NpcAI<NpcBase> {
 				workIndex = 0;
 			}
 		}
-		return shouldContinueExecuting();
-	}
-
-	@Override
-	public boolean shouldContinueExecuting() {
-		return npc.getIsAIEnabled() && !(npc.getFoodRemaining() <= 0 || npc.shouldBeAtHome()) && order != null && !order.isEmpty();
+		return !(npc.getFoodRemaining() <= 0 || npc.shouldBeAtHome()) && order != null && !order.isEmpty();
 	}
 
 	@Override
@@ -78,9 +76,17 @@ public class NpcAIPlayerOwnedWork extends NpcAI<NpcBase> {
 				return;
 			}
 		}
+		swingArm();
+		doWork(entry);
+	}
+
+	private void swingArm() {
 		if (npc.ticksExisted % 10 == 0) {
 			npc.swingArm(EnumHand.MAIN_HAND);
 		}
+	}
+
+	private void doWork(WorkEntry entry) {
 		if (ticksAtSite >= AWNPCStatics.npcWorkTicks) {
 			ticksAtSite = 0;
 
@@ -128,7 +134,7 @@ public class NpcAIPlayerOwnedWork extends NpcAI<NpcBase> {
 	@Override
 	public void resetTask() {
 		ticksAtSite = 0;
-		this.npc.removeAITask(TASK_WORK + TASK_MOVE);
+		npc.removeAITask(TASK_WORK + TASK_MOVE);
 	}
 
 	public void readFromNBT(NBTTagCompound tag) {

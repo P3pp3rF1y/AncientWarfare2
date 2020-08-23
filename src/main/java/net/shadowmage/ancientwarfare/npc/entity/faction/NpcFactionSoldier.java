@@ -5,7 +5,6 @@ import net.minecraft.entity.ai.EntityAIRestrictOpenDoor;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackMeleeLongRange;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackNearest;
@@ -13,15 +12,11 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIDoor;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIHurt;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIBlockWithShield;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWatchClosest;
 
-import javax.annotation.Nonnull;
-
 public class NpcFactionSoldier extends NpcFaction {
 	private NpcAIAttackMeleeLongRange meleeAI = new NpcAIAttackMeleeLongRange(this);
-	private NpcAIBlockWithShield shieldBlockAI = new NpcAIBlockWithShield(this, 30, 40);
 
 	public NpcFactionSoldier(World world) {
 		super(world);
@@ -75,20 +70,6 @@ public class NpcFactionSoldier extends NpcFaction {
 
 		if (meleeAI != null) {
 			meleeAI.setAttackReachFromWeapon(getHeldItemMainhand());
-		}
-	}
-
-	@Override
-	public void onOffhandInventoryChanged() {
-		super.onOffhandInventoryChanged();
-		if (!world.isRemote) {
-			@Nonnull ItemStack mainhandStack = getHeldItemMainhand();
-			@Nonnull ItemStack offhandStack = getHeldItemOffhand();
-			if (offhandStack.getItem().isShield(offhandStack, this) && !isBow(mainhandStack.getItem())) {
-				if (shieldBlockAI != null) {
-					tasks.addTask(2, shieldBlockAI);
-				}
-			}
 		}
 	}
 }

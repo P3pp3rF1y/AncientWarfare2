@@ -12,13 +12,14 @@ public class NpcAIFactionCommander extends NpcAIPlayerOwnedCommander {
 
 	public NpcAIFactionCommander(NpcFaction npc) {
 		super(npc);
-		if (npc.getNpcType().toLowerCase(Locale.ENGLISH).endsWith(".elite"))
+		if (npc.getNpcType().toLowerCase(Locale.ENGLISH).endsWith(".elite")) {
 			effect = new PotionEffect(effect.getPotion(), effect.getDuration(), 1);
+		}
 	}
 
 	@Override
-	protected boolean isCommander(NpcBase npc) {
-		return npc instanceof NpcFactionLeader;
+	protected boolean isNotCommander(NpcBase npc) {
+		return !(npc instanceof NpcFactionLeader);
 	}
 
 	@Override

@@ -4,14 +4,14 @@ import net.minecraft.entity.Entity;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 public class NpcAIFollowPlayer extends NpcAI<NpcBase> {
+	private static final double ATTACK_IGNORE_DISTANCE = 4.d * 4.d;
+	private static final double FOLLOW_STOP_DISTANCE = 4.d * 4.d;
 
 	private Entity target;
-	private double attackIgnoreDistance = 4.d * 4.d;
-	private double followStopDistance = 4.d * 4.d;
 
 	public NpcAIFollowPlayer(NpcBase npc) {
 		super(npc);
-		this.setMutexBits(MOVE + ATTACK);
+		setMutexBits(MOVE);
 	}
 
 	/*
@@ -19,14 +19,15 @@ public class NpcAIFollowPlayer extends NpcAI<NpcBase> {
 	 */
 	@Override
 	public boolean shouldExecute() {
-		target = this.npc.getFollowingEntity();
+		if (!super.shouldExecute()) {
+			return false;
+		}
+		target = npc.getFollowingEntity();
 		if (target == null) {
 			return false;
 		}
 		if (npc.getAttackTarget() != null) {
-			if (npc.getDistanceSq(target) < attackIgnoreDistance && npc.getDistanceSq(npc.getAttackTarget()) < attackIgnoreDistance) {
-				return false;
-			}
+			return npc.getDistanceSq(target) >= ATTACK_IGNORE_DISTANCE || npc.getDistanceSq(npc.getAttackTarget()) >= ATTACK_IGNORE_DISTANCE;
 		}
 		return true;
 	}
@@ -37,7 +38,7 @@ public class NpcAIFollowPlayer extends NpcAI<NpcBase> {
 	@Override
 	public void startExecuting() {
 		moveRetryDelay = 0;
-		this.npc.addAITask(TASK_FOLLOW);
+		npc.addAITask(TASK_FOLLOW);
 	}
 
 	/*
@@ -45,9 +46,9 @@ public class NpcAIFollowPlayer extends NpcAI<NpcBase> {
 	 */
 	@Override
 	public void resetTask() {
-		this.target = null;
+		target = null;
 		moveRetryDelay = 0;
-		this.npc.removeAITask(TASK_FOLLOW + TASK_MOVE);
+		npc.removeAITask(TASK_FOLLOW + TASK_MOVE);
 	}
 
 	/*
@@ -55,14 +56,14 @@ public class NpcAIFollowPlayer extends NpcAI<NpcBase> {
 	 */
 	@Override
 	public void updateTask() {
-		this.npc.getLookHelper().setLookPositionWithEntity(this.target, 10.0F, (float) this.npc.getVerticalFaceSpeed());
+		npc.getLookHelper().setLookPositionWithEntity(target, 10.0F, (float) npc.getVerticalFaceSpeed());
 		double distance = npc.getDistanceSq(target);
-		if (distance > followStopDistance) {
-			this.npc.addAITask(TASK_MOVE);
+		if (distance > FOLLOW_STOP_DISTANCE) {
+			npc.addAITask(TASK_MOVE);
 			moveToEntity(target, distance);
 		} else {
-			this.npc.removeAITask(TASK_MOVE);
-			this.npc.getNavigator().clearPath();
+			npc.removeAITask(TASK_MOVE);
+			npc.getNavigator().clearPath();
 		}
 	}
 

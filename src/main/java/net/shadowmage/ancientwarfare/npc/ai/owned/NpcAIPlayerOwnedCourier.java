@@ -15,7 +15,6 @@ import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcCourier;
 import net.shadowmage.ancientwarfare.npc.orders.RoutingOrder;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class NpcAIPlayerOwnedCourier extends NpcAI<NpcCourier> {
@@ -25,31 +24,28 @@ public class NpcAIPlayerOwnedCourier extends NpcAI<NpcCourier> {
 	private int ticksToWork;
 	private int ticksAtSite;
 	private RoutingOrder order;
-	@Nonnull
 	private ItemStack routeStack;
 
-	@SuppressWarnings("squid:S2637")
 	public NpcAIPlayerOwnedCourier(NpcCourier npc) {
 		super(npc);
-		this.setMutexBits(ATTACK + MOVE);
+		setMutexBits(ATTACK + MOVE);
 	}
 
 	@Override
 	public boolean shouldExecute() {
+		if (!super.shouldExecute()) {
+			return false;
+		}
+
 		if (!init) {
 			init = true;
 			routeStack = npc.ordersStack;
 			order = RoutingOrder.getRoutingOrder(routeStack);
-			if ((order != null && routeIndex >= order.size()) || order == null) {
+			if (order == null || routeIndex >= order.size()) {
 				routeIndex = 0;
 			}
 		}
-		return shouldContinueExecuting();
-	}
-
-	@Override
-	public boolean shouldContinueExecuting() {
-		return !(!npc.getIsAIEnabled() || npc.shouldBeAtHome()) && npc.backpackInventory != null && order != null && !order.isEmpty();
+		return !npc.shouldBeAtHome() && npc.backpackInventory != null && order != null && !order.isEmpty();
 	}
 
 	@Override
@@ -122,6 +118,7 @@ public class NpcAIPlayerOwnedCourier extends NpcAI<NpcCourier> {
 				.map(t -> getTargetHandler(point.getBlockSide(), t)).orElse(null);
 	}
 
+	@Nullable
 	private IItemHandler getTargetHandler(EnumFacing side, TileEntity te) {
 		if (te instanceof IOwnable) {
 			IOwnable ownableTE = (IOwnable) te;
@@ -129,7 +126,6 @@ public class NpcAIPlayerOwnedCourier extends NpcAI<NpcCourier> {
 				return null;
 			}
 		}
-		//noinspection ConstantConditions
 		return te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side);
 	}
 

@@ -9,15 +9,12 @@ public class NpcAIPlayerOwnedIdleWhenHungry extends NpcAI<NpcBase> {
 
 	public NpcAIPlayerOwnedIdleWhenHungry(NpcBase npc) {
 		super(npc);
-		this.setMutexBits(MOVE + ATTACK + HUNGRY);
+		setMutexBits(MOVE + ATTACK + HUNGRY);
 	}
 
 	@Override
 	public boolean shouldExecute() {
-		if (!npc.getIsAIEnabled()) {
-			return false;
-		}
-		return npc.getAttackTarget() == null && npc.requiresUpkeep() && npc.getFoodRemaining() == 0;
+		return super.shouldExecute() && npc.getAttackTarget() == null && npc.requiresUpkeep() && npc.getFoodRemaining() == 0;
 	}
 
 	/*

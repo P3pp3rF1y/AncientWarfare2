@@ -7,20 +7,14 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.orders.CombatOrder;
 
-import javax.annotation.Nonnull;
-
 public class NpcAIPlayerOwnedPatrol extends NpcAI<NpcBase> {
+	private static final int MAX_TICKS_AT_POINT = 50;//default 2.5 second idle at each point
 
-	double moveSpeed = 1.d;
 	private boolean init = false;
 	private int patrolIndex;
 	private boolean atPoint;
 	private int ticksAtPoint;
-
-	private int maxTicksAtPoint = 50;//default 2.5 second idle at each point
-
-	public CombatOrder orders;
-	@Nonnull
+	private CombatOrder orders;
 	private ItemStack ordersStack;
 
 	public NpcAIPlayerOwnedPatrol(NpcBase npc) {
@@ -36,6 +30,9 @@ public class NpcAIPlayerOwnedPatrol extends NpcAI<NpcBase> {
 
 	@Override
 	public boolean shouldExecute() {
+		if (!super.shouldExecute()) {
+			return false;
+		}
 		if (!init) {
 			init = true;
 			ordersStack = npc.ordersStack;
@@ -44,12 +41,7 @@ public class NpcAIPlayerOwnedPatrol extends NpcAI<NpcBase> {
 				patrolIndex = 0;
 			}
 		}
-		return shouldContinueExecuting();
-	}
-
-	@Override
-	public boolean shouldContinueExecuting() {
-		if (!npc.getIsAIEnabled() || npc.getAttackTarget() != null) {
+		if (npc.getAttackTarget() != null) {
 			return false;
 		}
 		return orders != null && !ordersStack.isEmpty() && orders.getPatrolDimension() == npc.world.provider.getDimension() && !orders.isEmpty();
@@ -65,7 +57,7 @@ public class NpcAIPlayerOwnedPatrol extends NpcAI<NpcBase> {
 		if (atPoint) {
 			npc.removeAITask(TASK_MOVE);
 			ticksAtPoint++;
-			if (ticksAtPoint > maxTicksAtPoint) {
+			if (ticksAtPoint > MAX_TICKS_AT_POINT) {
 				setMoveToNextPoint();
 			}
 		} else {

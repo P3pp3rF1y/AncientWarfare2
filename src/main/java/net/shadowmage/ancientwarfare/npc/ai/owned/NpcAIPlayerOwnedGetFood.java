@@ -7,26 +7,23 @@ import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 
 public class NpcAIPlayerOwnedGetFood extends NpcAI<NpcPlayerOwned> {
-
 	public NpcAIPlayerOwnedGetFood(NpcPlayerOwned npc) {
 		super(npc);
-		this.setMutexBits(MOVE + ATTACK + HUNGRY);
+		setMutexBits(MOVE + ATTACK + HUNGRY);
 	}
 
 	@Override
 	public boolean shouldExecute() {
-		if (!npc.getIsAIEnabled()) {
+		if (!super.shouldExecute()) {
 			return false;
 		}
-		return npc.requiresUpkeep() && npc.getUpkeepPoint().isPresent() && npc.getFoodRemaining() == 0 && npc.getUpkeepDimensionId() == npc.world.provider.getDimension();
+		return npc.requiresUpkeep() && npc.getUpkeepPoint().isPresent()
+				&& (npc.getFoodRemaining() == 0 || (isGettingFood() && npc.getFoodRemaining() < npc.getUpkeepAmount()))
+				&& npc.getUpkeepDimensionId() == npc.world.provider.getDimension();
 	}
 
-	@Override
-	public boolean shouldContinueExecuting() {
-		if (!npc.getIsAIEnabled()) {
-			return false;
-		}
-		return npc.requiresUpkeep() && npc.getUpkeepPoint().isPresent() && npc.getFoodRemaining() < npc.getUpkeepAmount() && npc.getUpkeepDimensionId() == npc.world.provider.getDimension();
+	private boolean isGettingFood() {
+		return (npc.getAITasks() & TASK_UPKEEP) != 0;
 	}
 
 	/*

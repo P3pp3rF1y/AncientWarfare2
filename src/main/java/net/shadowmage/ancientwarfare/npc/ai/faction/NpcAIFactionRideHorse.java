@@ -12,7 +12,7 @@ public class NpcAIFactionRideHorse<T extends NpcBase & IHorseMountedNpc> extends
 	}
 
 	@Override
-	public boolean shouldExecute() {
+	protected boolean shouldRideHorse() {
 		return npc.isHorseAlive() && (npc.getRidingEntity() == null || horse != npc.getRidingEntity());
 	}
 

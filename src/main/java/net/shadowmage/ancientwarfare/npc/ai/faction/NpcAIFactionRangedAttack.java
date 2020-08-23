@@ -6,11 +6,10 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttack;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 public class NpcAIFactionRangedAttack extends NpcAIAttack<NpcBase> {
-
 	private final IRangedAttackMob rangedAttacker;
 
-	private int attackDistanceSq = -1;
-	private int attackDelay;
+	private int attackDistanceSq;
+	private final int attackDelay;
 
 	public <T extends NpcBase & IRangedAttackMob> NpcAIFactionRangedAttack(T npc, double moveSpeed, int attackDistanceSq, int attackDelay) {
 		super(npc);
@@ -26,7 +25,7 @@ public class NpcAIFactionRangedAttack extends NpcAIAttack<NpcBase> {
 
 	@Override
 	protected boolean shouldCloseOnTarget(double dist) {
-		return (dist > getAttackDistanceSq() || !npc.getEntitySenses().canSee(this.getTarget()));
+		return (dist > getAttackDistanceSq() || !npc.getEntitySenses().canSee(getTarget()));
 	}
 
 	private double getAttackDistanceSq() {
@@ -39,7 +38,7 @@ public class NpcAIFactionRangedAttack extends NpcAIAttack<NpcBase> {
 
 	@Override
 	protected void doAttack(double dist) {
-		if (this.getAttackDelay() <= 0) {
+		if (getAttackDelay() <= 0) {
 			float pwr = (float) (getAttackDistanceSq() / dist);
 			pwr = Math.min(Math.max(pwr, 0.1F), 1F);
 			rangedAttacker.attackEntityWithRangedAttack(getTarget(), pwr);

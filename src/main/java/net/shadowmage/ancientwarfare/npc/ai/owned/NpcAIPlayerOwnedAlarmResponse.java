@@ -8,23 +8,12 @@ public class NpcAIPlayerOwnedAlarmResponse extends NpcAI<NpcPlayerOwned> {
 
 	public NpcAIPlayerOwnedAlarmResponse(NpcPlayerOwned npc) {
 		super(npc);
-		this.setMutexBits(ATTACK + MOVE);
+		setMutexBits(ATTACK + MOVE);
 	}
 
 	@Override
 	public boolean shouldExecute() {
-		if (!npc.getIsAIEnabled()) {
-			return false;
-		}
-		return npc.getUpkeepPoint().isPresent() && npc.getUpkeepDimensionId() == npc.world.provider.getDimension() && npc.isAlarmed;
-	}
-
-	@Override
-	public boolean shouldContinueExecuting() {
-		if (!npc.getIsAIEnabled()) {
-			return false;
-		}
-		return npc.getUpkeepPoint().isPresent() && npc.getUpkeepDimensionId() == npc.world.provider.getDimension() && npc.isAlarmed;
+		return super.shouldExecute() && npc.getUpkeepPoint().isPresent() && npc.getUpkeepDimensionId() == npc.world.provider.getDimension() && npc.isAlarmed;
 	}
 
 	/*

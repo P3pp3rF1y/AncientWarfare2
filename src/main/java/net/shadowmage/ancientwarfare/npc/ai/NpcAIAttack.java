@@ -17,12 +17,22 @@ public abstract class NpcAIAttack<T extends NpcBase> extends NpcAI<T> {
 
 	@Override
 	public boolean shouldExecute() {
-		return npc.getIsAIEnabled() && getAttackTarget().isPresent() && getAttackTarget().map(EntityLivingBase::isEntityAlive).orElse(false) && isTargetInRange();
+		return super.shouldExecute() && hasTargetInRange();
 	}
 
-	@Override
-	public boolean shouldContinueExecuting() {
-		return npc.getIsAIEnabled() && target != null && target.isEntityAlive() && getAttackTarget().map(t -> t.equals(target)).orElse(false) && isTargetInRange();
+	private boolean hasTargetInRange() {
+		if (target == null) {
+			return getAttackTarget().isPresent() && getAttackTarget().map(EntityLivingBase::isEntityAlive).orElse(false) && isTargetInRange();
+		}
+		return target.isEntityAlive() && getAttackTarget().map(t -> t.equals(target)).orElse(false) && isTargetInRange();
+	}
+
+	private boolean isTargetInRange() {
+		return getAttackTarget().map(t -> npc.getDistance(t) < getAdjustedTargetDistance()).orElse(false);
+	}
+
+	private Optional<EntityLivingBase> getAttackTarget() {
+		return npc.getAttackTarget() != null ? Optional.of(npc.getAttackTarget()) : Optional.ofNullable(npc.getRevengeTarget());
 	}
 
 	@Override
@@ -52,15 +62,6 @@ public abstract class NpcAIAttack<T extends NpcBase> extends NpcAI<T> {
 			attackDelay--;
 			doAttack(distanceToEntity);
 		}
-	}
-
-	private boolean isTargetInRange() {
-		//noinspection ConstantConditions
-		return getAttackTarget().map(t -> npc.getDistance(t) < getAdjustedTargetDistance()).orElse(false);
-	}
-
-	private Optional<EntityLivingBase> getAttackTarget() {
-		return npc.getAttackTarget() != null ? Optional.of(npc.getAttackTarget()) : Optional.ofNullable(npc.getRevengeTarget());
 	}
 
 	private double getAdjustedTargetDistance() {

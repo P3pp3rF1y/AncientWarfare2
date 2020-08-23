@@ -10,6 +10,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
+import javax.annotation.Nullable;
+
 /*
  * AI template class with utility methods and member access for a non-specific NPC type
  *
@@ -48,8 +50,8 @@ public abstract class NpcAI<T extends NpcBase> extends EntityAIBase {
 
 	protected int moveRetryDelay;
 	protected double moveSpeed = 1.d;
-	private double maxPFDist;
-	private double maxPFDistSq;
+	private final double maxPFDist;
+	private final double maxPFDistSq;
 
 	protected T npc;
 
@@ -72,13 +74,7 @@ public abstract class NpcAI<T extends NpcBase> extends EntityAIBase {
 		moveToPosition(pos.getX(), pos.getY(), pos.getZ(), sqDist);
 	}
 
-	/*
-	 * Forced move without delay. Should only be used in logic that has it's own delay.
-	 * @param pos
-	 * @param sqDist
-	 * @param forced
-	 */
-	protected final void moveToPosition(BlockPos pos, double sqDist, boolean forced) {
+	protected final void forceMoveToPosition(BlockPos pos, double sqDist) {
 		moveRetryDelay = 0;
 		moveToPosition(pos, sqDist);
 	}
@@ -100,6 +96,16 @@ public abstract class NpcAI<T extends NpcBase> extends EntityAIBase {
 				}
 			}
 		}
+	}
+
+	@Override
+	public boolean shouldExecute() {
+		return npc.getIsAIEnabled() && !npc.isAIFlagStopped(getMutexBits());
+	}
+
+	@Override
+	public final boolean shouldContinueExecuting() {
+		return super.shouldContinueExecuting();
 	}
 
 	protected final void moveLongDistance(double x, double y, double z) {
@@ -135,7 +141,8 @@ public abstract class NpcAI<T extends NpcBase> extends EntityAIBase {
 		npc.getNavigator().setPath(path, moveSpeed);
 	}
 
-	protected Path trimPath(Path path) {
+	@Nullable
+	protected Path trimPath(@Nullable Path path) {
 		if (path != null) {
 			int index = path.getCurrentPathIndex();
 			PathPoint pathpoint = path.getPathPointFromIndex(index);
@@ -150,8 +157,9 @@ public abstract class NpcAI<T extends NpcBase> extends EntityAIBase {
 				}
 			} else {
 				Vec3d vec = RandomPositionGenerator.findRandomTargetBlockAwayFrom(npc, MIN_RANGE, MIN_RANGE, new Vec3d(npc.posX, npc.posY, npc.posZ));
-				if (vec != null)
+				if (vec != null) {
 					return npc.getNavigator().getPathToXYZ(vec.x, vec.y, vec.z);
+				}
 			}
 		}
 		return path;

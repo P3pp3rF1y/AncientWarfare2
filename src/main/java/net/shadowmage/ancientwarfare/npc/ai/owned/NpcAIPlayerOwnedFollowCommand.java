@@ -19,7 +19,7 @@ public class NpcAIPlayerOwnedFollowCommand extends NpcAI<NpcPlayerOwned> {
 
 	@Override
 	public boolean shouldExecute() {
-		if (!npc.getIsAIEnabled()) {
+		if (!super.shouldExecute()) {
 			return false;
 		}
 		Command cmd = npc.getCurrentCommand();
@@ -87,6 +87,7 @@ public class NpcAIPlayerOwnedFollowCommand extends NpcAI<NpcPlayerOwned> {
 				handleMoveCommand(cmd);
 				break;
 			}
+			default:
 		}
 	}
 

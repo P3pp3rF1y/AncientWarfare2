@@ -37,30 +37,10 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
 	private boolean atWithdraw;
 	private boolean atWaypoint;
 
-	/*
-	 * used to track how long to wait when in 'waiting' state
-	 */
 	private int delayCounter;
-
-	/*
-	 * used to track waypoint index, to retrieve next waypoint and to retrieve upkeep status for current waypoint
-	 */
-	private int waypointIndex;
-
-	/*
-	 * the currently selected waypoint to move towards, should never be null if valid orders item is present
-	 */
-	private BlockPos waypoint;
-
-	/*
-	 * currently selected shelter position, used by shelter code, should be null when not in use
-	 */
+	private int currentWaypointIndex;
+	private BlockPos currentWaypoint;
 	private BlockPos shelterPoint;
-
-	/*
-	 * convenience access fields
-	 * trade orders is set/updated when orders item is changed or when entity is loaded from NBT
-	 */
 	private TradeOrder orders;
 
 	public NpcAIPlayerOwnedTrader(NpcPlayerOwned npc) {
@@ -70,7 +50,7 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
 
 	public void onOrdersUpdated() {
 		orders = TradeOrder.getTradeOrder(npc.ordersStack);
-		waypoint = null;
+		currentWaypoint = null;
 		shelterPoint = null;
 		upkeep = false;
 		restock = false;
@@ -81,16 +61,16 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
 		atUpkeep = false;
 		atWaypoint = false;
 		atWithdraw = false;
-		waypointIndex = 0;
+		currentWaypointIndex = 0;
 		delayCounter = 0;
 		if (orders != null && orders.getRoute().size() > 0) {
-			waypoint = orders.getRoute().get(waypointIndex).getPosition();
+			currentWaypoint = orders.getRoute().get(currentWaypointIndex).getPosition();
 		}
 	}
 
 	@Override
 	public boolean shouldExecute() {
-		return orders != null && waypoint != null;
+		return super.shouldExecute() && orders != null && currentWaypoint != null;
 	}
 
 	@Override
@@ -135,14 +115,14 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
 				npc.removeAITask(TASK_GO_HOME);
 			}//end shelter code, return to previously current route point - if was interrupted in the middle of upkeep, will restart upkeep
 		} else if (shelterPoint == null) {
-			int index = waypointIndex - 1;
+			int index = currentWaypointIndex - 1;
 			if (index < 0) {
 				index = orders.getRoute().size() - 1;
 			}
 			BlockPos wp2 = orders.getRoute().get(index).getPosition();
-			double d1 = npc.getDistanceSq(waypoint);
+			double d1 = npc.getDistanceSq(currentWaypoint);
 			double d2 = npc.getDistanceSq(wp2);
-			shelterPoint = d1 < d2 ? waypoint : wp2;
+			shelterPoint = d1 < d2 ? currentWaypoint : wp2;
 		} else {
 			double d = npc.getDistanceSq(shelterPoint);
 			if (d > MIN_RANGE) {
@@ -246,11 +226,11 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
 		if (atWaypoint) {
 			if (waiting) {
 				delayCounter++;
-				if (delayCounter >= orders.getRoute().get(waypointIndex).getDelay()) {
+				if (delayCounter >= orders.getRoute().get(currentWaypointIndex).getDelay()) {
 					delayCounter = 0;
 					waiting = false;
 					atWaypoint = false;
-					if (orders.getRoute().get(waypointIndex).shouldUpkeep()) {
+					if (orders.getRoute().get(currentWaypointIndex).shouldUpkeep()) {
 						upkeep = true;
 					} else {
 						setNextWaypoint();
@@ -262,23 +242,23 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
 			}
 		} else {
 			npc.addAITask(TASK_MOVE);
-			double d = npc.getDistanceSq(waypoint);
+			double d = npc.getDistanceSq(currentWaypoint);
 			if (d < MIN_RANGE) {
 				atWaypoint = true;
 				waiting = false;
 				npc.removeAITask(TASK_MOVE);
 			} else {
-				moveToPosition(waypoint, d);
+				moveToPosition(currentWaypoint, d);
 			}
 		}
 	}
 
 	private void setNextWaypoint() {
-		waypointIndex++;
-		if (waypointIndex >= orders.getRoute().size()) {
-			waypointIndex = 0;
+		currentWaypointIndex++;
+		if (currentWaypointIndex >= orders.getRoute().size()) {
+			currentWaypointIndex = 0;
 		}
-		waypoint = orders.getRoute().get(waypointIndex).getPosition();
+		currentWaypoint = orders.getRoute().get(currentWaypointIndex).getPosition();
 	}
 
 	private void doDeposit() {
@@ -305,12 +285,12 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
 
 	public void readFromNBT(NBTTagCompound tag) {
 		orders = TradeOrder.getTradeOrder(npc.ordersStack);
-		waypointIndex = tag.getInteger("waypoint");
-		waypoint = (orders == null || orders.getRoute().size() == 0) ? null : orders.getRoute().get(waypointIndex).getPosition();
+		currentWaypointIndex = tag.getInteger("waypoint");
+		currentWaypoint = (orders == null || orders.getRoute().size() == 0) ? null : orders.getRoute().get(currentWaypointIndex).getPosition();
 	}
 
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-		tag.setInteger("waypoint", waypointIndex);
+		tag.setInteger("waypoint", currentWaypointIndex);
 		return tag;
 	}
 

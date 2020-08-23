@@ -11,8 +11,8 @@ import java.util.List;
 
 public class NpcAIFindVehicle<T extends NpcBase & IVehicleUser> extends NpcAI<T> {
 	private static final double SEARCH_DISTANCE = 30D;
-	@SuppressWarnings("Guava")
-	private Predicate<VehicleBase> selector = v -> v != null && v.isDrivable() && v.getPassengers().isEmpty();
+	@SuppressWarnings({"Guava", "java:S4738"}) // need to use Guava Predicate because of vanilla getEntitiesWithinAABB uses it
+	private static final Predicate<VehicleBase> SELECTOR = v -> v != null && v.isDrivable() && v.getPassengers().isEmpty();
 
 	public NpcAIFindVehicle(T npc) {
 		super(npc);
@@ -20,7 +20,7 @@ public class NpcAIFindVehicle<T extends NpcBase & IVehicleUser> extends NpcAI<T>
 
 	@Override
 	public boolean shouldExecute() {
-		return !npc.getVehicle().isPresent() && npc.canContinueRidingVehicle() && (!npc.isRiding() || npc.getRidingEntity() instanceof VehicleBase);
+		return super.shouldExecute() && !npc.getVehicle().isPresent() && npc.canContinueRidingVehicle() && (!npc.isRiding() || npc.getRidingEntity() instanceof VehicleBase);
 	}
 
 	@Override
@@ -31,7 +31,7 @@ public class NpcAIFindVehicle<T extends NpcBase & IVehicleUser> extends NpcAI<T>
 			return;
 		}
 
-		List<VehicleBase> vehicles = npc.world.getEntitiesWithinAABB(VehicleBase.class, npc.getEntityBoundingBox().grow(SEARCH_DISTANCE), selector);
-		vehicles.stream().filter(v -> !v.isBeingRidden() && v.vehicleType.canSoldiersPilot()).sorted(Comparator.comparing(v -> v.getDistanceSq(npc))).findFirst().ifPresent(v -> npc.setVehicle(v));
+		List<VehicleBase> vehicles = npc.world.getEntitiesWithinAABB(VehicleBase.class, npc.getEntityBoundingBox().grow(SEARCH_DISTANCE), SELECTOR);
+		vehicles.stream().filter(v -> !v.isBeingRidden() && v.vehicleType.canSoldiersPilot()).min(Comparator.comparing(v -> v.getDistanceSq(npc))).ifPresent(v -> npc.setVehicle(v));
 	}
 }

@@ -26,31 +26,27 @@ public class NpcAIPlayerOwnedPriest extends NpcAI<NpcPlayerOwned> {
 
 	public NpcAIPlayerOwnedPriest(NpcPlayerOwned npc) {
 		super(npc);
-		this.setMutexBits(ATTACK + MOVE);
+		setMutexBits(ATTACK + MOVE);
 	}
 
 	@Override
 	public boolean shouldExecute() {
-		if (!npc.getIsAIEnabled()) {
+		if (!super.shouldExecute()) {
 			return false;
 		}
-		return (lastCheckTicks == -1 || npc.ticksExisted - lastCheckTicks > UPDATE_FREQ) && npc.getTownHall().map(t -> !t.getDeathList().isEmpty()).orElse(false);
-	}
-
-	@Override
-	public boolean shouldContinueExecuting() {
-		if (!npc.getIsAIEnabled()) {
-			return false;
+		if (entryToRes == null) {
+			return (lastCheckTicks == -1 || npc.ticksExisted - lastCheckTicks > UPDATE_FREQ) && npc.getTownHall().map(t -> !t.getDeathList().isEmpty()).orElse(false);
 		}
-		return npc.getTownHall().isPresent() && entryToRes != null && !entryToRes.resurrected && entryToRes.beingResurrected;
+		return npc.getTownHall().isPresent() && !entryToRes.resurrected && entryToRes.beingResurrected;
 	}
 
 	@Override
 	public void startExecuting() {
+		lastCheckTicks = npc.ticksExisted;
 		List<NpcDeathEntry> list = npc.getTownHall().map(TileTownHall::getDeathList).orElse(Collections.emptyList());
 		for (NpcDeathEntry entry : list) {
 			if (entry.canRes && !entry.resurrected && !entry.beingResurrected) {
-				this.entryToRes = entry;
+				entryToRes = entry;
 				entry.beingResurrected = true;
 				break;
 			}

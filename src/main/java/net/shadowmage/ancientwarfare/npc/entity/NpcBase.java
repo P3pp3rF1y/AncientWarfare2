@@ -54,6 +54,7 @@ import net.shadowmage.ancientwarfare.core.owner.Owner;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIBlockWithShield;
 import net.shadowmage.ancientwarfare.npc.ai.NpcNavigator;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
@@ -84,7 +85,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	private static final DataParameter<Byte> BED_DIRECTION = EntityDataManager.createKey(NpcBase.class, DataSerializers.BYTE);
 	private static final DataParameter<Boolean> IS_SLEEPING = EntityDataManager.createKey(NpcBase.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<Boolean> SWINGING_ARMS = EntityDataManager.createKey(NpcBase.class, DataSerializers.BOOLEAN);
-	private static final DataParameter<Boolean> BLOCKING = EntityDataManager.createKey(NpcBase.class, DataSerializers.BOOLEAN);
 	private static final String SLOT_NUM_TAG = "slotNum";
 	private static final String BED_DIRECTION_TAG = "bedDirection";
 	private static final String IS_SLEEPING_TAG = "isSleeping";
@@ -102,9 +102,11 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	private static final String HAS_CUSTOM_EQUIPMENT_TAG = "hasCustomEquipment";
 	public static final int ORDER_SLOT = 6;
 	public static final int UPKEEP_SLOT = 7;
+	private static final String ATTACK_TARGET_TAG = "attackTarget";
 
 	@Nonnull
 	public ItemStack ordersStack = ItemStack.EMPTY;
+	private NpcAIBlockWithShield shieldBlockAI = null;
 	private static final String DO_NOT_PURSUE = "donotpursue";
 	private Owner owner = Owner.EMPTY;
 
@@ -135,11 +137,25 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	private float originalWidth;
 	private float originalHeight;
 
+	private int stopAIControlFlags = 0;
+
 	public NpcBase(World par1World) {
 		super(par1World);
 		levelingStats = new NpcLevelingStats(this);
 		navigator = new NpcNavigator(this);
 		setPathPriority(PathNodeType.DOOR_WOOD_CLOSED, 0);
+	}
+
+	public void stopAIControlFlag(int flag) {
+		stopAIControlFlags |= flag;
+	}
+
+	public void startAIControlFlag(int flag) {
+		stopAIControlFlags &= ~flag;
+	}
+
+	public boolean isAIFlagStopped(int flag) {
+		return (stopAIControlFlags & flag) > 0;
 	}
 
 	@Override
@@ -150,7 +166,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		dataManager.register(BED_DIRECTION, (byte) EnumFacing.NORTH.ordinal());
 		dataManager.register(IS_SLEEPING, false);
 		dataManager.register(SWINGING_ARMS, false);
-		dataManager.register(BLOCKING, false);
 		dataManager.register(SHIELD_DISABLED_TICK, 0);
 	}
 
@@ -325,14 +340,10 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	public float getBlockPathWeight(BlockPos pos) {
 		IBlockState stateBelow = world.getBlockState(pos.down());
 		if (stateBelow.getMaterial() == Material.LAVA || stateBelow.getMaterial() == Material.CACTUS)//Avoid cacti and lava when wandering
-			return -10;
-		else if (stateBelow.getMaterial().isLiquid())//Don't try swimming too much
-			return 0;
+		{ return -10; } else if (stateBelow.getMaterial().isLiquid())//Don't try swimming too much
+		{ return 0; }
 		float level = getLitBlockWeight(pos);//Prefer lit areas
-		if (level < 0)
-			return 0;
-		else
-			return level + (stateBelow.isSideSolid(world, pos.down(), EnumFacing.UP) ? 1 : 0);
+		if (level < 0) { return 0; } else { return level + (stateBelow.isSideSolid(world, pos.down(), EnumFacing.UP) ? 1 : 0); }
 	}
 
 	protected float getLitBlockWeight(BlockPos pos) {
@@ -479,7 +490,23 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		if (source.getTrueSource() != null && !canBeAttackedBy(source.getTrueSource())) {
 			return false;
 		}
+		processPreDamageLogic(source, damage);
 		return super.attackEntityFrom(source, damage);
+	}
+
+	private void processPreDamageLogic(DamageSource source, float damage) {
+		if (shieldBlockAI != null) {
+			shieldBlockAI.onPreDamage(source, damage);
+		}
+	}
+
+	@Override
+	public void onLivingUpdate() {
+		if (isHandActive() && !isRiding()) {
+			setAIMoveSpeed(getAIMoveSpeed() * 0.2f);
+			setSprinting(false);
+		}
+		super.onLivingUpdate();
 	}
 
 	@Override
@@ -492,8 +519,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	}
 
 	private void disableShield() {
-		float f = 0.25F + (float) EnchantmentHelper.getEfficiencyModifier(this) * 0.05F;
-		f += 0.75F;
+		float f = 1F + (float) EnchantmentHelper.getEfficiencyModifier(this) * 0.05F;
 
 		if (rand.nextFloat() < f) {
 			setShieldDisabledTick(80);
@@ -502,6 +528,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		}
 	}
 
+	@Override
 	protected void damageShield(float damage) {
 		if (damage >= 3.0F && activeItemStack.getItem().isShield(activeItemStack, this)) {
 			int i = 1 + MathHelper.floor(damage);
@@ -515,33 +542,30 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		}
 	}
 
-
 	// vanilla method with a check for shield items to ignore canContinueUsing
 	@Override
 	protected void updateActiveHand() {
-		{
-			if (isHandActive()) {
-				ItemStack itemstack = getHeldItem(getActiveHand());
-				if (net.minecraftforge.common.ForgeHooks.canContinueUsing(activeItemStack, itemstack) || itemstack.getItem().isShield(itemstack, this))
-					activeItemStack = itemstack;
+		if (isHandActive()) {
+			ItemStack itemstack = getHeldItem(getActiveHand());
+			if (net.minecraftforge.common.ForgeHooks.canContinueUsing(activeItemStack, itemstack) || itemstack.getItem().isShield(itemstack, this)) {
+				activeItemStack = itemstack;
+			}
 
-				if (itemstack == activeItemStack) {
-					if (!activeItemStack.isEmpty()) {
-						activeItemStackUseCount = net.minecraftforge.event.ForgeEventFactory.onItemUseTick(this, activeItemStack, activeItemStackUseCount);
-						if (activeItemStackUseCount > 0)
-							activeItemStack.getItem().onUsingTick(activeItemStack, this, activeItemStackUseCount);
-					}
-
-					if (getItemInUseCount() <= 25 && getItemInUseCount() % 4 == 0) {
-						updateItemUse(activeItemStack, 5);
-					}
-
-					if (--activeItemStackUseCount <= 0 && !world.isRemote) {
-						onItemUseFinish();
-					}
-				} else {
-					resetActiveHand();
+			if (itemstack == activeItemStack) {
+				if (!activeItemStack.isEmpty()) {
+					activeItemStackUseCount = net.minecraftforge.event.ForgeEventFactory.onItemUseTick(this, activeItemStack, activeItemStackUseCount);
+					if (activeItemStackUseCount > 0) { activeItemStack.getItem().onUsingTick(activeItemStack, this, activeItemStackUseCount); }
 				}
+
+				if (getItemInUseCount() <= 25 && getItemInUseCount() % 4 == 0) {
+					updateItemUse(activeItemStack, 5);
+				}
+
+				if (--activeItemStackUseCount <= 0 && !world.isRemote) {
+					onItemUseFinish();
+				}
+			} else {
+				resetActiveHand();
 			}
 		}
 	}
@@ -566,7 +590,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
 	private void updateAttackTargetClient(EntityLivingBase entity) {
 		PacketEntity pkt = new PacketEntity(this);
-		pkt.packetData.setInteger("attackTarget", entity.getEntityId());
+		pkt.packetData.setInteger(ATTACK_TARGET_TAG, entity.getEntityId());
 		NetworkHandler.sendToAllTracking(this, pkt);
 	}
 
@@ -576,11 +600,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 			return;
 		}
 		super.setRevengeTarget(entity);
-	}
-
-	@Override
-	public ItemStack getItemStackFromSlot(EntityEquipmentSlot slotIn) {
-		return super.getItemStackFromSlot(slotIn);
 	}
 
 	public final ItemStack getItemStackFromSlot(int slot) {
@@ -744,6 +763,16 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	 * weapon was changed.
 	 */
 	public void onOffhandInventoryChanged() {
+		if (!world.isRemote) {
+			ItemStack mainhandStack = getHeldItemMainhand();
+			ItemStack offhandStack = getHeldItemOffhand();
+			if (offhandStack.getItem().isShield(offhandStack, this) && !isBow(mainhandStack.getItem())) {
+				shieldBlockAI = initShieldAI();
+				tasks.addTask(3, shieldBlockAI);
+			} else {
+				shieldBlockAI = null;
+			}
+		}
 	}
 
 	/*
@@ -1125,8 +1154,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 			owner = Owner.deserializeFromNBT(tag);
 		} else if (tag.hasKey(NpcSkinSettings.PACKET_TAG_NAME)) {
 			skinSettings.handlePacketData(tag);
-		} else if (tag.hasKey("attackTarget")) {
-			int entityId = tag.getInteger("attackTarget");
+		} else if (tag.hasKey(ATTACK_TARGET_TAG)) {
+			int entityId = tag.getInteger(ATTACK_TARGET_TAG);
 			setAttackTarget((EntityLivingBase) world.getEntityByID(entityId));
 		}
 	}
@@ -1361,16 +1390,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		return dataManager.get(SWINGING_ARMS);
 	}
 
-	public boolean isBlockingWithShield() {
-		return dataManager.get(BLOCKING);
-	}
-
 	public void setSwingingArms(boolean swingingArms) {
 		dataManager.set(SWINGING_ARMS, swingingArms);
-	}
-
-	public void setShieldBlocking(boolean isBlocking) {
-		dataManager.set(BLOCKING, isBlocking);
 	}
 
 	public int getShieldDisabledTick() {
@@ -1445,5 +1466,12 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
 	public boolean isBow(Item item) {
 		return item instanceof ItemBow;
+	}
+
+	private NpcAIBlockWithShield initShieldAI() {
+		if (shieldBlockAI == null) {
+			shieldBlockAI = new NpcAIBlockWithShield(this);
+		}
+		return shieldBlockAI;
 	}
 }
