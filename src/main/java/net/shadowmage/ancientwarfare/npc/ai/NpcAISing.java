@@ -9,9 +9,6 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 import java.util.List;
 
-/*
- * Created by Olivier on 15/06/2015.
- */
 public class NpcAISing extends NpcAI<NpcBase> {
 	private static final int PLAYER_DELAY = 10;
 	private static final int PLAYER_RANGE = 20;

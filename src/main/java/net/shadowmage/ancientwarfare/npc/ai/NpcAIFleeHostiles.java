@@ -144,9 +144,6 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
 		stayOutOfSightTimer = MAX_STAY_AWAY + fearLevel;
 		fearLevel += MAX_STAY_AWAY;
 	}
-	/*
-	 * Returns whether an in-progress EntityAIBase should continue executing
-	 */
 
 	@Override
 	public void updateTask() {

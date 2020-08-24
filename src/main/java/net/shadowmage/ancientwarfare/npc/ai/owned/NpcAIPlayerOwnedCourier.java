@@ -160,5 +160,4 @@ public class NpcAIPlayerOwnedCourier extends NpcAI<NpcCourier> {
 		tag.setInteger("ticksToWork", ticksToWork);
 		return tag;
 	}
-
 }

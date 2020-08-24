@@ -12,13 +12,15 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.ChunkCache;
 
+import javax.annotation.Nullable;
+
 public class NpcNavigator extends PathNavigateGround {
 	private final EntityLiving entity;
 	private final WalkNodeProcessor nodeProcessor = new NpcWalkNodeProcessor();
 
 	public NpcNavigator(EntityLiving living) {
 		super(living, living.world);
-		this.entity = living;
+		entity = living;
 	}
 
 	@Override
@@ -34,22 +36,25 @@ public class NpcNavigator extends PathNavigateGround {
 	}
 
 	public void onWorldChange() {
-		this.world = entity.world;
+		world = entity.world;
 	}
 
+	@Nullable
 	@Override
 	public Path getPathToPos(BlockPos pos) {
-		return !this.canNavigate() ? null : pathToXYZ(pos);
+		return !canNavigate() ? null : pathToXYZ(pos);
 	}
 
+	@Nullable
 	@Override
 	public Path getPathToEntityLiving(Entity target) {
-		return !this.canNavigate() ? null : pathToEntity(target);
+		return !canNavigate() ? null : pathToEntity(target);
 	}
 
 	@Override
-	public boolean setPath(Path path, double speed) {
+	public boolean setPath(@Nullable Path path, double speed) {
 		if (hasMount()) {
+			//noinspection ConstantConditions
 			((EntityLiving) entity.getRidingEntity()).getNavigator().setPath(path, speed);
 		}
 		return super.setPath(path, speed);
@@ -58,6 +63,7 @@ public class NpcNavigator extends PathNavigateGround {
 	@Override
 	public void clearPath() {
 		if (hasMount()) {
+			//noinspection ConstantConditions
 			((EntityLiving) entity.getRidingEntity()).getNavigator().clearPath();
 		}
 		super.clearPath();
@@ -67,6 +73,7 @@ public class NpcNavigator extends PathNavigateGround {
 	public void onUpdateNavigation() {
 		super.onUpdateNavigation();
 		if (!noPath() && hasMount()) {
+			//noinspection ConstantConditions
 			((EntityLiving) entity.getRidingEntity()).getNavigator().onUpdateNavigation();
 		}
 	}
@@ -76,30 +83,33 @@ public class NpcNavigator extends PathNavigateGround {
 	}
 
 	private EntityLiving mountOrEntity() {
+		//noinspection ConstantConditions
 		return hasMount() ? (EntityLiving) entity.getRidingEntity() : entity;
 	}
 
+	@Nullable
 	private Path pathToEntity(Entity target) {
 		ChunkCache chunkcache = cachePath(1, 16);
-		Path pathentity = (new PathFinder(nodeProcessor).findPath(chunkcache, mountOrEntity(), target, this.getPathSearchRange()));
-		this.world.profiler.endSection();
+		Path pathentity = (new PathFinder(nodeProcessor).findPath(chunkcache, mountOrEntity(), target, getPathSearchRange()));
+		world.profiler.endSection();
 		return pathentity;
 	}
 
+	@Nullable
 	private Path pathToXYZ(BlockPos pos) {
 		ChunkCache chunkcache = cachePath(0, 8);
-		Path pathentity = (new PathFinder(nodeProcessor).findPath(chunkcache, mountOrEntity(), pos, this.getPathSearchRange()));
-		this.world.profiler.endSection();
+		Path pathentity = (new PathFinder(nodeProcessor).findPath(chunkcache, mountOrEntity(), pos, getPathSearchRange()));
+		world.profiler.endSection();
 		return pathentity;
 	}
 
 	private ChunkCache cachePath(int h, int r) {
-		this.world.profiler.startSection("pathfind");
-		int i = MathHelper.floor(this.entity.posX);
-		int j = MathHelper.floor(this.entity.posY + h);
-		int k = MathHelper.floor(this.entity.posZ);
-		int l = (int) (this.getPathSearchRange() + r);
-		return new ChunkCache(this.world, new BlockPos(i - l, j - l, k - l), new BlockPos(i + l, j + l, k + l), 0);
+		world.profiler.startSection("pathfind");
+		int i = MathHelper.floor(entity.posX);
+		int j = MathHelper.floor(entity.posY + h);
+		int k = MathHelper.floor(entity.posZ);
+		int l = (int) (getPathSearchRange() + r);
+		return new ChunkCache(world, new BlockPos(i - l, j - l, k - l), new BlockPos(i + l, j + l, k + l), 0);
 	}
 
 	/*
@@ -118,7 +128,7 @@ public class NpcNavigator extends PathNavigateGround {
 		int k1 = xOffset - xSize / 2;
 		int l1 = zOffset - zSize / 2;
 
-		if (!this.isPositionClear(k1, yOffset, l1, xSize, ySize, zSize, origin, vecX, vecZ)) {
+		if (!isPositionClear(k1, yOffset, l1, xSize, ySize, zSize, origin, vecX, vecZ)) {
 			return false;
 		} else {
 			for (int i2 = k1; i2 < k1 + xSize; ++i2) {
@@ -127,13 +137,13 @@ public class NpcNavigator extends PathNavigateGround {
 					double d3 = (double) j2 + 0.5D - origin.z;
 
 					if (d2 * vecX + d3 * vecZ >= 0.0D) {
-						Material material = this.world.getBlockState(new BlockPos(i2, yOffset - 1, j2)).getMaterial();
+						Material material = world.getBlockState(new BlockPos(i2, yOffset - 1, j2)).getMaterial();
 
 						if (material == Material.AIR || material == Material.LAVA || material == Material.FIRE || material == Material.CACTUS) {
 							return false;
 						}
 
-						if (material == Material.WATER && !this.entity.isInWater()) {
+						if (material == Material.WATER && !entity.isInWater()) {
 							return false;
 						}
 					}
@@ -147,10 +157,11 @@ public class NpcNavigator extends PathNavigateGround {
 	@Override
 	public String toString() {
 		String result;
-		if (noPath())
+		if (noPath()) {
 			result = "No Path " + (getPath() != null ? getPath().getCurrentPathLength() : "");
-		else
+		} else {
 			result = "Path to " + getPath().getPathPointFromIndex(getPath().getCurrentPathIndex()).toString();
+		}
 		if (hasMount() && !((EntityLiving) entity.getRidingEntity()).getNavigator().noPath()) {
 			Path path = ((EntityLiving) entity.getRidingEntity()).getNavigator().getPath();
 			result += "AND Mount path to " + path.getPathPointFromIndex(path.getCurrentPathIndex()).toString();

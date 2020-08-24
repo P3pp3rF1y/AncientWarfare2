@@ -14,9 +14,6 @@ public class NpcAIFollowPlayer extends NpcAI<NpcBase> {
 		setMutexBits(MOVE);
 	}
 
-	/*
-	 * Returns whether the EntityAIBase should begin execution.
-	 */
 	@Override
 	public boolean shouldExecute() {
 		if (!super.shouldExecute()) {
@@ -32,18 +29,12 @@ public class NpcAIFollowPlayer extends NpcAI<NpcBase> {
 		return true;
 	}
 
-	/*
-	 * Execute a one shot task or start executing a continuous task
-	 */
 	@Override
 	public void startExecuting() {
 		moveRetryDelay = 0;
 		npc.addAITask(TASK_FOLLOW);
 	}
 
-	/*
-	 * Resets the task
-	 */
 	@Override
 	public void resetTask() {
 		target = null;
@@ -51,9 +42,6 @@ public class NpcAIFollowPlayer extends NpcAI<NpcBase> {
 		npc.removeAITask(TASK_FOLLOW + TASK_MOVE);
 	}
 
-	/*
-	 * Updates the task
-	 */
 	@Override
 	public void updateTask() {
 		npc.getLookHelper().setLookPositionWithEntity(target, 10.0F, (float) npc.getVerticalFaceSpeed());
@@ -66,5 +54,4 @@ public class NpcAIFollowPlayer extends NpcAI<NpcBase> {
 			npc.getNavigator().clearPath();
 		}
 	}
-
 }

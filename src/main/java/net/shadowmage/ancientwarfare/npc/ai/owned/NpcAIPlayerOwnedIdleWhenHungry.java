@@ -17,9 +17,6 @@ public class NpcAIPlayerOwnedIdleWhenHungry extends NpcAI<NpcBase> {
 		return super.shouldExecute() && npc.getAttackTarget() == null && npc.requiresUpkeep() && npc.getFoodRemaining() == 0;
 	}
 
-	/*
-	 * Execute a one shot task or start executing a continuous task
-	 */
 	@Override
 	public void startExecuting() {
 		npc.addAITask(TASK_IDLE_HUNGRY);
@@ -29,17 +26,11 @@ public class NpcAIPlayerOwnedIdleWhenHungry extends NpcAI<NpcBase> {
 		}
 	}
 
-	/*
-	 * Resets the task
-	 */
 	@Override
 	public void resetTask() {
 		npc.removeAITask(TASK_IDLE_HUNGRY);
 	}
 
-	/*
-	 * Updates the task
-	 */
 	@Override
 	public void updateTask() {
 		if (npc.hasHome()) {

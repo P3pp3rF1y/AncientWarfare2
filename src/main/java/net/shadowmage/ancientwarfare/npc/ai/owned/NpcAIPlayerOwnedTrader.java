@@ -11,16 +11,6 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.orders.TradeOrder;
 
-import javax.annotation.Nonnull;
-
-/*
- * replaces upkeep ai for player owned trader when an orders item is equipped.<br>
- * manages moving the trader through a trade route, stopping for specified time at each point;<br>
- * manages moving towards and withdrawing upkeep at specified point in trade route (or auto if no trade order present);<br>
- * manages depositing income and withdrawing new tradables from specified points<br>
- *
- * @author Shadowmage
- */
 public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
 
 	/*
