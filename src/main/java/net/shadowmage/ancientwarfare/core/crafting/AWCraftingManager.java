@@ -403,12 +403,14 @@ public class AWCraftingManager {
 			} else {
 				for (int ingredientIndex : consolidatedStack.getValue()) {
 					if (!remainingIngredients.containsKey(ingredientIndex)) {
-						remainingIngredients.put(ingredientIndex, new IngredientCount(consolidatedStack.getKey()) {
+						IngredientCount ingredient = new IngredientCount(consolidatedStack.getKey()) {
 							@Override
 							public int getCount() {
 								return 1;
 							}
-						});
+						};
+						remainingIngredients.put(ingredientIndex, ingredient);
+						ingredientsData.put(ingredientIndex, getSlotIngredient(ingredientIndex, ingredient));
 					}
 				}
 			}
@@ -517,10 +519,14 @@ public class AWCraftingManager {
 				continue;
 			}
 
-			ret.put(slot, new IngredientMatchData(ingredient, slot, ingredient instanceof IIngredientCount ? ((IIngredientCount) ingredient).getCount() : 1));
+			ret.put(slot, getSlotIngredient(slot, ingredient));
 		}
 
 		return ret;
+	}
+
+	private static IngredientMatchData getSlotIngredient(int slot, Ingredient ingredient) {
+		return new IngredientMatchData(ingredient, slot, ingredient instanceof IIngredientCount ? ((IIngredientCount) ingredient).getCount() : 1);
 	}
 
 	public static ItemStack getIngredientInventoryMatch(IItemHandler clonedResourceInventory, Ingredient ingredient) {
