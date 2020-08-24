@@ -1,0 +1,355 @@
+{
+    "pools": [
+        {
+            "name":"main", 
+            "rolls": {
+                "min": 3,
+                "max": 5
+            },
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "sugar",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "glowstone_dust",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "redstone",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "spider_eye",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "rabbit_foot",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "golden_carrot",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "fermented_spider_eye",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "blaze_rod",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "speckled_melon",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "magma_cream",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "ghast_tear",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "nether_wart",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "blaze_powder",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "dragon_breath",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+		{
+            "name":"coins", 
+            "rolls": {
+                "min": 0,
+                "max": 2
+            },
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "ancientwarfarenpc:coin",
+                    "entryName": "coin_copper",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{metal:\"copper\"}"
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "ancientwarfarenpc:coin",
+                    "entryName": "coin_silver",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{metal:\"silver\"}"
+                        }
+                    ]
+                }
+            ]
+        },
+		{
+            "name":"bottles", 
+            "rolls": {
+                "min": 1,
+                "max": 2
+            },
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "glass_bottle",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "potion",
+                    "entryName": "water_bottle",
+                    "weight": 3,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{Potion:\"water\"}"
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "potion",
+                    "entryName": "mundane_potion",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{Potion:\"mundane\"}"
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "potion",
+                    "entryName": "thick_potion",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{Potion:\"thick\"}"
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "potion",
+                    "entryName": "awkward_potion",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{Potion:\"awkward\"}"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

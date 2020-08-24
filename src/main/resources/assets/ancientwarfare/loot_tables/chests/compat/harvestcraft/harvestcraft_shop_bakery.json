@@ -1,0 +1,326 @@
+{
+    "pools": [
+        {
+            "name":"main", 
+            "rolls": {
+                "min": 7,
+                "max": 9
+            },
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "harvestcraft:chaoscookieitem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 3
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "harvestcraft:buttercookieitem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 3
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "harvestcraft:sugarcookieitem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 3
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "harvestcraft:softpretzelitem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 3
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "harvestcraft:croissantitem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 3
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "cookie",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 3
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "harvestcraft:biscuititem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 3
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "sugar",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 3
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "harvestcraft:honeybreaditem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 3
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "harvestcraft:raisincookiesitem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 3
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "harvestcraft:lavendershortbreaditem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 3
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "harvestcraft:cinnamonbreaditem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 3
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "harvestcraft:festivalbreaditem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 3
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "harvestcraft:peanutbuttercookiesitem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 3
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "harvestcraft:saltitem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 3
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "bread",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 3
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "egg",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 6,
+                                "max": 12
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "ancientwarfarenpc:coin",
+                    "entryName": "coin_copper",
+                    "weight": 3,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{metal:\"copper\"}"
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "ancientwarfarenpc:coin",
+                    "entryName": "coin_silver",
+                    "weight": 3,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{metal:\"silver\"}"
+                        }
+                    ]
+                }
+            ]
+        },
+		{
+            "name":"ingrediants", 
+            "rolls": {
+                "min": 1,
+                "max": 2
+            },
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "harvestcraft:flouritem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 5,
+                                "max": 15
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "harvestcraft:doughitem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 5,
+                                "max": 10
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

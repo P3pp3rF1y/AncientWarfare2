@@ -1,0 +1,513 @@
+{
+    "pools": [
+        {
+            "name":"main", 
+            "rolls": {
+                "min": 8,
+                "max": 10
+            },
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "harvestcraft:herringrawitem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+				},
+				{
+                    "type": "item",
+                    "name": "harvestcraft:jellyfishrawitem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+				},
+				{
+                    "type": "item",
+                    "name": "harvestcraft:mudfishrawitem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+				},
+				{
+                    "type": "item",
+                    "name": "harvestcraft:octopusrawitem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+				},
+				{
+                    "type": "item",
+                    "name": "harvestcraft:perchrawitem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+				},
+				{
+                    "type": "item",
+                    "name": "harvestcraft:scalloprawitem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+				},
+				{
+                    "type": "item",
+                    "name": "harvestcraft:shrimprawitem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+				},
+				{
+                    "type": "item",
+                    "name": "harvestcraft:snailrawitem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+				},
+				{
+                    "type": "item",
+                    "name": "harvestcraft:snapperrawitem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+				},
+				{
+                    "type": "item",
+                    "name": "harvestcraft:grouperrawitem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+				},
+				{
+                    "type": "item",
+                    "name": "harvestcraft:frograwitem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+				},
+				{
+                    "type": "item",
+                    "name": "harvestcraft:eelrawitem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+				},
+				{
+                    "type": "item",
+                    "name": "harvestcraft:crayfishrawitem",
+                    "weight": 4,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+				},
+				{
+                    "type": "item",
+                    "name": "harvestcraft:crabrawitem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+				},
+				{
+                    "type": "item",
+                    "name": "harvestcraft:clamrawitem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+				},
+				{
+                    "type": "item",
+                    "name": "harvestcraft:charrrawitem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+				},
+				{
+                    "type": "item",
+                    "name": "harvestcraft:catfishrawitem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+				},
+				{
+                    "type": "item",
+                    "name": "harvestcraft:carprawitem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+				},
+				{
+                    "type": "item",
+                    "name": "harvestcraft:seaweeditem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+				},
+				{
+                    "type": "item",
+                    "name": "harvestcraft:troutrawitem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+				},
+				{
+                    "type": "item",
+                    "name": "harvestcraft:tunarawitem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+				},
+				{
+                    "type": "item",
+                    "name": "harvestcraft:turtlerawitem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+				},
+				{
+                    "type": "item",
+                    "name": "harvestcraft:walleyerawitem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+				},
+				{
+                    "type": "item",
+                    "name": "harvestcraft:greenheartfishitem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+				},
+				{
+                    "type": "item",
+                    "name": "harvestcraft:sardinerawitem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+				},
+				{
+                    "type": "item",
+                    "name": "harvestcraft:musselrawitem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+				},
+				{
+                    "type": "item",
+                    "name": "harvestcraft:oysterrawitem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+				},
+				{
+                    "type": "item",
+                    "name": "harvestcraft:bassrawitem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+				},
+				{
+                    "type": "item",
+                    "name": "harvestcraft:anchovyrawitem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+				},
+				{
+                    "type": "item",
+                    "name": "harvestcraft:calamarirawitem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+				},
+				{
+                    "type": "item",
+                    "name": "harvestcraft:tilapiarawitem",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+				},
+				{
+                    "type": "item",
+                    "name": "fish",
+                    "weight": 7,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            },
+							"function": "set_data",
+                            "data": {
+                                "min": 0,
+                                "max": 3
+                            }
+                        }
+                    ]
+				}
+            ]
+        },
+		{
+            "name":"coins", 
+            "rolls": {
+                "min": 0,
+                "max": 2
+            },
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "ancientwarfarenpc:coin",
+                    "entryName": "coin_copper",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{metal:\"copper\"}"
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "ancientwarfarenpc:coin",
+                    "entryName": "coin_silver",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{metal:\"silver\"}"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
