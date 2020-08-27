@@ -11,7 +11,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class FactionEntry implements Iterable<Map.Entry<String, Integer>> {
-	private HashMap<String, Integer> factionStandings = new HashMap<>();
+	private final HashMap<String, Integer> factionStandings = new HashMap<>();
 
 	public FactionEntry(NBTTagCompound tag) {
 		this();
@@ -20,10 +20,9 @@ public class FactionEntry implements Iterable<Map.Entry<String, Integer>> {
 
 	public FactionEntry() {
 		for (String name : FactionRegistry.getFactionNames()) {
-			setStandingFor(name, AncientWarfareNPC.statics.getPlayerDefaultStanding(name));
+			setStandingFor(name, AncientWarfareNPC.statics.getPlayerDefaultStanding(name), false);
 		}
 	}
-
 
 	public int getStandingFor(String factionName) {
 		if (factionStandings.containsKey(factionName)) {
@@ -32,8 +31,15 @@ public class FactionEntry implements Iterable<Map.Entry<String, Integer>> {
 		return 0;
 	}
 
-	public void setStandingFor(String factionName, int standing) {
+	private void setStandingFor(String factionName, int standing, boolean checkIfFixed) {
+		if (checkIfFixed && !FactionRegistry.getFaction(factionName).getStandingSettings().canPlayerStandingChange()) {
+			return;
+		}
 		factionStandings.put(factionName, standing);
+	}
+
+	public void setStandingFor(String factionName, int standing) {
+		setStandingFor(factionName, standing, true);
 	}
 
 	public void adjustStandingFor(String factionName, int adjustment) {
@@ -55,7 +61,7 @@ public class FactionEntry implements Iterable<Map.Entry<String, Integer>> {
 
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		NBTTagList entryList = new NBTTagList();
-		for (Map.Entry<String, Integer> entry : this.factionStandings.entrySet()) {
+		for (Map.Entry<String, Integer> entry : factionStandings.entrySet()) {
 			NBTTagCompound entryTag = new NBTTagCompound();
 			entryTag.setString("name", entry.getKey());
 			entryTag.setInteger("standing", entry.getValue());

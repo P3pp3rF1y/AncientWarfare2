@@ -17,8 +17,8 @@ public class ContainerNpcFactionTradeView extends ContainerNpcBase<NpcFactionTra
 	@SuppressWarnings("unused") //used in reflection
 	public ContainerNpcFactionTradeView(EntityPlayer player, int x, int y, int z) {
 		super(player, x);
-		this.tradeList = entity.getTradeList();
-		this.entity.startTrade(player);
+		tradeList = entity.getTradeList();
+		entity.startTrade(player);
 
 		addPlayerSlots();
 	}
@@ -36,14 +36,14 @@ public class ContainerNpcFactionTradeView extends ContainerNpcBase<NpcFactionTra
 		if (tag.hasKey(TRADE_DATA_TAG)) {
 			tradeList.deserializeNBT(tag.getCompoundTag(TRADE_DATA_TAG));
 		} else if (tag.hasKey(DO_TRADE_TAG) && tradeList.performTrade(player, tag.getInteger(DO_TRADE_TAG))) {
-			FactionTracker.INSTANCE.adjustStandingFor(entity.world, player.getName(), entity.getFaction(), FactionRegistry.getFaction(entity.getFaction()).getStandingChange(StandingChanges.TRADE));
+			FactionTracker.INSTANCE.adjustStandingFor(entity.world, player.getName(), entity.getFaction(), FactionRegistry.getFaction(entity.getFaction()).getStandingSettings().getStandingChange(StandingChanges.TRADE));
 		}
 		refreshGui();
 	}
 
 	@Override
 	public void onContainerClosed(EntityPlayer player) {
-		this.entity.closeTrade();
+		entity.closeTrade();
 		super.onContainerClosed(player);
 	}
 

@@ -86,7 +86,7 @@ public abstract class NpcFaction extends NpcBase {
 		hurtSound = getSoundEventFromAttributes("_hurt");
 	}
 
-	private Map<IAdditionalAttribute<?>, Object> additionalAttributes = new HashMap<>();
+	private final Map<IAdditionalAttribute<?>, Object> additionalAttributes = new HashMap<>();
 	private boolean canDespawn = false;
 
 	@Override
@@ -367,7 +367,7 @@ public abstract class NpcFaction extends NpcBase {
 		if (damageSource.getTrueSource() instanceof EntityPlayer || damageSource.getTrueSource() instanceof NpcPlayerOwned) {
 			String playerName = damageSource.getTrueSource() instanceof EntityPlayer ? damageSource.getTrueSource().getName() :
 					((NpcBase) damageSource.getTrueSource()).getOwner().getName();
-			FactionTracker.INSTANCE.adjustStandingFor(world, playerName, getFaction(), FactionRegistry.getFaction(getFaction()).getStandingChange(StandingChanges.KILL));
+			FactionTracker.INSTANCE.adjustStandingFor(world, playerName, getFaction(), FactionRegistry.getFaction(getFaction()).getStandingSettings().getStandingChange(StandingChanges.KILL));
 
 			setDeathRevengePlayer(playerName);
 			world.getEntitiesWithinAABB(NpcFaction.class, new AxisAlignedBB(getPosition()).grow(REVENGE_SET_RANGE))
