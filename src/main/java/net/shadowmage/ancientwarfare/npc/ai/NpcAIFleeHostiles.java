@@ -81,8 +81,6 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
 		}
 		ticker = 0;
 
-		stayOutOfSightTimer = MAX_STAY_AWAY + fearLevel;
-
 		boolean flee = false;
 		findNearbyRelevantEntities();
 		if (!npc.nearbyHostiles.isEmpty()) {
@@ -94,6 +92,7 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
 				flee = fleeVector != null && nearestHostile.getDistanceSq(fleeVector.x, fleeVector.y, fleeVector.z) >= nearestHostile.getDistanceSq(npc);
 			}
 			if (flee) {
+				stayOutOfSightTimer = MAX_STAY_AWAY + fearLevel;
 				if (nearestHostile instanceof EntityLivingBase) {
 					npc.setAttackTarget((EntityLivingBase) nearestHostile);
 				} else {

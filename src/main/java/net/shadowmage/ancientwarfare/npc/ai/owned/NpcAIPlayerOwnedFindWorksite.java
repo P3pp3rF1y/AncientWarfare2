@@ -9,6 +9,7 @@ import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcWorker;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,8 +63,9 @@ public class NpcAIPlayerOwnedFindWorksite extends NpcAI<NpcWorker> {
 		npc.autoWorkTarget = getClosestWorksitePos(tiles);
 	}
 
+	@Nullable
 	private BlockPos getClosestWorksitePos(List<TileEntity> tiles) {
-		BlockPos closestPos = BlockPos.ORIGIN;
+		BlockPos closestPos = null;
 		double closestDist = -1;
 		for (TileEntity te : tiles) {
 			if (te instanceof IWorkSite) {
