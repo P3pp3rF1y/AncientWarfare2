@@ -7,25 +7,20 @@ import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
-public final class FactionEntry {
-
-	public final String playerName;
-	private HashMap<String, Integer> factionStandings = new HashMap<>();
+public class FactionEntry implements Iterable<Map.Entry<String, Integer>> {
+	private final HashMap<String, Integer> factionStandings = new HashMap<>();
 
 	public FactionEntry(NBTTagCompound tag) {
-		playerName = tag.getString("playerName");
-		for (String name : FactionRegistry.getFactionNames()) {
-			factionStandings.put(name, AncientWarfareNPC.statics.getPlayerDefaultStanding(name));
-		}
+		this();
 		readFromNBT(tag);
 	}
 
-	public FactionEntry(String playerName) {
-		this.playerName = playerName;
+	public FactionEntry() {
 		for (String name : FactionRegistry.getFactionNames()) {
-			factionStandings.put(name, AncientWarfareNPC.statics.getPlayerDefaultStanding(name));
+			setStandingFor(name, AncientWarfareNPC.statics.getPlayerDefaultStanding(name), false);
 		}
 	}
 
@@ -36,8 +31,15 @@ public final class FactionEntry {
 		return 0;
 	}
 
-	public void setStandingFor(String factionName, int standing) {
+	private void setStandingFor(String factionName, int standing, boolean checkIfFixed) {
+		if (checkIfFixed && !FactionRegistry.getFaction(factionName).getStandingSettings().canPlayerStandingChange()) {
+			return;
+		}
 		factionStandings.put(factionName, standing);
+	}
+
+	public void setStandingFor(String factionName, int standing) {
+		setStandingFor(factionName, standing, true);
 	}
 
 	public void adjustStandingFor(String factionName, int adjustment) {
@@ -57,16 +59,20 @@ public final class FactionEntry {
 		}
 	}
 
-	public final NBTTagCompound writeToNBT(NBTTagCompound tag) {
-		tag.setString("playerName", playerName);
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		NBTTagList entryList = new NBTTagList();
-		NBTTagCompound entryTag;
-		for (Map.Entry<String, Integer> entry : this.factionStandings.entrySet()) {
-			entryTag = new NBTTagCompound();
+		for (Map.Entry<String, Integer> entry : factionStandings.entrySet()) {
+			NBTTagCompound entryTag = new NBTTagCompound();
 			entryTag.setString("name", entry.getKey());
 			entryTag.setInteger("standing", entry.getValue());
+			entryList.appendTag(entryTag);
 		}
 		tag.setTag("entryList", entryList);
 		return tag;
+	}
+
+	@Override
+	public Iterator<Map.Entry<String, Integer>> iterator() {
+		return factionStandings.entrySet().iterator();
 	}
 }

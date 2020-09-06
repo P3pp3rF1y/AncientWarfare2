@@ -8,9 +8,12 @@ import net.minecraft.scoreboard.Team;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import net.shadowmage.ancientwarfare.core.block.BlockResearchStation;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
@@ -27,7 +30,6 @@ import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.List;
@@ -42,12 +44,13 @@ public class TileResearchStation extends TileOwned implements IWorkSite, ITorque
 	public final ItemStackHandler bookInventory = new ItemStackHandler(1) {
 		@Override
 		protected void onContentsChanged(int slot) {
+			IBlockState iblockstate = world.getBlockState(pos);
+			world.setBlockState(pos, iblockstate.withProperty(BlockResearchStation.HAS_BOOK, hasBook()));
 			markDirty();
 		}
 
-		@Nonnull
 		@Override
-		public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 			return ItemResearchBook.getResearcherName(stack) != null ? super.insertItem(slot, stack, simulate) : stack;
 		}
 	};
@@ -77,6 +80,10 @@ public class TileResearchStation extends TileOwned implements IWorkSite, ITorque
 	public void onBlockBroken(IBlockState state) {
 		InventoryTools.dropItemsInWorld(world, bookInventory, pos);
 		InventoryTools.dropItemsInWorld(world, resourceInventory, pos);
+	}
+
+	public boolean hasBook() {
+		return (!bookInventory.getStackInSlot(0).isEmpty());
 	}
 
 	@Override
@@ -323,5 +330,11 @@ public class TileResearchStation extends TileOwned implements IWorkSite, ITorque
 			return (T) resourceInventory;
 		}
 		return super.getCapability(capability, facing);
+	}
+
+	@Override
+	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
+		super.shouldRefresh(world, pos, oldState, newSate);
+		return !(newSate.getBlock() instanceof BlockResearchStation);
 	}
 }

@@ -9,20 +9,14 @@ public class NpcAIPlayerOwnedIdleWhenHungry extends NpcAI<NpcBase> {
 
 	public NpcAIPlayerOwnedIdleWhenHungry(NpcBase npc) {
 		super(npc);
-		this.setMutexBits(MOVE + ATTACK + HUNGRY);
+		setMutexBits(MOVE + ATTACK + HUNGRY);
 	}
 
 	@Override
 	public boolean shouldExecute() {
-		if (!npc.getIsAIEnabled()) {
-			return false;
-		}
-		return npc.getAttackTarget() == null && npc.requiresUpkeep() && npc.getFoodRemaining() == 0;
+		return super.shouldExecute() && npc.getAttackTarget() == null && npc.requiresUpkeep() && npc.getFoodRemaining() == 0;
 	}
 
-	/*
-	 * Execute a one shot task or start executing a continuous task
-	 */
 	@Override
 	public void startExecuting() {
 		npc.addAITask(TASK_IDLE_HUNGRY);
@@ -32,17 +26,11 @@ public class NpcAIPlayerOwnedIdleWhenHungry extends NpcAI<NpcBase> {
 		}
 	}
 
-	/*
-	 * Resets the task
-	 */
 	@Override
 	public void resetTask() {
 		npc.removeAITask(TASK_IDLE_HUNGRY);
 	}
 
-	/*
-	 * Updates the task
-	 */
 	@Override
 	public void updateTask() {
 		if (npc.hasHome()) {

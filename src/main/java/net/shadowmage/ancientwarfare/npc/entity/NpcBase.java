@@ -14,8 +14,11 @@ import net.minecraft.entity.INpc;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -23,7 +26,6 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
@@ -52,12 +54,12 @@ import net.shadowmage.ancientwarfare.core.owner.Owner;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIBlockWithShield;
 import net.shadowmage.ancientwarfare.npc.ai.NpcNavigator;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
-import net.shadowmage.ancientwarfare.npc.item.ItemShield;
 import net.shadowmage.ancientwarfare.npc.registry.NpcDefaultsRegistry;
 import net.shadowmage.ancientwarfare.npc.skin.NpcSkinSettings;
 import net.shadowmage.ancientwarfare.vehicle.entity.IPathableEntity;
@@ -78,6 +80,7 @@ import static net.shadowmage.ancientwarfare.npc.config.AWNPCStatics.npcLevelDama
 public abstract class NpcBase extends EntityCreature implements IEntityAdditionalSpawnData, IOwnable, IEntityPacketHandler, IPathableEntity, INpc {
 
 	private static final DataParameter<Integer> AI_TASKS = EntityDataManager.createKey(NpcBase.class, DataSerializers.VARINT);
+	private static final DataParameter<Integer> SHIELD_DISABLED_TICK = EntityDataManager.createKey(NpcBase.class, DataSerializers.VARINT);
 	private static final DataParameter<BlockPos> BED_POS = EntityDataManager.createKey(NpcBase.class, DataSerializers.BLOCK_POS);
 	private static final DataParameter<Byte> BED_DIRECTION = EntityDataManager.createKey(NpcBase.class, DataSerializers.BYTE);
 	private static final DataParameter<Boolean> IS_SLEEPING = EntityDataManager.createKey(NpcBase.class, DataSerializers.BOOLEAN);
@@ -96,11 +99,13 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	private static final String ATTACK_DAMAGE_OVERRIDE_TAG = "attackDamageOverride";
 	private static final String ARMOR_VALUE_OVERRIDE_TAG = "armorValueOverride";
 	private static final String AI_ENABLED_TAG = "aiEnabled";
+	private static final String HAS_CUSTOM_EQUIPMENT_TAG = "hasCustomEquipment";
 	public static final int ORDER_SLOT = 6;
 	public static final int UPKEEP_SLOT = 7;
+	private static final String ATTACK_TARGET_TAG = "attackTarget";
 
-	@Nonnull
 	public ItemStack ordersStack = ItemStack.EMPTY;
+	private NpcAIBlockWithShield shieldBlockAI = null;
 	private static final String DO_NOT_PURSUE = "donotpursue";
 	private Owner owner = Owner.EMPTY;
 
@@ -109,7 +114,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
 	private NpcSkinSettings skinSettings = new NpcSkinSettings();
 
-	@Nonnull
 	public ItemStack upkeepStack = ItemStack.EMPTY;
 
 	// used for flee/distress AI
@@ -119,6 +123,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
 	private boolean aiEnabled = true;
 	public boolean doNotPursue = false; //if the npc should not pursue targets away from its position/route
+	private boolean hasCustomEquipment = false; //faction based only
 
 	private int attackDamage = -1;//faction based only
 	private int armorValue = -1;//faction based only
@@ -130,11 +135,25 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	private float originalWidth;
 	private float originalHeight;
 
+	private int stopAIControlFlags = 0;
+
 	public NpcBase(World par1World) {
 		super(par1World);
 		levelingStats = new NpcLevelingStats(this);
-		this.navigator = new NpcNavigator(this);
+		navigator = new NpcNavigator(this);
 		setPathPriority(PathNodeType.DOOR_WOOD_CLOSED, 0);
+	}
+
+	public void stopAIControlFlag(int flag) {
+		stopAIControlFlags |= flag;
+	}
+
+	public void startAIControlFlag(int flag) {
+		stopAIControlFlags &= ~flag;
+	}
+
+	public boolean isAIFlagStopped(int flag) {
+		return (stopAIControlFlags & flag) > 0;
 	}
 
 	@Override
@@ -145,16 +164,17 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		dataManager.register(BED_DIRECTION, (byte) EnumFacing.NORTH.ordinal());
 		dataManager.register(IS_SLEEPING, false);
 		dataManager.register(SWINGING_ARMS, false);
+		dataManager.register(SHIELD_DISABLED_TICK, 0);
 	}
 
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-		this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_SPEED);
+		getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
+		getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_SPEED);
 	}
 
-	public ItemStack getShieldStack() {
+	private ItemStack getShieldStack() {
 		return getHeldItem(EnumHand.OFF_HAND);
 	}
 
@@ -169,7 +189,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	public void setMaxHealthOverride(int maxHealthOverride) {
 		this.maxHealthOverride = maxHealthOverride;
 		if (maxHealthOverride > 0) {
-			this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(maxHealthOverride);
+			getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(maxHealthOverride);
 			if (getHealth() < getMaxHealth()) {
 				setHealth(getMaxHealth());
 			}
@@ -178,6 +198,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
 	public void setAttackDamageOverride(int attackDamage) {
 		this.attackDamage = attackDamage;
+		getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(attackDamage);
 	}
 
 	public void setArmorValueOverride(int armorValue) {
@@ -192,43 +213,84 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		return attackDamage;
 	}
 
+	public void setCustomEquipmentOverride(boolean val) {
+		hasCustomEquipment = val;
+	}
+
+	public boolean getCustomEquipmentOverride() {
+		return hasCustomEquipment;
+	}
+
 	@Override
 	public boolean attackEntityAsMob(Entity target) {
-		float damage = (float) this.getAttackDamageOverride();
-		@Nonnull ItemStack shield = ItemStack.EMPTY;
-		if (damage < 0) {
-			if (!getShieldStack().isEmpty()) {
-				shield = getShieldStack().copy();
-				getAttributeMap().applyAttributeModifiers(shield.getAttributeModifiers(EntityEquipmentSlot.OFFHAND));
-			}
-			damage = (float) this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
-		}
-		int knockback = 0;
-		if (target instanceof EntityLivingBase) {
-			damage += EnchantmentHelper.getModifierForCreature(this.getHeldItemMainhand(), ((EntityLivingBase) target).getCreatureAttribute());
-			knockback += EnchantmentHelper.getKnockbackModifier(this);
-		}
-		boolean targetHit = target.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
-		if (targetHit) {
-			if (knockback > 0) {
-				target.addVelocity((double) (-MathHelper.sin(this.rotationYaw * (float) Math.PI / 180.0F) * (float) knockback * 0.5F), 0.1D, (double) (MathHelper.cos(this.rotationYaw * (float) Math.PI / 180.0F) * (float) knockback * 0.5F));
-				this.motionX *= 0.6D;
-				this.motionZ *= 0.6D;
-			}
-			int fireDamage = EnchantmentHelper.getFireAspectModifier(this);
+		float damage = (float) getAttackDamageOverride();
 
-			if (fireDamage > 0) {
-				target.setFire(fireDamage * 4);
-			}
-			if (target instanceof EntityLivingBase) {
-				EnchantmentHelper.applyThornEnchantments((EntityLivingBase) target, this);
-			}
-			EnchantmentHelper.applyArthropodEnchantments(this, target);
+		ItemStack shield = ItemStack.EMPTY;
+		if (damage < 0 && !getShieldStack().isEmpty()) {
+			shield = getShieldStack().copy();
+			getAttributeMap().applyAttributeModifiers(shield.getAttributeModifiers(EntityEquipmentSlot.OFFHAND));
 		}
+
+		boolean targetHit = vanillaAttackEntityAsMob(target);
+
+		if (targetHit && target instanceof EntityLivingBase) {
+			ItemStack item = getHeldItemMainhand();
+			getHeldItemMainhand().getItem().hitEntity(item, (EntityLivingBase) target, this);
+		}
+
 		if (!shield.isEmpty()) {
 			getAttributeMap().removeAttributeModifiers(shield.getAttributeModifiers(EntityEquipmentSlot.OFFHAND));
 		}
 		return targetHit;
+	}
+
+	@SuppressWarnings({"squid:S3776", "ConstantConditions"})
+	/*
+		not changing this because it's the exact copy of implementation of attackEntityAsMob from EntityMob that we should have here
+		this should make upgrading to new versions easier because it should only mean copying the code from EntityMob here in case something changes there
+		*/
+	private boolean vanillaAttackEntityAsMob(Entity target) {
+		float f = (float) getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
+		int i = 0;
+
+		if (target instanceof EntityLivingBase) {
+			f += EnchantmentHelper.getModifierForCreature(getHeldItemMainhand(), ((EntityLivingBase) target).getCreatureAttribute());
+			i += EnchantmentHelper.getKnockbackModifier(this);
+		}
+
+		boolean flag = target.attackEntityFrom(DamageSource.causeMobDamage(this), f);
+
+		if (flag) {
+			if (i > 0 && target instanceof EntityLivingBase) {
+				((EntityLivingBase) target).knockBack(this, (float) i * 0.5F, MathHelper.sin(rotationYaw * 0.017453292F), -MathHelper.cos(rotationYaw * 0.017453292F));
+				motionX *= 0.6D;
+				motionZ *= 0.6D;
+			}
+
+			int j = EnchantmentHelper.getFireAspectModifier(this);
+
+			if (j > 0) {
+				target.setFire(j * 4);
+			}
+
+			if (target instanceof EntityPlayer) {
+				EntityPlayer entityplayer = (EntityPlayer) target;
+				ItemStack itemstack = getHeldItemMainhand();
+				ItemStack itemstack1 = entityplayer.isHandActive() ? entityplayer.getActiveItemStack() : ItemStack.EMPTY;
+
+				if (!itemstack.isEmpty() && !itemstack1.isEmpty() && itemstack.getItem().canDisableShield(itemstack, itemstack1, entityplayer, this) && itemstack1.getItem().isShield(itemstack1, entityplayer)) {
+					float f1 = 0.25F + (float) EnchantmentHelper.getEfficiencyModifier(this) * 0.05F;
+
+					if (rand.nextFloat() < f1) {
+						entityplayer.getCooldownTracker().setCooldown(itemstack1.getItem(), 100);
+						world.setEntityState(entityplayer, (byte) 30);
+					}
+				}
+			}
+
+			applyEnchantments(this, target);
+		}
+		return flag;
 	}
 
 	/*
@@ -245,15 +307,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 					armor.add(armorPiece);
 				}
 				float value = ISpecialArmor.ArmorProperties.applyArmor(this, armor, source, amount);
-				if (value > 0.0F && getShieldStack().getItem() instanceof ItemShield) {
-					float absorb = value * ((ItemShield) getShieldStack().getItem()).getArmorBonusValue() / 25F;
-					int dmg = Math.max((int) absorb, 1);
-					getShieldStack().damageItem(dmg, this);
-					value -= absorb;
-				}
-				if (value < 0.0F)
-					return 0;
-				return value;
+				return value < 0.0F ? 0 : value;
 			}
 		}
 		return amount;
@@ -267,12 +321,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		if (getArmorValueOverride() >= 0) {
 			return getArmorValueOverride();
 		}
-		int value = super.getTotalArmorValue();
-		if (getShieldStack().getItem() instanceof ItemShield) {
-			ItemShield shield = (ItemShield) getShieldStack().getItem();
-			value += shield.getArmorBonusValue();
-		}
-		return value;
+		return super.getTotalArmorValue();
 	}
 
 	@Override
@@ -282,21 +331,17 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
 	@Override
 	public int getMaxFallHeight() {
-		return this.getAttackTarget() == null ? 4 : 4 + (int) (this.getHealth() / 3);
+		return getAttackTarget() == null ? 4 : 4 + (int) (getHealth() / 3);
 	}
 
 	@Override
 	public float getBlockPathWeight(BlockPos pos) {
 		IBlockState stateBelow = world.getBlockState(pos.down());
 		if (stateBelow.getMaterial() == Material.LAVA || stateBelow.getMaterial() == Material.CACTUS)//Avoid cacti and lava when wandering
-			return -10;
-		else if (stateBelow.getMaterial().isLiquid())//Don't try swimming too much
-			return 0;
+		{ return -10; } else if (stateBelow.getMaterial().isLiquid())//Don't try swimming too much
+		{ return 0; }
 		float level = getLitBlockWeight(pos);//Prefer lit areas
-		if (level < 0)
-			return 0;
-		else
-			return level + (stateBelow.isSideSolid(world, pos.down(), EnumFacing.UP) ? 1 : 0);
+		if (level < 0) { return 0; } else { return level + (stateBelow.isSideSolid(world, pos.down(), EnumFacing.UP) ? 1 : 0); }
 	}
 
 	protected float getLitBlockWeight(BlockPos pos) {
@@ -316,7 +361,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	}
 
 	public void setHomeAreaAtCurrentPosition() {
-		setHomePosAndDistance(new BlockPos(MathHelper.floor(this.posX), MathHelper.floor(this.posY), MathHelper.floor(this.posZ)), getHomeRange());
+		setHomePosAndDistance(new BlockPos(MathHelper.floor(posX), MathHelper.floor(posY), MathHelper.floor(posZ)), getHomeRange());
 	}
 
 	public int getHomeRange() {
@@ -334,13 +379,14 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		if (getAttackTarget() != null || !hasHome()) {
 			return false;
 		}
-		if (world.isRainingAt(getPosition()))
+		if (world.isRainingAt(getPosition())) {
 			setRainedOn(true);
+		}
 		return shouldSleep() || isWaitingForRainToStop();
 	}
 
 	private boolean isWaitingForRainToStop() {
-		if (worksInRain() || !this.world.isRaining()) {
+		if (worksInRain() || !world.isRaining()) {
 			// rain has stopped, reset
 			setRainedOn(false);
 			return false;
@@ -361,7 +407,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	}
 
 	public void setIsAIEnabled(boolean val) {
-		this.aiEnabled = val;
+		aiEnabled = val;
 	}
 
 	public boolean getIsAIEnabled() {
@@ -403,10 +449,10 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		if (!baton) {
 			if (!world.isRemote) {
 				if (player.isSneaking()) {
-					if (this.followingPlayerName != null && this.followingPlayerName.equals(player.getName())) {
-						this.followingPlayerName = null;
+					if (followingPlayerName != null && followingPlayerName.equals(player.getName())) {
+						followingPlayerName = null;
 					} else {
-						this.followingPlayerName = player.getName();
+						followingPlayerName = player.getName();
 					}
 				} else {
 					openGUI(player);
@@ -420,67 +466,105 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	@Override
 	public void applyEntityCollision(Entity entity) {
 		if (!isInWater() && !isHostileTowards(entity)) {
-			int d0 = (int) Math.signum(this.posX - entity.posX);
-			int d1 = (int) Math.signum(this.posZ - entity.posZ);
+			int d0 = (int) Math.signum(posX - entity.posX);
+			int d1 = (int) Math.signum(posZ - entity.posZ);
 			if (d0 != 0 || d1 != 0) {
-				Material material = world.getBlockState(new BlockPos(this.posX + d0, this.getEntityBoundingBox().minY - 1, this.posZ + d1)).getMaterial();
+				Material material = world.getBlockState(new BlockPos(posX + d0, getEntityBoundingBox().minY - 1, posZ + d1)).getMaterial();
 				if (material.isLiquid() || material == Material.CACTUS) {
 					return;
 				}
-				this.entityCollisionReduction = 0.9F;
+				entityCollisionReduction = 0.9F;
 			}
 		}
 		super.applyEntityCollision(entity);
-		this.entityCollisionReduction = 0;
+		entityCollisionReduction = 0;
 	}
 
 	@Override
-	public final boolean attackEntityFrom(DamageSource source, float par2) {
-		if (isSleeping()) // prevent suffocation damage (allows bunk beds and such)
-			return false;
-		if (source.getTrueSource() != null && !canBeAttackedBy(source.getTrueSource()))
-			return false;
-		if (source == DamageSource.IN_WALL && this.getRidingEntity() instanceof EntityLiving) {
-			knockFromDamage(par2, world.getBlockState(new BlockPos(this.posX, this.posY + this.getEyeHeight(), this.posZ)).getMaterial());
+	public final boolean attackEntityFrom(DamageSource source, float damage) {
+		if (isSleeping()) { // prevent suffocation damage (allows bunk beds and such)
 			return false;
 		}
-		if (source == DamageSource.CACTUS)
-			knockFromDamage(par2, Material.CACTUS);
-		else if (source == DamageSource.LAVA)
-			knockFromDamage(par2, Material.LAVA);
-		else if (source == DamageSource.DROWN)
-			jump();
-		return super.attackEntityFrom(source, par2);
+		if (source.getTrueSource() != null && !canBeAttackedBy(source.getTrueSource())) {
+			return false;
+		}
+		processPreDamageLogic(source, damage);
+		return super.attackEntityFrom(source, damage);
 	}
 
-	private void knockFromDamage(float val, Material material) {
-		BlockPos pos = new BlockPos(this.posX, this.getEntityBoundingBox().minY + 0.5, this.posZ);
-		if (world.getBlockState(pos.west()).getMaterial() == material) {
-			knockBack(null, val, pos.getX() - 1 - this.posX, 0);
-		} else if (world.getBlockState(pos.north()).getMaterial() == material) {
-			knockBack(null, val, 0, pos.getZ() - 1 - this.posZ);
-		} else if (world.getBlockState(pos.east()).getMaterial() == material) {
-			knockBack(null, val, pos.getX() + 1 - this.posX, 0);
-		} else if (world.getBlockState(pos.south()).getMaterial() == material) {
-			knockBack(null, val, 0, pos.getZ() + 1 - this.posZ);
-		} else if (world.getBlockState(pos.add(-1, 0, -1)).getMaterial() == material) {
-			knockBack(null, val, pos.getX() - 1 - this.posX, pos.getZ() - 1 - this.posZ);
-		} else if (world.getBlockState(pos.add(1, 0, -1)).getMaterial() == material) {
-			knockBack(null, val, pos.getX() + 1 - this.posX, pos.getZ() - 1 - this.posZ);
-		} else if (world.getBlockState(pos.add(-1, 0, 1)).getMaterial() == material) {
-			knockBack(null, val, pos.getX() - 1 - this.posX, pos.getZ() + 1 - this.posZ);
-		} else if (world.getBlockState(pos.add(1, 0, 1)).getMaterial() == material) {
-			knockBack(null, val, pos.getX() + 1 - this.posX, pos.getZ() + 1 - this.posZ);
-		} else if (world.getBlockState(pos.down()).getMaterial() == material) {
-			knockBack(null, val, 2 * getRNG().nextFloat() - 1, 2 * getRNG().nextFloat() - 1);
+	private void processPreDamageLogic(DamageSource source, float damage) {
+		if (shieldBlockAI != null) {
+			shieldBlockAI.onPreDamage(source, damage);
 		}
-		if (world.isRemote || getNavigator().noPath())
-			return;
-		PathPoint point = getNavigator().getPath().getPathPointFromIndex(getNavigator().getPath().getCurrentPathIndex());
-		if (world.getBlockState(new BlockPos(point.x, point.y, point.z)).getMaterial() == material) {
-			getNavigator().clearPath();
-		} else if (world.getBlockState(new BlockPos(point.x, point.y - 1, point.z)).getMaterial() == material) {
-			getNavigator().clearPath();
+	}
+
+	@Override
+	public void onLivingUpdate() {
+		if (isHandActive() && !isRiding()) {
+			setAIMoveSpeed(getAIMoveSpeed() * 0.2f);
+			setSprinting(false);
+		}
+		super.onLivingUpdate();
+	}
+
+	@Override
+	protected void blockUsingShield(EntityLivingBase attacker) {
+		attacker.knockBack(this, 0.1F, posX - attacker.posX, posZ - attacker.posZ);
+
+		if (attacker.getHeldItemMainhand().getItem().canDisableShield(attacker.getHeldItemMainhand(), getActiveItemStack(), this, attacker)) {
+			disableShield();
+		}
+	}
+
+	private void disableShield() {
+		float f = 1F + (float) EnchantmentHelper.getEfficiencyModifier(this) * 0.05F;
+
+		if (rand.nextFloat() < f) {
+			setShieldDisabledTick(80);
+			resetActiveHand();
+			world.setEntityState(this, (byte) 30);
+		}
+	}
+
+	@Override
+	protected void damageShield(float damage) {
+		if (damage >= 3.0F && activeItemStack.getItem().isShield(activeItemStack, this)) {
+			int i = 1 + MathHelper.floor(damage);
+			getShieldStack().damageItem(i, this);
+			setActiveHand(EnumHand.OFF_HAND);
+
+			if (getShieldStack().isEmpty()) {  //shield breaks
+				setShieldStack(ItemStack.EMPTY);
+				playSound(SoundEvents.ITEM_SHIELD_BREAK, 0.8F, 0.8F + world.rand.nextFloat() * 0.4F);
+			}
+		}
+	}
+
+	// vanilla method with a check for shield items to ignore canContinueUsing
+	@Override
+	protected void updateActiveHand() {
+		if (isHandActive()) {
+			ItemStack itemstack = getHeldItem(getActiveHand());
+			if (net.minecraftforge.common.ForgeHooks.canContinueUsing(activeItemStack, itemstack) || itemstack.getItem().isShield(itemstack, this)) {
+				activeItemStack = itemstack;
+			}
+
+			if (itemstack == activeItemStack) {
+				if (!activeItemStack.isEmpty()) {
+					activeItemStackUseCount = net.minecraftforge.event.ForgeEventFactory.onItemUseTick(this, activeItemStack, activeItemStackUseCount);
+					if (activeItemStackUseCount > 0) { activeItemStack.getItem().onUsingTick(activeItemStack, this, activeItemStackUseCount); }
+				}
+
+				if (getItemInUseCount() <= 25 && getItemInUseCount() % 4 == 0) {
+					updateItemUse(activeItemStack, 5);
+				}
+
+				if (--activeItemStackUseCount <= 0 && !world.isRemote) {
+					onItemUseFinish();
+				}
+			} else {
+				resetActiveHand();
+			}
 		}
 	}
 
@@ -492,18 +576,19 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
 	@Override
 	public void setAttackTarget(@Nullable EntityLivingBase entity) {
-		if (entity != null && !canTarget(entity))
+		if (entity != null && !canTarget(entity)) {
 			return;
+		}
 		super.setAttackTarget(entity);
 
-		if (!world.isRemote) {
-			updateAttackTargetClient();
+		if (!world.isRemote && entity != null) {
+			updateAttackTargetClient(entity);
 		}
 	}
 
-	private void updateAttackTargetClient() {
+	private void updateAttackTargetClient(EntityLivingBase entity) {
 		PacketEntity pkt = new PacketEntity(this);
-		pkt.packetData.setInteger("attackTarget", getAttackTarget() == null ? 0 : getAttackTarget().getEntityId());
+		pkt.packetData.setInteger(ATTACK_TARGET_TAG, entity.getEntityId());
 		NetworkHandler.sendToAllTracking(this, pkt);
 	}
 
@@ -513,26 +598,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 			return;
 		}
 		super.setRevengeTarget(entity);
-	}
-
-	@Override
-	protected final void dropEquipment(boolean wasRecentlyHit, int lootingModifier) {
-		super.dropEquipment(wasRecentlyHit, lootingModifier);
-		if (!AWNPCStatics.persistOrdersOnDeath) {
-			if (!ordersStack.isEmpty()) {
-				entityDropItem(ordersStack, 0.f);
-			}
-			if (!upkeepStack.isEmpty()) {
-				entityDropItem(upkeepStack, 0.f);
-			}
-			ordersStack = ItemStack.EMPTY;
-			upkeepStack = ItemStack.EMPTY;
-		}
-	}
-
-	@Override
-	public ItemStack getItemStackFromSlot(EntityEquipmentSlot slotIn) {
-		return super.getItemStackFromSlot(slotIn);
 	}
 
 	public final ItemStack getItemStackFromSlot(int slot) {
@@ -552,6 +617,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		if (slot == EntityEquipmentSlot.MAINHAND) {
 			onWeaponInventoryChanged();
 		}
+		if (slot == EntityEquipmentSlot.OFFHAND) {
+			onOffhandInventoryChanged();
+		}
 	}
 
 	public final void setItemStackToSlot(int slot, ItemStack stack) {
@@ -570,8 +638,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		super.onKillEntity(par1EntityLivingBase);
 		if (!world.isRemote) {
 			addExperience(AWNPCStatics.npcXpFromKill);
-			if (par1EntityLivingBase == this.getAttackTarget()) {
-				this.setAttackTarget(null);
+			if (par1EntityLivingBase == getAttackTarget()) {
+				setAttackTarget(null);
 			}
 		}
 	}
@@ -628,9 +696,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	/*
 	 * implementations should read in any data written during {@link #writeAdditionalItemData(NBTTagCompound)}
 	 */
-	public final void readAdditionalItemData(NBTTagCompound tag) {
+	public void readAdditionalItemData(NBTTagCompound tag) {
 		NBTTagList equipmentList = tag.getTagList("equipment", Constants.NBT.TAG_COMPOUND);
-		@Nonnull ItemStack stack;
+		ItemStack stack;
 		NBTTagCompound equipmentTag;
 		for (int i = 0; i < equipmentList.tagCount(); i++) {
 			equipmentTag = equipmentList.getCompoundTagAt(i);
@@ -646,9 +714,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	 * Implementations should write out any persistent entity-data needed to restore entity-state from an item-stack.<br>
 	 * This should include inventory, levels, orders, faction / etc
 	 */
-	public final void writeAdditionalItemData(NBTTagCompound tag) {
+	public void writeAdditionalItemData(NBTTagCompound tag) {
 		NBTTagList equipmentList = new NBTTagList();
-		@Nonnull ItemStack stack;
+		ItemStack stack;
 		NBTTagCompound equipmentTag;
 		for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
 			stack = getItemStackFromSlot(slot);
@@ -685,6 +753,24 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	 * weapon was changed.
 	 */
 	public void onWeaponInventoryChanged() {
+	}
+
+	/*
+	 * callback for when the offhand item slot has been changed.<br>
+	 * Implementations should re-set any subtype or inform any AI that need to know when
+	 * weapon was changed.
+	 */
+	public void onOffhandInventoryChanged() {
+		if (!world.isRemote) {
+			ItemStack mainhandStack = getHeldItemMainhand();
+			ItemStack offhandStack = getHeldItemOffhand();
+			if (offhandStack.getItem().isShield(offhandStack, this) && !isBow(mainhandStack.getItem())) {
+				shieldBlockAI = initShieldAI();
+				tasks.addTask(3, shieldBlockAI);
+			} else {
+				shieldBlockAI = null;
+			}
+		}
 	}
 
 	/*
@@ -736,7 +822,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	}
 
 	public final long getIDForSkin() {
-		return this.entityUniqueID.getLeastSignificantBits();
+		return entityUniqueID.getLeastSignificantBits();
 	}
 
 	@Override
@@ -756,7 +842,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	public void readSpawnData(ByteBuf buffer) {
 		long l1 = buffer.readLong();
 		long l2 = buffer.readLong();
-		this.entityUniqueID = new UUID(l1, l2);
+		entityUniqueID = new UUID(l1, l2);
 		owner = new Owner(buffer);
 		skinSettings = NpcSkinSettings.deserializeFromBuffer(buffer);
 	}
@@ -765,6 +851,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	public void onUpdate() {
 		world.profiler.startSection("AWNpcTick");
 		updateArmSwingProgress();
+		if (getShieldDisabledTick() > 0) {
+			decrementShieldDisabledTick();
+		}
 		if (ticksExisted % 200 == 0 && getHealth() < getMaxHealth() && isEntityAlive() && (!requiresUpkeep() || getFoodRemaining() > 0)) {
 			setHealth(getHealth() + 1);
 		}
@@ -785,11 +874,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		return false;
 	}
 
-	/*
-	 * called whenever level changes, to update the damage-done stat for the entity
-	 */
-	public final void updateDamageFromLevel() {
-		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(getLeveledAttack());
+	final void updateDamageFromLevel() {
+		getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(getLeveledAttack());
 	}
 
 	private double getLeveledAttack() {
@@ -881,16 +967,16 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
 	public final void setFollowingEntity(EntityLivingBase entity) {
 		if (entity instanceof EntityPlayer && hasCommandPermissions(entity.getUniqueID(), entity.getName())) {
-			this.followingPlayerName = entity.getName();
+			followingPlayerName = entity.getName();
 		}
 	}
 
 	public final void clearFollowingEntity() {
-		this.followingPlayerName = null;
+		followingPlayerName = null;
 	}
 
 	public void setDoNotPursue(boolean val) {
-		this.doNotPursue = val;
+		doNotPursue = val;
 	}
 
 	public boolean getDoNotPursue() {
@@ -904,12 +990,14 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
 	public final void repackEntity(EntityPlayer player) {
 		// we already hide the button but we need to prevent repack server-side too
-		if (AWNPCStatics.repackCreativeOnly && !player.capabilities.isCreativeMode)
+		if (AWNPCStatics.repackCreativeOnly && !player.capabilities.isCreativeMode) {
 			return;
+		}
 		if (!player.world.isRemote && isEntityAlive()) {
 			onRepack();
+			//noinspection ConstantConditions
 			@Nonnull
-			ItemStack item = InventoryTools.mergeItemStack(player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), this.getItemToSpawn());
+			ItemStack item = InventoryTools.mergeItemStack(player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), getItemToSpawn());
 			if (!item.isEmpty()) {
 				InventoryHelper.spawnItemStack(player.world, player.posX, player.posY, player.posZ, item);
 			}
@@ -934,21 +1022,28 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		if (tag.hasKey("home")) {
 			setHomePosAndDistance(BlockPos.fromLong(tag.getLong("home")), tag.getInteger("homeRange"));
 		}
-		if (tag.hasKey(BED_DIRECTION_TAG))
+		if (tag.hasKey(BED_DIRECTION_TAG)) {
 			setBedDirection(EnumFacing.VALUES[tag.getByte(BED_DIRECTION_TAG)]);
-		if (tag.hasKey(IS_SLEEPING_TAG))
+		}
+		if (tag.hasKey(IS_SLEEPING_TAG)) {
 			setSleeping(tag.getBoolean(IS_SLEEPING_TAG));
+		}
 		if (tag.hasKey(CACHED_BED_POS_TAG)) {
-			this.cachedBedPos = BlockPos.fromLong(tag.getLong(CACHED_BED_POS_TAG));
+			cachedBedPos = BlockPos.fromLong(tag.getLong(CACHED_BED_POS_TAG));
 		}
 		if (tag.hasKey(BED_POS_TAG)) {
-			this.setBedPosition(BlockPos.fromLong(tag.getLong(BED_POS_TAG)));
+			setBedPosition(BlockPos.fromLong(tag.getLong(BED_POS_TAG)));
 		}
-		if (tag.hasKey(FOUND_BED_TAG))
-			this.foundBed = tag.getBoolean(FOUND_BED_TAG);
+		if (tag.hasKey(FOUND_BED_TAG)) {
+			foundBed = tag.getBoolean(FOUND_BED_TAG);
+		}
+
+		originalWidth = tag.getFloat("originalWidth");
+		originalHeight = tag.getFloat("originalHeight");
 
 		readBaseTags(tag);
 		onWeaponInventoryChanged();
+		onOffhandInventoryChanged();
 	}
 
 	@Override
@@ -956,20 +1051,24 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		super.writeEntityToNBT(tag);
 		if (!hasHome()) {
 			Optional<BlockPos> position = getTownHallPosition();
-			if (position.isPresent())
+			if (position.isPresent()) {
 				setHomePosAndDistance(position.get(), getHomeRange());
-			else
+			} else {
 				setHomeAreaAtCurrentPosition();
+			}
 		}
 		tag.setLong("home", getHomePosition().toLong());
 		tag.setInteger("homeRange", getHomeRange());
 		tag.setByte(BED_DIRECTION_TAG, (byte) getBedDirection().ordinal());
-		tag.setBoolean(IS_SLEEPING_TAG, this.isSleeping());
-		if (cachedBedPos != null)
+		tag.setBoolean(IS_SLEEPING_TAG, isSleeping());
+		if (cachedBedPos != null) {
 			tag.setLong(CACHED_BED_POS_TAG, cachedBedPos.toLong());
-		BlockPos bedPos = this.getBedPosition();
+		}
+		BlockPos bedPos = getBedPosition();
 		tag.setLong(BED_POS_TAG, bedPos.toLong());
 		tag.setBoolean(FOUND_BED_TAG, foundBed);
+		tag.setFloat("originalWidth", originalWidth);
+		tag.setFloat("originalHeight", originalHeight);
 
 		writeBaseTags(tag);
 	}
@@ -1008,6 +1107,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		if (tag.hasKey(DO_NOT_PURSUE)) {
 			setDoNotPursue(tag.getBoolean(DO_NOT_PURSUE));
 		}
+		if (tag.hasKey(HAS_CUSTOM_EQUIPMENT_TAG)) {
+			setCustomEquipmentOverride(tag.getBoolean(HAS_CUSTOM_EQUIPMENT_TAG));
+		}
 		setSkinSettings(NpcSkinSettings.deserializeNBT(tag.getCompoundTag("skinSettings")).minimizeData());
 		owner = Owner.deserializeFromNBT(tag);
 	}
@@ -1035,6 +1137,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		tag.setInteger(ARMOR_VALUE_OVERRIDE_TAG, armorValue);
 		tag.setBoolean(AI_ENABLED_TAG, aiEnabled);
 		tag.setBoolean(DO_NOT_PURSUE, doNotPursue);
+		tag.setBoolean(HAS_CUSTOM_EQUIPMENT_TAG, hasCustomEquipment);
 		tag.setTag("skinSettings", skinSettings.serializeNBT());
 		owner.serializeToNBT(tag);
 	}
@@ -1049,8 +1152,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 			owner = Owner.deserializeFromNBT(tag);
 		} else if (tag.hasKey(NpcSkinSettings.PACKET_TAG_NAME)) {
 			skinSettings.handlePacketData(tag);
-		} else if (tag.hasKey("attackTarget")) {
-			int entityId = tag.getInteger("attackTarget");
+		} else if (tag.hasKey(ATTACK_TARGET_TAG)) {
+			int entityId = tag.getInteger(ATTACK_TARGET_TAG);
 			setAttackTarget((EntityLivingBase) world.getEntityByID(entityId));
 		}
 	}
@@ -1062,9 +1165,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
 	public BlockPos findBed() {
 		if (!foundBed) {
-			int originX = MathHelper.floor(this.posX);
-			int originY = MathHelper.floor(this.posY);
-			int originZ = MathHelper.floor(this.posZ);
+			int originX = MathHelper.floor(posX);
+			int originY = MathHelper.floor(posY);
+			int originZ = MathHelper.floor(posZ);
 			int maxSearchRange = 6;
 			int minX = originX - maxSearchRange;
 			int maxX = originX + maxSearchRange;
@@ -1078,8 +1181,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 					for (int z = minZ; z <= maxZ; z++) {
 						IBlockState state = world.getBlockState(new BlockPos(x, y, z));
 						if (state.getBlock() instanceof BlockBed) {
-							if (state.getValue(BlockBed.PART) != BlockBed.EnumPartType.FOOT)
+							if (state.getValue(BlockBed.PART) != BlockBed.EnumPartType.FOOT) {
 								continue;
+							}
 							if (!state.getValue(BlockBed.OCCUPIED)) { // occupied check
 								foundBeds.add(new BlockPos(x, y, z));
 							}
@@ -1091,8 +1195,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 			int closetBedIndex = -1;
 			for (int i = 0; i < foundBeds.size(); i++) {
 				double bedDistance = foundBeds.get(i).distanceSqToCenter(originX, originY, originZ);
-				if ((closetBedIndex == -1) || (bedDistance < foundBeds.get(closetBedIndex).distanceSqToCenter(originX, originY, originZ)))
+				if ((closetBedIndex == -1) || (bedDistance < foundBeds.get(closetBedIndex).distanceSqToCenter(originX, originY, originZ))) {
 					closetBedIndex = i;
+				}
 			}
 			if (closetBedIndex == -1) {
 				foundBed = false;
@@ -1112,8 +1217,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	}
 
 	public boolean lieDown(BlockPos pos) {
-		if (!foundBed)
+		if (!foundBed) {
 			return false;
+		}
 		if (world.isBlockLoaded(pos) && world.getBlockState(pos).getBlock() instanceof BlockBed) {
 			IBlockState state = world.getBlockState(pos);
 			if (state.getValue(BlockBed.OCCUPIED)) {
@@ -1129,7 +1235,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 			originalHeight = height;
 			originalWidth = width;
 			setSize(0.2F, 0.2F);
-			this.setPositionToBed();
+			setPositionToBed();
 			return true;
 		}
 		return false;
@@ -1147,34 +1253,38 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		// Try placing the NPC to an empty spot next to the bed. We don't want them standing on top of the bed, chance for suffocation
 		EnumFacing bedDirection = getBedDirection();
 
-		//try sides first
-		if (tryMovingToBedside(bedPos.offset(bedDirection.rotateY())))
-			return;
-		if (tryMovingToBedside(bedPos.offset(bedDirection.rotateYCCW())))
-			return;
-
-		//then the 3 blocks right next to the bed's bottom part
-		BlockPos offsetPos = bedPos.offset(bedDirection.getOpposite());
-		if (tryMovingToBedside(offsetPos))
-			return;
-		if (tryMovingToBedside(offsetPos.offset(bedDirection.rotateY())))
-			return;
-		if (tryMovingToBedside(offsetPos.offset(bedDirection.rotateYCCW())))
-			return;
-
 		setSize(originalWidth, originalHeight);
+
+		if (tryMovingToBedside(bedPos.offset(bedDirection.rotateY()))) {
+			return;
+		}
+		if (tryMovingToBedside(bedPos.offset(bedDirection.rotateYCCW()))) {
+			return;
+		}
+
+		BlockPos offsetPos = bedPos.offset(bedDirection.getOpposite());
+		if (tryMovingToBedside(offsetPos)) {
+			return;
+		}
+		if (tryMovingToBedside(offsetPos.offset(bedDirection.rotateY()))) {
+			return;
+		}
+		tryMovingToBedside(offsetPos.offset(bedDirection.rotateYCCW()));
 	}
 
 	private boolean tryMovingToBedside(BlockPos posToMove) {
-		if (world.getBlockState(posToMove).getMaterial().blocksMovement())
+		if (world.getBlockState(posToMove).getMaterial().blocksMovement()) {
 			return false;
-		if (world.getBlockState(posToMove.up()).getMaterial().blocksMovement())
+		}
+		if (world.getBlockState(posToMove.up()).getMaterial().blocksMovement()) {
 			return false;
-		if (!world.getBlockState(posToMove.down()).getMaterial().blocksMovement())
+		}
+		if (!world.getBlockState(posToMove.down()).getMaterial().blocksMovement()) {
 			return false;
-		this.aiEnabled = false;
-		this.setPosition(posToMove.getX() + 0.5, posToMove.getY() + 0.5, posToMove.getZ() + 0.5);
-		this.aiEnabled = true;
+		}
+		aiEnabled = false;
+		setPosition(posToMove.getX() + 0.5, posToMove.getY() + 0.5, posToMove.getZ() + 0.5);
+		aiEnabled = true;
 		return true;
 	}
 
@@ -1213,8 +1323,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
 	@Override
 	public void onCollideWithPlayer(EntityPlayer player) {
-		if (!isSleeping())
+		if (!isSleeping()) {
 			super.onCollideWithPlayer(player);
+		}
 	}
 
 	@Override
@@ -1224,8 +1335,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
 	@Override
 	protected void collideWithEntity(Entity entity) {
-		if (!isSleeping())
+		if (!isSleeping()) {
 			super.collideWithEntity(entity);
+		}
 	}
 
 	private void setSleeping(boolean isSleeping) {
@@ -1252,7 +1364,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	@SideOnly(Side.CLIENT)
 	public float getBedOrientationInDegrees() {
 		BlockPos bedLocation = getBedPosition();
-		IBlockState state = bedLocation == null ? null : this.world.getBlockState(bedLocation);
+		IBlockState state = bedLocation == null ? null : world.getBlockState(bedLocation);
 		if (state != null && state.getBlock().isBed(state, world, bedLocation, this)) {
 			EnumFacing enumfacing = state.getBlock().getBedDirection(state, world, bedLocation);
 
@@ -1273,13 +1385,24 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
 	@SideOnly(Side.CLIENT)
 	public boolean isSwingingArms() {
-		return this.dataManager.get(SWINGING_ARMS);
+		return dataManager.get(SWINGING_ARMS);
 	}
 
 	public void setSwingingArms(boolean swingingArms) {
-		this.dataManager.set(SWINGING_ARMS, swingingArms);
+		dataManager.set(SWINGING_ARMS, swingingArms);
 	}
 
+	public int getShieldDisabledTick() {
+		return dataManager.get(SHIELD_DISABLED_TICK);
+	}
+
+	public void setShieldDisabledTick(int count) {
+		dataManager.set(SHIELD_DISABLED_TICK, count);
+	}
+
+	public void decrementShieldDisabledTick() {
+		dataManager.set(SHIELD_DISABLED_TICK, (dataManager.get(SHIELD_DISABLED_TICK)) - 1);
+	}
 	//TODO refactor vehicle stuff out - perhaps capability??
 
 	@Nullable
@@ -1292,12 +1415,12 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
 	@Override
 	public void setPath(List<Node> path) {
-		VehicleBase vehicle = this.getRidingVehicle();
+		VehicleBase vehicle = getRidingVehicle();
 		if (vehicle != null) {
 			vehicle.nav.forcePath(path);
 		} else {
 			//TODO implement forcePath for NPC
-			//this.nav.forcePath(path);
+			//nav.forcePath(path);
 		}
 	}
 
@@ -1337,5 +1460,16 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	public void setSkinSettings(NpcSkinSettings skinSettings) {
 		this.skinSettings = skinSettings;
 		this.skinSettings.onNpcSet(this);
+	}
+
+	public boolean isBow(Item item) {
+		return item instanceof ItemBow;
+	}
+
+	private NpcAIBlockWithShield initShieldAI() {
+		if (shieldBlockAI == null) {
+			shieldBlockAI = new NpcAIBlockWithShield(this);
+		}
+		return shieldBlockAI;
 	}
 }

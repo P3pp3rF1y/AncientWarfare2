@@ -22,7 +22,6 @@ import java.util.List;
 
 @SideOnly(Side.CLIENT)
 public final class RenderWorkLines {
-
 	public static final RenderWorkLines INSTANCE = new RenderWorkLines();
 
 	private final List<BlockPos> positionList;
@@ -31,6 +30,7 @@ public final class RenderWorkLines {
 		positionList = new ArrayList<>();
 	}
 
+	@SuppressWarnings("unused")
 	@SubscribeEvent
 	public void renderLastEvent(RenderWorldLastEvent evt) {
 		boolean render = AWNPCStatics.renderWorkPoints.getBoolean();
@@ -38,14 +38,11 @@ public final class RenderWorkLines {
 			return;
 		}
 		Minecraft mc = Minecraft.getMinecraft();
-		if (mc == null) {
-			return;
-		}
 		EntityPlayer player = mc.player;
 		if (player == null) {
 			return;
 		}
-		@Nonnull ItemStack stack = player.getHeldItemMainhand();
+		ItemStack stack = player.getHeldItemMainhand();
 		Item item = stack.getItem();
 		if (stack.isEmpty() || !(stack.getItem() instanceof ItemOrders)) {
 			stack = player.getHeldItemOffhand();
@@ -65,11 +62,10 @@ public final class RenderWorkLines {
 	}
 
 	private void renderListOfPoints(EntityPlayer player, float partialTick) {
-		AxisAlignedBB bb = new AxisAlignedBB(0, 0, 0, 1, 1, 1);
 		BlockPos prev = null;
 		int index = 1;
 		for (BlockPos point : positionList) {
-			bb = new AxisAlignedBB(0, 0, 0, 1, 1, 1);
+			AxisAlignedBB bb = new AxisAlignedBB(0, 0, 0, 1, 1, 1);
 			bb = bb.offset(point.getX(), point.getY(), point.getZ());
 			bb = RenderTools.adjustBBForPlayerPos(bb, player, partialTick);
 			RenderTools.drawOutlinedBoundingBox(bb, 1.f, 1.f, 1.f);
@@ -118,5 +114,4 @@ public final class RenderWorkLines {
 		Minecraft.getMinecraft().fontRenderer.drawString(text, 0, 0, 0xffffffff);
 		GlStateManager.popMatrix();
 	}
-
 }

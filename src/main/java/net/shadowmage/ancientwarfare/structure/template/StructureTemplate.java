@@ -7,6 +7,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.Vec3i;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.MathUtils;
 import net.shadowmage.ancientwarfare.core.util.NBTHelper;
@@ -17,6 +18,7 @@ import net.shadowmage.ancientwarfare.structure.template.build.validation.Structu
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
 import net.shadowmage.ancientwarfare.structure.template.datafixes.DataFixManager;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -37,11 +39,10 @@ public class StructureTemplate {
 	 * stored template data
 	 */
 	public final Set<String> modDependencies;
-	private Map<Integer, TemplateRule> blockRules;
+	private Map<Integer, TemplateRuleBlock> blockRules;
 	private Map<Integer, TemplateRuleEntityBase> entityRules;
 	private short[] templateData;
-	private NonNullList<ItemStack> resourceList;
-	private List<ItemStack> remainingStacks;
+	private List<BuildResource> resourceList;
 
 	/*
 	 * world generation placement validation settings
@@ -64,7 +65,7 @@ public class StructureTemplate {
 		return entityRules;
 	}
 
-	public Map<Integer, TemplateRule> getBlockRules() {
+	public Map<Integer, TemplateRuleBlock> getBlockRules() {
 		return blockRules;
 	}
 
@@ -76,7 +77,7 @@ public class StructureTemplate {
 		return validator;
 	}
 
-	public void setBlockRules(Map<Integer, TemplateRule> rules) {
+	public void setBlockRules(Map<Integer, TemplateRuleBlock> rules) {
 		this.blockRules = rules;
 	}
 
@@ -92,12 +93,7 @@ public class StructureTemplate {
 		this.validator = settings;
 	}
 
-	public Optional<TemplateRuleBlock> getBlockRuleAt(Vec3i pos) {
-		Optional<TemplateRule> rule = getRuleAt(pos);
-		return !rule.isPresent() || !(rule.get() instanceof TemplateRuleBlock) ? Optional.empty() : Optional.of((TemplateRuleBlock) rule.get());
-	}
-
-	public Optional<TemplateRule> getRuleAt(Vec3i pos) {
+	public Optional<TemplateRuleBlock> getRuleAt(Vec3i pos) {
 		int index = getIndex(pos, size);
 		int ruleIndex = index >= 0 && index < templateData.length ? templateData[index] : -1;
 		return Optional.ofNullable(blockRules.get(ruleIndex));
@@ -112,29 +108,28 @@ public class StructureTemplate {
 		return "name: " + name + "\n" + "size: " + size.getX() + ", " + size.getY() + ", " + size.getZ() + "\n" + "buildKey: " + offset.getX() + ", " + offset.getY() + ", " + offset.getZ();
 	}
 
-	public NonNullList<ItemStack> getResourceList() {
+	public List<BuildResource> getResourceList() {
 		if (resourceList == null) {
-			NonNullList<ItemStack> stacks = NonNullList.create();
-			MathUtils.getAllVecsInBox(Vec3i.NULL_VECTOR, new Vec3i(size.getX() - 1, size.getY() - 1, size.getZ() - 1))
-					.forEach(pos -> getRuleAt(pos).ifPresent(r -> r.addResources(stacks)));
-			resourceList = InventoryTools.compactStackList(stacks);
-		}
-		return resourceList;
-	}
+			List<BuildResource> allResources = new ArrayList<>();
 
-	public List<ItemStack> getRemainingStacks() {
-		if (remainingStacks == null) {
-			NonNullList<ItemStack> stacks = NonNullList.create();
+			NonNullList<ItemStack> consumeOnlyResources = NonNullList.create();
+
 			MathUtils.getAllVecsInBox(Vec3i.NULL_VECTOR, new Vec3i(size.getX() - 1, size.getY() - 1, size.getZ() - 1))
 					.forEach(pos -> getRuleAt(pos).ifPresent(r -> {
-						ItemStack stack = r.getRemainingStack();
-						if (!stack.isEmpty()) {
-							stacks.add(stack);
-						}
-					}));
-			remainingStacks = InventoryTools.compactStackList(stacks);
+								ItemStack remainingStack = r.getRemainingStack();
+								List<ItemStack> resources = r.getResources();
+								if (remainingStack.isEmpty() || resources.size() > 1) {
+									consumeOnlyResources.addAll(resources);
+								} else {
+									resources.forEach(res -> allResources.add(new BuildResource(res, remainingStack)));
+								}
+							})
+					);
+			InventoryTools.compactStackList(consumeOnlyResources).forEach(res -> allResources.add(new BuildResource(res)));
+
+			resourceList = allResources;
 		}
-		return remainingStacks;
+		return resourceList;
 	}
 
 	@Override
@@ -252,6 +247,63 @@ public class StructureTemplate {
 
 		public int getMinor() {
 			return minor;
+		}
+	}
+
+	public static class BuildResource implements INBTSerializable<NBTTagCompound> {
+		private static final String STACK_TO_RETURN_TAG = "stackToReturn";
+		private ItemStack stackRequired;
+		private ItemStack stackToReturn = ItemStack.EMPTY;
+		private int requiredOriginalCount = 0;
+
+		private BuildResource(ItemStack stackRequired, ItemStack stackToReturn) {
+			this.stackRequired = stackRequired;
+			this.stackToReturn = stackToReturn;
+			requiredOriginalCount = stackRequired.getCount();
+		}
+
+		private BuildResource(ItemStack stackRequired) {
+			this.stackRequired = stackRequired;
+		}
+
+		public BuildResource() {}
+
+		public ItemStack getStackRequired() {
+			return stackRequired;
+		}
+
+		public BuildResource copy() {
+			return new BuildResource(stackRequired.copy(), stackToReturn.copy());
+		}
+
+		public ItemStack shrinkStackRequiredAndGetRemaining() {
+			stackRequired.shrink(1);
+			if (!stackToReturn.isEmpty() && stackRequired.getCount() % requiredOriginalCount == 0) {
+				return stackToReturn.copy();
+			}
+			return ItemStack.EMPTY;
+		}
+
+		public boolean isEmpty() {
+			return stackRequired.isEmpty();
+		}
+
+		public NBTTagCompound serializeNBT() {
+			NBTTagCompound tag = new NBTTagCompound();
+			tag.setTag("stackRequired", stackRequired.writeToNBT(new NBTTagCompound()));
+			if (!stackToReturn.isEmpty()) {
+				tag.setTag(STACK_TO_RETURN_TAG, stackToReturn.writeToNBT(new NBTTagCompound()));
+				tag.setInteger("requiredOriginalCount", requiredOriginalCount);
+			}
+			return tag;
+		}
+
+		public void deserializeNBT(NBTTagCompound tag) {
+			stackRequired = new ItemStack(tag.getCompoundTag("stackRequired"));
+			if (tag.hasKey(STACK_TO_RETURN_TAG)) {
+				stackToReturn = new ItemStack(tag.getCompoundTag(STACK_TO_RETURN_TAG));
+				requiredOriginalCount = tag.getInteger("requiredOriginalCount");
+			}
 		}
 	}
 }

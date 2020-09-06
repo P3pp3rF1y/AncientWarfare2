@@ -23,11 +23,10 @@ public class TEGateProxy extends TileUpdatable implements ITickable {
 	private int clientEntityID = 0;
 	private int noParentTicks = 0;
 	private boolean render = false;
-	private boolean open = false;
 
 	public void setOwner(EntityGate gate) {
-		this.owner = gate;
-		this.entityID = owner.getPersistentID();
+		owner = gate;
+		entityID = owner.getPersistentID();
 		BlockTools.notifyBlockUpdate(this);
 	}
 
@@ -40,19 +39,16 @@ public class TEGateProxy extends TileUpdatable implements ITickable {
 			entityID = new UUID(msb, lsb);
 		}
 		render = tag.getBoolean(RENDER_TAG);
-		open = tag.getBoolean("open");
-		markDirty();
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
-		if (this.entityID != null) {
+		if (entityID != null) {
 			tag.setLong("msb", entityID.getMostSignificantBits());
 			tag.setLong("lsb", entityID.getLeastSignificantBits());
 		}
 		tag.setBoolean(RENDER_TAG, render);
-		tag.setBoolean("open", open);
 		return tag;
 	}
 
@@ -60,16 +56,12 @@ public class TEGateProxy extends TileUpdatable implements ITickable {
 	protected void writeUpdateNBT(NBTTagCompound tag) {
 		tag.setBoolean(RENDER_TAG, render);
 		tag.setInteger("owner", owner != null ? owner.getEntityId() : 0);
-		tag.setBoolean("open", open);
-		tag.setBoolean("render", render);
 	}
 
 	@Override
 	protected void handleUpdateNBT(NBTTagCompound tag) {
 		render = tag.getBoolean(RENDER_TAG);
 		clientEntityID = tag.getInteger("owner");
-		open = tag.getBoolean("open");
-		render = tag.getBoolean("render");
 	}
 
 	@Override
@@ -93,24 +85,30 @@ public class TEGateProxy extends TileUpdatable implements ITickable {
 	}
 
 	private void handleMissingOwner() {
-		if (this.entityID == null) {
-			this.noParentTicks++;
+		if (entityID == null) {
+			noParentTicks++;
 		} else if (!getOwner().isPresent()) {
-			this.noParentTicks++;
+			noParentTicks++;
 
-			List<Entity> entities = this.world.loadedEntityList;
+			List<Entity> entities = world.loadedEntityList;
 			for (Entity ent : entities) {
 				if (ent.getPersistentID().equals(entityID) && ent instanceof EntityGate) {
 					setOwner((EntityGate) ent);
-					this.noParentTicks = 0;
+					noParentTicks = 0;
 					break;
 				}
 			}
 		}
-		if (this.noParentTicks >= 100 || getOwner().map(o -> o.isDead).orElse(false)) {
+		if (noParentTicks >= 100 || getOwner().map(o -> o.isDead).orElse(false)) {
 			owner = null;
-			this.world.setBlockToAir(pos);
+			world.setBlockToAir(pos);
 		}
+	}
+
+	@SideOnly(Side.CLIENT)
+	public double getMaxRenderDistanceSquared()
+	{
+		return 65536.0D;
 	}
 
 	public boolean isGateClosed() {
@@ -134,12 +132,7 @@ public class TEGateProxy extends TileUpdatable implements ITickable {
 		return Optional.ofNullable(owner);
 	}
 
-	public void setOpen(boolean open) {
-		this.open = open;
-		BlockTools.notifyBlockUpdate(this);
-	}
-
 	public boolean isOpen() {
-		return open;
+		return owner == null || !owner.isClosed();
 	}
 }

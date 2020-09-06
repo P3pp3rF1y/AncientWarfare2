@@ -14,26 +14,18 @@ public class NpcAIWander extends NpcAI<NpcBase> {
 
 	public NpcAIWander(NpcBase npc, double par2) {
 		super(npc);
-		this.moveSpeed = par2;
-		this.setMutexBits(MOVE);
+		moveSpeed = par2;
+		setMutexBits(MOVE);
 	}
 
 	@Override
 	public boolean shouldExecute() {
-		if (!npc.getIsAIEnabled() || npc.shouldBeAtHome() || npc.getRNG().nextInt(120) != 0) {
+		if (!super.shouldExecute() || npc.shouldBeAtHome() || npc.getRNG().nextInt(120) != 0 || npc.hasPath()) {
 			return false;
 		} else {
 			vec3 = RandomPositionGenerator.findRandomTarget(npc, MIN_RANGE, 7);
 			return vec3 != null;
 		}
-	}
-
-	@Override
-	public boolean shouldContinueExecuting() {
-		if (!npc.getIsAIEnabled() || npc.shouldBeAtHome()) {
-			return false;
-		}
-		return !npc.getNavigator().noPath();
 	}
 
 	@Override

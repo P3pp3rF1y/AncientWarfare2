@@ -15,7 +15,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
+import net.shadowmage.ancientwarfare.core.input.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.gui.GuiTownSelection;
@@ -46,12 +46,12 @@ public class ItemTownBuilder extends ItemBaseStructure implements IItemKeyInterf
 
 	@Override
 	public void onKeyAction(EntityPlayer player, ItemStack stack, ItemAltFunction altFunction) {
-		if (player == null || player.world.isRemote) {
+		if (player.world.isRemote) {
 			return;
 		}
 
 		RayTraceResult rayTraceResult = rayTrace(player.world, player, false);
-		if (rayTraceResult.typeOfHit != RayTraceResult.Type.BLOCK) {
+		if (rayTraceResult == null || rayTraceResult.typeOfHit != RayTraceResult.Type.BLOCK) {
 			return;
 		}
 
@@ -64,12 +64,12 @@ public class ItemTownBuilder extends ItemBaseStructure implements IItemKeyInterf
 		long t1 = System.nanoTime();
 		WorldTownGenerator.INSTANCE.generate(player.world, getTownArea(rayTraceResult.getBlockPos(), player.getHorizontalFacing(), getLength(stack), getWidth(stack)), template.get());
 		long t2 = System.nanoTime();
-		AncientWarfareStructure.LOG.debug("Total Town gen nanos (incl. validation): " + (t2 - t1));
+		AncientWarfareStructure.LOG.debug("Total Town gen nanos (incl. validation): {}", t2 - t1);
 	}
 
 	private TownBoundingArea getTownArea(BlockPos pos, EnumFacing horizontalFacing, int chunkLength, int chunkWidth) {
-		int minY = pos.getY() - 3;
-		int maxY = Math.min(pos.getY() + 14, 255);
+		int minY = Math.max(pos.getY() - 3, 0);
+		int maxY = Math.min(minY + 40, 255);
 
 		if (horizontalFacing.getAxis() == EnumFacing.Axis.X) {
 			int chunkMinX = (pos.getX() >> 4) - (horizontalFacing.getFrontOffsetX() < 0 ? chunkLength : 0);

@@ -12,16 +12,18 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 import net.shadowmage.ancientwarfare.npc.network.PacketNpcCommand;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
 public class NpcCommand {
+	//TODO refactor to proper individual instances of commands that will not only hold the type, but their logic as well (move that from NPCAIPlayerOwnedFollowCommand)
 
-	public static enum CommandType {
+	public enum CommandType {
 		MOVE, ATTACK, //attack click on entity
 		ATTACK_AREA, //attack click on block
 		GUARD, //attack click on friendly player or npc
-		SET_HOME, SET_UPKEEP, CLEAR_HOME, CLEAR_UPKEEP, CLEAR_COMMAND;
+		SET_HOME, SET_UPKEEP, CLEAR_HOME, CLEAR_UPKEEP, CLEAR_COMMAND, NONE;
 
 		public boolean isPersistent() {
 			return (this == ATTACK || this == GUARD || this == ATTACK_AREA);
@@ -31,7 +33,7 @@ public class NpcCommand {
 	/*
 	 * client-side handle command. called from command baton key handler
 	 */
-	public static void handleCommandClient(CommandType type, RayTraceResult hit) {
+	public static void handleCommandClient(CommandType type, @Nullable RayTraceResult hit) {
 		if (hit != null && hit.typeOfHit != RayTraceResult.Type.MISS) {
 			if (hit.typeOfHit == RayTraceResult.Type.ENTITY && hit.entityHit != null) {
 				NetworkHandler.sendToServer(new PacketNpcCommand(type, hit.entityHit));
@@ -59,14 +61,17 @@ public class NpcCommand {
 		}
 	}
 
-	public static final class Command {
+	public static class Command {
+		public static final Command NONE = new Command(CommandType.NONE, new BlockPos(0, 0, 0));
+		private static final String IDMSB_TAG = "idmsb";
+		private static final String IDLSB_TAG = "idlsb";
+
 		public CommandType type;
 		public BlockPos pos = BlockPos.ORIGIN;
-		public boolean blockTarget;
-
-		UUID entityUUID;
-		int entityID;
-		Entity entity;
+		private boolean blockTarget;
+		private UUID entityUUID;
+		private int entityID;
+		private Entity entity;
 
 		public Command() {
 		}
@@ -78,43 +83,43 @@ public class NpcCommand {
 		public Command(CommandType type, BlockPos pos) {
 			this.type = type;
 			this.pos = pos;
-			this.blockTarget = true;
+			blockTarget = true;
 		}
 
 		public Command(CommandType type, int entityID) {
 			this.type = type;
 			this.entityID = entityID;
-			this.blockTarget = false;
+			blockTarget = false;
 		}
 
 		public Command copy() {
 			Command cmd = new Command();
-			cmd.type = this.type;
-			cmd.pos = this.pos;
-			cmd.entity = this.entity;
-			cmd.entityID = this.entityID;
-			cmd.entityUUID = this.entityUUID;
-			cmd.blockTarget = this.blockTarget;
+			cmd.type = type;
+			cmd.pos = pos;
+			cmd.entity = entity;
+			cmd.entityID = entityID;
+			cmd.entityUUID = entityUUID;
+			cmd.blockTarget = blockTarget;
 			return cmd;
 		}
 
-		public final void readFromNBT(NBTTagCompound tag) {
+		public void readFromNBT(NBTTagCompound tag) {
 			type = CommandType.values()[tag.getInteger("type")];
 			blockTarget = tag.getBoolean("block");
 			pos = BlockPos.fromLong(tag.getLong("pos"));
-			if (tag.hasKey("idmsb") && tag.hasKey("idlsb")) {
-				entityUUID = new UUID(tag.getLong("idmsb"), tag.getLong("idlsb"));
+			if (tag.hasKey(IDMSB_TAG) && tag.hasKey(IDLSB_TAG)) {
+				entityUUID = new UUID(tag.getLong(IDMSB_TAG), tag.getLong(IDLSB_TAG));
 			}
 			entityID = tag.getInteger("entityid");
 		}
 
-		public final NBTTagCompound writeToNBT(NBTTagCompound tag) {
+		public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 			tag.setInteger("type", type.ordinal());
 			tag.setBoolean("block", blockTarget);
 			tag.setLong("pos", pos.toLong());
 			if (entityUUID != null) {
-				tag.setLong("idmsb", entityUUID.getMostSignificantBits());
-				tag.setLong("idlsb", entityUUID.getLeastSignificantBits());
+				tag.setLong(IDMSB_TAG, entityUUID.getMostSignificantBits());
+				tag.setLong(IDLSB_TAG, entityUUID.getLeastSignificantBits());
 			}
 			tag.setInteger("entityid", entityID);
 			return tag;
@@ -123,7 +128,7 @@ public class NpcCommand {
 		/*
 		 * should be called by packet prior to passing command into npc processing
 		 */
-		public void findEntity(World world) {
+		private void findEntity(World world) {
 			if (blockTarget) {
 				return;
 			}
@@ -140,6 +145,7 @@ public class NpcCommand {
 			}
 		}
 
+		@Nullable
 		public Entity getEntityTarget(World world) {
 			if (blockTarget) {
 				return null;
@@ -151,7 +157,5 @@ public class NpcCommand {
 			}
 			return entity;
 		}
-
 	}
-
 }

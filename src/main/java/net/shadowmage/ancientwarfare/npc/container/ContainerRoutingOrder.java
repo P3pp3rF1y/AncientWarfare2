@@ -20,7 +20,7 @@ public class ContainerRoutingOrder extends ContainerBase {
 	public ContainerRoutingOrder(EntityPlayer player, int x, int y, int z) {
 		super(player);
 		this.hand = EntityTools.getHandHoldingItem(player, AWNPCItems.ROUTING_ORDER);
-		@Nonnull ItemStack stack = player.getHeldItem(hand);
+		ItemStack stack = player.getHeldItem(hand);
 		if (stack.isEmpty()) {
 			throw new IllegalArgumentException("Cannot open Routing Order GUI for empty stack/item.");
 		}

@@ -1,6 +1,10 @@
 package net.shadowmage.ancientwarfare.npc.container;
 
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.items.SlotItemHandler;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
@@ -18,13 +22,13 @@ public class ContainerNpcInventory extends ContainerNpcBase<NpcBase> implements 
 		super(player, x);
 		NpcEquipmentHandler inventory = new NpcEquipmentHandler(entity);
 		addSlotToContainer(new SlotItemHandler(inventory, 0, 8, 8)); //weapon slot
+		addSlotToContainer(new SlotItemHandler(inventory, 1, 8, 8 + 18));//shield slot
 		addSlotToContainer(new SlotItemHandler(inventory, 2, 8, 8 + 18 * 5));//boots
 		addSlotToContainer(new SlotItemHandler(inventory, 3, 8, 8 + 18 * 4));//legs
 		addSlotToContainer(new SlotItemHandler(inventory, 4, 8, 8 + 18 * 3));//chest
 		addSlotToContainer(new SlotItemHandler(inventory, 5, 8, 8 + 18 * 2));//helm
 		addSlotToContainer(new SlotItemHandler(inventory, 6, 8 + 18 * 2, 8 + 18 * 3));//work/combat/route orders slot
 		addSlotToContainer(new SlotItemHandler(inventory, 7, 8 + 18 * 2, 8 + 18 * 2));//upkeep orders slot
-		addSlotToContainer(new SlotItemHandler(inventory, 1, 8, 8 + 18 * 1));//shield slot
 
 		guiHeight = addPlayerSlots(8 + 5 * 18 + 8 + 18) + 8;
 
@@ -58,10 +62,9 @@ public class ContainerNpcInventory extends ContainerNpcBase<NpcBase> implements 
 			} else if (tag.hasKey("clearHome")) {
 				entity.detachHome();
 			} else if (tag.hasKey("togglefollow")) {
-				if (entity.getFollowingEntity() != null && entity.getFollowingEntity().getName().equals(player.getName()))
+				if (entity.getFollowingEntity() != null && entity.getFollowingEntity().getName().equals(player.getName())) {
 					entity.clearFollowingEntity();
-				else
-					entity.setFollowingEntity(player);
+				} else { entity.setFollowingEntity(player); }
 			}
 			if (tag.hasKey("donotpursue")) {
 				doNotPursue = tag.getBoolean("donotpursue");
@@ -76,9 +79,6 @@ public class ContainerNpcInventory extends ContainerNpcBase<NpcBase> implements 
 
 	public void handleNpcNameUpdate(String newName) {
 		name = newName;
-		if (name == null) {
-			name = "";
-		}
 	}
 
 	@Override
@@ -110,5 +110,72 @@ public class ContainerNpcInventory extends ContainerNpcBase<NpcBase> implements 
 	@Override
 	public void setSkinSettings(NpcSkinSettings skinSettings) {
 		this.skinSettings = skinSettings;
+	}
+
+	@Override
+	public ItemStack transferStackInSlot(EntityPlayer player, int slotClickedIndex) {
+		ItemStack itemstack = ItemStack.EMPTY;
+		Slot slot = inventorySlots.get(slotClickedIndex);
+
+		if (slot != null && slot.getHasStack()) {
+			ItemStack slotStack = slot.getStack();
+			itemstack = slotStack.copy();
+			EntityEquipmentSlot entityequipmentslot = EntityLiving.getSlotForItemStack(itemstack);
+
+			if (slotClickedIndex < 8) {
+				if (!mergeItemStack(slotStack, 8, 44, true)) {
+					return ItemStack.EMPTY;
+				}
+			} else if (entityequipmentslot.getSlotType() == EntityEquipmentSlot.Type.ARMOR && !inventorySlots.get(2 + entityequipmentslot.getIndex()).getHasStack()) {
+				int i = 2 + entityequipmentslot.getIndex();
+
+				if (!mergeItemStack(slotStack, i, i + 1, false)) {
+					return ItemStack.EMPTY;
+				}
+			} else if (entityequipmentslot == EntityEquipmentSlot.MAINHAND && !inventorySlots.get(0).getHasStack() && !inventorySlots.get(1).getHasStack()) {
+				if (!mergeItemStack(slotStack, 0, 2, false)) {
+					return ItemStack.EMPTY;
+				}
+			} else if (entityequipmentslot == EntityEquipmentSlot.OFFHAND && !inventorySlots.get(1).getHasStack()) {
+				if (!mergeItemStack(slotStack, 1, 2, false)) {
+					return ItemStack.EMPTY;
+				}
+			} else if (!getSlot(6).getHasStack() && getSlot(6).isItemValid(slotStack)) {
+				if (!mergeItemStack(slotStack, 6, 7, false)) {
+					return ItemStack.EMPTY;
+				}
+			} else if (!getSlot(7).getHasStack() && getSlot(7).isItemValid(slotStack)) {
+				if (!mergeItemStack(slotStack, 7, 8, false)) {
+					return ItemStack.EMPTY;
+				}
+			} else if (slotClickedIndex < 17) {
+				if (!mergeItemStack(slotStack, 17, 44, false)) {
+					return ItemStack.EMPTY;
+				}
+			} else if (slotClickedIndex < 44) {
+				if (!mergeItemStack(slotStack, 8, 17, false)) {
+					return ItemStack.EMPTY;
+				}
+			} else if (!mergeItemStack(slotStack, 8, 44, false)) {
+				return ItemStack.EMPTY;
+			}
+
+			if (slotStack.isEmpty()) {
+				slot.putStack(ItemStack.EMPTY);
+			} else {
+				slot.onSlotChanged();
+			}
+
+			if (slotStack.getCount() == itemstack.getCount()) {
+				return ItemStack.EMPTY;
+			}
+
+			ItemStack itemstack2 = slot.onTake(player, slotStack);
+
+			if (slotClickedIndex == 0) {
+				player.dropItem(itemstack2, false);
+			}
+		}
+		return itemstack;
 	}
 }

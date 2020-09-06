@@ -5,7 +5,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketItemInteraction;
 
@@ -31,7 +30,7 @@ class ItemInputCallback implements IInputCallback {
 	}
 
 	private boolean runAction(Minecraft minecraft, EnumHand hand) {
-		@Nonnull ItemStack stack = minecraft.player.getHeldItem(hand);
+		ItemStack stack = minecraft.player.getHeldItem(hand);
 		if (stack.getItem() instanceof IItemKeyInterface && ((IItemKeyInterface) stack.getItem()).onKeyActionClient(minecraft.player, stack, altFunction)) {
 			PacketItemInteraction pkt = new PacketItemInteraction(altFunction);
 			NetworkHandler.sendToServer(pkt);

@@ -3,9 +3,11 @@ package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagLong;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseControl;
@@ -18,6 +20,7 @@ import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import net.shadowmage.ancientwarfare.core.util.NBTHelper;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
 import javax.annotation.Nullable;
@@ -33,6 +36,7 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
 	private boolean shouldRecount;
 
 	private final Set<TileWarehouseStockViewer> stockViewers = new HashSet<>();
+	private Set<BlockPos> stockLinkerPositions = new HashSet<>();
 	private final Set<TileWarehouseInterface> interfaceTiles = new HashSet<>();
 	private final Set<IWarehouseStorageTile> storageTiles = new HashSet<>();
 
@@ -315,6 +319,11 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
 		for (TileWarehouseStockViewer viewer : stockViewers) {
 			viewer.onWarehouseInventoryUpdated();
 		}
+		for (BlockPos linkerPos : stockLinkerPositions) {
+			if (world.isBlockLoaded(linkerPos)) {
+				WorldTools.getTile(world, linkerPos, TileWarehouseStockLinker.class).ifPresent(TileWarehouseStockLinker::onWarehouseInventoryUpdated);
+			}
+		}
 		for (ContainerWarehouseCraftingStation viewer : craftingViewers) {
 			viewer.onWarehouseInventoryUpdated();
 		}
@@ -399,6 +408,19 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
 		stockViewers.remove(tile);
 	}
 
+	private void addStockLinker(TileWarehouseStockLinker linker) {
+		if (world.isRemote) {
+			return;
+		}
+		stockLinkerPositions.add(linker.getPos());
+		linker.setController(this);
+		linker.onWarehouseInventoryUpdated();
+	}
+
+	private void removeStockLinker(TileWarehouseStockLinker tile) {
+		stockLinkerPositions.remove(tile.getPos());
+	}
+
 	@Override
 	public final void addControlledTile(IControlledTile tile) {
 		if (tile instanceof IWarehouseStorageTile) {
@@ -407,6 +429,8 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
 			addInterfaceTile((TileWarehouseInterface) tile);
 		} else if (tile instanceof TileWarehouseStockViewer) {
 			addStockViewer((TileWarehouseStockViewer) tile);
+		} else if (tile instanceof TileWarehouseStockLinker) {
+			addStockLinker((TileWarehouseStockLinker) tile);
 		}
 	}
 
@@ -418,6 +442,8 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
 			removeInterfaceTile((TileWarehouseInterface) tile);
 		} else if (tile instanceof TileWarehouseStockViewer) {
 			removeStockViewer((TileWarehouseStockViewer) tile);
+		} else if (tile instanceof TileWarehouseStockLinker) {
+			removeStockLinker((TileWarehouseStockLinker) tile);
 		}
 	}
 
@@ -491,14 +517,16 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
 	}
 
 	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+		NBTTagCompound ret = super.writeToNBT(tag);
+		ret.setTag("stockLinkerPositions", NBTHelper.getTagList(stockLinkerPositions, p -> new NBTTagLong(p.toLong())));
+		return ret;
+	}
+
+	@Override
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
-		if (tag.hasKey("min")) {
-			setWorkBoundsMin(BlockPos.fromLong(tag.getLong("min")));
-		}
-		if (tag.hasKey("max")) {
-			setWorkBoundsMax(BlockPos.fromLong(tag.getLong("max")));
-		}
+		stockLinkerPositions = NBTHelper.getSet(tag.getTagList("stockLinkerPositions", Constants.NBT.TAG_LONG), n -> BlockPos.fromLong(((NBTTagLong) n).getLong()));
 	}
 
 	/*

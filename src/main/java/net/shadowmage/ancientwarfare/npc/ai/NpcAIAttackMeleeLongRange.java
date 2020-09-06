@@ -5,6 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 import net.shadowmage.ancientwarfare.npc.item.IExtendedReachWeapon;
 
 public class NpcAIAttackMeleeLongRange extends NpcAIAttack<NpcBase> {
@@ -26,7 +27,7 @@ public class NpcAIAttackMeleeLongRange extends NpcAIAttack<NpcBase> {
 	@Override
 	protected boolean shouldCloseOnTarget(double distanceToEntity) {
 		double attackDistance = (npc.width / 2D) + (getTarget().width / 2D) + attackReach;
-		return (distanceToEntity > (attackDistance * attackDistance)) || !npc.getEntitySenses().canSee(getTarget()) ;
+		return (distanceToEntity > (attackDistance * attackDistance)) || !npc.getEntitySenses().canSee(getTarget());
 	}
 
 	@Override

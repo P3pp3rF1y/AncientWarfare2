@@ -1,0 +1,45 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "ancientwarfare:structure/gibbet_bottom"
+    },
+    "variants": {
+        "normal": [
+            {}
+        ],
+        "facing": {
+            "north": {
+                "y": 180
+            },
+            "south": {
+            },
+            "west": {
+                "y": 90
+            },
+            "east": {
+                "y": 270
+            }
+        },
+        "part": {
+            "top": {
+                "model": "ancientwarfare:structure/gibbet_top"
+            },
+            "bottom": {}
+        },
+        "visible": {
+            "true": {},
+            "false": {}
+        },
+        "inventory": {
+            "model": "builtin/generated",
+            "transform": {
+                "firstperson": {
+                    "rotation": [0, -40, 0]
+                }
+            },
+            "textures": {
+                "layer0": "ancientwarfare:items/structure/gibbet"
+            }
+        }
+    }
+}

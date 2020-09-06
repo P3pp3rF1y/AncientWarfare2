@@ -15,27 +15,22 @@ public class NpcAIAimVehicle<T extends NpcBase & IVehicleUser> extends NpcAI<T> 
 	@Override
 	@SuppressWarnings("squid:S3655")
 	public boolean shouldExecute() {
-		//noinspection ConstantConditions
-		return npc.getTarget().isPresent() && npc.canContinueRidingVehicle() && npc.isRidingVehicle() && !npc.getVehicle().get().firingHelper
-				.isAimedAt(npc.getTarget().get());
+		return super.shouldExecute() && npc.getTarget().isPresent() && npc.canContinueRidingVehicle() && npc.isRidingVehicle()
+				&& npc.getTarget().map(t -> !npc.getVehicle().map(v -> v.firingHelper.isAimedAt(t)).orElse(false)).orElse(false);
 	}
 
 	@Override
 	@SuppressWarnings("squid:S3655")
 	public void updateTask() {
-		//noinspection ConstantConditions
-		VehicleBase vehicle = npc.getVehicle().get();
-
-		//noinspection ConstantConditions
-		ITarget target = npc.getTarget().get();
-
-		//noinspection ConstantConditions
-		if (turnVehicleIfYawDifferenceGreat(vehicle, target)) {
-			return;
-		}
-		vehicle.moveHelper.setStrafeInput((byte) 0);
-		vehicle.moveHelper.setForwardInput((byte) 0);
-		vehicle.firingHelper.handleSoldierTargetInput(target.getX(), target.getY(), target.getZ());
+		npc.getVehicle().ifPresent(vehicle -> npc.getTarget().ifPresent(target -> {
+					if (turnVehicleIfYawDifferenceGreat(vehicle, target)) {
+						return;
+					}
+					vehicle.moveHelper.setStrafeInput((byte) 0);
+					vehicle.moveHelper.setForwardInput((byte) 0);
+					vehicle.firingHelper.handleSoldierTargetInput(target.getX(), target.getY(), target.getZ());
+				}
+		));
 	}
 
 	@SuppressWarnings("squid:S1066")

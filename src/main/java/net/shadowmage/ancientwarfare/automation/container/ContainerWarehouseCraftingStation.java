@@ -23,8 +23,8 @@ import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 import net.shadowmage.ancientwarfare.core.container.ICraftingContainer;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.crafting.ICraftingRecipe;
+import net.shadowmage.ancientwarfare.core.inventory.ItemHashEntry;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
-import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nonnull;
@@ -36,7 +36,7 @@ import static net.minecraft.util.EnumActionResult.SUCCESS;
 public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWarehouseCraftingStation> implements ICraftingContainer {
 	private static final int BOOK_SLOT = 1;
 	private static final String CHANGE_LIST_TAG = "changeList";
-	public static final int CRAFTING_SLOT = 0;
+	private static final int CRAFTING_SLOT = 0;
 	public ContainerCraftingRecipeMemory containerCrafting;
 
 	private ItemQuantityMap itemMap = new ItemQuantityMap();
@@ -91,9 +91,9 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void setAll(List<ItemStack> p_190896_1_) {
+	public void setAll(List<ItemStack> stacks) {
 		containerCrafting.setOpening(true);
-		super.setAll(p_190896_1_);
+		super.setAll(stacks);
 		containerCrafting.setOpening(false);
 	}
 
@@ -129,10 +129,10 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 			return ItemStack.EMPTY;
 		}
 
-		@Nonnull ItemStack slotStackCopy = ItemStack.EMPTY;
+		ItemStack slotStackCopy = ItemStack.EMPTY;
 		Slot theSlot = this.getSlot(slotClickedIndex);
 		if (theSlot.getHasStack()) {
-			@Nonnull ItemStack slotStack = theSlot.getStack();
+			ItemStack slotStack = theSlot.getStack();
 			slotStackCopy = slotStack.copy();
 			int playerSlotStart = 2 + tileEntity.craftingRecipeMemory.craftMatrix.getSizeInventory();
 			if (slotClickedIndex < playerSlotStart)//result slot, book slot
@@ -198,10 +198,10 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 	private void synchItemMaps() {
 		/*
 		 * need to loop through this.itemMap and compare quantities to warehouse.itemMap
-         *    add any changes to change-list
-         * need to loop through warehouse.itemMap and find new entries
-         *    add any new entries to change-list
-         */
+		 *    add any changes to change-list
+		 * need to loop through warehouse.itemMap and find new entries
+		 *    add any new entries to change-list
+		 */
 
 		cache.clear();
 		TileWarehouseBase warehouse = tileEntity.getWarehouse();
@@ -265,8 +265,12 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 		}
 
 		if (InventoryTools.insertItems(inventories, craftingItems, true).isEmpty()) {
-			InventoryTools.insertItems(inventories, craftingItems, false);
-			InventoryTools.removeItems(craftMatrixWrapper, craftingItems);
+			List<ItemStack> remainingItems = InventoryTools.insertItems(inventories, craftingItems, false);
+			InventoryTools.emptyInventory(craftMatrixWrapper);
+			if (!remainingItems.isEmpty()) {
+				InventoryTools.insertItems(craftMatrixWrapper, remainingItems, false);
+				return false;
+			}
 			return true;
 		}
 

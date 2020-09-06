@@ -4,12 +4,10 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
@@ -72,11 +70,29 @@ public class NBTHelper {
 		return property.getName((T) valueString);
 	}
 
-	public static Set<String> getStringSet(NBTTagList tagList) {
-		Set<String> ret = new HashSet<>();
+	public static <T> Set<T> getSet(NBTTagList tagList, Function<NBTBase, T> getElement) {
+		Set<T> ret = new HashSet<>();
 		for (NBTBase tag : tagList) {
-			ret.add(((NBTTagString) tag).getString());
+			ret.add(getElement.apply(tag));
 		}
+		return ret;
+	}
+
+	public static <T> List<T> getList(NBTTagList tagList, Function<NBTBase, T> getElement) {
+		ArrayList<T> ret = new ArrayList<>();
+		for (NBTBase tag : tagList) {
+			ret.add(getElement.apply(tag));
+		}
+		return ret;
+	}
+
+	public static Set<String> getStringSet(NBTTagList tagList) {
+		return getSet(tagList, tag -> ((NBTTagString) tag).getString());
+	}
+
+	public static <T> NBTTagList getTagList(Collection<T> collection, Function<T, NBTBase> serializeElement) {
+		NBTTagList ret = new NBTTagList();
+		collection.forEach(element -> ret.appendTag(serializeElement.apply(element)));
 		return ret;
 	}
 
@@ -93,12 +109,7 @@ public class NBTHelper {
 	}
 
 	public static Set<UUID> getUniqueIdSet(NBTBase tag) {
-		NBTTagList tagList = getTagList(tag, Constants.NBT.TAG_COMPOUND);
-		Set<UUID> ret = new HashSet<>();
-		for (NBTBase element : tagList) {
-			ret.add(((NBTTagCompound) element).getUniqueId("uuid"));
-		}
-		return ret;
+		return getSet(getTagList(tag, Constants.NBT.TAG_COMPOUND), element -> ((NBTTagCompound) element).getUniqueId("uuid"));
 	}
 
 	private static NBTTagList getTagList(NBTBase tag, int type) {
@@ -114,26 +125,10 @@ public class NBTHelper {
 			}
 		}
 		catch (ClassCastException classcastexception) {
-			AncientWarfareCore.LOG.error("Error casting tag to taglist: ", tag.toString());
+			AncientWarfareCore.LOG.error("Error casting tag to taglist: {}", tag);
 		}
 
 		return new NBTTagList();
-	}
-
-	public static NBTTagList serializeItemStackList(List<ItemStack> stacks) {
-		NBTTagList nbtStacks = new NBTTagList();
-		for (ItemStack stack : stacks) {
-			nbtStacks.appendTag(stack.writeToNBT(new NBTTagCompound()));
-		}
-		return nbtStacks;
-	}
-
-	public static List<ItemStack> deserializeItemStackList(NBTTagList nbtStacks) {
-		List<ItemStack> stacks = NonNullList.create();
-		for (NBTBase nbtStack : nbtStacks) {
-			stacks.add(new ItemStack((NBTTagCompound) nbtStack));
-		}
-		return stacks;
 	}
 
 	public static final Collector<NBTBase, NBTTagList, NBTTagList> NBTLIST_COLLECTOR =
@@ -155,7 +150,7 @@ public class NBTHelper {
 
 	public static <K, V> Map<K, V> getMap(NBTTagList list, Function<NBTTagCompound, K> getKey, Function<NBTTagCompound, V> getValue) {
 		Map<K, V> ret = new HashMap<>();
-		for (int i=0; i<list.tagCount(); i++) {
+		for (int i = 0; i < list.tagCount(); i++) {
 			NBTTagCompound tag = list.getCompoundTagAt(i);
 
 			ret.put(getKey.apply(tag), getValue.apply(tag));
@@ -164,9 +159,9 @@ public class NBTHelper {
 		return ret;
 	}
 
-	public static <K,V> NBTTagList mapToCompoundList(Map<K, V> map, BiConsumer<NBTTagCompound, K> setKeyTag, BiConsumer<NBTTagCompound, V> setValueTag) {
+	public static <K, V> NBTTagList mapToCompoundList(Map<K, V> map, BiConsumer<NBTTagCompound, K> setKeyTag, BiConsumer<NBTTagCompound, V> setValueTag) {
 		NBTTagList list = new NBTTagList();
-		for(Map.Entry<K, V> entry : map.entrySet()) {
+		for (Map.Entry<K, V> entry : map.entrySet()) {
 			NBTTagCompound nbtEntry = new NBTTagCompound();
 			setKeyTag.accept(nbtEntry, entry.getKey());
 			setValueTag.accept(nbtEntry, entry.getValue());

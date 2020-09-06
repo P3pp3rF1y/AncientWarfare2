@@ -3,7 +3,7 @@
         "attributes": {
             "generic.maxHealth": 50,
             "generic.movementSpeed": 0.3,
-            "generic.followRange": 16,
+            "generic.followRange": 35,
             "generic.attackDamage": 1
         },
         "enabled": true,
@@ -14,12 +14,12 @@
             "burns_in_sun": false,
             "horse_entity": "net.minecraft.entity.passive.EntityHorse"
         },
-        "loot_table": "ancientwarfare:entities/faction_npc",
+        "loot_table": "minecraft:empty",
         "height": {
             "min": 1.7,
             "max": 1.8
         },
-        "thinness": 1.0,
+        "thinness": 1,
         "npc_subtypes": {
             "soldier": {
                 "attributes": {
@@ -28,7 +28,8 @@
                 "experience_drop": 20,
                 "equipment": {
                     "mainhand": "minecraft:iron_sword"
-                }
+                },
+                "loot_table": "ancientwarfare:entities/soldier"
             },
             "soldier.elite": {
                 "attributes": {
@@ -39,11 +40,13 @@
                 "experience_drop": 30,
                 "equipment": {
                     "mainhand": "minecraft:iron_sword"
-                }
+                },
+                "loot_table": "ancientwarfare:entities/soldier_elite"
             },
             "archer": {
                 "attributes": {
-                    "generic.maxHealth": 20
+                    "generic.maxHealth": 20,
+                    "generic.followRange": 60
                 },
                 "experience_drop": 20,
                 "equipment": {
@@ -54,12 +57,13 @@
                 "attributes": {
                     "generic.maxHealth": 30,
                     "generic.movementSpeed": 0,
-                    "generic.followRange": 32
+                    "generic.followRange": 80
                 },
                 "experience_drop": 30,
                 "equipment": {
                     "mainhand": "minecraft:bow"
-                }
+                },
+                "loot_table": "ancientwarfare:entities/archer"
             },
             "cavalry": {
                 "attributes": {
@@ -69,7 +73,8 @@
                 "experience_drop": 40,
                 "equipment": {
                     "mainhand": "minecraft:iron_sword"
-                }
+                },
+                "loot_table": "ancientwarfare:entities/cavalry"
             },
             "mounted_archer": {
                 "attributes": {
@@ -78,7 +83,8 @@
                 "experience_drop": 30,
                 "equipment": {
                     "mainhand": "minecraft:bow"
-                }
+                },
+                "loot_table": "ancientwarfare:entities/mounted_archer"
             },
             "leader": {
                 "attributes": {
@@ -88,7 +94,8 @@
                 "experience_drop": 50,
                 "equipment": {
                     "mainhand": "minecraft:diamond_sword"
-                }
+                },
+                "loot_table": "ancientwarfare:entities/leader"
             },
             "leader.elite": {
                 "attributes": {
@@ -98,17 +105,19 @@
                 "experience_drop": 60,
                 "equipment": {
                     "mainhand": "minecraft:diamond_sword"
-                }
+                },
+                "loot_table": "ancientwarfare:entities/leader_elite"
             },
             "siege_engineer": {
                 "attributes": {
                     "generic.maxHealth": 30,
-                    "generic.followRange": 60
+                    "generic.followRange": 120
                 },
                 "experience_drop": 30,
                 "equipment": {
                     "mainhand": "minecraft:air"
-                }
+                },
+                "loot_table": "ancientwarfare:entities/siege_engineer"
             },
             "priest": {
                 "attributes": {
@@ -116,10 +125,38 @@
                     "generic.movementSpeed": 0.375,
                     "generic.attackDamage": 0
                 },
+                "additional_attributes": {
+                    "heal_per_try": 0.5
+                },
                 "experience_drop": 40,
                 "equipment": {
                     "mainhand": "minecraft:book"
-                }
+                },
+                "loot_table": "ancientwarfare:entities/priest"
+            },
+            "spellcaster": {
+                "enabled": false,
+                "attributes": {
+                    "generic.maxHealth": 30
+                },
+                "experience_drop": 40,
+                "loot_table": "ancientwarfare:entities/soldier",
+                "spells": "ebwizardry:magic_missile"
+            },
+            "spellcaster.1": {
+                "enabled": false
+            },
+            "spellcaster.2": {
+                "enabled": false
+            },
+            "spellcaster.3": {
+                "enabled": false
+            },
+            "spellcaster.4": {
+                "enabled": false
+            },
+            "spellcaster.5": {
+                "enabled": false
             },
             "bard": {
                 "attributes": {
@@ -128,7 +165,8 @@
                 "equipment": {
                     "mainhand": "ancientwarfarenpc:bard_instrument"
                 },
-                "can_break_doors": false
+                "can_break_doors": false,
+                "loot_table": "minecraft:empty"
             },
             "trader": {
                 "attributes": {
@@ -138,7 +176,8 @@
                 "equipment": {
                     "mainhand": "minecraft:book"
                 },
-                "can_break_doors": false
+                "can_break_doors": false,
+                "loot_table": "minecraft:empty"
             },
             "civilian.female": {
                 "attributes": {
@@ -148,7 +187,8 @@
                 "equipment": {
                     "mainhand": "minecraft:air"
                 },
-                "can_break_doors": false
+                "can_break_doors": false,
+                "loot_table": "minecraft:empty"
             },
             "civilian.male": {
                 "attributes": {
@@ -158,12 +198,16 @@
                 "equipment": {
                     "mainhand": "minecraft:air"
                 },
-                "can_break_doors": false
+                "can_break_doors": false,
+                "loot_table": "minecraft:empty"
             }
         }
     },
     "factions": {
         "empire": {
+            "additional_attributes": {
+                "entity_sound": "human"
+            },
             "npc_subtypes": {
                 "soldier.elite": {
                     "attributes": {
@@ -198,14 +242,91 @@
                         "mainhand": "minecraft:diamond_axe",
                         "offhand": "ancientwarfarenpc:iron_shield"
                     }
+                },
+                "civilian.female": {
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    }
+                },
+                "spellcaster": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 20,
+                        "generic.movementSpeed": 0.225
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:fireball"
+                },
+                "spellcaster.1": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 20,
+                        "generic.movementSpeed": 0.325
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:book"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:thunderbolt,ebwizardry:ignite,ebwizardry:freeze,ebwizardry:ward,ebwizardry:snare,ebwizardry:smoke_bomb"
+                },
+                "spellcaster.2": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30,
+                        "generic.movementSpeed": 0.4
+                    },
+                    "experience_drop": 40,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:fireball,ebwizardry:frost_ray,ebwizardry:flame_ray,ebwizardry:lightning_ray,ebwizardry:iceball,ebwizardry:lightning_arrow,ebwizardry:ward,ebwizardry:oakflesh"
+                },
+                "spellcaster.3": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 35,
+                        "generic.movementSpeed": 0.4
+                    },
+                    "experience_drop": 50,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:arcane_jammer,ebwizardry:fireball,ebwizardry:lightning_disc,ebwizardry:iceball,ebwizardry:greater_fireball,ebwizardry:ice_charge,ebwizardry:summon_blaze,ebwizardry:summon_ice_wraith,ebwizardry:summon_lightning_wraith,ebwizardry:oakflesh,ebwizardry:blink"
+                },
+                "spellcaster.4": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 40,
+                        "generic.movementSpeed": 0.4
+                    },
+                    "experience_drop": 100,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:ice_statue,ebwizardry:arcane_jammer,ebwizardry:arcane_jammer,ebwizardry:ring_of_fire,ebwizardry:blizzard,ebwizardry:greater_fireball,ebwizardry:ice_charge,ebwizardry:lightning_disc,ebwizardry:summon_storm_elemental,ebwizardry:summon_phoenix,ebwizardry:summon_ice_giant,ebwizardry:greater_ward,ebwizardry:diamondflesh,ebwizardry:blink,ebwizardry:blink,ebwizardry:blink,ebwizardry:banish,ebwizardry:paralysis,ebwizardry:decoy"
                 }
             }
         },
         "norska": {
+            "additional_attributes": {
+                "entity_sound": "norska"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "attributes": {
                         "generic.maxHealth": 30
+                    },
+                    "equipment": {
+                        "mainhand": "minecraft:iron_sword",
+                        "offhand": "ancientwarfarenpc:shield_round_2"
                     },
                     "experience_drop": 30
                 },
@@ -214,7 +335,7 @@
                         "min": 1.9,
                         "max": 1.9
                     },
-                    "thinness": 1.0,
+                    "thinness": 1,
                     "attributes": {
                         "generic.maxHealth": 50
                     },
@@ -227,7 +348,7 @@
                 "cavalry": {
                     "equipment": {
                         "mainhand": "ancientwarfarenpc:iron_spear",
-                        "offhand": "ancientwarfarenpc:iron_shield"
+                        "offhand": "ancientwarfarenpc:shield_round_3"
                     },
                     "additional_attributes": {
                         "horse_entity": "net.minecraft.entity.monster.EntityPolarBear"
@@ -238,7 +359,8 @@
                         "generic.maxHealth": 70
                     },
                     "equipment": {
-                        "mainhand": "minecraft:diamond_axe"
+                        "mainhand": "minecraft:diamond_axe",
+                        "offhand": "ancientwarfarenpc:shield_round_3"
                     },
                     "experience_drop": 70
                 },
@@ -246,11 +368,74 @@
                     "attributes": {
                         "generic.maxHealth": 100
                     },
+                    "equipment": {
+                        "mainhand": "minecraft:diamond_axe",
+                        "offhand": "ancientwarfarenpc:shield_round_4"
+                    },
                     "experience_drop": 100
+                },
+                "civilian.female": {
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    }
+                },
+                "spellcaster": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:skull"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:fireball"
+                },
+                "spellcaster.1": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 40
+                    },
+                    "experience_drop": 40,
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:fire_sigil,ebwizardry:frost_sigil,ebwizardry:ironflesh,ebwizardry:ring_of_fire,ebwizardry:snare,ebwizardry:font_of_vitality"
+                },
+                "spellcaster.2": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30
+                    },
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    },
+                    "experience_drop": 50,
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:whirlwind,ebwizardry:tornado,ebwizardry:font_of_vitality,ebwizardry:greater_ward"
+                },
+                "spellcaster.3": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 60
+                    },
+                    "experience_drop": 60,
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:arc,ebwizardry:arc,ebwizardry:ironflesh,ebwizardry:thunderstorm,ebwizardry:lightning_bolt,ebwizardry:lightning_hammer"
+                },
+                "spellcaster.4": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 80
+                    },
+                    "experience_drop": 80,
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:fireskin"
                 }
             }
         },
         "sarkonid": {
+            "additional_attributes": {
+                "entity_sound": "human"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "equipment": {
@@ -261,7 +446,7 @@
                 "soldier.elite": {
                     "equipment": {
                         "mainhand": "minecraft:golden_sword",
-                        "offhand": "minecraft:iron_sword"
+                        "offhand": "minecraft:golden_sword"
                     }
                 },
                 "cavalry": {
@@ -270,28 +455,37 @@
                         "generic.movementSpeed": 0.3
                     },
                     "equipment": {
-                        "mainhand": "ancientwarfarenpc:golden_lance",
-                        "offhand": "ancientwarfarenpc:gold_shield"
+                        "mainhand": "ancientwarfarenpc:golden_lance"
                     },
                     "experience_drop": 50
                 },
                 "leader": {
                     "equipment": {
+                        "mainhand": "ancientwarfarenpc:golden_halberd",
                         "offhand": "ancientwarfarenpc:gold_shield"
                     }
                 },
                 "leader.elite": {
                     "equipment": {
+                        "mainhand": "minecraft:golden_sword",
                         "offhand": "ancientwarfarenpc:gold_shield"
+                    }
+                },
+                "civilian.female": {
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
                     }
                 }
             }
         },
         "xoltec": {
+            "additional_attributes": {
+                "entity_sound": "human"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "equipment": {
-                        "mainhand": "ancientwarfarenpc:stone_spear",
+                        "mainhand": "ancientwarfarenpc:obsidian_spear",
                         "offhand": "ancientwarfarenpc:gold_shield"
                     }
                 },
@@ -300,7 +494,7 @@
                         "generic.maxHealth": 40
                     },
                     "equipment": {
-                        "mainhand": "minecraft:stone_axe"
+                        "mainhand": "ancientwarfarenpc:macuahuitl"
                     },
                     "experience_drop": 40
                 },
@@ -315,7 +509,7 @@
                         "generic.maxHealth": 60
                     },
                     "equipment": {
-                        "mainhand": "ancientwarfarenpc:stone_spear",
+                        "mainhand": "ancientwarfarenpc:obsidian_spear",
                         "offhand": "ancientwarfarenpc:gold_shield"
                     },
                     "experience_drop": 60,
@@ -330,18 +524,98 @@
                 },
                 "leader": {
                     "equipment": {
-                        "mainhand": "minecraft:diamond_axe"
+                        "mainhand": "ancientwarfarenpc:macuahuitl"
                     }
+                },
+                "leader.elite": {
+                    "attributes": {
+                        "generic.maxHealth": 100
+                    },
+                    "equipment": {
+                        "mainhand": "ancientwarfarenpc:macuahuitl",
+                        "offhand": "ancientwarfarenpc:macuahuitl"
+                    },
+                    "experience_drop": 100
                 },
                 "priest": {
                     "attributes": {
                         "generic.maxHealth": 50
                     },
                     "experience_drop": 50
+                },
+                "civilian.female": {
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    }
+                },
+                "spellcaster": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 20
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:skull"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": ""
+                },
+                "spellcaster.1": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30,
+                        "generic.movementSpeed": 0.325
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:book"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:fireball"
+                },
+                "spellcaster.2": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30,
+                        "generic.movementSpeed": 0.4
+                    },
+                    "experience_drop": 40,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:firebolt,ebwizardry:life_drain"
+                },
+                "spellcaster.3": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 40
+                    },
+                    "experience_drop": 50,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:firebolt,ebwizardry:life_drain,ebwizardry:summon_blaze"
+                },
+                "spellcaster.4": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 60
+                    },
+                    "experience_drop": 100,
+                    "equipment": {
+                        "mainhand": "minecraft:skull"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:curse_of_enfeeblement,ebwizardry:firebolt,ebwizardry:summon_blaze,ebwizardry:fireskin,ebwizardry:ring_of_fire"
                 }
             }
         },
         "witchbane": {
+            "additional_attributes": {
+                "entity_sound": "human"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "attributes": {
@@ -349,13 +623,16 @@
                     },
                     "equipment": {
                         "mainhand": "ancientwarfarenpc:iron_spear",
-                        "offhand": "ancientwarfarenpc:iron_shield"
+                        "offhand": "ancientwarfarenpc:shield_witchbane_1"
                     },
                     "experience_drop": 40
                 },
                 "soldier.elite": {
                     "attributes": {
                         "generic.maxHealth": 60
+                    },
+                    "equipment": {
+                        "mainhand": "ancientwarfarenpc:iron_halberd"
                     },
                     "experience_drop": 60
                 },
@@ -367,7 +644,7 @@
                     },
                     "equipment": {
                         "mainhand": "ancientwarfarenpc:iron_lance",
-                        "offhand": "ancientwarfarenpc:diamond_shield"
+                        "offhand": "ancientwarfarenpc:shield_witchbane_2"
                     },
                     "experience_drop": 60
                 },
@@ -376,13 +653,18 @@
                         "generic.maxHealth": 70
                     },
                     "equipment": {
-                        "offhand": "ancientwarfarenpc:iron_shield"
+                        "mainhand": "minecraft:golden_sword",
+                        "offhand": "ancientwarfarenpc:shield_witchbane_2"
                     },
                     "experience_drop": 70
                 },
                 "leader.elite": {
                     "attributes": {
                         "generic.maxHealth": 100
+                    },
+                    "equipment": {
+                        "mainhand": "minecraft:diamond_sword",
+                        "offhand": "ancientwarfarenpc:shield_witchbane_2"
                     },
                     "experience_drop": 100
                 },
@@ -397,10 +679,18 @@
                         "generic.maxHealth": 50
                     },
                     "experience_drop": 50
+                },
+                "civilian.female": {
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    }
                 }
             }
         },
         "nogg": {
+            "additional_attributes": {
+                "entity_sound": "norska"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "attributes": {
@@ -437,7 +727,7 @@
                     },
                     "equipment": {
                         "mainhand": "ancientwarfarenpc:iron_lance",
-                        "offhand": "ancientwarfarenpc:iron_shield"
+                        "offhand": "ancientwarfarenpc:shield_round_5"
                     },
                     "experience_drop": 65
                 },
@@ -452,15 +742,23 @@
                         "generic.maxHealth": 50
                     },
                     "experience_drop": 50
+                },
+                "civilian.female": {
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    }
                 }
             }
         },
         "buffloka": {
+            "additional_attributes": {
+                "entity_sound": "human"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "equipment": {
                         "mainhand": "ancientwarfarenpc:stone_spear",
-                        "offhand": "ancientwarfarenpc:wooden_shield"
+                        "offhand": "ancientwarfarenpc:shield_buffloka"
                     }
                 },
                 "soldier.elite": {
@@ -475,7 +773,7 @@
                 "cavalry": {
                     "equipment": {
                         "mainhand": "ancientwarfarenpc:stone_spear",
-                        "offhand": "ancientwarfarenpc:wooden_shield"
+                        "offhand": "ancientwarfarenpc:shield_buffloka"
                     }
                 },
                 "leader": {
@@ -497,15 +795,23 @@
                     "equipment": {
                         "mainhand": "minecraft:feather"
                     }
+                },
+                "civilian.female": {
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    }
                 }
             }
         },
         "zimba": {
+            "additional_attributes": {
+                "entity_sound": "human"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "equipment": {
-                        "mainhand": "minecraft:stone_sword",
-                        "offhand": "ancientwarfarenpc:wooden_shield"
+                        "mainhand": "ancientwarfarenpc:iron_spear",
+                        "offhand": "ancientwarfarenpc:shield_tribal_1"
                     }
                 },
                 "soldier.elite": {
@@ -513,19 +819,21 @@
                         "generic.maxHealth": 30
                     },
                     "equipment": {
+                        "mainhand": "minecraft:iron_sword",
                         "offhand": "ancientwarfarenpc:wooden_shield"
                     },
                     "experience_drop": 30
                 },
                 "cavalry": {
                     "equipment": {
-                        "mainhand": "ancientwarfarenpc:iron_lance",
-                        "offhand": "ancientwarfarenpc:wooden_shield"
+                        "mainhand": "ancientwarfarenpc:iron_spear",
+                        "offhand": "ancientwarfarenpc:shield_tribal_2"
                     }
                 },
                 "leader": {
                     "equipment": {
-                        "mainhand": "minecraft:iron_sword"
+                        "mainhand": "minecraft:diamond_sword",
+                        "offhand": "ancientwarfarenpc:shield_tribal_2"
                     }
                 },
                 "priest": {
@@ -537,10 +845,18 @@
                     "equipment": {
                         "mainhand": "minecraft:stick"
                     }
+                },
+                "civilian.female": {
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    }
                 }
             }
         },
         "kong": {
+            "additional_attributes": {
+                "entity_sound": "human"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "attributes": {
@@ -593,6 +909,9 @@
                     "attributes": {
                         "generic.maxHealth": 60
                     },
+                    "equipment": {
+                        "mainhand": "ancientwarfarenpc:golden_cleaver"
+                    },
                     "experience_drop": 60
                 },
                 "siege_engineer": {
@@ -610,10 +929,18 @@
                     "equipment": {
                         "mainhand": "minecraft:bone"
                     }
+                },
+                "civilian.female": {
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    }
                 }
             }
         },
         "orc": {
+            "additional_attributes": {
+                "entity_sound": "orc"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "attributes": {
@@ -633,9 +960,12 @@
                     "attributes": {
                         "generic.maxHealth": 50
                     },
+                    "additional_attributes": {
+                        "entity_sound": "orc_uruk"
+                    },
                     "equipment": {
-                        "mainhand": "minecraft:iron_axe",
-                        "offhand": "minecraft:iron_axe"
+                        "mainhand": "ancientwarfarenpc:iron_cleaver",
+                        "offhand": "ancientwarfarenpc:iron_cleaver"
                     },
                     "experience_drop": 50
                 },
@@ -661,13 +991,19 @@
                     "experience_drop": 20
                 },
                 "leader": {
+                    "additional_attributes": {
+                        "entity_sound": "orc_uruk"
+                    },
                     "equipment": {
-                        "mainhand": "ancientwarfarenpc:diamond_halberd"
+                        "mainhand": "ancientwarfarenpc:iron_cleaver"
                     }
                 },
                 "leader.elite": {
                     "attributes": {
                         "generic.attackDamage": 5
+                    },
+                    "additional_attributes": {
+                        "entity_sound": "orc_uruk"
                     }
                 },
                 "priest": {
@@ -679,10 +1015,65 @@
                     "equipment": {
                         "mainhand": "minecraft:feather"
                     }
+                },
+                "spellcaster": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 20,
+                        "generic.movementSpeed": 0.225
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:fireball"
+                },
+                "spellcaster.1": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30,
+                        "generic.movementSpeed": 0.325
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:book"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:fireball,ebwizardry:fireball,ebwizardry:snare,ebwizardry:whirlwind,ebwizardry:oakflesh"
+                },
+                "spellcaster.2": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 40,
+                        "generic.movementSpeed": 0.4
+                    },
+                    "experience_drop": 40,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:lightning_arrow,ebwizardry:chain_lightning,ebwizardry:paralysis,ebwizardry:summon_lightning_wraith,ebwizardry:static_aura"
+                },
+                "spellcaster.3": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 40,
+                        "generic.movementSpeed": 0.4
+                    },
+                    "experience_drop": 40,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:darkness_orb,ebwizardry:life_drain,ebwizardry:mind_trick,ebwizardry:summon_skeleton,ebwizardry:intimidate"
                 }
             }
         },
         "brigand": {
+            "additional_attributes": {
+                "entity_sound": "brigand"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "attributes": {
@@ -692,6 +1083,15 @@
                         "mainhand": "minecraft:iron_axe"
                     },
                     "experience_drop": 15
+                },
+                "soldier.elite": {
+                    "attributes": {
+                        "generic.maxHealth": 20
+                    },
+                    "equipment": {
+                        "mainhand": "minecraft:iron_sword"
+                    },
+                    "experience_drop": 20
                 },
                 "archer": {
                     "attributes": {
@@ -734,10 +1134,18 @@
                         "mainhand": "ancientwarfarenpc:iron_halberd"
                     },
                     "experience_drop": 60
+                },
+                "civilian.female": {
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    }
                 }
             }
         },
         "pirate": {
+            "additional_attributes": {
+                "entity_sound": "pirate"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "attributes": {
@@ -780,10 +1188,18 @@
                         "generic.maxHealth": 60
                     },
                     "experience_drop": 60
+                },
+                "civilian.female": {
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    }
                 }
             }
         },
         "evil": {
+            "additional_attributes": {
+                "entity_sound": "malice"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "equipment": {
@@ -793,10 +1209,10 @@
                 },
                 "soldier.elite": {
                     "height": {
-                        "min": 2.0,
+                        "min": 2,
                         "max": 2.1
                     },
-                    "thinness": 1.0,
+                    "thinness": 1,
                     "attributes": {
                         "generic.maxHealth": 60
                     },
@@ -841,10 +1257,78 @@
                         "generic.maxHealth": 50
                     },
                     "experience_drop": 50
+                },
+                "civilian.female": {
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    }
+                },
+                "spellcaster": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:banish"
+                },
+                "spellcaster.1": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:book"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:banish,ebwizardry:firebolt,ebwizardry:smoke_bomb"
+                },
+                "spellcaster.2": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 35
+                    },
+                    "experience_drop": 40,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:banish,ebwizardry:fireball,ebwizardry:cobwebs,ebwizardry:poison"
+                },
+                "spellcaster.3": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 40
+                    },
+                    "experience_drop": 50,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:banish,ebwizardry:slime,ebwizardry:greater_fireball,ebwizardry:wither,ebwizardry:summon_skeleton"
+                },
+                "spellcaster.4": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 50
+                    },
+                    "experience_drop": 80,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:black_hole,ebwizardry:banish,ebwizardry:darkness_orb,ebwizardry:disintegration,ebwizardry:summon_wither_skeleton"
                 }
             }
         },
         "good": {
+            "additional_attributes": {
+                "entity_sound": "human"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "attributes": {
@@ -857,8 +1341,8 @@
                 },
                 "soldier.elite": {
                     "height": {
-                        "min": 2.0,
-                        "max": 2.5
+                        "min": 2.4,
+                        "max": 2.8
                     },
                     "thinness": 1.1,
                     "attributes": {
@@ -897,10 +1381,18 @@
                         "generic.maxHealth": 50
                     },
                     "experience_drop": 50
+                },
+                "civilian.female": {
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    }
                 }
             }
         },
         "wizardly": {
+            "additional_attributes": {
+                "entity_sound": "human"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "attributes": {
@@ -913,10 +1405,10 @@
                 },
                 "soldier.elite": {
                     "height": {
-                        "min": 1.0,
-                        "max": 1.0
+                        "min": 1,
+                        "max": 1
                     },
-                    "thinness": 1.0,
+                    "thinness": 1,
                     "attributes": {
                         "generic.maxHealth": 30
                     },
@@ -954,7 +1446,8 @@
                     },
                     "thinness": 1.1,
                     "attributes": {
-                        "generic.maxHealth": 70
+                        "generic.maxHealth": 70,
+                        "generic.knockbackResistance" : 1.0
                     },
                     "equipment": {
                         "mainhand": "minecraft:iron_axe"
@@ -970,35 +1463,29 @@
                     },
                     "experience_drop": 50
                 },
-                "bard": {
+                "civilian.female": {
+                    "height": {
+                        "min": 1.2,
+                        "max": 1.2
+                    },
+                    "thinness": 1,
+                    "attributes": {
+                        "generic.maxHealth": 10
+                    },
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    },
                     "equipment": {
+                        "mainhand": "minecraft:book"
                     },
-                    "trader": {
-                        "equipment": {
-                            "mainhand": "ancientwarfare:gold_quill"
-                        }
-                    },
-                    "civilian.female": {
-                        "height": {
-                            "min": 1.2,
-                            "max": 1.2
-                        },
-                        "thinness": 1.0,
-                        "attributes": {
-                            "generic.maxHealth": 10
-                        },
-                        "equipment": {
-                            "mainhand": "minecraft:book"
-                        },
-                        "experience_drop": 10
-                    }
+                    "experience_drop": 10
                 },
                 "civilian.male": {
                     "height": {
                         "min": 1.2,
                         "max": 1.2
                     },
-                    "thinness": 1.0,
+                    "thinness": 1,
                     "attributes": {
                         "generic.maxHealth": 10
                     },
@@ -1010,6 +1497,9 @@
             }
         },
         "elf": {
+            "additional_attributes": {
+                "entity_sound": "human"
+            },
             "height": {
                 "min": 1.9,
                 "max": 2.1
@@ -1052,13 +1542,24 @@
                     },
                     "experience_drop": 70
                 },
+                "leader": {
+                    "attributes": {
+                        "generic.maxHealth": 70,
+                        "generic.attackDamage": 4
+                    },
+                    "equipment": {
+                        "mainhand": "ancientwarfarenpc:diamond_halberd"
+                    },
+                    "experience_drop": 70
+                },
                 "leader.elite": {
                     "attributes": {
                         "generic.maxHealth": 100,
                         "generic.attackDamage": 5
                     },
                     "equipment": {
-                        "mainhand": "minecraft:diamond_sword"
+                        "mainhand": "minecraft:diamond_sword",
+                        "offhand": "minecraft:diamond_sword"
                     },
                     "experience_drop": 100
                 },
@@ -1067,6 +1568,11 @@
                         "generic.maxHealth": 50
                     },
                     "experience_drop": 50
+                },
+                "civilian.female": {
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    }
                 }
             }
         },
@@ -1132,10 +1638,18 @@
                         "generic.maxHealth": 50
                     },
                     "experience_drop": 50
+                },
+                "civilian.female": {
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    }
                 }
             }
         },
         "hobbit": {
+            "additional_attributes": {
+                "entity_sound": "hobbit"
+            },
             "height": {
                 "min": 1.2,
                 "max": 1.3
@@ -1154,7 +1668,7 @@
                     },
                     "experience_drop": 50,
                     "equipment": {
-                        "mainhand": "ancientwarfarenpc:iron_spear"
+                        "mainhand": "ancientwarfarenpc:pitchfork"
                     }
                 },
                 "soldier.elite": {
@@ -1163,7 +1677,7 @@
                     },
                     "experience_drop": 60,
                     "equipment": {
-                        "mainhand": "minecraft:iron_axe"
+                        "mainhand": "ancientwarfarenpc:scythe"
                     }
                 },
                 "cavalry": {
@@ -1193,65 +1707,93 @@
                 },
                 "siege_engineer": {
                     "enabled": false
+                },
+                "civilian.female": {
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    }
                 }
             }
         },
         "undead": {
+            "additional_attributes": {
+                "entity_sound": "zombie"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "additional_attributes": {
-                        "burns_in_sun": true
-                    }
+                        "burns_in_sun": true,
+                        "undead": true
+                    },
+                    "loot_table": "ancientwarfare:entities/undead_soldier"
                 },
                 "soldier.elite": {
                     "equipment": {
-                        "mainhand": "ancientwarfarenpc:iron_halberd"
+                        "mainhand": "ancientwarfarenpc:scythe"
                     },
                     "additional_attributes": {
-                        "burns_in_sun": true
-                    }
+                        "burns_in_sun": true,
+                        "undead": true
+                    },
+                    "loot_table": "ancientwarfare:entities/undead_soldier_elite"
                 },
                 "archer": {
+                    "thinness": 0.9,
                     "additional_attributes": {
-                        "burns_in_sun": true
-                    }
+                        "burns_in_sun": true,
+                        "entity_sound": "zombie",
+                        "undead": true
+                    },
+                    "loot_table": "ancientwarfare:entities/undead_archer"
                 },
                 "archer.elite": {
+                    "thinness": 0.9,
                     "additional_attributes": {
-                        "burns_in_sun": true
-                    }
+                        "burns_in_sun": true,
+                        "undead": true
+                    },
+                    "loot_table": "ancientwarfare:entities/undead_archer_elite"
                 },
                 "cavalry": {
                     "additional_attributes": {
                         "burns_in_sun": true,
+                        "undead": true,
                         "horse_entity": "net.minecraft.entity.passive.EntitySkeletonHorse"
-                    }
+                    },
+                    "loot_table": "ancientwarfare:entities/undead_cavalry"
                 },
                 "mounted_archer": {
                     "additional_attributes": {
                         "burns_in_sun": true,
+                        "undead": true,
                         "horse_entity": "net.minecraft.entity.passive.EntitySkeletonHorse"
-                    }
+                    },
+                    "loot_table": "ancientwarfare:entities/undead_mounted_archer"
                 },
                 "leader": {
                     "additional_attributes": {
-                        "burns_in_sun": true
-                    }
+                        "burns_in_sun": true,
+                        "undead": true
+                    },
+                    "loot_table": "ancientwarfare:entities/undead_leader"
                 },
                 "leader.elite": {
                     "attributes": {
                         "generic.attackDamage": 5
                     },
                     "equipment": {
-                        "mainhand": "ancientwarfarenpc:diamond_halberd"
+                        "mainhand": "ancientwarfarenpc:death_scythe"
                     },
                     "additional_attributes": {
-                        "burns_in_sun": true
-                    }
+                        "burns_in_sun": true,
+                        "undead": true
+                    },
+                    "loot_table": "ancientwarfare:entities/undead_leader_elite"
                 },
                 "siege_engineer": {
                     "additional_attributes": {
-                        "burns_in_sun": true
+                        "burns_in_sun": true,
+                        "undead": true
                     }
                 },
                 "priest": {
@@ -1259,12 +1801,15 @@
                         "mainhand": "minecraft:skull"
                     },
                     "additional_attributes": {
-                        "burns_in_sun": true
-                    }
+                        "burns_in_sun": true,
+                        "undead": true
+                    },
+                    "loot_table": "ancientwarfare:entities/undead_priest"
                 },
                 "bard": {
                     "additional_attributes": {
-                        "burns_in_sun": true
+                        "burns_in_sun": true,
+                        "undead": true
                     }
                 },
                 "trader": {
@@ -1272,7 +1817,8 @@
                         "mainhand": "minecraft:bone"
                     },
                     "additional_attributes": {
-                        "burns_in_sun": true
+                        "burns_in_sun": true,
+                        "undead": true
                     }
                 },
                 "civilian.female": {
@@ -1280,6 +1826,58 @@
                 },
                 "civilian.male": {
                     "enabled": false
+                },
+                "spellcaster": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 20
+                    },
+                    "additional_attributes": {
+                        "burns_in_sun": true,
+                        "undead": true
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:skull"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:fireball"
+                },
+                "spellcaster.1": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30
+                    },
+                    "experience_drop": 40,
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:lightning_arrow,ebwizardry:lightning_arrow,ebwizardry:summon_zombie,ebwizardry:summon_skeleton"
+                },
+                "spellcaster.2": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 40
+                    },
+                    "experience_drop": 50,
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:wither,ebwizardry:wither,ebwizardry:poison,ebwizardry:poison,ebwizardry:reversal,ebwizardry:life_drain,ebwizardry:summon_zombie,ebwizardry:summon_skeleton"
+                },
+                "spellcaster.3": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 50
+                    },
+                    "experience_drop": 60,
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:darkness_orb,ebwizardry:darkness_orb,ebwizardry:life_drain,ebwizardry:decay,ebwizardry:blink,ebwizardry:summon_wither_skeleton"
+                },
+                "spellcaster.4": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 60
+                    },
+                    "experience_drop": 80,
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:darkness_orb,ebwizardry:darkness_orb,ebwizardry:darkness_orb,ebwizardry:wither_skull,ebwizardry:wither_skull,ebwizardry:decay,ebwizardry:summon_skeleton_legion,ebwizardry:summon_shadow_wraith,ebwizardry:summon_shadow_wraith"
                 }
             }
         },
@@ -1296,7 +1894,7 @@
                 },
                 "soldier.elite": {
                     "height": {
-                        "min": 2.0,
+                        "min": 2,
                         "max": 2.2
                     },
                     "thinness": 1.1,
@@ -1343,7 +1941,8 @@
                     "attributes": {
                         "generic.maxHealth": 150,
                         "generic.movementSpeed": 0.4,
-                        "generic.attackDamage": 6
+                        "generic.attackDamage": 6,
+                        "generic.knockbackResistance" : 1.0
                     },
                     "experience_drop": 150
                 },
@@ -1375,11 +1974,14 @@
             }
         },
         "barbarian": {
+            "additional_attributes": {
+                "entity_sound": "barbarian"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "equipment": {
                         "mainhand": "minecraft:stone_axe",
-                        "offhand": "ancientwarfarenpc:wooden_shield"
+                        "offhand": "ancientwarfarenpc:shield_round_1"
                     }
                 },
                 "soldier.elite": {
@@ -1397,14 +1999,14 @@
                 "leader": {
                     "height": {
                         "min": 1.9,
-                        "max": 2.0
+                        "max": 2
                     },
                     "thinness": 1.1,
                     "attributes": {
                         "generic.maxHealth": 60
                     },
                     "equipment": {
-                        "mainhand": "minecraft:iron_axe",
+                        "mainhand": "ancientwarfarenpc:stone_cleaver",
                         "offhand": "ancientwarfarenpc:iron_shield"
                     },
                     "experience_drop": 60
@@ -1482,7 +2084,7 @@
                 },
                 "soldier.elite": {
                     "equipment": {
-                        "mainhand": "minecraft:golden_sword",
+                        "mainhand": "ancientwarfarenpc:golden_cleaver",
                         "offhand": "ancientwarfarenpc:gold_shield"
                     }
                 },
@@ -1508,7 +2110,7 @@
                         "generic.attackDamage": 3
                     },
                     "equipment": {
-                        "mainhand": "minecraft:golden_sword"
+                        "mainhand": "ancientwarfarenpc:golden_cleaver"
                     }
                 },
                 "siege_engineer": {
@@ -1532,10 +2134,13 @@
             }
         },
         "vyncan": {
+            "additional_attributes": {
+                "entity_sound": "human"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "equipment": {
-                        "mainhand": "ancientwarfarenpc:stone_spear",
+                        "mainhand": "ancientwarfarenpc:obsidian_spear",
                         "offhand": "ancientwarfarenpc:stone_shield"
                     }
                 },
@@ -1544,7 +2149,7 @@
                         "generic.maxHealth": 50
                     },
                     "equipment": {
-                        "mainhand": "minecraft:stone_axe"
+                        "mainhand": "ancientwarfarenpc:macuahuitl"
                     },
                     "experience_drop": 50
                 },
@@ -1562,10 +2167,10 @@
                 },
                 "leader": {
                     "height": {
-                        "min": 2.0,
+                        "min": 2,
                         "max": 2.2
                     },
-                    "thinness": 1.0,
+                    "thinness": 1,
                     "attributes": {
                         "generic.maxHealth": 80,
                         "generic.attackDamage": 4
@@ -1586,14 +2191,22 @@
                 },
                 "bard": {
                     "enabled": false
+                },
+                "civilian.female": {
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    }
                 }
             }
         },
         "sealsker": {
+            "additional_attributes": {
+                "entity_sound": "human"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "equipment": {
-                        "mainhand": "ancientwarfarenpc:stone_spear"
+                        "mainhand": "ancientwarfarenpc:ice_spear"
                     }
                 },
                 "soldier.elite": {
@@ -1601,7 +2214,7 @@
                         "generic.maxHealth": 50
                     },
                     "equipment": {
-                        "mainhand": "ancientwarfarenpc:stone_spear"
+                        "mainhand": "ancientwarfarenpc:ice_spear"
                     },
                     "experience_drop": 50
                 },
@@ -1622,7 +2235,7 @@
                         "generic.maxHealth": 60
                     },
                     "equipment": {
-                        "mainhand": "ancientwarfarenpc:iron_spear"
+                        "mainhand": "ancientwarfarenpc:ice_spear"
                     },
                     "experience_drop": 80
                 },
@@ -1652,6 +2265,11 @@
                 },
                 "bard": {
                     "enabled": false
+                },
+                "civilian.female": {
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    }
                 }
             }
         },
@@ -1700,9 +2318,24 @@
         "klown": {
             "npc_subtypes": {
                 "soldier": {
-                    "enabled": false
+                    "height": {
+                        "min": 0.6,
+                        "max": 0.6
+                    },
+                    "thinness": 1,
+                    "attributes": {
+                        "generic.maxHealth": 6,
+                        "generic.movementSpeed": 0.3,
+                        "generic.attackDamage": 1
+                    },
+                    "equipment": {
+                        "mainhand": "ancientwarfarenpc:iron_cleaver"
+                    }
                 },
                 "soldier.elite": {
+                    "additional_attributes": {
+                        "entity_sound": "klown"
+                    },
                     "equipment": {
                         "mainhand": "minecraft:iron_axe"
                     }
@@ -1714,18 +2347,58 @@
                     "enabled": false
                 },
                 "cavalry": {
-                    "enabled": false
+                    "attributes": {
+                        "generic.movementSpeed": 0.3
+                    },
+                    "equipment": {
+                        "mainhand": "ancientwarfarenpc:iron_cleaver"
+                    },
+                    "additional_attributes": {
+                        "horse_entity": "net.minecraft.entity.passive.EntityZombieHorse",
+                        "entity_sound": "norska"
+                    }
                 },
                 "mounted_archer": {
-                    "enabled": false
+                    "height": {
+                        "min": 0.7,
+                        "max": 0.7
+                    },
+                    "thinness": 1,
+                    "attributes": {
+                        "generic.maxHealth": 6,
+                        "generic.movementSpeed": 0.3,
+                        "generic.attackDamage": 1
+                    },
+                    "equipment": {
+                        "mainhand": "minecraft:bow"
+                    },
+                    "additional_attributes": {
+                        "horse_entity": "net.minecraft.entity.passive.EntityPig"
+                    }
                 },
                 "leader": {
-                    "enabled": false
+                    "height": {
+                        "min": 3.2,
+                        "max": 3.6
+                    },
+                    "thinness": 0.9,
+                    "attributes": {
+                        "generic.maxHealth": 100,
+                        "generic.movementSpeed": 0.3,
+                        "generic.armor": 2,
+                        "generic.attackDamage": 2
+                    },
+                    "additional_attributes": {
+                        "entity_sound": "norska"
+                    },
+                    "equipment": {
+                        "mainhand": "ancientwarfarenpc:giant_club"
+                    }
                 },
                 "leader.elite": {
                     "height": {
-                        "min": 2.0,
-                        "max": 2.0
+                        "min": 2,
+                        "max": 2
                     },
                     "thinness": 1.1,
                     "attributes": {
@@ -1733,15 +2406,20 @@
                         "generic.movementSpeed": 0.3,
                         "generic.attackDamage": 3
                     },
+                    "additional_attributes": {
+                        "entity_sound": "klown"
+                    },
                     "equipment": {
-                        "mainhand": "minecraft:diamond_axe"
+                        "mainhand": "ancientwarfarenpc:iron_cleaver"
                     }
                 },
                 "siege_engineer": {
                     "enabled": false
                 },
                 "priest": {
-                    "enabled": false
+                    "additional_attributes": {
+                        "entity_sound": "human"
+                    }
                 },
                 "bard": {
                     "enabled": false
@@ -1759,9 +2437,22 @@
         },
         "coven": {
             "npc_subtypes": {
+                "archer": {
+                    "additional_attributes": {
+                        "entity_sound": "coven_satyr"
+                    }
+                },
+                "archer.elite": {
+                    "additional_attributes": {
+                        "entity_sound": "coven_dryad"
+                    }
+                },
                 "soldier": {
                     "equipment": {
-                        "mainhand": "minecraft:air"
+                        "mainhand": "ancientwarfarenpc:sickle"
+                    },
+                    "additional_attributes": {
+                        "entity_sound": "coven_scarecrow"
                     }
                 },
                 "soldier.elite": {
@@ -1773,7 +2464,11 @@
                     "attributes": {
                         "generic.maxHealth": 55,
                         "generic.movementSpeed": 0.2,
+                        "generic.armor": 6,
                         "generic.attackDamage": 4
+                    },
+                    "additional_attributes": {
+                        "entity_sound": "coven_puppet"
                     },
                     "equipment": {
                         "mainhand": "minecraft:air"
@@ -1781,10 +2476,11 @@
                 },
                 "cavalry": {
                     "equipment": {
-                        "mainhand": "ancientwarfarenpc:diamond_halberd"
+                        "mainhand": "ancientwarfarenpc:death_scythe"
                     },
                     "additional_attributes": {
-                        "horse_entity": "net.minecraft.entity.passive.EntitySkeletonHorse"
+                        "horse_entity": "net.minecraft.entity.passive.EntitySkeletonHorse",
+                        "entity_sound": "coven_puppetd"
                     }
                 },
                 "mounted_archer": {
@@ -1796,6 +2492,9 @@
                         "max": 1.1
                     },
                     "thinness": 0.8,
+                    "additional_attributes": {
+                        "entity_sound": "coven_familiar"
+                    },
                     "attributes": {
                         "generic.maxHealth": 45,
                         "generic.movementSpeed": 0.355,
@@ -1809,10 +2508,14 @@
                     "attributes": {
                         "generic.maxHealth": 75,
                         "generic.movementSpeed": 0.2,
+                        "generic.armor": 5,
                         "generic.attackDamage": 5
                     },
+                    "additional_attributes": {
+                        "entity_sound": "coven_witch"
+                    },
                     "equipment": {
-                        "mainhand": "minecraft:air"
+                        "mainhand": "ancientwarfarenpc:sickle"
                     }
                 },
                 "siege_engineer": {
@@ -1826,6 +2529,55 @@
                 },
                 "civilian.male": {
                     "enabled": false
+                },
+                "spellcaster": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 20,
+                        "generic.movementSpeed": 0.225
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:skull"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:fireball"
+                },
+                "spellcaster.1": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30
+                    },
+                    "experience_drop": 40,
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:smoke_bomb,ebwizardry:dart,ebwizardry:poison_bomb,ebwizardry:snare"
+                },
+                "spellcaster.2": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30
+                    },
+                    "experience_drop": 50,
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:curse_of_enfeeblement,ebwizardry:snare,ebwizardry:fireball,ebwizardry:summon_skeleton"
+                },
+                "spellcaster.3": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 40
+                    },
+                    "experience_drop": 60,
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:curse_of_enfeeblement,ebwizardry:snare,ebwizardry:cobwebs,ebwizardry:poison,ebwizardry:spider_swarm"
+                },
+                "spellcaster.4": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 50
+                    },
+                    "experience_drop": 80,
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:lightning_web,ebwizardry:lightning_web,ebwizardry:entrapment,ebwizardry:greater_ward,ebwizardry:curse_of_enfeeblement,ebwizardry:summon_shadow_wraith,ebwizardry:curse_of_undeath"
                 }
             }
         },
@@ -1839,8 +2591,10 @@
                     "thinness": 0.7,
                     "attributes": {
                         "generic.maxHealth": 100,
-                        "generic.movementSpeed": 0.250,
-                        "generic.attackDamage": 3
+                        "generic.movementSpeed": 0.25,
+                        "generic.armor": 4,
+                        "generic.attackDamage": 3,
+                        "generic.knockbackResistance" : 1.0
                     },
                     "equipment": {
                         "mainhand": "minecraft:air"
@@ -1848,13 +2602,14 @@
                 },
                 "soldier.elite": {
                     "height": {
-                        "min": 2.0,
+                        "min": 2,
                         "max": 2.4
                     },
                     "thinness": 1.1,
                     "attributes": {
                         "generic.maxHealth": 40,
-                        "generic.movementSpeed": 0.250,
+                        "generic.movementSpeed": 0.25,
+                        "generic.armor": 2,
                         "generic.attackDamage": 2
                     },
                     "equipment": {
@@ -1875,14 +2630,16 @@
                 },
                 "leader": {
                     "height": {
-                        "min": 2.0,
+                        "min": 2,
                         "max": 2.6
                     },
                     "thinness": 1.2,
                     "attributes": {
                         "generic.maxHealth": 75,
                         "generic.movementSpeed": 0.325,
-                        "generic.attackDamage": 4
+                        "generic.armor": 3,
+                        "generic.attackDamage": 4,
+                        "generic.knockbackResistance" : 1.0
                     },
                     "equipment": {
                         "mainhand": "minecraft:air"
@@ -1897,6 +2654,7 @@
                     "attributes": {
                         "generic.maxHealth": 65,
                         "generic.movementSpeed": 0.325,
+                        "generic.armor": 4,
                         "generic.attackDamage": 3
                     },
                     "equipment": {
@@ -1904,9 +2662,6 @@
                     }
                 },
                 "siege_engineer": {
-                    "enabled": false
-                },
-                "priest": {
                     "enabled": false
                 },
                 "bard": {
@@ -1924,6 +2679,9 @@
             }
         },
         "icelord": {
+            "additional_attributes": {
+                "entity_sound": "zombie"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "equipment": {
@@ -1942,7 +2700,7 @@
                 },
                 "cavalry": {
                     "equipment": {
-                        "mainhand": "ancientwarfarenpc:iron_spear",
+                        "mainhand": "ancientwarfarenpc:ice_spear",
                         "offhand": "ancientwarfarenpc:iron_shield"
                     },
                     "additional_attributes": {
@@ -1959,8 +2717,9 @@
                     },
                     "thinness": 1.2,
                     "attributes": {
-                        "generic.maxHealth": 55,
+                        "generic.maxHealth": 60,
                         "generic.movementSpeed": 0.3,
+                        "generic.armor": 6,
                         "generic.attackDamage": 4
                     },
                     "equipment": {
@@ -1968,6 +2727,17 @@
                     }
                 },
                 "leader.elite": {
+                    "height": {
+                        "min": 2,
+                        "max": 2.2
+                    },
+                    "thinness": 1.2,
+                    "attributes": {
+                        "generic.maxHealth": 100,
+                        "generic.movementSpeed": 0.3,
+                        "generic.armor": 10,
+                        "generic.attackDamage": 3
+                    },
                     "equipment": {
                         "mainhand": "minecraft:diamond_axe"
                     }
@@ -1991,31 +2761,68 @@
                 },
                 "civilian.male": {
                     "enabled": false
+                },
+                "spellcaster": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 20
+                    },
+                    "experience_drop": 30,
+                    "loot_table": "ancientwarfare:entities/soldier"
+                },
+                "spellcaster.1": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 20
+                    },
+                    "experience_drop": 60,
+                    "equipment": {
+                        "mainhand": "minecraft:book"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:frost_ray,ebwizardry:frost_ray,ebwizardry:ice_charge,ebwizardry:iceball,ebwizardry:iceball,ebwizardry:ice_lance,ebwizardry:ice_shroud,ebwizardry:ice_shroud,ebwizardry:ironflesh"
+                },
+                "spellcaster.2": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 100
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:book"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:iceball,ebwizardry:iceball,ebwizardry:ice_charge,ebwizardry:ice_lance,ebwizardry:ice_shroud,ebwizardry:blizzard,ebwizardry:hailstorm,ebwizardry:diamondflesh"
                 }
             }
         },
         "lizardman": {
+            "additional_attributes": {
+                "entity_sound": "lizardman"
+            },
             "height": {
-                "min": 2.0,
+                "min": 2,
                 "max": 2.2
             },
             "thinness": 1.2,
             "npc_subtypes": {
                 "soldier": {
                     "equipment": {
-                        "mainhand": "ancientwarfarenpc:stone_spear"
+                        "mainhand": "ancientwarfarenpc:stone_cleaver"
                     }
                 },
                 "soldier.elite": {
                     "height": {
-                        "min": 2.0,
+                        "min": 2,
                         "max": 2.8
                     },
                     "thinness": 1.2,
                     "attributes": {
                         "generic.maxHealth": 80,
                         "generic.movementSpeed": 0.325,
-                        "generic.attackDamage": 4
+                        "generic.armor": 8,
+                        "generic.attackDamage": 4,
+                        "generic.knockbackResistance" : 1.0
                     },
                     "equipment": {
                         "mainhand": "minecraft:air"
@@ -2031,12 +2838,31 @@
                     "enabled": false
                 },
                 "leader": {
+                    "attributes": {
+                        "generic.maxHealth": 80,
+                        "generic.movementSpeed": 0.3,
+                        "generic.armor": 5,
+                        "generic.attackDamage": 3
+                    },
                     "equipment": {
-                        "mainhand": "minecraft:stone_axe"
+                        "mainhand": "ancientwarfarenpc:iron_cleaver"
                     }
                 },
                 "leader.elite": {
-                    "enabled": false
+                    "height": {
+                        "min": 2.5,
+                        "max": 3
+                    },
+                    "thinness": 1.2,
+                    "attributes": {
+                        "generic.maxHealth": 120,
+                        "generic.movementSpeed": 0.3,
+                        "generic.armor": 6,
+                        "generic.attackDamage": 4
+                    },
+                    "equipment": {
+                        "mainhand": "minecraft:air"
+                    }
                 },
                 "siege_engineer": {
                     "enabled": false
@@ -2055,10 +2881,33 @@
                 },
                 "civilian.male": {
                     "enabled": false
+                },
+                "spellcaster": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 80
+                    },
+                    "experience_drop": 30,
+                    "loot_table": "ancientwarfare:entities/soldier"
+                },
+                "spellcaster.1": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 80
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:book"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:fireball,ebwizardry:fireball,ebwizardry:poison,ebwizardry:snare"
                 }
             }
         },
         "amazon": {
+            "additional_attributes": {
+                "entity_sound": "human_female"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "equipment": {
@@ -2090,6 +2939,9 @@
             }
         },
         "ishtari": {
+            "additional_attributes": {
+                "entity_sound": "ishtari_mummy"
+            },
             "npc_subtypes": {
                 "soldier": {
                     "equipment": {
@@ -2099,6 +2951,9 @@
                 "soldier.elite": {
                     "equipment": {
                         "mainhand": "minecraft:golden_sword"
+                    },
+                    "additional_attributes": {
+                        "entity_sound": "zombie"
                     }
                 },
                 "archer.elite": {
@@ -2112,20 +2967,27 @@
                 },
                 "leader": {
                     "height": {
-                        "min": 3.0,
-                        "max": 3.0
+                        "min": 3,
+                        "max": 3
                     },
                     "thinness": 0.9,
                     "attributes": {
                         "generic.maxHealth": 80,
                         "generic.movementSpeed": 0.325,
+                        "generic.armor": 5,
                         "generic.attackDamage": 3
+                    },
+                    "additional_attributes": {
+                        "entity_sound": "ishtari_anubite"
                     },
                     "equipment": {
                         "mainhand": "ancientwarfarenpc:golden_halberd"
                     }
                 },
                 "leader.elite": {
+                    "additional_attributes": {
+                        "entity_sound": "ishtari_pharoah"
+                    },
                     "equipment": {
                         "mainhand": "minecraft:diamond_sword"
                     }
@@ -2151,8 +3013,11 @@
             }
         },
         "monster": {
+            "additional_attributes": {
+                "entity_sound": "monster"
+            },
             "height": {
-                "min": 2.0,
+                "min": 2,
                 "max": 2.1
             },
             "thinness": 1.1,
@@ -2161,6 +3026,7 @@
                     "attributes": {
                         "generic.maxHealth": 65,
                         "generic.movementSpeed": 0.355,
+                        "generic.armor": 4,
                         "generic.attackDamage": 3
                     },
                     "equipment": {
@@ -2176,6 +3042,7 @@
                     "attributes": {
                         "generic.maxHealth": 85,
                         "generic.movementSpeed": 0.3,
+                        "generic.armor": 8,
                         "generic.attackDamage": 4
                     },
                     "equipment": {
@@ -2203,6 +3070,7 @@
                     "attributes": {
                         "generic.maxHealth": 100,
                         "generic.movementSpeed": 0.3,
+                        "generic.armor": 12,
                         "generic.attackDamage": 5
                     },
                     "equipment": {
@@ -2211,13 +3079,14 @@
                 },
                 "leader.elite": {
                     "height": {
-                        "min": 3.0,
+                        "min": 3,
                         "max": 3.6
                     },
                     "thinness": 1.2,
                     "attributes": {
                         "generic.maxHealth": 150,
                         "generic.movementSpeed": 0.3,
+                        "generic.armor": 16,
                         "generic.attackDamage": 6
                     },
                     "equipment": {
@@ -2246,21 +3115,24 @@
         },
         "beast": {
             "height": {
-                "min": 2.0,
+                "min": 2,
                 "max": 2.1
             },
-            "thinness": 1.0,
+            "thinness": 1,
             "npc_subtypes": {
                 "soldier": {
                     "height": {
                         "min": 1.1,
                         "max": 1.1
                     },
-                    "thinness": 1.0,
+                    "thinness": 1,
                     "attributes": {
                         "generic.maxHealth": 10,
                         "generic.movementSpeed": 0.255,
                         "generic.attackDamage": 1
+                    },
+                    "additional_attributes": {
+                        "entity_sound": "kobold"
                     },
                     "equipment": {
                         "mainhand": "minecraft:stone_axe"
@@ -2269,13 +3141,16 @@
                 "soldier.elite": {
                     "height": {
                         "min": 1.8,
-                        "max": 2.0
+                        "max": 2
                     },
-                    "thinness": 1.0,
+                    "thinness": 1,
                     "attributes": {
                         "generic.maxHealth": 30,
                         "generic.movementSpeed": 0.255,
                         "generic.attackDamage": 2
+                    },
+                    "additional_attributes": {
+                        "entity_sound": "gargoyle"
                     },
                     "equipment": {
                         "mainhand": "minecraft:air"
@@ -2302,7 +3177,11 @@
                     "attributes": {
                         "generic.maxHealth": 50,
                         "generic.movementSpeed": 0.255,
+                        "generic.armor": 6,
                         "generic.attackDamage": 2
+                    },
+                    "additional_attributes": {
+                        "entity_sound": "owlbear"
                     },
                     "equipment": {
                         "mainhand": "minecraft:air"
@@ -2310,14 +3189,18 @@
                 },
                 "leader.elite": {
                     "height": {
-                        "min": 5.0,
+                        "min": 5,
                         "max": 6.6
                     },
-                    "thinness": 1.0,
+                    "thinness": 1,
                     "attributes": {
                         "generic.maxHealth": 70,
                         "generic.movementSpeed": 0.222,
+                        "generic.armor": 16,
                         "generic.attackDamage": 2
+                    },
+                    "additional_attributes": {
+                        "entity_sound": "ent"
                     },
                     "equipment": {
                         "mainhand": "minecraft:air"
@@ -2344,11 +3227,14 @@
             }
         },
         "ent": {
+            "additional_attributes": {
+                "entity_sound": "ent"
+            },
             "height": {
                 "min": 1.8,
                 "max": 1.9
             },
-            "thinness": 1.0,
+            "thinness": 1,
             "npc_subtypes": {
                 "soldier": {
                     "attributes": {
@@ -2369,6 +3255,7 @@
                     "attributes": {
                         "generic.maxHealth": 85,
                         "generic.movementSpeed": 0.3,
+                        "generic.armor": 10,
                         "generic.attackDamage": 4
                     },
                     "equipment": {
@@ -2393,7 +3280,9 @@
                     "attributes": {
                         "generic.maxHealth": 100,
                         "generic.movementSpeed": 0.3,
-                        "generic.attackDamage": 5
+                        "generic.armor": 20,
+                        "generic.attackDamage": 5,
+                        "generic.knockbackResistance" : 1.0
                     },
                     "equipment": {
                         "mainhand": "minecraft:air"
@@ -2402,13 +3291,15 @@
                 "leader.elite": {
                     "height": {
                         "min": 4.6,
-                        "max": 5.0
+                        "max": 5
                     },
                     "thinness": 0.6,
                     "attributes": {
                         "generic.maxHealth": 150,
                         "generic.movementSpeed": 0.3,
-                        "generic.attackDamage": 6
+                        "generic.armor": 30,
+                        "generic.attackDamage": 6,
+                        "generic.knockbackResistance" : 1.0
                     },
                     "equipment": {
                         "mainhand": "minecraft:air"
@@ -2429,11 +3320,14 @@
             }
         },
         "gnome": {
+            "additional_attributes": {
+                "entity_sound": "gnome"
+            },
             "height": {
                 "min": 0.8,
                 "max": 0.8
             },
-            "thinness": 1.0,
+            "thinness": 1,
             "npc_subtypes": {
                 "archer": {
                     "attributes": {
@@ -2486,7 +3380,7 @@
                 "leader": {
                     "height": {
                         "min": 3.2,
-                        "max": 4.0
+                        "max": 4
                     },
                     "thinness": 0.8,
                     "attributes": {
@@ -2500,7 +3394,7 @@
                 },
                 "leader.elite": {
                     "height": {
-                        "min": 2.0,
+                        "min": 2,
                         "max": 2.8
                     },
                     "thinness": 0.8,
@@ -2537,6 +3431,9 @@
             }
         },
         "gremlin": {
+            "additional_attributes": {
+                "entity_sound": "gremlin"
+            },
             "height": {
                 "min": 0.9,
                 "max": 0.9
@@ -2587,8 +3484,8 @@
                 },
                 "leader": {
                     "height": {
-                        "min": 1.0,
-                        "max": 1.0
+                        "min": 1,
+                        "max": 1
                     },
                     "thinness": 0.9,
                     "attributes": {
@@ -2602,8 +3499,8 @@
                 },
                 "leader.elite": {
                     "height": {
-                        "min": 1.0,
-                        "max": 1.0
+                        "min": 1,
+                        "max": 1
                     },
                     "thinness": 0.9,
                     "attributes": {
@@ -2638,13 +3535,51 @@
                 },
                 "civilian.male": {
                     "enabled": false
+                },
+                "spellcaster": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 20
+                    },
+                    "experience_drop": 30,
+                    "loot_table": "ancientwarfare:entities/soldier"
+                },
+                "spellcaster.1": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 20
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:book"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:dart,ebwizardry:dart,ebwizardry:snare"
+                },
+                "spellcaster.2": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 25
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:book"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:snare,ebwizardry:poison,ebwizardry:blink"
                 }
             }
         },
         "giant": {
+            "attributes": {
+                "generic.knockbackResistance" : 1.0
+            },
+            "additional_attributes": {
+                "entity_sound": "giant"
+            },
             "height": {
                 "min": 3.6,
-                "max": 4.0
+                "max": 4
             },
             "thinness": 0.9,
             "npc_subtypes": {
@@ -2652,10 +3587,11 @@
                     "attributes": {
                         "generic.maxHealth": 100,
                         "generic.movementSpeed": 0.355,
+                        "generic.armor": 7,
                         "generic.attackDamage": 3
                     },
                     "equipment": {
-                        "mainhand": "minecraft:air"
+                        "mainhand": "ancientwarfarenpc:giant_club"
                     }
                 },
                 "soldier.elite": {
@@ -2667,10 +3603,11 @@
                     "attributes": {
                         "generic.maxHealth": 150,
                         "generic.movementSpeed": 0.3,
+                        "generic.armor": 10,
                         "generic.attackDamage": 4
                     },
                     "equipment": {
-                        "mainhand": "minecraft:air"
+                        "mainhand": "ancientwarfarenpc:ice_spear"
                     }
                 },
                 "archer": {
@@ -2694,6 +3631,7 @@
                     "attributes": {
                         "generic.maxHealth": 150,
                         "generic.movementSpeed": 0.3,
+                        "generic.armor": 15,
                         "generic.attackDamage": 5
                     },
                     "equipment": {
@@ -2703,16 +3641,17 @@
                 "leader.elite": {
                     "height": {
                         "min": 6.6,
-                        "max": 7.0
+                        "max": 7
                     },
                     "thinness": 0.6,
                     "attributes": {
                         "generic.maxHealth": 250,
                         "generic.movementSpeed": 0.3,
+                        "generic.armor": 20,
                         "generic.attackDamage": 6
                     },
                     "equipment": {
-                        "mainhand": "minecraft:air"
+                        "mainhand": "ancientwarfarenpc:giant_club"
                     }
                 },
                 "siege_engineer": {
@@ -2738,57 +3677,128 @@
         "vampire": {
             "npc_subtypes": {
                 "soldier": {
+                    "height": {
+                        "min": 2.2,
+                        "max": 2.4
+                    },
+                    "thinness": 1.2,
+                    "attributes": {
+                        "generic.maxHealth": 40,
+                        "generic.movementSpeed": 0.24,
+                        "generic.armor": 6,
+                        "generic.attackDamage": 2
+                    },
                     "additional_attributes": {
-                        "burns_in_sun": false
+                        "burns_in_sun": false,
+                        "can_swim": false,
+                        "entity_sound": "monster"
+                    },
+                    "equipment": {
+                        "mainhand": "minecraft:air"
                     }
                 },
                 "soldier.elite": {
-                    "equipment": {
-                        "mainhand": "minecraft:air"
+                    "height": {
+                        "min": 1.8,
+                        "max": 1.9
+                    },
+                    "thinness": 1.2,
+                    "attributes": {
+                        "generic.maxHealth": 30,
+                        "generic.movementSpeed": 0.3,
+                        "generic.armor": 1,
+                        "generic.attackDamage": 2
                     },
                     "additional_attributes": {
-                        "burns_in_sun": true
+                        "burns_in_sun": true,
+                        "can_swim": false,
+                        "undead": true,
+                        "entity_sound": "vampire_bride"
+                    },
+                    "equipment": {
+                        "mainhand": "minecraft:air"
                     }
                 },
                 "archer": {
                     "additional_attributes": {
-                        "burns_in_sun": false
+                        "burns_in_sun": false,
+                        "entity_sound": "malice"
                     }
                 },
                 "archer.elite": {
                     "additional_attributes": {
-                        "burns_in_sun": false
+                        "burns_in_sun": false,
+                        "entity_sound": "malice"
                     }
                 },
                 "cavalry": {
+                    "attributes": {
+                        "generic.maxHealth": 60,
+                        "generic.armor": 1,
+                        "generic.attackDamage": 3
+                    },
+                    "equipment": {
+                        "mainhand": "minecraft:diamond_sword"
+                    },
+                    "experience_drop": 80,
                     "additional_attributes": {
                         "burns_in_sun": false
                     }
                 },
                 "mounted_archer": {
                     "additional_attributes": {
-                        "burns_in_sun": false
+                        "burns_in_sun": false,
+                        "entity_sound": "malice"
                     }
                 },
                 "leader": {
+                    "height": {
+                        "min": 2,
+                        "max": 2
+                    },
+                    "thinness": 1,
+                    "attributes": {
+                        "generic.maxHealth": 80,
+                        "generic.armor": 2,
+                        "generic.attackDamage": 3
+                    },
+                    "experience_drop": 80,
+                    "equipment": {
+                        "mainhand": "minecraft:air"
+                    },
                     "additional_attributes": {
-                        "burns_in_sun": true
+                        "burns_in_sun": true,
+                        "can_swim": false,
+                        "undead": true,
+                        "entity_sound": "vampire"
                     }
                 },
                 "leader.elite": {
+                    "height": {
+                        "min": 2.2,
+                        "max": 2.2
+                    },
+                    "thinness": 1,
                     "attributes": {
+                        "generic.maxHealth": 120,
+                        "generic.armor": 4,
                         "generic.attackDamage": 5
                     },
+                    "experience_drop": 120,
                     "equipment": {
                         "mainhand": "minecraft:diamond_sword"
                     },
                     "additional_attributes": {
-                        "burns_in_sun": true
+                        "burns_in_sun": true,
+                        "undead": true,
+                        "entity_sound": "vampire_boss",
+                        "can_swim": false
                     }
                 },
                 "siege_engineer": {
                     "additional_attributes": {
-                        "burns_in_sun": false
+                        "burns_in_sun": false,
+                        "entity_sound": "malice"
                     }
                 },
                 "priest": {
@@ -2796,7 +3806,10 @@
                         "mainhand": "minecraft:skull"
                     },
                     "additional_attributes": {
-                        "burns_in_sun": true
+                        "burns_in_sun": true,
+                        "undead": true,
+                        "can_swim": false,
+                        "entity_sound": "vampire"
                     }
                 },
                 "bard": {
@@ -2807,18 +3820,75 @@
                         "mainhand": "minecraft:bone"
                     },
                     "additional_attributes": {
-                        "burns_in_sun": true
+                        "burns_in_sun": true,
+                        "undead": true,
+                        "entity_sound": "vampire"
                     }
                 },
                 "civilian.female": {
                     "additional_attributes": {
-                        "burns_in_sun": false
+                        "burns_in_sun": false,
+                        "entity_sound": "human_female"
                     }
                 },
                 "civilian.male": {
                     "additional_attributes": {
-                        "burns_in_sun": false
+                        "burns_in_sun": false,
+                        "entity_sound": "human"
                     }
+                },
+                "spellcaster": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30
+                    },
+                    "additional_attributes": {
+                        "burns_in_sun": true,
+                        "undead": true,
+                        "entity_sound": "vampire_bride"
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:skull"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:fireball"
+                },
+                "spellcaster.1": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 20
+                    },
+                    "experience_drop": 40,
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:life_drain,ebwizardry:invisibility,ebwizardry:blink"
+                },
+                "spellcaster.2": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30
+                    },
+                    "experience_drop": 50,
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:life_drain,ebwizardry:blink,ebwizardry:decoy,ebwizardry:oakflesh"
+                },
+                "spellcaster.3": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 60
+                    },
+                    "experience_drop": 60,
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:life_drain,ebwizardry:ironflesh,ebwizardry:curse_of_enfeeblement,ebwizardry:font_of_vitality"
+                },
+                "spellcaster.4": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 80
+                    },
+                    "experience_drop": 80,
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:life_drain,ebwizardry:diamondflesh,ebwizardry:curse_of_enfeeblement,ebwizardry:font_of_vitality"
                 }
             }
         }

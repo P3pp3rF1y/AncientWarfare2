@@ -6,6 +6,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.util.Trig;
+import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.materials.VehicleMaterial;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
@@ -23,6 +24,8 @@ public class VehicleTypeHwacha extends VehicleType {
 		this.height = 1.8f;
 
 		this.maxMissileWeight = 1.f;
+
+		baseHealth = AWVehicleStatics.vehicleStats.vehicleHwachaHealth;
 
 		this.validAmmoTypes.add(AmmoRegistry.ammoRocket);
 		this.validAmmoTypes.add(AmmoRegistry.ammoHwachaRocketFlame);

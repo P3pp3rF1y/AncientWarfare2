@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.vehicle.entity.types;
 import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.vehicle.VehicleVarHelpers.DummyVehicleHelper;
+import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleMovementType;
 import net.shadowmage.ancientwarfare.vehicle.entity.materials.VehicleMaterial;
@@ -14,6 +15,7 @@ public class VehicleTypeBoatTransport extends VehicleType {
 	public VehicleTypeBoatTransport(int typeNum) {
 		super(typeNum);
 		this.configName = "boat_transport";
+		baseHealth = AWVehicleStatics.vehicleStats.vehicleChestBoatHealth;
 		this.vehicleMaterial = VehicleMaterial.materialWood;
 		this.movementType = VehicleMovementType.WATER;
 		this.materialCount = 5;

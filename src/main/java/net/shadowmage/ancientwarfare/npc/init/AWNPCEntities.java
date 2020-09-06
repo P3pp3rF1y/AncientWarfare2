@@ -7,6 +7,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
@@ -35,15 +36,17 @@ import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionPriest;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionSiegeEngineer;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionSoldier;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionSoldierElite;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionSpellcaster;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionSpellcasterWizardry;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionTrader;
 import net.shadowmage.ancientwarfare.npc.entity.vehicle.NpcSiegeEngineer;
 
-import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(modid = AncientWarfareNPC.MOD_ID)
 public class AWNPCEntities {
@@ -55,7 +58,9 @@ public class AWNPCEntities {
 	private static final String ARCHER_SUBTYPE = "archer";
 	private static final String WORKER_TYPE = "worker";
 	private static final String MINER_SUBTYPE = "miner";
+	private static final String SPELLCASTER_SUBTYPE = "spellcaster";
 	private static int nextID = 0;
+	private static NpcFactionDeclaration wizreg;
 
 	/*
 	 * Npc base type -> NpcDeclaration<br>
@@ -97,9 +102,7 @@ public class AWNPCEntities {
 
 	private static void addFaction() {
 		NpcFactionDeclaration reg;
-		/*
-		 * BANDITS
-         */
+
 		reg = new NpcFactionDeclaration(NpcFactionArcher.class, AWEntityRegistry.NPC_FACTION_ARCHER, ARCHER_SUBTYPE);
 		addNpcRegistration(reg);
 
@@ -141,6 +144,27 @@ public class AWNPCEntities {
 
 		reg = new NpcFactionDeclaration(NpcFactionSiegeEngineer.class, AWEntityRegistry.NPC_FACTION_SIEGE_ENGINEER, "siege_engineer");
 		addNpcRegistration(reg);
+
+		registerSpellcasterFactionNpc();
+	}
+
+	private static void registerSpellcasterFactionNpc() {
+		NpcFactionDeclaration reg;
+
+		/* optional dependency for EBWizardry spell casters
+		 * References to the EBWizardry specific class can only be here, to avoid class loading if the mod is no present.
+		 * Any reference outside of the lambdas will crash the game if EBWizardry is not present */
+		Supplier<Runnable> registerWizardrySpellcaster = () -> () -> {
+			wizreg = new NpcFactionDeclaration(NpcFactionSpellcasterWizardry.class, AWEntityRegistry.NPC_FACTION_SPELLCASTER, SPELLCASTER_SUBTYPE);
+			addNpcRegistration(wizreg);
+		};
+
+		if (Loader.isModLoaded("ebwizardry")) {
+			registerWizardrySpellcaster.get().run();
+		} else {
+			reg = new NpcFactionDeclaration(NpcFactionSpellcaster.class, AWEntityRegistry.NPC_FACTION_SPELLCASTER, SPELLCASTER_SUBTYPE);
+			addNpcRegistration(reg);
+		}
 	}
 
 	/*
@@ -221,7 +245,7 @@ public class AWNPCEntities {
 		public NpcBase createEntity(World world, String subType, String factionName) {
 			NpcBase npc = (NpcBase) createEntity(world);
 			if (!subType.isEmpty()) {
-				@Nonnull ItemStack stack = spawnEquipment.get(subType);
+				ItemStack stack = spawnEquipment.get(subType);
 				if (!stack.isEmpty()) {
 					npc.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, stack.copy());
 				}

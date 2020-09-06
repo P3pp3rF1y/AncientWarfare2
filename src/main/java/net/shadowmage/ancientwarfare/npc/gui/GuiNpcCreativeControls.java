@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.npc.gui;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
@@ -16,6 +17,7 @@ public class GuiNpcCreativeControls extends GuiContainerBase<ContainerNpcCreativ
 	private NumberInput armorValueOverrideInput;
 	private NumberInput maxHealthOverrideInput;
 	private Checkbox wanderCheckbox;
+	private Checkbox customEquipmentCheckbox;
 
 	private boolean hasChanged = false;
 
@@ -104,6 +106,18 @@ public class GuiNpcCreativeControls extends GuiContainerBase<ContainerNpcCreativ
 			}
 		};
 		addGuiElement(wanderCheckbox);
+
+		if (getContainer().isFactionNpc()) {
+			customEquipmentCheckbox = new Checkbox(100, totalHeight, 16, 16, "guistrings.npc.custom_equipment") {
+				@Override
+				public void onToggled() {
+					getContainer().hasCustomEquipment = checked();
+					hasChanged = true;
+				}
+			};
+			customEquipmentCheckbox.addTooltip(I18n.format("guistrings.npc.custom_equipment.tooltip"));
+			addGuiElement(customEquipmentCheckbox);
+		}
 		totalHeight += 16;
 
 		this.ySize = totalHeight + 8;
@@ -116,20 +130,23 @@ public class GuiNpcCreativeControls extends GuiContainerBase<ContainerNpcCreativ
 		armorValueOverrideInput.setValue(getContainer().armorValue);
 		maxHealthOverrideInput.setValue(getContainer().maxHealth);
 		wanderCheckbox.setChecked(getContainer().wander);
+		if (getContainer().isFactionNpc()) {
+			customEquipmentCheckbox.setChecked(getContainer().hasCustomEquipment);
+		}
 	}
 
 	@Override
 	protected boolean onGuiCloseRequested() {
 		/*
 		 * if changes were made while gui was open, send these to server
-         */
+		 */
 		if (hasChanged) {
 			getContainer().sendChangesToServer();
 		}
 
-        /*
+		/*
 		 * force opening of normal gui (whatever that may be for the npc) when advanced controls is closed
-         */
+		 */
 		getContainer().entity.openGUI(player);
 		return false;
 	}

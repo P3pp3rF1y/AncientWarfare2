@@ -1,7 +1,7 @@
 {
     "entity_nbt": {
         "net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction": [
-            "factionName"
+            "factionName","hasCustomEquipment"
         ],
         "net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionTrader": [
             "tradeList"
@@ -11,6 +11,12 @@
         ],
         "net.shadowmage.ancientwarfare.npc.entity.NpcBase": [
             "skinSettings"
+        ],
+        "net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionSpellcasterWizardry": [
+            "spells"
+        ],
+        "net.minecraft.entity.passive.EntityRabbit": [
+            "RabbitType"
         ]
     }
 }

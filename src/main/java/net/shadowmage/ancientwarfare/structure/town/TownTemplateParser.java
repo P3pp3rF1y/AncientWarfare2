@@ -1,8 +1,13 @@
 package net.shadowmage.ancientwarfare.structure.town;
 
-import net.minecraft.block.Block;
+import com.google.common.collect.ImmutableMap;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
+import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.util.CompatUtils;
-import net.shadowmage.ancientwarfare.core.util.StringTools;
+import net.shadowmage.ancientwarfare.core.util.parsing.JsonHelper;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplate.TownStructureEntry;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplate.TownWallEntry;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -12,10 +17,15 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.MissingResourceException;
+import java.util.Optional;
+import java.util.function.BiConsumer;
 
 public class TownTemplateParser {
+	private TownTemplateParser() {}
 
-	public static TownTemplate parseTemplate(List<String> lines) {
+	public static Optional<TownTemplate> parseTemplate(List<String> lines) {
 		TownTemplate template = new TownTemplate();
 		Iterator<String> it = lines.iterator();
 		String line;
@@ -23,7 +33,9 @@ public class TownTemplateParser {
 		while (it.hasNext() && (line = it.next()) != null) {
 			line = line.toLowerCase(Locale.ENGLISH);
 			if (line.startsWith("header:")) {
-				parseHeader(it, template);
+				if (!parseHeader(it, template)) {
+					return Optional.empty();
+				}
 			} else if (line.startsWith("walls:")) {
 				parseWalls(it, template);
 			} else if (line.startsWith("wallpatterns:")) {
@@ -41,66 +53,68 @@ public class TownTemplateParser {
 			}
 		}
 		if (template.isValid()) {
-			return template;
+			return Optional.of(template);
 		}
-		return null;
+		return Optional.empty();
 	}
 
-	private static void parseHeader(Iterator<String> it, TownTemplate template) {
-		String line;
-		String lower;
-		while (it.hasNext() && (line = it.next()) != null) {
-			lower = line.toLowerCase(Locale.ENGLISH);
-			if (lower.startsWith(":endheader")) {
-				break;
-			} else if (lower.startsWith("name")) {
-				template.setTownTypeName(StringTools.safeParseString("=", line));
-			} else if (line.startsWith("mods=")) {
-				if (!CompatUtils.areModsLoaded(StringTools.safeParseString("=", line).split(","))) {
-					return;
+	private static final Map<String, BiConsumer<String, TownTemplate>> headerVariableSetters = new ImmutableMap.Builder<String, BiConsumer<String, TownTemplate>>()
+			.put("name", (value, template) -> template.setTownTypeName(value))
+			.put("minsize", (value, template) -> template.setMinSize(Integer.parseInt(value)))
+			.put("maxsize", (value, template) -> template.setMaxSize(Integer.parseInt(value)))
+			.put("buildingexpansion", (value, template) -> template.setTownBuildingWidthExpansion(Integer.parseInt(value)))
+			.put("selectionweight", (value, template) -> template.setSelectionWeight(Integer.parseInt(value)))
+			.put("clustervalue", (value, template) -> template.setClusterValue(Integer.parseInt(value)))
+			.put("townblocksize", (value, template) -> template.setTownBlockSize(Integer.parseInt(value)))
+			.put("townplotsize", (value, template) -> template.setTownPlotSize(Integer.parseInt(value)))
+			.put("wallstyle", (value, template) -> template.setWallStyle(Integer.parseInt(value)))
+			.put("wallsize", (value, template) -> template.setWallSize(Integer.parseInt(value)))
+			.put("exteriorsize", (value, template) -> template.setExteriorSize(Integer.parseInt(value)))
+			.put("exteriorplotsize", (value, template) -> template.setExteriorPlotSize(Integer.parseInt(value)))
+			.put("interioremptyplotchance", (value, template) -> template.setInteriorEmtpyPlotChance(Integer.parseInt(value)))
+			.put("randomvillagersperchunk", (value, template) -> template.setRandomVillagersPerChunk(Float.parseFloat(value)))
+			.put("preventnaturalhostilespawns", (value, template) -> template.setPreventNaturalHostileSpawns(Boolean.parseBoolean(value)))
+			.put("roadblocks", (value, template) -> {
+				String[] roadFillBlocks = value.split("\\|");
+				JsonParser parser = new JsonParser();
+				for (String roadFillBlock : roadFillBlocks) {
+					try {
+						template.addRoadFillBlock(JsonHelper.getBlockState(parser.parse(roadFillBlock)));
+					}
+					catch (JsonSyntaxException | MissingResourceException ex) {
+						AncientWarfareStructure.LOG.error("Error parsing roadBlock JSON \"{}\": ", roadFillBlock, ex);
+					}
 				}
-			} else if (lower.startsWith("minsize")) {
-				template.setMinSize(StringTools.safeParseInt("=", line));
-			} else if (lower.startsWith("maxsize")) {
-				template.setMaxSize(StringTools.safeParseInt("=", line));
-			} else if (lower.startsWith("buildingexpansion")) {
-				template.setTownBuildingWidthExpansion(StringTools.safeParseInt("=", line));
-			} else if (lower.startsWith("selectionweight")) {
-				template.setSelectionWeight(StringTools.safeParseInt("=", line));
-			} else if (lower.startsWith("clustervalue")) {
-				template.setClusterValue(StringTools.safeParseInt("=", line));
-			} else if (lower.startsWith("townblocksize")) {
-				template.setTownBlockSize(StringTools.safeParseInt("=", line));
-			} else if (lower.startsWith("townplotsize")) {
-				template.setTownPlotSize(StringTools.safeParseInt("=", line));
-			} else if (lower.startsWith("wallstyle")) {
-				template.setWallStyle(StringTools.safeParseInt("=", line));
-			} else if (lower.startsWith("wallsize")) {
-				template.setWallSize(StringTools.safeParseInt("=", line));
-			} else if (lower.startsWith("exteriorsize")) {
-				template.setExteriorSize(StringTools.safeParseInt("=", line));
-			} else if (lower.startsWith("exteriorplotsize")) {
-				template.setExteriorPlotSize(StringTools.safeParseInt("=", line));
-			} else if (lower.startsWith("interioremptyplotchance")) {
-				template.setInteriorEmtpyPlotChance(StringTools.safeParseInt("=", line));
-			} else if (lower.startsWith("randomvillagersperchunk")) {
-				template.setRandomVillagersPerChunk(StringTools.safeParseFloat("=", line));
-			} else if (lower.startsWith("roadblock")) {
-				template.setRoadFillBlock(Block.getBlockFromName(StringTools.safeParseString("=", line)));
-			} else if (lower.startsWith("roadmeta")) {
-				template.setRoadFillMeta(StringTools.safeParseInt("=", line));
-			} else if (lower.startsWith("biomewhitelist")) {
-				template.setBiomeWhiteList(StringTools.safeParseBoolean("=", line));
-			} else if (lower.startsWith("biomelist")) {
-				template.setBiomeList(parseBiomeList(StringTools.safeParseString("=", line)));
-			} else if (lower.startsWith("dimensionwhitelist")) {
-				template.setDimensionWhiteList(StringTools.safeParseBoolean("=", line));
-			} else if (lower.startsWith("dimensionlist")) {
-				template.setDimensionList(parseDimensionList(StringTools.safeParseString("=", line)));
-			} else if (lower.startsWith("lamp")) {
-				template.setLamp(new TownStructureEntry(StringTools.safeParseString("=", line), 1));
+
+			})
+			.put("biomewhitelist", (value, template) -> template.setBiomeWhiteList(Boolean.parseBoolean(value)))
+			.put("biomelist", (value, template) -> template.setBiomeList(parseBiomeList(value)))
+			.put("dimensionwhitelist", (value, template) -> template.setDimensionWhiteList(Boolean.parseBoolean(value)))
+			.put("dimensionlist", (value, template) -> template.setDimensionList(parseDimensionList(value)))
+			.put("lamp", (value, template) -> template.setLamp(new TownStructureEntry(value, 1)))
+			.put("biomereplacement", (value, template) -> template.setBiomeReplacement(new ResourceLocation(value)))
+			.put("territoryname", (value, template) -> template.setTerritoryName(value))
+			.build();
+
+	private static boolean parseHeader(Iterator<String> it, TownTemplate template) {
+		String line;
+		while (it.hasNext() && (line = it.next()) != null) {
+			String[] variableAndValue = line.split("=");
+			String variableName = variableAndValue[0].toLowerCase();
+			if (variableName.startsWith(":endheader")) {
+				break;
+			} else if (variableName.equals("mods") && variableAndValue.length > 1) {
+				if (!CompatUtils.areModsLoaded(variableAndValue[1].split(","))) {
+					return false;
+				}
+			} else if (headerVariableSetters.containsKey(variableName) && variableAndValue.length > 1) {
+				headerVariableSetters.get(variableName).accept(variableAndValue[1], template);
 			}
 		}
+		if (template.getRoadFillBlocks().isEmpty()) {
+			template.addRoadFillBlock(Blocks.GRAVEL.getDefaultState());
+		}
+		return true;
 	}
 
 	private static void parseUniqueStructures(Iterator<String> it, TownTemplate template) {
@@ -110,9 +124,7 @@ public class TownTemplateParser {
 				break;
 			} else {
 				TownStructureEntry e = parseStructureName(line);
-				if (e != null) {
-					template.getUniqueStructureEntries().add(e);
-				}
+				template.getUniqueStructureEntries().add(e);
 			}
 		}
 	}
@@ -124,9 +136,7 @@ public class TownTemplateParser {
 				break;
 			} else {
 				TownStructureEntry e = parseStructureName(line);
-				if (e != null) {
-					template.getMainStructureEntries().add(e);
-				}
+				template.getMainStructureEntries().add(e);
 			}
 		}
 	}
@@ -138,9 +148,7 @@ public class TownTemplateParser {
 				break;
 			} else {
 				TownStructureEntry e = parseStructureWeight(line);
-				if (e != null) {
-					template.getHouseStructureEntries().add(e);
-				}
+				template.getHouseStructureEntries().add(e);
 			}
 		}
 	}
@@ -152,9 +160,7 @@ public class TownTemplateParser {
 				break;
 			} else {
 				TownStructureEntry e = parseStructureWeight(line);
-				if (e != null) {
-					template.getCosmeticEntries().add(e);
-				}
+				template.getCosmeticEntries().add(e);
 			}
 		}
 	}
@@ -166,9 +172,7 @@ public class TownTemplateParser {
 				break;
 			} else {
 				TownStructureEntry e = parseStructureWeight(line);
-				if (e != null) {
-					template.getExteriorStructureEntries().add(e);
-				}
+				template.getExteriorStructureEntries().add(e);
 			}
 		}
 	}
@@ -180,9 +184,7 @@ public class TownTemplateParser {
 				break;
 			} else {
 				TownWallEntry e = parseWall(line);
-				if (e != null) {
-					template.addWall(e);
-				}
+				template.addWall(e);
 			}
 		}
 	}
@@ -203,7 +205,7 @@ public class TownTemplateParser {
 
 	private static List<String> parseBiomeList(String line) {
 		String[] bits = line.split(",", -1);
-		if (bits == null || bits.length <= 0) {
+		if (bits.length <= 0) {
 			return Collections.emptyList();
 		}
 		List<String> names = new ArrayList<>();
@@ -215,7 +217,7 @@ public class TownTemplateParser {
 
 	private static List<Integer> parseDimensionList(String line) {
 		String[] bits = line.split(",", -1);
-		if (bits == null || bits.length <= 0) {
+		if (bits.length <= 0) {
 			return Collections.emptyList();
 		}
 		List<Integer> dims = new ArrayList<>();

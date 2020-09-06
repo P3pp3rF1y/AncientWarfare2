@@ -2,12 +2,12 @@ package net.shadowmage.ancientwarfare.structure.api;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.util.List;
 
 /*
  * base template-rule class.  Plugins should define their own rule classes.
@@ -27,7 +27,7 @@ public abstract class TemplateRule {
 
 	public abstract void writeRuleData(NBTTagCompound tag);
 
-	public abstract void addResources(NonNullList<ItemStack> resources);
+	public abstract List<ItemStack> getResources();
 
 	public abstract ItemStack getRemainingStack();
 

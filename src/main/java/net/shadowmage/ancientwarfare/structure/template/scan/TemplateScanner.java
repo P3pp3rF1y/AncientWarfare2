@@ -10,7 +10,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
-import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntityBase;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
@@ -50,7 +49,7 @@ public class TemplateScanner {
 		short[] templateRuleData = new short[xSize * ySize * zSize];
 
 		HashMap<String, List<TemplateRuleBlock>> pluginBlockRuleMap = new HashMap<>();
-		Map<Integer, TemplateRule> blockRules = new HashMap<>();
+		Map<Integer, TemplateRuleBlock> blockRules = new HashMap<>();
 		Block scannedBlock;
 		List<TemplateRuleBlock> pluginBlockRules;
 		int index;

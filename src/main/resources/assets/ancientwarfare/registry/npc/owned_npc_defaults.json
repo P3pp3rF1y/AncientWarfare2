@@ -20,7 +20,10 @@
     },
     "npc_subtypes": {
         "combat": {
-            "can_swim": true
+            "can_swim": true,
+            "attributes": {
+                "generic.maxHealth": 30
+            }
         },
         "worker": {
             "can_swim": true

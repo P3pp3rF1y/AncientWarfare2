@@ -25,7 +25,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
-import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
+import net.shadowmage.ancientwarfare.core.input.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
@@ -57,7 +57,7 @@ public class ItemHammer extends ItemBaseCore implements IItemKeyInterface {
 	 */
 	@Override
 	public int getItemEnchantability() {
-		return this.material.getEnchantability();
+		return material.getEnchantability();
 	}
 
 	/*
@@ -65,7 +65,7 @@ public class ItemHammer extends ItemBaseCore implements IItemKeyInterface {
 	 */
 	@Override
 	public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
-		ItemStack mat = this.material.getRepairItemStack();
+		ItemStack mat = material.getRepairItemStack();
 		if (!mat.isEmpty() && OreDictionary.itemMatches(mat, repair, false))
 			return true;
 		return super.getIsRepairable(toRepair, repair);
@@ -98,7 +98,7 @@ public class ItemHammer extends ItemBaseCore implements IItemKeyInterface {
 			return super.getAttributeModifiers(slot, stack);
 		}
 		Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot, stack);
-		multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", this.attackDamage, 0));
+		multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", attackDamage, 0));
 		multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", -3.1D, 0));
 		return multimap;
 	}

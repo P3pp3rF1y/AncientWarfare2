@@ -537,4 +537,10 @@ public abstract class VehicleType implements IVehicleType {
 	public void setEnabledForLoot(boolean val) {
 		this.enabledForLoot = val;
 	}
+
+	@Override
+	public void playReloadSound(VehicleBase vehicleBase) {}
+
+	@Override
+	public void playFiringSound(VehicleBase vehicleBase) {}
 }

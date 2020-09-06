@@ -11,7 +11,6 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -42,12 +41,12 @@ import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 import javax.annotation.Nonnull;
 import java.util.Collection;
 
-@SuppressWarnings("squid:MaximumInheritanceDepth")
+@SuppressWarnings({"squid:MaximumInheritanceDepth", "squid:S2160"})
 public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
 	private static final String PATROL_AI_TAG = "patrolAI";
-	private NpcAIAttackMeleeLongRange meleeAI;
-	private EntityAIBase arrowAI;
-	private NpcAIPlayerOwnedPatrol patrolAI;
+	private final NpcAIAttackMeleeLongRange meleeAI;
+	private final EntityAIBase arrowAI;
+	private final NpcAIPlayerOwnedPatrol patrolAI;
 
 	private NpcBase distressedTarget;
 
@@ -70,12 +69,13 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
 		tasks.addTask(2, new NpcAIPlayerOwnedGetFood(this));
 		tasks.addTask(3, new NpcAIPlayerOwnedIdleWhenHungry(this));
 
+		//3==NpcAIShieldBlock
 		tasks.addTask(5, new NpcAIFollowPlayer(this));
 		tasks.addTask(6, new NpcAIPlayerOwnedAlarmResponse(this));
 
 		//6--empty....
 		//7==combat task, inserted from onweaponinventoryupdated
-		tasks.addTask(8, new NpcAIMedicBase(this));
+		tasks.addTask(8, new NpcAIMedicBase<NpcCombat>(this));
 		tasks.addTask(8, new NpcAIDistressResponse(this));
 		tasks.addTask(9, patrolAI);
 
@@ -116,15 +116,13 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
 		if (!world.isRemote) {
 			tasks.removeTask(arrowAI);
 			tasks.removeTask(meleeAI);
-			@Nonnull ItemStack stack = getHeldItemMainhand();
+			ItemStack stack = getHeldItemMainhand();
 			if (isBow(stack.getItem())) {
 				tasks.addTask(4, arrowAI);
 			} else {
 				tasks.addTask(4, meleeAI);
 			}
-			if (meleeAI != null) {
-				meleeAI.setAttackReachFromWeapon(getHeldItemMainhand());
-			}
+			meleeAI.setAttackReachFromWeapon(getHeldItemMainhand());
 		}
 	}
 
@@ -148,17 +146,13 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
 		return false;
 	}
 
-	private boolean isBow(Item item) {
-		return item instanceof ItemBow;
-	}
-
 	@Override
 	public String getNpcSubType() {
 		return getSubtypeFromEquipment();
 	}
 
 	private String getSubtypeFromEquipment() {
-		@Nonnull ItemStack stack = getHeldItemMainhand();
+		ItemStack stack = getHeldItemMainhand();
 		if (!stack.isEmpty()) {
 			Item item = stack.getItem();
 			Collection<String> tools = item.getToolClasses(stack);
@@ -187,6 +181,7 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
 	public void readEntityFromNBT(NBTTagCompound tag) {
 		super.readEntityFromNBT(tag);
 		onWeaponInventoryChanged();
+		onOffhandInventoryChanged();
 		if (tag.hasKey(PATROL_AI_TAG)) {
 			patrolAI.readFromNBT(tag.getCompoundTag(PATROL_AI_TAG));
 		}
@@ -200,9 +195,9 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
 
 	@Override
 	public void attackEntityWithRangedAttack(EntityLivingBase target, float force) {
-		// minimum precision = 10.0f, slowly reaches 0 (or close to it) as the NPC reaches max level
-		float precision = 10.0f - ((float) getLevelingStats().getBaseLevel() / (float) AWNPCStatics.maxNpcLevel * 10.0f);
-		RangeAttackHelper.doRangedAttack(this, target, force, precision);
+		// minimum inaccuracy = 3.0f, slowly reaches 0 (or close to it) as the NPC reaches max level
+		float inaccuracy = 3.0f - ((float) Math.sqrt(getLevelingStats().getBaseLevel()) / (float) Math.sqrt(AWNPCStatics.maxNpcLevel) * 3.0f);
+		RangeAttackHelper.doRangedAttack(this, target, force, inaccuracy);
 	}
 
 	public void respondToDistress(NpcBase source) {

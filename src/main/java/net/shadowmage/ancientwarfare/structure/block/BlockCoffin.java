@@ -1,15 +1,9 @@
 package net.shadowmage.ancientwarfare.structure.block;
 
-import codechicken.lib.model.ModelRegistryHelper;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.block.statemap.StateMapperBase;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -20,35 +14,25 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
-import net.shadowmage.ancientwarfare.structure.item.ItemBlockCoffin;
-import net.shadowmage.ancientwarfare.structure.render.CoffinRenderer;
-import net.shadowmage.ancientwarfare.structure.render.ParticleDummyModel;
 import net.shadowmage.ancientwarfare.structure.tile.TileCoffin;
 
 import java.util.Map;
+import java.util.function.Supplier;
 
-public class BlockCoffin extends BlockMulti<TileCoffin> {
-	public BlockCoffin() {
-		super(Material.WOOD, "coffin", TileCoffin::new, TileCoffin.class);
-	}
-
-	@Override
-	public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
-		for (int variant = 1; variant <= 6; variant++) {
-			items.add(ItemBlockCoffin.getVariantStack(variant));
-		}
+@SuppressWarnings("squid:MaximumInheritanceDepth")
+public abstract class BlockCoffin<T extends TileCoffin> extends BlockMulti<T> {
+	public BlockCoffin(Material material, String regName, Supplier<T> instantiateTe, Class<T> teClass) {
+		super(material, regName, instantiateTe, teClass);
 	}
 
 	@Override
 	public EnumBlockRenderType getRenderType(IBlockState state) {
-		return state.getValue(INVISIBLE) ? EnumBlockRenderType.INVISIBLE : EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
+		return Boolean.TRUE.equals(state.getValue(INVISIBLE)) ? EnumBlockRenderType.INVISIBLE : EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 
 	@Override
@@ -67,7 +51,7 @@ public class BlockCoffin extends BlockMulti<TileCoffin> {
 	}
 
 	@Override
-	public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+	public boolean isSideSolid(IBlockState baseState, IBlockAccess world, BlockPos pos, EnumFacing side) {
 		return false;
 	}
 
@@ -78,24 +62,21 @@ public class BlockCoffin extends BlockMulti<TileCoffin> {
 	}
 
 	@Override
-	protected void setPlacementProperties(World world, BlockPos pos, EntityLivingBase placer, ItemStack stack, TileCoffin te) {
-		boolean upright = !ItemBlockCoffin.canPlaceHorizontal(world, pos, placer.getHorizontalFacing(), placer);
-		te.setUpright(upright);
-		te.setVariant(ItemBlockCoffin.getVariant(stack));
-	}
-
-	@Override
 	public void onBlockHarvested(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
 		if (player.capabilities.isCreativeMode) {
 			return;
 		}
 		WorldTools.getTile(world, pos, TileCoffin.class)
-				.ifPresent(te -> InventoryTools.dropItemInWorld(world, ItemBlockCoffin.getVariantStack(te.getVariant()), pos));
+				.ifPresent(te -> InventoryTools.dropItemInWorld(world, getVariantStack(te.getVariant()), pos));
 	}
+
+	protected abstract ItemStack getVariantStack(IVariant variant);
+
+	protected abstract IVariant getDefaultVariant();
 
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		return ItemBlockCoffin.getVariantStack(WorldTools.getTile(world, pos, TileCoffin.class).map(TileCoffin::getVariant).orElse(1));
+		return getVariantStack(WorldTools.getTile(world, pos, TileCoffin.class).map(TileCoffin::getVariant).orElse(getDefaultVariant()));
 	}
 
 	@Override
@@ -104,23 +85,8 @@ public class BlockCoffin extends BlockMulti<TileCoffin> {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerClient() {
-		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
-			@Override
-			@SideOnly(Side.CLIENT)
-			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-				return CoffinRenderer.MODEL_LOCATION;
-			}
-		});
-		ModelRegistryHelper.register(CoffinRenderer.MODEL_LOCATION, ParticleDummyModel.INSTANCE);
-		ModelRegistryHelper.registerItemRenderer(Item.getItemFromBlock(this), new CoffinRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileCoffin.class, new CoffinRenderer());
-	}
-
-	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		WorldTools.getTile(world, pos, TileCoffin.class).ifPresent(te -> te.open(player));
+		WorldTools.getTile(world, pos, TileCoffin.class).ifPresent(TileCoffin::open);
 		return true;
 	}
 
@@ -218,5 +184,8 @@ public class BlockCoffin extends BlockMulti<TileCoffin> {
 		static CoffinDirection fromRotation(int rotationAngle) {
 			return ROTATION_VALUES.getOrDefault(rotationAngle, NORTH);
 		}
+	}
+
+	public interface IVariant extends IStringSerializable {
 	}
 }

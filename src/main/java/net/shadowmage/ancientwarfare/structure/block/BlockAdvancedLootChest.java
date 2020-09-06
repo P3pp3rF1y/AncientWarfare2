@@ -16,7 +16,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.proxy.IClientRegister;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
-import net.shadowmage.ancientwarfare.structure.render.ParticleDummyModel;
+import net.shadowmage.ancientwarfare.structure.render.ParticleOnlyModel;
 import net.shadowmage.ancientwarfare.structure.render.RenderAdvancedLootChest;
 import net.shadowmage.ancientwarfare.structure.render.RenderItemAdvancedLootChest;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedLootChest;
@@ -42,7 +42,7 @@ public class BlockAdvancedLootChest extends BlockChest implements IClientRegiste
 		//noinspection ConstantConditions
 		ModelResourceLocation modelLocation = new ModelResourceLocation(getRegistryName(), "normal");
 		ModelRegistryHelper.registerItemRenderer(Item.getItemFromBlock(this), new RenderItemAdvancedLootChest());
-		ModelRegistryHelper.register(modelLocation, ParticleDummyModel.INSTANCE);
+		ModelRegistryHelper.register(modelLocation, ParticleOnlyModel.INSTANCE);
 		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
 			@Override
 			@SideOnly(Side.CLIENT)

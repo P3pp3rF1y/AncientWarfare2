@@ -4,8 +4,8 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
-import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
-import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface.ItemAltFunction;
+import net.shadowmage.ancientwarfare.core.input.IItemKeyInterface;
+import net.shadowmage.ancientwarfare.core.input.IItemKeyInterface.ItemAltFunction;
 
 import javax.annotation.Nonnull;
 
@@ -13,9 +13,7 @@ public class PacketItemInteraction extends PacketBase {
 
 	private byte altFunction;
 
-	public PacketItemInteraction() {
-
-	}
+	public PacketItemInteraction() {}
 
 	public PacketItemInteraction(ItemAltFunction altFunction) {
 		this.altFunction = (byte) altFunction.ordinal();
@@ -39,7 +37,7 @@ public class PacketItemInteraction extends PacketBase {
 	}
 
 	private boolean executeKeyPress(EntityPlayer player, EnumHand hand) {
-		@Nonnull ItemStack stack = player.getHeldItem(hand);
+		ItemStack stack = player.getHeldItem(hand);
 		if (stack.isEmpty()) {
 			return false;
 		}

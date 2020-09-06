@@ -157,4 +157,10 @@ public class TownBoundingArea {
 		int maxZ = getBlockMaxZ();
 		return "TownArea: " + minX + "  :" + minZ + " :: " + maxX + " : " + maxZ + " size: " + getBlockWidth() + " : " + getBlockLength();
 	}
+
+	public void setSurfaceY(int surfaceY) {
+		int diff = surfaceY - getSurfaceY();
+		minY += diff;
+		maxY += diff;
+	}
 }

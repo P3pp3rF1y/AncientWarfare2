@@ -1,0 +1,742 @@
+{
+    "pools": [
+        {
+            "name": "main",
+            "rolls": {
+                "min": 1,
+                "max": 3
+            },
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 10
+                },
+                {
+                    "type": "item",
+                    "name": "bone",
+                    "weight": 20,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 3
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "rotten_flesh",
+                    "weight": 20,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 3
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:dye",
+                    "entryName": "bone_meal",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_data",
+                            "data": 15
+                        },
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 0,
+                                "max": 3
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "flint",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 0,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "stick",
+                    "weight": 3,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 0,
+                                "max": 5
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "potion",
+                    "entryName": "water_bottle",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 0,
+                                "max": 2
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{Potion:\"minecraft:water\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "arrow",
+                    "entryName": "arrows",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 0,
+                                "max": 5
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "skull",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 0,
+                                "max": 1
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "weapons",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 15
+                },
+                {
+                    "type": "item",
+                    "name": "wooden_pickaxe",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Rotted Wooden Pickaxe\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "wooden_hoe",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Rotted Wooden Hoe\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "wooden_shovel",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Rotted Wooden Shovel\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "stone_pickaxe",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Chipped Stone Pickaxe\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "stone_hoe",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Chipped Stone Hoe\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "stone_shovel",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Chipped Stone Shovel\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "wooden_sword",
+                    "entryName": "wooden_sword_rotted",
+                    "weight": 3,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Rotted Wooden Sword\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "arrow",
+                    "entryName": "arrow",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 6
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "stone_sword",
+                    "entryName": "chipped_stone_sword",
+                    "weight": 3,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Chipped Wooden Axe\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "wooden_axe",
+                    "entryName": "wooden_axe",
+                    "weight": 3
+                },
+                {
+                    "type": "item",
+                    "name": "stone_axe",
+                    "entryName": "cracked_stone_axe",
+                    "weight": 3,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Cracked Stone Axe\"}}"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "shield",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 20
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfarenpc:wooden_shield",
+                    "entryName": "wooden_shield_rotted",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Rotted Wooden Shield\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "shield",
+                    "entryName": "vanilla_wooden_shield_rotted",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Rotted Wooden Shield\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfarenpc:stone_shield",
+                    "entryName": "stone_shield_chipped",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.4,
+                                "max": 0.7
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Chipped Stone Shield\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfarenpc:wooden_shield",
+                    "entryName": "wooden_shield_broken",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.5
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Broken Wooden Shield\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfarenpc:stone_shield",
+                    "entryName": "stone_shield_crumbling",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.4
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Crumbling Wooden Shield\"}}"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "helmet",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 20
+                },
+                {
+                    "type": "item",
+                    "name": "leather_helmet",
+                    "entryName": "leather_helmet_rotted",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.4,
+                                "max": 0.7
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Rotted Leather Helmet\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "leather_helmet",
+                    "entryName": "leather_helmet_perished",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.4
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Perished Leather Helmet\"}}"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "chestplate",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 20
+                },
+                {
+                    "type": "item",
+                    "name": "leather_chestplate",
+                    "entryName": "leather_chestplate_rotted",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.4,
+                                "max": 0.7
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Rotted Leather Tunic\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "leather_chestplate",
+                    "entryName": "leather_chestplate_perished",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.4
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Perished Leather Tunic\"}}"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "leggings",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 20
+                },
+                {
+                    "type": "item",
+                    "name": "leather_leggings",
+                    "entryName": "leather_leggings_rotted",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.4,
+                                "max": 0.7
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Rotted Leather Pants\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "leather_leggings",
+                    "entryName": "leather_leggings_perished",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.4
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Perished Leather Pants\"}}"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "boots",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 20
+                },
+                {
+                    "type": "item",
+                    "name": "leather_boots",
+                    "entryName": "leather_boots_rotted",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.4,
+                                "max": 0.7
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Rotted Leather Boots\"}}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "leather_boots",
+                    "entryName": "leather_boots_perished",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.05,
+                                "max": 0.4
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{display:{Name:\"Perished Leather Boots\"}}"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "treasure",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 30
+                },
+                {
+                    "type": "loot_table",
+                    "name": "ancientwarfare:chests/potion_harmful",
+                    "weight": 1
+                },
+                {
+                    "type": "loot_table",
+                    "name": "ancientwarfare:chests/potion_beneficial",
+                    "weight": 1
+                },
+                {
+                    "type": "item",
+                    "name": "gold_nugget",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 5
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "iron_nugget",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 5
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "emerald",
+                    "weight": 1
+                },
+                {
+                    "type": "item",
+                    "name": "saddle",
+                    "weight": 1
+                }
+            ]
+        },
+        {
+            "name": "coins",
+            "rolls": {
+                "min": 1,
+                "max": 2
+            },
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 25
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfarenpc:coin",
+                    "entryName": "coin_copper",
+                    "weight": 4,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 10
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{metal:\"copper\"}"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "ancientwarfarenpc:coin",
+                    "entryName": "coin_silver",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        },
+                        {
+                            "function": "set_nbt",
+                            "tag": "{metal:\"silver\"}"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

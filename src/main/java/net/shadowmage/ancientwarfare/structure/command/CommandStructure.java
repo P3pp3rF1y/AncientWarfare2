@@ -6,6 +6,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumFacing;
@@ -13,59 +14,91 @@ import net.minecraft.util.Tuple;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.shadowmage.ancientwarfare.core.command.ISubCommand;
-import net.shadowmage.ancientwarfare.core.command.ParentCommand;
+import net.shadowmage.ancientwarfare.core.command.RootCommand;
 import net.shadowmage.ancientwarfare.core.command.SimpleSubCommand;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureEntry;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
 import net.shadowmage.ancientwarfare.structure.item.ItemStructureScanner;
 import net.shadowmage.ancientwarfare.structure.item.ItemStructureSettings;
+import net.shadowmage.ancientwarfare.structure.network.PacketShowBoundingBoxes;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 import net.shadowmage.ancientwarfare.structure.template.WorldGenStructureManager;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
 import net.shadowmage.ancientwarfare.structure.template.load.TemplateLoader;
 import net.shadowmage.ancientwarfare.structure.tile.ScannerTracker;
+import net.shadowmage.ancientwarfare.structure.worldgen.TerritoryManager;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-public class CommandStructure extends ParentCommand {
-
+public class CommandStructure extends RootCommand {
 	public CommandStructure() {
 		registerSubCommand(new DeleteCommand());
 		registerSubCommand(new BuildCommand());
 		registerSubCommand(new SaveCommand());
 		registerSubCommand(new SimpleSubCommand("reload",
 				(server, sender, args) -> {
+					WorldGenStructureManager.INSTANCE.clearCachedTemplates();
+					TerritoryManager.clearTerritoryCache();
 					WorldGenStructureManager.INSTANCE.loadBiomeList(); //reset biome to template cache
 					TemplateLoader.INSTANCE.reloadAll();
 					sender.sendMessage(new TextComponentTranslation("command.aw.structure.reloaded"));
 				}));
 		registerSubCommand(new ReexportCommand());
 		registerSubCommand(new SimpleSubCommand("scannerTp", (server, sender, args) -> {
-			if (args.length == 1 && sender instanceof EntityPlayer) {
+			if (sender instanceof EntityPlayer) {
 				Tuple<Integer, BlockPos> pos = ScannerTracker.getScannerPosByName(args[0]);
 				ScannerTracker.teleportAboveScannerBlock((EntityPlayer) sender, pos);
 			}
+
+
 		}) {
 			@Override
 			public int getMaxArgs() {
 				return 1;
 			}
+
+			@Override
+			public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
+				return CommandBase.getListOfStringsMatchingLastWord(args, ScannerTracker.getTrackedScannerNames().toArray(new String[0]));
+			}
+
+			@Override
+			public String getUsage(ICommandSender sender) {
+				return getName() + " <scannerTemplateName>";
+			}
 		});
 		registerSubCommand(new SimpleSubCommand("name", (server, sender, args) -> {
-			Optional<StructureEntry> structure = AWGameData.INSTANCE.getData(sender.getEntityWorld(), StructureMap.class)
+			Optional<StructureEntry> structure = AWGameData.INSTANCE.getPerWorldData(sender.getEntityWorld(), StructureMap.class)
 					.getStructureAt(sender.getEntityWorld(), sender.getPosition());
 
 			sender.sendMessage(structure.map(structureEntry -> new TextComponentTranslation("command.aw.structure.name", structureEntry.getName()))
 					.orElseGet(() -> new TextComponentTranslation("command.aw.structure.no_structure")));
 		}));
+		registerSubCommand(new SimpleSubCommand("showBoundingBoxes", (server, sender, args) -> {
+			if (sender instanceof EntityPlayerMP) {
+				EntityPlayerMP player = (EntityPlayerMP) sender;
+				NetworkHandler.sendToPlayer(player, new PacketShowBoundingBoxes(true));
+			}
+		}));
+		registerSubCommand(new SimpleSubCommand("hideBoundingBoxes", (server, sender, args) -> {
+			if (sender instanceof EntityPlayerMP) {
+				EntityPlayerMP player = (EntityPlayerMP) sender;
+				NetworkHandler.sendToPlayer(player, new PacketShowBoundingBoxes(false));
+			}
+		}));
+		registerSubCommand(new StatsCommand());
 	}
 
 	@Override
@@ -78,24 +111,20 @@ public class CommandStructure extends ParentCommand {
 		return "command.aw.structure.usage";
 	}
 
-	private class SaveCommand implements ISubCommand {
+	private static class SaveCommand implements ISubCommand {
 		@Override
 		public String getName() {
 			return "save";
 		}
 
 		@Override
-		public void execute(MinecraftServer server, ICommandSender sender, String[] subArgs) throws CommandException {
+		public void execute(MinecraftServer server, ICommandSender sender, String[] subArgs) {
 			if (sender instanceof EntityLivingBase) {
-				@Nonnull ItemStack stack = ((EntityLivingBase) sender).getHeldItemMainhand();
+				ItemStack stack = ((EntityLivingBase) sender).getHeldItemMainhand();
 				if (!stack.isEmpty()) {
 					ItemStructureSettings settings = ItemStructureSettings.getSettingsFor(stack);
 					if (settings.hasPos1() && settings.hasPos2() && settings.hasBuildKey() && (settings.hasName() || subArgs.length > 0)) {
-						String name = settings.hasName() ? settings.name() : subArgs[0];
-						ItemStructureScanner.setStructureName(stack, name);
-						if (ItemStructureScanner.scanStructure(sender.getEntityWorld(), stack)) {
-							sender.sendMessage(new TextComponentTranslation("command.aw.structure.exported", subArgs[0]));
-						}
+						scanStructure(sender, subArgs, stack, settings);
 					} else {
 						sender.sendMessage(new TextComponentTranslation("command.aw.structure.incomplete_data"));
 					}
@@ -103,13 +132,26 @@ public class CommandStructure extends ParentCommand {
 			}
 		}
 
+		private void scanStructure(ICommandSender sender, String[] subArgs, ItemStack stack, ItemStructureSettings settings) {
+			String name = settings.hasName() ? settings.name() : subArgs[0];
+			ItemStructureScanner.setStructureName(stack, name);
+			if (ItemStructureScanner.scanStructure(sender.getEntityWorld(), stack)) {
+				sender.sendMessage(new TextComponentTranslation("command.aw.structure.exported", subArgs[0]));
+			}
+		}
+
 		@Override
 		public int getMaxArgs() {
 			return 1;
 		}
+
+		@Override
+		public String getUsage(ICommandSender sender) {
+			return getName() + " [templateName]";
+		}
 	}
 
-	private class BuildCommand implements ISubCommand {
+	private static class BuildCommand implements ISubCommand {
 		@Override
 		public String getName() {
 			return "build";
@@ -126,7 +168,10 @@ public class CommandStructure extends ParentCommand {
 			int z = CommandBase.parseInt(subArgs[3]);
 			EnumFacing face = EnumFacing.SOUTH;
 			if (subArgs.length > 4) {
-				face = EnumFacing.byName(subArgs[4]);
+				EnumFacing faceArg = EnumFacing.byName(subArgs[4]);
+				if (faceArg != null) {
+					face = faceArg;
+				}
 			}
 			Optional<StructureTemplate> template = StructureTemplateManager.getTemplate(subArgs[0]);
 			if (template.isPresent()) {
@@ -142,9 +187,19 @@ public class CommandStructure extends ParentCommand {
 		public int getMaxArgs() {
 			return 5;
 		}
+
+		@Override
+		public String getUsage(ICommandSender sender) {
+			return getName() + " <templateName> <x> <y> <z> [north:east:south:west]";
+		}
+
+		@Override
+		public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
+			return args.length > 4 ? CommandBase.getListOfStringsMatchingLastWord(args, "north", "east", "south", "west") : Collections.emptyList();
+		}
 	}
 
-	private class DeleteCommand implements ISubCommand {
+	private static class DeleteCommand implements ISubCommand {
 		@Override
 		public String getName() {
 			return "delete";
@@ -182,7 +237,12 @@ public class CommandStructure extends ParentCommand {
 			String path = TemplateLoader.INCLUDE_DIRECTORY + name + "." + AWStructureStatics.templateExtension;
 			File file = new File(path);
 			if (file.exists()) {
-				file.delete();
+				try {
+					Files.delete(file.toPath());
+				}
+				catch (IOException e) {
+					AncientWarfareStructure.LOG.error("Unable to delete file ", e);
+				}
 				return true;
 			}
 			return false;
@@ -192,20 +252,25 @@ public class CommandStructure extends ParentCommand {
 		public int getMaxArgs() {
 			return 2;
 		}
+
+		@Override
+		public String getUsage(ICommandSender sender) {
+			return getName() + " <templateName> [true to remove the aws file]";
+		}
 	}
 
-	private class ReexportCommand implements ISubCommand {
+	private static class ReexportCommand implements ISubCommand {
 		@Override
 		public String getName() {
 			return "scannersReexport";
 		}
 
 		@Override
-		public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+		public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
 			if (sender instanceof EntityPlayer) {
 				boolean reloadMainSettings = false;
 				if (args.length == 1) {
-					reloadMainSettings = Boolean.valueOf(args[0]);
+					reloadMainSettings = Boolean.parseBoolean(args[0]);
 				}
 				ScannerTracker.reexportAll((EntityPlayer) sender, reloadMainSettings);
 			}
@@ -215,22 +280,15 @@ public class CommandStructure extends ParentCommand {
 		public int getMaxArgs() {
 			return 1;
 		}
+
+		@Override
+		public String getUsage(ICommandSender sender) {
+			return getName() + " [true to reload main settings]";
+		}
 	}
 
 	@Override
 	public int getRequiredPermissionLevel() {
 		return 2;
-	}
-
-	@Override
-	public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
-		if (args.length == 1) {
-			return super.getTabCompletions(server, sender, args, targetPos);
-		} else if (args.length > 5 && args[0].equalsIgnoreCase("build")) {
-			return CommandBase.getListOfStringsMatchingLastWord(args, "north", "east", "south", "west");
-		} else if (args.length == 2 && args[0].equalsIgnoreCase("scannertp")) {
-			return CommandBase.getListOfStringsMatchingLastWord(args, ScannerTracker.getTrackedScannerNames().toArray(new String[0]));
-		}
-		return Collections.emptyList();
 	}
 }

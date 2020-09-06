@@ -17,12 +17,13 @@ import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
-import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
+import net.shadowmage.ancientwarfare.core.inventory.ItemHashEntry;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack.SortOrder;
 
 import javax.annotation.Nonnull;
+import java.awt.*;
 import java.util.Arrays;
 import java.util.Locale;
 
@@ -72,23 +73,11 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
 			}
 
 		};
-		Listener l = new Listener(Listener.MOUSE_UP) {
-			@Override
-			public boolean onEvent(GuiElement widget, ActivationEvent evt) {
-				if (evt.mButton == 1 && widget.isMouseOverElement(evt.mx, evt.my)) {
-					((Text) widget).setText("");
-					refreshGui();
-				}
-
-				return false;
-			}
-		};
-		input.addNewListener(l);
 		addGuiElement(input);
 
 		area = new CompositeItemSlots(this, 0, 8 + 12 + 4 + 12 + 2, 178, 96, this);
 
-		l = new Listener(Listener.MOUSE_DOWN) {
+		Listener l = new Listener(Listener.MOUSE_DOWN) {
 			@Override
 			public boolean onEvent(GuiElement widget, ActivationEvent evt) {
 				if (evt.mButton == 0 && widget.isMouseOverElement(evt.mx, evt.my) && !area.isMouseOverSubElement(evt.mx, evt.my)) {
@@ -117,10 +106,11 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
 		area.clearElements();
 		addInventoryViewElements();
 		storedLabel.setText(I18n.format("guistrings.warehouse.storage", getContainer().currentStored, getContainer().maxStorage));
+		storedLabel.setColor(getContainer().isWarehouseFull() ? Color.RED.getRGB() : 4210752);
 	}
 
 	private void addInventoryViewElements() {
-		@Nonnull ItemStack stack;
+		ItemStack stack;
 		NonNullList<ItemStack> displayStacks = NonNullList.create();
 
 		for (ItemHashEntry entry : getContainer().itemMap.keySet()) {

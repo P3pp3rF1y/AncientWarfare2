@@ -1,3 +1,4 @@
+# minified
 # Ancient Warfare Structure Template File
 # Auto-generated structure template file. created on: 8/19/2019 at: 10:23:9
 # Lines beginning with # denote comments
@@ -28,46 +29,21 @@ leveling=3
 fill=12
 border=0
 blockSwap=true
+territoryName=brigand
 :endvalidation
 
 #### LAYERS ####
-layer: 0
-1,1,1,1
-1,1,1,1
-1,1,1,1
-1,1,1,1
-:endlayer
-layer: 1
-1,1,1,1
-1,1,1,1
-1,1,1,1
-1,1,1,1
-:endlayer
-layer: 2
-1,1,1,1
-1,1,1,1
-1,1,1,1
-1,1,1,1
-:endlayer
-layer: 3
-1,1,1,1
-1,1,1,1
-1,1,1,1
-1,1,1,1
+layer: 0-3
+4x1|4
 :endlayer
 layer: 4
-2,2,2,2
-2,2,2,2
-2,2,2,2
-2,2,2,2
+4x2|4
 :endlayer
 layer: 5
-0,0,0,0
-0,3,0,0
-0,0,0,0
-0,0,0,0
+0|4
+0,3,0|2
+2x0|4
 :endlayer
-
 #### RULES ####
 rule:
 plugin=vanillaBlocks

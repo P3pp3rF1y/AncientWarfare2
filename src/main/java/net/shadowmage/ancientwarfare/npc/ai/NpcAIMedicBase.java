@@ -13,41 +13,45 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class NpcAIMedicBase extends NpcAI<NpcBase> {
+public class NpcAIMedicBase<T extends NpcBase> extends NpcAI<T> {
+	private static final int HEAL_DELAY_MAX = 20;
+	private static final int INJURED_RECHECK_DELAY_MAX = 20;
+	private static final float AMOUNT_TO_HEAL_EACH_TRY = 0.5f;
 
 	private int injuredRecheckDelay = 0;
-	private int injuredRecheckDelayMax = 20;
 	private int healDelay = 0;
-	private int healDelayMax = 20;
 
 	private EntityLivingBase targetToHeal = null;
 
 	private final EntityAINearestAttackableTarget.Sorter sorter;
-	private Predicate<EntityLivingBase> selector;
+	@SuppressWarnings({"java:S4738", "Guava"}) //need to use this because it's what vanilla uses
+	private final Predicate<EntityLivingBase> selector;
 
-	public NpcAIMedicBase(NpcBase npc) {
+	public NpcAIMedicBase(T npc) {
 		super(npc);
 		sorter = new Sorter(npc);
-		selector = entity -> {
-			if (entity.isEntityAlive() && entity.getHealth() < entity.getMaxHealth() && !NpcAIMedicBase.this.npc.isHostileTowards(entity))
-				return true;
-			return false;
-		};
+		selector = entity -> entity != null && entity.isEntityAlive() && entity.getHealth() < entity.getMaxHealth() && !NpcAIMedicBase.this.npc.isHostileTowards(entity);
 		setMutexBits(MOVE | ATTACK);
 	}
 
 	@Override
 	public boolean shouldExecute() {
-		if (!npc.getIsAIEnabled()) {
+		if (!super.shouldExecute()) {
 			return false;
 		}
+
 		if (!isProperSubtype()) {
 			return false;
 		}
+
+		if (validateTarget()) {
+			return true;
+		}
+
 		if (injuredRecheckDelay-- > 0) {
 			return false;
 		}
-		injuredRecheckDelay = injuredRecheckDelayMax;
+		injuredRecheckDelay = INJURED_RECHECK_DELAY_MAX;
 		double dist = npc.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getAttributeValue();
 		AxisAlignedBB bb = npc.getEntityBoundingBox().expand(dist, dist / 2, dist);
 		List<EntityLivingBase> potentialTargets = npc.world.getEntitiesWithinAABB(EntityLivingBase.class, bb, selector);
@@ -57,11 +61,12 @@ public class NpcAIMedicBase extends NpcAI<NpcBase> {
 		potentialTargets.sort(sorter);
 		List<EntityLivingBase> sub = potentialTargets.stream().filter(input -> input instanceof NpcBase || input instanceof EntityPlayer).collect(Collectors.toList());
 		for (EntityLivingBase base : sub) {
-			this.targetToHeal = base;
-			if (validateTarget())
+			targetToHeal = base;
+			if (validateTarget()) {
 				return true;
+			}
 		}
-		this.targetToHeal = potentialTargets.get(0);
+		targetToHeal = potentialTargets.get(0);
 		if (!validateTarget()) {
 			targetToHeal = null;
 			return false;
@@ -71,11 +76,6 @@ public class NpcAIMedicBase extends NpcAI<NpcBase> {
 
 	private boolean validateTarget() {
 		return targetToHeal != null && targetToHeal.isEntityAlive() && targetToHeal.getHealth() < targetToHeal.getMaxHealth();
-	}
-
-	@Override
-	public boolean shouldContinueExecuting() {
-		return npc.getIsAIEnabled() && isProperSubtype() && validateTarget();
 	}
 
 	protected boolean isProperSubtype() {
@@ -90,21 +90,24 @@ public class NpcAIMedicBase extends NpcAI<NpcBase> {
 	@Override
 	public void updateTask() {
 		double dist = npc.getDistanceSq(targetToHeal);
-		double attackDistance = (double) ((this.npc.width * this.npc.width * 2.0F * 2.0F) + (targetToHeal.width * targetToHeal.width * 2.0F * 2.0F));
+		double attackDistance = (npc.width * npc.width * 2.0F * 2.0F) + (targetToHeal.width * targetToHeal.width * 2.0F * 2.0F);
 		if (dist > attackDistance) {
 			npc.addAITask(TASK_MOVE);
 			moveToEntity(targetToHeal, dist);
-			healDelay = healDelayMax;
+			healDelay = HEAL_DELAY_MAX;
 		} else {
 			npc.removeAITask(TASK_MOVE);
 			healDelay--;
 			if (healDelay < 0) {
-				healDelay = healDelayMax;
-				float amountToHeal = ((float) npc.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue()) / 2.f;
+				healDelay = HEAL_DELAY_MAX;
 				npc.swingArm(EnumHand.MAIN_HAND);
-				targetToHeal.heal(amountToHeal);
+				targetToHeal.heal(getAmountToHealEachTry());
 			}
 		}
+	}
+
+	protected float getAmountToHealEachTry() {
+		return AMOUNT_TO_HEAL_EACH_TRY;
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.structure.template.build.validation.border
 
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -15,23 +16,26 @@ import net.shadowmage.ancientwarfare.structure.worldgen.WorldStructureGenerator;
 
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.IntBinaryOperator;
 
 public class SmoothingMatrixBuilder {
 	private final World world;
 	private final int borderSize;
 	private final int groundY;
-	private final SmoothingMatrix smoothingMatrix;
+	private SmoothingMatrix smoothingMatrix;
+	private Function<BlockPos, IBlockState> getStructureBorderState;
 
-	public SmoothingMatrixBuilder(World world, StructureBB bb, int borderSize, int groundY) {
+	public SmoothingMatrixBuilder(World world, StructureBB bb, int borderSize, int groundY, Function<BlockPos, IBlockState> getStructureBorderState) {
 		this.world = world;
 		this.borderSize = borderSize;
 		this.groundY = groundY;
+		this.getStructureBorderState = getStructureBorderState;
 
 		BorderMatrix borderMatrix = BorderMatrixCache.getBorderMatrix(bb.getXSize(), bb.getZSize(), borderSize);
 		smoothingMatrix = new SmoothingMatrix(borderMatrix, bb.min, borderSize);
 
-		convertPointsToSmoothingMatrix(groundY, borderMatrix, PointType.STRUCTURE_BORDER);
+		convertPointsToSmoothingMatrix(this.groundY, borderMatrix, PointType.STRUCTURE_BORDER);
 		convertPointsToSmoothingMatrix(0, borderMatrix, PointType.REFERENCE_POINT);
 		convertPointsToSmoothingMatrix(0, borderMatrix, PointType.OUTER_BORDER);
 		convertPointsToSmoothingMatrix(0, borderMatrix, PointType.SMOOTHED_BORDER);
@@ -55,9 +59,28 @@ public class SmoothingMatrixBuilder {
 			}
 			if (type == PointType.OUTER_BORDER || type == PointType.SMOOTHED_BORDER) {
 				BorderPoint borderPoint = point.getClosestBorderPoint();
-				smoothingMatrix.getPoint(borderPoint.getX(), borderPoint.getZ()).ifPresent(p -> smoothingPoint.setStructureBorder(p, point.getStructureBorderDistance()));
+				smoothingMatrix.getPoint(borderPoint.getX(), borderPoint.getZ()).ifPresent(p -> {
+					smoothingPoint.setStructureBorder(p, point.getStructureBorderDistance());
+					if (type == PointType.OUTER_BORDER) {
+						smoothingPoint.setWaterLevel(getWaterLevel(smoothingPoint.getWorldPos()));
+					}
+				});
 			}
 		}
+	}
+
+	private int getWaterLevel(BlockPos worldPos) {
+		BlockPos tempPos = worldPos.up();
+		while (tempPos.getY() <= groundY && isWaterMaterial(world.getBlockState(tempPos).getMaterial())) {
+			tempPos = tempPos.up();
+		}
+		tempPos = tempPos.down();
+
+		return tempPos.getY() > worldPos.getY() ? tempPos.getY() : 0;
+	}
+
+	private boolean isWaterMaterial(Material material) {
+		return material == Material.WATER || material == Material.ICE;
 	}
 
 	public SmoothingMatrix build() {
@@ -134,8 +157,8 @@ public class SmoothingMatrixBuilder {
 		return addPoint(x, z, type, (xCoord, zCoord) -> getY(xCoord, zCoord, yLevel));
 	}
 
-	private SmoothingPoint addPoint(int x, int z, PointType type, BiFunction<Integer, Integer, Integer> getY) {
-		BlockPos pos = new BlockPos(getMinPos().getX() + x, getY.apply(x, z), getMinPos().getZ() + z);
+	private SmoothingPoint addPoint(int x, int z, PointType type, IntBinaryOperator getY) {
+		BlockPos pos = new BlockPos(getMinPos().getX() + x, getY.applyAsInt(x, z), getMinPos().getZ() + z);
 		Optional<IBlockState> state = getPointBlockState(pos, type);
 		return state.map(iBlockState -> smoothingMatrix.addPoint(x, z, pos, type, iBlockState)).orElseGet(() -> smoothingMatrix.addPoint(x, z, pos, type));
 	}
@@ -180,7 +203,7 @@ public class SmoothingMatrixBuilder {
 	);
 
 	private Optional<IBlockState> getPointBlockState(BlockPos pos, PointType type) {
-		IBlockState state = world.getBlockState(pos);
+		IBlockState state = type == PointType.STRUCTURE_BORDER ? getStructureBorderState.apply(pos) : world.getBlockState(pos);
 		if (type == PointType.STRUCTURE_BORDER && !STRUCTURE_BORDER_BLOCK_WHITELIST.contains(state.getBlock())) {
 			return Optional.empty();
 		}

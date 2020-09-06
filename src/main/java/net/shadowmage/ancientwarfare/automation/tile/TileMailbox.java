@@ -64,7 +64,7 @@ public class TileMailbox extends TileOwned implements IRotatableTile, ITickable,
 	}
 
 	private void trySendItems(MailboxData data) {
-		@Nonnull ItemStack item;
+		ItemStack item;
 		String owner = privateBox ? getOwner().getName() : null;
 		int dim = world.provider.getDimension();
 		for (int slot = 0; slot < sendInventory.getSlots(); slot++) {
@@ -133,6 +133,12 @@ public class TileMailbox extends TileOwned implements IRotatableTile, ITickable,
 		if (tag.hasKey("mailboxName")) {
 			mailboxName = tag.getString("mailboxName");
 		}
+		if (tag.hasKey("autoExport")) {
+			autoExport = tag.getBoolean("autoExport");
+		}
+		if (tag.hasKey("privateBox")) {
+			privateBox = tag.getBoolean("privateBox");
+		}
 		if (tag.hasKey("sendInventory")) {
 			sendInventory.deserializeNBT(tag.getCompoundTag("sendInventory"));
 		}
@@ -162,6 +168,7 @@ public class TileMailbox extends TileOwned implements IRotatableTile, ITickable,
 		tag.setTag("receivedInventory", receivedInventory.serializeNBT());
 		tag.setIntArray("sendSides", sendSides.stream().mapToInt(Enum::ordinal).toArray());
 		tag.setIntArray("receivedSides", receivedSides.stream().mapToInt(Enum::ordinal).toArray());
+		tag.setBoolean("privateBox", privateBox);
 
 		return tag;
 	}

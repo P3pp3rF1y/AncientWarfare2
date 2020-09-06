@@ -32,6 +32,7 @@ public class AWEntityRegistry {
 	public static final String NPC_FACTION_CIVILIAN_FEMALE = "faction.civilian.female";
 	public static final String NPC_FACTION_BARD = "faction.bard";
 	public static final String NPC_FACTION_SIEGE_ENGINEER = "faction.siege_engineer";
+	public static final String NPC_FACTION_SPELLCASTER = "faction.spellcaster";
 
 	public static final String VEHICLE = "vehicle";
 	public static final String MISSILE = "missile";

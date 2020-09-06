@@ -16,6 +16,8 @@ import net.shadowmage.ancientwarfare.structure.init.AWStructureItems;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilderTicked;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
 
+import java.util.Optional;
+
 public class TemplateRuleStructureBuilder extends TemplateRuleBlock {
 	public static final String PLUGIN_NAME = "AWStructureBuilder";
 
@@ -58,10 +60,10 @@ public class TemplateRuleStructureBuilder extends TemplateRuleBlock {
 	}
 
 	@Override
-	protected ItemStack getStack() {
+	protected Optional<ItemStack> getStack() {
 		ItemStack stack = new ItemStack(AWStructureItems.STRUCTURE_BUILDER_TICKED);
 		stack.setTagInfo("structureName", new NBTTagString(templateName));
-		return stack;
+		return Optional.of(stack);
 	}
 
 	@Override

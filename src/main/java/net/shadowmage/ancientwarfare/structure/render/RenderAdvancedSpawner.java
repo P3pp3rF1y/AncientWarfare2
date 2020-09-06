@@ -32,7 +32,7 @@ public class RenderAdvancedSpawner extends TileEntitySpecialRenderer<TileAdvance
 		if (spawnSettings.isEmpty()) {
 			return;
 		}
-		String string = I18n.format(spawnSettings.get(0).getEntityName());
+		String string = spawnSettings.get(0).getCustomName().orElse(I18n.format(spawnSettings.get(0).getEntityName()));
 
 		FontRenderer fontrenderer = Minecraft.getMinecraft().fontRenderer;
 		RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();

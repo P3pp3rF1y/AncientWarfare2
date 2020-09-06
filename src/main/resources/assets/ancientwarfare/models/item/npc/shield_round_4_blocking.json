@@ -1,0 +1,6 @@
+{
+    "parent": "ancientwarfare:item/npc/shield_round_blocking",
+    "textures": {
+        "0": "ancientwarfare:items/npc/shield_round_4"
+    }
+}

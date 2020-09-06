@@ -34,11 +34,11 @@ public class NpcAIOwnerHurtTarget extends EntityAITarget {
 
 	@Override
 	public void startExecuting() {
-		this.taskOwner.setAttackTarget(this.attacker);
+		taskOwner.setAttackTarget(attacker);
 		EntityLivingBase entitylivingbase = npc.world.getPlayerEntityByUUID(npc.getOwner().getUUID());
 
 		if (entitylivingbase != null) {
-			this.timestamp = entitylivingbase.getLastAttackedEntityTime();
+			timestamp = entitylivingbase.getLastAttackedEntityTime();
 		}
 
 		super.startExecuting();

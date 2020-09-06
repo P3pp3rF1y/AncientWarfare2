@@ -9,10 +9,8 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 import javax.annotation.Nullable;
 
-/*
- * Created by Olivier on 22/05/2015.
- */
-public class NpcAIAttackNearest extends EntityAINearestAttackableTarget {
+public class NpcAIAttackNearest extends EntityAINearestAttackableTarget<EntityLivingBase> {
+	@SuppressWarnings({"java:S4738", "Guava"})
 	public NpcAIAttackNearest(NpcBase npc, @Nullable final Predicate<Entity> targetSelector) {
 		super(npc, EntityLivingBase.class, 0, true, false, targetSelector);
 	}
@@ -27,8 +25,8 @@ public class NpcAIAttackNearest extends EntityAINearestAttackableTarget {
 	}
 
 	@Override
-	protected boolean isSuitableTarget(EntityLivingBase target, boolean unused) {
-		return AIHelper.isTarget((NpcBase) this.taskOwner, target, shouldCheckSight);
+	protected boolean isSuitableTarget(@Nullable EntityLivingBase target, boolean unused) {
+		return AIHelper.isTarget((NpcBase) taskOwner, target, shouldCheckSight);
 	}
 
 	@Override

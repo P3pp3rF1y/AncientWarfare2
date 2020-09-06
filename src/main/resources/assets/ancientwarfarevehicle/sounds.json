@@ -1,0 +1,169 @@
+{
+	"ballista_bolt_hit_entity": {
+		"category": "neutral",
+		"sounds": [
+			{
+				"name": "ancientwarfarevehicle:ballista_bolt_hit_entity",
+				"stream": false
+			}
+		]
+	},
+	"ballista_bolt_hit_ground": {
+		"category": "neutral",
+		"sounds": [
+			{
+				"name": "ancientwarfarevehicle:ballista_bolt_hit_ground",
+				"stream": false
+			}
+		]
+	},
+	"ballista_launch": {
+		"category": "neutral",
+		"sounds": [
+			{
+				"name": "ancientwarfarevehicle:ballista_launch_1",
+				"weight": 1,
+				"stream": false
+			},
+			{
+				"name": "ancientwarfarevehicle:ballista_launch_2",
+				"weight": 1,
+				"stream": false
+			}
+		]
+	},
+	"ballista_reload": {
+		"category": "neutral",
+		"sounds": [
+			{
+				"name": "ancientwarfarevehicle:ballista_reload",
+				"stream": false
+			}
+		]
+	},
+	"battering_ram_hit_iron": {
+		"category": "neutral",
+		"sounds": [
+			{
+				"name": "ancientwarfarevehicle:battering_ram_hit_iron_1",
+				"weight": 1,
+				"stream": false
+			},
+			{
+				"name": "ancientwarfarevehicle:battering_ram_hit_iron_2",
+				"weight": 1,
+				"stream": false
+			}
+		]
+	},
+	"battering_ram_hit_stone": {
+		"category": "neutral",
+		"sounds": [
+			{
+				"name": "ancientwarfarevehicle:battering_ram_hit_stone_1",
+				"weight": 1,
+				"stream": false
+			},
+			{
+				"name": "ancientwarfarevehicle:battering_ram_hit_stone_2",
+				"weight": 1,
+				"stream": false
+			}
+		]
+	},
+	"battering_ram_hit_wood": {
+		"category": "neutral",
+		"sounds": [
+			{
+				"name": "ancientwarfarevehicle:battering_ram_hit_wood_1",
+				"weight": 1,
+				"stream": false
+			},
+			{
+				"name": "ancientwarfarevehicle:battering_ram_hit_wood_2",
+				"weight": 1,
+				"stream": false
+			}
+		]
+	},
+	"battering_ram_launch": {
+		"category": "neutral",
+		"sounds": [
+			{
+				"name": "ancientwarfarevehicle:battering_ram_launch",
+				"stream": false
+			}
+		]
+	},
+	"catapult_launch": {
+		"category": "neutral",
+		"sounds": [
+			{
+				"name": "ancientwarfarevehicle:catapult_launch_1",
+				"weight": 1,
+				"stream": false
+			},
+			{
+				"name": "ancientwarfarevehicle:catapult_launch_2",
+				"weight": 1,
+				"stream": false
+			},
+			{
+				"name": "ancientwarfarevehicle:catapult_launch_3",
+				"weight": 1,
+				"stream": false
+			}
+		]
+	},
+	"catapult_reload": {
+		"category": "neutral",
+		"sounds": [
+			{
+				"name": "ancientwarfarevehicle:catapult_reload",
+				"stream": false
+			}
+		]
+	},
+	"giant_trebuchet_launch": {
+		"category": "neutral",
+		"sounds": [
+			{
+				"name": "ancientwarfarevehicle:giant_trebuchet_launch",
+				"stream": false
+			}
+		]
+	},
+	"trebuchet_launch": {
+		"category": "neutral",
+		"sounds": [
+			{
+				"name": "ancientwarfarevehicle:trebuchet_launch_1",
+				"weight": 1,
+				"stream": false
+			},
+			{
+				"name": "ancientwarfarevehicle:trebuchet_launch_2",
+				"weight": 1,
+				"stream": false
+			}
+		]
+	},
+	"trebuchet_reload": {
+		"category": "neutral",
+		"sounds": [
+			{
+				"name": "ancientwarfarevehicle:trebuchet_reload",
+				"stream": false
+			}
+		]
+	},
+	"vehicle_moving": {
+		"category": "neutral",
+		"sounds": [
+			{
+				"name": "ancientwarfarevehicle:vehicle_moving",
+				"stream": false
+			}
+		]
+	}
+}

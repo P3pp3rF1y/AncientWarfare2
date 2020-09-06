@@ -130,7 +130,7 @@ public class GuiNpcFactionTradeView extends GuiContainerBase<ContainerNpcFaction
 	}
 
 	private void addTradeInputSlot(final FactionTrade trade, int x, int y, final int slotNum) {
-		@Nonnull ItemStack stack = trade.getInputStack(slotNum);
+		ItemStack stack = trade.getInputStack(slotNum);
 		stack = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
 		final ItemSlot slot = new ItemSlot(x, y, stack, this);
 		if (stack.isEmpty()) {
@@ -140,7 +140,7 @@ public class GuiNpcFactionTradeView extends GuiContainerBase<ContainerNpcFaction
 	}
 
 	private void addTradeOutputSlot(final FactionTrade trade, int x, int y, final int slotNum) {
-		@Nonnull ItemStack stack = trade.getOutputStack(slotNum);
+		ItemStack stack = trade.getOutputStack(slotNum);
 		stack = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
 		final ItemSlot slot = new ItemSlot(x, y, stack, this);
 		if (stack.isEmpty()) {

@@ -1026,14 +1026,6 @@ item.ammo_hwacha_rocket_explosive.name=Hwacha explosive Rakete
 item.ammo_hwacha_rocket_airburst.name=Hwacha-Airburst-Rakete
 item.ammo_ball_shot.name=Steinkugel-Schuss
 item.ammo_iron_ball_shot.name=Eisenkugelschuss
-item.ammo_soldier_arrow_5.name=Soldat Pfeil
-item.ammo_soldier_arrow_7.name=Soldat Eisenpfeil
-item.ammo_soldier_arrow_5_flaming.name=Soldat Flamme Pfeil
-item.ammo_soldier_arrow_7_flaming.name=Soldat Eisen Flamme Pfeil
-item.ammo_torpedo_10.name=Torpedo 10kg
-item.ammo_torpedo_15.name=Torpedo 15kg
-item.ammo_torpedo_30.name=Torpedo 30kg
-item.ammo_torpedo_45.name=Torpedo 45kg
 item.ammo_stone_shot_10.tooltip=10kg aus Stein
 item.ammo_stone_shot_15.tooltip=15kg aus Stein
 item.ammo_stone_shot_30.tooltip=30kg aus Stein
@@ -1088,14 +1080,6 @@ item.ammo_hwacha_rocket_explosive.tooltip=Selbstfahrer mit einem explosiven Tipi
 item.ammo_hwacha_rocket_airburst.tooltip=Selbstfahrender Proximity-Zünder
 item.ammo_ball_shot.tooltip=Wird in Streumunition verwendet
 item.ammo_iron_ball_shot.tooltip=Wird in Streumunition verwendet
-item.ammo_soldier_arrow_5.tooltip=Wird von Soldaten benutzt
-item.ammo_soldier_arrow_7.tooltip=Wird von Soldaten benutzt
-item.ammo_soldier_arrow_5_flaming.tooltip=Wird von Soldaten benutzt
-item.ammo_soldier_arrow_7_flaming.tooltip=Wird von Soldaten benutzt
-item.ammo_torpedo_10.tooltip=Wird von U-Booten verwendet
-item.ammo_torpedo_15.tooltip=Wird von U-Booten verwendet
-item.ammo_torpedo_30.tooltip=Wird von U-Booten verwendet
-item.ammo_torpedo_45.tooltip=Wird von U-Booten verwendet
 death.attack.AWMissile=%1$s wurde durch Raketenschaden getötet
 death.attack.AWMissile.player=%1$s wurde durch Raketenschaden von getötet %2$s
 
@@ -1115,7 +1099,6 @@ item.vehicleSpawner.tooltip.barrage=Besonderes: Barrage
 item.vehicleSpawner.tooltip.large=Besonderes: Kann große Munition verwenden
 item.vehicleSpawner.tooltip.noweapon=Keine Waffen
 item.vehicleSpawner.tooltip.boat=Besonderes: Boot
-item.vehicleSpawner.tooltip.submarine=Besonderes: U-Boot
 
 # components
 item.flame_charge.name=Flammenladung

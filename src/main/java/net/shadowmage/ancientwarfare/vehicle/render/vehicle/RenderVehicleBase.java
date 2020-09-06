@@ -19,7 +19,5 @@ public abstract class RenderVehicleBase extends Render<VehicleBase> {
 		return entity.getTexture();
 	}
 
-	public abstract void renderVehicleFlag();
-
 	public abstract void renderVehicle(VehicleBase entity, double x, double y, double z, float entityYaw, float partialTicks);
 }

@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.structure.template.build.validation.border;
 
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -15,6 +14,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -117,33 +117,46 @@ public class SmoothingMatrix {
 	}
 
 	public void apply(World world, Consumer<BlockPos> handleClearing) {
-		typePoints.get(PointType.SMOOTHED_BORDER).forEach(point -> levelTerrain(world, point, handleClearing));
+		Set<BlockPos> chunkPoints = new HashSet<>();
+		typePoints.get(PointType.SMOOTHED_BORDER).forEach(point -> {
+			levelTerrain(world, point, handleClearing);
+			chunkPoints.add(new BlockPos(getChunkCornerCoord(point.getSmoothedPos().getX()), 0, getChunkCornerCoord(point.getSmoothedPos().getZ())));
+		});
+		chunkPoints.forEach(pos -> decorate(world, pos));
+		typePoints.get(PointType.SMOOTHED_BORDER).forEach(point -> {
+			BlockPos posAbove = point.getSmoothedPos().up();
+			if (world.canSnowAt(posAbove, true)) {
+				world.setBlockState(posAbove, Blocks.SNOW_LAYER.getDefaultState(), 2);
+			}
+		});
+	}
+
+	private int getChunkCornerCoord(int coord) {
+		return (coord >> 4) * 16;
+	}
+
+	@SuppressWarnings("squid:S2245")
+	private void decorate(World world, BlockPos point) {
+		Random random = new Random((long) (point.getX() >> 4) * 341873128712L + (long) (point.getZ() >> 4) * 132897987541L);
+		world.getBiome(point).decorate(world, random, point);
 	}
 
 	private void levelTerrain(World world, SmoothingPoint point, Consumer<BlockPos> handleClearing) {
 		BlockPos originalPos = point.getWorldPos();
 		BlockPos smoothedPos = point.getSmoothedPos();
 
-		int topSolidY = WorldStructureGenerator.getTargetY(world, originalPos.getX(), originalPos.getZ(), false, originalPos.getY());
 		Biome biome = world.getBiome(originalPos);
 		int topNonWaterY = WorldStructureGenerator.getTargetY(world, originalPos.getX(), originalPos.getZ(), true, originalPos.getY());
-		boolean seaWaterTop = false;
-		if (smoothedPos.getY() <= world.getSeaLevel() && world.getBlockState(new BlockPos(smoothedPos.getX(), world.getSeaLevel() - 1, smoothedPos.getZ())).getMaterial() == Material.WATER) {
-			seaWaterTop = true;
-		}
+		int topOuterBorderWaterY = point.getOuterBorderPoint().getWaterLevel();
 
-		if (originalPos.getY() == smoothedPos.getY() && topSolidY == originalPos.getY() && !seaWaterTop) {
+		if (originalPos.getY() == smoothedPos.getY() && topNonWaterY == originalPos.getY()) {
 			return;
 		}
 
-		if (originalPos.getY() > smoothedPos.getY() && (!seaWaterTop || topNonWaterY > smoothedPos.getY())) {
-			if (seaWaterTop) {
-				BlockTools.getAllInBoxTopDown(smoothedPos, new BlockPos(smoothedPos.getX(), Math.min(topNonWaterY, world.getSeaLevel() - 1), smoothedPos.getZ()))
+		if (originalPos.getY() > smoothedPos.getY()) {
+			if (smoothedPos.getY() < topOuterBorderWaterY) {
+				BlockTools.getAllInBoxTopDown(smoothedPos, new BlockPos(smoothedPos.getX(), topOuterBorderWaterY, smoothedPos.getZ()))
 						.forEach(pos -> world.setBlockState(pos, Blocks.WATER.getDefaultState()));
-				if (topSolidY > world.getSeaLevel()) {
-					BlockTools.getAllInBoxTopDown(smoothedPos.getX(), world.getSeaLevel(), smoothedPos.getZ(), originalPos.getX(), originalPos.getY(), originalPos.getZ())
-							.forEach(handleClearing);
-				}
 			} else {
 				BlockTools.getAllInBoxTopDown(smoothedPos, originalPos).forEach(handleClearing);
 			}

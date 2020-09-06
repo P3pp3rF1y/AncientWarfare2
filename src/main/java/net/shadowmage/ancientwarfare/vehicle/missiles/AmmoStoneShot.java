@@ -11,16 +11,16 @@ public class AmmoStoneShot extends Ammo {
 
 	public AmmoStoneShot(int weight) {
 		super("ammo_stone_shot_" + weight);
-		this.isPersistent = false;
-		this.isArrow = false;
-		this.isRocket = false;
-		this.ammoWeight = weight;
-		this.configName = "stone_shot_" + weight;
-		this.entityDamage = weight;
-		this.vehicleDamage = weight;
+		isPersistent = false;
+		isArrow = false;
+		isRocket = false;
+		ammoWeight = weight;
+		configName = "stone_shot_" + weight;
+		entityDamage = weight;
+		vehicleDamage = weight;
 		float scaleFactor = weight + 45.f;
-		this.renderScale = (weight / scaleFactor) * 2;
-		this.modelTexture = new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/model/vehicle/ammo/ammo_stone_shot.png");
+		renderScale = (weight / scaleFactor) * 2;
+		modelTexture = new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/model/vehicle/ammo/ammo_stone_shot.png");
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class AmmoStoneShot extends Ammo {
 	@Override
 	public void onImpactEntity(World world, Entity ent, float x, float y, float z, MissileBase missile) {
 		if (!world.isRemote) {
-			ent.attackEntityFrom(DamageType.causeEntityMissileDamage(missile.shooterLiving, false, false), this.getEntityDamage());
+			ent.attackEntityFrom(DamageType.causeEntityMissileDamage(missile.shooterLiving, false, false), getEntityDamage());
 		}
 	}
 

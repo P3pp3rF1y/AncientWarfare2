@@ -36,7 +36,6 @@ import net.shadowmage.ancientwarfare.core.util.parsing.PropertyState;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 
 import javax.annotation.Nullable;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.MissingResourceException;
@@ -46,6 +45,13 @@ import java.util.function.Function;
 import static net.minecraft.block.BlockRailBase.EnumRailDirection.*;
 
 public class BlockTools {
+	public static BlockPos rotateHorizontal(BlockPos offset, int turns) {
+		BlockPos.MutableBlockPos ret = new BlockPos.MutableBlockPos(offset);
+		for (int i=0; i < turns; i++) {
+			ret.setPos(-ret.getZ(), ret.getY(), ret.getX());
+		}
+		return ret;
+	}
 
 	/*
 	 * rotate a float X offset (-1<=x<=1) within a block
@@ -167,9 +173,13 @@ public class BlockTools {
 	 * @return true if it does
 	 */
 	public static boolean isPositionWithinBounds(BlockPos test, BlockPos pos1, BlockPos pos2) {
-		return test.getX() >= pos1.getX() && test.getX() <= pos2.getX()
-				&& test.getY() >= pos1.getY() && test.getY() <= pos2.getY()
-				&& test.getZ() >= pos1.getZ() && test.getZ() <= pos2.getZ();
+		return isPositionWithinHorizontalBounds(test, pos1, pos2)
+				&& test.getY() >= pos1.getY() && test.getY() <= pos2.getY();
+	}
+
+	public static boolean isPositionWithinHorizontalBounds(BlockPos test, BlockPos minPos, BlockPos maxPos) {
+		return test.getX() >= minPos.getX() && test.getX() <= maxPos.getX()
+				&& test.getZ() >= minPos.getZ() && test.getZ() <= maxPos.getZ();
 	}
 
 	/*
@@ -195,12 +205,6 @@ public class BlockTools {
 		int zSize1 = zSize;
 		int x = pos.getX();
 		int z = pos.getZ();
-		if (x >= xSize) {
-			x = 0;
-		}
-		if (z >= zSize) {
-			z = 0;
-		}
 		int x1 = x;
 		int z1 = z;
 		int positiveTurns = turns > 0 ? turns : 4 + turns;
@@ -279,6 +283,12 @@ public class BlockTools {
 		notifyBlockUpdate(tile.getWorld(), tile.getPos());
 	}
 
+	public static void notifyNeighbors(TileEntity tile) {
+		World world = tile.getWorld();
+		BlockPos pos = tile.getPos();
+		tile.getWorld().notifyNeighborsRespectDebug(pos, world.getBlockState(pos).getBlock(), true);
+	}
+
 	public static JsonElement serializeToJson(IBlockState state) {
 		JsonObject serializedState = new JsonObject();
 		//noinspection ConstantConditions
@@ -337,7 +347,7 @@ public class BlockTools {
 		return toJUtilOptional(property.parseValue(valueString));
 	}
 
-	@SuppressWarnings({"OptionalUsedAsFieldOrParameterType", "Guava"})
+	@SuppressWarnings({"OptionalUsedAsFieldOrParameterType", "Guava", "java:S4738"})
 	private static <T> Optional<T> toJUtilOptional(com.google.common.base.Optional<T> optional) {
 		return optional.transform(Optional::of).or(Optional::empty);
 	}
@@ -346,7 +356,6 @@ public class BlockTools {
 		for (Map.Entry<IProperty<?>, Comparable<?>> property : state.getProperties().entrySet()) {
 			Class<?> valueClass = property.getKey().getValueClass();
 			if (ROTATORS.containsKey(valueClass)) {
-				//noinspection unchecked
 				state = rotateY(state, property.getKey(), turns);
 			}
 		}
@@ -360,7 +369,7 @@ public class BlockTools {
 	}
 
 	@SuppressWarnings({"Convert2Lambda", "squid:S1604"})
-	private static final Map<Class, IRotator<?>> ROTATORS = new ImmutableMap.Builder<Class, IRotator<?>>()
+	private static final Map<Class<?>, IRotator<?>> ROTATORS = new ImmutableMap.Builder<Class<?>, IRotator<?>>()
 			.put(EnumFacing.class, new IRotator<EnumFacing>() {
 				@Override
 				public EnumFacing rotateY(EnumFacing facing, int turns) {
@@ -496,6 +505,7 @@ public class BlockTools {
 			})
 			.build();
 
+	@SuppressWarnings("java:S3740") // this is a method that helps with turning raw property type into generic one
 	public static PropertyState getPropertyState(Block block, BlockStateContainer stateContainer, String propName, String propValue) {
 		IProperty<?> property = stateContainer.getProperty(propName);
 		if (property == null) {
@@ -554,39 +564,35 @@ public class BlockTools {
 	}
 
 	public static Iterable<BlockPos> getAllInBoxTopDown(final int x1, final int y1, final int z1, final int x2, final int y2, final int z2) {
-		return new Iterable<BlockPos>() {
-			public Iterator<BlockPos> iterator() {
-				return new AbstractIterator<BlockPos>() {
-					private boolean first = true;
-					private int lastPosX;
-					private int lastPosY;
-					private int lastPosZ;
+		return () -> new AbstractIterator<BlockPos>() {
+			private boolean first = true;
+			private int lastPosX;
+			private int lastPosY;
+			private int lastPosZ;
 
-					protected BlockPos computeNext() {
-						if (this.first) {
-							this.first = false;
-							this.lastPosX = x1;
-							this.lastPosY = y2;
-							this.lastPosZ = z1;
-							return new BlockPos(x1, y2, z1);
-						} else if (this.lastPosX == x2 && this.lastPosY == y1 && this.lastPosZ == z2) {
-							return this.endOfData();
-						} else {
-							if (this.lastPosX < x2) {
-								++this.lastPosX;
-							} else if (this.lastPosZ < z2) {
-								this.lastPosX = x1;
-								++this.lastPosZ;
-							} else if (this.lastPosY > y1) {
-								this.lastPosX = x1;
-								this.lastPosZ = z1;
-								--this.lastPosY;
-							}
-
-							return new BlockPos(this.lastPosX, this.lastPosY, this.lastPosZ);
-						}
+			protected BlockPos computeNext() {
+				if (first) {
+					first = false;
+					lastPosX = x1;
+					lastPosY = y2;
+					lastPosZ = z1;
+					return new BlockPos(x1, y2, z1);
+				} else if (lastPosX == x2 && lastPosY == y1 && lastPosZ == z2) {
+					return endOfData();
+				} else {
+					if (lastPosX < x2) {
+						++lastPosX;
+					} else if (lastPosZ < z2) {
+						lastPosX = x1;
+						++lastPosZ;
+					} else if (lastPosY > y1) {
+						lastPosX = x1;
+						lastPosZ = z1;
+						--lastPosY;
 					}
-				};
+
+					return new BlockPos(lastPosX, lastPosY, lastPosZ);
+				}
 			}
 		};
 	}

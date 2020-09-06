@@ -42,22 +42,24 @@ public class JsonHelper {
 		return getBlockState(parent, elementName, Block::getDefaultState, BlockTools::updateProperty);
 	}
 
+	public static IBlockState getBlockState(JsonElement json) {
+		return BlockTools.getBlockState(getBlockNameAndProperties(json), Block::getDefaultState, BlockTools::updateProperty);
+	}
+
 	public static BlockStateMatcher getBlockStateMatcher(JsonElement stateJson) {
 		return BlockTools.getBlockState(getBlockNameAndProperties(stateJson), BlockStateMatcher::new, BlockStateMatcher::addProperty);
 	}
 
 	public static BlockStateMatcher getBlockStateMatcher(JsonObject stateJson) {
-		//noinspection ConstantConditions
 		return getBlockState(stateJson, BlockStateMatcher::new, BlockStateMatcher::addProperty);
 	}
 
 	public static BlockStateMatcher getBlockStateMatcher(JsonObject parent, String elementName) {
-		//noinspection ConstantConditions
 		return getBlockState(parent, elementName, BlockStateMatcher::new, BlockStateMatcher::addProperty);
 	}
 
 	public static ItemStack getItemStack(JsonElement json) {
-		return getItemStack(json, (i, c, m, t) -> {
+		return getItemStack(json, (i, c, m, t, n) -> {
 			ItemStack stack = new ItemStack(i, c, m);
 			stack.setTagCompound(t);
 			return stack;
@@ -66,15 +68,19 @@ public class JsonHelper {
 
 	public static ItemStack getItemStack(JsonObject json, String elementName) {
 		if (!JsonUtils.hasField(json, elementName)) {
-			throw new JsonParseException("Expected " + elementName + " member in " + json.toString());
+			throw new JsonParseException(getMissingMemberErrorMessage(json, elementName));
 		}
 
 		return getItemStack(json.get(elementName));
 	}
 
+	private static String getMissingMemberErrorMessage(JsonObject json, String elementName) {
+		return "Expected " + elementName + " member in " + json.toString();
+	}
+
 	private static <T> T getItemStack(JsonElement element, ItemStackCreator<T> creator) {
 		if (element.isJsonPrimitive()) {
-			return creator.instantiate(RegistryTools.getItem(element.getAsString()), 1, -1, null);
+			return creator.instantiate(RegistryTools.getItem(element.getAsString()), 1, -1, null, false);
 		}
 
 		JsonObject obj = element.getAsJsonObject();
@@ -93,20 +99,22 @@ public class JsonHelper {
 				tagCompound = JsonToNBT.getTagFromJson(JsonUtils.getString(obj, "nbt"));
 			}
 			catch (NBTException e) {
-				AncientWarfareCore.LOG.error("Error reading item stack nbt ", JsonUtils.getJsonObject(obj, "nbt"));
+				AncientWarfareCore.LOG.error("Error reading item stack nbt {}", JsonUtils.getJsonObject(obj, "nbt"));
 			}
 		}
 
-		return creator.instantiate(item, count, meta, tagCompound);
+		boolean ignoreNbt = JsonUtils.hasField(obj,"ignore_nbt") && JsonUtils.getBoolean(obj, "ignore_nbt");
+
+		return creator.instantiate(item, count, meta, tagCompound, ignoreNbt);
 	}
 
 	public static ItemStackMatcher getItemStackMatcher(JsonElement element) {
-		return getItemStack(element, (i, c, m, t) -> new ItemStackMatcher.Builder(i).setMeta(m).setTagCompound(t).build());
+		return getItemStack(element, (i, c, m, t, n) -> new ItemStackMatcher.Builder(i).setMeta(m).setTagCompound(t).setIgnoreNbt(n).build());
 	}
 
 	public static ItemStackMatcher getItemStackMatcher(JsonObject parent, String elementName) {
 		if (!JsonUtils.hasField(parent, elementName)) {
-			throw new JsonParseException("Expected " + elementName + " member in " + parent.toString());
+			throw new JsonParseException(getMissingMemberErrorMessage(parent, elementName));
 		}
 
 		return getItemStackMatcher(parent.get(elementName));
@@ -137,9 +145,10 @@ public class JsonHelper {
 
 		return getBlockNameAndProperties(JsonUtils.getJsonObject(stateElement, ""));
 	}
+
 	private static Tuple<String, Map<String, String>> getBlockNameAndProperties(JsonObject parent, String elementName) {
 		if (!JsonUtils.hasField(parent, elementName)) {
-			throw new JsonParseException("Expected " + elementName + " member in " + parent.toString());
+			throw new JsonParseException(getMissingMemberErrorMessage(parent, elementName));
 		}
 		return getBlockNameAndProperties(parent.get(elementName));
 	}
@@ -234,6 +243,7 @@ public class JsonHelper {
 		return ret;
 	}
 
+	@SuppressWarnings({"squid:S4042", "squid:S899"})
 	public static void saveJsonFile(JsonObject parent, File file) {
 		if (file.exists()) {
 			//noinspection ResultOfMethodCallIgnored
@@ -241,10 +251,10 @@ public class JsonHelper {
 		}
 		try {
 			if (!file.getParentFile().exists() && !file.getParentFile().mkdirs()) {
-				AncientWarfareCore.LOG.error("Unable to create folders for file : " + file.getAbsolutePath());
+				AncientWarfareCore.LOG.error("Unable to create folders for file : {}", file.getAbsolutePath());
 			}
 			if (!file.createNewFile()) {
-				AncientWarfareCore.LOG.error("Unable to create new file : " + file.getAbsolutePath());
+				AncientWarfareCore.LOG.error("Unable to create new file : {}", file.getAbsolutePath());
 			}
 		}
 		catch (IOException e) {
@@ -262,6 +272,6 @@ public class JsonHelper {
 	}
 
 	private interface ItemStackCreator<R> {
-		R instantiate(Item item, int count, int meta, @Nullable NBTTagCompound tagCompound);
+		R instantiate(Item item, int count, int meta, @Nullable NBTTagCompound tagCompound, boolean ignoreNbt);
 	}
 }

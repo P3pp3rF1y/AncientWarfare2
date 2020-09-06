@@ -4,11 +4,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistry;
+import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.item.ItemAmmo;
 import net.shadowmage.ancientwarfare.vehicle.missiles.AmmoArrow;
-import net.shadowmage.ancientwarfare.vehicle.missiles.AmmoArrowFlame;
-import net.shadowmage.ancientwarfare.vehicle.missiles.AmmoArrowIron;
-import net.shadowmage.ancientwarfare.vehicle.missiles.AmmoArrowIronFlame;
 import net.shadowmage.ancientwarfare.vehicle.missiles.AmmoBallShot;
 import net.shadowmage.ancientwarfare.vehicle.missiles.AmmoBallistaBolt;
 import net.shadowmage.ancientwarfare.vehicle.missiles.AmmoBallistaBoltExplosive;
@@ -27,9 +25,7 @@ import net.shadowmage.ancientwarfare.vehicle.missiles.AmmoIronBallShot;
 import net.shadowmage.ancientwarfare.vehicle.missiles.AmmoIronShot;
 import net.shadowmage.ancientwarfare.vehicle.missiles.AmmoNapalmShot;
 import net.shadowmage.ancientwarfare.vehicle.missiles.AmmoPebbleShot;
-import net.shadowmage.ancientwarfare.vehicle.missiles.AmmoSoldierArrow;
 import net.shadowmage.ancientwarfare.vehicle.missiles.AmmoStoneShot;
-import net.shadowmage.ancientwarfare.vehicle.missiles.AmmoTorpedo;
 import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
 
 import java.util.HashMap;
@@ -89,9 +85,6 @@ public class AmmoRegistry {
 	public static IAmmo ammoGrapeShot15;
 	public static IAmmo ammoGrapeShot25;
 	public static IAmmo ammoArrow;
-	public static IAmmo ammoArrowFlame;
-	public static IAmmo ammoArrowIron;
-	public static IAmmo ammoArrowIronFlame;
 	public static IAmmo ammoBallistaBolt;
 	public static IAmmo ammoBallistaBoltFlame;
 	public static IAmmo ammoBallistaBoltExplosive;
@@ -100,14 +93,6 @@ public class AmmoRegistry {
 	public static IAmmo ammoHwachaRocketFlame;
 	public static IAmmo ammoHwachaRocketExplosive;
 	public static IAmmo ammoHwachaRocketAirburst;
-	public static IAmmo ammoSoldierArrowWood;
-	public static IAmmo ammoSoldierArrowIron;
-	public static IAmmo ammoSoldierArrowWoodFlame;
-	public static IAmmo ammoSoldierArrowIronFlame;
-	public static IAmmo ammoTorpedo10;
-	public static IAmmo ammoTorpedo15;
-	public static IAmmo ammoTorpedo30;
-	public static IAmmo ammoTorpedo45;
 
 	private AmmoRegistry() {
 	}
@@ -147,10 +132,10 @@ public class AmmoRegistry {
 		ammoPebbleShot15 = registerAmmoType(new AmmoPebbleShot(15), registry);
 		ammoPebbleShot30 = registerAmmoType(new AmmoPebbleShot(30), registry);
 		ammoPebbleShot45 = registerAmmoType(new AmmoPebbleShot(45), registry);
-		ammoIronShot5 = registerAmmoType(new AmmoIronShot(5, 10), registry);
-		ammoIronShot10 = registerAmmoType(new AmmoIronShot(10, 15), registry);
-		ammoIronShot15 = registerAmmoType(new AmmoIronShot(15, 30), registry);
-		ammoIronShot25 = registerAmmoType(new AmmoIronShot(25, 45), registry);
+		ammoIronShot5 = registerAmmoType(new AmmoIronShot(5, AWVehicleStatics.vehicleStats.ammoCannonBall5kgDamage), registry);
+		ammoIronShot10 = registerAmmoType(new AmmoIronShot(10, AWVehicleStatics.vehicleStats.ammoCannonBall10kgDamage), registry);
+		ammoIronShot15 = registerAmmoType(new AmmoIronShot(15, AWVehicleStatics.vehicleStats.ammoCannonBall15kgDamage), registry);
+		ammoIronShot25 = registerAmmoType(new AmmoIronShot(25, AWVehicleStatics.vehicleStats.ammoCannonBall25kgDamage), registry);
 		ammoCanisterShot5 = registerAmmoType(new AmmoCanisterShot(5), registry);
 		ammoCanisterShot10 = registerAmmoType(new AmmoCanisterShot(10), registry);
 		ammoCanisterShot15 = registerAmmoType(new AmmoCanisterShot(15), registry);
@@ -160,9 +145,6 @@ public class AmmoRegistry {
 		ammoGrapeShot15 = registerAmmoType(new AmmoGrapeShot(15), registry);
 		ammoGrapeShot25 = registerAmmoType(new AmmoGrapeShot(25), registry);
 		ammoArrow = registerAmmoType(new AmmoArrow(), registry);
-		ammoArrowFlame = registerAmmoType(new AmmoArrowFlame(), registry);
-		ammoArrowIron = registerAmmoType(new AmmoArrowIron(), registry);
-		ammoArrowIronFlame = registerAmmoType(new AmmoArrowIronFlame(), registry);
 		ammoBallistaBolt = registerAmmoType(new AmmoBallistaBolt(), registry);
 		ammoBallistaBoltFlame = registerAmmoType(new AmmoBallistaBoltFlame(), registry);
 		ammoBallistaBoltExplosive = registerAmmoType(new AmmoBallistaBoltExplosive(), registry);
@@ -171,19 +153,11 @@ public class AmmoRegistry {
 		ammoHwachaRocketFlame = registerAmmoType(new AmmoHwachaRocketFlame(), registry);
 		ammoHwachaRocketExplosive = registerAmmoType(new AmmoHwachaRocketExplosive(), registry);
 		ammoHwachaRocketAirburst = registerAmmoType(new AmmoHwachaRocketAirburst(), registry);
-		ammoSoldierArrowWood = registerAmmoType(new AmmoSoldierArrow(5, false), registry);
-		ammoSoldierArrowIron = registerAmmoType(new AmmoSoldierArrow(7, false), registry);
-		ammoSoldierArrowWoodFlame = registerAmmoType(new AmmoSoldierArrow(5, true), registry);
-		ammoSoldierArrowIronFlame = registerAmmoType(new AmmoSoldierArrow(7, true), registry);
-		ammoTorpedo10 = registerAmmoType(new AmmoTorpedo(10), registry);
-		ammoTorpedo15 = registerAmmoType(new AmmoTorpedo(15), registry);
-		ammoTorpedo30 = registerAmmoType(new AmmoTorpedo(30), registry);
-		ammoTorpedo45 = registerAmmoType(new AmmoTorpedo(45), registry);
 	}
 
 	private static IAmmo registerAmmoType(IAmmo ammo, IForgeRegistry<Item> registry) {
 		ammoInstances.put(ammo.getRegistryName(), ammo);
-		ItemAmmo item = new ItemAmmo(ammo.getRegistryName());
+		ItemAmmo item = new ItemAmmo(ammo.getRegistryName(), ammo);
 		ammoItemInstances.put(ammo.getRegistryName(), item);
 		registry.register(item);
 		return ammo;

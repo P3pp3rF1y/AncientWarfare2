@@ -51,7 +51,7 @@ public class ItemBardInstrument extends ItemBaseNPC {
 			if (meta == 0) {
 				s = SoundEvents.BLOCK_NOTE_BASS;
 			} else if (meta == 1) {
-				s = SoundEvents.ENTITY_ZOMBIE_VILLAGER_CURE;
+				s = SoundEvents.BLOCK_NOTE_FLUTE;
 			} else if (meta == 2) {
 				s = SoundEvents.BLOCK_NOTE_HARP;
 			}

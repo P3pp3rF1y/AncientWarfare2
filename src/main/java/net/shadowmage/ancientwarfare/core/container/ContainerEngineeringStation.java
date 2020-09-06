@@ -117,10 +117,10 @@ public class ContainerEngineeringStation extends ContainerTileBase<TileEngineeri
 			return ItemStack.EMPTY;
 		}
 
-		@Nonnull ItemStack slotStackCopy = ItemStack.EMPTY;
+		ItemStack slotStackCopy = ItemStack.EMPTY;
 		Slot theSlot = this.getSlot(slotClickedIndex);
 		if (theSlot != null && theSlot.getHasStack()) {
-			@Nonnull ItemStack slotStack = theSlot.getStack();
+			ItemStack slotStack = theSlot.getStack();
 			slotStackCopy = slotStack.copy();
 			int craftSlotStart = 2;
 			//TODO replace the reference to craftMatrix here with something like crafting size reference on subcontainer itself
@@ -130,7 +130,7 @@ public class ContainerEngineeringStation extends ContainerTileBase<TileEngineeri
 			if (slotClickedIndex < craftSlotStart)//book or result slot
 			{
 				if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotEnd, false))//merge into player inventory
-					return ItemStack.EMPTY;
+				{ return ItemStack.EMPTY; }
 			} else {
 				if (slotClickedIndex < storageSlotsStart) {//craft matrix
 					if (!this.mergeItemStack(slotStack, storageSlotsStart, playerSlotStart, false))//merge into storage

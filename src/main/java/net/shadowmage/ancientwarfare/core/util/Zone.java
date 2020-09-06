@@ -17,25 +17,18 @@ public class Zone implements INBTSerializable<NBTTagCompound> {
 
 	}
 
-	public boolean crossWith(int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
-		return !(max.getX() < minX || max.getY() < minY || max.getZ() < minZ || min.getX() > maxX || min.getY() > maxY || min.getZ() > maxZ);
+	private boolean intersects(BlockPos min, BlockPos max) {
+		return intersects(min.getX(), min.getY(), min.getZ(), max.getX(), max.getY(), max.getZ());
+	}
+
+	public boolean intersects(int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
+		return max.getX() >= minX && max.getY() >= minY && max.getZ() >= minZ && min.getX() <= maxX && min.getY() <= maxY && min.getZ() <= maxZ;
 	}
 	/*
 	 * does the input share any block position with this zone ?
 	 */
-	public boolean crossWith(Zone z) {
-		return crossWith(z.min.getX(), z.min.getY(), z.min.getZ(), z.max.getX(), z.max.getY(), z.max.getZ());
-	}
-
-	public boolean isPositionIn(int x, int y, int z) {
-		if (x < min.getX() || y < min.getY() || z < min.getZ() || x > max.getX() || z > max.getZ() || y > max.getY()) {
-			return false;
-		}
-		return true;
-	}
-
-	public boolean isPositionIn(BlockPos pos) {
-		return isPositionIn(pos.getX(), pos.getY(), pos.getZ());
+	public boolean intersects(Zone z) {
+		return intersects(z.min, z.max);
 	}
 
 	public boolean equals(BlockPos min, BlockPos max) {

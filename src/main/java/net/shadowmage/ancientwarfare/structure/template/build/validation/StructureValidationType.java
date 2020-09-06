@@ -13,7 +13,7 @@ import static net.shadowmage.ancientwarfare.structure.template.build.validation.
 
 public enum StructureValidationType {
 
-	GROUND(StructureValidatorGround::new),
+	GROUND(StructureValidatorGround::new, MIN_GENERATION_HEIGHT, MAX_GENERATION_HEIGHT),
 	UNDERGROUND(StructureValidatorUnderground::new, MIN_GENERATION_DEPTH, MAX_GENERATION_DEPTH, MIN_OVERFILL),
 	SKY(StructureValidatorSky::new, MIN_GENERATION_HEIGHT, MAX_GENERATION_HEIGHT, MIN_FLYING_HEIGHT),
 	WATER(StructureValidatorWater::new),
@@ -29,16 +29,16 @@ public enum StructureValidationType {
 		this.createValidator = createValidator;
 
 		Collections.addAll(properties,
-				SURVIVAL, WORLD_GEN, UNIQUE, PRESERVE_BLOCKS,
+				STRUCTURE_AUTHOR, SURVIVAL, WORLD_GEN, UNIQUE, PRESERVE_BLOCKS, PREVENT_NATURAL_HOSTILE_SPAWNS,
 				SELECTION_WEIGHT, CLUSTER_VALUE, MIN_DUPLICATE_DISTANCE,
-				DIMENSION_WHITE_LIST, DIMENSION_LIST, BIOME_WHITE_LIST, BIOME_LIST,
+				DIMENSION_WHITE_LIST, DIMENSION_LIST, BIOME_GROUP_LIST, BIOME_WHITE_LIST, BIOME_LIST,
 				MAX_LEVELING, MAX_FILL, BORDER_SIZE,
-				BLOCK_SWAP);
+				BLOCK_SWAP, TERRITORY_NAME, BIOME_REPLACEMENT);
 		Collections.addAll(properties, props);
 	}
 
 	public List<IStructureValidationProperty> getValidationProperties() {
-		return this.properties;
+		return properties;
 	}
 
 	public String getName() {

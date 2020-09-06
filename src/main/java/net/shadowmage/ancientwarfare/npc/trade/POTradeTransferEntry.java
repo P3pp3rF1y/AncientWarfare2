@@ -11,7 +11,6 @@ import javax.annotation.Nonnull;
  */
 public abstract class POTradeTransferEntry {
 	private TransferType type = getDefaultType();
-	@Nonnull
 	private ItemStack filter = ItemStack.EMPTY;
 
 	protected abstract TransferType getDefaultType();

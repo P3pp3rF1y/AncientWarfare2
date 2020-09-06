@@ -2,14 +2,20 @@ package net.shadowmage.ancientwarfare.structure.entity;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemAxe;
+import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -26,7 +32,6 @@ import net.shadowmage.ancientwarfare.core.owner.Owner;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.gates.types.Gate;
 import net.shadowmage.ancientwarfare.structure.gates.types.GateRotatingBridge;
-import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;
@@ -36,6 +41,7 @@ import java.util.Optional;
  *
  * @author Shadowmage
  */
+@SuppressWarnings("squid:S2160") // no reason to override equals because the default implementation comparing entityId is enough
 public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IEntityPacketHandler {
 	private static final String HEALTH_TAG = "health";
 	public BlockPos pos1;
@@ -46,7 +52,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 
 	public float openingSpeed = 0.f;//calculated speed of the opening gate -- used during animation
 
-	private Gate gateType = Gate.getGateByID(0);
+	public Gate gateType = Gate.getGateByID(0);
 
 	private Owner owner = Owner.EMPTY;
 	private int health = 0;
@@ -60,12 +66,13 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 	private boolean wasPoweredB = false;
 	private AxisAlignedBB renderBoundingBox = new AxisAlignedBB(0, 0, 0, 0, 0, 0);
 
-	private TEGateProxy renderedTile = null;
+	private BlockPos renderedTilePos = null;
+	private int soundTicks = 15;
 
 	public EntityGate(World par1World) {
 		super(par1World);
-		this.ignoreFrustumCheck = true;
-		this.preventEntitySpawning = true;
+		ignoreFrustumCheck = true;
+		preventEntitySpawning = true;
 	}
 
 	public void setOwner(Owner owner) {
@@ -87,11 +94,11 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 	}
 
 	public Gate getGateType() {
-		return this.gateType;
+		return gateType;
 	}
 
 	public void setGateType(Gate type) {
-		this.gateType = type;
+		gateType = type;
 		setHealth(type.getMaxHealth());
 	}
 
@@ -102,61 +109,60 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 
 	@Override
 	public ItemStack getPickedResult(RayTraceResult target) {
-		return Gate.getItemToConstruct(this.gateType.getGlobalID());
+		return Gate.getItemToConstruct(gateType.getGlobalID());
 	}
 
 	public void repackEntity() {
 		if (world.isRemote || isDead) {
 			return;
 		}
-		gateType.onGateStartOpen(this);//catch gates that have proxy blocks still in the world
 		gateType.onGateStartClose(this);//
-		@Nonnull ItemStack item = Gate.getItemToConstruct(this.gateType.getGlobalID());
+		ItemStack item = Gate.getItemToConstruct(gateType.getGlobalID());
 		EntityItem entity = new EntityItem(world, posX, posY + 0.5d, posZ, item);
-		this.world.spawnEntity(entity);
-		this.setDead();
+		world.spawnEntity(entity);
+		setDead();
 	}
 
 	@Override
 	public void setDead() {
 		super.setDead();
-		if (!this.world.isRemote) {
+		if (!world.isRemote) {
 			//catch gates that have proxy blocks still in the world
-			gateType.onGateStartOpen(this);
 			gateType.onGateStartClose(this);
+			playSound(gateType.breakSound, 1, 1);
 		}
 	}
 
 	private void setOpeningStatus(byte op) {
-		this.gateStatus = op;
-		if (!this.world.isRemote) {
-			this.world.setEntityState(this, op);
+		gateStatus = op;
+		if (!world.isRemote) {
+			world.setEntityState(this, op);
 		}
 		if (op == -1) {
-			this.gateType.onGateStartClose(this);
-		} else if (op == 1) {
-			this.gateType.onGateStartOpen(this);
+			gateType.onGateStartClose(this);
 		}
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int getBrightnessForRender() {
-		int i = MathHelper.floor(this.posX);
-		int j = MathHelper.floor(this.posZ);
-		int k = MathHelper.floor(this.posY);
-		if (pos1.getY() > k)
+		int i = MathHelper.floor(posX);
+		int j = MathHelper.floor(posZ);
+		int k = MathHelper.floor(posY);
+		if (pos1.getY() > k) {
 			k = pos1.getY();
-		if (pos2.getY() > k)
+		}
+		if (pos2.getY() > k) {
 			k = pos2.getY();
-		return this.world.getCombinedLight(new BlockPos(i, k, j), 0);
+		}
+		return world.getCombinedLight(new BlockPos(i, k, j), 0);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void handleStatusUpdate(byte par1) {
 		if (par1 == -1 || par1 == 0 || par1 == 1) {
-			this.setOpeningStatus(par1);
+			setOpeningStatus(par1);
 		}
 		super.handleStatusUpdate(par1);
 	}
@@ -166,45 +172,45 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 	}
 
 	public byte getOpeningStatus() {
-		return this.gateStatus;
+		return gateStatus;
 	}
 
 	public int getHealth() {
-		return this.health;
+		return health;
 	}
 
 	public void setHealth(int val) {
 		int newHealth = Math.max(val, 0);
 		if (newHealth < health) {
-			this.hurtAnimationTicks = 20;
+			hurtAnimationTicks = 20;
 		}
-		if (newHealth < health && !this.world.isRemote) {
+		if (newHealth < health && !world.isRemote) {
 			PacketEntity pkt = new PacketEntity(this);
 			pkt.packetData.setInteger(HEALTH_TAG, newHealth);
 			NetworkHandler.sendToAllTracking(this, pkt);
 		}
-		this.health = newHealth;
+		health = newHealth;
 	}
 
 	@Override
 	public void setPosition(double par1, double par3, double par5) {
-		this.posX = par1;
-		this.posY = par3;
-		this.posZ = par5;
-		if (this.gateType != null) {
-			this.gateType.setCollisionBoundingBox(this);
+		posX = par1;
+		posY = par3;
+		posZ = par5;
+		if (gateType != null) {
+			gateType.setCollisionBoundingBox(this);
 		}
 	}
 
 	@Override
 	public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
-		this.setPosition(x, y, z);
-		this.setRotation(yaw, pitch);
+		setPosition(x, y, z);
+		setRotation(yaw, pitch);
 	}
 
 	@Override
 	public boolean processInitialInteract(EntityPlayer player, EnumHand hand) {
-		if (this.world.isRemote) {
+		if (world.isRemote) {
 			return true;
 		}
 
@@ -217,7 +223,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 					NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_GATE_CONTROL, getEntityId(), 0, 0);
 				}
 			} else {
-				this.activateGate();
+				activateGate();
 			}
 			return true;
 		} else {
@@ -227,48 +233,63 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 	}
 
 	public void activateGate() {
-		if (this.gateStatus == 1 && this.gateType.canActivate(this, false)) {
-			this.setOpeningStatus((byte) -1);
-		} else if (this.gateStatus == -1 && this.gateType.canActivate(this, true)) {
-			this.setOpeningStatus((byte) 1);
-		} else if (this.edgePosition == 0 && this.gateType.canActivate(this, true)) {
-			this.setOpeningStatus((byte) 1);
-		} else if (this.gateType.canActivate(this, false))//gate is already open/opening, set to closing
+		if (gateStatus == 1 && gateType.canActivate(this, false)) {
+			setOpeningStatus((byte) -1);
+		} else if (gateStatus == -1 && gateType.canActivate(this, true)) {
+			setOpeningStatus((byte) 1);
+		} else if (edgePosition == 0 && gateType.canActivate(this, true)) {
+			setOpeningStatus((byte) 1);
+		} else if (gateType.canActivate(this, false))//gate is already open/opening, set to closing
 		{
-			this.setOpeningStatus((byte) -1);
+			setOpeningStatus((byte) -1);
 		}
+	}
+
+	private void playGateMoveSound(BlockPos pos, Gate gateType) {
+		world.playSound(null, pos, gateType.moveSound, SoundCategory.AMBIENT, 2, 1);
+		soundTicks = 0;
 	}
 
 	@Override
 	@SuppressWarnings("squid:S2696") //World.MAX_ENTITY_RADIUS is static and can only be set this way, also just running in the main thread makes this safe
 	public void onUpdate() {
 		super.onUpdate();
-		float prevEdge = this.edgePosition;
-		this.setPosition(posX, posY, posZ);
-		if (this.hurtInvulTicks > 0) {
-			this.hurtInvulTicks--;
+		float prevEdge = edgePosition;
+		setPosition(posX, posY, posZ);
+		if (hurtInvulTicks > 0) {
+			hurtInvulTicks--;
 		}
-		this.checkForPowerUpdates();
+		checkForPowerUpdates();
 		gateType.setRenderedTileIfNotPresent(this);
-		if (this.hurtAnimationTicks > 0) {
-			this.hurtAnimationTicks--;
+		if (hurtAnimationTicks > 0) {
+			hurtAnimationTicks--;
 		}
-		if (this.gateStatus == 1) {
-			this.edgePosition += this.gateType.getMoveSpeed();
-			if (this.edgePosition >= this.edgeMax) {
-				this.edgePosition = this.edgeMax;
-				this.gateStatus = 0;
-				this.gateType.onGateFinishOpen(this);
+		if (gateStatus == 1) {
+			edgePosition += gateType.getMoveSpeed();
+			if (soundTicks == 15) {
+				playGateMoveSound(pos1, gateType);
 			}
-		} else if (this.gateStatus == -1) {
-			this.edgePosition -= this.gateType.getMoveSpeed();
-			if (this.edgePosition <= 0) {
-				this.edgePosition = 0;
-				this.gateStatus = 0;
-				this.gateType.onGateFinishClose(this);
+			soundTicks++;
+			if (edgePosition >= edgeMax) {
+				edgePosition = edgeMax;
+				gateStatus = 0;
+				soundTicks = 15;
+				gateType.onGateFinishOpen(this);
+			}
+		} else if (gateStatus == -1) {
+			edgePosition -= gateType.getMoveSpeed();
+			if (soundTicks == 15) {
+				playGateMoveSound(pos1, gateType);
+			}
+			soundTicks++;
+			if (edgePosition <= 0) {
+				edgePosition = 0;
+				gateStatus = 0;
+				soundTicks = 15;
+				gateType.onGateFinishClose(this);
 			}
 		}
-		this.openingSpeed = prevEdge - this.edgePosition;
+		openingSpeed = prevEdge - edgePosition;
 
 		if (!hasSetWorldEntityRadius) {
 			hasSetWorldEntityRadius = true;
@@ -277,8 +298,8 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 			int xSize = max.getX() - min.getX() + 1;
 			int zSize = max.getZ() - min.getZ() + 1;
 			int ySize = max.getY() - min.getY() + 1;
-			int largest = xSize > ySize ? xSize : ySize;
-			largest = largest > zSize ? largest : zSize;
+			int largest = Math.max(xSize, ySize);
+			largest = Math.max(largest, zSize);
 			largest = (largest / 2) + 1;
 			if (World.MAX_ENTITY_RADIUS < largest) {
 				World.MAX_ENTITY_RADIUS = largest;
@@ -288,23 +309,23 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 	}
 
 	private void checkForPowerUpdates() {
-		if (this.world.isRemote) {
+		if (world.isRemote) {
 			return;
 		}
 		boolean activate = false;
 		int y = Math.min(pos2.getY(), pos1.getY());
-		boolean foundPowerA = this.world.isBlockIndirectlyGettingPowered(new BlockPos(pos1.getX(), y, pos1.getZ())) > 0;
-		boolean foundPowerB = this.world.isBlockIndirectlyGettingPowered(new BlockPos(pos2.getX(), y, pos2.getZ())) > 0;
+		boolean foundPowerA = world.isBlockIndirectlyGettingPowered(new BlockPos(pos1.getX(), y, pos1.getZ())) > 0;
+		boolean foundPowerB = world.isBlockIndirectlyGettingPowered(new BlockPos(pos2.getX(), y, pos2.getZ())) > 0;
 		if (foundPowerA && !wasPoweredA) {
 			activate = true;
 		}
 		if (foundPowerB && !wasPoweredB) {
 			activate = true;
 		}
-		this.wasPoweredA = foundPowerA;
-		this.wasPoweredB = foundPowerB;
+		wasPoweredA = foundPowerA;
+		wasPoweredB = foundPowerB;
 		if (activate) {
-			this.activateGate();
+			activateGate();
 		}
 	}
 
@@ -317,21 +338,47 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 		if (isInsensitiveTo(damageSource) || amount < 0) {
 			return false;
 		}
-		if (this.world.isRemote) {
+		if (world.isRemote) {
 			return true;
 		}
 		if (!damageSource.isExplosion()) {
-			if (this.hurtInvulTicks > 0) {
+			if (hurtInvulTicks > 0) {
 				return false;
 			}
-			this.hurtInvulTicks = 10;
+			hurtInvulTicks = 10;
+		} else {
+			amount *= 10;
 		}
-		this.setHealth((int) (getHealth() - amount));
+
+		playSound(gateType.hurtSound, 1, 1);
+		if (damageSource.getImmediateSource() instanceof EntityArrow) { // ignore arrow dmg
+			return false;
+		}
+		if (damageSource.getImmediateSource() instanceof EntityLivingBase) {
+			/*  getTrueSource is no good here because that would make it work for ranged attacks like arrows and vehicles too,
+			we only want to reduce melee damage */
+			EntityLivingBase entitylivingbase = (EntityLivingBase) damageSource.getImmediateSource();
+			if ((!entitylivingbase.getHeldItem(EnumHand.MAIN_HAND).isEmpty())) {
+				Item heldItem = entitylivingbase.getHeldItem(EnumHand.MAIN_HAND).getItem();
+				if (gateType.isWood(gateType.getVariant())) { // wooden gates
+					amount = (heldItem instanceof ItemAxe) ? amount / 2 : amount / 4; // half dmg for axe, 1/4 for anything else
+
+				} else { // iron gates
+					if ((heldItem instanceof ItemPickaxe)) {
+						Item.ToolMaterial material = Item.ToolMaterial.valueOf(((ItemPickaxe) heldItem).getToolMaterialName());
+						amount = material == Item.ToolMaterial.DIAMOND ? amount / 2 : amount / 3; // half dmg for diamond pickaxe, 1/3 for any other axes
+					} else { // anything but a pickaxe
+						amount = amount / 4;
+					}
+				}
+			}
+		}
+		setHealth((int) (getHealth() - amount));
 
 		if (getHealth() <= 0) {
-			this.setDead();
+			setDead();
 		}
-		return !this.isDead;
+		return !isDead;
 	}
 
 	@Override
@@ -356,7 +403,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 
 	@Override
 	public AxisAlignedBB getCollisionBoundingBox() {
-		return this.getEntityBoundingBox();
+		return getEntityBoundingBox();
 	}
 
 	@Override
@@ -377,14 +424,16 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 	@Override
 	public void applyEntityCollision(Entity entity) {
 		super.applyEntityCollision(entity);
-		if (isInside(entity))
+		if (isInside(entity)) {
 			entity.addVelocity(0, -gateStatus * 0.5, 0);
+		}
 	}
 
 	@Override
 	public void onCollideWithPlayer(EntityPlayer entity) {
-		if (isInside(entity))
+		if (isInside(entity)) {
 			entity.addVelocity(0, -gateStatus * 0.5, 0);
+		}
 	}
 
 	private boolean isInside(Entity entity) {
@@ -405,15 +454,15 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound tag) {
 		setPositions(BlockPos.fromLong(tag.getLong("pos1")), BlockPos.fromLong(tag.getLong("pos2")));
-		this.setGateType(Gate.getGateByID(tag.getInteger("type")));
+		setGateType(Gate.getGateByID(tag.getInteger("type")));
 		owner = Owner.deserializeFromNBT(tag);
-		this.edgePosition = tag.getFloat("edge");
-		this.edgeMax = tag.getFloat("edgeMax");
-		this.setHealth(tag.getInteger(HEALTH_TAG));
-		this.gateStatus = tag.getByte("status");
-		this.gateOrientation = EnumFacing.VALUES[tag.getByte("orient")];
-		this.wasPoweredA = tag.getBoolean("power");
-		this.wasPoweredB = tag.getBoolean("power2");
+		edgePosition = tag.getFloat("edge");
+		edgeMax = tag.getFloat("edgeMax");
+		setHealth(tag.getInteger(HEALTH_TAG));
+		gateStatus = tag.getByte("status");
+		gateOrientation = EnumFacing.VALUES[tag.getByte("orient")];
+		wasPoweredA = tag.getBoolean("power");
+		wasPoweredB = tag.getBoolean("power2");
 		gateType.updateRenderBoundingBox(this);
 	}
 
@@ -421,46 +470,46 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 	protected void writeEntityToNBT(NBTTagCompound tag) {
 		tag.setLong("pos1", pos1.toLong());
 		tag.setLong("pos2", pos2.toLong());
-		tag.setInteger("type", this.gateType.getGlobalID());
+		tag.setInteger("type", gateType.getGlobalID());
 		getOwner().serializeToNBT(tag);
-		tag.setFloat("edge", this.edgePosition);
-		tag.setFloat("edgeMax", this.edgeMax);
-		tag.setInteger(HEALTH_TAG, this.getHealth());
-		tag.setByte("status", this.gateStatus);
+		tag.setFloat("edge", edgePosition);
+		tag.setFloat("edgeMax", edgeMax);
+		tag.setInteger(HEALTH_TAG, getHealth());
+		tag.setByte("status", gateStatus);
 		tag.setByte("orient", (byte) gateOrientation.ordinal());
-		tag.setBoolean("power", this.wasPoweredA);
-		tag.setBoolean("power2", this.wasPoweredB);
+		tag.setBoolean("power", wasPoweredA);
+		tag.setBoolean("power2", wasPoweredB);
 	}
 
 	@Override
 	public void writeSpawnData(ByteBuf data) {
 		data.writeLong(pos1.toLong());
 		data.writeLong(pos2.toLong());
-		data.writeInt(this.gateType.getGlobalID());
-		data.writeFloat(this.edgePosition);
-		data.writeFloat(this.edgeMax);
-		data.writeByte(this.gateStatus);
-		data.writeByte(this.gateOrientation.ordinal());
+		data.writeInt(gateType.getGlobalID());
+		data.writeFloat(edgePosition);
+		data.writeFloat(edgeMax);
+		data.writeByte(gateStatus);
+		data.writeByte(gateOrientation.ordinal());
 		data.writeInt(health);
 	}
 
 	@Override
 	public void readSpawnData(ByteBuf data) {
 		setPositions(BlockPos.fromLong(data.readLong()), BlockPos.fromLong(data.readLong()));
-		this.gateType = Gate.getGateByID(data.readInt());
-		this.edgePosition = data.readFloat();
-		this.edgeMax = data.readFloat();
-		this.gateStatus = data.readByte();
-		this.gateOrientation = EnumFacing.VALUES[data.readByte()];
-		this.health = data.readInt();
+		gateType = Gate.getGateByID(data.readInt());
+		edgePosition = data.readFloat();
+		edgeMax = data.readFloat();
+		gateStatus = data.readByte();
+		gateOrientation = EnumFacing.VALUES[data.readByte()];
+		health = data.readInt();
 		gateType.updateRenderBoundingBox(this);
 	}
 
 	@Override
 	public void handlePacketData(NBTTagCompound tag) {
 		if (tag.hasKey(HEALTH_TAG)) {
-			this.health = tag.getInteger(HEALTH_TAG);
-			this.hurtAnimationTicks = 20;
+			health = tag.getInteger(HEALTH_TAG);
+			hurtAnimationTicks = 20;
 		}
 	}
 
@@ -477,11 +526,11 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 		this.renderBoundingBox = renderBoundingBox;
 	}
 
-	public Optional<TEGateProxy> getRenderedTile() {
-		return Optional.ofNullable(renderedTile);
+	public Optional<BlockPos> getRenderedTilePos() {
+		return Optional.ofNullable(renderedTilePos);
 	}
 
-	public void setRenderedTile(TEGateProxy te) {
-		renderedTile = te;
+	public void setRenderedTilePos(BlockPos pos) {
+		renderedTilePos = pos;
 	}
 }

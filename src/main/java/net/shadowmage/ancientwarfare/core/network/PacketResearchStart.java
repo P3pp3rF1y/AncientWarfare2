@@ -6,7 +6,6 @@ import net.minecraft.network.PacketBuffer;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 
 public class PacketResearchStart extends PacketBase {
-
 	private String playerName;
 	private String toAdd;
 	private boolean start;
@@ -17,10 +16,7 @@ public class PacketResearchStart extends PacketBase {
 		this.start = start;
 	}
 
-	@SuppressWarnings("unused")
-	public PacketResearchStart() {
-
-	}
+	public PacketResearchStart() {}
 
 	@Override
 	protected void writeToStream(ByteBuf data) {

@@ -5,13 +5,96 @@
             "AgeTicks",
             "Gender",
             "Variant",
-            "ArmorHead",
-            "ArmorNeck",
-            "ArmorBody",
-            "ArmorTail",
             "ModelDead",
             "Items",
-            "AgingDisabled"
+            "AgingDisabled",
+            "DeadProg",
+            "DeathStage"
+        ],
+        "com.github.alexthe666.iceandfire.entity.EntityAmphithere": [
+            "Variant"
+        ],
+        "com.github.alexthe666.iceandfire.entity.EntityCockatrice": [
+            "Hen"
+        ],
+        "com.github.alexthe666.iceandfire.entity.EntityCyclops": [
+            "Variant"
+        ],
+        "com.github.alexthe666.iceandfire.entity.EntityDeathWorm": [
+            "Variant",
+            "Scale",
+            "WormAge"
+        ],
+        "com.github.alexthe666.iceandfire.entity.EntityDreadBeast": [
+            "Variant",
+            "Scale"
+        ],
+        "com.github.alexthe666.iceandfire.entity.EntityDreadGhoul": [
+            "Variant",
+            "Scale"
+        ],
+        "com.github.alexthe666.iceandfire.entity.EntityDreadKnight": [
+            "ArmorVariant"
+        ],
+        "com.github.alexthe666.iceandfire.entity.EntityDreadLich": [
+            "Variant"
+        ],
+        "com.github.alexthe666.iceandfire.entity.EntityDreadScuttler": [
+            "Scale"
+        ],
+        "com.github.alexthe666.iceandfire.entity.EntityDreadThrall": [
+            "ArmorVariant",
+            "HasCustomHelmet",
+            "HasCustomChestplate",
+            "HasCustomLeggings",
+            "HasCustomBoots"
+        ],
+        "com.github.alexthe666.iceandfire.entity.EntityHippocampus": [
+            "Variant",
+            "Chested",
+            "Saddled",
+            "Armor",
+            "Items"
+        ],
+        "com.github.alexthe666.iceandfire.entity.EntityHippogryph": [
+            "Variant",
+            "Chested",
+            "Saddled",
+            "Armor",
+            "Items"
+        ],
+        "com.github.alexthe666.iceandfire.entity.EntityHydra": [
+            "Variant",
+            "HeadCount",
+            "SeveredHead"
+        ],
+        "com.github.alexthe666.iceandfire.entity.EntityMyrmexBase": [
+            "GrowthStage",
+            "Variant",
+            "Career",
+            "CareerLevel",
+            "Offers",
+            "Riches"
+        ],
+        "com.github.alexthe666.iceandfire.entity.EntityPixie": [
+            "Color"
+        ],
+        "com.github.alexthe666.iceandfire.entity.EntitySeaSerpent": [
+            "Variant",
+            "Scale",
+            "Ancient"
+        ],
+        "com.github.alexthe666.iceandfire.entity.EntitySiren": [
+            "HairColor",
+            "SingingPose"
+        ],
+        "com.github.alexthe666.iceandfire.entity.EntitySnowVillager": [
+            "Profession",
+            "ProfessionName"
+        ],
+        "com.github.alexthe666.iceandfire.entity.EntityTroll": [
+            "Variant",
+            "Weapon"
         ]
     }
 }

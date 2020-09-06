@@ -1,0 +1,279 @@
+{
+    "pools": [
+        {
+            "name":"main", 
+            "rolls": {
+                "min": 3,
+                "max": 4
+            },
+            "entries": [
+				{
+                    "type": "item",
+                    "name": "gold_ingot",
+                    "weight": 4,
+                    "functions": [
+						{
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "diamond",
+                    "weight": 1,
+                    "functions": [
+						{
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "emerald",
+                    "weight": 1,
+                    "functions": [
+						{
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "gemsplusplus:ruby",
+                    "weight": 1,
+                    "functions": [
+						{
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "gemsplusplus:sapphire",
+                    "weight": 1,
+                    "functions": [
+						{
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "gemsplusplus:amethyst",
+                    "weight": 1,
+                    "functions": [
+						{
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "gemsplusplus:topaz",
+                    "weight": 1,
+                    "functions": [
+						{
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "gemsplusplus:phoenixite",
+                    "weight": 1,
+                    "functions": [
+						{
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 1
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "gemsplusplus:jade",
+                    "weight": 1,
+                    "functions": [
+						{
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "gemsplusplus:citrine",
+                    "weight": 1,
+                    "functions": [
+						{
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "gemsplusplus:garnet",
+                    "weight": 1,
+                    "functions": [
+						{
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "gemsplusplus:spinel",
+                    "weight": 1,
+                    "functions": [
+						{
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "gemsplusplus:sugilite",
+                    "weight": 1,
+                    "functions": [
+						{
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "gemsplusplus:jasper",
+                    "weight": 1,
+                    "functions": [
+						{
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "gemsplusplus:chrysocolla",
+                    "weight": 1,
+                    "functions": [
+						{
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "gemsplusplus:tourmaline",
+                    "weight": 1,
+                    "functions": [
+						{
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "gemsplusplus:malachite",
+                    "weight": 1,
+                    "functions": [
+						{
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "gemsplusplus:agate",
+                    "weight": 1,
+                    "functions": [
+						{
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "gemsplusplus:onyx",
+                    "weight": 1,
+                    "functions": [
+						{
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -16,7 +16,6 @@ import net.shadowmage.ancientwarfare.core.crafting.wrappers.NoRecipeWrapper;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
@@ -25,9 +24,8 @@ public class CraftingRecipeMemory {
 	private ICraftingRecipe recipe = NoRecipeWrapper.INSTANCE;
 
 	public ItemStackHandler bookSlot = new ItemStackHandler(1) {
-		@Nonnull
 		@Override
-		public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 			return ItemResearchBook.getResearcherName(stack) != null ? super.insertItem(slot, stack, simulate) : stack;
 		}
 

@@ -11,15 +11,13 @@ public class NpcAIDismountVehicle<T extends NpcBase & IVehicleUser> extends NpcA
 
 	@Override
 	public boolean shouldExecute() {
-		return npc.isRidingVehicle() && !npc.canContinueRidingVehicle();
+		return super.shouldExecute() && npc.isRidingVehicle() && !npc.canContinueRidingVehicle();
 	}
 
 	@Override
-	@SuppressWarnings("squid:S3655")
 	public void startExecuting() {
 		npc.dismountRidingEntity();
-		//noinspection ConstantConditions
-		npc.getVehicle().get().moveHelper.stopMotion(); //stop motion in case it started moving based on some other AI task (like AIM one)
+		npc.getVehicle().ifPresent(v -> v.moveHelper.stopMotion()); //stop motion in case it started moving based on some other AI task (like AIM one)
 		npc.resetVehicle();
 	}
 }

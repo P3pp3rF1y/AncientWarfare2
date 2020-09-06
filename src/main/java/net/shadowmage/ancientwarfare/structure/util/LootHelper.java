@@ -10,6 +10,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
@@ -21,6 +22,7 @@ import javax.annotation.Nullable;
 
 public class LootHelper {
 	public static final String FACTION_NAME_TAG = "factionName";
+
 	private LootHelper() {}
 
 	public static <T extends TileEntity & ISpecialLootContainer> void fillWithLoot(T te, @Nullable EntityPlayer player) {
@@ -88,6 +90,10 @@ public class LootHelper {
 					BlockTools.notifyBlockUpdate(te);
 				});
 				lootSettings.removeLoot();
+			}
+			if (lootSettings.hasMessage()) {
+				lootSettings.setHasMessage(false);
+				player.sendMessage(new TextComponentTranslation(lootSettings.getPlayerMessage()));
 			}
 		}
 	}

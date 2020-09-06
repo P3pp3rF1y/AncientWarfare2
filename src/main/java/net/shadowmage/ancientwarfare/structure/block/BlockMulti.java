@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.structure.block;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -13,6 +14,8 @@ import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.tile.TileMulti;
 
 import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.List;
 import java.util.function.Supplier;
 
 public abstract class BlockMulti<T extends TileMulti> extends BlockBaseStructure {
@@ -38,8 +41,20 @@ public abstract class BlockMulti<T extends TileMulti> extends BlockBaseStructure
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, INVISIBLE);
+	protected final BlockStateContainer createBlockState() {
+		List<IProperty> additionaProperties = getAdditionalProperties();
+		IProperty[] properties = new IProperty[1 + additionaProperties.size()];
+		properties[0] = INVISIBLE;
+		int i = 1;
+		for (IProperty property : additionaProperties) {
+			properties[i] = property;
+			i++;
+		}
+		return new BlockStateContainer(this, properties);
+	}
+
+	protected List<IProperty> getAdditionalProperties() {
+		return Collections.emptyList();
 	}
 
 	@Override
@@ -49,7 +64,7 @@ public abstract class BlockMulti<T extends TileMulti> extends BlockBaseStructure
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return state.getValue(INVISIBLE) ? 1 : 0;
+		return Boolean.TRUE.equals(state.getValue(INVISIBLE)) ? 1 : 0;
 	}
 
 	@Override

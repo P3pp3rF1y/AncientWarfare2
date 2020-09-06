@@ -4,12 +4,12 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -39,16 +39,22 @@ import net.shadowmage.ancientwarfare.structure.container.ContainerStatue;
 import net.shadowmage.ancientwarfare.structure.container.ContainerStructureScanner;
 import net.shadowmage.ancientwarfare.structure.container.ContainerStructureSelection;
 import net.shadowmage.ancientwarfare.structure.container.ContainerTownSelection;
+import net.shadowmage.ancientwarfare.structure.datafixes.LootSettingsPotionRegistryNameFixer;
 import net.shadowmage.ancientwarfare.structure.datafixes.TileLootFixer;
+import net.shadowmage.ancientwarfare.structure.datafixes.WoodenCoffinFixer;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.entity.EntitySeat;
 import net.shadowmage.ancientwarfare.structure.event.OneShotEntityDespawnListener;
+import net.shadowmage.ancientwarfare.structure.network.PacketHighlightBlock;
+import net.shadowmage.ancientwarfare.structure.network.PacketShowBoundingBoxes;
 import net.shadowmage.ancientwarfare.structure.network.PacketSoundBlockPlayerSpecValues;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructure;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructureRemove;
 import net.shadowmage.ancientwarfare.structure.proxy.CommonProxyStructure;
+import net.shadowmage.ancientwarfare.structure.registry.BiomeGroupRegistry;
 import net.shadowmage.ancientwarfare.structure.registry.EntitySpawnNBTRegistry;
 import net.shadowmage.ancientwarfare.structure.registry.StructureBlockRegistry;
+import net.shadowmage.ancientwarfare.structure.registry.TerritorySettingRegistry;
 import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 import net.shadowmage.ancientwarfare.structure.template.WorldGenStructureManager;
@@ -63,20 +69,17 @@ import net.shadowmage.ancientwarfare.structure.template.datafixes.fixers.json.Js
 import net.shadowmage.ancientwarfare.structure.template.load.TemplateLoader;
 import net.shadowmage.ancientwarfare.structure.town.WorldTownGenerator;
 import net.shadowmage.ancientwarfare.structure.util.CapabilityRespawnData;
+import net.shadowmage.ancientwarfare.structure.worldgen.CapabilityTerritoryData;
 import net.shadowmage.ancientwarfare.structure.worldgen.WorldGenTickHandler;
 import net.shadowmage.ancientwarfare.structure.worldgen.WorldStructureGenerator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @Mod(name = "Ancient Warfare Structures", modid = AncientWarfareStructure.MOD_ID, version = "@VERSION@", dependencies = "required-after:ancientwarfare")
-
 public class AncientWarfareStructure {
 	public static final String MOD_ID = "ancientwarfarestructure";
 
 	public static final CreativeTabs TAB = new AWStructureTab();
-
-	@Instance(value = MOD_ID)
-	public static AncientWarfareStructure instance;
 
 	public static final Logger LOG = LogManager.getLogger(MOD_ID);
 
@@ -86,6 +89,7 @@ public class AncientWarfareStructure {
 
 	private AWStructureStatics statics;
 
+	@SuppressWarnings("unused")
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent evt) {
 		statics = new AWStructureStatics("AncientWarfareStructures");
@@ -95,17 +99,21 @@ public class AncientWarfareStructure {
 
 		if (AWStructureStatics.enableWorldGen) {
 			MinecraftForge.EVENT_BUS.register(WorldGenTickHandler.INSTANCE);
-			if (AWStructureStatics.enableStructureGeneration)
+			if (AWStructureStatics.enableStructureGeneration) {
 				GameRegistry.registerWorldGenerator(WorldStructureGenerator.INSTANCE, 1);
-			if (AWStructureStatics.enableTownGeneration)
+			}
+			if (AWStructureStatics.enableTownGeneration) {
 				GameRegistry.registerWorldGenerator(WorldTownGenerator.INSTANCE, 2);
+			}
 		}
 		EntityRegistry.registerModEntity(new ResourceLocation(AncientWarfareStructure.MOD_ID, "aw_gate"), EntityGate.class, "aw_gate", 0, this, 250, 200, false);
 		EntityRegistry.registerModEntity(new ResourceLocation(AncientWarfareStructure.MOD_ID, "seat"), EntitySeat.class, "AWSeat", 1, this, 20, 10, false);
 
-		PacketBase.registerPacketType(NetworkHandler.PACKET_STRUCTURE, PacketStructure.class);
-		PacketBase.registerPacketType(NetworkHandler.PACKET_STRUCTURE_REMOVE, PacketStructureRemove.class);
-		PacketBase.registerPacketType(NetworkHandler.PACKET_SOUND_BLOCK_PLAYER_SPEC_VALUES, PacketSoundBlockPlayerSpecValues.class);
+		PacketBase.registerPacketType(NetworkHandler.PACKET_STRUCTURE, PacketStructure.class, PacketStructure::new);
+		PacketBase.registerPacketType(NetworkHandler.PACKET_STRUCTURE_REMOVE, PacketStructureRemove.class, PacketStructureRemove::new);
+		PacketBase.registerPacketType(NetworkHandler.PACKET_SOUND_BLOCK_PLAYER_SPEC_VALUES, PacketSoundBlockPlayerSpecValues.class, PacketSoundBlockPlayerSpecValues::new);
+		PacketBase.registerPacketType(NetworkHandler.PACKET_HIGHLIGHT_BLOCK, PacketHighlightBlock.class, PacketHighlightBlock::new);
+		PacketBase.registerPacketType(NetworkHandler.PACKET_SHOW_BBS, PacketShowBoundingBoxes.class, PacketShowBoundingBoxes::new);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_SCANNER, ContainerStructureScanner.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_BUILDER, ContainerStructureSelection.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_TOWN_BUILDER, ContainerTownSelection.class);
@@ -127,11 +135,15 @@ public class AncientWarfareStructure {
 		TemplateLoader.INSTANCE.initializeAndExportDefaults();
 
 		RegistryLoader.registerParser(new EntitySpawnNBTRegistry.Parser());
+		RegistryLoader.registerParser(new BiomeGroupRegistry.Parser());
 		RegistryLoader.registerParser(new StructureBlockRegistry.Parser());
+		RegistryLoader.registerParser(new TerritorySettingRegistry.Parser());
 
 		CapabilityRespawnData.register();
+		CapabilityTerritoryData.register();
 	}
 
+	@SuppressWarnings("unused")
 	@EventHandler
 	public void init(FMLInitializationEvent evt) {
 		proxy.init();
@@ -144,8 +156,11 @@ public class AncientWarfareStructure {
 		DataFixManager.registerRuleFixer(new EntityRuleNameFixer());
 		DataFixManager.registerRuleFixer(new EntityEquipmentFixer());
 		DataFixManager.registerRuleFixer(new TileLootFixer());
+		DataFixManager.registerRuleFixer(new LootSettingsPotionRegistryNameFixer());
+		DataFixManager.registerRuleFixer(new WoodenCoffinFixer());
 	}
 
+	@SuppressWarnings("unused")
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent evt) {
 		StructurePluginManager.INSTANCE.loadPlugins();
@@ -155,6 +170,7 @@ public class AncientWarfareStructure {
 		AWStructureStatics.logSkippableBlocksCoveredByMaterial();
 	}
 
+	@SuppressWarnings("unused")
 	@SubscribeEvent
 	public void onLogin(PlayerEvent.PlayerLoggedInEvent evt) {
 		if (!evt.player.world.isRemote) {
@@ -162,25 +178,36 @@ public class AncientWarfareStructure {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	@SubscribeEvent
 	public void onEntityCapabilityAttach(AttachCapabilitiesEvent<Entity> event) {
 		CapabilityRespawnData.onAttach(event);
 	}
 
+	@SuppressWarnings("unused")
+	@SubscribeEvent
+	public void onWorldCapabilityAttach(AttachCapabilitiesEvent<World> event) {
+		CapabilityTerritoryData.onAttach(event);
+	}
+
+	@SuppressWarnings("unused")
 	@SubscribeEvent
 	public void onWorldLoad(WorldEvent.Load event) {
 		event.getWorld().addEventListener(OneShotEntityDespawnListener.INSTANCE);
 	}
 
+	@SuppressWarnings("unused")
 	@EventHandler
 	public void serverStart(FMLServerStartingEvent evt) {
 		evt.registerServerCommand(new CommandStructure());
 	}
 
+	@SuppressWarnings("unused")
 	@EventHandler
 	public void serverStop(FMLServerStoppingEvent evt) {
-		if (AWStructureStatics.enableWorldGen)
+		if (AWStructureStatics.enableWorldGen) {
 			WorldGenTickHandler.INSTANCE.finalTick();
+		}
 	}
 
 }

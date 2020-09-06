@@ -7,13 +7,14 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 
 public class AmmoHwachaRocketExplosive extends Ammo {
 
 	public AmmoHwachaRocketExplosive() {
 		super("ammo_hwacha_rocket_explosive");
-		this.entityDamage = 4;
-		this.vehicleDamage = 4;
+		this.entityDamage = AWVehicleStatics.vehicleStats.ammoHwachaRocketExplosiveDamage;
+		this.vehicleDamage = AWVehicleStatics.vehicleStats.ammoHwachaRocketExplosiveDamage;
 		this.isArrow = true;
 		this.isPersistent = false;
 		this.isRocket = true;

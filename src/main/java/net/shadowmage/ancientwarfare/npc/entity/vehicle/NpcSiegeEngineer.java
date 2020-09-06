@@ -36,7 +36,7 @@ import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import javax.annotation.Nullable;
 import java.util.Optional;
 
-@SuppressWarnings("squid:S2160")
+@SuppressWarnings({"squid:MaximumInheritanceDepth", "squid:S2160"})
 public class NpcSiegeEngineer extends NpcPlayerOwned implements IVehicleUser {
 	@Nullable
 	private VehicleBase vehicle = null;
@@ -102,7 +102,7 @@ public class NpcSiegeEngineer extends NpcPlayerOwned implements IVehicleUser {
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(60D);
+		getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(120D);
 	}
 
 	@Override

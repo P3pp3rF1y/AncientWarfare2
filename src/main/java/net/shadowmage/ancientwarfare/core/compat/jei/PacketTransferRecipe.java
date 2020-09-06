@@ -21,9 +21,7 @@ import java.util.List;
 public class PacketTransferRecipe extends PacketBase {
 	private ICraftingRecipe recipe;
 
-	@SuppressWarnings("unused")
-	public PacketTransferRecipe() {
-	}
+	public PacketTransferRecipe() {}
 
 	public PacketTransferRecipe(ICraftingRecipe recipe) {
 		this.recipe = recipe;

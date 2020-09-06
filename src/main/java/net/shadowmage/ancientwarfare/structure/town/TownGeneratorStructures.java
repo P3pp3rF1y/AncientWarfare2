@@ -18,10 +18,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-public class TownGeneratorStructures {
+class TownGeneratorStructures {
 	private TownGeneratorStructures() {}
 
-	public static void generateStructures(final TownGenerator gen) {
+	static void generateStructures(final TownGenerator gen) {
 		List<TownPartBlock> blocks = new ArrayList<>();
 		for (TownPartQuadrant tq : gen.quadrants) {
 			tq.addBlocks(blocks);
@@ -41,10 +41,18 @@ public class TownGeneratorStructures {
 			blocks.addAll(exteriorBlocks);
 		}
 
-		WorldGenTickHandler.INSTANCE.addStructureGenCallback(() -> {
-			TownGeneratorStructures.generateLamps(blocks, gen.template.getLamp(), gen);
-			WorldStructureGenerator.sprinkleSnow(gen.world, gen.maximalBounds, 0);
-			gen.generateVillagers();
+		WorldGenTickHandler.INSTANCE.addStructureGenCallback(new WorldGenTickHandler.StructureTicket() {
+			@Override
+			public void call() {
+				gen.template.getLamp().ifPresent(lamp -> TownGeneratorStructures.generateLamps(blocks, lamp, gen));
+				WorldStructureGenerator.sprinkleSnow(gen.world, gen.maximalBounds, 0);
+				gen.generateVillagers();
+			}
+
+			@Override
+			public int getBlocksToGenerate() {
+				return 100;
+			}
 		});
 	}
 
@@ -89,11 +97,11 @@ public class TownGeneratorStructures {
 	}
 
 	private static void generateHouses(List<TownPartBlock> blocks, List<StructureTemplate> templatesToGenerate, TownGenerator gen) {
+		if (templatesToGenerate.isEmpty()) {
+			return;
+		}
 		for (TownPartBlock block : blocks) {
 			for (TownPartPlot plot : block.plots) {
-				if (templatesToGenerate.isEmpty()) {
-					return;
-				}
 				if (plot.closed || !plot.hasRoadBorder()) {
 					continue;
 				}
@@ -126,7 +134,7 @@ public class TownGeneratorStructures {
 		float maxDistance = Trig.getDistance(l1, 0, l2, 0, 0, 0);
 		l1 = gen.wallsBounds.getXSize() / 2.f;
 		l2 = gen.wallsBounds.getZSize() / 2.f;
-		float minDistance = l1 < l2 ? l1 : l2;
+		float minDistance = Math.min(l1, l2);
 		float minMaxDelta = maxDistance - minDistance;
 
 		for (TownPartBlock block : blocks) {
@@ -149,9 +157,6 @@ public class TownGeneratorStructures {
 	}
 
 	private static void generateLamps(List<TownPartBlock> blocks, TownStructureEntry templateToGenerate, final TownGenerator gen) {
-		if (templateToGenerate == null) {
-			return;
-		}
 		StructureTemplateManager.getTemplate(templateToGenerate.templateName).ifPresent(lamp -> {
 			for (TownPartBlock block : blocks) {
 				generateLamps(gen.world, block, lamp, gen.structureDoors);
@@ -172,9 +177,10 @@ public class TownGeneratorStructures {
 		int xBits;
 		int zBits;
 
-		size = 5;
-		xBits = (block.bb.getXSize() - 1) / size;
-		zBits = (block.bb.getZSize() - 1) / size;
+		int lampSize = Math.max(lamp.getSize().getX(), lamp.getSize().getZ());
+		size = 5 + lampSize;
+		xBits = (block.bb.getXSize() - lampSize) / size;
+		zBits = (block.bb.getZSize() - lampSize) / size;
 
 		if (block.bb.getXSize() % size == size - 1) {
 			xBits--;
@@ -183,84 +189,78 @@ public class TownGeneratorStructures {
 			zBits--;
 		}//ensures two lamps are not adjacent near the corner of the road
 
+		int lampOffset = lampSize / 2;
 		if (xDir == Direction.WEST) {
-			xStart = block.bb.max.getX();
+			xStart = block.bb.max.getX() - lampOffset;
 			xMove = -size;
 		} else {
-			xStart = block.bb.min.getX();
+			xStart = block.bb.min.getX() + lampOffset;
 			xMove = size;
 		}
 
 		if (zDir == Direction.NORTH) {
-			zStart = block.bb.max.getZ();
+			zStart = block.bb.max.getZ() - lampOffset;
 			zMove = -size;
 		} else {
-			zStart = block.bb.min.getZ();
+			zStart = block.bb.min.getZ() + lampOffset;
 			zMove = size;
 		}
 
 		if (block.hasRoadBorder(Direction.NORTH)) {
 			for (int xBit = 0; xBit <= xBits; xBit++) {
 				x = xBit * xMove + xStart;
-				generateLamp(world, lamp, doors, x, block.bb.min.getY(), block.bb.min.getZ(), Direction.EAST);
+				generateLamp(world, lamp, doors, x, block.bb.min.getY(), block.bb.min.getZ() + lampOffset, Direction.EAST);
 			}
 		}
 
 		if (block.hasRoadBorder(Direction.SOUTH)) {
 			for (int xBit = 0; xBit <= xBits; xBit++) {
 				x = xBit * xMove + xStart;
-				generateLamp(world, lamp, doors, x, block.bb.min.getY(), block.bb.max.getZ(), Direction.EAST);
+				generateLamp(world, lamp, doors, x, block.bb.min.getY(), block.bb.max.getZ() - lampOffset, Direction.EAST);
 			}
 		}
 
 		if (block.hasRoadBorder(Direction.WEST)) {
 			for (int zBit = 0; zBit <= zBits; zBit++) {
 				z = zBit * zMove + zStart;
-				generateLamp(world, lamp, doors, block.bb.min.getX(), block.bb.min.getY(), z, Direction.EAST);
+				generateLamp(world, lamp, doors, block.bb.min.getX() + lampOffset, block.bb.min.getY(), z, Direction.EAST);
 			}
 		}
 
 		if (block.hasRoadBorder(Direction.EAST)) {
 			for (int zBit = 0; zBit <= zBits; zBit++) {
 				z = zBit * zMove + zStart;
-				generateLamp(world, lamp, doors, block.bb.max.getX(), block.bb.min.getY(), z, Direction.EAST);
+				generateLamp(world, lamp, doors, block.bb.max.getX() - lampOffset, block.bb.min.getY(), z, Direction.EAST);
 			}
 		}
 	}
 
-	private static void generateLamp(World world, StructureTemplate t, List<BlockPos> doors, int x, int y, int z, Direction streetSide) {
+	private static void generateLamp(World world, StructureTemplate template, List<BlockPos> doors, int x, int y, int z, Direction streetSide) {
 		if (checkForNeighboringDoor(doors, x, z, streetSide.getOpposite())) {
 			return;
 		}
-		int minX = x;
-		int minZ = z;
-		int maxX = x + t.getSize().getX() - 1;
-		int maxY = y + (t.getSize().getY() - 1 - t.getOffset().getY());
-		int maxZ = z + t.getSize().getZ() - 1;
 
-		for (int x1 = minX; x1 <= maxX; x1++) {
-			for (int z1 = minZ; z1 <= maxZ; z1++) {
-				for (int y1 = y; y1 <= maxY; y1++) {
-					if (!world.isAirBlock(new BlockPos(x1, y1, z1))) {
-						return;
-					}//skip construction if it would overwrite any non-valid block (should ALL be air)
-				}
+		x += template.getSize().getX() / 2;
+		z += template.getSize().getZ() / 2;
+		x -= template.getOffset().getX();
+		z -= template.getOffset().getZ();
+		BlockPos pos = new BlockPos(x, y, z);
+
+		StructureBB bb = new StructureBB(pos, EnumFacing.SOUTH, template);
+		for (BlockPos posToCheck : BlockPos.getAllInBox(bb.min.add(0, template.getOffset().getY(), 0), bb.max)) {
+			if (!world.isAirBlock(posToCheck)) {
+				return;
 			}
 		}
-		x -= (t.getSize().getX() / 2);
-		z -= (t.getSize().getZ() / 2);
-		x += t.getOffset().getX();
-		z += t.getOffset().getZ();
-		WorldGenTickHandler.INSTANCE.addStructureForGeneration(new StructureBuilder(world, t, EnumFacing.SOUTH, new BlockPos(x, y, z)));
+
+		WorldGenTickHandler.INSTANCE.addStructureForGeneration(new StructureBuilder(world, template, EnumFacing.SOUTH, pos));
 	}
 
 	private static boolean checkForNeighboringDoor(List<BlockPos> doors, int x, int z, Direction dir) {
 		int x1 = x + dir.xDirection;
 		int z1 = z + dir.zDirection;
 		for (BlockPos p : doors) {
-			if (p.getX() == x && p.getZ() == z) {
-				return true;
-			} else if (p.getX() == x1 && p.getZ() == z1) {
+			if (p.getX() == x && p.getZ() == z || p.getX() == x1 && p.getZ() == z1) {
 				return true;
 			}
 		}
@@ -327,8 +327,16 @@ public class TownGeneratorStructures {
 			wAdj = extraWidth / 2;
 			lAdj = extraLength / 2;
 		} else {
-			wAdj = face.getAxis() == EnumFacing.Axis.Z ? extraWidth / 2 : face == EnumFacing.WEST ? extraWidth : 0;
-			lAdj = face.getAxis() == EnumFacing.Axis.X ? extraLength / 2 : face == EnumFacing.NORTH ? extraLength : 0;
+			if (face.getAxis() == EnumFacing.Axis.Z) {
+				wAdj = extraWidth / 2;
+			} else {
+				wAdj = face == EnumFacing.WEST ? extraWidth : 0;
+			}
+			if (face.getAxis() == EnumFacing.Axis.X) {
+				lAdj = extraLength / 2;
+			} else {
+				lAdj = face == EnumFacing.NORTH ? extraLength : 0;
+			}
 		}
 
 		//find corners of the bb for the structure

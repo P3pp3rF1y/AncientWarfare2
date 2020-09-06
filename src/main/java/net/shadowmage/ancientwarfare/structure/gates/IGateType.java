@@ -64,8 +64,6 @@ public interface IGateType {
 	 */
 	void setCollisionBoundingBox(EntityGate gate);
 
-	void onGateStartOpen(EntityGate gate);
-
 	void onGateFinishOpen(EntityGate gate);
 
 	void onGateStartClose(EntityGate gate);

@@ -15,6 +15,6 @@ public class StructurePluginNpcs implements StructureContentPlugin {
 
 	@Override
 	public void addHandledEntities(StructurePluginManager manager) {
-		manager.registerEntityHandler(TemplateRuleEntityNpc.PLUGIN_NAME, NpcBase.class::isAssignableFrom, TemplateRuleEntityNpc::new, TemplateRuleEntityNpc::new);
+		manager.<NpcBase>registerEntityHandler(TemplateRuleEntityNpc.PLUGIN_NAME, NpcBase.class::isAssignableFrom, TemplateRuleEntityNpc::new, TemplateRuleEntityNpc::new);
 	}
 }

@@ -11,21 +11,26 @@ buildscript {
             name = "sonatype"
             url = "https://oss.sonatype.org/content/repositories/snapshots/"
         }
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1+"
+        classpath "com.wynprice.cursemaven:CurseMaven:2.1.1"
     }
 }
 
 plugins {
-    id "com.jfrog.bintray" version "1.8.1"
     id "org.sonarqube" version "2.6.2"
     id "maven-publish"
+    id "com.wynprice.cursemaven" version "2.1.1"
+    id "de.fuerstenau.buildconfig" version "1.1.8"
 }
 
 // We apply the 'forge' plugin, so ForgeGradle can do it's stuff.
 apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'idea'
 
 repositories {
     maven {
@@ -33,21 +38,11 @@ repositories {
         url = "http://maven.covers1624.net"
     }
     maven {
-        name = "ChickenBones Maven"
-        url = "http://chickenbones.net/maven/"
-    }
-    maven {
         name "LatvianModder Ivy"
         url = "https://maven.latmod.com/"
     }
     maven { 
         url "http://dvs1.progwml6.com/files/maven" 
-    }
-    maven {
-        url "http://tehnut.info/maven"
-    }
-    maven {
-        url 'http://minecraft.curseforge.com/api/maven/'
     }
 }
 
@@ -75,8 +70,20 @@ dependencies {
     deobfCompile "mezz.jei:jei_${minecraft_version}:${jei_version}"
     deobfCompile "codechicken:CodeChickenLib:${ccl_version}:deobf"
     deobfCompile "com.feed_the_beast.mods:FTBLib:${ftblib_version}"
-    deobfCompile "infinitylib:infinitylib:${infinitylib_version}"
-    deobfCompile "agricraft:AgriCraft${agricraft_version}"
+    compile "curse.maven:ElectroblobsWizardry:${eb_cf_fileid}"
+    compile "curse.maven:infinitylib:${infinitylib_cf_fileid}"
+    compile "curse.maven:agricraft:${agricraft_cf_fileid}"
+}
+
+buildConfig {
+    appName = project.name       // sets value of NAME field
+    version = project.version // sets value of VERSION field,
+
+    clsName = 'BuildConfig'      // sets the name of the BuildConfig class
+    packageName = 'net.shadowmage.ancientwarfare'  // sets the package of the BuildConfig class,
+    charset = 'UTF-8'            // sets charset of the generated class,
+
+    buildConfigField 'boolean', 'UNSTABLE', {isUnstable()}
 }
 
 processResources{
@@ -109,11 +116,18 @@ def getBuildNumber() {
 }
 
 def getStable() {
-    if ((System.getenv("GITHUB_REF") == null || System.getenv("GITHUB_REF").endsWith("-dev"))
-            && (System.getenv("TRAVIS_BRANCH") == null || System.getenv("TRAVIS_BRANCH").endsWith("-dev"))) {
+    if (isUnstable()) {
         return "unstable"
     }
     return ""
+}
+
+def isUnstable() {
+    return (System.getenv("GITHUB_REF") == null || System.getenv("GITHUB_REF").endsWith("-dev"));
+}
+
+task minifyStructureTemplates(type: MinifyStructuresTask) {
+    templateFolder = "$projectDir/src/main/resources/assets/ancientwarfare/template/"
 }
 
 publishing {

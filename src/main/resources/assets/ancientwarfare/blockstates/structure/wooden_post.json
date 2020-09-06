@@ -27,6 +27,17 @@
         "visible": {
             "true": {},
             "false": {}
+        },
+        "inventory": {
+            "model": "builtin/generated",
+            "transform": {
+                "firstperson": {
+                    "rotation": [0, -40, 0]
+                }
+            },
+            "textures": {
+                "layer0": "ancientwarfare:items/structure/wooden_post"
+            }
         }
     }
 }

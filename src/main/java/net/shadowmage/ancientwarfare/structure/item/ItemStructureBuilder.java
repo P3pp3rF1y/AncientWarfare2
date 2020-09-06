@@ -16,7 +16,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
+import net.shadowmage.ancientwarfare.core.input.InputHandler;
+import net.shadowmage.ancientwarfare.core.input.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.event.IBoxRenderer;
@@ -48,6 +49,9 @@ public class ItemStructureBuilder extends ItemBaseStructure implements IItemKeyI
 			structure = viewSettings.name;
 		}
 		tooltip.add(I18n.format("guistrings.current_structure") + " " + I18n.format(structure));
+		String key = InputHandler.ALT_ITEM_USE_1.getDisplayName();
+		tooltip.add(I18n.format("guistrings.structure.place_structure", key));
+		tooltip.add(I18n.format("guistrings.structure.lock_overlay"));
 	}
 
 	@Override
@@ -80,9 +84,7 @@ public class ItemStructureBuilder extends ItemBaseStructure implements IItemKeyI
 			EnumFacing facing = buildPos.get().getSecond();
 
 			StructureBuilder builder = new StructureBuilder(player.world, template.get(), facing, hit);
-			builder.getTemplate().getValidationSettings().preGeneration(player.world, hit, facing, builder.getTemplate(), builder.getBoundingBox());
-			builder.instantConstruction();
-			builder.getTemplate().getValidationSettings().postGeneration(player.world, hit, builder.getBoundingBox(), builder.getTemplate());
+			buildStructure(player, hit, facing, builder);
 			removeLockPosition(stack);
 			if (!player.capabilities.isCreativeMode) {
 				stack.shrink(1);
@@ -90,6 +92,10 @@ public class ItemStructureBuilder extends ItemBaseStructure implements IItemKeyI
 		} else {
 			player.sendMessage(new TextComponentTranslation("guistrings.structure.no_selection"));
 		}
+	}
+
+	protected void buildStructure(EntityPlayer player, BlockPos hit, EnumFacing facing, StructureBuilder builder) {
+		builder.instantConstruction();
 	}
 
 	@Override

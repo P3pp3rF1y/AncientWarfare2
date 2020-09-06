@@ -14,8 +14,6 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.init.AWNPCItems;
 
-import javax.annotation.Nonnull;
-
 @Mod.EventBusSubscriber(modid = AncientWarfareNPC.MOD_ID)
 public class AWNpcCrafting {
 
@@ -38,9 +36,10 @@ public class AWNpcCrafting {
 
 		@Override
 		public boolean matches(InventoryCrafting var1, World var2) {
-			@Nonnull ItemStack order1 = ItemStack.EMPTY, order2 = ItemStack.EMPTY;
+			ItemStack order1 = ItemStack.EMPTY;
+			ItemStack order2 = ItemStack.EMPTY;
 			boolean foundOtherStuff = false;
-			@Nonnull ItemStack stack;
+			ItemStack stack;
 			for (int i = 0; i < var1.getSizeInventory(); i++) {
 				stack = var1.getStackInSlot(i);
 				if (stack.isEmpty()) {
@@ -65,9 +64,10 @@ public class AWNpcCrafting {
 
 		@Override
 		public ItemStack getCraftingResult(InventoryCrafting var1) {
-			@Nonnull ItemStack order1 = ItemStack.EMPTY, order2 = ItemStack.EMPTY;
+			ItemStack order1 = ItemStack.EMPTY;
+			ItemStack order2 = ItemStack.EMPTY;
 			boolean foundOtherStuff = false;
-			@Nonnull ItemStack stack;
+			ItemStack stack;
 			for (int i = 0; i < var1.getSizeInventory(); i++) {
 				stack = var1.getStackInSlot(i);
 				if (stack.isEmpty()) {
@@ -90,7 +90,7 @@ public class AWNpcCrafting {
 			if (foundOtherStuff || order1.isEmpty() || order2.isEmpty()) {
 				return ItemStack.EMPTY;
 			}
-			@Nonnull ItemStack retStack = order2.copy();
+			ItemStack retStack = order2.copy();
 			if (order1.getTagCompound() != null) {
 				retStack.setTagCompound(order1.getTagCompound().copy());
 			} else {

@@ -16,15 +16,13 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.tile.IBlockBreakHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class TileStirlingGenerator extends TileTorqueSingleCell implements IBlockBreakHandler {
 
 	private final ItemStackHandler fuelHandler = new ItemStackHandler(1) {
-		@Nonnull
 		@Override
-		public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 			return TileEntityFurnace.getItemBurnTime(stack) > 0 ? super.insertItem(slot, stack, simulate) : stack;
 		}
 	};

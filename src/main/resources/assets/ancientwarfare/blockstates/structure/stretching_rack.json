@@ -1,0 +1,45 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "ancientwarfare:structure/stretching_rack_south"
+    },
+    "variants": {
+        "normal": [
+            {}
+        ],
+        "facing": {
+            "north": {
+                "y": 180
+            },
+            "south": {
+            },
+            "west": {
+                "y": 90
+            },
+            "east": {
+                "y": 270
+            }
+        },
+        "part": {
+            "north": {
+                "model": "ancientwarfare:structure/stretching_rack_north"
+            },
+            "south": {}
+        },
+        "visible": {
+            "true": {},
+            "false": {}
+        },
+        "inventory": {
+            "model": "builtin/generated",
+            "transform": {
+                "firstperson": {
+                    "rotation": [0, -40, 0]
+                }
+            },
+            "textures": {
+                "layer0": "ancientwarfare:items/structure/stretching_rack"
+            }
+        }
+    }
+}

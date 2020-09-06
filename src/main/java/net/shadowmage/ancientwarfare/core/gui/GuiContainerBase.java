@@ -42,7 +42,6 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
 	private int elementTooltipX;
 	private int elementTooltipY;
 
-	@Nonnull
 	private ItemStack tooltipStack = ItemStack.EMPTY;
 	private int tooltipX;
 	private int tooltipY;
@@ -168,6 +167,7 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
 	@Override
 	public void initGui() {
 		super.initGui();
+		Keyboard.enableRepeatEvents(true);
 		if (!initDone) {
 			initElements();
 			initDone = true;
@@ -176,6 +176,12 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
 		for (GuiElement element : this.elements) {
 			element.updateGuiPosition(guiLeft, guiTop);
 		}
+	}
+
+	@Override
+	public void onGuiClosed() {
+		super.onGuiClosed();
+		Keyboard.enableRepeatEvents(false);
 	}
 
 	@Override

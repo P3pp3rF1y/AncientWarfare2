@@ -11,15 +11,17 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
-import net.shadowmage.ancientwarfare.automation.registry.TreeFarmRegistry;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.DefaultTreeScanner;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.ITree;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.ITreeScanner;
-import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.properties.IStructureValidationProperty;
+import net.shadowmage.ancientwarfare.structure.worldgen.WorldGenDetailedLogHelper;
 import net.shadowmage.ancientwarfare.structure.worldgen.WorldStructureGenerator;
+import net.shadowmage.ancientwarfare.structure.worldgen.stats.PlacementRejectionReason;
+import net.shadowmage.ancientwarfare.structure.worldgen.stats.WorldGenStatistics;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -28,7 +30,6 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
@@ -38,6 +39,7 @@ import java.util.regex.Pattern;
 import static net.shadowmage.ancientwarfare.structure.template.build.validation.properties.StructureValidationProperties.*;
 
 public abstract class StructureValidator {
+	private static final int CLEAR_TREE_MAX_BORDER_DISTANCE = 10;
 	public final StructureValidationType validationType;
 
 	private boolean riverBiomeChecked = false;
@@ -58,7 +60,7 @@ public abstract class StructureValidator {
 	 * This method should be called on the NEW StructureValidator.
 	 */
 	public void inheritPropertiesFrom(StructureValidator validator) {
-		for (IStructureValidationProperty<?> property : this.properties.keySet()) {
+		for (IStructureValidationProperty<?> property : properties.keySet()) {
 			if (validator.properties.containsKey(property)) {
 				properties.put(property, validator.properties.get(property));
 			}
@@ -70,15 +72,15 @@ public abstract class StructureValidator {
 	 * child-classes that have additional validation data set through gui
 	 */
 	public final void readFromNBT(NBTTagCompound tag) {
-		for (Map.Entry<IStructureValidationProperty<?>, Object> entry : this.properties.entrySet()) {
+		for (Map.Entry<IStructureValidationProperty<?>, Object> entry : properties.entrySet()) {
 			entry.setValue(entry.getKey().deserializeNBT(tag));
 		}
 	}
 
 	public final NBTTagCompound serializeToNBT() {
 		NBTTagCompound tag = new NBTTagCompound();
-		tag.setString("validationType", this.validationType.getName());
-		for (Map.Entry<IStructureValidationProperty<?>, Object> entry : this.properties.entrySet()) {
+		tag.setString("validationType", validationType.getName());
+		for (Map.Entry<IStructureValidationProperty<?>, Object> entry : properties.entrySet()) {
 			serializePropertyNBT(tag, entry.getKey(), entry.getValue());
 		}
 		return tag;
@@ -133,13 +135,13 @@ public abstract class StructureValidator {
 		IBlockState state = world.getBlockState(pos);
 		if (state.getMaterial() != Material.AIR) {
 			if (state.getMaterial() == Material.WOOD) {
-				Optional<ITreeScanner> treeScanner = TreeFarmRegistry.getRegisteredTreeScanner(state);
-				if (treeScanner.isPresent()) {
-					ITree tree = treeScanner.get().scanTree(world, pos);
-					tree.getLeafPositions().forEach(world::setBlockToAir);
-					tree.getTrunkPositions().forEach(world::setBlockToAir);
-					return;
-				}
+				ITreeScanner treeScanner = new DefaultTreeScanner(st -> st.getMaterial() == Material.WOOD, sl -> sl.getMaterial() == Material.LEAVES, DefaultTreeScanner.ALL_AROUND, 6);
+				ITree tree = treeScanner.scanTree(world, pos,
+						bb.min.add(-CLEAR_TREE_MAX_BORDER_DISTANCE, 0, -CLEAR_TREE_MAX_BORDER_DISTANCE),
+						bb.max.add(CLEAR_TREE_MAX_BORDER_DISTANCE, 0, CLEAR_TREE_MAX_BORDER_DISTANCE));
+				tree.getLeafPositions().forEach(world::setBlockToAir);
+				tree.getTrunkPositions().forEach(world::setBlockToAir);
+				return;
 			}
 			world.setBlockToAir(pos);
 		}
@@ -160,7 +162,7 @@ public abstract class StructureValidator {
 		}
 
 		//defaulting templates to whitelist overworld dimension if no dimension list provided and set to blacklist
-		if (!validator.isDimensionWhiteList() && validator.getAcceptedDimensions().length == 0) {
+		if (validator.getAcceptedDimensions().length == 0) {
 			validator.setPropertyValue(DIMENSION_WHITE_LIST, true);
 			validator.setPropertyValue(DIMENSION_LIST, new int[] {0});
 		}
@@ -181,6 +183,7 @@ public abstract class StructureValidator {
 		setPropertyValue(property, value);
 	}
 
+	@SuppressWarnings("squid:S4784")
 	private static final Pattern NAME_VALUE_MATCHER = Pattern.compile("([^=]*)=([^=]*)");
 
 	private static void parseLine(String line, BiConsumer<String, String> parseNameValue) {
@@ -257,6 +260,10 @@ public abstract class StructureValidator {
 
 	public final boolean isPreserveBlocks() {
 		return getPropertyValue(PRESERVE_BLOCKS);
+	}
+
+	public final boolean shouldPreventHostileSpawns() {
+		return getPropertyValue(PREVENT_NATURAL_HOSTILE_SPAWNS);
 	}
 
 	public final boolean isBiomeWhiteList() {
@@ -362,7 +369,7 @@ public abstract class StructureValidator {
 	private boolean validateBlockHeightTypeAndBiome(World world, int x, int z, int min, int max, boolean skipWater, Predicate<IBlockState> isValidState) {
 		BlockPos pos = new BlockPos(x, 1, z);
 		if (!canSpawnInRiverBiome() && BiomeDictionary.hasType(world.provider.getBiomeForCoords(pos), BiomeDictionary.Type.RIVER)) {
-			AncientWarfareStructure.LOG.debug("Rejected for placement into river biome at {}", pos.toString());
+			WorldGenDetailedLogHelper.log("Rejected for placement into river biome at {}", () -> pos);
 			return false;
 		}
 
@@ -380,7 +387,7 @@ public abstract class StructureValidator {
 	private int validateBlockHeight(World world, int x, int z, int minimumAcceptableY, int maximumAcceptableY, boolean skipWater) {
 		int topFilledY = WorldStructureGenerator.getTargetY(world, x, z, skipWater);
 		if (topFilledY < minimumAcceptableY || topFilledY > maximumAcceptableY) {
-			AncientWarfareStructure.LOG.debug("rejected for leveling or depth test. foundY: {} min: {} max: {} at: {},{},{}", topFilledY, minimumAcceptableY, maximumAcceptableY, x, topFilledY, z);
+			WorldGenDetailedLogHelper.log("Rejected for leveling or depth test. foundY {} min {} max {} at: x {} y {} z {}", () -> topFilledY, () -> minimumAcceptableY, () -> maximumAcceptableY, () -> x, () -> topFilledY, () -> z);
 			return -1;
 		}
 		return topFilledY;
@@ -395,12 +402,8 @@ public abstract class StructureValidator {
 		}
 		IBlockState state = world.getBlockState(new BlockPos(x, y, z));
 		Block block = state.getBlock();
-		if (block == Blocks.AIR) {
-			AncientWarfareStructure.LOG.debug("rejected for non-matching block: air at: {},{},{} ", x, y, z);
-			return false;
-		}
 		if (!isValidState.test(state)) {
-			AncientWarfareStructure.LOG.debug("Rejected for non-matching block: {} at: {},{},{} ", block.getRegistryName(), x, y, z);
+			WorldGenDetailedLogHelper.log("Rejected because of invalid target block \"{}\" at: x {} y {} z {} ", block::getRegistryName, () -> x, () -> y, () -> z);
 			return false;
 		}
 		return true;
@@ -430,7 +433,7 @@ public abstract class StructureValidator {
 		return getMinY(template, bb) + getMaxFill();
 	}
 
-	protected void borderLeveling(World world, int x, int z, StructureTemplate template, StructureBB bb) {
+	private void borderLeveling(World world, int x, int z, StructureTemplate template, StructureBB bb) {
 		if (getMaxLeveling() <= 0) {
 			return;
 		}
@@ -479,9 +482,6 @@ public abstract class StructureValidator {
 	}
 
 	void prePlacementUnderfill(World world, StructureBB bb) {
-		if (getMaxFill() <= 0) {
-			return;
-		}
 		int bx;
 		int bz;
 		for (bx = bb.min.getX(); bx <= bb.max.getX(); bx++) {
@@ -491,7 +491,7 @@ public abstract class StructureValidator {
 		}
 	}
 
-	protected void prePlacementBorder(World world, StructureTemplate template, StructureBB bb) {
+	void prePlacementBorder(World world, StructureTemplate template, StructureBB bb) {
 		int borderSize = getBorderSize();
 		if (borderSize <= 0) {
 			return;
@@ -524,4 +524,12 @@ public abstract class StructureValidator {
 		return getPropertyValue(SURVIVAL);
 	}
 
+	public Set<String> getBiomeGroupList() {
+		//noinspection unchecked
+		return getPropertyValue(BIOME_GROUP_LIST);
+	}
+
+	public void setBiomeGroupList(Set<String> biomeGroups) {
+		setPropertyValue(BIOME_GROUP_LIST, biomeGroups);
+	}
 }

@@ -1,23 +1,30 @@
 package net.shadowmage.ancientwarfare.npc.entity.faction;
 
+import com.google.common.primitives.Floats;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.pathfinding.PathNavigateGround;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.event.entity.living.PotionEvent;
 import net.shadowmage.ancientwarfare.core.util.NBTHelper;
 import net.shadowmage.ancientwarfare.npc.ai.AIHelper;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionFleeSun;
@@ -28,9 +35,11 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.entity.faction.attributes.AdditionalAttributes;
 import net.shadowmage.ancientwarfare.npc.entity.faction.attributes.IAdditionalAttribute;
 import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
+import net.shadowmage.ancientwarfare.npc.init.AWNPCSounds;
 import net.shadowmage.ancientwarfare.npc.registry.FactionNpcDefault;
 import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
 import net.shadowmage.ancientwarfare.npc.registry.NpcDefaultsRegistry;
+import net.shadowmage.ancientwarfare.npc.registry.StandingChanges;
 import net.shadowmage.ancientwarfare.structure.util.CapabilityRespawnData;
 import net.shadowmage.ancientwarfare.structure.util.IRespawnData;
 import net.shadowmage.ancientwarfare.structure.util.SpawnerHelper;
@@ -43,6 +52,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import static net.minecraftforge.common.MinecraftForge.EVENT_BUS;
+import static net.minecraftforge.fml.common.eventhandler.Event.Result.ALLOW;
+
 @SuppressWarnings({"squid:MaximumInheritanceDepth", "squid:S2160"})
 public abstract class NpcFaction extends NpcBase {
 	private static final int DEATH_REVENGE_TICKS = 6000;
@@ -50,6 +62,9 @@ public abstract class NpcFaction extends NpcBase {
 	private static final int REVENGE_LIST_VALIDATION_TICKS = DEATH_REVENGE_TICKS / 100;
 	private static final double REVENGE_SET_RANGE = 50D;
 	private static final String HEIGHT_TAG = "height";
+	private final SoundEvent attackSound;
+	private final SoundEvent deathSound;
+	private final SoundEvent hurtSound;
 
 	protected String factionName;
 	private Map<String, Long> revengePlayers = new HashMap<>();
@@ -57,15 +72,21 @@ public abstract class NpcFaction extends NpcBase {
 	public NpcFaction(World world) {
 		super(world);
 		addAI();
+		attackSound = getSoundEventFromAttributes("_attack");
+		deathSound = getSoundEventFromAttributes("_death");
+		hurtSound = getSoundEventFromAttributes("_hurt");
 	}
 
 	public NpcFaction(World world, String factionName) {
 		super(world);
 		setFactionNameAndDefaults(factionName);
 		addAI();
+		attackSound = getSoundEventFromAttributes("_attack");
+		deathSound = getSoundEventFromAttributes("_death");
+		hurtSound = getSoundEventFromAttributes("_hurt");
 	}
 
-	private Map<IAdditionalAttribute<?>, Object> additionalAttributes = new HashMap<>();
+	private final Map<IAdditionalAttribute<?>, Object> additionalAttributes = new HashMap<>();
 	private boolean canDespawn = false;
 
 	@Override
@@ -104,12 +125,16 @@ public abstract class NpcFaction extends NpcBase {
 		additionalAttributes.put(attribute, value);
 	}
 
-	<T> Optional<T> getAdditionalAttributeValue(IAdditionalAttribute<T> attribute) {
+	public <T> Optional<T> getAdditionalAttributeValue(IAdditionalAttribute<T> attribute) {
 		return Optional.ofNullable(attribute.getValueClass().cast(additionalAttributes.get(attribute)));
 	}
 
 	public boolean burnsInSun() {
 		return getAdditionalAttributeValue(AdditionalAttributes.BURNS_IN_SUN).orElse(false);
+	}
+
+	public boolean isUndead() {
+		return getAdditionalAttributeValue(AdditionalAttributes.UNDEAD).orElse(false);
 	}
 
 	@Override
@@ -145,15 +170,49 @@ public abstract class NpcFaction extends NpcBase {
 		}
 	}
 
+	@Override
+	public EnumCreatureAttribute getCreatureAttribute() {
+		if (isUndead()) {
+			return EnumCreatureAttribute.UNDEAD;
+		} else {
+			return EnumCreatureAttribute.UNDEFINED;
+		}
+	}
+
+	@Override
+	public boolean isPotionApplicable(PotionEffect potioneffectIn) { // makes lizardmen and coven immune to poison
+		if (potioneffectIn.getPotion() == MobEffects.POISON && getFaction().equals("lizardman|coven")) {
+			PotionEvent.PotionApplicableEvent event = new PotionEvent.PotionApplicableEvent(this, potioneffectIn);
+			EVENT_BUS.post(event);
+			return event.getResult() == ALLOW;
+		}
+		return super.isPotionApplicable(potioneffectIn);
+	}
+
 	public void setFactionNameAndDefaults(String factionName) {
 		this.factionName = factionName;
 		FactionNpcDefault npcDefault = NpcDefaultsRegistry.getFactionNpcDefault(this);
 		applyFactionNpcSettings(npcDefault);
-		npcDefault.applyEquipment(this);
+		// do not apply the default equipment if the hasCustomEquipment tag was set to true
+		if (!getCustomEquipmentOverride()) {
+			npcDefault.applyEquipment(this);
+		}
+
+		// makes faction NPCs drop all their items otherwise use the default vanilla drop rate
+		if (!AWNPCStatics.vanillaEquipmentDropRate) {
+			inventoryArmorDropChances = new float[] {1.f, 1.f, 1.f, 1.f};
+			inventoryHandsDropChances = new float[] {1.f, 1.f};
+		}
 
 		Range<Float> heightRange = npcDefault.getHeightRange();
 		float newHeight = heightRange.getMinimum() + world.rand.nextFloat() * (heightRange.getMaximum() - heightRange.getMinimum());
-		setSize((newHeight / 1.8f) * 0.6f * npcDefault.getThinness(), newHeight);
+		float newWidth = (newHeight / 1.8f) * 0.6f * npcDefault.getThinness();
+		setSize(newWidth, newHeight);
+	}
+
+	@Override
+	protected void setSize(float width, float height) {
+		super.setSize(Floats.constrainToRange(width, 0.1f, 10f), Floats.constrainToRange(height, 0.1f, 40f));
 	}
 
 	private void applyFactionNpcSettings(FactionNpcDefault npcDefault) {
@@ -166,10 +225,12 @@ public abstract class NpcFaction extends NpcBase {
 	@Override
 	public int getMaxFallHeight() {
 		int i = super.getMaxFallHeight();
-		if (i > 4)
+		if (i > 4) {
 			i += world.getDifficulty().getDifficultyId() * getMaxHealth() / 5;
-		if (i >= getHealth())
+		}
+		if (i >= getHealth()) {
 			return (int) getHealth();
+		}
 		return i;
 	}
 
@@ -189,7 +250,7 @@ public abstract class NpcFaction extends NpcBase {
 		//noinspection deprecation
 		String name = I18n.translateToLocal("entity.ancientwarfarenpc." + getNpcFullType() + ".name");
 		if (hasCustomName()) {
-			name = name + " : " + getCustomNameTag();
+			name = getCustomNameTag();
 		}
 		return name;
 	}
@@ -208,7 +269,8 @@ public abstract class NpcFaction extends NpcBase {
 	public boolean isHostileTowards(Entity e) {
 		if (e instanceof EntityPlayer || e instanceof NpcPlayerOwned) {
 			String playerName = e instanceof EntityPlayer ? e.getName() : ((NpcBase) e).getOwner().getName();
-			return revengePlayers.keySet().contains(playerName) || FactionTracker.INSTANCE.getStandingFor(world, playerName, getFaction()) < 0;
+			UUID playerUUID = e instanceof EntityPlayer ? e.getUniqueID() : ((NpcBase) e).getOwner().getUUID();
+			return revengePlayers.containsKey(playerName) || FactionTracker.INSTANCE.isHostileToPlayer(world, playerUUID, playerName, getFaction());
 		} else if (e instanceof NpcFaction) {
 			NpcFaction npc = (NpcFaction) e;
 			return !npc.getFaction().equals(factionName) && FactionRegistry.getFaction(getFaction()).isHostileTowards(npc.getFaction());
@@ -232,6 +294,37 @@ public abstract class NpcFaction extends NpcBase {
 			}
 		}
 
+	}
+
+	private SoundEvent getSoundEventFromAttributes(String suffix) {
+		if (getAdditionalAttributeValue(AdditionalAttributes.ENTITY_SOUND).isPresent()) {
+			String sound = getAdditionalAttributeValue(AdditionalAttributes.ENTITY_SOUND).get() + suffix;
+			if (AWNPCSounds.isValidSound(sound)) {
+				return AWNPCSounds.getSoundEventFromString(sound);
+			}
+		}
+		if (suffix.equals("_death")) {
+			return SoundEvents.ENTITY_GENERIC_DEATH;
+		} else {
+			return SoundEvents.ENTITY_GENERIC_HURT;
+		}
+	}
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+		return hurtSound;
+	}
+
+	@Override
+	protected SoundEvent getDeathSound() {
+		return deathSound;
+	}
+
+	private void playAttackSound() {
+		// don't play any sound if there is no specific attack sound
+		if (attackSound != SoundEvents.ENTITY_GENERIC_HURT) {
+			playSound(attackSound, 1.0F, 1.2F / (rand.nextFloat() * 0.2F + 0.9F));
+		}
 	}
 
 	@Override
@@ -261,12 +354,20 @@ public abstract class NpcFaction extends NpcBase {
 	}
 
 	@Override
+	public boolean attackEntityAsMob(Entity target) {
+		if ((Math.random() < 0.2)) {
+			playAttackSound();
+		}
+		return super.attackEntityAsMob(target);
+	}
+
+	@Override
 	public void onDeath(DamageSource damageSource) {
 		super.onDeath(damageSource);
 		if (damageSource.getTrueSource() instanceof EntityPlayer || damageSource.getTrueSource() instanceof NpcPlayerOwned) {
 			String playerName = damageSource.getTrueSource() instanceof EntityPlayer ? damageSource.getTrueSource().getName() :
 					((NpcBase) damageSource.getTrueSource()).getOwner().getName();
-			FactionTracker.INSTANCE.adjustStandingFor(world, playerName, getFaction(), -AWNPCStatics.factionLossOnDeath);
+			FactionTracker.INSTANCE.adjustStandingFor(world, playerName, getFaction(), FactionRegistry.getFaction(getFaction()).getStandingSettings().getStandingChange(StandingChanges.KILL));
 
 			setDeathRevengePlayer(playerName);
 			world.getEntitiesWithinAABB(NpcFaction.class, new AxisAlignedBB(getPosition()).grow(REVENGE_SET_RANGE))
@@ -323,8 +424,7 @@ public abstract class NpcFaction extends NpcBase {
 		revengePlayers = NBTHelper.getMap(tag.getTagList("revengePlayers", Constants.NBT.TAG_COMPOUND),
 				t -> t.getString("playerName"), t -> t.getLong("time"));
 		if (tag.hasKey(HEIGHT_TAG)) {
-			height = tag.getFloat(HEIGHT_TAG);
-			width = tag.getFloat("width");
+			setSize(tag.getFloat("width"), tag.getFloat(HEIGHT_TAG));
 		} else {
 			setFactionNameAndDefaults(factionName);
 		}

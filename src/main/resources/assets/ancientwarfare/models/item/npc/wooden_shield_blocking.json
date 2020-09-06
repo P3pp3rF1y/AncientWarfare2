@@ -1,0 +1,134 @@
+{
+	"credit": "Made by WinDanesz, with Blockbench",
+	"textures": {
+		"0": "ancientwarfare:items/npc/wooden_shield",
+		"1": "ancientwarfare:items/npc/shield_handle"
+	},
+	"elements": [
+		{
+			"name": "border1",
+			"from": [2, 13, 7],
+			"to": [14, 14, 8],
+			"faces": {
+				"north": {"uv": [0.5, 1, 6.5, 0.5], "texture": "#0"},
+				"south": {"uv": [0.5, 1, 6.5, 0.5], "texture": "#0"},
+				"up": {"uv": [0.5, 0.5, 6.5, 0], "rotation": 180, "texture": "#0"},
+				"down": {"uv": [0.5, 1, 6.5, 0.5], "rotation": 180, "texture": "#0"}
+			}
+		},
+		{
+			"name": "border3",
+			"from": [1.99387, 3.5145, 7.00614],
+			"to": [3, 13.99999, 8],
+			"faces": {
+				"north": {"uv": [0.5, 1, 5, 0.5], "rotation": 90, "texture": "#0"},
+				"east": {"uv": [0.5, 1, 6.5, 0.5], "rotation": 90, "texture": "#0"},
+				"south": {"uv": [0.5, 1, 4.5, 0.5], "rotation": 90, "texture": "#0"},
+				"west": {"uv": [0.5, 0.5, 6.5, 0], "rotation": 90, "texture": "#0"}
+			}
+		},
+		{
+			"name": "border4",
+			"from": [5.5145, 0, 7],
+			"to": [10.4855, 1, 8],
+			"rotation": {"angle": -45, "axis": "z", "origin": [8, 6, 8]},
+			"faces": {
+				"north": {"uv": [0.5, 1, 3, 0.5], "texture": "#0"},
+				"south": {"uv": [0.5, 1, 3, 0.5], "rotation": 180, "texture": "#0"},
+				"up": {"uv": [7, 0.5, 13, 1], "texture": "#0"},
+				"down": {"uv": [0.5, 0.5, 6.5, 1], "texture": "#0"}
+			}
+		},
+		{
+			"name": "border5",
+			"from": [5.5145, 0, 7],
+			"to": [10.4855, 1, 8],
+			"faces": {
+				"north": {"uv": [0.5, 7.5, 3, 8], "texture": "#0"},
+				"south": {"uv": [0.5, 7.5, 3, 8], "texture": "#0"},
+				"up": {"uv": [7, 7.5, 13, 8], "texture": "#0"},
+				"down": {"uv": [0.5, 0, 6.5, 0.5], "texture": "#0"}
+			}
+		},
+		{
+			"name": "border6",
+			"from": [5.5145, 0, 7],
+			"to": [10.4855, 1, 8],
+			"rotation": {"angle": 45, "axis": "z", "origin": [8, 6, 8]},
+			"faces": {
+				"north": {"uv": [0.5, 1, 3, 0.5], "rotation": 180, "texture": "#0"},
+				"south": {"uv": [0.5, 1, 3, 0.5], "texture": "#0"},
+				"up": {"uv": [7, 1.5, 7.5, 6], "rotation": 90, "texture": "#0"},
+				"down": {"uv": [0.5, 0.5, 6.5, 1], "texture": "#0"}
+			}
+		},
+		{
+			"name": "border7",
+			"from": [13, 3.5145, 7.00265],
+			"to": [13.99736, 14, 8],
+			"faces": {
+				"north": {"uv": [0.5, 1, 5, 0.5], "rotation": 90, "texture": "#0"},
+				"east": {"uv": [0.5, 0, 6.5, 0.5], "rotation": 270, "texture": "#0"},
+				"south": {"uv": [0.5, 1, 5, 0.5], "rotation": 90, "texture": "#0"},
+				"west": {"uv": [0.5, 0.5, 6.5, 1], "rotation": 270, "texture": "#0"}
+			}
+		},
+		{
+			"name": "shieldHandle",
+			"from": [7, 6.5, 7.75],
+			"to": [9, 11, 12.75],
+			"faces": {
+				"north": {"uv": [3, 3, 4, 6], "texture": "#1"},
+				"east": {"uv": [0, 3, 3, 6], "rotation": 90, "texture": "#1"},
+				"south": {"uv": [7, 3, 8, 6], "texture": "#1"},
+				"west": {"uv": [4, 3, 7, 6], "rotation": 90, "texture": "#1"},
+				"up": {"uv": [3, 0, 4, 3], "texture": "#1"},
+				"down": {"uv": [4, 0, 5, 3], "texture": "#1"}
+			}
+		},
+		{
+			"name": "shieldBodyFront",
+			"from": [3, 0.9, 7.25],
+			"to": [13, 13.1, 7.75],
+			"faces": {
+				"north": {"uv": [1, 1, 6, 7], "texture": "#0"}
+			}
+		},
+		{
+			"name": "shieldBodyBack",
+			"from": [3, 0.9, 7.25],
+			"to": [13, 13.1, 7.75],
+			"faces": {
+				"south": {"uv": [7.5, 1, 12.5, 7], "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [39, -46, 0],
+			"translation": [1, -0.5, -0.25],
+			"scale": [1, 1.3, 1]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [39, -46, 0],
+			"translation": [1, -0.5, -0.25],
+			"scale": [1, 1.3, 1]
+		},
+		"firstperson_righthand": {
+			"rotation": [0, 2, 0],
+			"translation": [-6.5, 0.25, 3.25]
+		},
+		"firstperson_lefthand": {
+			"rotation": [0, 2, 0],
+			"translation": [-6.5, 0.25, 3.25]
+		},
+		"ground": {
+			"translation": [0, 2, 0],
+			"scale": [0.7, 0.8, 0.7]
+		},
+		"gui": {
+			"rotation": [0, 180, 0],
+			"translation": [-0.25, 0.75, 0]
+		}
+	}
+}

@@ -27,33 +27,20 @@ public class TileTotemPart extends TileMulti {
 	@Override
 	public void setMainBlockPos(BlockPos mainBlockPos) {
 		super.setMainBlockPos(mainBlockPos);
-		getMainBlockPos().ifPresent(mainPos -> WorldTools.getTile(world, mainPos, TileTotemPart.class).ifPresent(te -> dropVariant = te.getVariant()));
+		getMainBlockPos().flatMap(mainPos -> WorldTools.getTile(world, mainPos, TileTotemPart.class)).ifPresent(te -> dropVariant = te.getVariant());
 	}
 
 	@Override
-	protected void writeUpdateNBT(NBTTagCompound tag) {
-		super.writeUpdateNBT(tag);
-		tag.setByte(VARIANT_TAG, (byte) variant.getId());
-	}
-
-	@Override
-	protected void handleUpdateNBT(NBTTagCompound tag) {
-		super.handleUpdateNBT(tag);
-		variant = Variant.fromId(tag.getByte(VARIANT_TAG));
-	}
-
-	@Override
-	public void readFromNBT(NBTTagCompound compound) {
-		super.readFromNBT(compound);
+	protected void readNBT(NBTTagCompound compound) {
+		super.readNBT(compound);
 		variant = Variant.fromId(compound.getByte(VARIANT_TAG));
-		getMainBlockPos().ifPresent(mainPos -> WorldTools.getTile(world, mainPos, TileTotemPart.class).ifPresent(te -> dropVariant = te.getVariant()));
+		getMainBlockPos().flatMap(mainPos -> WorldTools.getTile(world, mainPos, TileTotemPart.class)).ifPresent(te -> dropVariant = te.getVariant());
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		compound = super.writeToNBT(compound);
+	protected void writeNBT(NBTTagCompound compound) {
+		super.writeNBT(compound);
 		compound.setByte(VARIANT_TAG, (byte) variant.getId());
-		return compound;
 	}
 
 	@Override

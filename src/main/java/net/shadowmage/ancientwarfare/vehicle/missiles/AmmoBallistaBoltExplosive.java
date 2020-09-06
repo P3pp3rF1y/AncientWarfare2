@@ -7,6 +7,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 
 public class AmmoBallistaBoltExplosive extends Ammo {
 
@@ -14,8 +15,8 @@ public class AmmoBallistaBoltExplosive extends Ammo {
 		super("ammo_ballista_bolt_explosive");
 		this.ammoWeight = 2.6f;
 		this.renderScale = 0.3f;
-		this.vehicleDamage = 15;
-		this.entityDamage = 15;
+		this.vehicleDamage = AWVehicleStatics.vehicleStats.ammoBallistaBoltExplosiveDamage;
+		this.entityDamage = AWVehicleStatics.vehicleStats.ammoBallistaBoltExplosiveDamage;
 		this.isArrow = true;
 		this.isRocket = false;
 		this.isPersistent = false;

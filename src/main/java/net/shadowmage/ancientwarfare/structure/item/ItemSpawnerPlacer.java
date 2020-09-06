@@ -20,7 +20,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
+import net.shadowmage.ancientwarfare.core.input.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
@@ -38,6 +38,7 @@ public class ItemSpawnerPlacer extends ItemBaseStructure implements IItemKeyInte
 
 	public ItemSpawnerPlacer(String name) {
 		super(name);
+		setMaxStackSize(1);
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 
@@ -45,7 +46,6 @@ public class ItemSpawnerPlacer extends ItemBaseStructure implements IItemKeyInte
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag) {
 		tooltip.add(I18n.format("guistrings.selected_mob") + ":");
-		//noinspection ConstantConditions
 		if (stack.hasTagCompound() && hasSpawnerData(stack)) {
 			SpawnerSettings settings = new SpawnerSettings();
 			settings.readFromNBT(getSpawnerData(stack));
@@ -128,41 +128,42 @@ public class ItemSpawnerPlacer extends ItemBaseStructure implements IItemKeyInte
 	public void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
 		EntityPlayer player = event.getEntityPlayer();
 		ItemStack spawnerPlacer = EntityTools.getItemFromEitherHand(player, ItemSpawnerPlacer.class);
-		if (!spawnerPlacer.isEmpty()) {
-			event.setCanceled(true);
-			event.setCancellationResult(EnumActionResult.SUCCESS);
-
-			if (player.world.isRemote) {
-				return;
-			}
-
-			Entity entity = event.getTarget();
-
-			SpawnerSettings settings = new SpawnerSettings();
-			SpawnerSettings.EntitySpawnGroup group = new SpawnerSettings.EntitySpawnGroup(settings);
-			SpawnerSettings.EntitySpawnSettings spawnSettings = new SpawnerSettings.EntitySpawnSettings(group);
-			if (hasSpawnerData(spawnerPlacer)) {
-				settings.readFromNBT(getSpawnerData(spawnerPlacer));
-				spawnSettings = getFirstEntitySpawnSettings(settings);
-			} else {
-				setDefaultEntitySpawnSettings(spawnSettings);
-				group.addSpawnSetting(spawnSettings);
-				settings.addSpawnGroup(group);
-				settings.setSpawnDelay(0);
-				settings.setMinDelay(10);
-				settings.setMaxDelay(10);
-				settings.setSpawnRange(0);
-				settings.setPlayerRange(16);
-				settings.toggleTransparent();
-			}
-
-			spawnSettings.setEntityToSpawn(entity);
-			spawnSettings.setCustomSpawnTag(getCustomSpawnTag(entity));
-			setSpawnerData(spawnerPlacer, settings);
-			entity.setDead();
-
-			event.getEntityPlayer().sendMessage(new TextComponentTranslation("guistrings.spawner.entity_set", entity.getName()));
+		if (spawnerPlacer.isEmpty()) {
+			return;
 		}
+		event.setCanceled(true);
+		event.setCancellationResult(EnumActionResult.SUCCESS);
+
+		if (player.world.isRemote) {
+			return;
+		}
+
+		Entity entity = event.getTarget();
+
+		SpawnerSettings settings = new SpawnerSettings();
+		SpawnerSettings.EntitySpawnGroup group = new SpawnerSettings.EntitySpawnGroup(settings);
+		SpawnerSettings.EntitySpawnSettings spawnSettings = new SpawnerSettings.EntitySpawnSettings(group);
+		if (hasSpawnerData(spawnerPlacer)) {
+			settings.readFromNBT(getSpawnerData(spawnerPlacer));
+			spawnSettings = getFirstEntitySpawnSettings(settings);
+		} else {
+			setDefaultEntitySpawnSettings(spawnSettings);
+			group.addSpawnSetting(spawnSettings);
+			settings.addSpawnGroup(group);
+			settings.setSpawnDelay(0);
+			settings.setMinDelay(10);
+			settings.setMaxDelay(10);
+			settings.setSpawnRange(0);
+			settings.setPlayerRange(16);
+			settings.toggleTransparent();
+		}
+
+		spawnSettings.setEntityToSpawn(entity);
+		spawnSettings.setCustomSpawnTag(EntitySpawnNBTRegistry.getEntitySpawnNBT(entity));
+		setSpawnerData(spawnerPlacer, settings);
+		entity.setDead();
+
+		event.getEntityPlayer().sendMessage(new TextComponentTranslation("guistrings.spawner.entity_set", entity.getName()));
 	}
 
 	private void setDefaultEntitySpawnSettings(SpawnerSettings.EntitySpawnSettings spawnSettings) {
@@ -197,13 +198,6 @@ public class ItemSpawnerPlacer extends ItemBaseStructure implements IItemKeyInte
 
 	public static void setSpawnerData(ItemStack spawnerPlacer, NBTTagCompound settingsNbt) {
 		spawnerPlacer.setTagInfo(SPAWNER_DATA_TAG, settingsNbt);
-	}
-
-	private NBTTagCompound getCustomSpawnTag(Entity entity) {
-		NBTTagCompound entityTag = new NBTTagCompound();
-		entity.writeToNBT(entityTag);
-
-		return EntitySpawnNBTRegistry.getEntitySpawnNBT(entity, entityTag);
 	}
 
 	@Override

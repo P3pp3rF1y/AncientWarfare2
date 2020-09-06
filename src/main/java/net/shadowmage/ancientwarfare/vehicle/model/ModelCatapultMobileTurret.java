@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.vehicle.model;
 
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.relauncher.Side;
@@ -7,7 +8,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
 @SideOnly(Side.CLIENT)
-public class ModelCatapultMobileTurret extends ModelVehicleBase {
+public class ModelCatapultMobileTurret extends ModelBase {
 
 	ModelRenderer frontCrossBeam;
 	ModelRenderer rightBeam;
@@ -64,8 +65,6 @@ public class ModelCatapultMobileTurret extends ModelVehicleBase {
 	ModelRenderer FLw6;
 	ModelRenderer FLw7;
 	ModelRenderer FLw8;
-	ModelRenderer flagPole;
-	ModelRenderer flagCloth;
 	ModelRenderer turretMidBeam;
 	ModelRenderer upright1;
 	ModelRenderer upright2;
@@ -478,18 +477,6 @@ public class ModelCatapultMobileTurret extends ModelVehicleBase {
 		FLWheelPivot.addChild(FLw8);
 		frontAxle.addChild(FLWheelPivot);
 		frontCrossBeam.addChild(frontAxle);
-		flagPole = new ModelRenderer(this, "flagPole");
-		flagPole.setTextureOffset(19, 78);
-		flagPole.setTextureSize(256, 256);
-		flagPole.setRotationPoint(-14.0f, -27.0f, 21.5f);
-		setPieceRotation(flagPole, 0.0f, 0.0f, 0.0f);
-		flagPole.addBox(0.0f, 0.0f, 0.0f, 1, 16, 1);
-		flagCloth = new ModelRenderer(this, "flagCloth");
-		flagCloth.setTextureOffset(24, 78);
-		flagCloth.setTextureSize(256, 256);
-		flagCloth.setRotationPoint(-14.0f, -27.0f, 22.5f);
-		setPieceRotation(flagCloth, 0.0f, 0.0f, 0.0f);
-		flagCloth.addBox(0.0f, 0.0f, 0.0f, 1, 8, 11);
 		turretMidBeam = new ModelRenderer(this, "turretMidBeam");
 		turretMidBeam.setTextureOffset(0, 134);
 		turretMidBeam.setTextureSize(256, 256);
@@ -679,7 +666,6 @@ public class ModelCatapultMobileTurret extends ModelVehicleBase {
 		setRotationAngles(f1, f2, f3, f4, f5, f6, entity);
 		frontCrossBeam.render(f6);
 		turretMidBeam.render(f6);
-		flagPole.render(0.0625f);
 	}
 
 	public void setPieceRotation(ModelRenderer model, float x, float y, float z) {
@@ -705,10 +691,5 @@ public class ModelCatapultMobileTurret extends ModelVehicleBase {
 
 	public void setCrankRotations(float angle) {
 		this.pulleyAxle.rotateAngleX = Trig.toRadians(angle);
-	}
-
-	@Override
-	public void renderFlag() {
-		flagCloth.render(0.0625f);
 	}
 }

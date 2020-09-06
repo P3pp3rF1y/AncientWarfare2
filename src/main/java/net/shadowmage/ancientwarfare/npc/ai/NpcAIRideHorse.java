@@ -12,28 +12,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NpcAIRideHorse<T extends NpcBase> extends NpcAI<T> {
-	private final AttributeModifier followRangeModifier;
+	private static final AttributeModifier FOLLOW_RANGE_MODIFIER = new AttributeModifier("modifier.npc_horse_path_extension", 24.d, 0).setSaved(false);
 	private final AttributeModifier moveSpeedModifier;
 
 	protected EntityLiving horse;
-	private List<EntityAITasks.EntityAITaskEntry> horseAI = new ArrayList<>();
+	private final List<EntityAITasks.EntityAITaskEntry> horseAI = new ArrayList<>();
 
 	public NpcAIRideHorse(T npc, double speedFactor) {
 		super(npc);
-		this.moveSpeedModifier = new AttributeModifier("modifier.npc_ride_speed", speedFactor, 1);
-		this.moveSpeedModifier.setSaved(false);
-		this.followRangeModifier = new AttributeModifier("modifier.npc_horse_path_extension", 24.d, 0);
-		this.followRangeModifier.setSaved(false);
+		moveSpeedModifier = new AttributeModifier("modifier.npc_ride_speed", speedFactor, 1).setSaved(false);
 	}
 
 	@Override
 	public boolean shouldExecute() {
-		if (horse == null && npc.getRidingEntity() instanceof EntityHorse) {
-			horse = (EntityLiving) npc.getRidingEntity();
-			onMountHorse();
-			return true;
-		}
-		return false;
+		return super.shouldExecute() && shouldRideHorse();
+	}
+
+	protected boolean shouldRideHorse() {
+		return horse == null && npc.getRidingEntity() instanceof EntityHorse;
+	}
+
+	@Override
+	public void startExecuting() {
+		horse = (EntityLiving) npc.getRidingEntity();
+		onMountHorse();
 	}
 
 	protected void onMountHorse() {
@@ -66,13 +68,13 @@ public class NpcAIRideHorse<T extends NpcBase> extends NpcAI<T> {
 		if (horse instanceof AbstractHorse) {
 			removeModifiers();
 			horse.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(moveSpeedModifier);
-			horse.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).applyModifier(followRangeModifier);
+			horse.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).applyModifier(FOLLOW_RANGE_MODIFIER);
 		}
 	}
 
 	private void removeModifiers() {
 		horse.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(moveSpeedModifier);
-		horse.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).removeModifier(followRangeModifier);
+		horse.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).removeModifier(FOLLOW_RANGE_MODIFIER);
 	}
 
 	private void removeHorseAI() {

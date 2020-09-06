@@ -3,9 +3,10 @@ package net.shadowmage.ancientwarfare.npc.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionTrader;
 import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
+import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
+import net.shadowmage.ancientwarfare.npc.registry.StandingChanges;
 import net.shadowmage.ancientwarfare.npc.trade.FactionTradeList;
 
 public class ContainerNpcFactionTradeView extends ContainerNpcBase<NpcFactionTrader> {
@@ -16,8 +17,8 @@ public class ContainerNpcFactionTradeView extends ContainerNpcBase<NpcFactionTra
 	@SuppressWarnings("unused") //used in reflection
 	public ContainerNpcFactionTradeView(EntityPlayer player, int x, int y, int z) {
 		super(player, x);
-		this.tradeList = entity.getTradeList();
-		this.entity.startTrade(player);
+		tradeList = entity.getTradeList();
+		entity.startTrade(player);
 
 		addPlayerSlots();
 	}
@@ -35,14 +36,14 @@ public class ContainerNpcFactionTradeView extends ContainerNpcBase<NpcFactionTra
 		if (tag.hasKey(TRADE_DATA_TAG)) {
 			tradeList.deserializeNBT(tag.getCompoundTag(TRADE_DATA_TAG));
 		} else if (tag.hasKey(DO_TRADE_TAG) && tradeList.performTrade(player, tag.getInteger(DO_TRADE_TAG))) {
-			FactionTracker.INSTANCE.adjustStandingFor(entity.world, player.getName(), entity.getFaction(), +AWNPCStatics.factionGainOnTrade);
+			FactionTracker.INSTANCE.adjustStandingFor(entity.world, player.getName(), entity.getFaction(), FactionRegistry.getFaction(entity.getFaction()).getStandingSettings().getStandingChange(StandingChanges.TRADE));
 		}
 		refreshGui();
 	}
 
 	@Override
 	public void onContainerClosed(EntityPlayer player) {
-		this.entity.closeTrade();
+		entity.closeTrade();
 		super.onContainerClosed(player);
 	}
 

@@ -9,8 +9,6 @@ import net.shadowmage.ancientwarfare.vehicle.item.ItemAmmo;
 import net.shadowmage.ancientwarfare.vehicle.item.ItemArmor;
 import net.shadowmage.ancientwarfare.vehicle.item.ItemUpgrade;
 
-import javax.annotation.Nonnull;
-
 public class ContainerVehicleInventory extends ContainerVehicle {
 
 	private Slot[] storageSlots;
@@ -135,7 +133,6 @@ public class ContainerVehicleInventory extends ContainerVehicle {
 		}
 	}
 
-	@Nonnull
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slotClickedIndex) {
 		ItemStack slotStackCopy = ItemStack.EMPTY;

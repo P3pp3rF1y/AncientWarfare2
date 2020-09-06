@@ -51,6 +51,12 @@ public class Text extends GuiElement {
 			@Override
 			public boolean onEvent(GuiElement widget, ActivationEvent evt) {
 				if (enabled && visible && isMouseOverElement(evt.mx, evt.my)) {
+					if (selected && evt.mButton == 1) {
+						String oldText = text;
+						setText("");
+						onTextUpdated(oldText, text);
+						return false;
+					}
 					setSelected(true);
 					selector.onWidgetSelected(Text.this);
 					cursorIndex = text.length();
@@ -330,7 +336,7 @@ public class Text extends GuiElement {
 
 		if (selected) {
 			int w = 0;
-			for (int i = 0; i < cursorIndex; i++) {
+			for (int i = 0; i < cursorIndex && i < text.length(); i++) {
 				w += Minecraft.getMinecraft().fontRenderer.getCharWidth(text.charAt(i));
 			}
 			Minecraft.getMinecraft().fontRenderer.drawString("_", renderX + 2 + w, renderY + 3, 0xffff0000);

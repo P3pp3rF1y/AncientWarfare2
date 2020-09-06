@@ -1,0 +1,26 @@
+{
+    "pools": [
+        {
+            "name": "coins",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "loot_table",
+                    "name": "ancientwarfare:entities/soldier",
+                    "weight": 1
+                }
+            ]
+        },
+        {
+            "name": "zombie_drops",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "loot_table",
+                    "name": "minecraft:entities/zombie",
+                    "weight": 1
+                }
+            ]
+        }
+    ]
+}

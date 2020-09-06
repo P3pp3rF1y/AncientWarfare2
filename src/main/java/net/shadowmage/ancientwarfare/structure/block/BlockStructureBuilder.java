@@ -22,7 +22,6 @@ import net.shadowmage.ancientwarfare.structure.render.RenderStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Set;
 
@@ -41,7 +40,7 @@ public class BlockStructureBuilder extends BlockBaseStructure {
 			displayCache = NonNullList.create();
 
 			Set<String> templateNames = StructureTemplateManager.getSurvivalStructures().keySet();
-			@Nonnull ItemStack item;
+			ItemStack item;
 			for (String templateName : templateNames) {
 				item = new ItemStack(this);
 				item.setTagInfo("structureName", new NBTTagString(templateName));

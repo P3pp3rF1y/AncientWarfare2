@@ -6,7 +6,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.MathUtils;
-import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
+import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 
@@ -52,7 +52,7 @@ public class StructureBuilderTicked extends StructureBuilder {
 	}
 
 	private boolean placeAtCurrentPos() {
-		Optional<TemplateRule> rule = template.getRuleAt(curTempPos);
+		Optional<TemplateRuleBlock> rule = template.getRuleAt(curTempPos);
 		if (!rule.isPresent() || !rule.get().placeInSurvival() || !rule.get().shouldPlaceOnBuildPass(world, turns, destination, currentPriority)) {
 			increment();//skip that position, was either air/null rule, or could not be placed on current pass, auto-increment to next
 		} else//place it...

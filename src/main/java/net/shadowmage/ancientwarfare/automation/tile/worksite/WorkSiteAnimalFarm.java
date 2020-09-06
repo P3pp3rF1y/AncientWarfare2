@@ -18,6 +18,8 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
+import net.minecraftforge.event.entity.living.LivingDropsEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
@@ -27,11 +29,12 @@ import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.ItemWrapper;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 	private static final int FOOD_INVENTORY_SIZE = 3;
@@ -65,6 +68,8 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 	public final ItemStackHandler foodInventory;
 	public final ItemStackHandler toolInventory;
 
+	private static final Set<Integer> entityCulledIds = new HashSet<>();
+
 	public WorkSiteAnimalFarm() {
 		super();
 		shouldCountResources = true;
@@ -76,9 +81,8 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 				shouldCountResources = true;
 			}
 
-			@Nonnull
 			@Override
-			public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+			public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 				return isFood(stack.getItem()) ? super.insertItem(slot, stack, simulate) : stack;
 			}
 		};
@@ -90,9 +94,8 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 				shouldCountResources = true;
 			}
 
-			@Nonnull
 			@Override
-			public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+			public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 				return isTool(stack.getItem()) ? super.insertItem(slot, stack, simulate) : stack;
 			}
 		};
@@ -412,6 +415,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 
 				animal.captureDrops = true;
 				animal.arrowHitTimer = 10;
+				entityCulledIds.add(animal.getEntityId());
 				animal.attackEntityFrom(DamageSource.GENERIC, animal.getHealth() + 1);
 				for (EntityItem item : animal.capturedDrops) {
 					ItemStack stack = item.getItem();
@@ -424,10 +428,18 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 				}
 				animal.capturedDrops.clear();
 				animal.captureDrops = false;
+				entityCulledIds.remove(animal.getEntityId());
 				return true;
 			}
 		}
 		return false;
+	}
+
+	@SubscribeEvent
+	public static void onLivingDrops(LivingDropsEvent evt) {
+		if (entityCulledIds.contains(evt.getEntity().getEntityId())) {
+			evt.setCanceled(true);
+		}
 	}
 
 	@Override

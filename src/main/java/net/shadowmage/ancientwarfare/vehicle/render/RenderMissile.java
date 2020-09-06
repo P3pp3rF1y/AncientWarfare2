@@ -66,9 +66,6 @@ public class RenderMissile extends Render<MissileBase> {
 		missileRenders.put(AmmoRegistry.ammoCanisterShot25, shotRender);
 
 		missileRenders.put(AmmoRegistry.ammoArrow, arrowRender);
-		missileRenders.put(AmmoRegistry.ammoArrowIron, arrowRender);
-		missileRenders.put(AmmoRegistry.ammoArrowFlame, arrowRender);
-		missileRenders.put(AmmoRegistry.ammoArrowIronFlame, arrowRender);
 		missileRenders.put(AmmoRegistry.ammoRocket, arrowRender);
 		missileRenders.put(AmmoRegistry.ammoHwachaRocketFlame, arrowRender);
 		missileRenders.put(AmmoRegistry.ammoHwachaRocketExplosive, arrowRender);
@@ -80,16 +77,6 @@ public class RenderMissile extends Render<MissileBase> {
 
 		missileRenders.put(AmmoRegistry.ammoBallShot, shotRender);
 		missileRenders.put(AmmoRegistry.ammoBallIronShot, shotRender);
-
-		missileRenders.put(AmmoRegistry.ammoSoldierArrowWood, arrowRender);
-		missileRenders.put(AmmoRegistry.ammoSoldierArrowIron, arrowRender);
-		missileRenders.put(AmmoRegistry.ammoSoldierArrowWoodFlame, arrowRender);
-		missileRenders.put(AmmoRegistry.ammoSoldierArrowIronFlame, arrowRender);
-
-		missileRenders.put(AmmoRegistry.ammoTorpedo10, shotRender);
-		missileRenders.put(AmmoRegistry.ammoTorpedo15, shotRender);
-		missileRenders.put(AmmoRegistry.ammoTorpedo30, shotRender);
-		missileRenders.put(AmmoRegistry.ammoTorpedo45, shotRender);
 	}
 
 	@Override

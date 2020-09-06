@@ -49,7 +49,7 @@ public class ContainerMailbox extends ContainerTileBase<TileMailbox> {
 			yPos = y1 * 18 + 8 + 12;
 			addSlotToContainer(new SlotItemHandler(tileEntity.receivedInventory, i, xPos, yPos) {
 				@Override
-				public boolean isItemValid(@Nonnull ItemStack stack) {
+				public boolean isItemValid(ItemStack stack) {
 					return false;
 				}
 			});
@@ -375,10 +375,10 @@ public class ContainerMailbox extends ContainerTileBase<TileMailbox> {
 
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex) {
-		@Nonnull ItemStack slotStackCopy = ItemStack.EMPTY;
+		ItemStack slotStackCopy = ItemStack.EMPTY;
 		Slot theSlot = this.getSlot(slotClickedIndex);
 		if (theSlot != null && theSlot.getHasStack()) {
-			@Nonnull ItemStack slotStack = theSlot.getStack();
+			ItemStack slotStack = theSlot.getStack();
 			slotStackCopy = slotStack.copy();
 			if (slotStack.getCount() == 0) {
 				theSlot.putStack(ItemStack.EMPTY);

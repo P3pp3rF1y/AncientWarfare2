@@ -63,6 +63,14 @@ public final class NetworkHandler implements IGuiHandler {
 
 	public static final int PACKET_SOUND_BLOCK_PLAYER_SPEC_VALUES = 30;
 
+	public static final int PACKET_TEAM_MEMBERSHIP_UPDATE = 31;
+	public static final int PACKET_TEAM_STANDINGS_UPDATE = 32;
+	public static final int PACKET_TEAM_STANDING_UPDATE = 33;
+
+	public static final int PACKET_HIGHLIGHT_BLOCK = 34;
+	public static final int PACKET_SHOW_BBS = 35;
+	public static final int PACKET_ITEM_MOUSE_SCROLL = 36;
+
 	public static final int GUI_CRAFTING = 0;
 	public static final int GUI_SCANNER = 1;
 	public static final int GUI_BUILDER = 2;
@@ -93,6 +101,7 @@ public final class NetworkHandler implements IGuiHandler {
 	public static final int GUI_WORKSITE_FISH_FARM = 29;
 	public static final int GUI_WORKSITE_QUARRY_BOUNDS = 30;
 	public static final int GUI_STIRLING_GENERATOR = 31;
+	public static final int GUI_WAREHOUSE_STOCK_LINKER = 32;
 	public static final int GUI_NPC_WORK_ORDER = 34;
 	public static final int GUI_NPC_UPKEEP_ORDER = 35;
 	public static final int GUI_NPC_COMBAT_ORDER = 36;
@@ -125,6 +134,7 @@ public final class NetworkHandler implements IGuiHandler {
 	public static final int GUI_LOOT_BASKET = 59;
 	public static final int GUI_STAKE = 60;
 	public static final int GUI_STATUE = 61;
+	public static final int GUI_NPC_FACTION_SPELLCASTER_WIZARDRY = 62;
 
 	private FMLEventChannel channel;
 
@@ -133,19 +143,20 @@ public final class NetworkHandler implements IGuiHandler {
 
 	public final void registerNetwork() {
 		channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(CHANNELNAME);
-		channel.register(new PacketHandlerServer());
-		PacketBase.registerPacketType(PACKET_GUI, PacketGui.class);
-		PacketBase.registerPacketType(PACKET_ITEM_KEY_INTERFACE, PacketItemInteraction.class);
-		PacketBase.registerPacketType(PACKET_ENTITY, PacketEntity.class);
-		PacketBase.registerPacketType(PACKET_RESEARCH_INIT, PacketResearchInit.class);
-		PacketBase.registerPacketType(PACKET_RESEARCH_ADD, PacketResearchUpdate.class);
-		PacketBase.registerPacketType(PACKET_RESEARCH_START, PacketResearchStart.class);
-		PacketBase.registerPacketType(PACKET_BLOCK_EVENT, PacketBlockEvent.class);
-		PacketBase.registerPacketType(PACKET_MANUAL_RELOAD, PacketManualReload.class);
+		channel.register(new PacketHandler());
+		PacketBase.registerPacketType(PACKET_GUI, PacketGui.class, PacketGui::new);
+		PacketBase.registerPacketType(PACKET_ITEM_KEY_INTERFACE, PacketItemInteraction.class, PacketItemInteraction::new);
+		PacketBase.registerPacketType(PACKET_ENTITY, PacketEntity.class, PacketEntity::new);
+		PacketBase.registerPacketType(PACKET_RESEARCH_INIT, PacketResearchInit.class, PacketResearchInit::new);
+		PacketBase.registerPacketType(PACKET_RESEARCH_ADD, PacketResearchUpdate.class, PacketResearchUpdate::new);
+		PacketBase.registerPacketType(PACKET_RESEARCH_START, PacketResearchStart.class, PacketResearchStart::new);
+		PacketBase.registerPacketType(PACKET_BLOCK_EVENT, PacketBlockEvent.class, PacketBlockEvent::new);
+		PacketBase.registerPacketType(PACKET_MANUAL_RELOAD, PacketManualReload.class, PacketManualReload::new);
+		PacketBase.registerPacketType(PACKET_ITEM_MOUSE_SCROLL, PacketItemMouseScroll.class, PacketItemMouseScroll::new);
 		NetworkRegistry.INSTANCE.registerGuiHandler(AncientWarfareCore.instance, this);
 
 		if (Loader.isModLoaded("jei")) {
-			PacketBase.registerPacketType(PACKET_JEI_TRANSFER_RECIPE, PacketTransferRecipe.class);
+			PacketBase.registerPacketType(PACKET_JEI_TRANSFER_RECIPE, PacketTransferRecipe.class, PacketTransferRecipe::new);
 		}
 	}
 
@@ -201,12 +212,13 @@ public final class NetworkHandler implements IGuiHandler {
 
 	@Override
 	public final Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
-		Class<?> clz = this.guiClasses.get(id);
+		Class<?> clz = guiClasses.get(id);
 		if (clz != null) {
 			Object container = getServerGuiElement(id, player, world, x, y, z);
 			try {
-				if (container != null)
+				if (container != null) {
 					return clz.getConstructor(ContainerBase.class).newInstance(container);
+				}
 			}
 			catch (Exception e) {
 				AncientWarfareCore.LOG.error("Error instantiating client GUI: ", e);
@@ -227,7 +239,6 @@ public final class NetworkHandler implements IGuiHandler {
 		openGui(player, id, pos.getX(), pos.getY(), pos.getZ());
 	}
 
-	//TODO refactor stuff to use this entityId overload
 	public final void openGui(EntityPlayer player, int guiId) {
 		openGui(player, guiId, 0);
 	}

@@ -164,7 +164,6 @@ public class TileTownHall extends TileOwned implements IInteractableTile, ITicka
 	}
 
 	public static class NpcDeathEntry {
-		@Nonnull
 		public ItemStack stackToSpawn;
 		public String npcType;
 		public String npcName;

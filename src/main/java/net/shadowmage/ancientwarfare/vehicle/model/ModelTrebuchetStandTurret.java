@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.vehicle.model;
 
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.relauncher.Side;
@@ -7,7 +8,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
 @SideOnly(Side.CLIENT)
-public class ModelTrebuchetStandTurret extends ModelVehicleBase {
+public class ModelTrebuchetStandTurret extends ModelBase {
 
 	ModelRenderer standBaseMidBeam;
 	ModelRenderer standLeftBeam;
@@ -25,8 +26,6 @@ public class ModelTrebuchetStandTurret extends ModelVehicleBase {
 	ModelRenderer standRlAngle;
 	ModelRenderer standLBrace;
 	ModelRenderer standRBrace;
-	ModelRenderer flagPole;
-	ModelRenderer flagCloth;
 	ModelRenderer turretMidBeam;
 	ModelRenderer upright1;
 	ModelRenderer upright2;
@@ -167,18 +166,6 @@ public class ModelTrebuchetStandTurret extends ModelVehicleBase {
 		setPieceRotation(standRBrace, 0.0f, 0.0f, 0.0f);
 		standRBrace.addBox(0.0f, 0.0f, 0.0f, 2, 5, 2);
 		standBaseMidBeam.addChild(standRBrace);
-		flagPole = new ModelRenderer(this, "flagPole");
-		flagPole.setTextureOffset(18, 105);
-		flagPole.setTextureSize(256, 256);
-		flagPole.setRotationPoint(-18.0f, -24.5f, 18.5f);
-		setPieceRotation(flagPole, 0.0f, 0.0f, 0.0f);
-		flagPole.addBox(0.0f, 0.0f, 0.0f, 1, 16, 1);
-		flagCloth = new ModelRenderer(this, "flagCloth");
-		flagCloth.setTextureOffset(23, 105);
-		flagCloth.setTextureSize(256, 256);
-		flagCloth.setRotationPoint(-18.0f, -24.5f, 19.5f);
-		setPieceRotation(flagCloth, 0.0f, 0.0f, 0.0f);
-		flagCloth.addBox(0.0f, 0.0f, 0.0f, 1, 8, 11);
 		turretMidBeam = new ModelRenderer(this, "turretMidBeam");
 		turretMidBeam.setTextureOffset(0, 128);
 		turretMidBeam.setTextureSize(256, 256);
@@ -376,7 +363,6 @@ public class ModelTrebuchetStandTurret extends ModelVehicleBase {
 		super.render(entity, f1, f2, f3, f4, f5, f6);
 		setRotationAngles(f1, f2, f3, f4, f5, f6, entity);
 		standBaseMidBeam.render(f6);
-		flagPole.render(f6);
 		turretMidBeam.render(f6);
 	}
 
@@ -394,10 +380,5 @@ public class ModelTrebuchetStandTurret extends ModelVehicleBase {
 		model.rotateAngleX = x;
 		model.rotateAngleY = y;
 		model.rotateAngleZ = z;
-	}
-
-	@Override
-	public void renderFlag() {
-		flagCloth.render(0.0625f);
 	}
 }

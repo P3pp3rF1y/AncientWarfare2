@@ -21,8 +21,10 @@ import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.Optional;
@@ -42,7 +44,7 @@ public class RegistryLoader {
 
 	private static final Map<ResourceLocation, String> loadedRegistries = new HashMap<>();
 
-	private static final Map<Path, Set<String>> loadLater = new HashMap<>();
+	private static final List<DependentFile> loadLater = new ArrayList<>();
 
 	public static void load() {
 		load(p -> true);
@@ -54,7 +56,6 @@ public class RegistryLoader {
 	}
 
 	public static void load(Predicate<IRegistryDataParser> include) {
-		//noinspection ConstantConditions
 		ModContainer awModContainer = Loader.instance().activeModContainer();
 
 		Path registryOverridesFolder = new File(AWCoreStatics.configPathForFiles + "registry").toPath();
@@ -105,21 +106,21 @@ public class RegistryLoader {
 			AncientWarfareCore.LOG.error("Error iterating filesystem for: {}", root, e);
 			return;
 		}
-		while (itr != null && itr.hasNext()) {
-			loadFile(mod, root, itr.next(), include, true);
+		while (itr.hasNext()) {
+			loadFile(mod, root, itr.next(), include);
 		}
 
-		loadDependents(mod, root, include);
+		loadDependents(mod, include);
 	}
 
-	private static void loadDependents(ModContainer mod, Path root, Predicate<IRegistryDataParser> include) {
+	private static void loadDependents(ModContainer mod, Predicate<IRegistryDataParser> include) {
 		int lastCountLoadLater = loadLater.size();
 		while (!loadLater.isEmpty()) {
-			Iterator<Map.Entry<Path, Set<String>>> iterator = loadLater.entrySet().iterator();
+			Iterator<DependentFile> iterator = loadLater.iterator();
 			while (iterator.hasNext()) {
-				Map.Entry<Path, Set<String>> entry = iterator.next();
-				if (areDependenciesLoaded(entry.getValue())) {
-					loadFile(mod, root, entry.getKey(), include, false);
+				DependentFile dependentFile = iterator.next();
+				if (areDependenciesLoaded(dependentFile.getDependencies())) {
+					loadFile(mod, dependentFile.getPath(), include, false, dependentFile.getName());
 					iterator.remove();
 				}
 			}
@@ -132,20 +133,25 @@ public class RegistryLoader {
 	}
 
 	private static void logIncorrectDependencies() {
-		for (Map.Entry<Path, Set<String>> entry : loadLater.entrySet()) {
-			AncientWarfareCore.LOG.error("Non existent or circular load after dependencies in {} - {}", entry.getKey().toString(), String.join(",", entry.getValue()));
+		for (DependentFile dependentFile : loadLater) {
+			AncientWarfareCore.LOG.error("Non existent or circular load after dependencies in {} - {}", dependentFile.getPath().toString(), String.join(",", dependentFile.getDependencies()));
 		}
 	}
 
-	private static void loadFile(ModContainer mod, Path root, Path file, Predicate<IRegistryDataParser> include, boolean checkDependencies) {
+	private static void loadFile(ModContainer mod, Path root, Path file, Predicate<IRegistryDataParser> include) {
 		Loader.instance().setActiveModContainer(mod);
 
-		String relative = root.relativize(file).toString();
-		if (!"json".equals(FilenameUtils.getExtension(file.toString())))
+		if (!"json".equals(FilenameUtils.getExtension(file.toString()))) {
 			return;
+		}
 
+		String relative = root.relativize(file).toString();
 		String name = FilenameUtils.removeExtension(relative).replaceAll("\\\\", "/");
 
+		loadFile(mod, file, include, true, name);
+	}
+
+	private static void loadFile(ModContainer mod, Path file, Predicate<IRegistryDataParser> include, boolean checkDependencies, String name) {
 		String shortName = name.substring(name.lastIndexOf('/') + 1);
 
 		ResourceLocation registryName = new ResourceLocation(mod.getModId(), name);
@@ -170,8 +176,7 @@ public class RegistryLoader {
 			if (checkDependencies && json.has("load_after")) {
 				Set<String> dependencies = JsonHelper.setFromJson(json.get("load_after"), e -> JsonUtils.getString(e, ""));
 				if (!areDependenciesLoaded(dependencies)) {
-
-					loadLater.put(file, dependencies);
+					loadLater.add(new DependentFile(name, file, dependencies));
 					return;
 				}
 			}
@@ -225,5 +230,29 @@ public class RegistryLoader {
 			parserName = JsonUtils.getString(json, "type");
 		}
 		return parsers.containsKey(parserName) ? Optional.of(parsers.get(parserName)) : Optional.empty();
+	}
+
+	private static class DependentFile {
+		private final String name;
+		private final Path path;
+		private final Set<String> dependencies;
+
+		private DependentFile(String name, Path path, Set<String> dependencies) {
+			this.name = name;
+			this.path = path;
+			this.dependencies = dependencies;
+		}
+
+		public Set<String> getDependencies() {
+			return dependencies;
+		}
+
+		public Path getPath() {
+			return path;
+		}
+
+		public String getName() {
+			return name;
+		}
 	}
 }

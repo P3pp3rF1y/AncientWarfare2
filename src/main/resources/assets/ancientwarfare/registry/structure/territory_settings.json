@@ -1,0 +1,19 @@
+{
+    "defaults": {
+        "max_radius_in_chunks": 11,
+        "per_chunk_cluster_value_multiplier": 1.0,
+        "structure_generation_chance_multiplier": 1.0,
+        "territory_weight_multiplier": 1.0
+    },
+    "territories": {
+        "generic": {
+            "max_radius_in_chunks": 6,
+            "per_chunk_cluster_value_multiplier": 0.5,
+            "territory_weight_multiplier": 0.2
+        },
+        "empire": {
+            "per_chunk_cluster_value": 2.0,
+            "structure_generation_chance_multiplier": 2.0
+        }
+    }
+}

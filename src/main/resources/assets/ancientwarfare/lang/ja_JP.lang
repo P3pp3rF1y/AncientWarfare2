@@ -1043,14 +1043,6 @@ item.ammo_hwacha_rocket_explosive.name=Hwacha Explosive Rocket
 item.ammo_hwacha_rocket_airburst.name=Hwacha Airburst Rocket
 item.ammo_ball_shot.name=Stone Ball Shot
 item.ammo_iron_ball_shot.name=Iron Ball Shot
-item.ammo_soldier_arrow_5.name=Soldier Arrow
-item.ammo_soldier_arrow_7.name=Soldier Iron Arrow
-item.ammo_soldier_arrow_5_flaming.name=Soldier Flame Arrow
-item.ammo_soldier_arrow_7_flaming.name=Soldier Iron Flame Arrow
-item.ammo_torpedo_10.name=Torpedo 10kg
-item.ammo_torpedo_15.name=Torpedo 15kg
-item.ammo_torpedo_30.name=Torpedo 30kg
-item.ammo_torpedo_45.name=Torpedo 45kg
 item.ammo_stone_shot_10.tooltip=10kg of Stone
 item.ammo_stone_shot_15.tooltip=15kg of Stone
 item.ammo_stone_shot_30.tooltip=30kg of Stone
@@ -1105,14 +1097,6 @@ item.ammo_hwacha_rocket_explosive.tooltip=Self-propelled with an explosive tip
 item.ammo_hwacha_rocket_airburst.tooltip=Self-propelled, proximity detonator
 item.ammo_ball_shot.tooltip=Used in cluster ammunition
 item.ammo_iron_ball_shot.tooltip=Used in cluster ammunition
-item.ammo_soldier_arrow_5.tooltip=Used by soldiers
-item.ammo_soldier_arrow_7.tooltip=Used by soldiers
-item.ammo_soldier_arrow_5_flaming.tooltip=Used by soldiers
-item.ammo_soldier_arrow_7_flaming.tooltip=Used by soldiers
-item.ammo_torpedo_10.tooltip=Used by Submarines
-item.ammo_torpedo_15.tooltip=Used by Submarines
-item.ammo_torpedo_30.tooltip=Used by Submarines
-item.ammo_torpedo_45.tooltip=Used by Submarines
 death.attack.AWMissile=%1$s was killed by missile damage
 death.attack.AWMissile.player=%1$s was killed by missile damage by %2$s
 
@@ -1132,7 +1116,6 @@ item.vehicleSpawner.tooltip.barrage=Special: Barrage
 item.vehicleSpawner.tooltip.large=Special: Can Use Large Ammo
 item.vehicleSpawner.tooltip.noweapon=No Weapons
 item.vehicleSpawner.tooltip.boat=Special: Boat
-item.vehicleSpawner.tooltip.submarine=Special: Submarine
 
 # components
 item.flame_charge.name=フレイム炸薬

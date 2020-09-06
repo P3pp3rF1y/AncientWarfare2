@@ -3,9 +3,11 @@ package net.shadowmage.ancientwarfare.structure.gates.types;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -14,11 +16,13 @@ import net.shadowmage.ancientwarfare.core.owner.Owner;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
+import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.entity.DualBoundingBox;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.gates.IGateType;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureItems;
+import net.shadowmage.ancientwarfare.structure.init.AWStructureSounds;
 import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
 
 import java.util.HashMap;
@@ -30,16 +34,16 @@ public class Gate implements IGateType {
 
 	private static final Gate[] gateTypes = new Gate[16];
 
-	private static final Gate basicWood = new Gate(0, "_wood_1.png").setName("gateBasicWood").setVariant(Variant.WOOD_BASIC);
-	private static final Gate basicIron = new Gate(1, "_iron_1.png").setName("gateBasicIron").setVariant(Variant.IRON_BASIC).setModel(1);
+	private static final Gate basicWood = new Gate(0, "_wood_1.png", AWStructureSounds.WOODEN_GATE, SoundEvents.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD, AWStructureSounds.WOODEN_GATE_BREAK, AWStructureStatics.gateVerticalWoodenMaxHealth).setName("gateBasicWood").setVariant(Variant.WOOD_BASIC);
+	private static final Gate basicIron = new Gate(1, "_iron_1.png", AWStructureSounds.IRON_GATE, SoundEvents.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, AWStructureSounds.IRON_GATE_BREAK, AWStructureStatics.gateVerticalIronMaxHealth).setName("gateBasicIron").setVariant(Variant.IRON_BASIC).setModel(1);
 
-	private static final Gate singleWood = new GateSingle(4, "_wood_1.png").setName("gateSingleWood").setVariant(Variant.WOOD_SINGLE);
-	private static final Gate singleIron = new GateSingle(5, "_iron_1.png").setName("gateSingleIron").setVariant(Variant.IRON_SINGLE).setModel(1);
+	private static final Gate singleWood = new GateSingle(4, "_wood_1.png", AWStructureSounds.WOODEN_GATE, SoundEvents.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD, AWStructureSounds.WOODEN_GATE_BREAK, AWStructureStatics.gateSingleWoodMaxHealth).setName("gateSingleWood").setVariant(Variant.WOOD_SINGLE);
+	private static final Gate singleIron = new GateSingle(5, "_iron_1.png", AWStructureSounds.IRON_GATE, SoundEvents.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, AWStructureSounds.IRON_GATE_BREAK, AWStructureStatics.gateSingleIronMaxHealth).setName("gateSingleIron").setVariant(Variant.IRON_SINGLE).setModel(1);
 
-	private static final Gate doubleWood = new GateDouble(8, "_wood_1.png").setName("gateDoubleWood").setVariant(Variant.WOOD_DOUBLE);
-	private static final Gate doubleIron = new GateDouble(9, "_iron_1.png").setName("gateDoubleIron").setVariant(Variant.IRON_DOUBLE).setModel(1);
+	private static final Gate doubleWood = new GateDouble(8, "_wood_1.png", AWStructureSounds.WOODEN_GATE, SoundEvents.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD, AWStructureSounds.WOODEN_GATE_BREAK, AWStructureStatics.gateDoubleWoodMaxHealth).setName("gateDoubleWood").setVariant(Variant.WOOD_DOUBLE);
+	private static final Gate doubleIron = new GateDouble(9, "_iron_1.png", AWStructureSounds.IRON_GATE, SoundEvents.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, AWStructureSounds.IRON_GATE_BREAK, AWStructureStatics.gateDoubleIronMaxHealth).setName("gateDoubleIron").setVariant(Variant.IRON_DOUBLE).setModel(1);
 
-	private static final Gate rotatingBridge = new GateRotatingBridge(12, "_bridge_wood_1.png");
+	private static final Gate rotatingBridge = new GateRotatingBridge(12, "_bridge_wood_1.png", AWStructureSounds.WOODEN_GATE, SoundEvents.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD, AWStructureSounds.WOODEN_GATE_BREAK, AWStructureStatics.drawbridgeMaxHealth);
 
 	private static final HashMap<String, Integer> gateIDByName = new HashMap<>();
 
@@ -57,6 +61,18 @@ public class Gate implements IGateType {
 		return variant;
 	}
 
+	public boolean isWood(Variant variant) {
+		switch (variant) {
+			case WOOD_DOUBLE:
+			case WOOD_ROTATING:
+			case WOOD_SINGLE:
+			case WOOD_BASIC:
+				return true;
+			default:
+				return false;
+		}
+	}
+
 	public enum Variant {
 		WOOD_BASIC, IRON_BASIC, WOOD_SINGLE, IRON_SINGLE, WOOD_DOUBLE, IRON_DOUBLE, WOOD_ROTATING
 	}
@@ -65,8 +81,11 @@ public class Gate implements IGateType {
 	protected String displayName = "";
 	protected String tooltip = "";
 	protected Variant variant;
-	protected int maxHealth = 40;
+	protected int maxHealth = 80;
 	private int modelType = 0;
+	public SoundEvent moveSound;
+	public SoundEvent hurtSound;
+	public SoundEvent breakSound;
 
 	protected boolean canSoldierInteract = true;
 
@@ -74,19 +93,25 @@ public class Gate implements IGateType {
 
 	private final ItemStack displayStack;
 
-	private final ResourceLocation textureLocation;
+	private ResourceLocation textureLocation;
+	private ResourceLocation textureLocationHurt;
 
 	/*
 	 *
 	 */
-	public Gate(int id, String textureLocation) {
-		this.globalID = id;
-		this.tooltip = "item.gate." + id + ".tooltip";
+	public Gate(int id, String textureLocation, SoundEvent moveSound, SoundEvent hurtSound, SoundEvent breakSound, int maxHealth) {
+		globalID = id;
+		tooltip = "item.gate." + id + ".tooltip";
 		if (id >= 0 && id < gateTypes.length && gateTypes[id] == null) {
 			gateTypes[id] = this;
 		}
-		this.displayStack = new ItemStack(AWStructureItems.GATE_SPAWNER, 1, id);
+		displayStack = new ItemStack(AWStructureItems.GATE_SPAWNER, 1, id);
 		this.textureLocation = new ResourceLocation("ancientwarfare:textures/model/structure/gate/gate" + textureLocation);
+		textureLocationHurt = new ResourceLocation("ancientwarfare:textures/model/structure/gate/gate_wood_1_damaged_2.png");
+		this.moveSound = moveSound;
+		this.hurtSound = hurtSound;
+		this.breakSound = breakSound;
+		this.maxHealth = maxHealth;
 	}
 
 	protected final Gate setName(String name) {
@@ -126,7 +151,7 @@ public class Gate implements IGateType {
 
 	@Override
 	public ItemStack getConstructingItem() {
-		return new ItemStack(AWStructureItems.GATE_SPAWNER, 1, this.globalID);
+		return new ItemStack(AWStructureItems.GATE_SPAWNER, 1, globalID);
 	}
 
 	@Override
@@ -243,16 +268,6 @@ public class Gate implements IGateType {
 	}
 
 	@Override
-	public void onGateStartOpen(EntityGate gate) {
-		if (gate.world.isRemote) {
-			return;
-		}
-		BlockPos min = BlockTools.getMin(gate.pos1, gate.pos2);
-		BlockPos max = BlockTools.getMax(gate.pos1, gate.pos2);
-		openBetween(gate.world, min, max);
-	}
-
-	@Override
 	public void onGateFinishOpen(EntityGate gate) {
 		//overriden in subclass
 	}
@@ -272,58 +287,40 @@ public class Gate implements IGateType {
 		closeBetween(gate, min, max);
 	}
 
-	public final void openBetween(World world, BlockPos min, BlockPos max) {
-		Block id;
-		for (int x = min.getX(); x <= max.getX(); x++) {
-			for (int y = min.getY(); y <= max.getY(); y++) {
-				for (int z = min.getZ(); z <= max.getZ(); z++) {
-					id = world.getBlockState(new BlockPos(x, y, z)).getBlock();
-					if (id == AWStructureBlocks.GATE_PROXY) {
-						WorldTools.getTile(world, new BlockPos(x, y, z), TEGateProxy.class).ifPresent(t -> t.setOpen(true));
-					}
-				}
+	final void closeBetween(EntityGate gate, BlockPos min, BlockPos max) {
+		BlockPos.getAllInBox(min, max).forEach(pos -> {
+			placeProxyIfNotPresent(gate, pos);
+			if (!gate.getRenderedTilePos().isPresent()) {
+				WorldTools.getTile(gate.world, pos, TEGateProxy.class).ifPresent(te -> {
+					te.setRender();
+					gate.setRenderedTilePos(pos);
+				});
+			} else {
+				WorldTools.getTile(gate.world, pos, TEGateProxy.class).filter(te -> !te.doesRender()).ifPresent(TEGateProxy::setRender);
 			}
-		}
-	}
-
-	public final void closeBetween(EntityGate gate, BlockPos min, BlockPos max) {
-		for (int x = min.getX(); x <= max.getX(); x++) {
-			for (int y = min.getY(); y <= max.getY(); y++) {
-				for (int z = min.getZ(); z <= max.getZ(); z++) {
-					BlockPos pos = new BlockPos(x, y, z);
-					placeProxyIfNotPresent(gate, pos, false);
-					if (!gate.getRenderedTile().isPresent()) {
-						WorldTools.getTile(gate.world, pos, TEGateProxy.class).ifPresent(te -> {
-							te.setRender();
-							gate.setRenderedTile(te);
-						});
-					}
-
-				}
-			}
-		}
+		});
 	}
 
 	public void setRenderedTileIfNotPresent(EntityGate gate) {
-		if (gate.getRenderedTile().isPresent()) {
+		if (gate.getRenderedTilePos().isPresent()) {
 			return;
 		}
 		BlockPos min = BlockTools.getMin(gate.pos1, gate.pos2);
 		BlockPos max = BlockTools.getMax(gate.pos1, gate.pos2);
-		BlockPos.getAllInBox(min, max).forEach(pos -> placeProxyIfNotPresent(gate, pos, true));
+		BlockPos.getAllInBox(min, max).forEach(pos -> placeProxyIfNotPresent(gate, pos));
 		Optional<TEGateProxy> renderedTe = StreamSupport.stream(BlockPos.getAllInBox(min, max).spliterator(), false)
 				.map(pos -> WorldTools.getTile(gate.world, pos, TEGateProxy.class)).filter(te -> te.isPresent() && te.get().doesRender()).map(Optional::get).findFirst();
 		if (renderedTe.isPresent()) {
-			gate.setRenderedTile(renderedTe.get());
+			gate.setRenderedTilePos(renderedTe.get().getPos());
 		} else {
 			WorldTools.getTile(gate.world, min, TEGateProxy.class).ifPresent(te -> {
 				te.setRender();
-				gate.setRenderedTile(te);
+				gate.setRenderedTilePos(min);
 			});
 		}
 	}
 
-	private boolean placeProxyIfNotPresent(EntityGate gate, BlockPos pos, boolean openDefault) {
+	private void placeProxyIfNotPresent(EntityGate gate, BlockPos pos) {
 		IBlockState state = gate.world.getBlockState(pos);
 		Block block = state.getBlock();
 		if (block != AWStructureBlocks.GATE_PROXY) {
@@ -331,13 +328,10 @@ public class Gate implements IGateType {
 				block.dropBlockAsItem(gate.world, pos, state, 0);
 			}
 			gate.world.setBlockState(pos, AWStructureBlocks.GATE_PROXY.getDefaultState());
-			WorldTools.getTile(gate.world, pos, TEGateProxy.class).ifPresent(t -> {
-				t.setOwner(gate);
-				t.setOpen(openDefault);
-			});
-			return true;
 		}
-		return false;
+		WorldTools.getTile(gate.world, pos, TEGateProxy.class).ifPresent(t -> {
+			t.setOwner(gate);
+		});
 	}
 
 	/*
@@ -351,7 +345,7 @@ public class Gate implements IGateType {
 				for (int z = min.getZ(); z <= max.getZ(); z++) {
 					BlockPos pos = new BlockPos(x, y, z);
 					if (!world.isAirBlock(pos)) {
-						AncientWarfareStructure.LOG.info("could not create gate for non-air block at: " + x + "," + y + "," + z + " block: " + world.getBlockState(pos).getBlock());
+						AncientWarfareStructure.LOG.info("could not create gate for non-air block at: {},{},{} block: {}", x, y, z, world.getBlockState(pos).getBlock());
 						return Optional.empty();
 					}
 				}

@@ -5,9 +5,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.vehicle.VehicleVarHelpers.BatteringRamVarHelper;
+import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.materials.VehicleMaterial;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
+import net.shadowmage.ancientwarfare.vehicle.init.AWVehicleSounds;
 import net.shadowmage.ancientwarfare.vehicle.registry.ArmorRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.UpgradeRegistry;
 
@@ -15,6 +17,7 @@ public class VehicleTypeBatteringRam extends VehicleType {
 	public VehicleTypeBatteringRam(int typeNum) {
 		super(typeNum);
 		this.configName = "battering_ram";
+		this.baseHealth = AWVehicleStatics.vehicleStats.vehicleBatteringRamHealth;
 		this.vehicleMaterial = VehicleMaterial.materialWood;
 		this.validArmors.add(ArmorRegistry.armorStone);
 		this.validArmors.add(ArmorRegistry.armorIron);
@@ -95,5 +98,10 @@ public class VehicleTypeBatteringRam extends VehicleType {
 		positions[5] = new BlockPos(blockHit.getX(), blockHit.getY() + 1, blockHit.getZ());
 		positions[6] = new BlockPos(blockHit.getX(), blockHit.getY(), blockHit.getZ() + 1);
 		return positions;
+	}
+
+	@Override
+	public void playFiringSound(VehicleBase vehicleBase) {
+		vehicleBase.playSound(AWVehicleSounds.BATTERING_RAM_LAUNCH, 2, 1);
 	}
 }

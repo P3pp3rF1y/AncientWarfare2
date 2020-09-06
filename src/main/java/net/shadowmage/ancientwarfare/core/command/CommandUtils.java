@@ -17,27 +17,26 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketManualReload;
+import net.shadowmage.ancientwarfare.core.util.FileUtils;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CommandUtils extends ParentCommand {
+public class CommandUtils extends RootCommand {
 	public CommandUtils() {
 		registerSubCommand(new EntityListCommand());
 		registerSubCommand(new EntityListCommand());
@@ -53,17 +52,13 @@ public class CommandUtils extends ParentCommand {
 		return "awutils";
 	}
 
-	@Override
-	public String getUsage(ICommandSender sender) {
-		return "command.aw.utils.usage";
-	}
-
 	private abstract static class ExportCommand implements ISubCommand {
 		@Override
-		public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+		public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
 			List<String> lines = getLines();
 			String fileName = args.length > 0 ? args[0] : getDefaultFileName();
-			File file = new File(AWCoreStatics.utilsExportPath, fileName);
+			String filePath = AWCoreStatics.utilsExportPath;
+			File file = new File(filePath, fileName);
 			exportToFile(file, getHeader(), lines);
 			notifyPlayer(sender, file);
 		}
@@ -74,33 +69,11 @@ public class CommandUtils extends ParentCommand {
 
 		protected abstract List<String> getLines();
 
-		private static void exportToFile(File exportFile, String header, List<String> rows) {
-
-			if (!exportFile.exists()) {
-				try {
-					if (!exportFile.getParentFile().mkdirs()) {
-						AncientWarfareCore.LOG.error("Unable to create folders for file : " + exportFile.getAbsolutePath());
-					}
-					if (!exportFile.createNewFile()) {
-						AncientWarfareCore.LOG.error("Unable to open new file : " + exportFile.getAbsolutePath());
-					}
-				}
-				catch (IOException e) {
-					AncientWarfareCore.LOG.error("Error opening file : " + exportFile.getAbsolutePath(), e);
-					return;
-				}
-			}
-			try (FileWriter fileWriter = new FileWriter(exportFile); BufferedWriter writer = new BufferedWriter(fileWriter)) {
-				writer.write(header);
-				writer.newLine();
-				for (String row : rows) {
-					writer.write(row);
-					writer.newLine();
-				}
-			}
-			catch (IOException e) {
-				AncientWarfareCore.LOG.error("Error exporting file: " + exportFile.getAbsolutePath(), e);
-			}
+		private static void exportToFile(File exportFile, String header, List<String> data) {
+			ArrayList<String> rows = new ArrayList<>();
+			rows.add(header);
+			rows.addAll(data);
+			FileUtils.exportToFile(exportFile, rows);
 		}
 
 		private static void notifyPlayer(ICommandSender sender, File exportFile) {
@@ -136,11 +109,16 @@ public class CommandUtils extends ParentCommand {
 		public String getName() {
 			return "exportentities";
 		}
+
+		@Override
+		public String getUsage(ICommandSender sender) {
+			return getName() + " [fileName - defaults to \"entitylist.csv\"]";
+		}
 	}
 
-	private static final Field BIOME_NAME = ReflectionHelper.findField(Biome.class, "biomeName", "field_76791_y");
+	private static final Field BIOME_NAME = ObfuscationReflectionHelper.findField(Biome.class, "field_76791_y");
 
-	private class BiomeListCommand extends ExportCommand {
+	private static class BiomeListCommand extends ExportCommand {
 		@Override
 		protected String getHeader() {
 			return "Registry Name,Biome Name,Temperature Category,High Humidity,Height Variation,Top Block,Biome Types,Biome Class";
@@ -176,9 +154,14 @@ public class CommandUtils extends ParentCommand {
 		public String getName() {
 			return "exportbiomes";
 		}
+
+		@Override
+		public String getUsage(ICommandSender sender) {
+			return getName() + " [fileName - defaults to \"biomelist.csv\"]";
+		}
 	}
 
-	private class BlockListCommand extends ExportCommand {
+	private static class BlockListCommand extends ExportCommand {
 
 		@Override
 		protected String getHeader() {
@@ -206,16 +189,21 @@ public class CommandUtils extends ParentCommand {
 		public String getName() {
 			return "exportblocks";
 		}
+
+		@Override
+		public String getUsage(ICommandSender sender) {
+			return getName() + " [fileName - defaults to \"blocklist.csv\"]";
+		}
 	}
 
-	private class ReloadManualCommand implements ISubCommand {
+	private static class ReloadManualCommand implements ISubCommand {
 		@Override
 		public String getName() {
 			return "reloadmanual";
 		}
 
 		@Override
-		public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+		public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
 			Entity senderEntity = sender.getCommandSenderEntity();
 			if (senderEntity instanceof EntityPlayer) {
 				NetworkHandler.sendToPlayer((EntityPlayerMP) senderEntity, new PacketManualReload());
@@ -224,11 +212,16 @@ public class CommandUtils extends ParentCommand {
 
 		@Override
 		public int getMaxArgs() {
-			return 1;
+			return 0;
+		}
+
+		@Override
+		public String getUsage(ICommandSender sender) {
+			return getName();
 		}
 	}
 
-	private class LootTableListCommand extends ExportCommand {
+	private static class LootTableListCommand extends ExportCommand {
 		@Override
 		protected String getHeader() {
 			return "Registry Name";
@@ -248,9 +241,14 @@ public class CommandUtils extends ParentCommand {
 		public String getName() {
 			return "exportloottables";
 		}
+
+		@Override
+		public String getUsage(ICommandSender sender) {
+			return getName() + " [fileName - defaults to \"loottablelist.csv\"]";
+		}
 	}
 
-	private class ChunkLoadCommand implements ISubCommand {
+	private static class ChunkLoadCommand implements ISubCommand {
 		private PlayerMover playerMover = new PlayerMover();
 
 		private ChunkLoadCommand() {
@@ -281,8 +279,13 @@ public class CommandUtils extends ParentCommand {
 			return 1;
 		}
 
+		@Override
+		public String getUsage(ICommandSender sender) {
+			return getName() + " <diameterInChunks>";
+		}
+
 		//this is not made for multiple players using it on server as there's likely no need for that
-		private class PlayerMover {
+		private static class PlayerMover {
 			private EntityPlayerMP player;
 			private int chunkLoadRadius;
 			private int range;
@@ -292,6 +295,7 @@ public class CommandUtils extends ParentCommand {
 			private Iterator<ChunkPos> iterator;
 			private int timeout = 0;
 
+			@SuppressWarnings("unused") // used in event listener reflection
 			@SubscribeEvent
 			public void serverTick(TickEvent.ServerTickEvent evt) {
 				if (evt.phase == TickEvent.Phase.END) {
@@ -327,7 +331,7 @@ public class CommandUtils extends ParentCommand {
 							currentZ = getInitialZ();
 							first = false;
 						} else if (currentX + chunkLoadRadius >= originalChunkPos.x + range && currentZ + chunkLoadRadius >= originalChunkPos.z + range) {
-							return this.endOfData();
+							return endOfData();
 						} else {
 							if (currentX + chunkLoadRadius < originalChunkPos.x + range) {
 								currentX += 2 * chunkLoadRadius;

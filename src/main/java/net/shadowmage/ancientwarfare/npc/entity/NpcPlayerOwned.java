@@ -4,12 +4,14 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.INpc;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
@@ -19,6 +21,7 @@ import net.shadowmage.ancientwarfare.npc.ai.AIHelper;
 import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedRideHorse;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
+import net.shadowmage.ancientwarfare.npc.init.AWNPCSounds;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.Command;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.CommandType;
 import net.shadowmage.ancientwarfare.npc.orders.UpkeepOrder;
@@ -30,13 +33,14 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Optional;
 
+@SuppressWarnings({"squid:MaximumInheritanceDepth", "squid:S2160"})
 public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc {
 	private static final String COMMAND_TAG = "command";
 	private static final String TOWN_HALL_TAG = "townHall";
 	private static final String UPKEEP_POS_TAG = "upkeepPos";
 	public boolean isAlarmed = false;
 
-	private Command playerIssuedCommand;
+	private Command playerIssuedCommand = Command.NONE;
 	private int foodValueRemaining = 0;
 
 	NpcAIPlayerOwnedRideHorse horseAI;
@@ -51,12 +55,23 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 		npcDefault.applyAttributes(this);
 		inventoryArmorDropChances = new float[] {1.f, 1.f, 1.f, 1.f};
 		inventoryHandsDropChances = new float[] {1.f, 1.f};
-
 	}
 
 	@Override
 	public int getMaxFallHeight() {
 		return super.getMaxFallHeight() - 1;
+	}
+
+	@Nullable
+	@Override
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+		return isFemale() || getSkinSettings().isAlexModel() ? AWNPCSounds.HUMAN_FEMALE_HURT : AWNPCSounds.HUMAN_HURT;
+	}
+
+	@Nullable
+	@Override
+	protected SoundEvent getDeathSound() {
+		return isFemale() || getSkinSettings().isAlexModel() ? AWNPCSounds.HUMAN_FEMALE_DEATH : AWNPCSounds.HUMAN_HURT;
 	}
 
 	@Override
@@ -151,8 +166,8 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 	/*
 	 * input path from command baton - default implementation for player-owned NPC is to set current command==input command and then let AI do the rest
 	 */
-	public void handlePlayerCommand(@Nullable Command cmd) {
-		if (cmd != null && cmd.type == CommandType.ATTACK) {
+	public void handlePlayerCommand(Command cmd) {
+		if (cmd.type == CommandType.ATTACK) {
 			handleAttackCommand(cmd);
 			return;
 		}
@@ -168,10 +183,10 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 				setAttackTarget(elb);
 			}
 		}
-		setPlayerCommand(null);
+		setPlayerCommand(Command.NONE);
 	}
 
-	public void setPlayerCommand(@Nullable Command cmd) {
+	public void setPlayerCommand(Command cmd) {
 		this.playerIssuedCommand = cmd;
 	}
 
@@ -194,11 +209,6 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 	@Override
 	public boolean canBeAttackedBy(Entity e) {
 		return !getOwner().isOwnerOrSameTeamOrFriend(e);
-	}
-
-	@Override
-	public void onWeaponInventoryChanged() {
-		//TODO do we need to do anything to update skin info on client here?
 	}
 
 	@Override
@@ -241,12 +251,33 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 		return hasCommandPermissions(player.getUniqueID(), player.getName()) && super.tryCommand(player);
 	}
 
+	@Override
+	protected void dropEquipment(boolean wasRecentlyHit, int lootingModifier) {
+		for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
+			ItemStack itemstack = this.getItemStackFromSlot(slot);
+			if (!itemstack.isEmpty()) {
+				this.entityDropItem(itemstack, 0.0F);
+			}
+			setItemStackToSlot(slot, ItemStack.EMPTY);
+		}
+		if (!AWNPCStatics.persistOrdersOnDeath) {
+			if (!ordersStack.isEmpty()) {
+				entityDropItem(ordersStack, 0.f);
+			}
+			if (!upkeepStack.isEmpty()) {
+				entityDropItem(upkeepStack, 0.f);
+			}
+			ordersStack = ItemStack.EMPTY;
+			upkeepStack = ItemStack.EMPTY;
+		}
+	}
+
 	public boolean withdrawFood(IItemHandler handler) {
 		int amount = getUpkeepAmount() - getFoodRemaining();
 		if (amount <= 0) {
 			return true;
 		}
-		@Nonnull ItemStack stack;
+		ItemStack stack;
 		int val;
 		int eaten = 0;
 		for (int slot = 0; slot < handler.getSlots(); slot++) {
@@ -315,7 +346,7 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 	public void writeEntityToNBT(NBTTagCompound tag) {
 		super.writeEntityToNBT(tag);
 		tag.setInteger("foodValue", foodValueRemaining);
-		if (playerIssuedCommand != null) {
+		if (playerIssuedCommand != Command.NONE) {
 			tag.setTag(COMMAND_TAG, playerIssuedCommand.writeToNBT(new NBTTagCompound()));
 		}
 		if (townHallPosition != null) {

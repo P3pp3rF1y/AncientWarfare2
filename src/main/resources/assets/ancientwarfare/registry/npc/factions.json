@@ -1,7 +1,14 @@
 {
     "load_after": ["target_lists"],
     "defaults": {
-        "player_default_standing": -70,
+        "standing_settings": {
+            "player_default_standing": -70,
+            "standing_can_change": true,
+            "standing_changes": {
+                "kill": -10,
+                "trade": 2
+            }
+        },
         "hostile_towards_factions": {
             "empire": true,
             "norska": true,
@@ -56,7 +63,9 @@
         {
             "name": "empire",
             "color": "800080",
-            "player_default_standing": -1000,
+            "standing_settings": {
+                "player_default_standing": -1000
+            },
             "hostile_towards_factions": {
                 "hobbit": false,
                 "ent": false,
@@ -112,7 +121,9 @@
         }, {
             "name": "norska",
             "color": "9999FF",
-            "player_default_standing": -50,
+            "standing_settings": {
+                "player_default_standing": -50
+            },
             "hostile_towards_factions": {
                 "empire": true,
                 "hobbit": false,
@@ -157,7 +168,7 @@
         }, {
             "name": "sarkonid",
             "color": "b20000",
-            "player_default_standing": -50,
+            "standing_settings": {"player_default_standing": -50},
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -202,7 +213,7 @@
         }, {
             "name": "xoltec",
             "color": "ffa500",
-            "player_default_standing": -3000,
+            "standing_settings": {"player_default_standing": -3000},
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -250,7 +261,7 @@
         }, {
             "name": "witchbane",
             "color": "ffffff",
-            "player_default_standing": -1000,
+            "standing_settings": {"player_default_standing": -1000},
             "hostile_towards_factions": {
                 "empire": false,
                 "norska": true,
@@ -307,7 +318,7 @@
         }, {
             "name": "nogg",
             "color": "00cd00",
-            "player_default_standing": 25,
+            "standing_settings": {"player_default_standing": 25},
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -363,7 +374,7 @@
         }, {
             "name": "buffloka",
             "color": "008000",
-            "player_default_standing": -50,
+            "standing_settings": {"player_default_standing": -50},
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": false,
@@ -408,7 +419,7 @@
         }, {
             "name": "zimba",
             "color": "ffff00",
-            "player_default_standing": -50,
+            "standing_settings": {"player_default_standing": -50},
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": false,
@@ -453,7 +464,7 @@
         }, {
             "name": "kong",
             "color": "004000",
-            "player_default_standing": -3000,
+            "standing_settings": {"player_default_standing": -3000},
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -502,7 +513,10 @@
         }, {
             "name": "orc",
             "color": "404040",
-            "player_default_standing": -9000,
+            "standing_settings": {
+                "player_default_standing": -9000,
+                "standing_can_change": false
+            },
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -550,7 +564,10 @@
         }, {
             "name": "brigand",
             "color": "964b00",
-            "player_default_standing": -9000,
+            "standing_settings": {
+                "player_default_standing": -9000,
+                "standing_can_change": false
+            },
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -598,7 +615,10 @@
         }, {
             "name": "pirate",
             "color": "cc7722",
-            "player_default_standing": -9000,
+            "standing_settings": {
+                "player_default_standing": -9000,
+                "standing_can_change": false
+            },
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -647,7 +667,10 @@
         }, {
             "name": "evil",
             "color": "000000",
-            "player_default_standing": -9000,
+            "standing_settings": {
+                "player_default_standing": -9000,
+                "standing_can_change": false
+            },
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -708,7 +731,7 @@
         }, {
             "name": "good",
             "color": "66b266",
-            "player_default_standing": 50,
+            "standing_settings": {"player_default_standing": 50},
             "hostile_towards_factions": {
                 "empire": false,
                 "norska": false,
@@ -765,7 +788,10 @@
         }, {
             "name": "undead",
             "color": "b2b2b2",
-            "player_default_standing": -9000,
+            "standing_settings": {
+                "player_default_standing": -9000,
+                "standing_can_change": false
+            },
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -826,7 +852,10 @@
         }, {
             "name": "demon",
             "color": "ff2400",
-            "player_default_standing": -9000,
+            "standing_settings": {
+                "player_default_standing": -9000,
+                "standing_can_change": false
+            },
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -886,8 +915,11 @@
             }
         }, {
             "name": "coven",
-            "color": "FFC0CB",
-            "player_default_standing": -9000,
+            "color": "000000",
+            "standing_settings": {
+                "player_default_standing": -9000,
+                "standing_can_change": false
+            },
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -936,7 +968,7 @@
         }, {
             "name": "elf",
             "color": "66b266",
-            "player_default_standing": 50,
+            "standing_settings": {"player_default_standing": 50},
             "hostile_towards_factions": {
                 "empire": false,
                 "norska": false,
@@ -981,7 +1013,7 @@
         }, {
             "name": "barbarian",
             "color": "802B00",
-            "player_default_standing": -5000,
+            "standing_settings": {"player_default_standing": -5000},
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -1026,7 +1058,7 @@
         }, {
             "name": "dwarf",
             "color": "77b266",
-            "player_default_standing": 50,
+            "standing_settings": {"player_default_standing": 50},
             "hostile_towards_factions": {
                 "empire": false,
                 "norska": false,
@@ -1071,7 +1103,7 @@
         }, {
             "name": "smingol",
             "color": "FFD700",
-            "player_default_standing": -5000,
+            "standing_settings": {"player_default_standing": -5000},
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -1118,8 +1150,11 @@
             }
         }, {
             "name": "lizardman",
-            "color": "FFC0CB",
-            "player_default_standing": -9000,
+            "color": "576500",
+            "standing_settings": {
+                "player_default_standing": -9000,
+                "standing_can_change": false
+            },
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -1166,8 +1201,11 @@
             }
         }, {
             "name": "rakshasa",
-            "color": "FFC0CB",
-            "player_default_standing": -9000,
+            "color": "d7bf00",
+            "standing_settings": {
+                "player_default_standing": -9000,
+                "standing_can_change": false
+            },
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -1215,7 +1253,10 @@
         }, {
             "name": "klown",
             "color": "FFC0CB",
-            "player_default_standing": -9000,
+            "standing_settings": {
+                "player_default_standing": -9000,
+                "standing_can_change": false
+            },
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -1262,8 +1303,11 @@
             }
         }, {
             "name": "ishtari",
-            "color": "FFC0CB",
-            "player_default_standing": -9000,
+            "color": "fed000",
+            "standing_settings": {
+                "player_default_standing": -9000,
+                "standing_can_change": false
+            },
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -1310,8 +1354,11 @@
             }
         }, {
             "name": "icelord",
-            "color": "FFC0CB",
-            "player_default_standing": -9000,
+            "color": "3c9f9c",
+            "standing_settings": {
+                "player_default_standing": -9000,
+                "standing_can_change": false
+            },
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -1358,8 +1405,8 @@
             }
         }, {
             "name": "guild",
-            "color": "FFC0CB",
-            "player_default_standing": 50,
+            "color": "007cc9",
+            "standing_settings": {"player_default_standing": 50},
             "hostile_towards_factions": {
                 "empire": false,
                 "norska": false,
@@ -1403,8 +1450,8 @@
             }
         }, {
             "name": "wizardly",
-            "color": "FFC0CB",
-            "player_default_standing": 50,
+            "color": "aa3fd8",
+            "standing_settings": {"player_default_standing": 50},
             "hostile_towards_factions": {
                 "empire": false,
                 "norska": false,
@@ -1448,8 +1495,8 @@
             }
         }, {
             "name": "amazon",
-            "color": "FFC0CB",
-            "player_default_standing": -50,
+            "color": "d34848",
+            "standing_settings": {"player_default_standing": -50},
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": false,
@@ -1493,8 +1540,11 @@
             }
         }, {
             "name": "minossian",
-            "color": "FFC0CB",
-            "player_default_standing": -9000,
+            "color": "456689",
+            "standing_settings": {
+                "player_default_standing": -9000,
+                "standing_can_change": false
+            },
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -1542,7 +1592,7 @@
         }, {
             "name": "sealsker",
             "color": "6666FF",
-            "player_default_standing": 50,
+            "standing_settings": {"player_default_standing": 50},
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": false,
@@ -1587,7 +1637,7 @@
         }, {
             "name": "vyncan",
             "color": "6666FF",
-            "player_default_standing": 50,
+            "standing_settings": {"player_default_standing": 50},
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": false,
@@ -1632,7 +1682,7 @@
         }, {
             "name": "hobbit",
             "color": "6666FF",
-            "player_default_standing": 50,
+            "standing_settings": {"player_default_standing": 50},
             "hostile_towards_factions": {
                 "empire": false,
                 "norska": false,
@@ -1677,7 +1727,10 @@
         }, {
             "name": "monster",
             "color": "FFC0CB",
-            "player_default_standing": -9000,
+            "standing_settings": {
+                "player_default_standing": -9000,
+                "standing_can_change": false
+            },
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -1725,7 +1778,10 @@
         }, {
             "name": "beast",
             "color": "FFC0CB",
-            "player_default_standing": -9000,
+            "standing_settings": {
+                "player_default_standing": -9000,
+                "standing_can_change": false
+            },
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -1773,7 +1829,7 @@
         }, {
             "name": "ent",
             "color": "6666FF",
-            "player_default_standing": 50,
+            "standing_settings": {"player_default_standing": 50},
             "hostile_towards_factions": {
                 "empire": false,
                 "norska": false,
@@ -1818,7 +1874,7 @@
         }, {
             "name": "gnome",
             "color": "6666FF",
-            "player_default_standing": 50,
+            "standing_settings": {"player_default_standing": 50},
             "hostile_towards_factions": {
                 "empire": false,
                 "norska": false,
@@ -1863,7 +1919,10 @@
         }, {
             "name": "gremlin",
             "color": "FFC0CB",
-            "player_default_standing": -9000,
+            "standing_settings": {
+                "player_default_standing": -9000,
+                "standing_can_change": false
+            },
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -1909,8 +1968,11 @@
             }
         }, {
             "name": "vampire",
-            "color": "FFC0CB",
-            "player_default_standing": -9000,
+            "color": "320000",
+            "standing_settings": {
+                "player_default_standing": -9000,
+                "standing_can_change": false
+            },
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,
@@ -1957,7 +2019,10 @@
         }, {
             "name": "giant",
             "color": "FFC0CB",
-            "player_default_standing": -9000,
+            "standing_settings": {
+                "player_default_standing": -9000,
+                "standing_can_change": false
+            },
             "hostile_towards_factions": {
                 "empire": true,
                 "norska": true,

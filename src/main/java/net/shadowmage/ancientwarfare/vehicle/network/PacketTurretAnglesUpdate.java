@@ -5,12 +5,12 @@ import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 
 import java.io.IOException;
 
+//TODO figure out if this is needed at all?
 public class PacketTurretAnglesUpdate extends PacketVehicleBase {
 	private float pitch;
 	private float rotation;
 
-	public PacketTurretAnglesUpdate() {
-	}
+	public PacketTurretAnglesUpdate() {}
 
 	public PacketTurretAnglesUpdate(VehicleBase vehicle, float pitch, float rotation) {
 		super(vehicle);

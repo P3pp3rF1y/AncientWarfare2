@@ -10,7 +10,11 @@
         },
         {
             "content_type": "text",
-            "text": "The Warehouse is meant as an upgradeable self-sorting and auto-organizing mass item storage area. It has work bounds like other Worksites, but is also a Multi-block structure in that it requires other blocks for its functionality. The Warehouse comprises four different types of blocks – the Warehouse Control Block, Warehouse Storage blocks, Warehouse Interface blocks, and Warehouse Stock Viewer Signs. Additionally there is a Warehouse Crafting Station to allow a Player to use items directly from the warehouse for crafting. \n \n \n"
+            "text": "The Warehouse is meant as an upgradeable self-sorting and auto-organizing mass item storage area. It has work bounds like other Worksites, but is also a Multi-block structure in that it requires other blocks for its functionality. The Warehouse comprises four different types of blocks – the Warehouse Control Block, Warehouse Storage blocks, Warehouse Interface blocks, and Warehouse Stock Viewer Signs. Additionally there is a Warehouse Crafting Table to allow a Player to use items directly from the warehouse for crafting, and the Stock Linker for controlling production in the AW system."
+        },
+        {
+            "content_type": "text",
+            "text": "\n\n\n "
         },
         {
             "content_type": "item",
@@ -62,7 +66,40 @@
         },
         {
             "content_type": "text",
-            "text": "Warehouse Interface blocks provide the means to access the items in the Warehouse through external and automated processes. These blocks provide an externally accessible inventory that may be directly manipulated by NPC Couriers, vanilla hoppers, or any other mod-added means of manipulating block-based inventories. The Interface block serves as both the input and output for the Warehouse, and every Interface block may be used as input, output, or both. The Warehouse Interface block can be interacted with to open up a GUI to control its filter list.  The filter list determines what items will be automatically placed into the interface, and which items should be automatically removed.  Any items in the filter list will be automatically placed into the Interface block at regular intervals by the Control Block, up to the quantity specified in the filter (as long as the Control block is powered).  Any items not in the filter list will be automatically removed from the Interface block at regular intervals by the Control Block (again, as long as it is powered)."
+            "text": "Warehouse Interface blocks provide the means to access the items in the Warehouse through external and automated processes. These blocks provide an externally accessible inventory that may be directly manipulated by NPC Couriers, vanilla hoppers, or any other mod-added means of manipulating block-based inventories. These Interfaces MUST be WITHIN the bounds of the Warehouse and the Warehouse Control Block MUST BE POWERED to facilitate item transfer between the Interfaces and the Storage Blocks. The Interface block serves as both the input and output for the Warehouse, and every Interface block may be used as input, output, or both. The Warehouse Interface block can be interacted with to open up a GUI to control its filter list.  The filter list determines what items will be automatically placed into the interface, and which items should be automatically removed.  Any items in the filter list will be automatically placed into the Interface block at regular intervals by the Control Block, up to the quantity specified in the filter. Any items not in the filter list will be automatically removed from the Interface block at regular intervals by the Control Block."
+        },
+        {
+            "content_type": "item",
+            "name": "ancientwarfareautomation:warehouse_stock_linker"
+        },
+        {
+            "content_type": "heading",
+            "text": "Stock Linker",
+            "level": 2
+        },
+        {
+            "content_type": "text",
+            "text": "The Stock Linker is a sign-like block that is designed to communicate between the Warehouse and Machines out in the fields. It can be used to tell Machines to cease operating based on the quantities of items in the Warehouse. Therefore, it does not belong within the bounds of the Warehouse, but does need to be linked to a Warehouse. To do so, hold the Stock Linker in your hand, and then sneak-right click on the Warehouse you want it to link to. There will be a message stating the Warehouse for the Stock Linker is set, and will display its coordinates. Now the Stock Linker is ready to be placed, and in order to work properly, the Stock Linker MUST be placed on any side of the Machine, which can be done by sneak-placing on the Machine. \n \nNext, you can right click the Stock Linker to open its GUI, which is similar to the Warehouse Interfaces. You must add a new filter, set the item you want to track, set the equality sign, and the comparison value. This works by checking the amount of the item, the item that is set in the filter, in the linked Warehouse, and comparing it to the value set in the comparison value via the equality sign. Once the equality value is met, the Stock Linker will emit a form of Redstone that will disable the Machine it is attached to. If the equality is no longer met, the Stock Linker will cease emitting its signal, and will allow the Machine to function. Up to four filters can be put on a single Stock Linker, and the top one has the highest priority, the bottom one has the lowest priority."
+        },
+        {
+            "content_type": "text",
+            "text": "\n\n\n\n\n\n\n\n\n "
+        },
+        {
+            "content_type": "image",
+            "path": "/images/Stock_Linker_GUI1.jpg",
+            "width": 757,
+            "height": 238
+        },
+        {
+            "content_type": "image",
+            "path": "/images/Stock_Linker1.jpg",
+            "width": 757,
+            "height": 408
+        },
+        {
+            "content_type": "text",
+            "text": "\n\n\n "
         },
         {
             "content_type": "item",
@@ -70,12 +107,12 @@
         },
         {
             "content_type": "heading",
-            "text": "Crafting Station",
+            "text": "Crafting Table",
             "level": 2
         },
         {
             "content_type": "text",
-            "text": "The Warehouse Crafting Station must be placed on top of a Warehouse Control block (not within the bounds), and works with materials from a single Warehouse. Like other crafting stations, the recipe may be laid out in the recipe grid. Results may be pulled from the result slot. Any resources needed from crafting will be pulled from the Warehouse’s Storage blocks. \n \n \n "
+            "text": "The Warehouse Crafting Table must be placed on top of a Warehouse Control block (not within the bounds), and works with materials from a single Warehouse. Like other crafting benches and tables in the mod, the recipe may be laid out in the recipe grid. Results may be pulled from the result slot. Any resources needed from crafting will be pulled from the Warehouse’s Storage blocks."
         },
         {
             "content_type": "item",

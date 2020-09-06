@@ -86,6 +86,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	private float baseGenericResist = 0.f;
 	private float baseFireResist = 0.f;
 	private float baseExplosionResist = 0.f;
+	private int hurtInvulTicks = 0;
 
 	/**
 	 * local current stats, fully updated and modified from upgrades/etc. should not be altered aside from
@@ -572,6 +573,9 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 				this.isSettingUp = false;
 			}
 		}
+		if (this.hurtInvulTicks > 0) {
+			this.hurtInvulTicks--;
+		}
 		if (this.assignedRider != null) {
 			if (assignedRider.isDead || assignedRider.getRidingEntity() != this || !assignedRider.isRiding() || assignedRider.getRidingEntity() != this || (this.getDistanceSq(assignedRider) > (AWNPCStatics.npcActionRange * AWNPCStatics.npcActionRange))) {
 				//TODO config setting for vehicle search range
@@ -758,6 +762,13 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 
 	@Override
 	public boolean attackEntityFrom(DamageSource damageSource, float amount) {
+		if (!damageSource.isExplosion()) {
+			if (hurtInvulTicks > 0) {
+				return false;
+			}
+			hurtInvulTicks = 10;
+		}
+
 		if (this.world.isRemote) {
 			hitAnimationTicks = 20;
 			return false;

@@ -32,17 +32,17 @@ public class ContainerLootBasket extends ContainerTileBase<TileLootBasket> {
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
+	public ItemStack transferStackInSlot(EntityPlayer playerIn, int slotClickedIndex) {
 		return getItemHandler().map(inventory -> {
 			int slotNum = inventory.getSlots();
-			Slot slot = inventorySlots.get(index);
+			Slot slot = inventorySlots.get(slotClickedIndex);
 			ItemStack itemstack = ItemStack.EMPTY;
 
 			if (slot != null && slot.getHasStack()) {
 				ItemStack itemstack1 = slot.getStack();
 				itemstack = itemstack1.copy();
 
-				if (index < slotNum) {
+				if (slotClickedIndex < slotNum) {
 					if (!mergeItemStack(itemstack1, slotNum, this.inventorySlots.size(), true)) {
 						return ItemStack.EMPTY;
 					}

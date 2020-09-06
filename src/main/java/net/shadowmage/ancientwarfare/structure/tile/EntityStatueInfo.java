@@ -11,7 +11,6 @@ import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.shadowmage.ancientwarfare.core.util.MathUtils;
 import net.shadowmage.ancientwarfare.core.util.NBTHelper;
-import net.shadowmage.ancientwarfare.structure.render.statue.StatueEntityRegistry;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -30,8 +29,7 @@ public class EntityStatueInfo {
 	private ResourceLocation entityName = null;
 	private boolean entityOnFire = false;
 
-	@SuppressWarnings("ConstantConditions") //there is always going to be at least one entity in the registry
-	private String statueEntityName = StatueEntityRegistry.getStatueEntityNames().stream().findFirst().get();
+	private String statueEntityName = "Zombie";
 	private Transform overallTransform = new Transform();
 	private Map<String, Transform> partTransforms = new HashMap<>();
 

@@ -1,0 +1,77 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "ancientwarfare:structure/gravestone_1",
+        "textures": {
+            "0": "ancientwarfare:blocks/structure/gravestone_1"
+        },
+        "transform": "forge:default-block"
+    },
+    "variants": {
+        "normal": [
+            {}
+        ],
+        "variant": {
+            "1": {
+                "model": "ancientwarfare:structure/gravestone_1",
+                "textures": {
+                    "0": "ancientwarfare:blocks/structure/gravestone_1"
+                }
+            },
+            "2": {
+                "model": "ancientwarfare:structure/gravestone_1",
+                "textures": {
+                    "0": "ancientwarfare:blocks/structure/gravestone_2"
+                }
+            },
+            "3": {
+                "model": "ancientwarfare:structure/gravestone_3",
+                "textures": {
+                    "0": "ancientwarfare:blocks/structure/gravestone_3"
+                }
+            },
+            "4": {
+                "model": "ancientwarfare:structure/gravestone_3",
+                "textures": {
+                    "0": "ancientwarfare:blocks/structure/gravestone_4"
+                }
+            },
+            "5": {
+                "model": "ancientwarfare:structure/gravestone_5",
+                "textures": {
+                    "0": "ancientwarfare:blocks/structure/gravestone_5"
+                }
+            },
+            "6": {
+                "model": "ancientwarfare:structure/gravestone_6",
+                "textures": {
+                    "0": "ancientwarfare:blocks/structure/gravestone_6"
+                }
+            },
+            "7": {
+                "model": "ancientwarfare:structure/gravestone_7",
+                "textures": {
+                    "0": "ancientwarfare:blocks/structure/gravestone_7"
+                }
+            },
+            "8": {
+                "model": "ancientwarfare:structure/gravestone_8",
+                "textures": {
+                    "0": "ancientwarfare:blocks/structure/gravestone_8"
+                }
+            }
+        },
+        "facing": {
+            "north": {},
+            "south": {
+                "y": 180
+            },
+            "west": {
+                "y": 270
+            },
+            "east": {
+                "y": 90
+            }
+        }
+    }
+}

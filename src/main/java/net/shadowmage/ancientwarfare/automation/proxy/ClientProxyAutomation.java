@@ -28,7 +28,6 @@ import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteInventorySideSele
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteQuarry;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteQuarryBounds;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteTreeFarm;
-import net.shadowmage.ancientwarfare.automation.render.AutoCraftingRenderer;
 import net.shadowmage.ancientwarfare.automation.render.FlywheelControllerAnimationRenderer;
 import net.shadowmage.ancientwarfare.automation.render.FlywheelControllerRenderer;
 import net.shadowmage.ancientwarfare.automation.render.FlywheelStorageAnimationRenderer;
@@ -41,6 +40,7 @@ import net.shadowmage.ancientwarfare.automation.render.TorqueJunctionRenderer;
 import net.shadowmage.ancientwarfare.automation.render.TorqueShaftAnimationRenderer;
 import net.shadowmage.ancientwarfare.automation.render.TorqueShaftRenderer;
 import net.shadowmage.ancientwarfare.automation.render.TorqueTransportAnimationRenderer;
+import net.shadowmage.ancientwarfare.automation.render.WarehouseStockLinkerRenderer;
 import net.shadowmage.ancientwarfare.automation.render.WarehouseStockViewerRenderer;
 import net.shadowmage.ancientwarfare.automation.render.WaterwheelGeneratorRenderer;
 import net.shadowmage.ancientwarfare.automation.render.WindmillBladeAnimationRenderer;
@@ -59,6 +59,7 @@ import net.shadowmage.ancientwarfare.automation.tile.torque.TileWindmillControll
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileFlywheelStorage;
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileWindmillBlade;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseBase;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStockLinker;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStockViewer;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteBase;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
@@ -100,6 +101,7 @@ public class ClientProxyAutomation extends ClientProxyBase {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileWorksiteBase.class, new WorksiteRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileWarehouseBase.class, new WorksiteRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileWarehouseStockViewer.class, new WarehouseStockViewerRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileWarehouseStockLinker.class, new WarehouseStockLinkerRenderer());
 
 		//********************************************CONDUIT / TRANSPORT RENDERS***************************************************************//
 
@@ -154,7 +156,6 @@ public class ClientProxyAutomation extends ClientProxyBase {
 
 	@SubscribeEvent
 	public void onPreTextureStitch(TextureStitchEvent.Pre evt) {
-		AutoCraftingRenderer.INSTANCE.setSprite(registerSprite(evt, "tile_auto_crafting"));
 
 		StirlingGeneratorRenderer.INSTANCE.setSprite(registerSprite(evt, "stirling_generator"));
 

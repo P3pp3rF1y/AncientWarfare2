@@ -10,6 +10,8 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.Function2;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
+import net.shadowmage.ancientwarfare.npc.entity.vehicle.NpcSiegeEngineer;
 import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
@@ -70,7 +72,7 @@ public class VehicleAmmoHelper implements INBTSerializable<NBTTagCompound> {
 	 * the vehicle into firing infinite rounds.
 	 */
 	public int getCurrentAmmoCount() {
-		if (!AWVehicleStatics.soldiersUseAmmo && vehicle.getControllingPassenger() instanceof NpcBase) {
+		if (vehicle.getControllingPassenger() instanceof NpcFaction || AWVehicleStatics.generalSettings.ownedSoldiersUseAmmo && vehicle.getControllingPassenger() instanceof NpcSiegeEngineer) {
 			return 64;
 		}
 		if (currentAmmoType != null && ammoEntries.containsKey(currentAmmoType)) {
@@ -184,7 +186,7 @@ public class VehicleAmmoHelper implements INBTSerializable<NBTTagCompound> {
 				return entry.baseAmmoType;
 			}
 		}
-		if (!AWVehicleStatics.soldiersUseAmmo && vehicle.getControllingPassenger() instanceof NpcBase) {
+		if (vehicle.getControllingPassenger() instanceof NpcFaction || !AWVehicleStatics.generalSettings.ownedSoldiersUseAmmo && vehicle.getControllingPassenger() instanceof NpcSiegeEngineer) {
 			NpcBase npc = (NpcBase) vehicle.getControllingPassenger();
 			return vehicle.vehicleType.getAmmoForSoldierRank(npc.getLevelingStats().getLevel());
 		}

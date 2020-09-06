@@ -1,0 +1,95 @@
+{
+    "pools": [
+        {
+            "name":"main", 
+            "rolls": {
+                "min": 3,
+                "max": 4
+            },
+            "entries": [
+				{
+                    "type": "item",
+                    "name": "log2",
+                    "weight": 6,
+                    "functions": [
+						{
+                            "function": "set_data",
+                            "data": 1
+                        },
+						{
+                            "function": "set_count",
+                            "count": {
+                                "min": 6,
+                                "max": 12
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "planks",
+                    "weight": 6,
+                    "functions": [
+						{
+                            "function": "set_data",
+                            "data": 5
+                        },
+						{
+                            "function": "set_count",
+                            "count": {
+                                "min": 6,
+                                "max": 12
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "sapling",
+                    "weight": 6,
+                    "functions": [
+						{
+                            "function": "set_data",
+                            "data": 5
+                        },
+						{
+                            "function": "set_count",
+                            "count": {
+                                "min": 6,
+                                "max": 12
+                            }
+                        }
+                    ]
+                },
+				{
+                    "type": "item",
+                    "name": "apple",
+                    "weight": 3,
+                    "functions": [
+						{
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 3
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "iron_axe",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 1
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,13 @@
+{
+    "mod": "growthcraft",
+    "crops": [
+        {
+            "crop": "growthcraft_rice:ricecrop",
+            "type": "mature_defined",
+            "item": "growthcraft_rice:rice",
+            "mature": {
+                "age": 7
+            }
+        }
+    ]
+}

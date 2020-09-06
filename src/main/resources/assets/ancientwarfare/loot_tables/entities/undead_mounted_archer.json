@@ -1,0 +1,55 @@
+{
+    "pools": [
+        {
+            "name": "coins",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "loot_table",
+                    "name": "ancientwarfare:entities/mounted_archer",
+                    "weight": 1
+                }
+            ]
+        },
+        {
+            "name": "bones",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "bone",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 0,
+                                "max": 1
+                            }
+                        },
+                        {
+                            "function": "looting_enchant",
+                            "count": 0,
+                            "limit": 3
+                        }
+                    ]
+                },
+                {
+                    "type": "empty",
+                    "weight": 2
+                }
+            ]
+        },
+        {
+            "name": "stray_drops",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "loot_table",
+                    "name": "minecraft:entities/stray",
+                    "weight": 1
+                }
+            ]
+        }
+    ]
+}

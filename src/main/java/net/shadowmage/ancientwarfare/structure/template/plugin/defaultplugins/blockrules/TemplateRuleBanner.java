@@ -13,6 +13,8 @@ import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 
+import java.util.Optional;
+
 public class TemplateRuleBanner extends TemplateRuleBlockTile {
 	public static final String PLUGIN_NAME = "banner";
 
@@ -25,11 +27,11 @@ public class TemplateRuleBanner extends TemplateRuleBlockTile {
 	}
 
 	@Override
-	protected ItemStack getStack() {
+	protected Optional<ItemStack> getStack() {
 		EnumDyeColor baseColor = EnumDyeColor.byDyeDamage(tag.getInteger("Base"));
 		NBTTagList patterns = tag.getTagList("Patterns", 10);
 
-		return ItemBanner.makeBanner(baseColor, patterns);
+		return Optional.of(ItemBanner.makeBanner(baseColor, patterns));
 	}
 
 	@Override

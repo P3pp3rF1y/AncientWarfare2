@@ -31,7 +31,6 @@ import net.shadowmage.ancientwarfare.structure.render.RenderAdvancedSpawner;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
@@ -45,7 +44,7 @@ public class BlockAdvancedSpawner extends BlockBaseStructure {
 
 	@Override
 	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
-		@Nonnull ItemStack stack = new ItemStack(this);
+		ItemStack stack = new ItemStack(this);
 		SpawnerSettings settings = SpawnerSettings.getDefaultSettings();
 		NBTTagCompound defaultTag = new NBTTagCompound();
 		settings.writeToNBT(defaultTag);
@@ -125,7 +124,7 @@ public class BlockAdvancedSpawner extends BlockBaseStructure {
 	}
 
 	private ItemStack getSpawnerItem(TileAdvancedSpawner te) {
-		@Nonnull ItemStack item = new ItemStack(this);
+		ItemStack item = new ItemStack(this);
 		NBTTagCompound settings = new NBTTagCompound();
 		te.getSettings().writeToNBT(settings);
 		item.setTagInfo("spawnerSettings", settings);

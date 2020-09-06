@@ -1,11 +1,12 @@
 package net.shadowmage.ancientwarfare.npc.ai.faction;
 
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMedicBase;
-import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
+import net.shadowmage.ancientwarfare.npc.entity.faction.attributes.AdditionalAttributes;
 
-public class NpcAIFactionPriest extends NpcAIMedicBase {
+public class NpcAIFactionPriest extends NpcAIMedicBase<NpcFaction> {
 
-	public NpcAIFactionPriest(NpcBase npc) {
+	public NpcAIFactionPriest(NpcFaction npc) {
 		super(npc);
 	}
 
@@ -14,4 +15,8 @@ public class NpcAIFactionPriest extends NpcAIMedicBase {
 		return true;
 	}
 
+	@Override
+	protected float getAmountToHealEachTry() {
+		return npc.getAdditionalAttributeValue(AdditionalAttributes.HEAL_PER_TRY).orElse(0f);
+	}
 }

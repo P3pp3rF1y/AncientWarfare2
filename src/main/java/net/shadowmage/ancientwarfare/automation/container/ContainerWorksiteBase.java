@@ -53,7 +53,7 @@ public class ContainerWorksiteBase<T extends TileWorksiteBoundedInventory> exten
 			return ItemStack.EMPTY;
 		}
 
-		@Nonnull ItemStack stackFromSlot = slot.getStack();
+		ItemStack stackFromSlot = slot.getStack();
 		if (slotClickedIndex < tileEntitySlots) {
 			this.mergeItemStack(stackFromSlot, tileEntitySlots, tileEntitySlots + playerSlots, false);
 		} else {

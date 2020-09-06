@@ -6,6 +6,7 @@ import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
+import net.shadowmage.ancientwarfare.npc.registry.FactionDefinition;
 import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
 
 import java.util.HashMap;
@@ -31,12 +32,13 @@ public class AWNPCStatics extends ModConfiguration {
 	public static int townMaxRange = 100;
 	public static int townUpdateFreq = 100; //5 second broadcast frequency
 	public static boolean npcAIDebugMode = false;
-	public static double archerRange = 16.0;
+	public static double archerRange = 60.0;
+	public static boolean vanillaEquipmentDropRate = true;
+	public static double npcLevelDamageMultiplier = 0.05;//damage bonus per npc level.  @ level 10 they do 2x the damage as at lvl 0
 
 	/*
 	 * TODO add these to config
 	 */
-	public static double npcLevelDamageMultiplier = 0.05;//damage bonus per npc level.  @ level 10 they do 2x the damage as at lvl 0
 	/* ********************************************CLIENT SETTINGS************************************************ */
 	public static boolean loadDefaultSkinPack = true;
 
@@ -46,13 +48,11 @@ public class AWNPCStatics extends ModConfiguration {
 	private Configuration foodConfig;
 	private static final String foodSettings = "01_food_settings";
 	private HashMap<String, Integer> foodValues;
-	private int foodMultiplier = 750;
+	private static int foodMultiplier = 350;
 
 	/* ********************************************FACTION STARTING VALUE SETTINGS************************************************ */
 	private Configuration factionConfig;
 	private static final String factionSettings = "01_faction_settings";
-	public static int factionLossOnDeath = 10;//how much faction standing is lost when you (or one of your npcs) kills an enemy faction-based npc
-	public static int factionGainOnTrade = 2;//how much faction standing is gained when you complete a trade with a faction-based trader-npc
 
 	public AWNPCStatics(String mod) {
 		super(mod);
@@ -81,7 +81,9 @@ public class AWNPCStatics extends ModConfiguration {
 
 		npcXpFromAttack = config.get(serverOptions, "npc_xp_per_attack", npcXpFromAttack, "XP Per Attack\nDefault=" + npcXpFromAttack + "\n" + "How much xp should an NPC gain each time they damage but do not kill an enemy?\n" + "Higher values will result in faster npc leveling.\n" + "Applies to both player-owned and faction-based NPCs.").getInt();
 
-		npcXpFromKill = config.get(serverOptions, "npc_xp_per_kill", npcXpFromKill, "XP Per Killnefault=" + npcXpFromKill + "\n" + "How much xp should an NPC gain each time they kill an enemy?\n" + "Higher values will result in faster npc leveling.\n" + "Applies to both player-owned and faction-based NPCs.").getInt();
+		npcXpFromKill = config.get(serverOptions, "npc_xp_per_kill", npcXpFromKill, "XP Per Kill\nDefault=" + npcXpFromKill + "\n" + "How much xp should an NPC gain each time they kill an enemy?\n" + "Higher values will result in faster npc leveling.\n" + "Applies to both player-owned and faction-based NPCs.").getInt();
+
+		npcLevelDamageMultiplier = config.get(serverOptions, "npc_level_damage_multiplier", npcLevelDamageMultiplier, "NPC damage bonus per npc level\nDefault=" + npcLevelDamageMultiplier + "\n" + "By default at level 10 they do 2x the damage as at lvl 0.\n" + "Higher values will result in more damage.\n" + "Applies to player-owned and faction-based NPCs.").getDouble();
 
 		npcXpFromTrade = config.get(serverOptions, "npc_xp_per_trade", npcXpFromTrade, "XP Per Trade\nDefault=" + npcXpFromTrade + "\n" + "How much xp should an NPC gain each time successfully traded with?\n" + "Higher values will result in faster npc leveling and unlock more trade recipes.\n" + "Applies to both player-owned and faction-based NPCs.").getInt();
 
@@ -97,10 +99,6 @@ public class AWNPCStatics extends ModConfiguration {
 
 		townUpdateFreq = config.get(serverOptions, "town_hall_ticks", townUpdateFreq, "Default=" + townUpdateFreq + "\n" + "How many game ticks should pass between Town Hall updates." + "This affect how an NPC can change its selected Town Hall by moving to different places.\n" + "Lower values will make an NPC change its Town Hall faster, but is more costly for a server.\n").getInt();
 
-		factionLossOnDeath = factionConfig.get(factionSettings, "faction_loss_on_kill", factionLossOnDeath, "Faction Loss On Kill\nDefault=10\n" + "How much faction standing should be lost if you or one of your minions kills a faction based NPC.").getInt();
-
-		factionGainOnTrade = factionConfig.get(factionSettings, "faction_gain_on_trade", factionGainOnTrade, "Faction Gain On Trade\nDefault=2\n" + "How much faction standing should be gained when you trade with a faction based trader.").getInt();
-
 		loadDefaultSkinPack = config.get(clientOptions, "load_default_skin_pack", loadDefaultSkinPack, "Load Default Skin Pack\nDefault=true\n" + "If true, default skin pack will be loaded.\n" + "If false, default skin pack will NOT be loaded -- you will need to supply your own\n" + "skin packs or all npcs will use the default skin.").getBoolean();
 
 		archerRange = config.get(serverOptions, "archer_attack_range", archerRange, "Archer attack range\nDefault=" + archerRange + "\n" + "Attack range of all archers, except mounted archers who are half of this value.").getDouble();
@@ -115,20 +113,26 @@ public class AWNPCStatics extends ModConfiguration {
 
 		npcActionRange = config.get(generalOptions, "npc_action_range", npcActionRange, "Action Range\nDefault=" + npcActionRange + "\n" + "The range in blocks that an NPC can perform an action on something. The player has an action\n" + "range of 5. Only affects workers, no effect on the attack range of combat units nor medics.\n" + "Minimum value of 3 unless you want NPC's to bug-out and get stuck at random.").getInt();
 
+		vanillaEquipmentDropRate = config.get(generalOptions, "npc_vanilla_equipment_drop_rate", vanillaEquipmentDropRate, "Vanilla equipment drop rate for faction NPCs\nMakes Faction NPCs drop their items by the Vanilla Equipment Drop rate (8,5%)\nDefault=" + vanillaEquipmentDropRate + "\n" + "If set to false, the NPCs will ALWAYS drop ALL equipment they have (100%) rate").getBoolean();
+
 		repackCreativeOnly = config.get(generalOptions, "npc_repack_creative_only", repackCreativeOnly, "Repack only available for Creative players?\nDefault=" + repackCreativeOnly + "\n" + "If true, the 'Repack' option for NPC's will be unavailable outside of Creative mode.").getBoolean();
 
 		persistOrdersOnDeath = config.get(generalOptions, "npc_death_keep_orders_items", persistOrdersOnDeath, "NPC's will keep orders items on death?\nDefault=" + persistOrdersOnDeath + "\n" + "If true, an NPC who dies and manages to notify a nearby town hall will keep their orders items on their body. So if/when a priest resurrects them, they will have the orders items on them still. If there is no Town Hall nearby to catch the death however, the will drop on the ground as normal.").getBoolean();
 	}
 
 	public int getPlayerDefaultStanding(String factionName) {
-		return factionConfig.get(factionSettings, factionName + ".starting_faction_standing", FactionRegistry.getFaction(factionName).getPlayerDefaultStanding(),
+		FactionDefinition.StandingSettings standingSettings = FactionRegistry.getFaction(factionName).getStandingSettings();
+		if (!standingSettings.canPlayerStandingChange()) {
+			return standingSettings.getPlayerDefaultStanding();
+		}
+		return factionConfig.get(factionSettings, factionName + ".starting_faction_standing", standingSettings.getPlayerDefaultStanding(),
 				"Default faction standing for: [" + factionName + "] for new players joining a game." +
 						" Less than 0 will be hostile, greater than or equal to zero will be neutral/friendly." +
 						" Players will need to trade with faction-owned traders to improve their standing to become friendly.").getInt();
 	}
 
 	private void loadFoodValues() {
-		foodMultiplier = foodConfig.getInt("Food Multiplier", "Default", foodMultiplier, 0, Integer.MAX_VALUE / 10, "Food items which don't have a custom duration time set will have their nourishing amount multiplied by this number, to get the number of ticks feeding the npc.");
+		foodMultiplier = foodConfig.getInt("food_multiplier", "Default", foodMultiplier, 0, Integer.MAX_VALUE / 10, "Food items which don't have a custom duration time set will have their nourishing amount multiplied by this number, to get the number of ticks feeding the npc.");
 		foodConfig.get(foodSettings, "minecraft:apple", 3000, "Example of a food usual tick duration. Default food multiplier included.");
 		foodConfig.get(foodSettings, "minecraft:mushroom_stew", 4500, "Example of a food usual tick duration. Default food multiplier included.");
 		foodConfig.get(foodSettings, "minecraft:rotten_flesh", 0, "Rotten flesh is a rejected food by default.");
@@ -157,7 +161,9 @@ public class AWNPCStatics extends ModConfiguration {
 		if (foodValues.containsKey(name)) {
 			return foodValues.get(name);
 		} else if (stack.getItem() instanceof ItemFood) {
-			return (((ItemFood) stack.getItem()).getHealAmount(stack) + (int)((ItemFood) stack.getItem()).getSaturationModifier(stack)) * foodMultiplier;
+			int healAmount = ((ItemFood) stack.getItem()).getHealAmount(stack);
+			float saturationModifier = ((ItemFood) stack.getItem()).getSaturationModifier(stack);
+			return (healAmount + healAmount * (int) (saturationModifier * 2F)) * foodMultiplier;
 		}
 		return 0;
 	}

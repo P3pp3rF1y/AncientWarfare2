@@ -3,7 +3,8 @@
     "saplings": [
         {
             "sapling": {
-                "name": "forestry:sapling"
+                "name": "forestry:sapling",
+                "ignore_nbt": true
             },
             "right_click": true
         }

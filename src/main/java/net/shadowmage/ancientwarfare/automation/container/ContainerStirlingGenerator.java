@@ -81,7 +81,7 @@ public class ContainerStirlingGenerator extends ContainerTileBase<TileStirlingGe
 			return ItemStack.EMPTY;
 		}
 		int slots = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).getSlots();
-		@Nonnull ItemStack stackFromSlot = slot.getStack();
+		ItemStack stackFromSlot = slot.getStack();
 		if (slotClickedIndex < slots)//click on input slot, merge into player inventory
 		{
 			this.mergeItemStack(stackFromSlot, slots, slots + playerSlots, false);

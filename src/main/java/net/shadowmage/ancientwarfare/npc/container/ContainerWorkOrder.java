@@ -20,7 +20,7 @@ public class ContainerWorkOrder extends ContainerBase {
 	public ContainerWorkOrder(EntityPlayer player, int x, int y, int z) {
 		super(player);
 		hand = EntityTools.getHandHoldingItem(player, AWNPCItems.WORK_ORDER);
-		@Nonnull ItemStack stack = player.getHeldItem(hand);
+		ItemStack stack = player.getHeldItem(hand);
 		if (stack.isEmpty()) {
 			throw new IllegalArgumentException("Cannot open Work Order GUI for empty stack/item.");
 		}

@@ -124,7 +124,7 @@ public class PreviewRenderer {
 
 	private static void renderPreviewAt(StructureTemplate structure, StructureBB bb, int turns, BufferBuilder buffer, Map<BlockPos, TemplateRuleBlock> dynamicRenderRules, TemplateBlockAccess blockAccess, BlockPos pos) {
 		BlockPos translateTo = BlockTools.rotateInArea(pos, structure.getSize().getX(), structure.getSize().getZ(), turns).add(bb.min);
-		structure.getBlockRuleAt(pos).ifPresent(r -> {
+		structure.getRuleAt(pos).ifPresent(r -> {
 			r.renderRule(turns, translateTo, blockAccess, buffer);
 			if (r.isDynamicallyRendered(turns)) {
 				dynamicRenderRules.put(translateTo, r);
@@ -195,7 +195,7 @@ public class PreviewRenderer {
 
 		private Optional<TemplateRuleBlock> getBlockRuleAt(BlockPos pos) {
 			Vec3i tempPos = BlockTools.rotateInArea(pos.add(-bb.min.getX(), -bb.min.getY(), -bb.min.getZ()), templateXSize, templateZSize, -turns);
-			return template.getBlockRuleAt(tempPos);
+			return template.getRuleAt(tempPos);
 		}
 
 		@Override

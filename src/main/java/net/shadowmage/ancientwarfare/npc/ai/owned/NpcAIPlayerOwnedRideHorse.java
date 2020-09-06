@@ -12,11 +12,6 @@ public class NpcAIPlayerOwnedRideHorse extends NpcAIRideHorse<NpcPlayerOwned> {
 	}
 
 	@Override
-	public boolean shouldContinueExecuting() {
-		return horse != null;
-	}
-
-	@Override
 	public void updateTask() {
 		if (horse != npc.getRidingEntity() && horse != null) {
 			onDismountHorse();
@@ -35,7 +30,7 @@ public class NpcAIPlayerOwnedRideHorse extends NpcAIRideHorse<NpcPlayerOwned> {
 	@Override
 	protected void onMountHorse() {
 		if (horse instanceof AbstractHorse) {
-			this.saddled = ((AbstractHorse) horse).isHorseSaddled();
+			saddled = ((AbstractHorse) horse).isHorseSaddled();
 		}
 		super.onMountHorse();
 	}

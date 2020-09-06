@@ -12,17 +12,16 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcWorker;
 import java.util.Optional;
 
 public class NpcAIPlayerOwnedWorkRandom extends NpcAI<NpcWorker> {
-
 	private int ticksAtSite = 0;
 
 	public NpcAIPlayerOwnedWorkRandom(NpcWorker npc) {
 		super(npc);
-		this.setMutexBits(ATTACK + MOVE);
+		setMutexBits(ATTACK + MOVE);
 	}
 
 	@Override
 	public boolean shouldExecute() {
-		if (!npc.getIsAIEnabled()) {
+		if (!super.shouldExecute()) {
 			return false;
 		}
 		if (npc.getFoodRemaining() <= 0 || npc.shouldBeAtHome()) {

@@ -14,7 +14,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
-import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
+import net.shadowmage.ancientwarfare.core.inventory.ItemHashEntry;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -95,7 +95,7 @@ public class GuiWarehouseStorage extends GuiContainerBase<ContainerWarehouseStor
 	private void addInventoryViewElements() {
 		ItemSlot slot;
 		int qty;
-		@Nonnull ItemStack stack;
+		ItemStack stack;
 		int x = 0;
 		int y = 0;
 		NonNullList<ItemStack> displayStacks = NonNullList.create();
@@ -116,9 +116,10 @@ public class GuiWarehouseStorage extends GuiContainerBase<ContainerWarehouseStor
 			slot = new ItemSlot(4 + x * 18, 4 + y * 18, displayStack, this) {
 				@Override
 				public void onSlotClicked(ItemStack stack, boolean rightClicked) {
-					@Nonnull ItemStack reqStack = getStack();
-					if (!(rightClicked && isShiftKeyDown()) && !reqStack.isEmpty() && (reqStack.isItemEqual(stack) && ItemStack.areItemStackTagsEqual(stack, reqStack)))
+					ItemStack reqStack = getStack();
+					if (!(rightClicked && isShiftKeyDown()) && !reqStack.isEmpty() && (reqStack.isItemEqual(stack) && ItemStack.areItemStackTagsEqual(stack, reqStack))) {
 						reqStack = ItemStack.EMPTY;
+					}
 					getContainer().handleClientRequestSpecific(reqStack, isShiftKeyDown(), rightClicked);
 				}
 			};
@@ -129,9 +130,9 @@ public class GuiWarehouseStorage extends GuiContainerBase<ContainerWarehouseStor
 	}
 
 	private class FilterRemoveButton extends Button {
-		final WarehouseStorageFilter filter;
+		private final WarehouseStorageFilter filter;
 
-		public FilterRemoveButton(int topLeftX, int topLeftY, WarehouseStorageFilter filter) {
+		private FilterRemoveButton(int topLeftX, int topLeftY, WarehouseStorageFilter filter) {
 			super(topLeftX, topLeftY, 12, 12, "-");
 			this.filter = filter;
 		}
@@ -145,16 +146,16 @@ public class GuiWarehouseStorage extends GuiContainerBase<ContainerWarehouseStor
 	}
 
 	private class FilterItemSlot extends ItemSlot {
-		final WarehouseStorageFilter filter;
+		private final WarehouseStorageFilter filter;
 
-		public FilterItemSlot(int topLeftX, int topLeftY, WarehouseStorageFilter filter, ITooltipRenderer render) {
+		private FilterItemSlot(int topLeftX, int topLeftY, WarehouseStorageFilter filter, ITooltipRenderer render) {
 			super(topLeftX, topLeftY, filter.getFilterItem(), render);
 			this.filter = filter;
 		}
 
 		@Override
 		public void onSlotClicked(ItemStack stack, boolean rightClicked) {
-			@Nonnull ItemStack in = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
+			ItemStack in = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
 			this.setItem(in);
 			if (!in.isEmpty()) {
 				in.setCount(1);

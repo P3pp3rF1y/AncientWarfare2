@@ -8,36 +8,19 @@ public class NpcAIPlayerOwnedAlarmResponse extends NpcAI<NpcPlayerOwned> {
 
 	public NpcAIPlayerOwnedAlarmResponse(NpcPlayerOwned npc) {
 		super(npc);
-		this.setMutexBits(ATTACK + MOVE);
+		setMutexBits(ATTACK + MOVE);
 	}
 
 	@Override
 	public boolean shouldExecute() {
-		if (!npc.getIsAIEnabled()) {
-			return false;
-		}
-		return npc.getUpkeepPoint().isPresent() && npc.getUpkeepDimensionId() == npc.world.provider.getDimension() && npc.isAlarmed;
+		return super.shouldExecute() && npc.getUpkeepPoint().isPresent() && npc.getUpkeepDimensionId() == npc.world.provider.getDimension() && npc.isAlarmed;
 	}
 
-	@Override
-	public boolean shouldContinueExecuting() {
-		if (!npc.getIsAIEnabled()) {
-			return false;
-		}
-		return npc.getUpkeepPoint().isPresent() && npc.getUpkeepDimensionId() == npc.world.provider.getDimension() && npc.isAlarmed;
-	}
-
-	/*
-	 * Execute a one shot task or start executing a continuous task
-	 */
 	@Override
 	public void startExecuting() {
 		npc.addAITask(TASK_ALARM);
 	}
 
-	/*
-	 * Updates the task
-	 */
 	@Override
 	public void updateTask() {
 		npc.getUpkeepPoint().ifPresent(pos -> {
@@ -51,9 +34,6 @@ public class NpcAIPlayerOwnedAlarmResponse extends NpcAI<NpcPlayerOwned> {
 		});
 	}
 
-	/*
-	 * Resets the task
-	 */
 	@Override
 	public void resetTask() {
 		moveRetryDelay = 0;

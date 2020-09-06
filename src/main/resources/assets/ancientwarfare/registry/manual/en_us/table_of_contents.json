@@ -27,12 +27,16 @@
                     "category_link": "npcs"
                 },
                 {
-                    "text": "Factions",
+                    "text": "Tribes and Nations",
                     "category_link": "factions"
                 },
                 {
                     "text": "Structures",
                     "category_link": "structures"
+                },
+                {
+                    "text": "Decoration Blocks",
+                    "category_link": "decoration"
                 },
                 {
                     "text": "Vehicles",

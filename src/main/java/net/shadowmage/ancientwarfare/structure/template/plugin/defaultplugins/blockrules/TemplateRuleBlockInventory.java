@@ -20,8 +20,12 @@ import net.shadowmage.ancientwarfare.structure.tile.ISpecialLootContainer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import static net.shadowmage.ancientwarfare.npc.event.EventHandler.GENERATED_INVENTORY_TAG;
 
 public class TemplateRuleBlockInventory extends TemplateRuleBlockTile {
 
@@ -78,12 +82,14 @@ public class TemplateRuleBlockInventory extends TemplateRuleBlockTile {
 	}
 
 	@Override
-	public void addResources(NonNullList<ItemStack> resources) {
-		super.addResources(resources);
+	public List<ItemStack> getResources() {
+		List<ItemStack> resources = new ArrayList<>(super.getResources());
 
 		for (NonNullList<ItemStack> stacks : inventoryStacks.values()) {
 			resources.addAll(stacks);
 		}
+
+		return resources;
 	}
 
 	@Override
@@ -100,6 +106,7 @@ public class TemplateRuleBlockInventory extends TemplateRuleBlockTile {
 			WorldTools.getItemHandlerFromTile(world, pos, null)
 					.ifPresent(itemHandler -> InventoryTools.insertItems(itemHandler, inventoryStacks.get(null), false));
 		}
+		WorldTools.getTile(world, pos).ifPresent(te -> te.getTileData().setBoolean(GENERATED_INVENTORY_TAG, true));
 		BlockTools.notifyBlockUpdate(world, pos);
 	}
 
@@ -135,7 +142,7 @@ public class TemplateRuleBlockInventory extends TemplateRuleBlockTile {
 		invData.setInteger("length", stacks.size());
 		NBTTagCompound itemTag;
 		NBTTagList list = new NBTTagList();
-		@Nonnull ItemStack stack;
+		ItemStack stack;
 		for (int i = 0; i < stacks.size(); i++) {
 			stack = stacks.get(i);
 			if (stack.isEmpty()) {
@@ -175,7 +182,7 @@ public class TemplateRuleBlockInventory extends TemplateRuleBlockTile {
 		NBTTagCompound itemTag;
 		NBTTagList list = inventoryTag.getTagList("inventoryContents", Constants.NBT.TAG_COMPOUND);
 		int slot;
-		@Nonnull ItemStack stack;
+		ItemStack stack;
 		for (int i = 0; i < list.tagCount(); i++) {
 			itemTag = list.getCompoundTagAt(i);
 			stack = new ItemStack(itemTag);

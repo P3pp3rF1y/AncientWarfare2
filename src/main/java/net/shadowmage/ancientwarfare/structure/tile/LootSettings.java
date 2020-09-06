@@ -5,6 +5,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Constants;
+import net.shadowmage.ancientwarfare.structure.util.PotionHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,8 @@ public class LootSettings {
 	private boolean spawnEntity = false;
 	private ResourceLocation entity = null;
 	private NBTTagCompound entityNBT = new NBTTagCompound();
+	private boolean hasMessage = false;
+	private String playerMessage = "";
 
 	public NBTTagCompound serializeNBT() {
 		NBTTagCompound ret = new NBTTagCompound();
@@ -32,7 +35,7 @@ public class LootSettings {
 		if (!effects.isEmpty()) {
 			NBTTagList effectList = new NBTTagList();
 			for (PotionEffect potioneffect : effects) {
-				effectList.appendTag(potioneffect.writeCustomPotionEffectToNBT(new NBTTagCompound()));
+				effectList.appendTag(PotionHelper.writeCustomPotionEffectToNBT(potioneffect));
 			}
 			ret.setTag("effects", effectList);
 		}
@@ -42,6 +45,10 @@ public class LootSettings {
 			if (!entityNBT.hasNoTags()) {
 				ret.setTag("entityNBT", entityNBT);
 			}
+		}
+		ret.setBoolean("hasMessage", hasMessage);
+		if (!playerMessage.isEmpty()) {
+			ret.setString("playerMessage", playerMessage);
 		}
 
 		return ret;
@@ -55,11 +62,13 @@ public class LootSettings {
 		lootSettings.splashPotion = nbt.getBoolean("splashPotion");
 		NBTTagList effectList = nbt.getTagList("effects", Constants.NBT.TAG_COMPOUND);
 		for (int i = 0; i < effectList.tagCount(); i++) {
-			lootSettings.effects.add(PotionEffect.readCustomPotionEffectFromNBT(effectList.getCompoundTagAt(i)));
+			PotionHelper.readCustomPotionEffectFromNBT(effectList.getCompoundTagAt(i)).ifPresent(lootSettings.effects::add);
 		}
 		lootSettings.spawnEntity = nbt.getBoolean("spawnEntity");
 		lootSettings.entity = new ResourceLocation(nbt.getString("entity"));
 		lootSettings.entityNBT = nbt.getCompoundTag("entityNBT");
+		lootSettings.hasMessage = nbt.getBoolean("hasMessage");
+		lootSettings.playerMessage = nbt.getString("playerMessage");
 
 		return lootSettings;
 	}
@@ -82,6 +91,10 @@ public class LootSettings {
 			applicableSettings.setEntityNBT(entityNBT);
 		}
 
+		if (hasMessage) {
+			applicableSettings.setHasMessage(true);
+			applicableSettings.setPlayerMessage(playerMessage);
+		}
 		container.setLootSettings(applicableSettings);
 	}
 
@@ -111,11 +124,20 @@ public class LootSettings {
 			spawnEntity = false;
 		}
 
+		if (lootSettings.hasMessage) {
+			hasMessage = true;
+			playerMessage = lootSettings.playerMessage;
+		}
+
 		return this;
 	}
 
 	public boolean hasLoot() {
 		return hasLoot;
+	}
+
+	public boolean hasMessage() {
+		return hasMessage;
 	}
 
 	public Optional<ResourceLocation> getLootTableName() {
@@ -168,6 +190,14 @@ public class LootSettings {
 		this.entity = entity;
 	}
 
+	public void setHasMessage(boolean hasMessage) {
+		this.hasMessage = hasMessage;
+	}
+
+	public void setPlayerMessage(String playerMessage) {
+		this.playerMessage = playerMessage;
+	}
+
 	public void setEntityNBT(NBTTagCompound entityNBT) {
 		this.entityNBT = entityNBT;
 	}
@@ -188,7 +218,11 @@ public class LootSettings {
 		return entity;
 	}
 
+	public String getPlayerMessage() {
+		return playerMessage;
+	}
+
 	public boolean hasLootToSpawn() {
-		return spawnEntity || splashPotion || hasLoot;
+		return spawnEntity || splashPotion || hasLoot || hasMessage;
 	}
 }

@@ -5,6 +5,8 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
+import java.util.Optional;
+
 public abstract class NpcAIAttack<T extends NpcBase> extends NpcAI<T> {
 	private EntityLivingBase target;
 	private int attackDelay = 35;
@@ -15,17 +17,27 @@ public abstract class NpcAIAttack<T extends NpcBase> extends NpcAI<T> {
 
 	@Override
 	public boolean shouldExecute() {
-		return npc.getIsAIEnabled() && npc.getAttackTarget() != null && npc.getAttackTarget().isEntityAlive() && isTargetInRange();
+		return super.shouldExecute() && hasTargetInRange();
 	}
 
-	@Override
-	public boolean shouldContinueExecuting() {
-		return npc.getIsAIEnabled() && target != null && target.isEntityAlive() && target.equals(npc.getAttackTarget()) && isTargetInRange();
+	private boolean hasTargetInRange() {
+		if (target == null) {
+			return getAttackTarget().isPresent() && getAttackTarget().map(EntityLivingBase::isEntityAlive).orElse(false) && isTargetInRange();
+		}
+		return target.isEntityAlive() && getAttackTarget().map(t -> t.equals(target)).orElse(false) && isTargetInRange();
+	}
+
+	private boolean isTargetInRange() {
+		return getAttackTarget().map(t -> npc.getDistance(t) < getAdjustedTargetDistance()).orElse(false);
+	}
+
+	private Optional<EntityLivingBase> getAttackTarget() {
+		return npc.getAttackTarget() != null ? Optional.of(npc.getAttackTarget()) : Optional.ofNullable(npc.getRevengeTarget());
 	}
 
 	@Override
 	public final void startExecuting() {
-		target = npc.getAttackTarget();
+		target = getAttackTarget().orElse(null);
 		moveRetryDelay = 0;
 		npc.addAITask(TASK_ATTACK);
 		npc.setSwingingArms(true);
@@ -42,7 +54,7 @@ public abstract class NpcAIAttack<T extends NpcBase> extends NpcAI<T> {
 	@Override
 	public final void updateTask() {
 		npc.getLookHelper().setLookPositionWithEntity(target, 30.f, 30.f);
-		double distanceToEntity = this.npc.getDistanceSq(target.posX, target.getEntityBoundingBox().minY, target.posZ);
+		double distanceToEntity = npc.getDistanceSq(target.posX, target.getEntityBoundingBox().minY, target.posZ);
 		if (shouldCloseOnTarget(distanceToEntity)) {
 			npc.addAITask(TASK_MOVE);
 			moveToEntity(target, distanceToEntity);
@@ -50,11 +62,6 @@ public abstract class NpcAIAttack<T extends NpcBase> extends NpcAI<T> {
 			attackDelay--;
 			doAttack(distanceToEntity);
 		}
-	}
-
-	private boolean isTargetInRange() {
-		//noinspection ConstantConditions
-		return npc.getDistance(npc.getAttackTarget()) < getAdjustedTargetDistance();
 	}
 
 	private double getAdjustedTargetDistance() {
@@ -75,7 +82,7 @@ public abstract class NpcAIAttack<T extends NpcBase> extends NpcAI<T> {
 	private double getTargetDistance() {
 		IAttributeInstance iattributeinstance = npc.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE);
 		//noinspection ConstantConditions
-		return iattributeinstance == null ? 16.0D : iattributeinstance.getAttributeValue();
+		return iattributeinstance == null ? 35.0D : iattributeinstance.getAttributeValue();
 	}
 
 	protected abstract boolean shouldCloseOnTarget(double distanceToEntity);

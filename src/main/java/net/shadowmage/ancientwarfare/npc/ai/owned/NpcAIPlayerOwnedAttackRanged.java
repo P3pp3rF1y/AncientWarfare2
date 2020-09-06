@@ -9,12 +9,12 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 public class NpcAIPlayerOwnedAttackRanged extends NpcAIAttack<NpcBase> {
 
 	private final IRangedAttackMob rangedAttacker;
-	private double attackDistance = AWNPCStatics.archerRange * AWNPCStatics.archerRange;
+	private static final double ATTACK_DISTANCE = AWNPCStatics.archerRange * AWNPCStatics.archerRange;
 
 	public NpcAIPlayerOwnedAttackRanged(NpcBase npc) {
 		super(npc);
-		this.rangedAttacker = (IRangedAttackMob) npc;//will classcastexception if improperly used..
-		this.moveSpeed = 1.d;
+		rangedAttacker = (IRangedAttackMob) npc;//will classcastexception if improperly used..
+		moveSpeed = 1.d;
 		setMutexBits(ATTACK + MOVE);
 	}
 
@@ -23,18 +23,19 @@ public class NpcAIPlayerOwnedAttackRanged extends NpcAIAttack<NpcBase> {
 		if (npc.doNotPursue) {
 			return (dist < 0);
 		}
-		return (dist > attackDistance || !this.npc.getEntitySenses().canSee(getTarget()));
+		return (dist > ATTACK_DISTANCE || !npc.getEntitySenses().canSee(getTarget()));
 	}
 
 	@Override
 	protected void doAttack(double dist) {
 		npc.removeAITask(TASK_MOVE);
-		this.npc.getNavigator().clearPath();
-		if (this.getAttackDelay() <= 0) {
-			float pwr = (float) (attackDistance / dist);
+		npc.getNavigator().clearPath();
+		if (getAttackDelay() <= 0) {
+			float pwr = (float) (ATTACK_DISTANCE / dist);
+			//noinspection UnstableApiUsage
 			pwr = Floats.constrainToRange(pwr, 0.1f, 1f);
-			this.rangedAttacker.attackEntityWithRangedAttack(getTarget(), pwr);
-			this.setAttackDelay(35);
+			rangedAttacker.attackEntityWithRangedAttack(getTarget(), pwr);
+			setAttackDelay(35);
 		}
 	}
 }

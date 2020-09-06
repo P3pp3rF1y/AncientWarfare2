@@ -19,7 +19,6 @@ import javax.annotation.Nonnull;
 @SideOnly(Side.CLIENT)
 public class ItemSlot extends GuiElement {
 	private static final RenderItem itemRender = Minecraft.getMinecraft().getRenderItem();
-	@Nonnull
 	private ItemStack item = ItemStack.EMPTY;
 	protected ITooltipRenderer render;
 	protected boolean highlightOnMouseOver = true;
@@ -27,7 +26,7 @@ public class ItemSlot extends GuiElement {
 	protected boolean renderSlotBackground = true;
 	protected boolean renderLabel = false;
 
-	public ItemSlot(int topLeftX, int topLeftY, @Nonnull ItemStack item, ITooltipRenderer render) {
+	public ItemSlot(int topLeftX, int topLeftY, ItemStack item, ITooltipRenderer render) {
 		super(topLeftX - 1, topLeftY - 1, 18, 18);
 		this.item = item;
 		this.render = render;
@@ -36,7 +35,7 @@ public class ItemSlot extends GuiElement {
 			@Override
 			public boolean onEvent(GuiElement widget, ActivationEvent evt) {
 				if (widget.isMouseOverElement(evt.mx, evt.my)) {
-					@Nonnull ItemStack stack = Minecraft.getMinecraft().player.inventory.getItemStack();
+					ItemStack stack = Minecraft.getMinecraft().player.inventory.getItemStack();
 					onSlotClicked(stack, evt.mButton == 1);
 				}
 				return true;
