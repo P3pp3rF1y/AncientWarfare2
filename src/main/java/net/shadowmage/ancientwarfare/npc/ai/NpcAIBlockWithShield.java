@@ -30,7 +30,7 @@ public class NpcAIBlockWithShield extends NpcAI<NpcBase> {
 
 	private boolean canExecute(Predicate<EntityLivingBase> defendFrom) {
 		if (target == null) {
-			return hasShieldInOffhand() && npc.getShieldDisabledTick() <= 0 && (npc.getActiveHand() == EnumHand.OFF_HAND || getAttackTarget().map(defendFrom::test).orElse(false));
+			return hasShieldInOffhand() && npc.getShieldDisabledTick() <= 0 && npc.getActiveHand() == EnumHand.OFF_HAND && getAttackTarget().map(defendFrom::test).orElse(false);
 		}
 		return hasShieldInOffhand() && npc.getShieldDisabledTick() <= 0 && target.isEntityAlive() && (shieldWithdrawTicks > 0 || getAttackTarget().map(t -> t.equals(target) && shouldDefendFrom(target)).orElse(false));
 	}
