@@ -214,8 +214,7 @@
                         "generic.maxHealth": 30
                     },
                     "equipment": {
-                        "mainhand": "ancientwarfarenpc:iron_halberd",
-                        "offhand": "ancientwarfarenpc:iron_shield"
+                        "mainhand": "ancientwarfarenpc:iron_halberd"
                     },
                     "experience_drop": 30
                 },
@@ -240,6 +239,116 @@
                 "leader": {
                     "equipment": {
                         "mainhand": "minecraft:diamond_axe",
+                        "offhand": "ancientwarfarenpc:iron_shield"
+                    }
+                },
+                "civilian.female": {
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    }
+                },
+                "spellcaster": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 20,
+                        "generic.movementSpeed": 0.225
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:fireball"
+                },
+                "spellcaster.1": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 20,
+                        "generic.movementSpeed": 0.325
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:book"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:thunderbolt,ebwizardry:ignite,ebwizardry:freeze,ebwizardry:ward,ebwizardry:snare,ebwizardry:smoke_bomb"
+                },
+                "spellcaster.2": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30,
+                        "generic.movementSpeed": 0.4
+                    },
+                    "experience_drop": 40,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:fireball,ebwizardry:frost_ray,ebwizardry:flame_ray,ebwizardry:lightning_ray,ebwizardry:iceball,ebwizardry:lightning_arrow,ebwizardry:ward,ebwizardry:oakflesh"
+                },
+                "spellcaster.3": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 35,
+                        "generic.movementSpeed": 0.4
+                    },
+                    "experience_drop": 50,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:arcane_jammer,ebwizardry:fireball,ebwizardry:lightning_disc,ebwizardry:iceball,ebwizardry:greater_fireball,ebwizardry:ice_charge,ebwizardry:summon_blaze,ebwizardry:summon_ice_wraith,ebwizardry:summon_lightning_wraith,ebwizardry:oakflesh,ebwizardry:blink"
+                },
+                "spellcaster.4": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 40,
+                        "generic.movementSpeed": 0.4
+                    },
+                    "experience_drop": 100,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:ice_statue,ebwizardry:arcane_jammer,ebwizardry:arcane_jammer,ebwizardry:ring_of_fire,ebwizardry:blizzard,ebwizardry:greater_fireball,ebwizardry:ice_charge,ebwizardry:lightning_disc,ebwizardry:summon_storm_elemental,ebwizardry:summon_phoenix,ebwizardry:summon_ice_giant,ebwizardry:greater_ward,ebwizardry:diamondflesh,ebwizardry:blink,ebwizardry:blink,ebwizardry:blink,ebwizardry:banish,ebwizardry:paralysis,ebwizardry:decoy"
+                }
+            }
+        },
+        "reiksgard": {
+            "additional_attributes": {
+                "entity_sound": "human"
+            },
+            "npc_subtypes": {
+                "soldier.elite": {
+                    "attributes": {
+                        "generic.maxHealth": 30
+                    },
+                    "equipment": {
+                        "mainhand": "ancientwarfarenpc:iron_halberd"
+                    },
+                    "experience_drop": 30
+                },
+                "soldier": {
+                    "equipment": {
+                        "mainhand": "ancientwarfarenpc:iron_spear",
+                        "offhand": "ancientwarfarenpc:iron_shield"
+                    }
+                },
+                "cavalry": {
+                    "attributes": {
+                        "generic.maxHealth": 65,
+                        "generic.movementSpeed": 0.3,
+                        "generic.attackDamage": 3
+                    },
+                    "equipment": {
+                        "mainhand": "ancientwarfarenpc:iron_lance",
+                        "offhand": "ancientwarfarenpc:iron_shield"
+                    },
+                    "experience_drop": 65
+                },
+                "leader": {
+                    "equipment": {
+                        "mainhand": "minecraft:diamond_sword",
                         "offhand": "ancientwarfarenpc:iron_shield"
                     }
                 },
@@ -461,8 +570,7 @@
                 },
                 "leader": {
                     "equipment": {
-                        "mainhand": "ancientwarfarenpc:golden_halberd",
-                        "offhand": "ancientwarfarenpc:gold_shield"
+                        "mainhand": "ancientwarfarenpc:golden_halberd"
                     }
                 },
                 "leader.elite": {
@@ -475,6 +583,281 @@
                     "additional_attributes": {
                         "entity_sound": "human_female"
                     }
+                },
+                "spellcaster": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 20
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:skull"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": ""
+                },
+                "spellcaster.1": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30,
+                        "generic.movementSpeed": 0.325
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:book"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:fireball"
+                },
+                "spellcaster.2": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30,
+                        "generic.movementSpeed": 0.4
+                    },
+                    "experience_drop": 40,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:firebolt,ebwizardry:life_drain"
+                },
+                "spellcaster.3": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 40
+                    },
+                    "experience_drop": 50,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:firebolt,ebwizardry:life_drain,ebwizardry:summon_blaze"
+                },
+                "spellcaster.4": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 60
+                    },
+                    "experience_drop": 100,
+                    "equipment": {
+                        "mainhand": "minecraft:skull"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:curse_of_enfeeblement,ebwizardry:firebolt,ebwizardry:summon_blaze,ebwizardry:fireskin,ebwizardry:ring_of_fire"
+                }
+            }
+        },
+        "shakayana": {
+            "additional_attributes": {
+                "entity_sound": "human"
+            },
+            "npc_subtypes": {
+                "soldier": {
+                    "equipment": {
+                        "mainhand": "ancientwarfarenpc:golden_spear",
+                        "offhand": "ancientwarfarenpc:gold_shield"
+                    }
+                },
+                "soldier.elite": {
+                    "equipment": {
+                        "mainhand": "minecraft:golden_sword",
+                        "offhand": "minecraft:golden_axe"
+                    }
+                },
+                "cavalry": {
+                    "attributes": {
+                        "generic.maxHealth": 50,
+                        "generic.movementSpeed": 0.3
+                    },
+                    "equipment": {
+                        "mainhand": "ancientwarfarenpc:golden_lance"
+                    },
+                    "experience_drop": 50
+                },
+                "leader": {
+                    "equipment": {
+                        "mainhand": "ancientwarfarenpc:golden_halberd"
+                    }
+                },
+                "leader.elite": {
+                    "equipment": {
+                        "mainhand": "minecraft:golden_sword",
+                        "offhand": "ancientwarfarenpc:gold_shield"
+                    }
+                },
+                "civilian.female": {
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    }
+                },
+                "spellcaster": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 20
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:skull"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": ""
+                },
+                "spellcaster.1": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30,
+                        "generic.movementSpeed": 0.325
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:book"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:fireball"
+                },
+                "spellcaster.2": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30,
+                        "generic.movementSpeed": 0.4
+                    },
+                    "experience_drop": 40,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:firebolt,ebwizardry:life_drain"
+                },
+                "spellcaster.3": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 40
+                    },
+                    "experience_drop": 50,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:firebolt,ebwizardry:life_drain,ebwizardry:summon_blaze"
+                },
+                "spellcaster.4": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 60
+                    },
+                    "experience_drop": 100,
+                    "equipment": {
+                        "mainhand": "minecraft:skull"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:curse_of_enfeeblement,ebwizardry:firebolt,ebwizardry:summon_blaze,ebwizardry:fireskin,ebwizardry:ring_of_fire"
+                }
+            }
+        },
+        "zamurai": {
+            "additional_attributes": {
+                "entity_sound": "human"
+            },
+            "npc_subtypes": {
+                "soldier": {
+                    "equipment": {
+                        "mainhand": "ancientwarfarenpc:iron_spear",
+                        "offhand": "ancientwarfarenpc:iron_shield"
+                    }
+                },
+                "soldier.elite": {
+                    "equipment": {
+                        "mainhand": "minecraft:iron_sword"
+                    }
+                },
+                "cavalry": {
+                    "attributes": {
+                        "generic.maxHealth": 50,
+                        "generic.movementSpeed": 0.3
+                    },
+                    "equipment": {
+                        "mainhand": "minecraft:iron_sword"
+                    },
+                    "experience_drop": 50
+                },
+                "leader": {
+                    "equipment": {
+                        "mainhand": "ancientwarfarenpc:iron_halberd"
+                    }
+                },
+                "leader.elite": {
+                    "equipment": {
+                        "mainhand": "minecraft:golden_sword",
+                        "offhand": "ancientwarfarenpc:gold_shield"
+                    }
+                },
+                "civilian.female": {
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    }
+                },
+                "spellcaster": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 20
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:skull"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": ""
+                },
+                "spellcaster.1": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30,
+                        "generic.movementSpeed": 0.325
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:book"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:fireball"
+                },
+                "spellcaster.2": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30,
+                        "generic.movementSpeed": 0.4
+                    },
+                    "experience_drop": 40,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:firebolt,ebwizardry:life_drain"
+                },
+                "spellcaster.3": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 40
+                    },
+                    "experience_drop": 50,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:firebolt,ebwizardry:life_drain,ebwizardry:summon_blaze"
+                },
+                "spellcaster.4": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 60
+                    },
+                    "experience_drop": 100,
+                    "equipment": {
+                        "mainhand": "minecraft:skull"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:curse_of_enfeeblement,ebwizardry:firebolt,ebwizardry:summon_blaze,ebwizardry:fireskin,ebwizardry:ring_of_fire"
                 }
             }
         },
@@ -1193,6 +1576,68 @@
                     "additional_attributes": {
                         "entity_sound": "human_female"
                     }
+                },
+                "spellcaster": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 20
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:skull"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": ""
+                },
+                "spellcaster.1": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30,
+                        "generic.movementSpeed": 0.325
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:book"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:fireball"
+                },
+                "spellcaster.2": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30,
+                        "generic.movementSpeed": 0.4
+                    },
+                    "experience_drop": 40,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:firebolt,ebwizardry:life_drain"
+                },
+                "spellcaster.3": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 40
+                    },
+                    "experience_drop": 50,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:firebolt,ebwizardry:life_drain,ebwizardry:summon_blaze"
+                },
+                "spellcaster.4": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 60
+                    },
+                    "experience_drop": 100,
+                    "equipment": {
+                        "mainhand": "minecraft:skull"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:curse_of_enfeeblement,ebwizardry:firebolt,ebwizardry:summon_blaze,ebwizardry:fireskin,ebwizardry:ring_of_fire"
                 }
             }
         },
@@ -1386,6 +1831,68 @@
                     "additional_attributes": {
                         "entity_sound": "human_female"
                     }
+                },
+                "spellcaster": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 20
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:skull"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": ""
+                },
+                "spellcaster.1": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30,
+                        "generic.movementSpeed": 0.325
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:book"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:fireball"
+                },
+                "spellcaster.2": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30,
+                        "generic.movementSpeed": 0.4
+                    },
+                    "experience_drop": 40,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:firebolt,ebwizardry:life_drain"
+                },
+                "spellcaster.3": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 40
+                    },
+                    "experience_drop": 50,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:firebolt,ebwizardry:life_drain,ebwizardry:summon_blaze"
+                },
+                "spellcaster.4": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 60
+                    },
+                    "experience_drop": 100,
+                    "equipment": {
+                        "mainhand": "minecraft:skull"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:curse_of_enfeeblement,ebwizardry:firebolt,ebwizardry:summon_blaze,ebwizardry:fireskin,ebwizardry:ring_of_fire"
                 }
             }
         },
@@ -1447,7 +1954,7 @@
                     "thinness": 1.1,
                     "attributes": {
                         "generic.maxHealth": 70,
-                        "generic.knockbackResistance" : 1.0
+                        "generic.knockbackResistance": 1
                     },
                     "equipment": {
                         "mainhand": "minecraft:iron_axe"
@@ -1493,6 +2000,68 @@
                         "mainhand": "minecraft:book"
                     },
                     "experience_drop": 10
+                },
+                "spellcaster": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 20
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:skull"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": ""
+                },
+                "spellcaster.1": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30,
+                        "generic.movementSpeed": 0.325
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:book"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:fireball"
+                },
+                "spellcaster.2": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30,
+                        "generic.movementSpeed": 0.4
+                    },
+                    "experience_drop": 40,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:firebolt,ebwizardry:life_drain"
+                },
+                "spellcaster.3": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 40
+                    },
+                    "experience_drop": 50,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:firebolt,ebwizardry:life_drain,ebwizardry:summon_blaze"
+                },
+                "spellcaster.4": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 60
+                    },
+                    "experience_drop": 100,
+                    "equipment": {
+                        "mainhand": "minecraft:skull"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:curse_of_enfeeblement,ebwizardry:firebolt,ebwizardry:summon_blaze,ebwizardry:fireskin,ebwizardry:ring_of_fire"
                 }
             }
         },
@@ -1573,6 +2142,68 @@
                     "additional_attributes": {
                         "entity_sound": "human_female"
                     }
+                },
+                "spellcaster": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 20
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:skull"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": ""
+                },
+                "spellcaster.1": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30,
+                        "generic.movementSpeed": 0.325
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:book"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:fireball"
+                },
+                "spellcaster.2": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30,
+                        "generic.movementSpeed": 0.4
+                    },
+                    "experience_drop": 40,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:firebolt,ebwizardry:life_drain"
+                },
+                "spellcaster.3": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 40
+                    },
+                    "experience_drop": 50,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:firebolt,ebwizardry:life_drain,ebwizardry:summon_blaze"
+                },
+                "spellcaster.4": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 60
+                    },
+                    "experience_drop": 100,
+                    "equipment": {
+                        "mainhand": "minecraft:skull"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:curse_of_enfeeblement,ebwizardry:firebolt,ebwizardry:summon_blaze,ebwizardry:fireskin,ebwizardry:ring_of_fire"
                 }
             }
         },
@@ -1643,6 +2274,68 @@
                     "additional_attributes": {
                         "entity_sound": "human_female"
                     }
+                },
+                "spellcaster": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 20
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:skull"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": ""
+                },
+                "spellcaster.1": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30,
+                        "generic.movementSpeed": 0.325
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:book"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:fireball"
+                },
+                "spellcaster.2": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30,
+                        "generic.movementSpeed": 0.4
+                    },
+                    "experience_drop": 40,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:firebolt,ebwizardry:life_drain"
+                },
+                "spellcaster.3": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 40
+                    },
+                    "experience_drop": 50,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:firebolt,ebwizardry:life_drain,ebwizardry:summon_blaze"
+                },
+                "spellcaster.4": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 60
+                    },
+                    "experience_drop": 100,
+                    "equipment": {
+                        "mainhand": "minecraft:skull"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:curse_of_enfeeblement,ebwizardry:firebolt,ebwizardry:summon_blaze,ebwizardry:fireskin,ebwizardry:ring_of_fire"
                 }
             }
         },
@@ -1942,7 +2635,7 @@
                         "generic.maxHealth": 150,
                         "generic.movementSpeed": 0.4,
                         "generic.attackDamage": 6,
-                        "generic.knockbackResistance" : 1.0
+                        "generic.knockbackResistance": 1
                     },
                     "experience_drop": 150
                 },
@@ -1970,6 +2663,68 @@
                     "attributes": {
                         "generic.maxHealth": 10
                     }
+                },
+                "spellcaster": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 20
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:skull"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": ""
+                },
+                "spellcaster.1": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30,
+                        "generic.movementSpeed": 0.325
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:book"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:fireball"
+                },
+                "spellcaster.2": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30,
+                        "generic.movementSpeed": 0.4
+                    },
+                    "experience_drop": 40,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:firebolt,ebwizardry:life_drain"
+                },
+                "spellcaster.3": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 40
+                    },
+                    "experience_drop": 50,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:firebolt,ebwizardry:life_drain,ebwizardry:summon_blaze"
+                },
+                "spellcaster.4": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 60
+                    },
+                    "experience_drop": 100,
+                    "equipment": {
+                        "mainhand": "minecraft:skull"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:curse_of_enfeeblement,ebwizardry:firebolt,ebwizardry:summon_blaze,ebwizardry:fireskin,ebwizardry:ring_of_fire"
                 }
             }
         },
@@ -2039,41 +2794,112 @@
         },
         "smingol": {
             "npc_subtypes": {
-                "soldier": {
-                    "enabled": false
-                },
                 "soldier.elite": {
-                    "enabled": false
+                    "attributes": {
+                        "generic.maxHealth": 30
+                    },
+                    "equipment": {
+                        "mainhand": "minecraft:iron_sword",
+                        "offhand": "minecraft:iron_sword"
+                    },
+                    "experience_drop": 30
                 },
-                "archer": {
-                    "enabled": false
+                "soldier": {
+                    "equipment": {
+                        "mainhand": "ancientwarfarenpc:iron_spear",
+                        "offhand": "ancientwarfarenpc:iron_shield"
+                    }
                 },
-                "archer.elite": {
-                    "enabled": false
+                "cavalry": {
+                    "attributes": {
+                        "generic.maxHealth": 65,
+                        "generic.movementSpeed": 0.3,
+                        "generic.attackDamage": 3
+                    },
+                    "equipment": {
+                        "mainhand": "ancientwarfarenpc:iron_lance",
+                        "offhand": "ancientwarfarenpc:iron_shield"
+                    },
+                    "experience_drop": 65
                 },
                 "leader": {
-                    "enabled": false
-                },
-                "leader.elite": {
-                    "enabled": false
-                },
-                "siege_engineer": {
-                    "enabled": false
+                    "equipment": {
+                        "mainhand": "minecraft:diamond_sword",
+                        "offhand": "ancientwarfarenpc:iron_shield"
+                    }
                 },
                 "priest": {
-                    "enabled": false
-                },
-                "bard": {
-                    "enabled": false
-                },
-                "trader": {
-                    "enabled": false
+                    "attributes": {
+                        "generic.maxHealth": 50
+                    },
+                    "experience_drop": 50
                 },
                 "civilian.female": {
-                    "enabled": false
+                    "additional_attributes": {
+                        "entity_sound": "human_female"
+                    }
                 },
-                "civilian.male": {
-                    "enabled": false
+                "spellcaster": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 20
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:skull"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": ""
+                },
+                "spellcaster.1": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30,
+                        "generic.movementSpeed": 0.325
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:skull"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:fireball"
+                },
+                "spellcaster.2": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30,
+                        "generic.movementSpeed": 0.4
+                    },
+                    "experience_drop": 40,
+                    "equipment": {
+                        "mainhand": "minecraft:skull"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:firebolt,ebwizardry:life_drain"
+                },
+                "spellcaster.3": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 40
+                    },
+                    "experience_drop": 50,
+                    "equipment": {
+                        "mainhand": "minecraft:skull"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:firebolt,ebwizardry:life_drain,ebwizardry:summon_blaze"
+                },
+                "spellcaster.4": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 60
+                    },
+                    "experience_drop": 100,
+                    "equipment": {
+                        "mainhand": "minecraft:skull"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:curse_of_enfeeblement,ebwizardry:firebolt,ebwizardry:summon_blaze,ebwizardry:fireskin,ebwizardry:ring_of_fire"
                 }
             }
         },
@@ -2130,6 +2956,68 @@
                 },
                 "civilian.male": {
                     "enabled": false
+                },
+                "spellcaster": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 20
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:skull"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": ""
+                },
+                "spellcaster.1": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30,
+                        "generic.movementSpeed": 0.325
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:book"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:fireball"
+                },
+                "spellcaster.2": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30,
+                        "generic.movementSpeed": 0.4
+                    },
+                    "experience_drop": 40,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:firebolt,ebwizardry:life_drain"
+                },
+                "spellcaster.3": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 40
+                    },
+                    "experience_drop": 50,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:firebolt,ebwizardry:life_drain,ebwizardry:summon_blaze"
+                },
+                "spellcaster.4": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 60
+                    },
+                    "experience_drop": 100,
+                    "equipment": {
+                        "mainhand": "minecraft:skull"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:curse_of_enfeeblement,ebwizardry:firebolt,ebwizardry:summon_blaze,ebwizardry:fireskin,ebwizardry:ring_of_fire"
                 }
             }
         },
@@ -2196,6 +3084,68 @@
                     "additional_attributes": {
                         "entity_sound": "human_female"
                     }
+                },
+                "spellcaster": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 20
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:skull"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": ""
+                },
+                "spellcaster.1": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30,
+                        "generic.movementSpeed": 0.325
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:book"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:fireball"
+                },
+                "spellcaster.2": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30,
+                        "generic.movementSpeed": 0.4
+                    },
+                    "experience_drop": 40,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:firebolt,ebwizardry:life_drain"
+                },
+                "spellcaster.3": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 40
+                    },
+                    "experience_drop": 50,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:firebolt,ebwizardry:life_drain,ebwizardry:summon_blaze"
+                },
+                "spellcaster.4": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 60
+                    },
+                    "experience_drop": 100,
+                    "equipment": {
+                        "mainhand": "minecraft:skull"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:curse_of_enfeeblement,ebwizardry:firebolt,ebwizardry:summon_blaze,ebwizardry:fireskin,ebwizardry:ring_of_fire"
                 }
             }
         },
@@ -2270,6 +3220,68 @@
                     "additional_attributes": {
                         "entity_sound": "human_female"
                     }
+                },
+                "spellcaster": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 20
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:skull"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": ""
+                },
+                "spellcaster.1": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30,
+                        "generic.movementSpeed": 0.325
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:book"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:fireball"
+                },
+                "spellcaster.2": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30,
+                        "generic.movementSpeed": 0.4
+                    },
+                    "experience_drop": 40,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:firebolt,ebwizardry:life_drain"
+                },
+                "spellcaster.3": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 40
+                    },
+                    "experience_drop": 50,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:firebolt,ebwizardry:life_drain,ebwizardry:summon_blaze"
+                },
+                "spellcaster.4": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 60
+                    },
+                    "experience_drop": 100,
+                    "equipment": {
+                        "mainhand": "minecraft:skull"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:curse_of_enfeeblement,ebwizardry:firebolt,ebwizardry:summon_blaze,ebwizardry:fireskin,ebwizardry:ring_of_fire"
                 }
             }
         },
@@ -2432,6 +3444,68 @@
                 },
                 "civilian.male": {
                     "enabled": false
+                },
+                "spellcaster": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 20
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:skull"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": ""
+                },
+                "spellcaster.1": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30,
+                        "generic.movementSpeed": 0.325
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:book"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:fireball"
+                },
+                "spellcaster.2": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30,
+                        "generic.movementSpeed": 0.4
+                    },
+                    "experience_drop": 40,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:firebolt,ebwizardry:life_drain"
+                },
+                "spellcaster.3": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 40
+                    },
+                    "experience_drop": 50,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:firebolt,ebwizardry:life_drain,ebwizardry:summon_blaze"
+                },
+                "spellcaster.4": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 60
+                    },
+                    "experience_drop": 100,
+                    "equipment": {
+                        "mainhand": "minecraft:skull"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:curse_of_enfeeblement,ebwizardry:firebolt,ebwizardry:summon_blaze,ebwizardry:fireskin,ebwizardry:ring_of_fire"
                 }
             }
         },
@@ -2594,7 +3668,7 @@
                         "generic.movementSpeed": 0.25,
                         "generic.armor": 4,
                         "generic.attackDamage": 3,
-                        "generic.knockbackResistance" : 1.0
+                        "generic.knockbackResistance": 1
                     },
                     "equipment": {
                         "mainhand": "minecraft:air"
@@ -2639,7 +3713,7 @@
                         "generic.movementSpeed": 0.325,
                         "generic.armor": 3,
                         "generic.attackDamage": 4,
-                        "generic.knockbackResistance" : 1.0
+                        "generic.knockbackResistance": 1
                     },
                     "equipment": {
                         "mainhand": "minecraft:air"
@@ -2675,6 +3749,55 @@
                 },
                 "civilian.male": {
                     "enabled": false
+                },
+                "spellcaster": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 20,
+                        "generic.movementSpeed": 0.225
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:skull"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:fireball"
+                },
+                "spellcaster.1": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30
+                    },
+                    "experience_drop": 40,
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:smoke_bomb,ebwizardry:dart,ebwizardry:poison_bomb,ebwizardry:snare"
+                },
+                "spellcaster.2": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30
+                    },
+                    "experience_drop": 50,
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:curse_of_enfeeblement,ebwizardry:snare,ebwizardry:fireball,ebwizardry:summon_skeleton"
+                },
+                "spellcaster.3": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 40
+                    },
+                    "experience_drop": 60,
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:curse_of_enfeeblement,ebwizardry:snare,ebwizardry:cobwebs,ebwizardry:poison,ebwizardry:spider_swarm"
+                },
+                "spellcaster.4": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 50
+                    },
+                    "experience_drop": 80,
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:lightning_web,ebwizardry:lightning_web,ebwizardry:entrapment,ebwizardry:greater_ward,ebwizardry:curse_of_enfeeblement,ebwizardry:summon_shadow_wraith,ebwizardry:curse_of_undeath"
                 }
             }
         },
@@ -2822,7 +3945,7 @@
                         "generic.movementSpeed": 0.325,
                         "generic.armor": 8,
                         "generic.attackDamage": 4,
-                        "generic.knockbackResistance" : 1.0
+                        "generic.knockbackResistance": 1
                     },
                     "equipment": {
                         "mainhand": "minecraft:air"
@@ -2868,7 +3991,20 @@
                     "enabled": false
                 },
                 "priest": {
-                    "enabled": false
+                    "height": {
+                        "min": 1.5,
+                        "max": 1.8
+                    },
+                    "thinness": 1,
+                    "attributes": {
+                        "generic.maxHealth": 30,
+                        "generic.movementSpeed": 0.3,
+                        "generic.armor": 2,
+                        "generic.attackDamage": 2
+                    },
+                    "equipment": {
+                        "mainhand": "minecraft:air"
+                    }
                 },
                 "bard": {
                     "enabled": false
@@ -2884,6 +4020,11 @@
                 },
                 "spellcaster": {
                     "enabled": true,
+                    "height": {
+                        "min": 1.5,
+                        "max": 1.8
+                    },
+                    "thinness": 1,
                     "attributes": {
                         "generic.maxHealth": 80
                     },
@@ -2892,12 +4033,17 @@
                 },
                 "spellcaster.1": {
                     "enabled": true,
+                    "height": {
+                        "min": 1.5,
+                        "max": 1.8
+                    },
+                    "thinness": 1,
                     "attributes": {
                         "generic.maxHealth": 80
                     },
                     "experience_drop": 30,
                     "equipment": {
-                        "mainhand": "minecraft:book"
+                        "mainhand": "minecraft:skull"
                     },
                     "loot_table": "ancientwarfare:entities/soldier",
                     "spells": "ebwizardry:fireball,ebwizardry:fireball,ebwizardry:poison,ebwizardry:snare"
@@ -3226,6 +4372,179 @@
                 }
             }
         },
+        "mindflayer": {
+            "height": {
+                "min": 2,
+                "max": 2.1
+            },
+            "thinness": 1,
+            "npc_subtypes": {
+                "soldier": {
+                    "height": {
+                        "min": 1.1,
+                        "max": 1.1
+                    },
+                    "thinness": 1,
+                    "attributes": {
+                        "generic.maxHealth": 10,
+                        "generic.movementSpeed": 0.255,
+                        "generic.attackDamage": 1
+                    },
+                    "additional_attributes": {
+                        "entity_sound": "kobold"
+                    },
+                    "equipment": {
+                        "mainhand": "minecraft:stone_axe"
+                    }
+                },
+                "soldier.elite": {
+                    "height": {
+                        "min": 1.5,
+                        "max": 1.7
+                    },
+                    "thinness": 1,
+                    "attributes": {
+                        "generic.maxHealth": 30,
+                        "generic.movementSpeed": 0.255,
+                        "generic.attackDamage": 2
+                    },
+                    "additional_attributes": {
+                        "entity_sound": "gargoyle"
+                    },
+                    "equipment": {
+                        "mainhand": "minecraft:iron_sword"
+                    }
+                },
+                "archer": {
+                    "enabled": false
+                },
+                "archer.elite": {
+                    "enabled": false
+                },
+                "cavalry": {
+                    "enabled": false
+                },
+                "mounted_archer": {
+                    "enabled": false
+                },
+                "leader": {
+                    "height": {
+                        "min": 2,
+                        "max": 2.2
+                    },
+                    "thinness": 1.1,
+                    "attributes": {
+                        "generic.maxHealth": 50,
+                        "generic.movementSpeed": 0.255,
+                        "generic.armor": 6,
+                        "generic.attackDamage": 2
+                    },
+                    "additional_attributes": {
+                        "entity_sound": "owlbear"
+                    },
+                    "equipment": {
+                        "mainhand": "minecraft:air"
+                    }
+                },
+                "leader.elite": {
+                    "height": {
+                        "min": 5,
+                        "max": 6.6
+                    },
+                    "thinness": 1,
+                    "attributes": {
+                        "generic.maxHealth": 70,
+                        "generic.movementSpeed": 0.222,
+                        "generic.armor": 16,
+                        "generic.attackDamage": 2
+                    },
+                    "additional_attributes": {
+                        "entity_sound": "ent"
+                    },
+                    "equipment": {
+                        "mainhand": "minecraft:air"
+                    }
+                },
+                "siege_engineer": {
+                    "enabled": false
+                },
+                "priest": {
+                    "enabled": false
+                },
+                "bard": {
+                    "enabled": false
+                },
+                "trader": {
+                    "enabled": false
+                },
+                "civilian.female": {
+                    "enabled": false
+                },
+                "civilian.male": {
+                    "enabled": false
+                },
+                "spellcaster": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:banish"
+                },
+                "spellcaster.1": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 30
+                    },
+                    "experience_drop": 30,
+                    "equipment": {
+                        "mainhand": "minecraft:book"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:banish,ebwizardry:firebolt,ebwizardry:smoke_bomb"
+                },
+                "spellcaster.2": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 35
+                    },
+                    "experience_drop": 40,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:banish,ebwizardry:fireball,ebwizardry:cobwebs,ebwizardry:poison"
+                },
+                "spellcaster.3": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 40
+                    },
+                    "experience_drop": 50,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:banish,ebwizardry:slime,ebwizardry:greater_fireball,ebwizardry:wither,ebwizardry:summon_skeleton"
+                },
+                "spellcaster.4": {
+                    "enabled": true,
+                    "attributes": {
+                        "generic.maxHealth": 50
+                    },
+                    "experience_drop": 80,
+                    "equipment": {
+                        "mainhand": "minecraft:stick"
+                    },
+                    "loot_table": "ancientwarfare:entities/soldier",
+                    "spells": "ebwizardry:black_hole,ebwizardry:banish,ebwizardry:darkness_orb,ebwizardry:disintegration,ebwizardry:summon_wither_skeleton"
+                }
+            }
+        },
         "ent": {
             "additional_attributes": {
                 "entity_sound": "ent"
@@ -3282,7 +4601,7 @@
                         "generic.movementSpeed": 0.3,
                         "generic.armor": 20,
                         "generic.attackDamage": 5,
-                        "generic.knockbackResistance" : 1.0
+                        "generic.knockbackResistance": 1
                     },
                     "equipment": {
                         "mainhand": "minecraft:air"
@@ -3299,7 +4618,7 @@
                         "generic.movementSpeed": 0.3,
                         "generic.armor": 30,
                         "generic.attackDamage": 6,
-                        "generic.knockbackResistance" : 1.0
+                        "generic.knockbackResistance": 1
                     },
                     "equipment": {
                         "mainhand": "minecraft:air"
@@ -3572,7 +4891,7 @@
         },
         "giant": {
             "attributes": {
-                "generic.knockbackResistance" : 1.0
+                "generic.knockbackResistance": 1
             },
             "additional_attributes": {
                 "entity_sound": "giant"
