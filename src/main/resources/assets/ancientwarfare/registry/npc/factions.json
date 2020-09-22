@@ -1,5 +1,7 @@
 {
-    "load_after": ["target_lists"],
+    "load_after": [
+        "target_lists"
+    ],
     "defaults": {
         "player_default_standing": -70,
         "standing_changes": {
@@ -13,6 +15,9 @@
             "xoltec": true,
             "witchbane": true,
             "nogg": false,
+            "reiksgard": false,
+            "shakayana": false,
+            "zamurai": false,
             "buffloka": true,
             "zimba": true,
             "kong": true,
@@ -27,6 +32,7 @@
             "gremlin": true,
             "giant": true,
             "smingol": true,
+            "mindflayer": true,
             "minossian": true,
             "guild": false,
             "sealsker": false,
@@ -69,6 +75,9 @@
                 "xoltec": true,
                 "witchbane": false,
                 "nogg": true,
+                "reiksgard": true,
+                "shakayana": true,
+                "zamurai": true,
                 "buffloka": true,
                 "zimba": true,
                 "kong": true,
@@ -82,6 +91,7 @@
                 "giant": true,
                 "smingol": true,
                 "minossian": true,
+                "mindflayer": true,
                 "guild": false,
                 "sealsker": true,
                 "vyncan": true,
@@ -113,7 +123,8 @@
                     "color": 16777215
                 }
             }
-        }, {
+        },
+        {
             "name": "norska",
             "color": "9999FF",
             "player_default_standing": -50,
@@ -125,6 +136,9 @@
                 "xoltec": true,
                 "witchbane": true,
                 "nogg": true,
+                "reiksgard": true,
+                "shakayana": true,
+                "zamurai": true,
                 "buffloka": false,
                 "zimba": false,
                 "kong": true,
@@ -138,6 +152,7 @@
                 "giant": true,
                 "smingol": true,
                 "minossian": true,
+                "mindflayer": true,
                 "guild": false,
                 "sealsker": true,
                 "vyncan": false,
@@ -158,7 +173,8 @@
                 "vampire": true,
                 "demon": true
             }
-        }, {
+        },
+        {
             "name": "sarkonid",
             "color": "b20000",
             "player_default_standing": -50,
@@ -169,6 +185,9 @@
                 "xoltec": true,
                 "witchbane": true,
                 "nogg": false,
+                "reiksgard": true,
+                "shakayana": true,
+                "zamurai": true,
                 "buffloka": false,
                 "zimba": false,
                 "kong": true,
@@ -183,6 +202,7 @@
                 "giant": true,
                 "smingol": true,
                 "minossian": true,
+                "mindflayer": true,
                 "guild": false,
                 "sealsker": false,
                 "vyncan": false,
@@ -203,7 +223,8 @@
                 "vampire": true,
                 "demon": true
             }
-        }, {
+        },
+        {
             "name": "xoltec",
             "color": "ffa500",
             "player_default_standing": -3000,
@@ -213,6 +234,9 @@
                 "sarkonid": true,
                 "witchbane": true,
                 "nogg": true,
+                "reiksgard": true,
+                "shakayana": true,
+                "zamurai": true,
                 "buffloka": true,
                 "zimba": true,
                 "kong": false,
@@ -228,6 +252,7 @@
                 "giant": true,
                 "smingol": true,
                 "minossian": false,
+                "mindflayer": true,
                 "guild": true,
                 "sealsker": true,
                 "vyncan": true,
@@ -249,9 +274,12 @@
                 "demon": false
             },
             "targets": {
-                "lists": ["friendly"]
+                "lists": [
+                    "friendly"
+                ]
             }
-        }, {
+        },
+        {
             "name": "witchbane",
             "color": "ffffff",
             "player_default_standing": -1000,
@@ -262,6 +290,9 @@
                 "xoltec": true,
                 "hobbit": true,
                 "nogg": true,
+                "reiksgard": true,
+                "shakayana": true,
+                "zamurai": true,
                 "buffloka": true,
                 "zimba": true,
                 "kong": true,
@@ -276,6 +307,7 @@
                 "giant": true,
                 "smingol": true,
                 "minossian": true,
+                "mindflayer": true,
                 "guild": false,
                 "sealsker": true,
                 "vyncan": true,
@@ -308,7 +340,8 @@
                     "flameColor": 16711680
                 }
             }
-        }, {
+        },
+        {
             "name": "nogg",
             "color": "00cd00",
             "player_default_standing": 25,
@@ -318,6 +351,9 @@
                 "sarkonid": false,
                 "xoltec": true,
                 "witchbane": true,
+                "reiksgard": false,
+                "shakayana": true,
+                "zamurai": true,
                 "hobbit": false,
                 "buffloka": false,
                 "zimba": false,
@@ -333,6 +369,7 @@
                 "giant": true,
                 "smingol": true,
                 "minossian": true,
+                "mindflayer": true,
                 "guild": false,
                 "sealsker": false,
                 "vyncan": false,
@@ -364,7 +401,8 @@
                     "color": 16777215
                 }
             }
-        }, {
+        },
+        {
             "name": "buffloka",
             "color": "008000",
             "player_default_standing": -50,
@@ -375,6 +413,9 @@
                 "xoltec": true,
                 "witchbane": true,
                 "nogg": false,
+                "reiksgard": true,
+                "shakayana": true,
+                "zamurai": true,
                 "hobbit": false,
                 "zimba": false,
                 "kong": true,
@@ -389,6 +430,7 @@
                 "giant": true,
                 "smingol": true,
                 "minossian": true,
+                "mindflayer": true,
                 "guild": false,
                 "sealsker": false,
                 "vyncan": false,
@@ -409,7 +451,58 @@
                 "vampire": true,
                 "demon": true
             }
-        }, {
+        },
+        {
+            "name": "reiksgard",
+            "color": "22cd22",
+            "player_default_standing": 50,
+            "hostile_towards_factions": {
+                "empire": true,
+                "norska": true,
+                "sarkonid": true,
+                "xoltec": true,
+                "witchbane": true,
+                "nogg": false,
+                "shakayana": true,
+                "zamurai": true,
+                "hobbit": false,
+                "buffloka": true,
+                "zimba": true,
+                "kong": true,
+                "orc": true,
+                "brigand": true,
+                "pirate": true,
+                "elf": true,
+                "dwarf": true,
+                "ent": false,
+                "gnome": false,
+                "gremlin": true,
+                "giant": true,
+                "smingol": true,
+                "minossian": true,
+                "mindflayer": true,
+                "guild": false,
+                "sealsker": true,
+                "vyncan": true,
+                "lizardmen": true,
+                "coven": true,
+                "rakshasa": true,
+                "icelord": true,
+                "amazon": true,
+                "ishtari": true,
+                "barbarian": true,
+                "klown": true,
+                "evil": true,
+                "good": false,
+                "undead": true,
+                "monster": true,
+                "beast": true,
+                "wizardly": false,
+                "vampire": true,
+                "demon": true
+            }
+        },
+        {
             "name": "zimba",
             "color": "ffff00",
             "player_default_standing": -50,
@@ -420,6 +513,9 @@
                 "xoltec": true,
                 "witchbane": true,
                 "nogg": false,
+                "reiksgard": true,
+                "shakayana": true,
+                "zamurai": true,
                 "buffloka": false,
                 "hobbit": false,
                 "kong": true,
@@ -434,6 +530,7 @@
                 "giant": true,
                 "smingol": true,
                 "minossian": true,
+                "mindflayer": true,
                 "guild": false,
                 "sealsker": false,
                 "vyncan": false,
@@ -454,7 +551,8 @@
                 "vampire": true,
                 "demon": true
             }
-        }, {
+        },
+        {
             "name": "kong",
             "color": "004000",
             "player_default_standing": -3000,
@@ -465,6 +563,9 @@
                 "xoltec": false,
                 "witchbane": true,
                 "nogg": true,
+                "reiksgard": true,
+                "shakayana": true,
+                "zamurai": true,
                 "buffloka": true,
                 "zimba": true,
                 "kong": false,
@@ -480,6 +581,7 @@
                 "giant": true,
                 "smingol": true,
                 "minossian": false,
+                "mindflayer": true,
                 "guild": true,
                 "sealsker": true,
                 "vyncan": true,
@@ -501,9 +603,12 @@
                 "demon": false
             },
             "targets": {
-                "lists": ["friendly"]
+                "lists": [
+                    "friendly"
+                ]
             }
-        }, {
+        },
+        {
             "name": "orc",
             "color": "404040",
             "player_default_standing": -9000,
@@ -511,9 +616,12 @@
                 "empire": true,
                 "norska": true,
                 "sarkonid": true,
-                "xoltec": false,
+                "xoltec": true,
                 "witchbane": true,
                 "nogg": true,
+                "reiksgard": true,
+                "shakayana": true,
+                "zamurai": true,
                 "buffloka": true,
                 "zimba": true,
                 "kong": false,
@@ -527,6 +635,7 @@
                 "gremlin": false,
                 "smingol": true,
                 "minossian": false,
+                "mindflayer": true,
                 "guild": true,
                 "giant": true,
                 "sealsker": true,
@@ -549,9 +658,12 @@
                 "demon": false
             },
             "targets": {
-                "lists": ["friendly"]
+                "lists": [
+                    "friendly"
+                ]
             }
-        }, {
+        },
+        {
             "name": "brigand",
             "color": "964b00",
             "player_default_standing": -9000,
@@ -562,6 +674,9 @@
                 "xoltec": false,
                 "witchbane": true,
                 "nogg": true,
+                "reiksgard": true,
+                "shakayana": true,
+                "zamurai": true,
                 "buffloka": true,
                 "zimba": true,
                 "kong": false,
@@ -576,6 +691,7 @@
                 "giant": true,
                 "smingol": true,
                 "minossian": false,
+                "mindflayer": true,
                 "guild": true,
                 "sealsker": true,
                 "vyncan": true,
@@ -597,9 +713,12 @@
                 "demon": false
             },
             "targets": {
-                "lists": ["friendly"]
+                "lists": [
+                    "friendly"
+                ]
             }
-        }, {
+        },
+        {
             "name": "pirate",
             "color": "cc7722",
             "player_default_standing": -9000,
@@ -610,6 +729,9 @@
                 "xoltec": false,
                 "witchbane": true,
                 "nogg": true,
+                "reiksgard": true,
+                "shakayana": true,
+                "zamurai": true,
                 "buffloka": true,
                 "zimba": true,
                 "kong": false,
@@ -625,6 +747,7 @@
                 "hobbit": true,
                 "smingol": true,
                 "minossian": false,
+                "mindflayer": true,
                 "guild": true,
                 "sealsker": true,
                 "vyncan": true,
@@ -646,9 +769,12 @@
                 "demon": false
             },
             "targets": {
-                "lists": ["friendly"]
+                "lists": [
+                    "friendly"
+                ]
             }
-        }, {
+        },
+        {
             "name": "evil",
             "color": "000000",
             "player_default_standing": -9000,
@@ -659,6 +785,9 @@
                 "xoltec": false,
                 "witchbane": true,
                 "nogg": true,
+                "reiksgard": true,
+                "shakayana": true,
+                "zamurai": true,
                 "buffloka": true,
                 "zimba": true,
                 "kong": false,
@@ -674,6 +803,7 @@
                 "giant": true,
                 "smingol": true,
                 "minossian": false,
+                "mindflayer": true,
                 "guild": true,
                 "sealsker": true,
                 "vyncan": true,
@@ -695,7 +825,9 @@
                 "demon": false
             },
             "targets": {
-                "lists": ["friendly"]
+                "lists": [
+                    "friendly"
+                ]
             },
             "themed_blocks": {
                 "ancientwarfarestructure:altar_long_cloth": {
@@ -709,7 +841,8 @@
                     "flameColor": 16776960
                 }
             }
-        }, {
+        },
+        {
             "name": "good",
             "color": "66b266",
             "player_default_standing": 50,
@@ -720,6 +853,9 @@
                 "xoltec": true,
                 "witchbane": true,
                 "nogg": false,
+                "reiksgard": false,
+                "shakayana": false,
+                "zamurai": false,
                 "buffloka": false,
                 "zimba": false,
                 "kong": true,
@@ -734,6 +870,7 @@
                 "giant": true,
                 "smingol": true,
                 "minossian": true,
+                "mindflayer": true,
                 "guild": false,
                 "sealsker": false,
                 "vyncan": false,
@@ -766,7 +903,8 @@
                     "flameColor": 255
                 }
             }
-        }, {
+        },
+        {
             "name": "undead",
             "color": "b2b2b2",
             "player_default_standing": -9000,
@@ -777,6 +915,9 @@
                 "xoltec": false,
                 "witchbane": true,
                 "nogg": true,
+                "reiksgard": true,
+                "shakayana": true,
+                "zamurai": true,
                 "buffloka": true,
                 "zimba": true,
                 "kong": false,
@@ -792,6 +933,7 @@
                 "giant": true,
                 "smingol": true,
                 "minossian": false,
+                "mindflayer": false,
                 "guild": true,
                 "sealsker": true,
                 "vyncan": true,
@@ -813,7 +955,9 @@
                 "demon": false
             },
             "targets": {
-                "lists": ["friendly"]
+                "lists": [
+                    "friendly"
+                ]
             },
             "themed_blocks": {
                 "ancientwarfarestructure:altar_long_cloth": {
@@ -827,7 +971,8 @@
                     "flameSmoke": 1
                 }
             }
-        }, {
+        },
+        {
             "name": "demon",
             "color": "ff2400",
             "player_default_standing": -9000,
@@ -838,6 +983,9 @@
                 "xoltec": false,
                 "witchbane": true,
                 "nogg": true,
+                "reiksgard": true,
+                "shakayana": true,
+                "zamurai": true,
                 "buffloka": true,
                 "zimba": true,
                 "kong": false,
@@ -853,6 +1001,7 @@
                 "giant": true,
                 "smingol": true,
                 "minossian": false,
+                "mindflayer": false,
                 "guild": true,
                 "sealsker": true,
                 "vyncan": true,
@@ -874,7 +1023,9 @@
                 "demon": false
             },
             "targets": {
-                "lists": ["friendly"]
+                "lists": [
+                    "friendly"
+                ]
             },
             "themed_blocks": {
                 "ancientwarfarestructure:altar_long_cloth": {
@@ -888,7 +1039,8 @@
                     "flameColor": 16711680
                 }
             }
-        }, {
+        },
+        {
             "name": "coven",
             "color": "000000",
             "player_default_standing": -9000,
@@ -899,6 +1051,9 @@
                 "xoltec": false,
                 "witchbane": true,
                 "nogg": true,
+                "reiksgard": true,
+                "shakayana": true,
+                "zamurai": true,
                 "buffloka": true,
                 "zimba": true,
                 "kong": false,
@@ -914,6 +1069,7 @@
                 "giant": false,
                 "smingol": true,
                 "minossian": false,
+                "mindflayer": false,
                 "guild": true,
                 "sealsker": true,
                 "vyncan": true,
@@ -935,9 +1091,12 @@
                 "demon": false
             },
             "targets": {
-                "lists": ["friendly"]
+                "lists": [
+                    "friendly"
+                ]
             }
-        }, {
+        },
+        {
             "name": "elf",
             "color": "66b266",
             "player_default_standing": 50,
@@ -948,6 +1107,9 @@
                 "xoltec": true,
                 "witchbane": true,
                 "nogg": false,
+                "reiksgard": true,
+                "shakayana": true,
+                "zamurai": true,
                 "buffloka": false,
                 "zimba": false,
                 "kong": true,
@@ -962,6 +1124,7 @@
                 "giant": true,
                 "smingol": true,
                 "minossian": true,
+                "mindflayer": true,
                 "guild": false,
                 "sealsker": false,
                 "vyncan": false,
@@ -982,7 +1145,8 @@
                 "vampire": true,
                 "demon": true
             }
-        }, {
+        },
+        {
             "name": "barbarian",
             "color": "802B00",
             "player_default_standing": -5000,
@@ -993,6 +1157,9 @@
                 "xoltec": true,
                 "witchbane": true,
                 "nogg": true,
+                "shakayana": true,
+                "reiksgard": true,
+                "zamurai": true,
                 "buffloka": true,
                 "zimba": true,
                 "kong": true,
@@ -1008,6 +1175,7 @@
                 "giant": true,
                 "smingol": true,
                 "minossian": true,
+                "mindflayer": true,
                 "guild": true,
                 "sealsker": true,
                 "vyncan": true,
@@ -1027,7 +1195,8 @@
                 "vampire": true,
                 "demon": false
             }
-        }, {
+        },
+        {
             "name": "dwarf",
             "color": "77b266",
             "player_default_standing": 50,
@@ -1038,6 +1207,9 @@
                 "xoltec": true,
                 "witchbane": true,
                 "nogg": false,
+                "reiksgard": true,
+                "shakayana": true,
+                "zamurai": true,
                 "buffloka": false,
                 "zimba": false,
                 "kong": true,
@@ -1052,6 +1224,7 @@
                 "giant": true,
                 "smingol": true,
                 "minossian": true,
+                "mindflayer": true,
                 "guild": false,
                 "sealsker": false,
                 "vyncan": false,
@@ -1072,7 +1245,58 @@
                 "vampire": true,
                 "demon": true
             }
-        }, {
+        },
+        {
+            "name": "shakayana",
+            "color": "88b266",
+            "player_default_standing": 20,
+            "hostile_towards_factions": {
+                "empire": true,
+                "norska": true,
+                "sarkonid": true,
+                "xoltec": true,
+                "witchbane": true,
+                "nogg": false,
+                "reiksgard": true,
+                "dwarf": true,
+                "zamurai": true,
+                "buffloka": true,
+                "zimba": true,
+                "kong": true,
+                "orc": true,
+                "brigand": true,
+                "pirate": true,
+                "elf": true,
+                "hobbit": true,
+                "ent": true,
+                "gnome": true,
+                "gremlin": true,
+                "giant": true,
+                "smingol": true,
+                "minossian": true,
+                "mindflayer": true,
+                "guild": false,
+                "sealsker": true,
+                "vyncan": true,
+                "lizardmen": true,
+                "coven": true,
+                "rakshasa": true,
+                "icelord": true,
+                "amazon": true,
+                "ishtari": true,
+                "barbarian": true,
+                "klown": true,
+                "evil": true,
+                "good": false,
+                "undead": true,
+                "monster": true,
+                "beast": true,
+                "wizardly": false,
+                "vampire": true,
+                "demon": true
+            }
+        },
+        {
             "name": "smingol",
             "color": "FFD700",
             "player_default_standing": -5000,
@@ -1083,6 +1307,9 @@
                 "xoltec": true,
                 "witchbane": true,
                 "nogg": true,
+                "reiksgard": true,
+                "shakayana": true,
+                "zamurai": true,
                 "buffloka": true,
                 "zimba": true,
                 "kong": true,
@@ -1097,6 +1324,7 @@
                 "gremlin": true,
                 "giant": true,
                 "minossian": true,
+                "mindflayer": true,
                 "guild": true,
                 "sealsker": true,
                 "vyncan": true,
@@ -1118,9 +1346,12 @@
                 "demon": true
             },
             "targets": {
-                "lists": ["friendly"]
+                "lists": [
+                    "friendly"
+                ]
             }
-        }, {
+        },
+        {
             "name": "lizardman",
             "color": "576500",
             "player_default_standing": -9000,
@@ -1131,6 +1362,9 @@
                 "xoltec": false,
                 "witchbane": true,
                 "nogg": true,
+                "reiksgard": true,
+                "shakayana": true,
+                "zamurai": true,
                 "buffloka": true,
                 "zimba": true,
                 "kong": false,
@@ -1145,7 +1379,8 @@
                 "gremlin": true,
                 "giant": true,
                 "smingol": true,
-                "minossian": false,
+                "minossian": true,
+                "mindflayer": true,
                 "guild": true,
                 "sealsker": true,
                 "vyncan": true,
@@ -1166,9 +1401,117 @@
                 "demon": false
             },
             "targets": {
-                "lists": ["friendly"]
+                "lists": [
+                    "friendly"
+                ]
             }
-        }, {
+        },
+        {
+            "name": "mindflayer",
+            "color": "777500",
+            "player_default_standing": -9000,
+            "hostile_towards_factions": {
+                "empire": true,
+                "norska": true,
+                "sarkonid": true,
+                "xoltec": false,
+                "witchbane": true,
+                "nogg": true,
+                "reiksgard": true,
+                "shakayana": true,
+                "zamurai": true,
+                "buffloka": true,
+                "zimba": true,
+                "kong": false,
+                "orc": false,
+                "brigand": true,
+                "pirate": false,
+                "elf": true,
+                "dwarf": true,
+                "hobbit": true,
+                "ent": true,
+                "gnome": true,
+                "gremlin": true,
+                "giant": true,
+                "smingol": true,
+                "minossian": true,
+                "lizardmen": true,
+                "guild": true,
+                "sealsker": true,
+                "vyncan": true,
+                "coven": false,
+                "rakshasa": false,
+                "icelord": false,
+                "amazon": true,
+                "ishtari": false,
+                "barbarian": true,
+                "klown": false,
+                "evil": false,
+                "good": true,
+                "undead": false,
+                "monster": false,
+                "beast": false,
+                "wizardly": true,
+                "vampire": false,
+                "demon": false
+            },
+            "targets": {
+                "lists": [
+                    "friendly"
+                ]
+            }
+        },
+        {
+            "name": "zamurai",
+            "color": "376500",
+            "player_default_standing": 10,
+            "hostile_towards_factions": {
+                "empire": true,
+                "norska": true,
+                "sarkonid": true,
+                "xoltec": true,
+                "witchbane": true,
+                "nogg": false,
+                "reiksgard": true,
+                "shakayana": true,
+                "lizardmen": true,
+                "buffloka": true,
+                "zimba": true,
+                "kong": true,
+                "orc": true,
+                "brigand": true,
+                "pirate": true,
+                "elf": true,
+                "dwarf": true,
+                "hobbit": true,
+                "ent": true,
+                "gnome": true,
+                "gremlin": true,
+                "giant": true,
+                "smingol": true,
+                "minossian": true,
+                "mindflayer": true,
+                "guild": false,
+                "sealsker": true,
+                "vyncan": true,
+                "coven": true,
+                "rakshasa": true,
+                "icelord": true,
+                "amazon": true,
+                "ishtari": true,
+                "barbarian": true,
+                "klown": true,
+                "evil": true,
+                "good": true,
+                "undead": true,
+                "monster": true,
+                "beast": true,
+                "wizardly": true,
+                "vampire": true,
+                "demon": true
+            }
+        },
+        {
             "name": "rakshasa",
             "color": "d7bf00",
             "player_default_standing": -9000,
@@ -1179,6 +1522,9 @@
                 "xoltec": false,
                 "witchbane": true,
                 "nogg": true,
+                "reiksgard": true,
+                "shakayana": true,
+                "zamurai": true,
                 "buffloka": true,
                 "zimba": true,
                 "kong": false,
@@ -1194,6 +1540,7 @@
                 "giant": false,
                 "smingol": true,
                 "minossian": false,
+                "mindflayer": false,
                 "guild": true,
                 "sealsker": true,
                 "vyncan": true,
@@ -1214,9 +1561,12 @@
                 "demon": false
             },
             "targets": {
-                "lists": ["friendly"]
+                "lists": [
+                    "friendly"
+                ]
             }
-        }, {
+        },
+        {
             "name": "klown",
             "color": "FFC0CB",
             "player_default_standing": -9000,
@@ -1226,7 +1576,10 @@
                 "sarkonid": true,
                 "xoltec": false,
                 "witchbane": true,
+                "reiksgard": true,
                 "nogg": true,
+                "shakayana": true,
+                "zamurai": true,
                 "buffloka": true,
                 "zimba": true,
                 "kong": false,
@@ -1242,6 +1595,7 @@
                 "giant": false,
                 "smingol": true,
                 "minossian": false,
+                "mindflayer": false,
                 "guild": true,
                 "sealsker": true,
                 "vyncan": true,
@@ -1262,9 +1616,12 @@
                 "demon": false
             },
             "targets": {
-                "lists": ["friendly"]
+                "lists": [
+                    "friendly"
+                ]
             }
-        }, {
+        },
+        {
             "name": "ishtari",
             "color": "fed000",
             "player_default_standing": -9000,
@@ -1275,6 +1632,9 @@
                 "xoltec": false,
                 "witchbane": true,
                 "nogg": true,
+                "reiksgard": true,
+                "shakayana": true,
+                "zamurai": true,
                 "buffloka": true,
                 "zimba": true,
                 "kong": false,
@@ -1290,6 +1650,7 @@
                 "giant": true,
                 "smingol": true,
                 "minossian": false,
+                "mindflayer": false,
                 "guild": true,
                 "sealsker": true,
                 "vyncan": true,
@@ -1310,9 +1671,12 @@
                 "demon": false
             },
             "targets": {
-                "lists": ["friendly"]
+                "lists": [
+                    "friendly"
+                ]
             }
-        }, {
+        },
+        {
             "name": "icelord",
             "color": "3c9f9c",
             "player_default_standing": -9000,
@@ -1320,30 +1684,34 @@
                 "empire": true,
                 "norska": true,
                 "sarkonid": true,
-                "xoltec": false,
+                "xoltec": true,
                 "witchbane": true,
+                "reiksgard": true,
                 "nogg": true,
+                "shakayana": true,
+                "zamurai": true,
                 "buffloka": true,
                 "zimba": true,
                 "kong": false,
                 "orc": false,
-                "brigand": false,
-                "pirate": false,
+                "brigand": true,
+                "pirate": true,
                 "elf": true,
                 "dwarf": true,
                 "hobbit": true,
                 "ent": true,
                 "gnome": true,
-                "gremlin": false,
+                "gremlin": true,
                 "giant": true,
                 "smingol": true,
-                "minossian": false,
+                "minossian": true,
+                "mindflayer": true,
                 "guild": true,
                 "sealsker": true,
                 "vyncan": true,
-                "lizardmen": false,
-                "coven": false,
-                "rakshasa": false,
+                "lizardmen": true,
+                "coven": true,
+                "rakshasa": true,
                 "amazon": true,
                 "ishtari": false,
                 "barbarian": true,
@@ -1351,19 +1719,22 @@
                 "evil": false,
                 "good": true,
                 "undead": false,
-                "monster": false,
-                "beast": false,
+                "monster": true,
+                "beast": true,
                 "wizardly": true,
                 "vampire": false,
                 "demon": false
             },
             "targets": {
-                "lists": ["friendly"]
+                "lists": [
+                    "friendly"
+                ]
             }
-        }, {
+        },
+        {
             "name": "guild",
             "color": "007cc9",
-            "player_default_standing": 50,
+            "player_default_standing": 100,
             "hostile_towards_factions": {
                 "empire": false,
                 "norska": false,
@@ -1371,6 +1742,9 @@
                 "xoltec": true,
                 "witchbane": false,
                 "nogg": false,
+                "reiksgard": false,
+                "shakayana": false,
+                "zamurai": false,
                 "buffloka": false,
                 "zimba": false,
                 "kong": true,
@@ -1385,6 +1759,7 @@
                 "giant": true,
                 "smingol": true,
                 "minossian": true,
+                "mindflayer": true,
                 "hobbit": false,
                 "sealsker": false,
                 "vyncan": false,
@@ -1405,7 +1780,8 @@
                 "vampire": true,
                 "demon": true
             }
-        }, {
+        },
+        {
             "name": "wizardly",
             "color": "aa3fd8",
             "player_default_standing": 50,
@@ -1416,6 +1792,9 @@
                 "xoltec": true,
                 "witchbane": false,
                 "nogg": false,
+                "reiksgard": false,
+                "shakayana": false,
+                "zamurai": false,
                 "buffloka": false,
                 "zimba": false,
                 "kong": true,
@@ -1430,6 +1809,7 @@
                 "giant": true,
                 "smingol": true,
                 "minossian": true,
+                "mindflayer": true,
                 "hobbit": false,
                 "sealsker": false,
                 "vyncan": false,
@@ -1450,7 +1830,8 @@
                 "vampire": true,
                 "demon": true
             }
-        }, {
+        },
+        {
             "name": "amazon",
             "color": "d34848",
             "player_default_standing": -50,
@@ -1461,6 +1842,9 @@
                 "xoltec": true,
                 "witchbane": true,
                 "nogg": false,
+                "reiksgard": true,
+                "shakayana": true,
+                "zamurai": true,
                 "buffloka": false,
                 "zimba": false,
                 "kong": true,
@@ -1475,6 +1859,7 @@
                 "giant": true,
                 "smingol": true,
                 "minossian": true,
+                "mindflayer": true,
                 "guild": false,
                 "sealsker": false,
                 "vyncan": false,
@@ -1495,7 +1880,8 @@
                 "vampire": true,
                 "demon": true
             }
-        }, {
+        },
+        {
             "name": "minossian",
             "color": "456689",
             "player_default_standing": -9000,
@@ -1506,6 +1892,9 @@
                 "xoltec": false,
                 "witchbane": true,
                 "nogg": true,
+                "reiksgard": true,
+                "shakayana": true,
+                "zamurai": true,
                 "buffloka": true,
                 "zimba": true,
                 "kong": false,
@@ -1520,6 +1909,7 @@
                 "gremlin": false,
                 "giant": true,
                 "smingol": true,
+                "mindflayer": false,
                 "guild": true,
                 "sealsker": true,
                 "vyncan": true,
@@ -1541,9 +1931,12 @@
                 "demon": false
             },
             "targets": {
-                "lists": ["friendly"]
+                "lists": [
+                    "friendly"
+                ]
             }
-        }, {
+        },
+        {
             "name": "sealsker",
             "color": "6666FF",
             "player_default_standing": 50,
@@ -1554,6 +1947,9 @@
                 "xoltec": true,
                 "witchbane": true,
                 "nogg": false,
+                "reiksgard": false,
+                "shakayana": true,
+                "zamurai": true,
                 "buffloka": false,
                 "zimba": false,
                 "kong": true,
@@ -1564,6 +1960,7 @@
                 "dwarf": false,
                 "smingol": true,
                 "minossian": true,
+                "mindflayer": true,
                 "guild": false,
                 "hobbit": false,
                 "ent": false,
@@ -1588,7 +1985,8 @@
                 "vampire": true,
                 "demon": true
             }
-        }, {
+        },
+        {
             "name": "vyncan",
             "color": "6666FF",
             "player_default_standing": 50,
@@ -1599,6 +1997,9 @@
                 "xoltec": true,
                 "witchbane": true,
                 "nogg": false,
+                "reiksgard": true,
+                "shakayana": true,
+                "zamurai": true,
                 "buffloka": false,
                 "zimba": false,
                 "kong": true,
@@ -1612,6 +2013,7 @@
                 "giant": true,
                 "smingol": true,
                 "minossian": true,
+                "mindflayer": true,
                 "guild": false,
                 "sealsker": false,
                 "hobbit": false,
@@ -1633,7 +2035,8 @@
                 "vampire": true,
                 "demon": true
             }
-        }, {
+        },
+        {
             "name": "hobbit",
             "color": "6666FF",
             "player_default_standing": 50,
@@ -1644,6 +2047,9 @@
                 "xoltec": true,
                 "witchbane": true,
                 "nogg": false,
+                "reiksgard": false,
+                "shakayana": true,
+                "zamurai": true,
                 "buffloka": false,
                 "zimba": false,
                 "kong": true,
@@ -1658,6 +2064,7 @@
                 "giant": true,
                 "smingol": true,
                 "minossian": true,
+                "mindflayer": true,
                 "guild": false,
                 "sealsker": false,
                 "vyncan": false,
@@ -1678,7 +2085,8 @@
                 "vampire": true,
                 "demon": true
             }
-        }, {
+        },
+        {
             "name": "monster",
             "color": "FFC0CB",
             "player_default_standing": -9000,
@@ -1689,6 +2097,9 @@
                 "xoltec": false,
                 "witchbane": true,
                 "nogg": true,
+                "reiksgard": true,
+                "shakayana": true,
+                "zamurai": true,
                 "buffloka": true,
                 "zimba": true,
                 "kong": false,
@@ -1704,6 +2115,7 @@
                 "giant": true,
                 "smingol": true,
                 "minossian": false,
+                "mindflayer": false,
                 "guild": true,
                 "sealsker": true,
                 "vyncan": true,
@@ -1724,9 +2136,12 @@
                 "demon": false
             },
             "targets": {
-                "lists": ["friendly"]
+                "lists": [
+                    "friendly"
+                ]
             }
-        }, {
+        },
+        {
             "name": "beast",
             "color": "FFC0CB",
             "player_default_standing": -9000,
@@ -1737,6 +2152,9 @@
                 "xoltec": false,
                 "witchbane": true,
                 "nogg": true,
+                "reiksgard": true,
+                "shakayana": true,
+                "zamurai": true,
                 "buffloka": true,
                 "zimba": true,
                 "kong": false,
@@ -1752,6 +2170,7 @@
                 "giant": true,
                 "smingol": true,
                 "minossian": false,
+                "mindflayer": false,
                 "guild": true,
                 "sealsker": true,
                 "vyncan": true,
@@ -1772,9 +2191,12 @@
                 "demon": false
             },
             "targets": {
-                "lists": ["friendly"]
+                "lists": [
+                    "friendly"
+                ]
             }
-        }, {
+        },
+        {
             "name": "ent",
             "color": "6666FF",
             "player_default_standing": 50,
@@ -1785,6 +2207,9 @@
                 "xoltec": true,
                 "witchbane": true,
                 "nogg": false,
+                "reiksgard": false,
+                "shakayana": true,
+                "zamurai": true,
                 "buffloka": false,
                 "zimba": false,
                 "kong": true,
@@ -1799,6 +2224,7 @@
                 "giant": true,
                 "smingol": true,
                 "minossian": true,
+                "mindflayer": true,
                 "guild": false,
                 "sealsker": false,
                 "vyncan": false,
@@ -1819,7 +2245,8 @@
                 "vampire": true,
                 "demon": true
             }
-        }, {
+        },
+        {
             "name": "gnome",
             "color": "6666FF",
             "player_default_standing": 50,
@@ -1830,6 +2257,9 @@
                 "xoltec": true,
                 "witchbane": true,
                 "nogg": false,
+                "reiksgard": false,
+                "shakayana": true,
+                "zamurai": true,
                 "buffloka": false,
                 "zimba": false,
                 "kong": true,
@@ -1844,6 +2274,7 @@
                 "giant": true,
                 "smingol": true,
                 "minossian": true,
+                "mindflayer": true,
                 "guild": false,
                 "sealsker": false,
                 "vyncan": false,
@@ -1864,7 +2295,8 @@
                 "vampire": true,
                 "demon": true
             }
-        }, {
+        },
+        {
             "name": "gremlin",
             "color": "FFC0CB",
             "player_default_standing": -9000,
@@ -1875,6 +2307,9 @@
                 "xoltec": false,
                 "witchbane": true,
                 "nogg": true,
+                "reiksgard": true,
+                "shakayana": true,
+                "zamurai": true,
                 "buffloka": true,
                 "zimba": true,
                 "kong": false,
@@ -1888,6 +2323,8 @@
                 "gnome": true,
                 "giant": true,
                 "smingol": true,
+                "minossian": true,
+                "mindflayer": true,
                 "guild": true,
                 "sealsker": true,
                 "vyncan": true,
@@ -1909,9 +2346,12 @@
                 "demon": false
             },
             "targets": {
-                "lists": ["friendly"]
+                "lists": [
+                    "friendly"
+                ]
             }
-        }, {
+        },
+        {
             "name": "vampire",
             "color": "320000",
             "player_default_standing": -9000,
@@ -1922,6 +2362,9 @@
                 "xoltec": false,
                 "witchbane": true,
                 "nogg": true,
+                "reiksgard": true,
+                "shakayana": true,
+                "zamurai": true,
                 "buffloka": true,
                 "zimba": true,
                 "kong": false,
@@ -1935,6 +2378,8 @@
                 "gnome": true,
                 "giant": true,
                 "smingol": true,
+                "minossian": true,
+                "mindflayer": true,
                 "guild": true,
                 "sealsker": true,
                 "vyncan": true,
@@ -1956,9 +2401,12 @@
                 "demon": false
             },
             "targets": {
-                "lists": ["friendly"]
+                "lists": [
+                    "friendly"
+                ]
             }
-        }, {
+        },
+        {
             "name": "giant",
             "color": "FFC0CB",
             "player_default_standing": -9000,
@@ -1969,6 +2417,8 @@
                 "xoltec": true,
                 "witchbane": true,
                 "nogg": true,
+                "shakayana": true,
+                "zamurai": true,
                 "buffloka": true,
                 "zimba": true,
                 "kong": true,
@@ -1984,6 +2434,7 @@
                 "monster": true,
                 "smingol": true,
                 "minossian": true,
+                "mindflayer": true,
                 "guild": true,
                 "sealsker": true,
                 "vyncan": true,
@@ -2004,7 +2455,9 @@
                 "demon": true
             },
             "targets": {
-                "lists": ["friendly"]
+                "lists": [
+                    "friendly"
+                ]
             }
         }
     ]
