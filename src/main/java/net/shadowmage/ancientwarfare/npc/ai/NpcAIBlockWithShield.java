@@ -50,7 +50,7 @@ public class NpcAIBlockWithShield extends NpcAI<NpcBase> {
 	private void init() {
 		target = getAttackTarget().orElse(null);
 		//noinspection ConstantConditions
-		reactionDelayTicks = new Random(target.world.getTotalWorldTime()).nextInt(isAimingWithBow(target) ? maxReactionDelayBow : maxReactionDelay);
+		reactionDelayTicks = new Random(npc.world.getTotalWorldTime()).nextInt(target != null && isAimingWithBow(target) ? maxReactionDelayBow : maxReactionDelay);
 		shieldWithdrawTicks = SHIELD_WITHDRAW_DELAY;
 	}
 
@@ -65,6 +65,12 @@ public class NpcAIBlockWithShield extends NpcAI<NpcBase> {
 
 	@Override
 	public final void updateTask() {
+		if (target == null) {
+			target = getAttackTarget().orElse(null);
+			if (target == null) {
+				return;
+			}
+		}
 		if (reactionDelayTicks > 0) {
 			reactionDelayTicks--;
 			return;
@@ -112,6 +118,9 @@ public class NpcAIBlockWithShield extends NpcAI<NpcBase> {
 	}
 
 	public void onPreDamage(DamageSource source, float damage) {
+		if (source.getImmediateSource() != null && source.getImmediateSource() instanceof EntityLivingBase) {
+			target = (EntityLivingBase) source.getImmediateSource();
+		}
 		if (damage > 0 && !source.isUnblockable() && canExecute(EntityLivingBase::isEntityAlive)) {
 			init();
 			updateTask();

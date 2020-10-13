@@ -488,7 +488,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		if (source.getTrueSource() != null && !canBeAttackedBy(source.getTrueSource())) {
 			return false;
 		}
-		processPreDamageLogic(source, damage);
+		if (!world.isRemote)
+			processPreDamageLogic(source, damage);
 		return super.attackEntityFrom(source, damage);
 	}
 
