@@ -32,7 +32,7 @@ public class NpcAIBlockWithShield extends NpcAI<NpcBase> {
 		if (target == null) {
 			return hasShieldInOffhand() && npc.getShieldDisabledTick() <= 0 && npc.getActiveHand() == EnumHand.OFF_HAND && getAttackTarget().map(defendFrom::test).orElse(false);
 		}
-		return hasShieldInOffhand() && npc.getShieldDisabledTick() <= 0 && target.isEntityAlive() && (shieldWithdrawTicks > 0 || getAttackTarget().map(t -> t.equals(target) && shouldDefendFrom(target)).orElse(false));
+		return hasShieldInOffhand() && npc.getShieldDisabledTick() <= 0 && target.isEntityAlive() && getAttackTarget().isPresent() && (shieldWithdrawTicks > 0 || getAttackTarget().map(t -> t.equals(target) && shouldDefendFrom(target)).orElse(false));
 	}
 
 	private boolean shouldDefendFrom(@Nullable EntityLivingBase e) {
@@ -118,9 +118,6 @@ public class NpcAIBlockWithShield extends NpcAI<NpcBase> {
 	}
 
 	public void onPreDamage(DamageSource source, float damage) {
-		if (source.getImmediateSource() != null && source.getImmediateSource() instanceof EntityLivingBase) {
-			target = (EntityLivingBase) source.getImmediateSource();
-		}
 		if (damage > 0 && !source.isUnblockable() && canExecute(EntityLivingBase::isEntityAlive)) {
 			init();
 			updateTask();
