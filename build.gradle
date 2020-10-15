@@ -142,6 +142,7 @@ publishing {
         }
     }
     publications {
+        artifactId 'ancientwarfare2'
         gpr(MavenPublication) {
             from(components.java)
         }
@@ -154,4 +155,3 @@ sonarqube {
         property "sonar.projectKey", "ancientwarfare"
     }
 }
- 
