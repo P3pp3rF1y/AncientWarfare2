@@ -21,7 +21,7 @@ jobs:
       run: |
         ./gradlew clean
         ./gradlew setupCIWorkspace
-        ./gradlew build
+        ./gradlew build -Dhttp.socketTimeout=60000 -Dhttp.connectionTimeout=60000
     - name: Publish to Github Packages
       env:
         GPR_USER: ${{ secrets.GPR_USER }}
