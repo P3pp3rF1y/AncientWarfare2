@@ -142,9 +142,10 @@ publishing {
         }
     }
     publications {
-        artifactId = 'ancientwarfare2'
-        gpr(MavenPublication) {
-            from(components.java)
+        maven(MavenPublication) {
+            artifactId 'ancientwarfare2'
+
+            from components.java
         }
     }
 }
