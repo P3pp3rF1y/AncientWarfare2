@@ -50,7 +50,7 @@ public class NpcAIBlockWithShield extends NpcAI<NpcBase> {
 	private void init() {
 		target = getAttackTarget().orElse(null);
 		//noinspection ConstantConditions
-		reactionDelayTicks = new Random(npc.world.getTotalWorldTime()).nextInt(target != null && isAimingWithBow(target) ? maxReactionDelayBow : maxReactionDelay);
+		reactionDelayTicks = new Random(target.world.getTotalWorldTime()).nextInt(isAimingWithBow(target) ? maxReactionDelayBow : maxReactionDelay);
 		shieldWithdrawTicks = SHIELD_WITHDRAW_DELAY;
 	}
 
@@ -65,12 +65,6 @@ public class NpcAIBlockWithShield extends NpcAI<NpcBase> {
 
 	@Override
 	public final void updateTask() {
-		if (target == null) {
-			target = getAttackTarget().orElse(null);
-			if (target == null) {
-				return;
-			}
-		}
 		if (reactionDelayTicks > 0) {
 			reactionDelayTicks--;
 			return;
