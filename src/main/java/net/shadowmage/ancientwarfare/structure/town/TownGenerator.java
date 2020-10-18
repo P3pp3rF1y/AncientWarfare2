@@ -30,6 +30,7 @@ public class TownGenerator {
 	public final TownTemplate template;
 	public final World world;
 	public final Random rng;
+	public final PseudoNonRepeatingIntRandom nonRepeatingRng;
 	final StructureBB maximalBounds;
 	final StructureBB exteriorBounds;//maximal, shrunk by borderSize (16 blocks), maximal area encompassing extents of exterior buffer zone
 	final StructureBB wallsBounds;//exterior shrunk by exteriorSize (configurable), maximal area encompassing extents of walls
@@ -48,6 +49,7 @@ public class TownGenerator {
 		this.template = template;
 		long seed = (area.getCenterX() << 16) | area.getCenterZ();
 		rng = new Random(seed);
+		nonRepeatingRng = new PseudoNonRepeatingIntRandom(seed);
 
 		int y1 = area.getSurfaceY() + 1;
 		int y2 = y1 + 20;
@@ -477,4 +479,24 @@ public class TownGenerator {
 		world.setBlockState(pos.down(), Blocks.COBBLESTONE.getDefaultState(), 3);
 	}
 
+	//introduced to prevent very common repetition of structures next to each other
+	private static class PseudoNonRepeatingIntRandom extends Random {
+		private int lastInt;
+
+		public PseudoNonRepeatingIntRandom(long seed) {
+			super(seed);
+			lastInt = -1;
+		}
+
+		@Override
+		public int nextInt(int bound) {
+			int ret = super.nextInt(bound);
+			int retries = 0;
+			while (bound > 1 && ret == lastInt && retries++ < 10) {
+				ret = super.nextInt(bound);
+			}
+			lastInt = ret;
+			return ret;
+		}
+	}
 }
