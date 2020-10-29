@@ -14,7 +14,7 @@ public class NpcAIMountVehicle<T extends NpcBase & IVehicleUser> extends NpcAI<T
 
 	@Override
 	public boolean shouldExecute() {
-		return super.shouldExecute() && !npc.isRiding() && npc.canContinueRidingVehicle() && npc.getVehicle().map(Entity::isBeingRidden).orElse(false);
+		return super.shouldExecute() && !npc.isRiding() && npc.canContinueRidingVehicle() && !npc.getVehicle().map(Entity::isBeingRidden).orElse(false);
 	}
 
 	@Override
