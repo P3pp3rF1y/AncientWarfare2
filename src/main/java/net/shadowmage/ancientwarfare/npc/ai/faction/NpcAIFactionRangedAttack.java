@@ -21,7 +21,7 @@ public class NpcAIFactionRangedAttack extends NpcAIAttack<NpcBase> {
 	}
 
 	public <T extends NpcBase & IRangedAttackMob> NpcAIFactionRangedAttack(T npc) {
-		this(npc, 1, (int) Math.pow(npc.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getAttributeValue(), 2), 60);
+		this(npc, 1, (int) Math.pow(npc.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getAttributeValue(), 2), 45);
 	}
 
 	@Override
