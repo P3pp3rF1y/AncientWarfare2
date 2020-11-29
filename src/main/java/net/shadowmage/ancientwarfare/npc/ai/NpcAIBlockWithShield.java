@@ -1,6 +1,8 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
@@ -30,13 +32,24 @@ public class NpcAIBlockWithShield extends NpcAI<NpcBase> {
 
 	private boolean canExecute(Predicate<EntityLivingBase> defendFrom) {
 		if (target == null) {
-			return hasShieldInOffhand() && npc.getShieldDisabledTick() <= 0 && npc.getActiveHand() == EnumHand.OFF_HAND && getAttackTarget().map(defendFrom::test).orElse(false);
+			return hasShieldInOffhand() && npc.getShieldDisabledTick() <= 0 && (shieldWithdrawTicks > 0 || getAttackTarget().map(defendFrom::test).orElse(false));
 		}
 		return hasShieldInOffhand() && npc.getShieldDisabledTick() <= 0 && target.isEntityAlive() && getAttackTarget().isPresent() && (shieldWithdrawTicks > 0 || getAttackTarget().map(t -> t.equals(target) && shouldDefendFrom(target)).orElse(false));
 	}
 
 	private boolean shouldDefendFrom(@Nullable EntityLivingBase e) {
-		return e != null && (e.isSwingInProgress || isAimingWithBow(e));
+		return e != null && isPlayerOrTargetsThisNpc(e) && (e.isSwingInProgress || isAimingWithBow(e));
+	}
+
+	private boolean isPlayerOrTargetsThisNpc(EntityLivingBase e) {
+		if (e instanceof EntityPlayer) {
+			return true;
+		}
+		if (e instanceof EntityLiving) {
+			EntityLiving living = (EntityLiving) e;
+			return living.getAttackTarget() != null && living.getAttackTarget().equals(npc);
+		}
+		return false;
 	}
 
 	@Override
