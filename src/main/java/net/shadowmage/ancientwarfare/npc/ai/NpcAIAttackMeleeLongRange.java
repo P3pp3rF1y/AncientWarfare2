@@ -5,7 +5,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
-import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 import net.shadowmage.ancientwarfare.npc.item.IExtendedReachWeapon;
 
 public class NpcAIAttackMeleeLongRange extends NpcAIAttack<NpcBase> {
@@ -41,7 +40,8 @@ public class NpcAIAttackMeleeLongRange extends NpcAIAttack<NpcBase> {
 		}
 	}
 
-	private int getCoolDown() {
+	@Override
+	protected int getCoolDown() {
 		int entityAttackCooldown = (int) (1.0D / npc.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).getAttributeValue() * 20.0D);
 
 		return entityAttackCooldown > 0 ? entityAttackCooldown : 20;
