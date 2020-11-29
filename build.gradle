@@ -108,9 +108,9 @@ jar {
     }
 }
 
-def getBuildNumber() {
-    if (System.getenv("BUILD_NUMBER") != null) {
-        return System.getenv("BUILD_NUMBER").toString()
+static def getBuildNumber() {
+    if (System.getenv("GITHUB_RUN_NUMBER") != null) {
+        return Integer.valueOf(Integer.parseInt(System.getenv("GITHUB_RUN_NUMBER")) + 830).toString()
     }
     return ""
 }
