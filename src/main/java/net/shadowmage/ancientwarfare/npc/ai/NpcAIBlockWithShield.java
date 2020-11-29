@@ -84,6 +84,7 @@ public class NpcAIBlockWithShield extends NpcAI<NpcBase> {
 		}
 		if (!shouldDefendFrom(target)) {
 			shieldWithdrawTicks--;
+			return;
 		}
 		npc.stopAIControlFlag(ATTACK);
 		npc.setActiveHand(EnumHand.OFF_HAND);
