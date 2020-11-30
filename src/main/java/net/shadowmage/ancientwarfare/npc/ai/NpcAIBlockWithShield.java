@@ -62,8 +62,7 @@ public class NpcAIBlockWithShield extends NpcAI<NpcBase> {
 	@SuppressWarnings("java:S2259")
 	private void init() {
 		target = getAttackTarget().orElse(null);
-		//noinspection ConstantConditions
-		reactionDelayTicks = new Random(target.world.getTotalWorldTime()).nextInt(isAimingWithBow(target) ? maxReactionDelayBow : maxReactionDelay);
+		reactionDelayTicks = new Random(npc.world.getTotalWorldTime()).nextInt(target != null && isAimingWithBow(target) ? maxReactionDelayBow : maxReactionDelay);
 		shieldWithdrawTicks = SHIELD_WITHDRAW_DELAY;
 	}
 
@@ -71,9 +70,7 @@ public class NpcAIBlockWithShield extends NpcAI<NpcBase> {
 	public final void resetTask() {
 		target = null;
 		reactionDelayTicks = 0;
-		shieldWithdrawTicks = 0;
 		npc.startAIControlFlag(ATTACK);
-		npc.stopActiveHand();
 	}
 
 	@Override
@@ -88,14 +85,16 @@ public class NpcAIBlockWithShield extends NpcAI<NpcBase> {
 		}
 		npc.stopAIControlFlag(ATTACK);
 		npc.setActiveHand(EnumHand.OFF_HAND);
-		npc.activeItemStackUseCount = 5; //need to set this because shield block logic checks for more than 5 ticks of shield use
+		npc.activeItemStackUseCount = SHIELD_WITHDRAW_DELAY;
 		npc.getNavigator().clearPath();
 
-		npc.getLookHelper().setLookPositionWithEntity(target, 30.f, 30.f);
-		double distanceToEntity = npc.getDistanceSq(target.posX, target.getEntityBoundingBox().minY, target.posZ);
+		if (target != null) {
+			npc.getLookHelper().setLookPositionWithEntity(target, 30.f, 30.f);
+			double distanceToEntity = npc.getDistanceSq(target.posX, target.getEntityBoundingBox().minY, target.posZ);
 
-		if (!shouldCloseOnTarget(distanceToEntity) || isAimingWithBow(target)) {
-			startBlocking();
+			if (!shouldCloseOnTarget(distanceToEntity) || isAimingWithBow(target)) {
+				startBlocking();
+			}
 		}
 	}
 
