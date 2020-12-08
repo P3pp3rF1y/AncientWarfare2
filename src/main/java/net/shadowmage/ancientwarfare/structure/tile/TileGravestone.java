@@ -7,6 +7,7 @@ import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.tile.IBlockBreakHandler;
 import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.structure.util.LootHelper;
 
@@ -52,6 +53,7 @@ public class TileGravestone extends TileUpdatable implements ISpecialLootContain
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
 		readNBT(compound);
+		markDirty();
 	}
 
 	private void readNBT(NBTTagCompound compound) {
@@ -80,8 +82,8 @@ public class TileGravestone extends TileUpdatable implements ISpecialLootContain
 
 	@Override
 	protected void handleUpdateNBT(NBTTagCompound tag) {
-		super.handleUpdateNBT(tag);
 		readNBT(tag);
+		BlockTools.notifyBlockUpdate(this);
 	}
 
 	public void activate(EntityPlayer player) {
