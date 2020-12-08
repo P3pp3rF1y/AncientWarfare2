@@ -114,6 +114,11 @@ public class BlockBench extends BlockSeat {
 	}
 
 	@Override
+	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+		WoodVariantHelper.getDrops(this, drops, state);
+	}
+
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerClient() {
 		WoodVariantHelper.registerClient(this, propString -> "axis=x,legs=both," + propString);

@@ -37,7 +37,7 @@ public class BlockProtectionFlag extends BlockFlag {
 	public BlockProtectionFlag() {
 		super(Material.WOOD, "protection_flag");
 		setResistance(6000000F);
-		setLightLevel(10 / 15F);
+		setLightLevel(13 / 15F);
 	}
 
 	@Override
@@ -79,7 +79,7 @@ public class BlockProtectionFlag extends BlockFlag {
 
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand) {
-		int maxParticles = worldIn.rand.nextInt(3);
+		int maxParticles = worldIn.rand.nextInt(10);
 		for (int i = 0; i < maxParticles; i++) {
 
 			double d0 = (double) pos.getX() + worldIn.rand.nextFloat();
