@@ -19,6 +19,7 @@ itemGroup.tabs.npc=Ancient Warfare Npcs
 itemGroup.tabs.vehicles=Ancient Warfare Vehicles
 #core
 item.manual.name=Treatise on the Principles of Ruling
+item.manual.tooltip=Ancient Warfare Manual
 item.research_book.name=Research Book
 item.wooden_hammer.name=Wooden Hammer
 item.stone_hammer.name=Stone Hammer
