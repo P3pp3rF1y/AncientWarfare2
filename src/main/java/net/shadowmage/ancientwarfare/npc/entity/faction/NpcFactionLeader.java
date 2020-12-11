@@ -10,11 +10,11 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackMeleeLongRange;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackNearest;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIDoor;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIHurt;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWatchClosest;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionCommander;
+import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionHurt;
 
 public class NpcFactionLeader extends NpcFaction {
 	private NpcAIAttackMeleeLongRange meleeAI = new NpcAIAttackMeleeLongRange(this);
@@ -42,7 +42,7 @@ public class NpcFactionLeader extends NpcFaction {
 		tasks.addTask(102, new NpcAIWander(this));
 		tasks.addTask(103, new NpcAIWatchClosest(this, EntityLiving.class, 8.0F));
 
-		targetTasks.addTask(1, new NpcAIHurt(this));
+		targetTasks.addTask(1, new NpcAIFactionHurt(this, this::isHostileTowards));
 		targetTasks.addTask(2, new NpcAIAttackNearest(this, this::isHostileTowards));
 	}
 

@@ -26,9 +26,9 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackNearest;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIDoor;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIHurt;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
+import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionHurt;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionPriest;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRangedAttack;
 import net.shadowmage.ancientwarfare.npc.entity.NoFriendlyFirePotion;
@@ -57,7 +57,7 @@ public class NpcFactionPriest extends NpcFaction implements IRangedAttackMob {
 		tasks.addTask(102, new NpcAIWander(this));
 		tasks.addTask(103, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
 
-		targetTasks.addTask(1, new NpcAIHurt(this));
+		targetTasks.addTask(1, new NpcAIFactionHurt(this, this::isHostileTowards));
 		targetTasks.addTask(15, new NpcAIAttackNearest(this,
 				entity -> {
 					//noinspection ConstantConditions
