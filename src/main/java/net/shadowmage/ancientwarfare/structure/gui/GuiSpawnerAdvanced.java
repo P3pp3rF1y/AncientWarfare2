@@ -220,6 +220,19 @@ public class GuiSpawnerAdvanced extends GuiContainerBase<ContainerSpawnerAdvance
 		area.addGuiElement(input);
 		totalHeight += 16;
 
+		label = new Label(8, totalHeight, "guistrings.spawner.spawn_y_offest");
+		area.addGuiElement(label);
+		input = new NumberInput(180, totalHeight, 50, getContainer().settings.getSpawnYOffset(), this) {
+			@Override
+			public void onValueUpdated(float value) {
+				getContainer().settings.setSpawnYOffset((int) value);
+			}
+		};
+		input.setIntegerValue();
+		input.setAllowNegative();
+		area.addGuiElement(input);
+		totalHeight += 16;
+
 		label = new Label(8, totalHeight, "guistrings.spawner.spawn_groups");
 		area.addGuiElement(label);
 		totalHeight += 12;
