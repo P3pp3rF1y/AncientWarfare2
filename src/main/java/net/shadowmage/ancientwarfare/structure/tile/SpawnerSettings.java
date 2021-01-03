@@ -46,6 +46,8 @@ import java.util.Random;
 import java.util.Set;
 import java.util.function.Predicate;
 
+import static net.shadowmage.ancientwarfare.npc.event.EventHandler.NO_SPAWN_PREVENTION_TAG;
+
 @SuppressWarnings("SpellCheckingInspection")
 public class SpawnerSettings {
 	private static final String RESPOND_TO_REDSTONE_TAG = "respondToRedstone";
@@ -795,6 +797,7 @@ public class SpawnerSettings {
 				((EntityLiving) e).spawnExplosionParticle();
 			}
 			setDataFromTag(e); //some data needs to be set before spawning entity in the world (like factionName)
+			e.getTags().add(NO_SPAWN_PREVENTION_TAG);
 			world.spawnEntity(e);
 			setDataFromTag(e); //and some data needs to be set after onInitialSpawn fires for entity]
 			if (e instanceof NpcFaction) {
