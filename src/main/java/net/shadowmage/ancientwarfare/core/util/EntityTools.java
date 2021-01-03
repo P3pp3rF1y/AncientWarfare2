@@ -19,6 +19,7 @@ import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -63,16 +64,20 @@ public class EntityTools {
 		return world.getEntitiesWithinAABB(clazz, bb);
 	}
 
-	public static void spawnEntity(World world, ResourceLocation entity, NBTTagCompound entityNBT, BlockPos pos) {
+	public static void spawnEntity(World world, ResourceLocation entity, NBTTagCompound entityNBT, BlockPos pos, String... tags) {
 		Entity e = EntityList.createEntityByIDFromName(entity, world);
-		if (e == null)
+		if (e == null) {
 			return;
+		}
 		e.setLocationAndAngles(pos.getX() + 0.5d, pos.getY(), pos.getZ() + 0.5d, world.rand.nextFloat() * 360, 0);
 		if (e instanceof EntityLiving) {
 			((EntityLiving) e).onInitialSpawn(world.getDifficultyForLocation(e.getPosition()), null);
 			((EntityLiving) e).spawnExplosionParticle();
 		}
 		setDataFromTag(e, entityNBT); //some data needs to be set before spawning entity in the world (like factionName)
+		if (tags.length > 0) {
+			e.getTags().addAll(Arrays.asList(tags));
+		}
 		world.spawnEntity(e);
 		setDataFromTag(e, entityNBT); //and some data needs to be set after onInitialSpawn fires for entity]
 	}

@@ -20,6 +20,8 @@ import net.shadowmage.ancientwarfare.structure.tile.LootSettings;
 
 import javax.annotation.Nullable;
 
+import static net.shadowmage.ancientwarfare.npc.event.EventHandler.NO_SPAWN_PREVENTION_TAG;
+
 public class LootHelper {
 	public static final String FACTION_NAME_TAG = "factionName";
 
@@ -80,7 +82,7 @@ public class LootHelper {
 			}
 			if (lootSettings.getSpawnEntity()) {
 				lootSettings.setSpawnEntity(false);
-				EntityTools.spawnEntity(te.getWorld(), lootSettings.getEntity(), lootSettings.getEntityNBT(), te.getPos().add(getPlayerOffset(te, player)));
+				EntityTools.spawnEntity(te.getWorld(), lootSettings.getEntity(), lootSettings.getEntityNBT(), te.getPos().add(getPlayerOffset(te, player)), NO_SPAWN_PREVENTION_TAG);
 			}
 			if (lootSettings.hasLoot()) {
 				lootSettings.setHasLoot(false);
