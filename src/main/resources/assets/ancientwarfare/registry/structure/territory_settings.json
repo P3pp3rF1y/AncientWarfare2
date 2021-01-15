@@ -12,37 +12,37 @@
             "territory_weight_multiplier": 0.1
         },        
 		"empire": {
-            "max_radius_in_chunks": 24,
+            "max_radius_in_chunks": 30,
             "per_chunk_cluster_value_multiplier": 2.5,
             "territory_weight_multiplier": 2.2
         },        
 		"empirecoastal": {
-            "max_radius_in_chunks": 12,
+            "max_radius_in_chunks": 18,
             "per_chunk_cluster_value_multiplier": 2.5,
             "territory_weight_multiplier": 2.2
         },        
 		"empirecrusader": {
-            "max_radius_in_chunks": 16,
+            "max_radius_in_chunks": 12,
             "per_chunk_cluster_value_multiplier": 2.5,
             "territory_weight_multiplier": 1.2
         },        
 		"nog": {
-            "max_radius_in_chunks": 24,
-            "per_chunk_cluster_value_multiplier": 5.5,
-            "territory_weight_multiplier": 5.2
+            "max_radius_in_chunks": 30,
+            "per_chunk_cluster_value_multiplier": 2.5,
+            "territory_weight_multiplier": 2.2
         },        
 		"nogcoastal": {
-            "max_radius_in_chunks": 12,
+            "max_radius_in_chunks": 18,
             "per_chunk_cluster_value_multiplier": 2.5,
             "territory_weight_multiplier": 2.2
         },        
 		"norska": {
-            "max_radius_in_chunks": 24,
+            "max_radius_in_chunks": 30,
             "per_chunk_cluster_value_multiplier": 2.5,
             "territory_weight_multiplier": 2.2
         },        
 		"norskacoastal": {
-            "max_radius_in_chunks": 12,
+            "max_radius_in_chunks": 18,
             "per_chunk_cluster_value_multiplier": 2.5,
             "territory_weight_multiplier": 2.2
         },        
@@ -57,22 +57,22 @@
             "territory_weight_multiplier": 2.2
         },        
 		"shakayana": {
-            "max_radius_in_chunks": 16,
+            "max_radius_in_chunks": 24,
             "per_chunk_cluster_value_multiplier": 2.5,
             "territory_weight_multiplier": 2.2
         },        
 		"shakayanacoastal": {
-            "max_radius_in_chunks": 10,
+            "max_radius_in_chunks": 12,
             "per_chunk_cluster_value_multiplier": 2.5,
             "territory_weight_multiplier": 2.2
         },        
 		"zamurai": {
-            "max_radius_in_chunks": 16,
+            "max_radius_in_chunks": 24,
             "per_chunk_cluster_value_multiplier": 2.5,
             "territory_weight_multiplier": 2.2
         },        
 		"zamuraicoastal": {
-            "max_radius_in_chunks": 10,
+            "max_radius_in_chunks": 12,
             "per_chunk_cluster_value_multiplier": 2.5,
             "territory_weight_multiplier": 2.2
         },        
@@ -86,18 +86,23 @@
             "per_chunk_cluster_value_multiplier": 2.5,
             "territory_weight_multiplier": 2.2
         },        
+		"zimba": {
+            "max_radius_in_chunks": 24,
+            "per_chunk_cluster_value_multiplier": 2.5,
+            "territory_weight_multiplier": 2.2
+        },        
 		"buffloka": {
             "max_radius_in_chunks": 16,
             "per_chunk_cluster_value_multiplier": 2.5,
             "territory_weight_multiplier": 2.2
         },        
 		"bufflokaforest": {
-            "max_radius_in_chunks": 12,
+            "max_radius_in_chunks": 16,
             "per_chunk_cluster_value_multiplier": 1.5,
             "territory_weight_multiplier": 1.2
         },        
 		"barbarian": {
-            "max_radius_in_chunks": 16,
+            "max_radius_in_chunks": 24,
             "per_chunk_cluster_value_multiplier": 2.5,
             "territory_weight_multiplier": 2.2
         },        
@@ -177,16 +182,16 @@
             "territory_weight_multiplier": 2.2
         },        
 		"minossian": {
-            "max_radius_in_chunks": 12,
-            "per_chunk_cluster_value_multiplier": 2.5,
-            "territory_weight_multiplier": 2.2
+            "max_radius_in_chunks": 24,
+            "per_chunk_cluster_value_multiplier": 3.5,
+            "territory_weight_multiplier": 3.2
         },        
 		"kong": {
             "max_radius_in_chunks": 16,
             "per_chunk_cluster_value_multiplier": 2.5,
             "territory_weight_multiplier": 2.2
         },        
-		"pirate": {
+		"piratecoastal": {
             "max_radius_in_chunks": 10,
             "per_chunk_cluster_value_multiplier": 1.5,
             "territory_weight_multiplier": 1.2
@@ -217,7 +222,7 @@
             "territory_weight_multiplier": 1.2
         },        
 		"ruins": {
-            "max_radius_in_chunks": 10,
+            "max_radius_in_chunks": 16,
             "per_chunk_cluster_value_multiplier": 1.5,
             "territory_weight_multiplier": 1.2
         },        
@@ -227,12 +232,12 @@
             "territory_weight_multiplier": 1.2
         },        
 		"swampruins": {
-            "max_radius_in_chunks": 10,
+            "max_radius_in_chunks": 16,
             "per_chunk_cluster_value_multiplier": 1.5,
             "territory_weight_multiplier": 1.2
         },        
 		"beachruins": {
-            "max_radius_in_chunks": 8,
+            "max_radius_in_chunks": 10,
             "per_chunk_cluster_value_multiplier": 1.5,
             "territory_weight_multiplier": 1.2
         },        
@@ -261,8 +266,8 @@
             "per_chunk_cluster_value_multiplier": 2.5,
             "territory_weight_multiplier": 1.2
         },        
-		"lizardmen": {
-            "max_radius_in_chunks": 16,
+		"jungleruins": {
+            "max_radius_in_chunks": 24,
             "per_chunk_cluster_value_multiplier": 2.5,
             "territory_weight_multiplier": 2.2
         },        
@@ -292,8 +297,8 @@
             "territory_weight_multiplier": 0.2
         },        
 		"oceanopen": {
-            "max_radius_in_chunks": 32,
-            "per_chunk_cluster_value_multiplier": 2.5,
+            "max_radius_in_chunks": 40,
+            "per_chunk_cluster_value_multiplier": 3.5,
             "territory_weight_multiplier": 3.5
         },        
 		"oceancold": {
@@ -322,7 +327,7 @@
             "territory_weight_multiplier": 0.1
         },        
 		"oceanrockspires": {
-            "max_radius_in_chunks": 24,
+            "max_radius_in_chunks": 32,
             "per_chunk_cluster_value_multiplier": 0.5,
             "territory_weight_multiplier": 0.1
         },        
