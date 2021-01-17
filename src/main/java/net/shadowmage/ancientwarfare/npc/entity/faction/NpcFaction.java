@@ -198,8 +198,12 @@ public abstract class NpcFaction extends NpcBase {
 			npcDefault.applyEquipment(this);
 		}
 
-		// makes faction NPCs drop all their items otherwise use the default vanilla drop rate
-		if (!AWNPCStatics.vanillaEquipmentDropRate) {
+		if (AWNPCStatics.vanillaEquipmentDropRate) {
+			// necessary to reset this to the default values as many old structures had NPCs scanned with 1.0f drop rates
+			inventoryArmorDropChances = new float[] {0.085f, 0.085f, 0.085f, 0.085f};
+			inventoryHandsDropChances = new float[] {0.085f, 0.085f};
+		} else {
+			// makes faction NPCs drop all their items otherwise use the default vanilla drop rate
 			inventoryArmorDropChances = new float[] {1.f, 1.f, 1.f, 1.f};
 			inventoryHandsDropChances = new float[] {1.f, 1.f};
 		}
