@@ -13,6 +13,9 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.scoreboard.Team;
@@ -62,9 +65,7 @@ public abstract class NpcFaction extends NpcBase {
 	private static final int REVENGE_LIST_VALIDATION_TICKS = DEATH_REVENGE_TICKS / 100;
 	private static final double REVENGE_SET_RANGE = 50D;
 	private static final String HEIGHT_TAG = "height";
-	private final SoundEvent attackSound;
-	private final SoundEvent deathSound;
-	private final SoundEvent hurtSound;
+	private static final DataParameter<String> SOUND = EntityDataManager.createKey(NpcFaction.class, DataSerializers.STRING);
 
 	protected String factionName;
 	private Map<String, Long> revengePlayers = new HashMap<>();
@@ -72,18 +73,18 @@ public abstract class NpcFaction extends NpcBase {
 	public NpcFaction(World world) {
 		super(world);
 		addAI();
-		attackSound = getSoundEventFromAttributes("_attack");
-		deathSound = getSoundEventFromAttributes("_death");
-		hurtSound = getSoundEventFromAttributes("_hurt");
 	}
 
 	public NpcFaction(World world, String factionName) {
 		super(world);
 		setFactionNameAndDefaults(factionName);
 		addAI();
-		attackSound = getSoundEventFromAttributes("_attack");
-		deathSound = getSoundEventFromAttributes("_death");
-		hurtSound = getSoundEventFromAttributes("_hurt");
+	}
+
+	@Override
+	protected void entityInit() {
+		super.entityInit();
+		dataManager.register(SOUND, "none");
 	}
 
 	private final Map<IAdditionalAttribute<?>, Object> additionalAttributes = new HashMap<>();
@@ -224,6 +225,8 @@ public abstract class NpcFaction extends NpcBase {
 		npcDefault.applyAdditionalAttributes(this);
 		experienceValue = npcDefault.getExperienceDrop();
 		npcDefault.applyPathSettings((PathNavigateGround) getNavigator());
+		String sound = getAdditionalAttributeValue(AdditionalAttributes.ENTITY_SOUND).isPresent() ? getAdditionalAttributeValue(AdditionalAttributes.ENTITY_SOUND).get() : "none";
+		setSound(sound);
 	}
 
 	@Override
@@ -300,34 +303,28 @@ public abstract class NpcFaction extends NpcBase {
 
 	}
 
-	private SoundEvent getSoundEventFromAttributes(String suffix) {
-		if (getAdditionalAttributeValue(AdditionalAttributes.ENTITY_SOUND).isPresent()) {
-			String sound = getAdditionalAttributeValue(AdditionalAttributes.ENTITY_SOUND).get() + suffix;
-			if (AWNPCSounds.isValidSound(sound)) {
-				return AWNPCSounds.getSoundEventFromString(sound);
-			}
-		}
-		if (suffix.equals("_death")) {
-			return SoundEvents.ENTITY_GENERIC_DEATH;
-		} else {
-			return SoundEvents.ENTITY_GENERIC_HURT;
-		}
+	private String getSound() {
+		return dataManager.get(SOUND);
+	}
+
+	public void setSound(String sound) {
+		dataManager.set(SOUND, sound);
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-		return hurtSound;
+		return getSound().equals("none") ? SoundEvents.ENTITY_GENERIC_HURT : AWNPCSounds.getSoundEventFromString(getSound() + "_hurt");
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return deathSound;
+		return getSound().equals("none") ? SoundEvents.ENTITY_GENERIC_DEATH : AWNPCSounds.getSoundEventFromString(getSound() + "_death");
 	}
 
 	private void playAttackSound() {
 		// don't play any sound if there is no specific attack sound
-		if (attackSound != SoundEvents.ENTITY_GENERIC_HURT) {
-			playSound(attackSound, 1.0F, 1.2F / (rand.nextFloat() * 0.2F + 0.9F));
+		if (!getSound().equals("none")) {
+			playSound(AWNPCSounds.getSoundEventFromString(getSound() + "_attack"), 1.0F, 1.2F / (rand.nextFloat() * 0.2F + 0.9F));
 		}
 	}
 
