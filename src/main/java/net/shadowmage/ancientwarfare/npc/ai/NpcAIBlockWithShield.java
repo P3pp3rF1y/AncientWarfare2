@@ -38,7 +38,7 @@ public class NpcAIBlockWithShield extends NpcAI<NpcBase> {
 	}
 
 	private boolean shouldDefendFrom(@Nullable EntityLivingBase e) {
-		return e != null && isPlayerOrTargetsThisNpc(e) && (e.isSwingInProgress || isAimingWithBow(e));
+		return e != null && isPlayerOrTargetsThisNpc(e) && ((e.isSwingInProgress && npc.getDistance(e) < 4 ) || isAimingWithBow(e));
 	}
 
 	private boolean isPlayerOrTargetsThisNpc(EntityLivingBase e) {
@@ -94,6 +94,7 @@ public class NpcAIBlockWithShield extends NpcAI<NpcBase> {
 
 			if (!shouldCloseOnTarget(distanceToEntity) || isAimingWithBow(target)) {
 				startBlocking();
+				npc.getNavigator().tryMoveToXYZ(target.posX, target.posY, target.posZ, npc.getDefaultMoveSpeed() * 0.5f);
 			}
 		}
 	}
