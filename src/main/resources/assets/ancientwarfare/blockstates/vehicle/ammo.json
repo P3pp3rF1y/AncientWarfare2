@@ -118,22 +118,22 @@
             },
             "ammo_cluster_shot_10": {
                 "textures": {
-                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_cluster"
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_cluster_10"
                 }
             },
             "ammo_cluster_shot_15": {
                 "textures": {
-                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_cluster"
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_cluster_15"
                 }
             },
             "ammo_cluster_shot_30": {
                 "textures": {
-                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_cluster"
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_cluster_30"
                 }
             },
             "ammo_cluster_shot_45": {
                 "textures": {
-                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_cluster"
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_cluster_45"
                 }
             },
             "ammo_pebble_shot_10": {
