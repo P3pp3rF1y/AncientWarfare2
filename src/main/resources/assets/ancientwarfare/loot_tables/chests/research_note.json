@@ -163,18 +163,6 @@
                 {
                     "type": "item",
                     "name": "ancientwarfare:research_note",
-                    "entryName": "flight",
-                    "weight": 5,
-                    "functions": [
-                        {
-                            "function": "set_nbt",
-                            "tag": "{researchName:\"flight\"}"
-                        }
-                    ]
-                },
-                {
-                    "type": "item",
-                    "name": "ancientwarfare:research_note",
                     "entryName": "gunpowder",
                     "weight": 5,
                     "functions": [
