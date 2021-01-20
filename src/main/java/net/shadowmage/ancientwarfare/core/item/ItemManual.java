@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.core.item;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -47,7 +48,7 @@ public class ItemManual extends ItemBaseCore {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		tooltip.add("item.manual.tooltip");
+		tooltip.add(I18n.format("item.manual.tooltip"));
 	}
 
 	@SubscribeEvent
