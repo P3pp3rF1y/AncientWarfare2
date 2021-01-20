@@ -20,7 +20,9 @@ public class AWNPCStatics extends ModConfiguration {
 	public static boolean persistOrdersOnDeath = true;
 
 	/* ********************************************SERVER SETTINGS************************************************ */
-	public static int maxNpcLevel = 10;
+	public static int maxNpcLevel = 10; // Deprecated
+	public static int maxNpcWorkerLevel = 10;
+	public static int maxNpcCombatLevel = 10;
 	public static int npcXpFromWork = 1;
 	public static int npcXpFromTrade = 1;
 	public static int npcXpFromAttack = 1;
@@ -77,7 +79,11 @@ public class AWNPCStatics extends ModConfiguration {
 	public void initializeValues() {
 		loadFoodValues();
 
-		maxNpcLevel = config.get(serverOptions, "npc_max_level", maxNpcLevel, "Max NPC Level\nDefault=" + maxNpcLevel + "\n" + "How high can NPCs level up?  Npcs gain more health, attack damage, and overall\n" + "improved stats with each level.  Levels can go very high, but higher values may\n" + "result in overpowered NPCs once leveled up.").getInt();
+		maxNpcLevel = config.get(serverOptions, "npc_max_level", maxNpcLevel, "[DEPRECATED] Max NPC Level\nDefault=" + maxNpcLevel + "\n" + "How high can NPCs level up?  Npcs gain more health, attack damage, and overall\n" + "improved stats with each level.  Levels can go very high, but higher values may\n" + "result in overpowered NPCs once leveled up.").getInt();
+
+		maxNpcWorkerLevel = config.get(serverOptions, "npc_worker_max_level", maxNpcWorkerLevel, "Max Worker NPC Level\nDefault=" + maxNpcWorkerLevel + "\n" + "How high Worker can NPCs level up?  Npcs gain more health and overall\n" + "improved stats with each level.  Levels can go very high, but higher values may\n" + "result in overpowered NPCs once leveled up.").getInt();
+
+		maxNpcCombatLevel = config.get(serverOptions, "npc_combat_max_level", maxNpcCombatLevel, "Max Combat NPC Level\nDefault=" + maxNpcCombatLevel + "\n" + "How high Combat can NPCs level up?  Npcs gain more health, attack damage, and overall\n" + "improved stats with each level.  Levels can go very high, but higher values may\n" + "result in overpowered NPCs once leveled up.").getInt();
 
 		npcXpFromAttack = config.get(serverOptions, "npc_xp_per_attack", npcXpFromAttack, "XP Per Attack\nDefault=" + npcXpFromAttack + "\n" + "How much xp should an NPC gain each time they damage but do not kill an enemy?\n" + "Higher values will result in faster npc leveling.\n" + "Applies to both player-owned and faction-based NPCs.").getInt();
 
