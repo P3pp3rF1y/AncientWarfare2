@@ -119,5 +119,1670 @@
                 "stream": false
             }
         ]
+    },
+    "barbarian_drums_cautious": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/barbarian_drums_cautious",
+                "stream": true
+            }
+        ]
+    },
+    "barbarian_drums_distant": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/barbarian_drums_distant",
+                "stream": true
+            }
+        ]
+    },
+    "barbarian_drums_slow_short": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/barbarian_drums_slow_short",
+                "stream": true
+            }
+        ]
+    },
+    "barbarian_drums_warning": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/barbarian_drums_warning",
+                "stream": true
+            }
+        ]
+    },
+    "barracks_ambiance": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/barracks_ambiance",
+                "stream": true
+            }
+        ]
+    },
+    "clock_grandfather_chimes": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/clock_grandfather_chimes",
+                "stream": true
+            }
+        ]
+    },
+    "creepy_chittering": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/creepy_chittering",
+                "stream": true
+            }
+        ]
+    },
+    "creepy_crypt_voice_1": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/creepy_crypt_voice_1",
+                "stream": false
+            }
+        ]
+    },
+    "creepy_crypt_voice_2": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/creepy_crypt_voice_2",
+                "stream": false
+            }
+        ]
+    },
+    "creepy_crypt_voice_4": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/creepy_crypt_voice_4",
+                "stream": false
+            }
+        ]
+    },
+    "creepy_droning_1": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/creepy_droning_1",
+                "stream": true
+            }
+        ]
+    },
+    "creepy_droning_2": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/creepy_droning_2",
+                "stream": true
+            }
+        ]
+    },
+    "creepy_evil_girl": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/creepy_evil_girl",
+                "stream": false
+            }
+        ]
+    },
+    "creepy_ghostly_breath": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/creepy_ghostly_breath",
+                "stream": false
+            }
+        ]
+    },
+    "creepy_ghostly_whisper": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/creepy_ghostly_whisper",
+                "stream": false
+            }
+        ]
+    },
+    "creepy_knock_knock": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/creepy_knock_knock",
+                "stream": true
+            }
+        ]
+    },
+    "creepy_spooky_ravens": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/creepy_spooky_ravens",
+                "stream": false
+            }
+        ]
+    },
+    "cthulhu": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/cthulhu",
+                "stream": true
+            }
+        ]
+    },
+    "cthulhu_background_1": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/cthulhu_background_1",
+                "stream": true
+            }
+        ]
+    },
+    "cthulhu_background_2": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/cthulhu_background_2",
+                "stream": true
+            }
+        ]
+    },
+    "cthulhu_background_3": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/cthulhu_background_3",
+                "stream": true
+            }
+        ]
+    },
+    "del_cashinhand": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/del_cashinhand",
+                "stream": false
+            }
+        ]
+    },
+    "del_cowboy": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/del_cowboy",
+                "stream": false
+            }
+        ]
+    },
+    "del_dontbeaplonker": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/del_dontbeaplonker",
+                "stream": false
+            }
+        ]
+    },
+    "del_dozytwonk": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/del_dozytwonk",
+                "stream": false
+            }
+        ]
+    },
+    "del_gonnabecushty": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/del_gonnabecushty",
+                "stream": false
+            }
+        ]
+    },
+    "del_keepyourmitsoff": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/del_keepyourmitsoff",
+                "stream": false
+            }
+        ]
+    },
+    "del_millionares": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/del_millionares",
+                "stream": false
+            }
+        ]
+    },
+    "del_moneyforoldrope": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/del_moneyforoldrope",
+                "stream": false
+            }
+        ]
+    },
+    "del_ohshutupyoutart": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/del_ohshutupyoutart",
+                "stream": false
+            }
+        ]
+    },
+    "del_packitin": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/del_packitin",
+                "stream": false
+            }
+        ]
+    },
+    "del_plonker": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/del_plonker",
+                "stream": false
+            }
+        ]
+    },
+    "del_youdipstick": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/del_youdipstick",
+                "stream": false
+            }
+        ]
+    },
+    "del_youpranny": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/del_youpranny",
+                "stream": false
+            }
+        ]
+    },
+    "empire_church_bell": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/empire_church_bell",
+                "stream": false
+            }
+        ]
+    },
+    "witchbane_church_entry": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/witchbane_church_entry",
+                "stream": false
+            }
+        ]
+    },
+    "witchbane_nuns_chant": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/witchbane_nuns_chant",
+                "stream": false
+            }
+        ]
+    },
+    "evil_ambience_1": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/evil_ambience_1",
+                "stream": true
+            }
+        ]
+    },
+    "evil_ambience_2": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/evil_ambience_2",
+                "stream": true
+            }
+        ]
+    },
+    "evil_dark_prayer": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/evil_dark_prayer",
+                "stream": true
+            }
+        ]
+    },
+    "evil_demonichaunting1": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/evil_demonichaunting1",
+                "stream": true
+            }
+        ]
+    },
+    "evil_demonichaunting2": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/evil_demonichaunting2",
+                "stream": true
+            }
+        ]
+    },
+    "evil_demonichaunting3": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/evil_demonichaunting3",
+                "stream": true
+            }
+        ]
+    },
+    "evil_demonichaunting4": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/evil_demonichaunting4",
+                "stream": false
+            }
+        ]
+    },
+    "evil_getout": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/evil_getout",
+                "stream": false
+            }
+        ]
+    },
+    "gong_large": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/gong_large",
+                "stream": true
+            }
+        ]
+    },
+    "gongs_1": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/gongs_1",
+                "stream": false
+            }
+        ]
+    },
+    "gongs_2": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/gongs_2",
+                "stream": false
+            }
+        ]
+    },
+    "gongs_3": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/gongs_3",
+                "stream": false
+            }
+        ]
+    },
+    "gongs_4": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/gongs_4",
+                "stream": false
+            }
+        ]
+    },
+    "gongs_5": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/gongs_5",
+                "stream": true
+            }
+        ]
+    },
+    "gongs_6": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/gongs_6",
+                "stream": false
+            }
+        ]
+    },
+    "grindstone_generic": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/grindstone_generic",
+                "stream": true
+            }
+        ]
+    },
+    "guardians_church_choir": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/guardians_church_choir",
+                "stream": true
+            }
+        ]
+    },
+    "haunted_graveyard": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/haunted_graveyard",
+                "stream": false
+            }
+        ]
+    },
+    "haunted_graveyard_entry_ambience": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/haunted_graveyard_entry_ambience",
+                "stream": true
+            }
+        ]
+    },
+    "haunted_graveyard_tree_rustling_leaves": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/haunted_graveyard_tree_rustling_leaves",
+                "stream": true
+            }
+        ]
+    },
+    "haunted_graveyard_wind_in_trees_01": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/haunted_graveyard_wind_in_trees_01",
+                "stream": false
+            }
+        ]
+    },
+    "haunted_graveyard_wind_in_trees_02": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/haunted_graveyard_wind_in_trees_02",
+                "stream": false
+            }
+        ]
+    },
+    "haunted_graveyard_wind_in_trees_03": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/haunted_graveyard_wind_in_trees_03",
+                "stream": false
+            }
+        ]
+    },
+    "haunted_graveyard_wind_in_trees_04": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/haunted_graveyard_wind_in_trees_04",
+                "stream": false
+            }
+        ]
+    },
+    "horn_1": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/horn_1",
+                "stream": false
+            }
+        ]
+    },
+    "horn_3": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/horn_3",
+                "stream": false
+            }
+        ]
+    },
+    "horn_5": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/horn_5",
+                "stream": true
+            }
+        ]
+    },
+    "horn_6": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/horn_6",
+                "stream": false
+            }
+        ]
+    },
+    "horn_7": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/horn_7",
+                "stream": true
+            }
+        ]
+    },
+    "horn_8": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/horn_8",
+                "stream": true
+            }
+        ]
+    },
+    "jungle_drums_1": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/jungle_drums_1",
+                "stream": true
+            }
+        ]
+    },
+    "jungle_drums_2": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/jungle_drums_2",
+                "stream": false
+            }
+        ]
+    },
+    "location_sigh_1": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/location_sigh_1",
+                "stream": false
+            }
+        ]
+    },
+    "magical_appearance": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/magical_appearance",
+                "stream": false
+            }
+        ]
+    },
+    "market_generic_2": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/market_generic_2",
+                "stream": true
+            }
+        ]
+    },
+    "myth_boldpredictions": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/myth_boldpredictions",
+                "stream": true
+            }
+        ]
+    },
+    "myth_pithhelmet": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/myth_pithhelmet",
+                "stream": true
+            }
+        ]
+    },
+    "mythbusters_eyebrow": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/mythbusters_eyebrow",
+                "stream": false
+            }
+        ]
+    },
+    "mythbusters_quack": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/mythbusters_quack",
+                "stream": false
+            }
+        ]
+    },
+    "mythbusters_theresyourproblem": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/mythbusters_theresyourproblem",
+                "stream": false
+            }
+        ]
+    },
+    "nogg_church_bells": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/nogg_church_bells",
+                "stream": true
+            }
+        ]
+    },
+    "nogg_clock_tower": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/nogg_clock_tower",
+                "stream": true
+            }
+        ]
+    },
+    "pirate_pugwash": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/pirate_pugwash",
+                "stream": true
+            }
+        ]
+    },
+    "religious_church_bells_12": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/religious_church_bells_12",
+                "stream": true
+            }
+        ]
+    },
+    "sarkonid_music": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/sarkonid_music",
+                "stream": true
+            }
+        ]
+    },
+    "undead_spooky": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/undead_spooky",
+                "stream": true
+            }
+        ]
+    },
+    "undead_whispering_voices": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/undead_whispering_voices",
+                "stream": false
+            }
+        ]
+    },
+    "undead_ambience": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/undead_ambience",
+                "stream": true
+            }
+        ]
+    },
+    "undead_haunting": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/undead_haunting",
+                "stream": false
+            }
+        ]
+    },
+    "undead_vampire_evil_laugh": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/undead_vampire_evil_laugh",
+                "stream": false
+            }
+        ]
+    },
+    "vampire_castle_organ_short": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/vampire_castle_organ_short",
+                "stream": true
+            }
+        ]
+    },
+    "vampire_organmusic": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/vampire_organmusic",
+                "stream": true
+            }
+        ]
+    },
+    "vampire_watcher": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/vampire_watcher",
+                "stream": false
+            }
+        ]
+    },
+    "vampire_crypt": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/vampire_crypt",
+                "stream": true
+            }
+        ]
+    },
+    "vampire_ghostly_voices": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/vampire_ghostly_voices",
+                "stream": true
+            }
+        ]
+    },
+    "vampire_whispers": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/vampire_whispers",
+                "stream": false
+            }
+        ]
+    },
+    "market_generic": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/market_generic",
+                "stream": true
+            }
+        ]
+    },
+    "village_carpenter_1": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/village_carpenter_1",
+                "stream": false
+            }
+        ]
+    },
+    "village_carpenter_2": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/village_carpenter_2",
+                "stream": false
+            }
+        ]
+    },
+    "village_carpenter_3": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/village_carpenter_3",
+                "stream": true
+            }
+        ]
+    },
+    "village_carpenter_4": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/village_carpenter_4",
+                "stream": false
+            }
+        ]
+    },
+    "village_carpenter_5": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/village_carpenter_5",
+                "stream": false
+            }
+        ]
+    },
+    "village_farm_ambience_3": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/village_farm_ambience_3",
+                "stream": true
+            }
+        ]
+    },
+    "village_general_ambience_1": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/village_general_ambience_1",
+                "stream": true
+            }
+        ]
+    },
+    "village_general_ambience_3": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/village_general_ambience_3",
+                "stream": true
+            }
+        ]
+    },
+    "village_lumberjack_1": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/village_lumberjack_1",
+                "stream": false
+            }
+        ]
+    },
+    "village_lumberjack_2": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/village_lumberjack_2",
+                "stream": false
+            }
+        ]
+    },
+    "village_market_general_background_1": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/village_market_general_background_1",
+                "stream": true
+            }
+        ]
+    },
+    "village_pigeons_1": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/village_pigeons_1",
+                "stream": false
+            }
+        ]
+    },
+    "village_pigeons_2": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/village_pigeons_2",
+                "stream": true
+            }
+        ]
+    },
+    "village_pigeons_3": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/village_pigeons_3",
+                "stream": false
+            }
+        ]
+    },
+    "village_tavern_ambient_loop": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/village_tavern_ambient_loop",
+                "stream": true
+            }
+        ]
+    },
+    "village_water_mill_wheel_turning": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/village_water_mill_wheel_turning",
+                "stream": true
+            }
+        ]
+    },
+    "village_weavers_loom": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/village_weavers_loom",
+                "stream": true
+            }
+        ]
+    },
+    "village_well_crank": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/village_well_crank",
+                "stream": false
+            }
+        ]
+    },
+    "village_windmill": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/village_windmill",
+                "stream": true
+            }
+        ]
+    },
+    "village_windmill_interior": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/village_windmill_interior",
+                "stream": true
+            }
+        ]
+    },
+    "village_windmill_sails_turning_1": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/village_windmill_sails_turning_1",
+                "stream": true
+            }
+        ]
+    },
+    "village_windmill_sails_turning_2": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/village_windmill_sails_turning_2",
+                "stream": false
+            }
+        ]
+    },
+    "volcano": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/volcano",
+                "stream": false
+            }
+        ]
+    },
+    "volcano_10": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/volcano_10",
+                "stream": false
+            }
+        ]
+    },
+    "volcano_2": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/volcano_2",
+                "stream": true
+            }
+        ]
+    },
+    "volcano_3": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/volcano_3",
+                "stream": true
+            }
+        ]
+    },
+    "volcano_4": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/volcano_4",
+                "stream": true
+            }
+        ]
+    },
+    "volcano_5": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/volcano_5",
+                "stream": true
+            }
+        ]
+    },
+    "volcano_6": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/volcano_6",
+                "stream": true
+            }
+        ]
+    },
+    "volcano_7": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/volcano_7",
+                "stream": true
+            }
+        ]
+    },
+    "volcano_8": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/volcano_8",
+                "stream": true
+            }
+        ]
+    },
+    "volcano_9": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/volcano_9",
+                "stream": false
+            }
+        ]
+    },
+    "volcano_erupts_1": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/volcano_erupts_1",
+                "stream": true
+            }
+        ]
+    },
+    "volcano_erupts_2": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/volcano_erupts_2",
+                "stream": true
+            }
+        ]
+    },
+    "volcano_erupts_3": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/volcano_erupts_3",
+                "stream": false
+            }
+        ]
+    },
+    "volcano_erupts_4": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/volcano_erupts_4",
+                "stream": false
+            }
+        ]
+    },
+    "volcano_explosion": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/volcano_explosion",
+                "stream": false
+            }
+        ]
+    },
+    "volcano_rumble": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/volcano_rumble",
+                "stream": false
+            }
+        ]
+    },
+    "volcano_1": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/volcano_1",
+                "stream": true
+            }
+        ]
+    },
+    "witch_house_1": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/witch_house_1",
+                "stream": true
+            }
+        ]
+    },
+    "witch_house_2_cackle": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/witch_house_2_cackle",
+                "stream": false
+            }
+        ]
+    },
+    "witch_house_2_hungry": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/witch_house_2_hungry",
+                "stream": false
+            }
+        ]
+    },
+    "witch_house_2_laugh_1": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/witch_house_2_laugh_1",
+                "stream": false
+            }
+        ]
+    },
+    "witch_house_2_oooh": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/witch_house_2_oooh",
+                "stream": false
+            }
+        ]
+    },
+    "witch_house_3": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/witch_house_3",
+                "stream": true
+            }
+        ]
+    },
+    "witch_house_4": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/witch_house_4",
+                "stream": true
+            }
+        ]
+    },
+    "witch_house_5_1": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/witch_house_5_1",
+                "stream": true
+            }
+        ]
+    },
+    "witch_house_5_2": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/witch_house_5_2",
+                "stream": true
+            }
+        ]
+    },
+    "witch_house_5_3": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/witch_house_5_3",
+                "stream": true
+            }
+        ]
+    },
+    "witch_house_bubbling_cauldron_1": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/witch_house_bubbling_cauldron_1",
+                "stream": false
+            }
+        ]
+    },
+    "witch_house_bubbling_cauldron_2": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/witch_house_bubbling_cauldron_2",
+                "stream": false
+            }
+        ]
+    },
+    "witch_house_bubbling_cauldron_3": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/witch_house_bubbling_cauldron_3",
+                "stream": false
+            }
+        ]
+    },
+    "witch_house_bubbling_cauldron_4": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/witch_house_bubbling_cauldron_4",
+                "stream": true
+            }
+        ]
+    },
+    "witch_house_bugs": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/witch_house_bugs",
+                "stream": true
+            }
+        ]
+    },
+    "witch_house_cat_screeching": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/witch_house_cat_screeching",
+                "stream": false
+            }
+        ]
+    },
+    "witch_house_crow_1": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/witch_house_crow_1",
+                "stream": false
+            }
+        ]
+    },
+    "witch_house_crow_2": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/witch_house_crow_2",
+                "stream": false
+            }
+        ]
+    },
+    "witch_house_mad_laugh": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/witch_house_mad_laugh",
+                "stream": false
+            }
+        ]
+    },
+    "witch_house_rats_squeak_1": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/witch_house_rats_squeak_1",
+                "stream": false
+            }
+        ]
+    },
+    "witch_house_rats_squeak_2": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/witch_house_rats_squeak_2",
+                "stream": false
+            }
+        ]
+    },
+    "witch_house_rats_squeak_3": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/witch_house_rats_squeak_3",
+                "stream": false
+            }
+        ]
+    },
+    "witch_house_toad_1": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/witch_house_toad_1",
+                "stream": false
+            }
+        ]
+    },
+    "witch_house_toad_2": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/witch_house_toad_2",
+                "stream": false
+            }
+        ]
+    },
+    "wizard_explosion_2": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/wizard_explosion_2",
+                "stream": false
+            }
+        ]
+    },
+    "wizard_tower_1": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/wizard_tower_1",
+                "stream": true
+            }
+        ]
+    },
+    "wizard_tower_10": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/wizard_tower_10",
+                "stream": true
+            }
+        ]
+    },
+    "wizard_tower_11": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/wizard_tower_11",
+                "stream": true
+            }
+        ]
+    },
+    "wizard_tower_12": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/wizard_tower_12",
+                "stream": true
+            }
+        ]
+    },
+    "wizard_tower_2": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/wizard_tower_2",
+                "stream": true
+            }
+        ]
+    },
+    "wizard_tower_3": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/wizard_tower_3",
+                "stream": true
+            }
+        ]
+    },
+    "wizard_tower_4": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/wizard_tower_4",
+                "stream": false
+            }
+        ]
+    },
+    "wizard_tower_5": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/wizard_tower_5",
+                "stream": true
+            }
+        ]
+    },
+    "wizard_tower_6": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/wizard_tower_6",
+                "stream": true
+            }
+        ]
+    },
+    "wizard_tower_7": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/wizard_tower_7",
+                "stream": true
+            }
+        ]
+    },
+    "wizard_tower_8": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/wizard_tower_8",
+                "stream": false
+            }
+        ]
+    },
+    "wizard_tower_9": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/wizard_tower_9",
+                "stream": false
+            }
+        ]
+    },
+    "wizards_tower_13": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/wizards_tower_13",
+                "stream": true
+            }
+        ]
+    },
+    "wizards_tower_14": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/wizards_tower_14",
+                "stream": false
+            }
+        ]
+    },
+    "wizards_tower_15": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/wizards_tower_15",
+                "stream": false
+            }
+        ]
+    },
+    "wizards_tower_16": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/wizards_tower_16",
+                "stream": false
+            }
+        ]
+    },
+    "wizards_tower_17": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/wizards_tower_17",
+                "stream": false
+            }
+        ]
+    },
+    "wizards_tower_18": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/wizards_tower_18",
+                "stream": false
+            }
+        ]
+    },
+    "xoltec_long_drum_beat": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/xoltec_long_drum_beat",
+                "stream": true
+            }
+        ]
+    },
+    "xoltec_pyramid_drums": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/xoltec_pyramid_drums",
+                "stream": true
+            }
+        ]
+    },
+    "xoltec_temple_flute": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/xoltec_temple_flute",
+                "stream": true
+            }
+        ]
+    },
+    "xoltec_town_drums": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/xoltec_town_drums",
+                "stream": true
+            }
+        ]
+    },
+    "xoltec_town_flutes": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/xoltec_town_flutes",
+                "stream": true
+            }
+        ]
+    },
+    "xoltec_town_long": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/xoltec_town_long",
+                "stream": true
+            }
+        ]
+    },
+    "yo_way_yo": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/yo_way_yo",
+                "stream": true
+            }
+        ]
+    },
+    "zimba_drums_2": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/zimba_drums_2",
+                "stream": true
+            }
+        ]
+    },
+    "zimba_village_dance": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/zimba_village_dance",
+                "stream": true
+            }
+        ]
     }
 }
