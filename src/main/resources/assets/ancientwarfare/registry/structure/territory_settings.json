@@ -28,8 +28,8 @@
         },        
 		"nog": {
             "max_radius_in_chunks": 30,
-            "per_chunk_cluster_value_multiplier": 2.5,
-            "territory_weight_multiplier": 2.2
+            "per_chunk_cluster_value_multiplier": 5.5,
+            "territory_weight_multiplier": 5.2
         },        
 		"nogcoastal": {
             "max_radius_in_chunks": 18,
@@ -82,11 +82,6 @@
             "territory_weight_multiplier": 2.2
         },        
 		"xoltec": {
-            "max_radius_in_chunks": 24,
-            "per_chunk_cluster_value_multiplier": 2.5,
-            "territory_weight_multiplier": 2.2
-        },        
-		"zimba": {
             "max_radius_in_chunks": 24,
             "per_chunk_cluster_value_multiplier": 2.5,
             "territory_weight_multiplier": 2.2
@@ -251,6 +246,11 @@
             "per_chunk_cluster_value_multiplier": 1.5,
             "territory_weight_multiplier": 1.2
         },        
+		"jungleruins": {
+            "max_radius_in_chunks": 16,
+            "per_chunk_cluster_value_multiplier": 1.5,
+            "territory_weight_multiplier": 1.2
+        },        
 		"coldruins": {
             "max_radius_in_chunks": 10,
             "per_chunk_cluster_value_multiplier": 1.5,
@@ -266,8 +266,8 @@
             "per_chunk_cluster_value_multiplier": 2.5,
             "territory_weight_multiplier": 1.2
         },        
-		"jungleruins": {
-            "max_radius_in_chunks": 24,
+		"lizardmen": {
+            "max_radius_in_chunks": 16,
             "per_chunk_cluster_value_multiplier": 2.5,
             "territory_weight_multiplier": 2.2
         },        
@@ -297,9 +297,9 @@
             "territory_weight_multiplier": 0.2
         },        
 		"oceanopen": {
-            "max_radius_in_chunks": 40,
-            "per_chunk_cluster_value_multiplier": 3.5,
-            "territory_weight_multiplier": 3.5
+            "max_radius_in_chunks": 64,
+            "per_chunk_cluster_value_multiplier": 5.5,
+            "territory_weight_multiplier": 5.5
         },        
 		"oceancold": {
             "max_radius_in_chunks": 32,
