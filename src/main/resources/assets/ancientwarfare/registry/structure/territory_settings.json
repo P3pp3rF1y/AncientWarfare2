@@ -28,8 +28,8 @@
         },        
 		"nog": {
             "max_radius_in_chunks": 30,
-            "per_chunk_cluster_value_multiplier": 5.5,
-            "territory_weight_multiplier": 5.2
+            "per_chunk_cluster_value_multiplier": 2.5,
+            "territory_weight_multiplier": 2.2
         },        
 		"nogcoastal": {
             "max_radius_in_chunks": 18,
@@ -82,6 +82,11 @@
             "territory_weight_multiplier": 2.2
         },        
 		"xoltec": {
+            "max_radius_in_chunks": 24,
+            "per_chunk_cluster_value_multiplier": 2.5,
+            "territory_weight_multiplier": 2.2
+        },        
+		"zimba": {
             "max_radius_in_chunks": 24,
             "per_chunk_cluster_value_multiplier": 2.5,
             "territory_weight_multiplier": 2.2
@@ -226,6 +231,11 @@
             "per_chunk_cluster_value_multiplier": 1.5,
             "territory_weight_multiplier": 1.2
         },        
+		"magical": {
+            "max_radius_in_chunks": 5,
+            "per_chunk_cluster_value_multiplier": 1.5,
+            "territory_weight_multiplier": 1.2
+        },        
 		"swampruins": {
             "max_radius_in_chunks": 16,
             "per_chunk_cluster_value_multiplier": 1.5,
@@ -246,11 +256,6 @@
             "per_chunk_cluster_value_multiplier": 1.5,
             "territory_weight_multiplier": 1.2
         },        
-		"jungleruins": {
-            "max_radius_in_chunks": 16,
-            "per_chunk_cluster_value_multiplier": 1.5,
-            "territory_weight_multiplier": 1.2
-        },        
 		"coldruins": {
             "max_radius_in_chunks": 10,
             "per_chunk_cluster_value_multiplier": 1.5,
@@ -266,7 +271,7 @@
             "per_chunk_cluster_value_multiplier": 2.5,
             "territory_weight_multiplier": 1.2
         },        
-		"lizardmen": {
+		"jungleruins": {
             "max_radius_in_chunks": 16,
             "per_chunk_cluster_value_multiplier": 2.5,
             "territory_weight_multiplier": 2.2
