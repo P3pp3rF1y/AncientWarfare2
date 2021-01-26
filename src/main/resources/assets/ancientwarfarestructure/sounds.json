@@ -1784,5 +1784,14 @@
                 "stream": true
             }
         ]
+    },
+	"evil_boogiemancackle": {
+        "category": "neutral",
+        "sounds": [
+            {
+                "name": "ancientwarfarestructure:structures/evil_boogiemancackle",
+                "stream": false
+            }
+        ]
     }
 }

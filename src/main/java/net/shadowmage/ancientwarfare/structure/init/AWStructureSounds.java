@@ -212,6 +212,7 @@ public class AWStructureSounds {
 	public static final SoundEvent YO_WAY_YO = InjectionTools.nullValue();
 	public static final SoundEvent ZIMBA_DRUMS_2 = InjectionTools.nullValue();
 	public static final SoundEvent ZIMBA_VILLAGE_DANCE = InjectionTools.nullValue();
+	public static final SoundEvent EVIL_BOOGIEMANCACKLE = InjectionTools.nullValue();
 
 	private AWStructureSounds() {}
 
@@ -417,6 +418,7 @@ public class AWStructureSounds {
 		registry.register(createSoundEvent("yo_way_yo"));
 		registry.register(createSoundEvent("zimba_drums_2"));
 		registry.register(createSoundEvent("zimba_village_dance"));
+		registry.register(createSoundEvent("evil_boogiemancackle"));
 	}
 
 	private static SoundEvent createSoundEvent(String soundName) {
