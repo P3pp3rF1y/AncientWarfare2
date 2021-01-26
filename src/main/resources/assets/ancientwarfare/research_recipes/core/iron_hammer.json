@@ -2,8 +2,8 @@
     "type": "ancientwarfare:research_recipe",
     "research": "engineering",
     "pattern": [
-        " S ",
         "MSM",
+        " S ",
         " S "
     ],
     "key": {
