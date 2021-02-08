@@ -1,0 +1,78 @@
+# minified
+# Ancient Warfare Structure Template File
+# Auto-generated structure template file. created on: 11/27/2020 at: 8:12:5
+# Lines beginning with # denote comments
+
+header:
+version=2.11
+name=BrigandHighwayMan
+mods=
+size=4,6,4
+offset=1,5,3
+:endheader
+
+#### VALIDATION ####
+validation:
+type=ground
+structureAuthor=mohawky
+survival=false
+worldGenEnabled=true
+unique=false
+preserveBlocks=false
+preventNaturalHostileSpawns=false
+selectionWeight=30
+clusterValue=50
+minDuplicateDistance=1000
+dimensionWhiteList=true
+dimensionList=0
+biomeGroupList=
+biomeWhiteList=true
+biomeList=biomesoplenty:meadow,biomesoplenty:shrubland,biomesoplenty:dead_forest,minecraft:extreme_hills,traverse:badlands,traverse:thicket,biomesoplenty:highland,biomesoplenty:moor,traverse:meadow,minecraft:plains,biomesoplenty:lavender_fields,biomesoplenty:orchard
+leveling=3
+fill=3
+border=3
+blockSwap=false
+territoryName=ruins
+biomeReplacement=minecraft:
+minGenerationHeight=0
+maxGenerationHeight=255
+:endvalidation
+
+#### LAYERS ####
+layer: 0-3
+4x1|4
+:endlayer
+layer: 4
+4x2|4
+:endlayer
+layer: 5
+0|4
+0,3,0|2
+2x0|4
+:endlayer
+#### RULES ####
+rule:
+plugin=vanillaBlocks
+number=1
+data:
+JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"dirt",snowy:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=2
+data:
+JSON:{blockState:{blockName:"minecraft:grass",properties:{snowy:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=blockTile
+number=3
+data:
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:10,spawnDelay:6,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,customTag:{factionName:"brigand"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.mounted_archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:10,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+:enddata
+:endrule
+
+#### ENTITIES ####

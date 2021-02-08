@@ -1,0 +1,118 @@
+# minified
+# Ancient Warfare Structure Template File
+# Auto-generated structure template file. created on: 4/15/2020 at: 23:52:42
+# Lines beginning with # denote comments
+
+header:
+version=2.10
+name=SarkonidTownGenFillHayShack
+mods=
+size=5,8,4
+offset=2,5,3
+:endheader
+
+#### VALIDATION ####
+validation:
+type=ground
+survival=false
+worldGenEnabled=false
+unique=false
+preserveBlocks=false
+selectionWeight=1
+clusterValue=1
+minDuplicateDistance=1
+dimensionWhiteList=true
+dimensionList=
+biomeGroupList=
+biomeWhiteList=true
+biomeList=
+leveling=0
+fill=0
+border=0
+blockSwap=false
+territoryName=
+biomeReplacement=minecraft:
+:endvalidation
+
+#### LAYERS ####
+layer: 0-2
+4x1|5
+:endlayer
+layer: 3-4
+4x2|5
+:endlayer
+layer: 5
+0|2,3,4,0
+0,5,6,5,0
+0,5,4,5,0
+6,0|4
+:endlayer
+layer: 6
+0|5
+0,5,4,5,0
+0,5,0,5,0
+0|5
+:endlayer
+layer: 7
+0|5
+2x0,7|3,0
+0|5
+:endlayer
+#### RULES ####
+rule:
+plugin=vanillaBlocks
+number=1
+data:
+JSON:{blockState:{blockName:"minecraft:sandstone",properties:{type:"sandstone"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=2
+data:
+JSON:{blockState:{blockName:"minecraft:sand",properties:{variant:"sand"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=3
+data:
+JSON:{blockState:{blockName:"minecraft:hay_block",properties:{axis:"z"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=4
+data:
+JSON:{blockState:{blockName:"minecraft:hay_block",properties:{axis:"y"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=5
+data:
+JSON:{blockState:{blockName:"minecraft:birch_fence",properties:{east:"false",south:"false",north:"false",west:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=6
+data:
+JSON:{blockState:{blockName:"minecraft:hay_block",properties:{axis:"x"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=7
+data:
+JSON:{blockState:{blockName:"minecraft:wooden_slab",properties:{half:"bottom",variant:"birch"}}}
+:enddata
+:endrule
+
+#### ENTITIES ####

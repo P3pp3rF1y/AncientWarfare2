@@ -1,0 +1,114 @@
+### Ancient Warfare Town Template ###
+# a line beginning with # denotes a comment line, and is ignored during parsing
+# the line must -start- with # to be ignored, mid-line comments are not allowed
+header:
+name=NorskaUnwalledTown
+minSize=8
+maxSize=12
+buildingExpansion=0
+preventNaturalHostileSpawns=true
+selectionWeight=70
+clusterValue=250
+townBlockSize=48
+townPlotSize=3
+wallStyle=0
+wallSize=0
+exteriorSize=1
+exteriorPlotSize=2
+interiorEmptyPlotChance=0
+randomVillagersPerChunk=0
+roadBlocks={"name":"minecraft:dirt","properties":{"variant":"coarse_dirt"}}|{"name":"minecraft:grass_path"}
+roadMeta=0
+biomeWhiteList=true
+biomeList=minecraft:taiga_cold,biomesoplenty:cold_desert,traverse:snowy_coniferous_forest,minecraft:ice_flats
+dimensionWhiteList=true
+dimensionList=0
+lamp=NorskaTownGenLamppost
+territoryName=norska
+biomeReplacement=minecraft:
+:endheader
+
+#wall type registry
+#name:type:id:weight
+walls:
+:endwalls
+
+#wall patterns
+#size:pattern
+#patterns reference the wall id number from above.  enter a non-registered number in the pattern for an empty spot (used for large-sized wall corners)
+wallPatterns:
+:endWallPaterns
+
+#list of structures, one per line
+uniqueStructures:
+NorskaTownGenThingMeetingPlace
+:endUniqueStructures
+
+#list of structures, one per line
+mainStructures:
+NorskaTownGenMainWaystone
+NorskaTownGenMarketPlace
+NorskaTownGenCouncilHouse
+NorskaTownGenMageTower
+NorskaTownGenTavernBaldursBladdered
+NorskaTownGenTavernWodinsRest
+NorskaTownGenGrainStore
+NorskaTownGenMeetingHall
+NorskaTownGenAdventurersHouse
+NorskaTownGenBloodJarlsHouse
+:endMainStructures
+
+#list of structure templates w/weight, to be used to fill in random positions post-generation
+#structure_name:weight
+houseStructures:
+NorskaTownGenBlacksmithsSmall:2
+NorskaTownGenHouse1:2
+NorskaTownGenHouse2:2
+NorskaTownGenHouse3:2
+NorskaTownGenHovel1:2
+NorskaTownGenHovel2:2
+NorskaTownGenHovel3:2
+NorskaTownGenHovel4:2
+NorskaTownGenCraftsmanCarpenterSpruce:2
+NorskaTownGenCraftsmanGlasWorker:2
+NorskaTownGenCraftsmanJewel:2
+NorskaTownGenCraftsmanPottery:2
+NorskaTownGenCraftsmanTanneryZawa:2
+NorskaTownGenStoneTrader:2
+NorskaTownGenMarketChipsAndDrinks:2
+NorskaTownGenMarketStalls1:2
+NorskaTownGenMarketStalls2:2
+NorskaTownGenMarketTavern:2
+NorskaTownGenBlacksmithsMedium:2
+:endHouseStructures
+
+#list of structure templates w/weight, to be used to fill in random positions post-generation
+#structure_name:weight
+cosmeticStructures:
+NorskaTownGenStables:2
+NorskaTownGenWorkshed:2
+NorskaTownGenPigPen:2
+NorskaTownGenHenHouse:2
+NorskaTownGenWoodpile:2
+TownGenSpruceLarge1:2
+TownGenSpruceLarge2:2
+TownGenSpruceLarge3:2
+TownGenSpruceMedium1:2
+TownGenSpruceSmall1:2
+TownGenSpruceSmall2:2
+:endCosmeticStructures
+
+#list of structure templates w/weight, to be used to fill in random positions post-generation
+#structure_name:weight
+exteriorStructures:
+NorskaTownGenFieldLarge:1
+NorskaTownGenFieldSmall:1
+NorskaTownGenBarn:1
+NorskaTownGenPeasantFarmTiny:2
+NorskaTownGenMine:2
+NorskaTownGenFeastingHall:2
+NorskaTownGenBeaconTower:1
+NorskaTownGenGuardTower:1
+NorskaTownGenLumberjackLarge:2
+TownGenSpruceVillagePond:2
+:endExteriorStructures

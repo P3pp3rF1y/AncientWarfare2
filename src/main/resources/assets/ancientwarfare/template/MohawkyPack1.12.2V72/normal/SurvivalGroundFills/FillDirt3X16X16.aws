@@ -1,0 +1,47 @@
+# minified
+# Ancient Warfare Structure Template File
+# Auto-generated structure template file. created on: 3/28/2019 at: 18:39:21
+# Lines beginning with # denote comments
+
+header:
+version=2.8
+name=FillDirt3X16X16
+mods=
+size=16,3,16
+offset=0,3,15
+:endheader
+
+#### VALIDATION ####
+validation:
+type=ground
+survival=true
+worldGenEnabled=false
+unique=false
+preserveBlocks=false
+selectionWeight=1
+clusterValue=1
+minDuplicateDistance=1
+dimensionWhiteList=false
+dimensionList=
+biomeWhiteList=false
+biomeList=
+leveling=0
+fill=0
+border=0
+blockSwap=false
+:endvalidation
+
+#### LAYERS ####
+layer: 0-2
+16x1|16
+:endlayer
+#### RULES ####
+rule:
+plugin=vanillaBlocks
+number=1
+data:
+JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"dirt",snowy:"false"}}}
+:enddata
+:endrule
+
+#### ENTITIES ####

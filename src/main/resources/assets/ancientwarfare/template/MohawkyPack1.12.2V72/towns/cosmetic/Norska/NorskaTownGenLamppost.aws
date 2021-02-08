@@ -1,0 +1,169 @@
+# minified
+# Ancient Warfare Structure Template File
+# Auto-generated structure template file. created on: 12/26/2020 at: 8:50:16
+# Lines beginning with # denote comments
+
+header:
+version=2.11
+name=NorskaTownGenLamppost
+mods=
+size=3,9,3
+offset=2,2,2
+:endheader
+
+#### VALIDATION ####
+validation:
+type=ground
+structureAuthor=mohawky
+survival=false
+worldGenEnabled=false
+unique=false
+preserveBlocks=false
+preventNaturalHostileSpawns=true
+selectionWeight=1
+clusterValue=1
+minDuplicateDistance=1
+dimensionWhiteList=true
+dimensionList=
+biomeGroupList=
+biomeWhiteList=true
+biomeList=
+leveling=0
+fill=0
+border=0
+blockSwap=false
+territoryName=
+biomeReplacement=minecraft:
+minGenerationHeight=0
+maxGenerationHeight=255
+:endvalidation
+
+#### LAYERS ####
+layer: 0
+3x1|3
+:endlayer
+layer: 1
+2|3
+2,3,2
+2|3
+:endlayer
+layer: 2
+0|3
+0,3,0
+0|3
+:endlayer
+layer: 3-4
+0|3
+0,4,0
+0|3
+:endlayer
+layer: 5
+0,9,0
+8,7,6
+0,5,0
+:endlayer
+layer: 6
+0,4,0
+4|3
+0,4,0
+:endlayer
+layer: 7
+0,10,0
+10,7,10
+0,10,0
+:endlayer
+layer: 8
+0|3
+0,11,0
+0|3
+:endlayer
+#### RULES ####
+rule:
+plugin=vanillaBlocks
+number=1
+data:
+JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"dirt",snowy:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=2
+data:
+JSON:{blockState:{blockName:"minecraft:clay"}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=3
+data:
+JSON:{blockState:{blockName:"minecraft:cobblestone"}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=4
+data:
+JSON:{blockState:{blockName:"minecraft:spruce_fence",properties:{east:"false",south:"false",north:"false",west:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=5
+data:
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"south"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=6
+data:
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"east"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=7
+data:
+JSON:{blockState:{blockName:"minecraft:planks",properties:{variant:"spruce"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=8
+data:
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"west"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=9
+data:
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"north"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=10
+data:
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"up"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=11
+data:
+JSON:{blockState:{blockName:"ancientwarfarestructure:fire_pit",properties:{lit:"true",variant:"square"}}}
+:enddata
+:endrule
+
+#### ENTITIES ####

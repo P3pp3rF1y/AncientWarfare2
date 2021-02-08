@@ -1,0 +1,143 @@
+# minified
+# Ancient Warfare Structure Template File
+# Auto-generated structure template file. created on: 12/26/2020 at: 8:57:30
+# Lines beginning with # denote comments
+
+header:
+version=2.11
+name=NorskaTownGenFieldSmall
+mods=
+size=9,5,7
+offset=3,2,6
+:endheader
+
+#### VALIDATION ####
+validation:
+type=ground
+structureAuthor=mohawky
+survival=false
+worldGenEnabled=false
+unique=false
+preserveBlocks=false
+preventNaturalHostileSpawns=true
+selectionWeight=1
+clusterValue=1
+minDuplicateDistance=1
+dimensionWhiteList=true
+dimensionList=
+biomeGroupList=
+biomeWhiteList=true
+biomeList=
+leveling=0
+fill=0
+border=0
+blockSwap=false
+territoryName=
+biomeReplacement=minecraft:
+minGenerationHeight=0
+maxGenerationHeight=255
+:endvalidation
+
+#### LAYERS ####
+layer: 0
+7x1|9
+:endlayer
+layer: 1
+1|9
+2x1,2|7,1
+1|5,2,1,2,1
+2x1,2|7,1
+1|9
+:endlayer
+layer: 2
+3|9
+2x3,4|7,3
+3,5|7,3
+2x3,4|7,3
+3|9
+:endlayer
+layer: 3
+6,0|7,6
+2x0,7|7,0
+6,0|7,6
+2x0,7|7,0
+6,0|7,6
+:endlayer
+layer: 4
+0|4,8,0|4
+6x0|9
+:endlayer
+#### RULES ####
+rule:
+plugin=vanillaBlocks
+number=1
+data:
+JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"dirt",snowy:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=2
+data:
+JSON:{blockState:{blockName:"minecraft:grass",properties:{snowy:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=3
+data:
+JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"spruce",axis:"y"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=4
+data:
+JSON:{blockState:{blockName:"minecraft:farmland",properties:{moisture:"7"}}}
+:enddata
+:endrule
+
+rule:
+plugin=fluid
+number=5
+data:
+JSON:{blockState:{blockName:"minecraft:water",properties:{level:"0"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=6
+data:
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"up"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=7
+data:
+JSON:{blockState:{blockName:"minecraft:wheat",properties:{age:"7"}}}
+:enddata
+:endrule
+
+rule:
+plugin=blockTile
+number=8
+data:
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:10,spawnDelay:6,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,customTag:{factionName:"norska"},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:10,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+:enddata
+:endrule
+
+#### ENTITIES ####
+entity:
+plugin=entity
+number=0
+data:
+JSON:{yOffset:0.9375f,xOffset:0.9317937f,rotation:170.9942f,mobID:"minecraft:item",zOffset:0.5859532f,position:824767938564L,entityData:{Motion:[8.44411865208574E-51d,-0.0d,-1.6769320453755522E-50d],ForgeData:{},Health:5s,Invulnerable:0b,Air:300s,OnGround:1b,Dimension:0,PortalCooldown:0,Rotation:[350.9942f,0.0f],UpdateBlocked:0b,FallDistance:0.0f,Item:{id:"minecraft:torch",Count:1b,Damage:0s},Pos:[423.06820630677004d,120.9375d,1090.4140468362068d],PickupDelay:0s,Fire:-1s,ForgeCaps:{"llibrary:extendedentitydatacapability":{}},Lifespan:6000,Age:221s}}
+:enddata
+:endentity
+

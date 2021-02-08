@@ -1,0 +1,147 @@
+# minified
+# Ancient Warfare Structure Template File
+# Auto-generated structure template file. created on: 4/30/2020 at: 16:28:38
+# Lines beginning with # denote comments
+
+header:
+version=2.10
+name=UndeadCemetaryFillTree3
+mods=
+size=6,12,5
+offset=3,5,4
+:endheader
+
+#### VALIDATION ####
+validation:
+type=ground
+survival=false
+worldGenEnabled=false
+unique=false
+preserveBlocks=false
+preventNaturalHostileSpawns=false
+selectionWeight=0
+clusterValue=0
+minDuplicateDistance=0
+dimensionWhiteList=false
+dimensionList=
+biomeGroupList=
+biomeWhiteList=false
+biomeList=
+leveling=0
+fill=0
+border=0
+blockSwap=false
+territoryName=
+biomeReplacement=minecraft:
+:endvalidation
+
+#### LAYERS ####
+layer: 0-2
+5x1|6
+:endlayer
+layer: 3
+5x2|6
+:endlayer
+layer: 4
+5,6,5,3|3
+3,4,5|2,4,3
+3,4,5,6,5|2
+6,5|2,4|2,6
+5,4,3,5,4,3
+:endlayer
+layer: 5-6
+2x0|6
+0|3,7,0|2
+2x0|6
+:endlayer
+layer: 7
+0|6
+0|3,7,0|2
+0|2,8,0|3
+0|3,7,0|2
+0|6
+:endlayer
+layer: 8
+0|6
+0|3,7,0|2
+0,7,0|4
+0|3,7,0|2
+0|6
+:endlayer
+layer: 9
+2x0|6
+0,7,0|4
+0|3,7,0|2
+0|6
+:endlayer
+layer: 10-11
+2x0|6
+0|4,7,0
+2x0|6
+:endlayer
+#### RULES ####
+rule:
+plugin=vanillaBlocks
+number=1
+data:
+JSON:{blockState:{blockName:"minecraft:stone",properties:{variant:"stone"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=2
+data:
+JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"dirt",snowy:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=3
+data:
+JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"coarse_dirt",snowy:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=4
+data:
+JSON:{blockState:{blockName:"minecraft:grass_path"}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=5
+data:
+JSON:{blockState:{blockName:"minecraft:grass",properties:{snowy:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=6
+data:
+JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"podzol",snowy:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=7
+data:
+JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"spruce",axis:"y"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=8
+data:
+JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"spruce",axis:"x"}}}
+:enddata
+:endrule
+
+#### ENTITIES ####

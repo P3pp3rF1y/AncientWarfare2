@@ -1,0 +1,227 @@
+# minified
+# Ancient Warfare Structure Template File
+# Auto-generated structure template file. created on: 4/30/2020 at: 16:32:47
+# Lines beginning with # denote comments
+
+header:
+version=2.10
+name=UndeadCemetaryFillTree5
+mods=
+size=9,17,9
+offset=4,5,8
+:endheader
+
+#### VALIDATION ####
+validation:
+type=ground
+survival=false
+worldGenEnabled=false
+unique=false
+preserveBlocks=false
+preventNaturalHostileSpawns=false
+selectionWeight=0
+clusterValue=0
+minDuplicateDistance=0
+dimensionWhiteList=false
+dimensionList=
+biomeGroupList=
+biomeWhiteList=false
+biomeList=
+leveling=0
+fill=0
+border=0
+blockSwap=false
+territoryName=
+biomeReplacement=minecraft:
+:endvalidation
+
+#### LAYERS ####
+layer: 0-2
+9x1|9
+:endlayer
+layer: 3
+9x2|9
+:endlayer
+layer: 4
+3|4,5,6,4,3|2
+5,6,2,6,5,4,6,3,4
+4,6,3,6,3,5|3,4
+3,5,4|2,2,6,4,5,3
+6,5,6,3|2,2,5,3,4
+5|3,3,2,6|2,3,5
+3|2,2,6|2,4,6,3,6
+5,4,6|2,5,2,3|2,5
+6,3|2,5,6,5,4,6,3
+:endlayer
+layer: 5
+0|9
+0|2,7,0|4,7,0
+0|9
+0|4,7,0|4
+0|3,7|3,0|3
+0|4,7,0|4
+0|2,7,0|6
+0|5,7,0|3
+0|9
+:endlayer
+layer: 6
+0|9
+0|7,7,0
+0|9
+0|4,7,0|4
+0|4,7|2,0|3
+0|4,7,0|4
+0|2,7,0|6
+2x0|9
+:endlayer
+layer: 7
+2x0|9
+0|7,7,0
+0|9
+0|4,7|2,0|3
+0,7,0|7
+0|9
+0|2,7,0|6
+0|9
+:endlayer
+layer: 8
+4x0|9
+0|4,7,0|4
+2x0|9
+0|2,7,0|6
+0|9
+:endlayer
+layer: 9
+4x0|9
+0|2,8|2,7,0|4
+4x0|9
+:endlayer
+layer: 10
+3x0|9
+0|4,7,0|4
+0,8,0,7,0,7,0|3
+0|4,9,0|4
+3x0|9
+:endlayer
+layer: 11
+2x0|9
+0|4,9,0|4
+0|9
+0|3,7,0,7,0|3
+0|3,9,0|5
+0|4,7,0|4
+2x0|9
+:endlayer
+layer: 12
+0|9
+0|4,9,0|4
+0|9
+0|3,7,0,7,0|3
+0|2,7,0|3,8|2,0
+0,8,0|3,7,0|3
+0|4,7,0|4
+2x0|9
+:endlayer
+layer: 13
+2x0|9
+0|5,7,0|3
+0|3,7,0|5
+0|9
+0|5,7,0|3
+0|9
+0|4,9,0|4
+0|9
+:endlayer
+layer: 14
+3x0|9
+0|3,7,0|5
+0|5,9,0|3
+0|6,8,0|2
+0|5,9,0|3
+2x0|9
+:endlayer
+layer: 15
+2x0|9
+0|5,9,8,0|2
+0|5,9,0|3
+5x0|9
+:endlayer
+layer: 16
+0|9
+0|5,9,0|3
+7x0|9
+:endlayer
+#### RULES ####
+rule:
+plugin=vanillaBlocks
+number=1
+data:
+JSON:{blockState:{blockName:"minecraft:stone",properties:{variant:"stone"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=2
+data:
+JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"dirt",snowy:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=3
+data:
+JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"coarse_dirt",snowy:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=4
+data:
+JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"podzol",snowy:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=5
+data:
+JSON:{blockState:{blockName:"minecraft:grass",properties:{snowy:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=6
+data:
+JSON:{blockState:{blockName:"minecraft:grass_path"}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=7
+data:
+JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"spruce",axis:"y"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=8
+data:
+JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"spruce",axis:"x"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=9
+data:
+JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"spruce",axis:"z"}}}
+:enddata
+:endrule
+
+#### ENTITIES ####

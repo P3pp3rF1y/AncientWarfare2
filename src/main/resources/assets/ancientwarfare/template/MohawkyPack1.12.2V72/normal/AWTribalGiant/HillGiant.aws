@@ -1,0 +1,88 @@
+# minified
+# Ancient Warfare Structure Template File
+# Auto-generated structure template file. created on: 11/29/2020 at: 1:41:15
+# Lines beginning with # denote comments
+
+header:
+version=2.11
+name=HillGiant
+mods=
+size=5,6,5
+offset=2,5,4
+:endheader
+
+#### VALIDATION ####
+validation:
+type=ground
+structureAuthor=
+survival=false
+worldGenEnabled=true
+unique=false
+preserveBlocks=false
+preventNaturalHostileSpawns=true
+selectionWeight=30
+clusterValue=300
+minDuplicateDistance=1000
+dimensionWhiteList=true
+dimensionList=
+biomeGroupList=
+biomeWhiteList=true
+biomeList=environs:tall_oak_forest_hills,explorercraft:snowdonia,byg:bbluff_mountains,minecraft:extreme_hills,traverse:glacier,environs:moor,traverse:lush_hills,traverse:rocky_plateau,byg:bskyrishighlands
+leveling=6
+fill=6
+border=6
+blockSwap=true
+territoryName=
+biomeReplacement=minecraft:
+minGenerationHeight=36
+maxGenerationHeight=255
+:endvalidation
+
+#### LAYERS ####
+layer: 0-3
+5x1|5
+:endlayer
+layer: 4
+5x2|5
+:endlayer
+layer: 5
+0,3,0,3|2
+0,3|3,0
+3|2,4,3|2
+3|2,0,3|2
+3|2,0|3
+:endlayer
+#### RULES ####
+rule:
+plugin=vanillaBlocks
+number=1
+data:
+JSON:{blockState:{blockName:"minecraft:stone",properties:{variant:"stone"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=2
+data:
+JSON:{blockState:{blockName:"minecraft:grass",properties:{snowy:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=3
+data:
+JSON:{blockState:{blockName:"minecraft:tallgrass",properties:{type:"tall_grass"}}}
+:enddata
+:endrule
+
+rule:
+plugin=blockTile
+number=4
+data:
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:10,spawnDelay:6,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],hasCustomEquipment:0b,ArmorItems:[{},{},{},{}],skinSettings:{npcTypeName:"custom",skinTypeSelected:"default"},HandDropChances:[0.085f,0.085f],factionName:"giant",HandItems:[{id:"ancientwarfarenpc:giant_club",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:10,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+:enddata
+:endrule
+
+#### ENTITIES ####

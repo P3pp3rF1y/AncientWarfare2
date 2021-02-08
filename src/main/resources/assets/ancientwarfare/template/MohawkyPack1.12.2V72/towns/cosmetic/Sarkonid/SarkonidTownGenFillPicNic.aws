@@ -1,0 +1,152 @@
+# minified
+# Ancient Warfare Structure Template File
+# Auto-generated structure template file. created on: 4/15/2020 at: 23:55:3
+# Lines beginning with # denote comments
+
+header:
+version=2.10
+name=SarkonidTownGenFillPicNic
+mods=
+size=7,9,8
+offset=3,5,7
+:endheader
+
+#### VALIDATION ####
+validation:
+type=ground
+survival=false
+worldGenEnabled=false
+unique=false
+preserveBlocks=false
+selectionWeight=1
+clusterValue=1
+minDuplicateDistance=1
+dimensionWhiteList=true
+dimensionList=
+biomeGroupList=
+biomeWhiteList=true
+biomeList=
+leveling=0
+fill=0
+border=0
+blockSwap=false
+territoryName=
+biomeReplacement=minecraft:
+:endvalidation
+
+#### LAYERS ####
+layer: 0-2
+8x1|7
+:endlayer
+layer: 3-4
+8x2|7
+:endlayer
+layer: 5
+0|7
+0,3,0|3,3,0
+0|2,4,0|4
+2x0,5,6|2,5,0|2
+0|3,4,0|3
+0,3,0|3,3,0
+0|7
+:endlayer
+layer: 6
+0|7
+0,3,0|3,3,0
+4x0|7
+0,3,0|3,3,0
+0|7
+:endlayer
+layer: 7
+0|7
+0,3|2,0,3|2,0
+0,3,0|3,3,0
+2x0|7
+0,3,0|3,3,0
+0,3|2,0,3|2,0
+0|7
+:endlayer
+layer: 8
+0|7
+0,7|5,0
+0,7,9|3,7,0
+0,7,8|3,7,0
+0,7,9|3,7,0
+0,7,8|3,7,0
+0,7|5,0
+0|7
+:endlayer
+#### RULES ####
+rule:
+plugin=vanillaBlocks
+number=1
+data:
+JSON:{blockState:{blockName:"minecraft:sandstone",properties:{type:"sandstone"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=2
+data:
+JSON:{blockState:{blockName:"minecraft:sand",properties:{variant:"sand"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=3
+data:
+JSON:{blockState:{blockName:"minecraft:birch_fence",properties:{east:"false",south:"false",north:"false",west:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=4
+data:
+JSON:{blockState:{blockName:"ancientwarfarestructure:stool",properties:{variant:"birch"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=5
+data:
+JSON:{blockState:{blockName:"ancientwarfarestructure:bench",properties:{legs:"none",variant:"birch",axis:"z"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=6
+data:
+JSON:{blockState:{blockName:"ancientwarfarestructure:table",properties:{leg_southwest:"true",leg_northwest:"true",variant:"birch",leg_northeast:"true",leg_southeast:"true"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=7
+data:
+JSON:{blockState:{blockName:"minecraft:wooden_slab",properties:{half:"bottom",variant:"birch"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=8
+data:
+JSON:{blockState:{blockName:"minecraft:wool",properties:{color:"yellow"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=9
+data:
+JSON:{blockState:{blockName:"minecraft:wool",properties:{color:"lime"}}}
+:enddata
+:endrule
+
+#### ENTITIES ####
