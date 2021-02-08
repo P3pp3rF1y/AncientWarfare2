@@ -1,0 +1,67 @@
+# minified
+# Ancient Warfare Structure Template File
+# Auto-generated structure template file. created on: 11/29/2020 at: 1:33:37
+# Lines beginning with # denote comments
+
+header:
+version=2.11
+name=FrostGiant2
+mods=
+size=5,6,5
+offset=2,5,4
+:endheader
+
+#### VALIDATION ####
+validation:
+type=ground
+structureAuthor=mohawky
+survival=false
+worldGenEnabled=true
+unique=false
+preserveBlocks=false
+preventNaturalHostileSpawns=true
+selectionWeight=30
+clusterValue=100
+minDuplicateDistance=1000
+dimensionWhiteList=true
+dimensionList=
+biomeGroupList=
+biomeWhiteList=true
+biomeList=minecraft:mutated_ice_flats,traverse:glacier_spikes,environs:icy_hills,traverse:glacier,minecraft:cold_beach
+leveling=6
+fill=6
+border=6
+blockSwap=true
+territoryName=
+biomeReplacement=minecraft:
+minGenerationHeight=60
+maxGenerationHeight=255
+:endvalidation
+
+#### LAYERS ####
+layer: 0-4
+5x1|5
+:endlayer
+layer: 5
+2x0|5
+0|2,2,0|2
+2x0|5
+:endlayer
+#### RULES ####
+rule:
+plugin=vanillaBlocks
+number=1
+data:
+JSON:{blockState:{blockName:"minecraft:stone",properties:{variant:"stone"}}}
+:enddata
+:endrule
+
+rule:
+plugin=blockTile
+number=2
+data:
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:10,spawnDelay:8,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],hasCustomEquipment:0b,ArmorItems:[{},{},{},{}],skinSettings:{npcTypeName:"custom",skinTypeSelected:"default"},HandDropChances:[0.085f,0.085f],factionName:"giant",HandItems:[{id:"ancientwarfarenpc:ice_spear",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier.elite",minToSpawn:1}],groupWeight:1}],playerRange:40,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:10,xpToDrop:30,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+:enddata
+:endrule
+
+#### ENTITIES ####

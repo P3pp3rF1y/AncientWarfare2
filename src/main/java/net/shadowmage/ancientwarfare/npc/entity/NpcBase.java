@@ -464,23 +464,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	}
 
 	@Override
-	public void applyEntityCollision(Entity entity) {
-		if (!isInWater() && !isHostileTowards(entity)) {
-			int d0 = (int) Math.signum(posX - entity.posX);
-			int d1 = (int) Math.signum(posZ - entity.posZ);
-			if (d0 != 0 || d1 != 0) {
-				Material material = world.getBlockState(new BlockPos(posX + d0, getEntityBoundingBox().minY - 1, posZ + d1)).getMaterial();
-				if (material.isLiquid() || material == Material.CACTUS) {
-					return;
-				}
-				entityCollisionReduction = 0.9F;
-			}
-		}
-		super.applyEntityCollision(entity);
-		entityCollisionReduction = 0;
-	}
-
-	@Override
 	public final boolean attackEntityFrom(DamageSource source, float damage) {
 		if (isSleeping()) { // prevent suffocation damage (allows bunk beds and such)
 			return false;
@@ -488,7 +471,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		if (source.getTrueSource() != null && !canBeAttackedBy(source.getTrueSource())) {
 			return false;
 		}
-		processPreDamageLogic(source, damage);
+		if (!world.isRemote)
+			processPreDamageLogic(source, damage);
 		return super.attackEntityFrom(source, damage);
 	}
 

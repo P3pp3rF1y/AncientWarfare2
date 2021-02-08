@@ -1,0 +1,146 @@
+# minified
+# Ancient Warfare Structure Template File
+# Auto-generated structure template file. created on: 4/30/2020 at: 17:12:47
+# Lines beginning with # denote comments
+
+header:
+version=2.10
+name=UndeadCemetarySimpleGrave13
+mods=
+size=5,7,6
+offset=2,5,5
+:endheader
+
+#### VALIDATION ####
+validation:
+type=ground
+survival=false
+worldGenEnabled=false
+unique=false
+preserveBlocks=false
+preventNaturalHostileSpawns=false
+selectionWeight=0
+clusterValue=0
+minDuplicateDistance=0
+dimensionWhiteList=false
+dimensionList=
+biomeGroupList=
+biomeWhiteList=false
+biomeList=
+leveling=0
+fill=0
+border=0
+blockSwap=false
+territoryName=
+biomeReplacement=minecraft:
+:endvalidation
+
+#### LAYERS ####
+layer: 0-2
+6x1|5
+:endlayer
+layer: 3
+6x2|5
+:endlayer
+layer: 4
+3|2,4,5,3
+5,6,7|2,8
+3,6,7|2,3
+4,7|2,6,4
+5,7,6,7,8
+8,5,3|2,5
+:endlayer
+layer: 5
+0|5
+2x0|2,6,0|2
+0|2,7,0|2
+0|2,9,0|2
+0|5
+:endlayer
+layer: 6
+0|5
+0|2,10,0|2
+4x0|5
+:endlayer
+#### RULES ####
+rule:
+plugin=vanillaBlocks
+number=1
+data:
+JSON:{blockState:{blockName:"minecraft:stone",properties:{variant:"stone"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=2
+data:
+JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"dirt",snowy:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=3
+data:
+JSON:{blockState:{blockName:"minecraft:grass_path"}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=4
+data:
+JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"coarse_dirt",snowy:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=5
+data:
+JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"podzol",snowy:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=6
+data:
+JSON:{blockState:{blockName:"minecraft:mossy_cobblestone"}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=7
+data:
+JSON:{blockState:{blockName:"minecraft:cobblestone"}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=8
+data:
+JSON:{blockState:{blockName:"minecraft:grass",properties:{snowy:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=blockTile
+number=9
+data:
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:10,spawnDelay:3,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],hasCustomEquipment:0b,ArmorItems:[{},{},{},{}],skinSettings:{npcTypeName:"custom",skinTypeSelected:"default"},HandDropChances:[0.085f,0.085f],factionName:"undead",HandItems:[{id:"minecraft:iron_sword",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:1}],groupWeight:1}],playerRange:3,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:2,transparent:1b,maxDelay:10,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=10
+data:
+JSON:{blockState:{blockName:"minecraft:stone_stairs",properties:{half:"bottom",shape:"straight",facing:"south"}}}
+:enddata
+:endrule
+
+#### ENTITIES ####

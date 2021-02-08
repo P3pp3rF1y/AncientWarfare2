@@ -19,9 +19,8 @@ public class TileAdvancedLootChest extends TileEntityChest implements ISpecialLo
 
 	private LootSettings lootSettings = new LootSettings();
 
-	@Override
-	public void fillWithLoot(@Nullable EntityPlayer player) {
-		LootHelper.fillWithLoot(this, player != null ? player : EntityTools.findClosestPlayer(world, pos, 100));
+	public boolean fillWithLootAndCheckIfGoodToOpen(@Nullable EntityPlayer player) {
+		return LootHelper.fillWithLootAndCheckIfGoodToOpen(this, player != null ? player : EntityTools.findClosestPlayer(world, pos, 100));
 	}
 
 	@Override

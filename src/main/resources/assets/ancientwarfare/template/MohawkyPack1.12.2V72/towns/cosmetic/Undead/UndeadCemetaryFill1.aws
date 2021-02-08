@@ -1,0 +1,51 @@
+# minified
+# Ancient Warfare Structure Template File
+# Auto-generated structure template file. created on: 4/29/2020 at: 14:51:52
+# Lines beginning with # denote comments
+
+header:
+version=2.10
+name=UndeadCemetaryFill1
+mods=
+size=1,1,1
+offset=0,1,0
+:endheader
+
+#### VALIDATION ####
+validation:
+type=ground
+survival=false
+worldGenEnabled=false
+unique=false
+preserveBlocks=false
+preventNaturalHostileSpawns=false
+selectionWeight=0
+clusterValue=0
+minDuplicateDistance=0
+dimensionWhiteList=false
+dimensionList=
+biomeGroupList=
+biomeWhiteList=false
+biomeList=
+leveling=0
+fill=0
+border=0
+blockSwap=false
+territoryName=
+biomeReplacement=minecraft:
+:endvalidation
+
+#### LAYERS ####
+layer: 0
+1
+:endlayer
+#### RULES ####
+rule:
+plugin=vanillaBlocks
+number=1
+data:
+JSON:{blockState:{blockName:"minecraft:grass_path"}}
+:enddata
+:endrule
+
+#### ENTITIES ####

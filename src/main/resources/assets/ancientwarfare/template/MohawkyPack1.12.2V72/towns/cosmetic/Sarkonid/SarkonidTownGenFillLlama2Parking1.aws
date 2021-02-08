@@ -1,0 +1,161 @@
+# minified
+# Ancient Warfare Structure Template File
+# Auto-generated structure template file. created on: 4/15/2020 at: 23:53:16
+# Lines beginning with # denote comments
+
+header:
+version=2.10
+name=SarkonidTownGenFillLlama2Parking1
+mods=
+size=10,10,6
+offset=4,5,5
+:endheader
+
+#### VALIDATION ####
+validation:
+type=ground
+survival=false
+worldGenEnabled=false
+unique=false
+preserveBlocks=false
+selectionWeight=1
+clusterValue=1
+minDuplicateDistance=1
+dimensionWhiteList=true
+dimensionList=
+biomeGroupList=
+biomeWhiteList=true
+biomeList=
+leveling=0
+fill=0
+border=0
+blockSwap=false
+territoryName=
+biomeReplacement=minecraft:
+:endvalidation
+
+#### LAYERS ####
+layer: 0-2
+6x1|10
+:endlayer
+layer: 3-4
+6x2|10
+:endlayer
+layer: 5
+0|10
+0,1|8,0
+0,1,0|2,1,0|2,1|2,0
+0,1,6,0,1,0,4,1|2,0
+0,1,5|2,1,5|2,1,3,0
+0|10
+:endlayer
+layer: 6
+0|10
+0,1|8,0
+0,1,0|2,1,0|2,1|2,0
+0,7,0|2,7,0|2,7,3,0
+0,1,0|2,1,0|2,1,0|2
+0|10
+:endlayer
+layer: 7
+0|10
+0,1|8,0
+0,1,0|2,1,0|2,1,3,0
+2x0,1,0|2,1,0|2,1,0|2
+0|10
+:endlayer
+layer: 8
+0|10
+0,8|7,3,0
+2x0,8,9|2,8,9|2,8,0|2
+0,8,7|2,8,7|2,8,0|2
+0|10
+:endlayer
+layer: 9
+0|10
+0,10|7,0|2
+3x0,10,0|2,10,0|2,10,0|2
+0|10
+:endlayer
+#### RULES ####
+rule:
+plugin=vanillaBlocks
+number=1
+data:
+JSON:{blockState:{blockName:"minecraft:sandstone",properties:{type:"sandstone"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=2
+data:
+JSON:{blockState:{blockName:"minecraft:sand",properties:{variant:"sand"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=3
+data:
+JSON:{blockState:{blockName:"minecraft:sandstone_stairs",properties:{half:"bottom",shape:"straight",facing:"north"}}}
+:enddata
+:endrule
+
+rule:
+plugin=blockTile
+number=4
+data:
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:10,spawnDelay:8,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:0b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"minecraft:llama",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:10,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=5
+data:
+JSON:{blockState:{blockName:"minecraft:birch_fence_gate",properties:{in_wall:"false",powered:"false",facing:"north",open:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=blockTile
+number=6
+data:
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:10,spawnDelay:10,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:0b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"minecraft:llama",minToSpawn:1}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:10,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=7
+data:
+JSON:{blockState:{blockName:"minecraft:birch_fence",properties:{east:"false",south:"false",north:"false",west:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=8
+data:
+JSON:{blockState:{blockName:"minecraft:stained_hardened_clay",properties:{color:"white"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=9
+data:
+JSON:{blockState:{blockName:"minecraft:wooden_slab",properties:{half:"top",variant:"acacia"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=10
+data:
+JSON:{blockState:{blockName:"minecraft:stone_slab",properties:{half:"bottom",variant:"sandstone"}}}
+:enddata
+:endrule
+
+#### ENTITIES ####

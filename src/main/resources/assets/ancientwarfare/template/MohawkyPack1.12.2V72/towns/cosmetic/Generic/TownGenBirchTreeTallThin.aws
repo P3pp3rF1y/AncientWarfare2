@@ -1,0 +1,281 @@
+# minified
+# Ancient Warfare Structure Template File
+# Auto-generated structure template file. created on: 3/13/2019 at: 5:56:22
+# Lines beginning with # denote comments
+
+header:
+version=2.8
+name=TownGenBirchTreeTallThin
+mods=
+size=9,27,10
+offset=4,3,9
+:endheader
+
+#### VALIDATION ####
+validation:
+type=ground
+survival=false
+worldGenEnabled=false
+unique=false
+preserveBlocks=false
+selectionWeight=0
+clusterValue=0
+minDuplicateDistance=0
+dimensionWhiteList=false
+dimensionList=
+biomeWhiteList=false
+biomeList=
+leveling=0
+fill=0
+border=0
+blockSwap=false
+:endvalidation
+
+#### LAYERS ####
+layer: 0-1
+10x1|9
+:endlayer
+layer: 2
+5x2|9
+2|4,1|2,2|3
+2|3,1|4,2|2
+2|4,1|2,2|3
+2x2|9
+:endlayer
+layer: 3
+0|4,3|2,0|3
+0,3|4,0|4
+0,3|2,0,3|2,0|3
+0|2,3,0,3|3,0|2
+0|2,3,0,3|2,0,3,0
+0|2,3,0,6,5,0,3|2
+3|2,0,6|4,4,3
+0|2,3|2,6,5,3,0,3
+0|2,4,3|2,0|2,3,0
+0,3|3,0|2,3,0|2
+:endlayer
+layer: 4
+5x0|9
+0|5,6,0|3
+0|3,6|3,0|3
+0|4,6|2,0|3
+2x0|9
+:endlayer
+layer: 5
+6x0|9
+0|4,6|2,0|3
+0|4,6,0|4
+2x0|9
+:endlayer
+layer: 6
+6x0|9
+0|4,6|2,0|3
+3x0|9
+:endlayer
+layer: 7
+6x0|9
+0|3,6|2,7,0|3
+3x0|9
+:endlayer
+layer: 8-9
+6x0|9
+0|3,6|2,0|4
+3x0|9
+:endlayer
+layer: 10
+6x0|9
+0|3,6,0|5
+3x0|9
+:endlayer
+layer: 11
+5x0|9
+0|3,8,0,8,0|3
+0|3,6|2,8|2,0|2
+0|3,8|3,0|3
+2x0|9
+:endlayer
+layer: 12
+4x0|9
+0|2,8,0|2,8|2,0|2
+0,8|6,0|2
+0|2,8,6|2,8|2,0|2
+0|2,8|5,0|2
+0|4,8,0|4
+0|9
+:endlayer
+layer: 13
+4x0|9
+0,8|5,0|3
+0,8|6,0|2
+0,8|3,6|2,8|2,0
+0|2,8|5,0|2
+0|3,8|3,0|3
+0|9
+:endlayer
+layer: 14
+4x0|9
+0|2,8|3,0|4
+0,8|6,0|2
+0|2,8|2,6|2,8,0|2
+0|4,8|3,0|2
+0|3,8|3,0|3
+0|9
+:endlayer
+layer: 15
+4x0|9
+0|3,8,0,8,0|3
+0|4,8|3,0|2
+0|2,8|2,6|2,8,0|2
+0|2,8,0,8|3,0|2
+0|5,8,0|3
+0|9
+:endlayer
+layer: 16
+4x0|9
+0|5,8,0|3
+0|3,8|3,0|3
+0|4,8,6,8,0|2
+0|3,8|4,0|2
+0|4,8|3,0|2
+0|9
+:endlayer
+layer: 17
+4x0|9
+0|4,8|2,0|3
+0|3,8|5,0
+0|3,8|2,6,8|2,0
+0|3,8,0,8|3,0
+0|4,8|3,0|2
+0|9
+:endlayer
+layer: 18
+4x0|9
+0|5,8,0|3
+0|4,8|3,0|2
+0|3,9,8,6,8|2,0
+2x0|5,8,0|3
+0|9
+:endlayer
+layer: 19
+5x0|9
+0|4,8|3,0|2
+0|3,9,8,6,8,0|2
+0|4,8|3,0|2
+2x0|9
+:endlayer
+layer: 20
+5x0|9
+0|5,8,0|3
+0|3,9|2,8|2,0|2
+0|4,8|2,0|3
+2x0|9
+:endlayer
+layer: 21
+5x0|9
+0|5,8,0|3
+0|4,9,8|2,0|2
+0|4,8|3,0|2
+2x0|9
+:endlayer
+layer: 22
+6x0|9
+0|5,8|2,0|2
+3x0|9
+:endlayer
+layer: 23
+6x0|9
+0|4,9,10,0|3
+3x0|9
+:endlayer
+layer: 24
+6x0|9
+0|4,10|2,0|3
+3x0|9
+:endlayer
+layer: 25-26
+6x0|9
+0|4,10,0|4
+3x0|9
+:endlayer
+#### RULES ####
+rule:
+plugin=vanillaBlocks
+number=1
+data:
+JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"dirt",snowy:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=2
+data:
+JSON:{blockState:{blockName:"minecraft:grass",properties:{snowy:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=3
+data:
+JSON:{blockState:{blockName:"minecraft:tallgrass",properties:{type:"tall_grass"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=4
+data:
+JSON:{blockState:{blockName:"minecraft:yellow_flower",properties:{type:"dandelion"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=5
+data:
+JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"birch",axis:"z"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=6
+data:
+JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"birch",axis:"y"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=7
+data:
+JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"birch",axis:"x"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=8
+data:
+JSON:{blockState:{blockName:"minecraft:leaves",properties:{check_decay:"false",decayable:"true",variant:"birch"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=9
+data:
+JSON:{blockState:{blockName:"minecraft:leaves",properties:{check_decay:"false",decayable:"false",variant:"birch"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=10
+data:
+JSON:{blockState:{blockName:"minecraft:leaves",properties:{check_decay:"true",decayable:"false",variant:"birch"}}}
+:enddata
+:endrule
+
+#### ENTITIES ####

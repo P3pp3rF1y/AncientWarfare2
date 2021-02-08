@@ -1,0 +1,227 @@
+# minified
+# Ancient Warfare Structure Template File
+# Auto-generated structure template file. created on: 3/13/2019 at: 5:41:18
+# Lines beginning with # denote comments
+
+header:
+version=2.8
+name=TownGenOakTreeMedium1
+mods=
+size=10,15,10
+offset=5,3,9
+:endheader
+
+#### VALIDATION ####
+validation:
+type=ground
+survival=false
+worldGenEnabled=false
+unique=false
+preserveBlocks=false
+selectionWeight=0
+clusterValue=0
+minDuplicateDistance=0
+dimensionWhiteList=false
+dimensionList=
+biomeWhiteList=false
+biomeList=
+leveling=0
+fill=0
+border=0
+blockSwap=false
+:endvalidation
+
+#### LAYERS ####
+layer: 0-1
+10x1|10
+:endlayer
+layer: 2
+5x2|10
+2|4,1,2|5
+4x2|10
+:endlayer
+layer: 3
+0|5,3|4,0
+0,3,0|2,4,0|5
+3,0|2,3|6,0
+0,3,0|3,3,0|2,3,0
+0|7,3,0|2
+3|4,5,0,3,0|3
+3|3,0,3|6
+0|4,3|4,0|2
+0|3,3|3,0,3,0|2
+0|6,3|2,0|2
+:endlayer
+layer: 4
+5x0|10
+0|4,5,0|5
+4x0|10
+:endlayer
+layer: 5
+5x0|10
+0|3,6,5,6,0|4
+0|4,6|2,0|4
+3x0|10
+:endlayer
+layer: 6
+2x0|10
+0|5,6,0|4
+0|4,6,0,6,0|3
+0|3,6,0|6
+0|3,6,5,6,0|4
+0|2,6,0,6,0|5
+0|5,6|2,0|3
+0|5,7,6,0|3
+0|10
+:endlayer
+layer: 7
+0|10
+0|6,6,0|3
+0|2,6,0|2,6|2,0|3
+0|3,7,6|2,0,7,0|2
+0|2,7,5,7|2,0|4
+0,6,0,7,5,7,6|2,0|2
+0,6|6,0|3
+0,6|2,0|2,6|2,0|3
+0|2,6,7|3,0|4
+0|4,7|2,0|4
+:endlayer
+layer: 8
+0|10
+0|3,6,0|6
+0,6|3,0,6|2,7,0|2
+0,6,5,6|4,7,0|2
+0,6|5,0,7,0|2
+0|3,6,5,6|2,0|3
+0|2,6|5,0|3
+0|2,6|2,0,6|2,0|3
+0|2,6,7|3,6|2,0|2
+0|3,7|2,0|5
+:endlayer
+layer: 9
+0|10
+0|3,6|3,0|4
+0,6|3,0|2,6,7,0|2
+6|2,5,0,6|2,0,7|2,0
+0,6|4,0|5
+6|4,5,6|2,0|3
+0,6|3,5,6,0,6,0|2
+6,0,6|5,0|3
+6,0|2,6|3,0|4
+0|2,7|2,0,6|2,0|3
+:endlayer
+layer: 10
+0,6|4,0|5
+0|2,6|4,0|4
+6|2,5,6|2,0,6,0|3
+6,0,6|3,0,6,7,0|2
+6,5,6|3,5,6,0|3
+0,6,0,6,5,6|2,0,7,0
+0,6|5,0,6,0|2
+6,0,6,0,5,0|2,6,0|2
+0|2,6,0,6|3,0|3
+0|4,6|2,0|4
+:endlayer
+layer: 11
+0,6|2,0,6,0|5
+6,0,6|5,0|3
+6|2,5,6,0|2,6|2,0|2
+0|2,6|5,0,7,0
+0,6|5,5,7,0|2
+0,5,6|2,5,6,0,7,0|2
+6,0|2,6|5,0|2
+0,6|3,5,0,6,0|3
+0|2,6|5,0|3
+0|4,6|2,0|4
+:endlayer
+layer: 12
+0|10
+0|3,6|3,7|2,0|2
+6,0,6|4,7,6,0|2
+6,0,6,0,6|2,5,6,7,0
+0,6|2,0,6,0,6,7|2,0
+6|3,0|3,6,7,0|2
+0|2,6|4,0,6,0|2
+6,0,6,0,6,0,6,0|3
+0|4,5,6|2,0|3
+0|2,7|2,0,6|2,0|3
+:endlayer
+layer: 13
+0|10
+0|6,7,0|3
+0|2,6,0|3,7,0|3
+0|3,6|3,0,7,0|2
+0|2,6|5,0|3
+0,6,0|4,6,0|3
+0|2,6,0,6|2,0|4
+0|3,6|3,0|4
+0|3,7|3,0|4
+0|2,7,0|7
+:endlayer
+layer: 14
+3x0|10
+0|5,6|2,0|3
+0|3,6,0|6
+0|2,6|4,0|4
+2x0|3,6|2,0|5
+0|3,7,0|6
+0|10
+:endlayer
+#### RULES ####
+rule:
+plugin=vanillaBlocks
+number=1
+data:
+JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"dirt",snowy:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=2
+data:
+JSON:{blockState:{blockName:"minecraft:grass",properties:{snowy:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=3
+data:
+JSON:{blockState:{blockName:"minecraft:tallgrass",properties:{type:"tall_grass"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=4
+data:
+JSON:{blockState:{blockName:"minecraft:red_flower",properties:{type:"red_tulip"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=5
+data:
+JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"oak",axis:"none"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=6
+data:
+JSON:{blockState:{blockName:"minecraft:leaves",properties:{check_decay:"false",decayable:"false",variant:"oak"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=7
+data:
+JSON:{blockState:{blockName:"minecraft:leaves",properties:{check_decay:"true",decayable:"false",variant:"oak"}}}
+:enddata
+:endrule
+
+#### ENTITIES ####

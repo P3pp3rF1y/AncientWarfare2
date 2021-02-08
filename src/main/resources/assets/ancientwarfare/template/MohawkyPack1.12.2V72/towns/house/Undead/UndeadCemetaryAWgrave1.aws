@@ -1,0 +1,104 @@
+# minified
+# Ancient Warfare Structure Template File
+# Auto-generated structure template file. created on: 4/29/2020 at: 18:25:39
+# Lines beginning with # denote comments
+
+header:
+version=2.10
+name=UndeadCemetaryAWgrave1
+mods=
+size=3,6,3
+offset=1,5,0
+:endheader
+
+#### VALIDATION ####
+validation:
+type=ground
+survival=false
+worldGenEnabled=false
+unique=false
+preserveBlocks=false
+preventNaturalHostileSpawns=false
+selectionWeight=0
+clusterValue=0
+minDuplicateDistance=0
+dimensionWhiteList=false
+dimensionList=
+biomeGroupList=
+biomeWhiteList=false
+biomeList=
+leveling=0
+fill=0
+border=0
+blockSwap=false
+territoryName=
+biomeReplacement=minecraft:
+:endvalidation
+
+#### LAYERS ####
+layer: 0-2
+3x1|3
+:endlayer
+layer: 3
+3x2|3
+:endlayer
+layer: 4
+4,5,4
+3,5|2
+4|2,3
+:endlayer
+layer: 5
+0|3
+0,6,0
+0|3
+:endlayer
+#### RULES ####
+rule:
+plugin=vanillaBlocks
+number=1
+data:
+JSON:{blockState:{blockName:"minecraft:stone",properties:{variant:"stone"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=2
+data:
+JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"dirt",snowy:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=3
+data:
+JSON:{blockState:{blockName:"minecraft:grass",properties:{snowy:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=4
+data:
+JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"podzol",snowy:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=5
+data:
+JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"coarse_dirt",snowy:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=blockTile
+number=6
+data:
+JSON:{blockState:{blockName:"ancientwarfarestructure:gravestone",properties:{variant:"1",facing:"north"}},facing:"north",teData:{variant:1,lootSettings:{splashPotion:0b,hasMessage:0b,hasLoot:0b,spawnEntity:0b},id:"ancientwarfarestructure:gravestone_tile"}}
+:enddata
+:endrule
+
+#### ENTITIES ####

@@ -33,7 +33,6 @@ import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.gates.types.Gate;
 import net.shadowmage.ancientwarfare.structure.gates.types.GateRotatingBridge;
 
-import javax.annotation.Nonnull;
 import java.util.Optional;
 
 /*
@@ -200,12 +199,6 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 		if (gateType != null) {
 			gateType.setCollisionBoundingBox(this);
 		}
-	}
-
-	@Override
-	public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
-		setPosition(x, y, z);
-		setRotation(yaw, pitch);
 	}
 
 	@Override
@@ -454,6 +447,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound tag) {
 		setPositions(BlockPos.fromLong(tag.getLong("pos1")), BlockPos.fromLong(tag.getLong("pos2")));
+		realignEntityPosition();
 		setGateType(Gate.getGateByID(tag.getInteger("type")));
 		owner = Owner.deserializeFromNBT(tag);
 		edgePosition = tag.getFloat("edge");
@@ -464,6 +458,12 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 		wasPoweredA = tag.getBoolean("power");
 		wasPoweredB = tag.getBoolean("power2");
 		gateType.updateRenderBoundingBox(this);
+	}
+
+	private void realignEntityPosition() {
+		BlockPos min = BlockTools.getMin(pos1, pos2);
+		BlockPos max = BlockTools.getMax(pos1, pos2);
+		setPosition(min.getX() + ((max.getX() - min.getX() + 1) / 2d), min.getY(), min.getZ() + ((max.getZ() - min.getZ() + 1) / 2d));
 	}
 
 	@Override

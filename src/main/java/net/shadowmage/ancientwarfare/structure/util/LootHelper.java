@@ -20,13 +20,13 @@ import net.shadowmage.ancientwarfare.structure.tile.LootSettings;
 
 import javax.annotation.Nullable;
 
-public class LootHelper {
-	public static final String FACTION_NAME_TAG = "factionName";
+import static net.shadowmage.ancientwarfare.npc.event.EventHandler.NO_SPAWN_PREVENTION_TAG;
 
+public class LootHelper {
 	private LootHelper() {}
 
-	public static <T extends TileEntity & ISpecialLootContainer> void fillWithLoot(T te, @Nullable EntityPlayer player) {
-		processLoot(te, player, new ILootTableProcessor() {
+	public static <T extends TileEntity & ISpecialLootContainer> boolean fillWithLootAndCheckIfGoodToOpen(T te, @Nullable EntityPlayer player) {
+		return processLootAndCheckIfGoodToOpen(te, player, new ILootTableProcessor() {
 			@SuppressWarnings("ConstantConditions")
 			@Override
 			public <U extends TileEntity & ISpecialLootContainer> void processLootTable(U te,
@@ -39,7 +39,7 @@ public class LootHelper {
 	}
 
 	public static <T extends TileEntity & ISpecialLootContainer> void dropLoot(T te, @Nullable EntityPlayer player) {
-		processLoot(te, player, new ILootTableProcessor() {
+		processLootAndCheckIfGoodToOpen(te, player, new ILootTableProcessor() {
 			@Override
 			public <U extends TileEntity & ISpecialLootContainer> void processLootTable(U te,
 					@Nullable EntityPlayer player, LootSettings lootSettings, ResourceLocation lootTable) {
@@ -63,8 +63,10 @@ public class LootHelper {
 		return new Vec3i(offsetX, offsetY, offsetZ);
 	}
 
-	public static <T extends TileEntity & ISpecialLootContainer> void processLoot(T te, @Nullable EntityPlayer player, ILootTableProcessor lootTableProcessor) {
+	public static <T extends TileEntity & ISpecialLootContainer> boolean processLootAndCheckIfGoodToOpen(T te,
+			@Nullable EntityPlayer player, ILootTableProcessor lootTableProcessor) {
 		LootSettings lootSettings = te.getLootSettings();
+		boolean goodToOpen = true;
 		if (!te.getWorld().isRemote) {
 			if (lootSettings.getSplashPotion()) {
 				lootSettings.setSplashPotion(false);
@@ -77,25 +79,27 @@ public class LootHelper {
 
 				potionEntity.shoot(playerPos.x - (startPos.getX() + 0.5), playerPos.y - (startPos.getY() + 0.5), playerPos.z - (startPos.getZ() + 0.5), 0.5F, 1.0F);
 				te.getWorld().spawnEntity(potionEntity);
+				goodToOpen = false;
 			}
 			if (lootSettings.getSpawnEntity()) {
 				lootSettings.setSpawnEntity(false);
-				EntityTools.spawnEntity(te.getWorld(), lootSettings.getEntity(), lootSettings.getEntityNBT(), te.getPos().add(getPlayerOffset(te, player)));
+				EntityTools.spawnEntity(te.getWorld(), lootSettings.getEntity(), lootSettings.getEntityNBT(), te.getPos().add(getPlayerOffset(te, player)), NO_SPAWN_PREVENTION_TAG);
+				goodToOpen = false;
 			}
 			if (lootSettings.hasLoot()) {
 				lootSettings.setHasLoot(false);
 				lootSettings.getLootTableName().ifPresent(lootTable -> {
-					//noinspection ConstantConditions
 					lootTableProcessor.processLootTable(te, player, lootSettings, lootTable);
 					BlockTools.notifyBlockUpdate(te);
 				});
 				lootSettings.removeLoot();
 			}
-			if (lootSettings.hasMessage()) {
+			if (lootSettings.hasMessage() && player != null) {
 				lootSettings.setHasMessage(false);
 				player.sendMessage(new TextComponentTranslation(lootSettings.getPlayerMessage()));
 			}
 		}
+		return goodToOpen;
 	}
 
 	public interface ILootTableProcessor {

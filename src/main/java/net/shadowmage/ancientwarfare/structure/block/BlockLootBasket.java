@@ -158,8 +158,9 @@ public class BlockLootBasket extends BlockBaseStructure {
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if (!world.isRemote) {
-			WorldTools.getTile(world, pos, TileLootBasket.class).ifPresent(te -> te.fillWithLoot(player));
-			NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_LOOT_BASKET, pos);
+			if (WorldTools.getTile(world, pos, TileLootBasket.class).map(te -> te.fillWithLootAndCheckIfGoodToOpen(player)).orElse(false)) {
+				NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_LOOT_BASKET, pos);
+			}
 		}
 		return true;
 	}

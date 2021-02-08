@@ -1,0 +1,105 @@
+# minified
+# Ancient Warfare Structure Template File
+# Auto-generated structure template file. created on: 11/8/2019 at: 12:27:16
+# Lines beginning with # denote comments
+
+header:
+version=2.10
+name=OrcRaidersGeneric
+mods=
+size=7,41,7
+offset=3,5,6
+:endheader
+
+#### VALIDATION ####
+validation:
+type=ground
+survival=false
+worldGenEnabled=true
+unique=false
+preserveBlocks=false
+selectionWeight=30
+clusterValue=20
+minDuplicateDistance=500
+dimensionWhiteList=true
+dimensionList=0
+biomeGroupList=
+biomeWhiteList=true
+biomeList=biomesoplenty:shrubland,biomesoplenty:woodland,minecraft:mutated_roofed_forest,minecraft:roofed_forest,biomesoplenty:bayou,biomesoplenty:dead_forest,traverse:woodlands,minecraft:forest,minecraft:extreme_hills,minecraft:taiga,traverse:badlands,biomesoplenty:highland,biomesoplenty:moor,biomesoplenty:dead_swamp,traverse:rocky_plains,minecraft:redwood_taiga,minecraft:ice_flats,minecraft:forest_hills,biomesoplenty:steppe,minecraft:plains
+leveling=4
+fill=3
+border=4
+blockSwap=false
+territoryName=ruins
+biomeReplacement=minecraft:minecraft:
+:endvalidation
+
+#### LAYERS ####
+layer: 0-3
+7x1|7
+:endlayer
+layer: 4
+7x2|7
+:endlayer
+layer: 5
+0|3,3|4
+3|2,0,3|3,0
+3|3,4,3,0|2
+3|3,5,3|3
+3,0,3,6,3|3
+0,3|2,0|2,3,0
+0|2,3,0|4
+:endlayer
+layer: 6-40
+7x0|7
+:endlayer
+#### RULES ####
+rule:
+plugin=vanillaBlocks
+number=1
+data:
+JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"dirt",snowy:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=2
+data:
+JSON:{blockState:{blockName:"minecraft:grass",properties:{snowy:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=3
+data:
+JSON:{blockState:{blockName:"minecraft:tallgrass",properties:{type:"tall_grass"}}}
+:enddata
+:endrule
+
+rule:
+plugin=blockTile
+number=4
+data:
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:3,hostile:1b,forced:1b,customTag:{factionName:"orc"},maxToSpawn:3,entityId:"ancientwarfarenpc:faction.archer",minToSpawn:3}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:3,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+:enddata
+:endrule
+
+rule:
+plugin=blockTile
+number=5
+data:
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:2,hostile:1b,forced:1b,customTag:{factionName:"orc"},maxToSpawn:2,entityId:"ancientwarfarenpc:faction.soldier.elite",minToSpawn:2}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:2,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+:enddata
+:endrule
+
+rule:
+plugin=blockTile
+number=6
+data:
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:0,spawnDelay:0,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:6,hostile:1b,forced:1b,customTag:{factionName:"orc"},maxToSpawn:6,entityId:"ancientwarfarenpc:faction.soldier",minToSpawn:6}],groupWeight:1}],playerRange:16,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:3,transparent:1b,maxDelay:0,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+:enddata
+:endrule
+
+#### ENTITIES ####

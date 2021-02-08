@@ -1,0 +1,146 @@
+# minified
+# Ancient Warfare Structure Template File
+# Auto-generated structure template file. created on: 4/15/2020 at: 23:56:13
+# Lines beginning with # denote comments
+
+header:
+version=2.10
+name=SarkonidTownGenFillField3
+mods=
+size=9,8,9
+offset=4,5,8
+:endheader
+
+#### VALIDATION ####
+validation:
+type=ground
+survival=false
+worldGenEnabled=false
+unique=false
+preserveBlocks=false
+selectionWeight=1
+clusterValue=1
+minDuplicateDistance=1
+dimensionWhiteList=true
+dimensionList=
+biomeGroupList=
+biomeWhiteList=true
+biomeList=
+leveling=0
+fill=0
+border=0
+blockSwap=false
+territoryName=
+biomeReplacement=minecraft:
+:endvalidation
+
+#### LAYERS ####
+layer: 0-2
+9x1|9
+:endlayer
+layer: 3-4
+2x2|9
+5x2|2,1|5,2|2
+2x2|9
+:endlayer
+layer: 5
+0|9
+0,1|7,0
+2x0,1,3|5,1,0
+0,1,3|2,4,3|2,1,0
+2x0,1,3|5,1,0
+0,1,5|5,1,0
+0|9
+:endlayer
+layer: 6
+0|9
+0,1,6|5,1,0
+2x0,6,7|5,6,0
+0,6,7|2,8,7|2,6,0
+2x0,6,7|5,6,0
+0,1,0|5,1,0
+0|9
+:endlayer
+layer: 7
+0|9
+0,6,0|5,6,0
+2x0|9
+0|4,9,0|4
+2x0|9
+0,6,0|5,6,0
+0|9
+:endlayer
+#### RULES ####
+rule:
+plugin=vanillaBlocks
+number=1
+data:
+JSON:{blockState:{blockName:"minecraft:sandstone",properties:{type:"sandstone"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=2
+data:
+JSON:{blockState:{blockName:"minecraft:sand",properties:{variant:"sand"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=3
+data:
+JSON:{blockState:{blockName:"minecraft:farmland",properties:{moisture:"7"}}}
+:enddata
+:endrule
+
+rule:
+plugin=fluid
+number=4
+data:
+JSON:{blockState:{blockName:"minecraft:water",properties:{level:"0"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=5
+data:
+JSON:{blockState:{blockName:"minecraft:sandstone_stairs",properties:{half:"bottom",shape:"straight",facing:"north"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=6
+data:
+JSON:{blockState:{blockName:"minecraft:stone_slab2",properties:{half:"bottom",variant:"red_sandstone"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=7
+data:
+JSON:{blockState:{blockName:"minecraft:beetroots",properties:{age:"3"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=8
+data:
+JSON:{blockState:{blockName:"minecraft:birch_fence",properties:{east:"false",south:"false",north:"false",west:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=9
+data:
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"up"}}}
+:enddata
+:endrule
+
+#### ENTITIES ####

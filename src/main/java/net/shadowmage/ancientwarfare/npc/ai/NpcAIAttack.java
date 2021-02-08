@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public abstract class NpcAIAttack<T extends NpcBase> extends NpcAI<T> {
 	private EntityLivingBase target;
-	private int attackDelay = 35;
+	private int attackDelay = 0;
 
 	public NpcAIAttack(T npc) {
 		super(npc);
@@ -41,6 +41,7 @@ public abstract class NpcAIAttack<T extends NpcBase> extends NpcAI<T> {
 		moveRetryDelay = 0;
 		npc.addAITask(TASK_ATTACK);
 		npc.setSwingingArms(true);
+		attackDelay = 0;
 	}
 
 	@Override
@@ -51,16 +52,21 @@ public abstract class NpcAIAttack<T extends NpcBase> extends NpcAI<T> {
 		npc.setSwingingArms(false);
 	}
 
+	protected int getCoolDown() {
+		return attackDelay;
+	}
+
 	@Override
 	public final void updateTask() {
 		npc.getLookHelper().setLookPositionWithEntity(target, 30.f, 30.f);
-		double distanceToEntity = npc.getDistanceSq(target.posX, target.getEntityBoundingBox().minY, target.posZ);
-		if (shouldCloseOnTarget(distanceToEntity)) {
+		double distanceToEntitySq = npc.getDistanceSq(target.posX, target.getEntityBoundingBox().minY, target.posZ);
+		if (shouldCloseOnTarget(distanceToEntitySq)) {
 			npc.addAITask(TASK_MOVE);
-			moveToEntity(target, distanceToEntity);
+			moveToEntity(target, distanceToEntitySq);
 		} else {
+			npc.getNavigator().clearPath();
 			attackDelay--;
-			doAttack(distanceToEntity);
+			doAttack(distanceToEntitySq);
 		}
 	}
 

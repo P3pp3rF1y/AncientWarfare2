@@ -40,6 +40,9 @@ public abstract class PacketVehicleBase extends PacketBase {
 	@Override
 	protected void execute(EntityPlayer player) {
 		vehicle = getVehicle(player.world);
+		if (vehicle == null) {
+			return;
+		}
 		super.execute(player);
 	}
 }

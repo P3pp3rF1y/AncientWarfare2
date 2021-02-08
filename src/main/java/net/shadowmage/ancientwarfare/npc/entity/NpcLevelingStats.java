@@ -55,13 +55,13 @@ public class NpcLevelingStats {
 		}
 		ExperienceEntry entry = experienceMap.get(type);
 		entry.xp += xpGained;
-		while (entry.level < AWNPCStatics.maxNpcLevel && entry.xp >= getXPToLevel(entry.level + 1)) {
+		while (entry.level < (npc instanceof NpcCombat ? AWNPCStatics.maxNpcCombatLevel : AWNPCStatics.maxNpcWorkerLevel) && entry.xp >= getXPToLevel(entry.level + 1)) {
 			entry.xp -= getXPToLevel(entry.level + 1);
 			entry.level++;
 			onSubLevelGained(entry.level);
 		}
 		this.xp += xpGained;
-		while (level < AWNPCStatics.maxNpcLevel && this.xp >= getXPToLevel(level)) {
+		while (level < (npc instanceof NpcCombat ? AWNPCStatics.maxNpcCombatLevel : AWNPCStatics.maxNpcWorkerLevel) && this.xp >= getXPToLevel(level)) {
 			this.xp -= getXPToLevel(level);
 			onBaseLevelGained(level + 1);
 		}
@@ -69,7 +69,7 @@ public class NpcLevelingStats {
 
 	private void onBaseLevelGained(int newLevel) {
 		level = newLevel;
-		if (newLevel <= AWNPCStatics.maxNpcLevel) {
+		if (newLevel <= (npc instanceof NpcCombat ? AWNPCStatics.maxNpcCombatLevel : AWNPCStatics.maxNpcWorkerLevel)) {
 			if (npc.getMaxHealthOverride() <= 0) {
 				//TODO get rid of instanceof check once player owned attributes are migrated to similar structure to faction npcs
 				double health;

@@ -1,0 +1,80 @@
+# minified
+# Ancient Warfare Structure Template File
+# Auto-generated structure template file. created on: 12/2/2018 at: 11:53:54
+# Lines beginning with # denote comments
+
+header:
+version=2.8
+name=EmptyWaterBalancingProxy4
+mods=
+size=4,32,13
+offset=2,9,12
+:endheader
+
+#### VALIDATION ####
+validation:
+type=water
+survival=false
+worldGenEnabled=true
+unique=false
+preserveBlocks=false
+selectionWeight=30
+clusterValue=50
+minDuplicateDistance=300
+dimensionWhiteList=false
+dimensionList=
+biomeWhiteList=true
+biomeList=minecraft:ocean,minecraft:deep_ocean
+leveling=0
+fill=0
+border=0
+blockSwap=false
+territoryName=oceanopen
+biomeReplacement=
+:endvalidation
+
+#### LAYERS ####
+layer: 0-3
+13x1|4
+:endlayer
+layer: 4-5
+13x2|3,1
+:endlayer
+layer: 6
+4x2|3,1
+2|4
+8x2|3,1
+:endlayer
+layer: 7
+2|4
+3x2|3,1
+2|4
+2x2|3,1
+2|4
+4x2|3,1
+2|4
+:endlayer
+layer: 8
+13x2|4
+:endlayer
+layer: 9-31
+13x0|4
+:endlayer
+#### RULES ####
+rule:
+plugin=fluid
+number=1
+data:
+JSON:{blockState:{blockName:"minecraft:water",properties:{level:"8"}}}
+:enddata
+:endrule
+
+rule:
+plugin=fluid
+number=2
+data:
+JSON:{blockState:{blockName:"minecraft:water",properties:{level:"0"}}}
+:enddata
+:endrule
+
+#### ENTITIES ####

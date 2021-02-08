@@ -1,0 +1,124 @@
+### Ancient Warfare Town Template ###
+# a line beginning with # denotes a comment line, and is ignored during parsing
+# the line must -start- with # to be ignored, mid-line comments are not allowed
+header:
+name=NoggUnwalledTown
+minSize=10
+maxSize=14
+buildingExpansion=0
+preventNaturalHostileSpawns=true
+selectionWeight=150
+clusterValue=250
+townBlockSize=48
+townPlotSize=3
+wallStyle=0
+wallSize=0
+exteriorSize=1
+exteriorPlotSize=2
+interiorEmptyPlotChance=0
+randomVillagersPerChunk=0
+roadBlocks={"name":"minecraft:dirt","properties":{"variant":"coarse_dirt"}}|{"name":"minecraft:grass_path"}
+roadMeta=0
+biomeWhiteList=true
+biomeList=nt:cold_birch_forest_hills,nt:cold_birch_forest,minecraft:birch_forest,traverse:birch_forested_hills,nt:birch_hills,minecraft:birch_forest_hills
+dimensionWhiteList=true
+dimensionList=0
+lamp=NoggTownGenLampPost
+territoryName=nogg
+biomeReplacement=minecraft:birch_forest
+:endheader
+
+#wall type registry
+#name:type:id:weight
+walls:
+:endwalls
+
+#wall patterns
+#size:pattern
+#patterns reference the wall id number from above.  enter a non-registered number in the pattern for an empty spot (used for large-sized wall corners)
+wallPatterns:
+:endWallPaterns
+
+#list of structures, one per line
+uniqueStructures:
+NoggTownGenMarketSquare
+:endUniqueStructures
+
+#list of main structures, one per line
+mainStructures:
+WaypointShrineTown
+NoggTownGenWellSquare
+NoggTownGenCourtMagiciansHouse
+NoggTownGenTavern
+NoggTownGenMuckyDuckInn
+NoggTownGenClockTower
+NoggTownGenMarketPlace
+NoggTownGenRoyalBank
+NoggTownGenHealthCare
+NoggTownGenThreeLittlePigs
+NoggTownGenChurchSmall
+NoggTownGenShopGemsBOP
+:endMainStructures
+
+
+#list of house structure templates w/weight, to be used to fill in random positions post-generation
+#structure_name:weight
+houseStructures:
+NoggTownGenHouse1:2
+NoggTownGenHouse2:2
+NoggTownGenHouse3:2
+NoggTownGenHouse4:2
+NoggTownGenHouse5:2
+NoggTownGenHouse6:2
+NoggTownGenHouse7:2
+NoggTownGenHouse8:2
+NoggTownGenHouse9:2
+NoggTownGenHouse10:2
+NoggTownGenHouse11:2
+NoggTownGenHouse12:2
+NoggTownGenHouse13:2
+NoggTownGenWeaponDealer:1
+NoggTownGenBakery:1
+NoggTownGenForge:1
+NoggTownGenInn:1
+NoggTownGenRestaurant:1
+:endHouseStructures
+
+#list of cosmetic structure templates w/weight, to be used to fill in random positions post-generation
+#structure_name:weight
+cosmeticStructures:
+TownGenBirchTreeMedium1:1
+TownGenBirchTreeLarge1:1
+TownGenBirchTreeSmall1:1
+TownGenBirchTreeTallThin:1
+NoggTownGenHenHouse:1
+NoggTownGenPigPen:1
+NoggTownGenStables:1
+NoggTownGenWorkShed:1
+:endCosmeticStructures
+
+#list of exterior structure templates w/weight, to be used to fill in random positions post-generation
+#structure_name:weight
+exteriorStructures:
+NoggTownGenCharcoalBurner:2
+NoggTownGenMediumFieldMixed:2
+NoggTownGenMediumFieldWheat:2
+NoggTownGenLargeFieldWheat:2
+NoggTownGenSmallFieldMixed:2
+NoggTownGenBlacksmithAndStables:2
+NoggTownGenHorseTrader:2
+NoggTownGenLumberjacks:2
+NoggTownGenWatermill:1
+NoggTownGenWindmill:1
+NoggTownGenRuinedHouse:1
+NoggTownGenAppleOrchardRustic:2
+TownGenBirchTreeVillagePond:2
+NoggTownGenHouse1:1
+NoggTownGenHouse2:1
+NoggTownGenHouse3:1
+NoggTownGenHouse4:1
+NoggTownGenHouse5:1
+NoggTownGenArborist:3
+GuildTownGenFreelancerCamp:3
+SmingolTownGenLargeInvasionForce:1
+:endExteriorStructures

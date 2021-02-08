@@ -1,0 +1,67 @@
+# minified
+# Ancient Warfare Structure Template File
+# Auto-generated structure template file. created on: 11/29/2020 at: 1:27:45
+# Lines beginning with # denote comments
+
+header:
+version=2.11
+name=MountainGiantBopMountains
+mods=biomesoplenty
+size=5,7,5
+offset=2,6,4
+:endheader
+
+#### VALIDATION ####
+validation:
+type=ground
+structureAuthor=mohawky
+survival=false
+worldGenEnabled=true
+unique=false
+preserveBlocks=false
+preventNaturalHostileSpawns=true
+selectionWeight=30
+clusterValue=400
+minDuplicateDistance=1000
+dimensionWhiteList=true
+dimensionList=
+biomeGroupList=
+biomeWhiteList=true
+biomeList=biomesoplenty:mountain
+leveling=6
+fill=6
+border=6
+blockSwap=true
+territoryName=
+biomeReplacement=minecraft:
+minGenerationHeight=150
+maxGenerationHeight=255
+:endvalidation
+
+#### LAYERS ####
+layer: 0-5
+5x1|5
+:endlayer
+layer: 6
+2x0|5
+0|2,2,0|2
+2x0|5
+:endlayer
+#### RULES ####
+rule:
+plugin=vanillaBlocks
+number=1
+data:
+JSON:{blockState:{blockName:"minecraft:stone",properties:{variant:"stone"}}}
+:enddata
+:endrule
+
+rule:
+plugin=blockTile
+number=2
+data:
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:10,spawnDelay:1,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],hasCustomEquipment:0b,ArmorItems:[{},{},{},{}],skinSettings:{npcTypeName:"custom",skinTypeSelected:"default"},HandDropChances:[0.085f,0.085f],factionName:"giant",HandItems:[{id:"ancientwarfarenpc:giant_club",Count:1b,Damage:0s},{}]},maxToSpawn:1,entityId:"ancientwarfarenpc:faction.leader.elite",minToSpawn:1}],groupWeight:1}],playerRange:40,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:10,xpToDrop:40,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+:enddata
+:endrule
+
+#### ENTITIES ####

@@ -1,6 +1,8 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
@@ -30,13 +32,24 @@ public class NpcAIBlockWithShield extends NpcAI<NpcBase> {
 
 	private boolean canExecute(Predicate<EntityLivingBase> defendFrom) {
 		if (target == null) {
-			return hasShieldInOffhand() && npc.getShieldDisabledTick() <= 0 && (npc.getActiveHand() == EnumHand.OFF_HAND || getAttackTarget().map(defendFrom::test).orElse(false));
+			return hasShieldInOffhand() && npc.getShieldDisabledTick() <= 0 && (shieldWithdrawTicks > 0 || getAttackTarget().map(defendFrom::test).orElse(false));
 		}
-		return hasShieldInOffhand() && npc.getShieldDisabledTick() <= 0 && target.isEntityAlive() && (shieldWithdrawTicks > 0 || getAttackTarget().map(t -> t.equals(target) && shouldDefendFrom(target)).orElse(false));
+		return hasShieldInOffhand() && npc.getShieldDisabledTick() <= 0 && target.isEntityAlive() && getAttackTarget().isPresent() && (shieldWithdrawTicks > 0 || getAttackTarget().map(t -> t.equals(target) && shouldDefendFrom(target)).orElse(false));
 	}
 
 	private boolean shouldDefendFrom(@Nullable EntityLivingBase e) {
-		return e != null && (e.isSwingInProgress || isAimingWithBow(e));
+		return e != null && isPlayerOrTargetsThisNpc(e) && ((e.isSwingInProgress && npc.getDistance(e) < 4 ) || isAimingWithBow(e));
+	}
+
+	private boolean isPlayerOrTargetsThisNpc(EntityLivingBase e) {
+		if (e instanceof EntityPlayer) {
+			return true;
+		}
+		if (e instanceof EntityLiving) {
+			EntityLiving living = (EntityLiving) e;
+			return living.getAttackTarget() != null && living.getAttackTarget().equals(npc);
+		}
+		return false;
 	}
 
 	@Override
@@ -49,8 +62,7 @@ public class NpcAIBlockWithShield extends NpcAI<NpcBase> {
 	@SuppressWarnings("java:S2259")
 	private void init() {
 		target = getAttackTarget().orElse(null);
-		//noinspection ConstantConditions
-		reactionDelayTicks = new Random(target.world.getTotalWorldTime()).nextInt(isAimingWithBow(target) ? maxReactionDelayBow : maxReactionDelay);
+		reactionDelayTicks = new Random(npc.world.getTotalWorldTime()).nextInt(target != null && isAimingWithBow(target) ? maxReactionDelayBow : maxReactionDelay);
 		shieldWithdrawTicks = SHIELD_WITHDRAW_DELAY;
 	}
 
@@ -58,9 +70,7 @@ public class NpcAIBlockWithShield extends NpcAI<NpcBase> {
 	public final void resetTask() {
 		target = null;
 		reactionDelayTicks = 0;
-		shieldWithdrawTicks = 0;
 		npc.startAIControlFlag(ATTACK);
-		npc.stopActiveHand();
 	}
 
 	@Override
@@ -71,17 +81,21 @@ public class NpcAIBlockWithShield extends NpcAI<NpcBase> {
 		}
 		if (!shouldDefendFrom(target)) {
 			shieldWithdrawTicks--;
+			return;
 		}
 		npc.stopAIControlFlag(ATTACK);
 		npc.setActiveHand(EnumHand.OFF_HAND);
-		npc.activeItemStackUseCount = 5; //need to set this because shield block logic checks for more than 5 ticks of shield use
+		npc.activeItemStackUseCount = SHIELD_WITHDRAW_DELAY;
 		npc.getNavigator().clearPath();
 
-		npc.getLookHelper().setLookPositionWithEntity(target, 30.f, 30.f);
-		double distanceToEntity = npc.getDistanceSq(target.posX, target.getEntityBoundingBox().minY, target.posZ);
+		if (target != null) {
+			npc.getLookHelper().setLookPositionWithEntity(target, 30.f, 30.f);
+			double distanceToEntity = npc.getDistanceSq(target.posX, target.getEntityBoundingBox().minY, target.posZ);
 
-		if (!shouldCloseOnTarget(distanceToEntity) || isAimingWithBow(target)) {
-			startBlocking();
+			if (!shouldCloseOnTarget(distanceToEntity) || isAimingWithBow(target)) {
+				startBlocking();
+				npc.getNavigator().tryMoveToXYZ(target.posX, target.posY, target.posZ, npc.getDefaultMoveSpeed() * 0.5f);
+			}
 		}
 	}
 

@@ -12,6 +12,7 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIDoor;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
+import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionPanic;
 
 public abstract class NpcFactionCivilian extends NpcFaction {
 
@@ -26,15 +27,16 @@ public abstract class NpcFactionCivilian extends NpcFaction {
 	}
 
 	private void addAI() {
-		this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
-		this.tasks.addTask(0, new NpcAIDoor(this, true));
-		this.tasks.addTask(1, new NpcAIFollowPlayer(this));
-		this.tasks.addTask(2, new NpcAIMoveHome(this, 50F, 3F, 30F, 3F));
+		tasks.addTask(0, new EntityAISwimming(this));
+		tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
+		tasks.addTask(0, new NpcAIDoor(this, true));
+		tasks.addTask(0, new NpcAIFactionPanic(this, 1.25D));
+		tasks.addTask(1, new NpcAIFollowPlayer(this));
+		tasks.addTask(2, new NpcAIMoveHome(this, 50F, 3F, 30F, 3F));
 
-		this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
-		this.tasks.addTask(102, new NpcAIWander(this));
-		this.tasks.addTask(103, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
+		tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
+		tasks.addTask(102, new NpcAIWander(this));
+		tasks.addTask(103, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
 	}
 
 	@Override
@@ -44,7 +46,7 @@ public abstract class NpcFactionCivilian extends NpcFaction {
 
 	@Override
 	public boolean canTarget(Entity e) {
-		return false;
+		return true;
 	}
 
 }

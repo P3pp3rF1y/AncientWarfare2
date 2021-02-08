@@ -1,0 +1,257 @@
+# minified
+# Ancient Warfare Structure Template File
+# Auto-generated structure template file. created on: 3/16/2019 at: 22:24:16
+# Lines beginning with # denote comments
+
+header:
+version=2.8
+name=TownGenSpruceLarge1
+mods=
+size=11,22,14
+offset=5,3,13
+:endheader
+
+#### VALIDATION ####
+validation:
+type=ground
+survival=false
+worldGenEnabled=false
+unique=false
+preserveBlocks=false
+selectionWeight=0
+clusterValue=0
+minDuplicateDistance=0
+dimensionWhiteList=false
+dimensionList=
+biomeWhiteList=false
+biomeList=
+leveling=0
+fill=0
+border=0
+blockSwap=false
+:endvalidation
+
+#### LAYERS ####
+layer: 0-1
+14x1|11
+:endlayer
+layer: 2
+7x2|11
+2|5,1,2|5
+2|4,1|3,2|4
+2|5,1,2|5
+4x2|11
+:endlayer
+layer: 3
+7x0|11
+0|5,4,0|5
+0|4,3|3,0|4
+0|5,3,0|5
+4x0|11
+:endlayer
+layer: 4
+8x0|11
+0|5,3|2,0|4
+5x0|11
+:endlayer
+layer: 5
+8x0|11
+0|5,3,0|5
+5x0|11
+:endlayer
+layer: 6
+4x0|11
+0|5,5,0|5
+0|4,5,0|2,5,0|3
+0|8,5,0|2
+0|5,5|2,0,5,0|2
+0|2,5,0|2,3,5|2,0|3
+0|6,5,0|4
+0|8,5,0|2
+0|3,5,0|7
+2x0|11
+:endlayer
+layer: 7
+5x0|11
+0|2,5,0|2,5|2,0|4
+0,5,4,5|3,0,5,0|3
+0|2,5,6,5|2,0|3,7,0
+0|3,5,6,3,0|5
+0|2,5,0,5,0|2,5|2,0|2
+0|3,5,0|7
+0|4,5,4,5,0|4
+0|5,5,0|5
+0|11
+:endlayer
+layer: 8
+5x0|11
+0|6,5|2,0|3
+0|2,5,0,5,0,5|3,0|2
+0|3,5,0,5|2,4,6,5,0
+0|3,5|2,3,6,5|2,0|2
+0|3,5|2,4,5,0|4
+0|4,5,4,5,0|4
+0|5,5,0|5
+2x0|11
+:endlayer
+layer: 9
+5x0|11
+0|5,5|2,0|4
+0|5,5,0|5
+0|4,5|2,0,5|2,0|2
+0|3,5|2,3,5,0|4
+0|3,5|3,0|5
+0|5,5,0|5
+3x0|11
+:endlayer
+layer: 10
+6x0|11
+0|5,7,0|5
+0|11
+0|2,5,0,7,3,0|2,5,0|2
+0|11
+0|3,7,0|2,5,0|4
+3x0|11
+:endlayer
+layer: 11
+5x0|11
+0|6,7,0|4
+0|4,7,5,4,5,0|3
+0|3,5|3,6,5,0|3
+0|2,7,5|2,3,5|3,0|2
+0|3,5,6,5|2,0|4
+0|3,5,4,5,0,5,0|3
+0|4,5,0|6
+2x0|11
+:endlayer
+layer: 12
+6x0|11
+0|6,5,0|4
+0|4,5|4,0|3
+0|3,5|2,3,5|2,0|3
+0|4,5|2,0,5,0|3
+0|4,5,0|6
+3x0|11
+:endlayer
+layer: 13
+6x0|11
+0|5,5,0|5
+0|5,7,0|5
+0|2,5,0|2,3,0,5,0|3
+0|3,5,0|2,7,5,0|3
+0|4,7,0|6
+3x0|11
+:endlayer
+layer: 14
+5x0|11
+0|5,5,0|5
+0|11
+0|4,5|2,0,5,0|3
+0|3,5,6,3,5,0|4
+0|4,5|2,0|5
+0|5,5,0|5
+3x0|11
+:endlayer
+layer: 15
+6x0|11
+0|5,5,0|5
+0|4,5,4,5,0|4
+0|4,5,3,6,5,0|3
+0|4,5|3,0|4
+4x0|11
+:endlayer
+layer: 16
+7x0|11
+0|5,7,0|5
+0|3,5|2,3,5,0|4
+0|5,5,3,7,0|3
+0|6,5,0|4
+3x0|11
+:endlayer
+layer: 17
+7x0|11
+0|4,5,0,5,0|4
+0|3,7|2,3,0|5
+5x0|11
+:endlayer
+layer: 18
+7x0|11
+0|5,5,0|5
+0|4,5,3,5,0|4
+0|5,5,0|5
+4x0|11
+:endlayer
+layer: 19
+7x0|11
+0|5,7,0|5
+0|4,7|3,0|4
+5x0|11
+:endlayer
+layer: 20
+8x0|11
+0|5,5,0|5
+5x0|11
+:endlayer
+layer: 21
+8x0|11
+0|5,7,0|5
+5x0|11
+:endlayer
+#### RULES ####
+rule:
+plugin=vanillaBlocks
+number=1
+data:
+JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"dirt",snowy:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=2
+data:
+JSON:{blockState:{blockName:"minecraft:grass",properties:{snowy:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=3
+data:
+JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"spruce",axis:"y"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=4
+data:
+JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"spruce",axis:"z"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=5
+data:
+JSON:{blockState:{blockName:"minecraft:leaves",properties:{check_decay:"true",decayable:"false",variant:"spruce"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=6
+data:
+JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"spruce",axis:"x"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=7
+data:
+JSON:{blockState:{blockName:"minecraft:leaves",properties:{check_decay:"false",decayable:"false",variant:"spruce"}}}
+:enddata
+:endrule
+
+#### ENTITIES ####

@@ -1,0 +1,62 @@
+# minified
+# Ancient Warfare Structure Template File
+# Auto-generated structure template file. created on: 4/29/2020 at: 15:48:51
+# Lines beginning with # denote comments
+
+header:
+version=2.10
+name=UndeadCemetaryFillSkull2
+mods=
+size=1,2,1
+offset=0,0,0
+:endheader
+
+#### VALIDATION ####
+validation:
+type=ground
+survival=false
+worldGenEnabled=false
+unique=false
+preserveBlocks=false
+preventNaturalHostileSpawns=false
+selectionWeight=0
+clusterValue=0
+minDuplicateDistance=0
+dimensionWhiteList=false
+dimensionList=
+biomeGroupList=
+biomeWhiteList=false
+biomeList=
+leveling=0
+fill=0
+border=0
+blockSwap=false
+territoryName=
+biomeReplacement=minecraft:
+:endvalidation
+
+#### LAYERS ####
+layer: 0
+1
+:endlayer
+layer: 1
+2
+:endlayer
+#### RULES ####
+rule:
+plugin=vanillaBlocks
+number=1
+data:
+JSON:{blockState:{blockName:"minecraft:iron_bars",properties:{east:"false",south:"false",north:"false",west:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaSkull
+number=2
+data:
+JSON:{blockState:{blockName:"minecraft:skull",properties:{nodrop:"false",facing:"up"}},skullRotation:8,teData:{Rot:8b,id:"minecraft:skull",SkullType:0b}}
+:enddata
+:endrule
+
+#### ENTITIES ####

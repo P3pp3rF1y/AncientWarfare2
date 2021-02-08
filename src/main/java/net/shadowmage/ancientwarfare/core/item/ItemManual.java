@@ -1,5 +1,7 @@
 package net.shadowmage.ancientwarfare.core.item;
 
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -18,6 +20,9 @@ import net.shadowmage.ancientwarfare.core.gamedata.WorldData;
 import net.shadowmage.ancientwarfare.core.gui.manual.GuiManual;
 import net.shadowmage.ancientwarfare.core.init.AWCoreItems;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class ItemManual extends ItemBaseCore {
 	public ItemManual() {
@@ -38,6 +43,12 @@ public class ItemManual extends ItemBaseCore {
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_MANUAL);
 		return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		tooltip.add(I18n.format("item.manual.tooltip"));
 	}
 
 	@SubscribeEvent

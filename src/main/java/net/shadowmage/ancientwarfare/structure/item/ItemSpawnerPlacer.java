@@ -156,6 +156,7 @@ public class ItemSpawnerPlacer extends ItemBaseStructure implements IItemKeyInte
 			settings.setSpawnRange(0);
 			settings.setPlayerRange(16);
 			settings.toggleTransparent();
+			settings.setSpawnYOffset(0);
 		}
 
 		spawnSettings.setEntityToSpawn(entity);

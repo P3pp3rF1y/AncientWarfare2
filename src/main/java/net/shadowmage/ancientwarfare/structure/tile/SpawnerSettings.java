@@ -46,6 +46,8 @@ import java.util.Random;
 import java.util.Set;
 import java.util.function.Predicate;
 
+import static net.shadowmage.ancientwarfare.npc.event.EventHandler.NO_SPAWN_PREVENTION_TAG;
+
 @SuppressWarnings("SpellCheckingInspection")
 public class SpawnerSettings {
 	private static final String RESPOND_TO_REDSTONE_TAG = "respondToRedstone";
@@ -66,6 +68,7 @@ public class SpawnerSettings {
 	private static final String INVENTORY_TAG = "inventory";
 	private static final String HOSTILE_TAG = "hostile";
 	private static final String FACTION_NAME_TAG = "factionName";
+	private static final String SPAWN_Y_OFFSET_TAG = "spawnYOffset";
 	private List<EntitySpawnGroup> spawnGroups = new ArrayList<>();
 
 	private ItemStackHandler inventory = new ItemStackHandler(9);
@@ -90,6 +93,8 @@ public class SpawnerSettings {
 	private boolean lightSensitive;
 
 	private int xpToDrop;
+
+	private int spawnYOffset = 0;
 
 	private boolean isOneShotSpawner;
 	private String factionName = "";
@@ -192,7 +197,7 @@ public class SpawnerSettings {
 		}
 
 		if (toSpawn != null) {
-			toSpawn.spawnEntities(world, pos, index, range);
+			toSpawn.spawnEntities(world, pos, index, spawnYOffset, range);
 			if (toSpawn.shouldRemove()) {
 				spawnGroups.remove(toSpawn);
 			}
@@ -288,6 +293,7 @@ public class SpawnerSettings {
 		tag.setTag(SPAWN_GROUPS_TAG, groupList);
 
 		tag.setTag(INVENTORY_TAG, inventory.serializeNBT());
+		tag.setInteger(SPAWN_Y_OFFSET_TAG, spawnYOffset);
 
 		return tag;
 	}
@@ -319,6 +325,9 @@ public class SpawnerSettings {
 		}
 		if (tag.hasKey(INVENTORY_TAG)) {
 			inventory.deserializeNBT(tag.getCompoundTag(INVENTORY_TAG));
+		}
+		if (tag.hasKey(SPAWN_Y_OFFSET_TAG)) {
+			spawnYOffset = tag.getInteger(SPAWN_Y_OFFSET_TAG);
 		}
 
 		updateSpawnProperties();
@@ -477,6 +486,10 @@ public class SpawnerSettings {
 		this.pos = posIn;
 	}
 
+	public int getSpawnYOffset() { return spawnYOffset; }
+
+	public void setSpawnYOffset(int spawnYOffset) { this.spawnYOffset = spawnYOffset; }
+
 	public static boolean spawnsHostileNpcs(SpawnerSettings spawnerSettings) {
 		return spawnerSettings.spawnsEntity(spawnerSettings::isHostileNpc);
 	}
@@ -526,7 +539,8 @@ public class SpawnerSettings {
 			entitiesToSpawn.add(setting);
 		}
 
-		private void spawnEntities(World world, BlockPos spawnPos, int grpIndex, int range) {
+		private void spawnEntities(World world, BlockPos spawnPos, int grpIndex, int yOffset, int range) {
+			spawnPos = spawnPos.add(0, yOffset, 0);
 			Iterator<EntitySpawnSettings> it = entitiesToSpawn.iterator();
 			int index = 0;
 			EntitySpawnSettings entitySpawnSettings;
@@ -783,6 +797,7 @@ public class SpawnerSettings {
 				((EntityLiving) e).spawnExplosionParticle();
 			}
 			setDataFromTag(e); //some data needs to be set before spawning entity in the world (like factionName)
+			e.getTags().add(NO_SPAWN_PREVENTION_TAG);
 			world.spawnEntity(e);
 			setDataFromTag(e); //and some data needs to be set after onInitialSpawn fires for entity]
 			if (e instanceof NpcFaction) {

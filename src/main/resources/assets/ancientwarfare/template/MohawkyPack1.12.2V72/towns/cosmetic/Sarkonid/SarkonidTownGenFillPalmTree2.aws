@@ -1,0 +1,165 @@
+# minified
+# Ancient Warfare Structure Template File
+# Auto-generated structure template file. created on: 4/18/2020 at: 11:4:44
+# Lines beginning with # denote comments
+
+header:
+version=2.10
+name=SarkonidTownGenFillPalmTree2
+mods=
+size=7,14,7
+offset=3,5,6
+:endheader
+
+#### VALIDATION ####
+validation:
+type=ground
+survival=false
+worldGenEnabled=false
+unique=false
+preserveBlocks=false
+selectionWeight=1
+clusterValue=1
+minDuplicateDistance=1
+dimensionWhiteList=true
+dimensionList=
+biomeGroupList=
+biomeWhiteList=true
+biomeList=
+leveling=0
+fill=0
+border=0
+blockSwap=false
+territoryName=
+biomeReplacement=minecraft:
+:endvalidation
+
+#### LAYERS ####
+layer: 0-2
+7x1|7
+:endlayer
+layer: 3-4
+7x2|7
+:endlayer
+layer: 5-7
+0|7
+0|5,3,0
+0|7
+0|3,4,0|3
+3x0|7
+:endlayer
+layer: 8-9
+3x0|7
+0|3,4,0|3
+3x0|7
+:endlayer
+layer: 10
+3x0|7
+0|2,5,4,6,0|2
+3x0|7
+:endlayer
+layer: 11
+0|3,7,0|3
+0,7,0,7,0,7,0
+0|3,8,0|3
+7|2,0,4,6,7|2
+0|3,9,0|3
+0,7,0,7,0,7,0
+0|3,7,0|3
+:endlayer
+layer: 12
+0|7
+0|3,7,0|3
+0|2,7|3,0|2
+0,7|2,10,7|2,0
+0|2,7|3,0|2
+0|3,7,0|3
+0|7
+:endlayer
+layer: 13
+3x0|7
+0|3,10,0|3
+3x0|7
+:endlayer
+#### RULES ####
+rule:
+plugin=vanillaBlocks
+number=1
+data:
+JSON:{blockState:{blockName:"minecraft:sandstone",properties:{type:"sandstone"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=2
+data:
+JSON:{blockState:{blockName:"minecraft:sand",properties:{variant:"sand"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=3
+data:
+JSON:{blockState:{blockName:"minecraft:cactus",properties:{age:"0"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=4
+data:
+JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"jungle",axis:"y"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=5
+data:
+JSON:{blockState:{blockName:"minecraft:cocoa",properties:{facing:"east",age:"2"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=6
+data:
+JSON:{blockState:{blockName:"minecraft:cocoa",properties:{facing:"west",age:"2"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=7
+data:
+JSON:{blockState:{blockName:"minecraft:leaves",properties:{check_decay:"true",decayable:"false",variant:"jungle"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=8
+data:
+JSON:{blockState:{blockName:"minecraft:cocoa",properties:{facing:"south",age:"2"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=9
+data:
+JSON:{blockState:{blockName:"minecraft:cocoa",properties:{facing:"north",age:"2"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=10
+data:
+JSON:{blockState:{blockName:"minecraft:leaves",properties:{check_decay:"false",decayable:"false",variant:"jungle"}}}
+:enddata
+:endrule
+
+#### ENTITIES ####

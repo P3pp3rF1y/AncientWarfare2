@@ -1,0 +1,113 @@
+# minified
+# Ancient Warfare Structure Template File
+# Auto-generated structure template file. created on: 4/15/2020 at: 23:57:32
+# Lines beginning with # denote comments
+
+header:
+version=2.10
+name=SarkonidTownGenFillLampPost2
+mods=
+size=3,10,3
+offset=1,5,2
+:endheader
+
+#### VALIDATION ####
+validation:
+type=ground
+survival=false
+worldGenEnabled=false
+unique=false
+preserveBlocks=false
+selectionWeight=1
+clusterValue=1
+minDuplicateDistance=1
+dimensionWhiteList=true
+dimensionList=
+biomeGroupList=
+biomeWhiteList=true
+biomeList=
+leveling=0
+fill=0
+border=0
+blockSwap=false
+territoryName=
+biomeReplacement=minecraft:
+:endvalidation
+
+#### LAYERS ####
+layer: 0-2
+3x1|3
+:endlayer
+layer: 3
+3x2|3
+:endlayer
+layer: 4
+2|3
+2,3,2
+2|3
+:endlayer
+layer: 5-7
+0|3
+0,4,0
+0|3
+:endlayer
+layer: 8
+0,4,0
+4|3
+0,4,0
+:endlayer
+layer: 9
+0,5,0
+5,6,5
+0,5,0
+:endlayer
+#### RULES ####
+rule:
+plugin=vanillaBlocks
+number=1
+data:
+JSON:{blockState:{blockName:"minecraft:sandstone",properties:{type:"sandstone"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=2
+data:
+JSON:{blockState:{blockName:"minecraft:sand",properties:{variant:"sand"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=3
+data:
+JSON:{blockState:{blockName:"minecraft:red_sandstone",properties:{type:"red_sandstone"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=4
+data:
+JSON:{blockState:{blockName:"minecraft:birch_fence",properties:{east:"false",south:"false",north:"false",west:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=5
+data:
+JSON:{blockState:{blockName:"minecraft:torch",properties:{facing:"up"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=6
+data:
+JSON:{blockState:{blockName:"minecraft:stone_slab2",properties:{half:"bottom",variant:"red_sandstone"}}}
+:enddata
+:endrule
+
+#### ENTITIES ####

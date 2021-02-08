@@ -1,0 +1,104 @@
+# minified
+# Ancient Warfare Structure Template File
+# Auto-generated structure template file. created on: 3/12/2019 at: 14:40:20
+# Lines beginning with # denote comments
+
+header:
+version=2.8
+name=EmpireTownGenPigPen
+mods=
+size=5,4,15
+offset=3,2,14
+:endheader
+
+#### VALIDATION ####
+validation:
+type=ground
+survival=false
+worldGenEnabled=false
+unique=false
+preserveBlocks=false
+selectionWeight=0
+clusterValue=0
+minDuplicateDistance=0
+dimensionWhiteList=false
+dimensionList=
+biomeWhiteList=false
+biomeList=
+leveling=0
+fill=0
+border=0
+blockSwap=false
+:endvalidation
+
+#### LAYERS ####
+layer: 0
+15x1|5
+:endlayer
+layer: 1
+2|5
+2|2,1,2|2
+4x2,1|3,2
+2x2,3,1|2,2
+2,1|3,2
+2|2,1,2|2
+2,1,2|3
+2|2,1,2|2
+2,1,2|3
+2x2|5
+:endlayer
+layer: 2
+4,0|4
+4|2,3,0|2
+4,3|3,0
+0,3|3,0
+3x0,3|3,4
+2x0,3|3,0
+0,4,3,0|2
+0,3,0|3
+4,0,3,0|2
+0,3,4,0,4
+0,4,0|2,4
+0,4|2,0,4
+:endlayer
+layer: 3
+2x0|5
+4x0|2,3,0|2
+2x0|2,3|2,0
+0|2,3,0|2
+6x0|5
+:endlayer
+#### RULES ####
+rule:
+plugin=vanillaBlocks
+number=1
+data:
+JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"dirt",snowy:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=2
+data:
+JSON:{blockState:{blockName:"minecraft:grass",properties:{snowy:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=3
+data:
+JSON:{blockState:{blockName:"minecraft:log",properties:{variant:"oak",axis:"y"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=4
+data:
+JSON:{blockState:{blockName:"minecraft:tallgrass",properties:{type:"tall_grass"}}}
+:enddata
+:endrule
+
+#### ENTITIES ####

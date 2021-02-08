@@ -10,10 +10,10 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackNearest;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIDoor;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIHurt;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWatchClosest;
+import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionHurt;
 import net.shadowmage.ancientwarfare.npc.ai.vehicle.NpcAIAimVehicle;
 import net.shadowmage.ancientwarfare.npc.ai.vehicle.NpcAIFindVehicle;
 import net.shadowmage.ancientwarfare.npc.ai.vehicle.NpcAIFireVehicle;
@@ -60,7 +60,7 @@ public class NpcFactionSiegeEngineer extends NpcFaction implements IVehicleUser 
 		this.tasks.addTask(102, new NpcAIWander(this));
 		this.tasks.addTask(103, new NpcAIWatchClosest(this, EntityLiving.class, 8.0F));
 
-		this.targetTasks.addTask(1, new NpcAIHurt(this));
+		this.targetTasks.addTask(1, new NpcAIFactionHurt(this, this::isHostileTowards));
 		this.targetTasks.addTask(2, new NpcAIAttackNearest(this, this::isHostileTowards));
 	}
 

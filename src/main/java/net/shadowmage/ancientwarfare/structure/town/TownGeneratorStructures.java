@@ -109,7 +109,7 @@ class TownGeneratorStructures {
 					plot.skipped = true;//mark skipped, so it is skipped by cosmetic generation as well (do not close, allow expansion onto this plot).
 					continue;
 				}
-				getRandomTemplate(templatesToGenerate, gen.rng).ifPresent(template -> generateStructureForPlot(gen, plot, template, false));
+				getRandomTemplate(templatesToGenerate, gen.nonRepeatingRng).ifPresent(template -> generateStructureForPlot(gen, plot, template, false));
 			}
 		}
 	}
@@ -123,7 +123,7 @@ class TownGeneratorStructures {
 				if (templatesToGenerate.isEmpty()) {
 					return;
 				}
-				getRandomTemplate(templatesToGenerate, gen.rng).ifPresent(template -> generateStructureForPlot(gen, plot, template, true));
+				getRandomTemplate(templatesToGenerate, gen.nonRepeatingRng).ifPresent(template -> generateStructureForPlot(gen, plot, template, true));
 			}
 		}
 	}
@@ -150,7 +150,7 @@ class TownGeneratorStructures {
 				distPercent = 1.f - distPercent;
 				distPercent *= distPercent;
 				if (gen.rng.nextFloat() < distPercent) {
-					getRandomTemplate(templatesToGenerate, gen.rng).ifPresent(template -> generateStructureForPlot(gen, plot, template, true));
+					getRandomTemplate(templatesToGenerate, gen.nonRepeatingRng).ifPresent(template -> generateStructureForPlot(gen, plot, template, true));
 				}
 			}
 		}

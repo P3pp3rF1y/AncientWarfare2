@@ -33,8 +33,6 @@ import net.shadowmage.ancientwarfare.structure.gamedata.TownMap;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
 import net.shadowmage.ancientwarfare.structure.tile.ISpecialLootContainer;
 import net.shadowmage.ancientwarfare.structure.tile.TileProtectionFlag;
-import net.shadowmage.ancientwarfare.structure.util.CapabilityRespawnData;
-import net.shadowmage.ancientwarfare.structure.util.IRespawnData;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
@@ -99,16 +97,7 @@ public class EventHandler {
 	}
 
 	private boolean isMarkedWithNoPreventionTag(Entity entity) {
-		if (entity.getTags().contains(NO_SPAWN_PREVENTION_TAG)) {
-			return true;
-		}
-		if (entity.hasCapability(CapabilityRespawnData.RESPAWN_DATA_CAPABILITY, null)) {
-			IRespawnData respawnData = entity.getCapability(CapabilityRespawnData.RESPAWN_DATA_CAPABILITY, null);
-
-			//noinspection ConstantConditions
-			return respawnData.canRespawn();
-		}
-		return false;
+		return entity.getTags().contains(NO_SPAWN_PREVENTION_TAG);
 	}
 
 	private void injectAi(EntityJoinWorldEvent event) {

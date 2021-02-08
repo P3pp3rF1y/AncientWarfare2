@@ -1,0 +1,186 @@
+# minified
+# Ancient Warfare Structure Template File
+# Auto-generated structure template file. created on: 12/20/2020 at: 5:0:32
+# Lines beginning with # denote comments
+
+header:
+version=2.11
+name=PMMOBSShriekerCircle
+mods=
+size=12,9,13
+offset=6,3,12
+:endheader
+
+#### VALIDATION ####
+validation:
+type=ground
+structureAuthor=
+survival=false
+worldGenEnabled=true
+unique=false
+preserveBlocks=false
+preventNaturalHostileSpawns=false
+selectionWeight=30
+clusterValue=50
+minDuplicateDistance=1000
+dimensionWhiteList=true
+dimensionList=
+biomeGroupList=
+biomeWhiteList=true
+biomeList=minecraft:roofed_forest,minecraft:extreme_hills,minecraft:ice_mountains,minecraft:plains
+leveling=10
+fill=10
+border=10
+blockSwap=true
+territoryName=
+biomeReplacement=minecraft:
+minGenerationHeight=0
+maxGenerationHeight=255
+:endvalidation
+
+#### LAYERS ####
+layer: 0
+6x1|12
+1|6,2,1|5
+6x1|12
+:endlayer
+layer: 1
+6x1|12
+1|6,0,1|5
+6x1|12
+:endlayer
+layer: 2
+3|12
+3|3,1,3|2,1,3,1,3|3
+2x3|12
+3,1,3|8,1,3
+3|12
+3|6,4,3|5
+3,1,3|8,1,3
+2x3|12
+3|3,1,3|4,1,3|3
+3|6,1,3|5
+3|12
+:endlayer
+layer: 3
+0,5,0,5,0|2,5,0,5|4
+0,5|2,6,5,0,7,0,6,0,5,0
+0|2,5|2,0,5|3,0|4
+5|5,0|3,5,0|2,5
+5,6,5,0,5,0|5,6,0
+0|2,5,0,5|4,0|4
+5|2,0|2,5,0|3,5|3,0
+0,6,5,0|7,6,0
+0|2,5,0|5,5|3,0
+0,5,0|6,5|4
+5,0|2,6,0|2,5,0,6,0,5,0
+5,0|3,5,0,7,0|5
+5|2,0|2,5|2,0|3,5,0,5
+:endlayer
+layer: 4
+0|12
+0|3,6,0|2,6,0,7,0|3
+2x0|12
+0,6,0|8,7,0
+2x0|12
+0,7,0|8,6,0
+2x0|12
+0|3,6,0|4,6,0|3
+0|6,7,0|5
+0|12
+:endlayer
+layer: 5
+0|12
+0|3,7,0|2,6,0,7,0|3
+2x0|12
+0,7,0|8,7,0
+2x0|12
+0,6,0|8,7,0
+2x0|12
+0|3,7,0|4,7,0|3
+0|6,6,0|5
+0|12
+:endlayer
+layer: 6
+0|12
+0|3,7,0|2,7,0,7,0|3
+2x0|12
+0,7,0|8,7,0
+2x0|12
+0,6,0|8,7,0
+2x0|12
+0|3,7,0|4,7,0|3
+0|6,7,0|5
+0|12
+:endlayer
+layer: 7
+4x0|12
+0,6,0|8,7,0
+5x0|12
+0|3,7,0|8
+0|6,7,0|5
+0|12
+:endlayer
+layer: 8
+4x0|12
+0,6,0|10
+8x0|12
+:endlayer
+#### RULES ####
+rule:
+plugin=vanillaBlocks
+number=1
+data:
+JSON:{blockState:{blockName:"minecraft:dirt",properties:{variant:"dirt",snowy:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=blockTile
+number=2
+data:
+JSON:{blockState:{blockName:"ancientwarfarestructure:advanced_spawner",properties:{transparent:"true"}},teData:{id:"ancientwarfarestructure:advanced_spawner_tile",spawnerSettings:{minDelay:10,spawnDelay:1,lightSensitive:0b,spawnGroups:[{settingsList:[{remainingSpawnCount:1,hostile:1b,customTag:{ArmorDropChances:[0.085f,0.085f,0.085f,0.085f],ArmorItems:[{},{},{},{}],HandDropChances:[0.085f,0.085f],HandItems:[{},{}]},maxToSpawn:1,entityId:"dungeonmobs:dmshrieker",minToSpawn:1}],groupWeight:1}],playerRange:36,respondToRedstone:0b,inventory:{Size:9,Items:[]},spawnRange:0,transparent:1b,maxDelay:10,xpToDrop:0,mobRange:0,debugMode:0b,maxNearbyMonsters:0}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=3
+data:
+JSON:{blockState:{blockName:"minecraft:grass",properties:{snowy:"false"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=4
+data:
+JSON:{blockState:{blockName:"minecraft:stone",properties:{variant:"stone"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=5
+data:
+JSON:{blockState:{blockName:"minecraft:tallgrass",properties:{type:"tall_grass"}}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=6
+data:
+JSON:{blockState:{blockName:"minecraft:mossy_cobblestone"}}
+:enddata
+:endrule
+
+rule:
+plugin=vanillaBlocks
+number=7
+data:
+JSON:{blockState:{blockName:"minecraft:cobblestone"}}
+:enddata
+:endrule
+
+#### ENTITIES ####
