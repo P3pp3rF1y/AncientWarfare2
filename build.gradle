@@ -133,7 +133,7 @@ task minifyStructureTemplates(type: MinifyStructuresTask) {
 publishing {
     repositories {
         maven {
-            name = "GitHubPackages"
+            name = "AWMaven"
             url = uri("https://maven.pkg.github.com/P3pp3rF1y/AncientWarfare2")
             credentials {
                 username = project.findProperty("gpr.user") ?: System.getenv("GPR_USER")
@@ -142,7 +142,7 @@ publishing {
         }
     }
     publications {
-        maven(MavenPublication) {
+        gpr(MavenPublication) {
             artifactId 'ancientwarfare2'
 
             from components.java
