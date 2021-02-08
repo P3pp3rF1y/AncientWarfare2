@@ -22,7 +22,7 @@ jobs:
       env:
         GPR_USER: ${{ secrets.GPR_USER }}
         GPR_API_KEY: ${{ secrets.GPR_TOKEN }}
-      run: ./gradlew build publish --debug
+      run: ./gradlew build publish --scan
     - name: Code Quality
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
