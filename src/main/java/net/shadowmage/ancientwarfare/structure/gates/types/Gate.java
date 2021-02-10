@@ -295,8 +295,6 @@ public class Gate implements IGateType {
 					te.setRender();
 					gate.setRenderedTilePos(pos);
 				});
-			} else {
-				WorldTools.getTile(gate.world, pos, TEGateProxy.class).filter(te -> !te.doesRender()).ifPresent(TEGateProxy::setRender);
 			}
 		});
 	}
