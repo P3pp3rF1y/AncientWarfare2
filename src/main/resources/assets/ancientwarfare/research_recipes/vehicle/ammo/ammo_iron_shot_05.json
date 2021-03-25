@@ -3,18 +3,15 @@
     "research": "ballistics",
     "ingredients": [
         {
-            "type": "ancientwarfare:item_count",
-            "item": "ancientwarfarevehicle:iron_casing",
-            "count": 6
+            "item": "ancientwarfarevehicle:iron_casing"
         },
         {
             "type": "ancientwarfare:ore_dict_count",
-            "ore": "gunpowder",
-            "count": 2
+            "ore": "gunpowder"
         }
     ],
     "result": {
-        "item": "ancientwarfarevehicle:ammo_iron_shot_25_45",
+        "item": "ancientwarfarevehicle:ammo_iron_shot_5",
         "count": 8
     }
 }

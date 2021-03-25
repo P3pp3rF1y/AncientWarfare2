@@ -5,15 +5,16 @@
         {
             "type": "ancientwarfare:item_count",
             "item": "ancientwarfarevehicle:iron_casing",
-            "count": 2
+            "count": 4
         },
         {
             "type": "ancientwarfare:ore_dict_count",
-            "ore": "gunpowder"
+            "ore": "gunpowder",
+            "count": 2
         }
     ],
     "result": {
-        "item": "ancientwarfarevehicle:ammo_iron_shot_10_15",
+        "item": "ancientwarfarevehicle:ammo_iron_shot_15",
         "count": 8
     }
 }

@@ -5,7 +5,7 @@
         {
             "type": "ancientwarfare:item_count",
             "item": "ancientwarfarevehicle:iron_casing",
-            "count": 4
+            "count": 6
         },
         {
             "type": "ancientwarfare:ore_dict_count",
@@ -14,7 +14,7 @@
         }
     ],
     "result": {
-        "item": "ancientwarfarevehicle:ammo_iron_shot_15_30",
+        "item": "ancientwarfarevehicle:ammo_iron_shot_25",
         "count": 8
     }
 }
