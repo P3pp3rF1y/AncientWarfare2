@@ -9,8 +9,8 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack.SortOrder;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack.SortType;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemHashEntry.SortOrder;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemHashEntry.SortType;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
 import java.util.List;

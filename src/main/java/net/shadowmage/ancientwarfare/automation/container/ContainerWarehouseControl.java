@@ -10,10 +10,10 @@ import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouse;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 import net.shadowmage.ancientwarfare.core.inventory.ItemHashEntry;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack.SortOrder;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack.SortType;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemHashEntry.SortOrder;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemHashEntry.SortType;
 
-import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class ContainerWarehouseControl extends ContainerTileBase<TileWarehouse> {
 	private static final String SLOT_CLICK_TAG = "slotClick";
@@ -84,11 +84,11 @@ public class ContainerWarehouseControl extends ContainerTileBase<TileWarehouse> 
 		refreshGui();
 	}
 
-	public void handleClientRequestSpecific(ItemStack stack, boolean isShiftClick, boolean isRightClick) {
+	public void handleClientRequestSpecific(@Nullable NBTTagCompound itemTag, int count, boolean isShiftClick, boolean isRightClick) {
 		NBTTagCompound tag = new NBTTagCompound();
-		if (!stack.isEmpty()) {
-			ItemStack copy = stack.copy();
-			copy.setCount(Math.min(stack.getCount(), stack.getMaxStackSize()));
+		if (itemTag != null) {
+			ItemStack copy = new ItemStack(itemTag);
+			copy.setCount(Math.min(count, copy.getMaxStackSize()));
 			tag.setTag(REQ_ITEM_TAG, copy.writeToNBT(new NBTTagCompound()));
 		}
 		tag.setBoolean("isShiftClick", isShiftClick);

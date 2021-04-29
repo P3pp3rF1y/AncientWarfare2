@@ -28,6 +28,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+import net.shadowmage.ancientwarfare.core.inventory.ItemHashEntry;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import org.apache.commons.lang3.Validate;
 
@@ -603,24 +604,24 @@ public class InventoryTools {
 	 * @author Shadowmage
 	 */
 
-	public static final class ComparatorItemStack implements Comparator<ItemStack> {
+	public static final class ComparatorItemHashEntry implements Comparator<ItemHashEntry> {
 
 		public enum SortType {
 			QUANTITY("sort_type_quantity") {
 				@Override
-				public int compare(ItemStack o1, ItemStack o2) {
-					int r = o1.getCount() - o2.getCount();
+				public int compare(ItemQuantityMap itemMap, ItemHashEntry o1, ItemHashEntry o2) {
+					int r = itemMap.getCount(o1) - itemMap.getCount(o2);
 					if (r == 0) {
-						return super.compare(o1, o2);
+						return super.compare(itemMap, o1, o2);
 					}
 					return r;
 				}
 			}, NAME("sort_type_name") {
 				@Override
-				public int compare(ItemStack o1, ItemStack o2) {
-					int r = o1.getDisplayName().compareTo(o2.getDisplayName());
+				public int compare(ItemQuantityMap itemMap, ItemHashEntry o1, ItemHashEntry o2) {
+					int r = o1.getItemStack().getDisplayName().compareTo(o2.getItemStack().getDisplayName());
 					if (r == 0) {//if they have the same name, compare damage/tags
-						return super.compare(o1, o2);
+						return super.compare(itemMap, o1, o2);
 					}
 					return r;
 				}
@@ -633,12 +634,13 @@ public class InventoryTools {
 			}
 
 			public SortType next() {
-				if (this == QUANTITY)
+				if (this == QUANTITY) {
 					return NAME;
-				else if (this == NAME)
+				} else if (this == NAME) {
 					return DAMAGE;
-				else
+				} else {
 					return QUANTITY;
+				}
 			}
 
 			@Override
@@ -646,24 +648,27 @@ public class InventoryTools {
 				return unlocalizedName;
 			}
 
-			public int compare(ItemStack o1, ItemStack o2) {
+			public int compare(ItemQuantityMap itemMap, ItemHashEntry o1, ItemHashEntry o2) {
+				ItemStack stackA = o1.getItemStack();
+				ItemStack stackB = o2.getItemStack();
 				//noinspection ConstantConditions
-				int itemComparison = o1.getItem().getRegistryName().toString().compareTo(o2.getItem().getRegistryName().toString());
+				int itemComparison = stackA.getItem().getRegistryName().compareTo(stackB.getItem().getRegistryName());
 				if (itemComparison != 0) {
 					return itemComparison;
 				}
 
-				if (o1.getItemDamage() != o2.getItemDamage()) {
-					return Integer.compare(o1.getItemDamage(), o2.getItemDamage());
+				if (stackA.getItemDamage() != stackB.getItemDamage()) {
+					return Integer.compare(stackA.getItemDamage(), stackB.getItemDamage());
 				}
 
-				if (o1.hasTagCompound()) {
-					if (o2.hasTagCompound())
+				if (stackA.hasTagCompound()) {
+					if (stackB.hasTagCompound()) {
 						//noinspection ConstantConditions
-						return Integer.compare(o1.getTagCompound().hashCode(), o2.getTagCompound().hashCode());
-					else
+						return Integer.compare(stackA.getTagCompound().hashCode(), stackB.getTagCompound().hashCode());
+					} else {
 						return 1;
-				} else if (o2.hasTagCompound()) {
+					}
+				} else if (stackB.hasTagCompound()) {
 					return -1;
 				}
 
@@ -671,7 +676,7 @@ public class InventoryTools {
 			}
 		}
 
-		public static enum SortOrder {
+		public enum SortOrder {
 			ASCENDING(-1), DESCENDING(1);
 
 			SortOrder(int mult) {
@@ -681,28 +686,30 @@ public class InventoryTools {
 			int mult;
 		}
 
+		private final ItemQuantityMap itemMap;
 		private SortOrder sortOrder;
 		private SortType sortType;
 
 		/*
 		 * @param order 1 for normal, -1 for reverse
 		 */
-		public ComparatorItemStack(SortType type, SortOrder order) {
-			this.sortOrder = order;
-			this.sortType = type;
+		public ComparatorItemHashEntry(ItemQuantityMap itemMap, SortType type, SortOrder order) {
+			this.itemMap = itemMap;
+			sortOrder = order;
+			sortType = type;
 		}
 
 		public void setSortOrder(SortOrder order) {
-			this.sortOrder = order;
+			sortOrder = order;
 		}
 
 		public void setSortType(SortType type) {
-			this.sortType = type;
+			sortType = type;
 		}
 
 		@Override
-		public int compare(ItemStack o1, ItemStack o2) {
-			int result = sortType.compare(o1, o2);
+		public int compare(ItemHashEntry o1, ItemHashEntry o2) {
+			int result = sortType.compare(itemMap, o1, o2);
 			if (result == 0) {
 				return 0;
 			}
