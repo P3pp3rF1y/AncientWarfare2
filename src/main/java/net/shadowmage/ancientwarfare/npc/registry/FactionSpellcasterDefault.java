@@ -1,15 +1,14 @@
 package net.shadowmage.ancientwarfare.npc.registry;
 
-import jdk.nashorn.internal.ir.annotations.Immutable;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootTableList;
-import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 import net.shadowmage.ancientwarfare.npc.entity.faction.attributes.IAdditionalAttribute;
 import org.apache.commons.lang3.Range;
 
 import javax.annotation.Nullable;
+import javax.annotation.concurrent.Immutable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -90,7 +89,6 @@ public class FactionSpellcasterDefault extends NpcDefault {
 	public FactionSpellcasterDefault setThinness(float thinness) {
 		return change(def -> def.thinness = thinness);
 	}
-
 
 	public void applyAdditionalAttributes(NpcFaction npc) {
 		additionalAttributes.forEach(npc::setAdditionalAttribute);

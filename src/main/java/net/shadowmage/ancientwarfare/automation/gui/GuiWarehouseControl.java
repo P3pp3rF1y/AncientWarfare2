@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.automation.gui;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseControl;
@@ -19,33 +18,35 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
 import net.shadowmage.ancientwarfare.core.inventory.ItemHashEntry;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack.SortOrder;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemHashEntry;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemHashEntry.SortOrder;
 
-import javax.annotation.Nonnull;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseControl> {
 
+	private static final String TRANSL_GUI_AUTOMATION = "guistrings.automation.";
 	private CompositeScrolled area;
 	private Text input;
-	private final ComparatorItemStack sorter;
+	private final ComparatorItemHashEntry sorter;
 	private Label storedLabel;
 
 	public GuiWarehouseControl(ContainerBase par1Container) {
 		super(par1Container, 178, 240);
-		sorter = new ComparatorItemStack(getContainer().getSortType(), getContainer().getSortOrder());
+		sorter = new ComparatorItemHashEntry(getContainer().itemMap, getContainer().getSortType(), getContainer().getSortOrder());
 	}
 
 	@Override
 	public void initElements() {
-		Button sortChange = new Button(8, 8, 110, 12, "guistrings.automation." + getContainer().getSortType().toString()) {
+		Button sortChange = new Button(8, 8, 110, 12, TRANSL_GUI_AUTOMATION + getContainer().getSortType().toString()) {
 			@Override
 			protected void onPressed() {
 				getContainer().setSortType(getContainer().getSortType().next());
-				setText("guistrings.automation." + getContainer().getSortType().toString());
+				setText(TRANSL_GUI_AUTOMATION + getContainer().getSortType().toString());
 				refreshGui();
 			}
 		};
@@ -57,7 +58,7 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
 				super.onToggled();
 				getContainer().setSortOrder(checked() ? SortOrder.ASCENDING : SortOrder.DESCENDING);
 				String name = getContainer().getSortOrder().name().toLowerCase(Locale.ENGLISH);
-				label = I18n.format("guistrings.automation." + name);
+				label = I18n.format(TRANSL_GUI_AUTOMATION + name);
 				refreshGui();
 			}
 		};
@@ -81,7 +82,7 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
 			@Override
 			public boolean onEvent(GuiElement widget, ActivationEvent evt) {
 				if (evt.mButton == 0 && widget.isMouseOverElement(evt.mx, evt.my) && !area.isMouseOverSubElement(evt.mx, evt.my)) {
-					getContainer().handleClientRequestSpecific(ItemStack.EMPTY, isShiftKeyDown(), false);
+					getContainer().handleClientRequestSpecific(null, 0, isShiftKeyDown(), false);
 				}
 				return true;
 			}
@@ -111,32 +112,35 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
 
 	private void addInventoryViewElements() {
 		ItemStack stack;
-		NonNullList<ItemStack> displayStacks = NonNullList.create();
+		List<ItemHashEntry> displayEntries = new ArrayList<>();
 
 		for (ItemHashEntry entry : getContainer().itemMap.keySet()) {
-			stack = entry.getItemStack();
-
+			stack = entry.getItemStack().copy();
 			if (matchesSearch(stack, entry.getNameAndTooltip())) {
-				stack.setCount(getContainer().itemMap.getCount(entry));
-				displayStacks.add(stack);
+				displayEntries.add(entry);
 			}
 		}
 
-		sortItems(displayStacks);
+		sortItems(displayEntries);
 
-		int x = 0, y = 0;
+		int x = 0;
+		int y = 0;
 		int totalSize = 22;
-		ItemSlot slot;
-		for (ItemStack displayStack : displayStacks) {
+		for (ItemHashEntry entry : displayEntries) {
 			if (x >= 9) {
 				x = 0;
 				y++;
 				totalSize += 18;
 			}
-			slot = new ItemSlot(4 + x * 18, 4 + y * 18, displayStack, this) {
+
+			ItemStack displayStack = entry.getItemStack().copy();
+			int count = getContainer().itemMap.getCount(entry);
+			displayStack.setCount(count);
+
+			ItemSlot slot = new ItemSlot(4 + x * 18, 4 + y * 18, displayStack, this) {
 				@Override
 				public void onSlotClicked(ItemStack stack, boolean rightClicked) {
-					getContainer().handleClientRequestSpecific(getStack(), isShiftKeyDown(), rightClicked);
+					getContainer().handleClientRequestSpecific(entry.writeToNBT(), count, isShiftKeyDown(), rightClicked);
 				}
 			};
 			area.addGuiElement(slot);
@@ -166,14 +170,14 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
 		return nameAndTooltip.contains(searchInput);
 	}
 
-	private void sortItems(NonNullList<ItemStack> items) {
+	private void sortItems(List<ItemHashEntry> items) {
 		sorter.setSortType(getContainer().getSortType());
 		sorter.setSortOrder(getContainer().getSortOrder());
 		try {
 			items.sort(sorter);
 		}
 		catch (IllegalArgumentException ex) {
-			AncientWarfareAutomation.LOG.error("Error sorting warehouse items: " + ex.getMessage());
+			AncientWarfareAutomation.LOG.error("Error sorting warehouse items: ", ex);
 		}
 	}
 

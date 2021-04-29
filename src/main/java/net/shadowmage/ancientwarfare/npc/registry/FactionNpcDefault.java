@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.npc.registry;
 
-import jdk.nashorn.internal.ir.annotations.Immutable;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootTableList;
@@ -9,6 +8,7 @@ import net.shadowmage.ancientwarfare.npc.entity.faction.attributes.IAdditionalAt
 import org.apache.commons.lang3.Range;
 
 import javax.annotation.Nullable;
+import javax.annotation.concurrent.Immutable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;

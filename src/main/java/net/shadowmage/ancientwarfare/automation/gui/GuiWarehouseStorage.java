@@ -16,7 +16,6 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 import net.shadowmage.ancientwarfare.core.inventory.ItemHashEntry;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 
 public class GuiWarehouseStorage extends GuiContainerBase<ContainerWarehouseStorage> {
@@ -101,7 +100,7 @@ public class GuiWarehouseStorage extends GuiContainerBase<ContainerWarehouseStor
 		NonNullList<ItemStack> displayStacks = NonNullList.create();
 		for (ItemHashEntry entry : getContainer().itemMap.keySet()) {
 			qty = getContainer().itemMap.getCount(entry);
-			stack = entry.getItemStack();
+			stack = entry.getItemStack().copy();
 			stack.setCount(qty);
 			displayStacks.add(stack);
 		}

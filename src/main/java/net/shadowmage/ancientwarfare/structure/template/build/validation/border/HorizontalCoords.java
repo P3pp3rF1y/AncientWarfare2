@@ -1,8 +1,8 @@
 package net.shadowmage.ancientwarfare.structure.template.build.validation.border;
 
 import com.google.common.collect.ImmutableSet;
-import jdk.nashorn.internal.ir.annotations.Immutable;
 
+import javax.annotation.concurrent.Immutable;
 import java.util.Set;
 
 @Immutable

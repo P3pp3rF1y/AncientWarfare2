@@ -48,7 +48,7 @@ public final class ItemHashEntry {
 
 	public ItemStack getItemStack() {
 		if (cacheStack.isEmpty()) {
-			cacheStack = new ItemStack(itemTag);
+			cacheStack = new ItemStack(itemTag.copy());
 		}
 		return cacheStack;
 	}

@@ -5,6 +5,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 
 import java.util.Collections;
 import java.util.List;
@@ -28,6 +30,15 @@ public class TemplateRuleBlockDoors extends TemplateRuleVanillaBlocks {
 		}
 
 		return Collections.emptyList();
+	}
+
+	@Override
+	public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
+		if (state.getValue(BlockDoor.HALF) == BlockDoor.EnumDoorHalf.UPPER) {
+			IBlockState state = BlockTools.rotateFacing(this.state, turns);
+			builder.placeBlock(pos, state, buildPass);
+			builder.placeBlock(pos.down(), state.withProperty(BlockDoor.HALF, BlockDoor.EnumDoorHalf.LOWER), buildPass);
+		}
 	}
 
 	@Override

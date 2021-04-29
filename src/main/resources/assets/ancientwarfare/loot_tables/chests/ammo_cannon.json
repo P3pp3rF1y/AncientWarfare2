@@ -6,7 +6,7 @@
             "entries": [
                 {
                     "type": "item",
-                    "name": "ancientwarfarevehicle:ammo_iron_shot_5_10",
+                    "name": "ancientwarfarevehicle:ammo_iron_shot_5",
                     "weight": 4,
                     "functions": [
                         {
@@ -20,7 +20,7 @@
                 },
                 {
                     "type": "item",
-                    "name": "ancientwarfarevehicle:ammo_iron_shot_10_15",
+                    "name": "ancientwarfarevehicle:ammo_iron_shot_10",
                     "weight": 3,
                     "functions": [
                         {
@@ -34,7 +34,7 @@
                 },
                 {
                     "type": "item",
-                    "name": "ancientwarfarevehicle:ammo_iron_shot_15_30",
+                    "name": "ancientwarfarevehicle:ammo_iron_shot_15",
                     "weight": 2,
                     "functions": [
                         {
@@ -48,7 +48,7 @@
                 },
                 {
                     "type": "item",
-                    "name": "ancientwarfarevehicle:ammo_iron_shot_25_45",
+                    "name": "ancientwarfarevehicle:ammo_iron_shot_25",
                     "weight": 1,
                     "functions": [
                         {
