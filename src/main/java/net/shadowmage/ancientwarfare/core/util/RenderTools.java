@@ -261,6 +261,7 @@ public class RenderTools {
 		if (disabledDepth) {
 			GlStateManager.disableDepth();
 		}
+		GlStateManager.depthFunc(519);
 		GlStateManager.depthMask(false);
 
 		Tessellator tess = Tessellator.getInstance();
@@ -280,6 +281,7 @@ public class RenderTools {
 		bufferBuilder.pos(bb.minX, bb.maxY, bb.maxZ).endVertex();
 		tess.draw();
 
+		GlStateManager.depthFunc(515);
 		GlStateManager.depthMask(true);
 		GlStateManager.enableTexture2D();
 		GlStateManager.disableBlend();
