@@ -20,6 +20,7 @@ import net.shadowmage.ancientwarfare.structure.template.datafixes.DataFixManager
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -126,6 +127,7 @@ public class StructureTemplate {
 							})
 					);
 			InventoryTools.compactStackList(consumeOnlyResources).forEach(res -> allResources.add(new BuildResource(res)));
+			allResources.sort(Comparator.comparing(br -> ((BuildResource) br).stackRequired.getCount()).reversed());
 
 			resourceList = allResources;
 		}

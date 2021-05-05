@@ -13,7 +13,6 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.tile.TileDraftingStation;
 
-import javax.annotation.Nonnull;
 import java.util.Optional;
 
 public class ContainerDraftingStation extends ContainerStructureSelectionBase {
@@ -130,6 +129,7 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
 		for (ItemStack item : resources) {
 			tag = new NBTTagCompound();
 			item.writeToNBT(tag);
+			tag.setInteger("RealCount", item.getCount());
 			list.appendTag(tag);
 		}
 		return list;
@@ -141,6 +141,7 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
 		for (int i = 0; i < list.tagCount(); i++) {
 			tag = list.getCompoundTagAt(i);
 			stack = new ItemStack(tag);
+			stack.setCount(tag.getInteger("RealCount"));
 			if (!stack.isEmpty()) {
 				resources.add(stack);
 			}
@@ -166,6 +167,7 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
 				this.structureName = tag.getString(STRUCT_NAME_TAG);
 			} else {
 				tile.setTemplate(tag.getString(STRUCT_NAME_TAG));
+				updateResources();
 			}
 		} else if (tag.hasKey("clearName")) {
 			structureName = null;
@@ -240,18 +242,17 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
 			totalTime = tile.getTotalTime();
 			tag.setInteger(TOTAL_TIME_TAG, totalTime);
 		}
-		if (!neededResources.equals(tile.getNeededResources())) {
-			if (tag == null) {
-				tag = new NBTTagCompound();
-			}
-			neededResources.clear();
-			neededResources.addAll(InventoryTools.copyStacks(tile.getNeededResources()));
-			NBTTagList list = getResourceListTag(neededResources);
-			tag.setTag(RESOURCE_LIST_TAG, list);
-		}
 		if (tag != null) {
 			sendDataToClient(tag);
 		}
 	}
 
+	private void updateResources() {
+		NBTTagCompound tag = new NBTTagCompound();
+		neededResources.clear();
+		neededResources.addAll(InventoryTools.copyStacks(tile.getNeededResources()));
+		NBTTagList list = getResourceListTag(neededResources);
+		tag.setTag(RESOURCE_LIST_TAG, list);
+		sendDataToClient(tag);
+	}
 }

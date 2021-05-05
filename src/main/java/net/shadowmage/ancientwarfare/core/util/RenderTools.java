@@ -79,14 +79,16 @@ public class RenderTools {
 	}
 
 	public static void renderColoredQuad(int renderStartX, int renderStartY, int renderWidth, int renderHeight, float colorRed, float colorGreen, float colorBlue) {
-		GlStateManager.glBegin(GL11.GL_QUADS);
+		GlStateManager.disableTexture2D();
 		GlStateManager.color(colorRed, colorGreen, colorBlue);
+		GlStateManager.glBegin(GL11.GL_QUADS);
 		GL11.glVertex2f(renderStartX, renderStartY);
 		GL11.glVertex2f(renderStartX, (float) renderStartY + renderHeight);
 		GL11.glVertex2f((float) renderStartX + renderWidth, (float) renderStartY + renderHeight);
 		GL11.glVertex2f((float) renderStartX + renderWidth, renderStartY);
 		GlStateManager.color(1, 1, 1);
 		GlStateManager.glEnd();
+		GlStateManager.enableTexture2D();
 	}
 
 	/*

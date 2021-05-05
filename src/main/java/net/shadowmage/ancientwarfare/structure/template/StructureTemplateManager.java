@@ -1,5 +1,7 @@
 package net.shadowmage.ancientwarfare.structure.template;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.Constants;
@@ -17,6 +19,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class StructureTemplateManager {
@@ -26,6 +29,7 @@ public class StructureTemplateManager {
 	private static final String SINGLE_STRUCTURE_TAG = "singleStructure";
 	private static final String SYNC_TEMPLATE_TAG = "syncTemplate";
 	private static final String STRUCTURE_LIST_TAG = "structureList";
+	private static final Cache<String, String> requestedTemplates = CacheBuilder.newBuilder().expireAfterAccess(10, TimeUnit.SECONDS).build();
 	private static HashMap<String, StructureTemplate> loadedTemplates = new HashMap<>();
 
 	//used on client side - only these get synced on log on and then get displayed in structure selection guis, subsequent calls to getTemplate will trigger syncing of the full template detail
@@ -91,7 +95,8 @@ public class StructureTemplateManager {
 
 	public static Optional<StructureTemplate> getTemplate(String name) {
 		StructureTemplate template = loadedTemplates.get(name);
-		if (template == null && FMLCommonHandler.instance().getSide() == Side.CLIENT && allTemplateNames.contains(name)) {
+		if (template == null && FMLCommonHandler.instance().getSide() == Side.CLIENT && allTemplateNames.contains(name) && requestedTemplates.getIfPresent(name) == null) {
+			requestedTemplates.put(name, name);
 			PacketStructure pkt = new PacketStructure();
 			pkt.packetData.setString(SYNC_TEMPLATE_TAG, name);
 			NetworkHandler.sendToServer(pkt);
