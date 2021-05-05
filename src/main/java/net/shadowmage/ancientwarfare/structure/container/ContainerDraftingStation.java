@@ -13,6 +13,7 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.tile.TileDraftingStation;
 
+import java.util.List;
 import java.util.Optional;
 
 public class ContainerDraftingStation extends ContainerStructureSelectionBase {
@@ -191,7 +192,12 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
 		if (tag.hasKey("stop")) {
 			tile.stopCurrentWork();
 		} else if (tag.hasKey("start")) {
-			tile.tryStart();
+			if (player.isCreative()) {
+				tile.tryFinish();
+				tile.stopCurrentWork();
+			} else {
+				tile.tryStart();
+			}
 		}
 		refreshGui();
 	}
@@ -242,9 +248,33 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
 			totalTime = tile.getTotalTime();
 			tag.setInteger(TOTAL_TIME_TAG, totalTime);
 		}
+		if (neededResourcesChanged()) {
+			if (tag == null) {
+				tag = new NBTTagCompound();
+			}
+			neededResources.clear();
+			neededResources.addAll(InventoryTools.copyStacks(tile.getNeededResources()));
+			NBTTagList list = getResourceListTag(neededResources);
+			tag.setTag(RESOURCE_LIST_TAG, list);
+		}
 		if (tag != null) {
 			sendDataToClient(tag);
 		}
+	}
+
+	private boolean neededResourcesChanged() {
+		List<ItemStack> tileResources = tile.getNeededResources();
+		if (neededResources.size() != tileResources.size()) {
+			return true;
+		}
+
+		for (int i = 0; i < neededResources.size(); i++) {
+			if (!ItemStack.areItemStacksEqual(neededResources.get(i), tileResources.get(i))) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private void updateResources() {

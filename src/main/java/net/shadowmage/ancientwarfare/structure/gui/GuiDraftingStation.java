@@ -6,7 +6,6 @@ import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.structure.container.ContainerDraftingStation;
-import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 
 public class GuiDraftingStation extends GuiContainerBase<ContainerDraftingStation> {
 	private static final int RESOURCE_HEIGHT = 60;
@@ -25,7 +24,8 @@ public class GuiDraftingStation extends GuiContainerBase<ContainerDraftingStatio
 		structurePreview = new StructurePreviewElement(176, 4, xSize - 176 - 5, 174);
 		addGuiElement(structurePreview);
 
-		resourceListArea = new StructureResourceElement(this, 176, ySize - RESOURCE_HEIGHT, 400 - 176, RESOURCE_HEIGHT);
+		resourceListArea = new StructureResourceElement(this, 176, ySize - RESOURCE_HEIGHT, 400 - 176, RESOURCE_HEIGHT,
+				() -> getContainer().neededResources);
 		addGuiElement(resourceListArea);
 
 		Button selectButton = new Button(8, 8, 95, 12, "guistrings.structure.select_structure") {
@@ -67,7 +67,6 @@ public class GuiDraftingStation extends GuiContainerBase<ContainerDraftingStatio
 		removeGuiElement(stopButton);
 		getContainer().setGui(this);
 		structurePreview.setTemplateName(getContainer().structureName);
-		resourceListArea.setStructure(StructureTemplateManager.getTemplate(getContainer().structureName).orElse(null));
 		resourceListArea.updateResources();
 
 		String name = getContainer().structureName;

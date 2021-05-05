@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.gui;
 
+import net.minecraft.util.NonNullList;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
@@ -71,7 +72,10 @@ public class GuiStructureSelectionBase extends GuiContainerBase<ContainerStructu
 		selectionArea = new CompositeScrolled(this, 0, 50, STRUCTURE_SELECTION_WIDTH, ySize - 50);
 		addGuiElement(selectionArea);
 
-		resourceArea = new StructureResourceElement(this, STRUCTURE_SELECTION_WIDTH, 180, xSize - STRUCTURE_SELECTION_WIDTH, 60);
+		resourceArea = new StructureResourceElement(this, STRUCTURE_SELECTION_WIDTH, 180, xSize - STRUCTURE_SELECTION_WIDTH, 60,
+				() -> currentSelection == null ? NonNullList.create() :
+						currentSelection.getResourceList().stream().map(StructureTemplate.BuildResource::getStackRequired).collect(Collectors.toList())
+		);
 		addGuiElement(resourceArea);
 
 		preview = new StructurePreviewElement(STRUCTURE_SELECTION_WIDTH + 2, 30, xSize - STRUCTURE_SELECTION_WIDTH - 7, PREVIEW_HEIGHT);
@@ -106,7 +110,6 @@ public class GuiStructureSelectionBase extends GuiContainerBase<ContainerStructu
 	public void notifyTemplateChange(StructureTemplate template) {
 		if (template.name.equals(selection.getText())) {
 			currentSelection = template;
-			resourceArea.setStructure(currentSelection);
 			updateSurvivalResources();
 		}
 	}
@@ -152,7 +155,6 @@ public class GuiStructureSelectionBase extends GuiContainerBase<ContainerStructu
 		setSelectionName(templateName);
 		currentSelection = StructureTemplateManager.getTemplate(templateName).orElse(null);
 		preview.setTemplateName(templateName);
-		resourceArea.setStructure(currentSelection);
 		updateSurvivalResources();
 	}
 
