@@ -412,9 +412,7 @@ public class AWStructureStatics extends ModConfiguration {
 	}
 
 	private void initializeScannerSkippedBlocks() {
-		String[] defaultSkippableBlocks = new String[] {"AncientWarfareStructure:gate_proxy",
-				//skip gate proxy blocks by default... possibly some others that need skipping as well
-		};
+		String[] defaultSkippableBlocks = new String[] {"minecraft:barrier"};
 		defaultSkippableBlocks = config.getStringList("scanner_skipped_blocks", scanSkippedBlocks, defaultSkippableBlocks, "Blocks TO be skipped by structure scanner");
 		Collections.addAll(scannerSkippedBlocks, defaultSkippableBlocks);
 	}

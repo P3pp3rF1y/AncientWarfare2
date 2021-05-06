@@ -103,6 +103,10 @@
             "item": {"name": "minecraft:air"}
         },
         {
+            "block": {"name": "ancientwarfarestructure:advanced_spawner"},
+            "item": {"name": "minecraft:air"}
+        },
+        {
             "block": {"name": "ancientwarfarestructure:golden_idol"},
             "item": {"name": "minecraft:gold_ingot"}
         },

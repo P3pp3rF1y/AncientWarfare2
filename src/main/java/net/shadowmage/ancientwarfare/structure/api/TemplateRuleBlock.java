@@ -89,6 +89,10 @@ public abstract class TemplateRuleBlock extends TemplateRule {
 	public void parseRule(NBTTagCompound tag) {
 		try {
 			state = NBTHelper.getBlockState(tag.getCompoundTag("blockState"));
+			if (state.getBlock() == Blocks.BARRIER) {
+				AncientWarfareStructure.LOG.debug("Barrier block found in the structure template - replacing with air.");
+				state = Blocks.AIR.getDefaultState();
+			}
 		}
 		catch (MissingResourceException e) {
 			AncientWarfareStructure.LOG.warn("Unable to find blockstate while parsing structure template thus replacing it with air - {}.", e.getMessage());

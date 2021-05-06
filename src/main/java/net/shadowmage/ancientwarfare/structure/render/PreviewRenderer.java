@@ -119,6 +119,9 @@ public class PreviewRenderer {
 
 	@SideOnly(Side.CLIENT)
 	public static void renderPreview(StructureTemplate structure, StructureBB bb, int turns, BufferBuilder buffer, Map<BlockPos, TemplateRuleBlock> dynamicRenderRules) {
+		if (structure.getBlockRules().isEmpty()) {
+			return;
+		}
 		TemplateBlockAccess blockAccess = new TemplateBlockAccess(structure, bb, turns);
 		Vec3i size = structure.getSize();
 		for (int pass = 0; pass < 3; pass++) {
