@@ -99,6 +99,10 @@
             "item": {"name": "minecraft:air"}
         },
         {
+            "block": {"name": "ancientwarfarestructure:gate_proxy"},
+            "item": {"name": "minecraft:air"}
+        },
+        {
             "block": {"name": "ancientwarfarestructure:golden_idol"},
             "item": {"name": "minecraft:gold_ingot"}
         },

@@ -114,7 +114,6 @@ public class StructureTemplate {
 			List<BuildResource> allResources = new ArrayList<>();
 
 			NonNullList<ItemStack> consumeOnlyResources = NonNullList.create();
-
 			MathUtils.getAllVecsInBox(Vec3i.NULL_VECTOR, new Vec3i(size.getX() - 1, size.getY() - 1, size.getZ() - 1))
 					.forEach(pos -> getRuleAt(pos).ifPresent(r -> {
 								ItemStack remainingStack = r.getRemainingStack();
@@ -126,6 +125,11 @@ public class StructureTemplate {
 								}
 							})
 					);
+
+			for (TemplateRuleEntityBase rule : entityRules.values()) {
+				consumeOnlyResources.addAll(rule.getResources());
+			}
+
 			InventoryTools.compactStackList(consumeOnlyResources).forEach(res -> allResources.add(new BuildResource(res)));
 			allResources.sort(Comparator.comparing(br -> ((BuildResource) br).stackRequired.getCount()).reversed());
 
