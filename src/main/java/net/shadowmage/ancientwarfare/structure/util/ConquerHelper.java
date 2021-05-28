@@ -57,7 +57,7 @@ public class ConquerHelper {
 	private static boolean checkBBConquered(World world, StructureBB bb, @Nullable EntityPlayer player, Consumer<NpcFaction> onHostileNpcFound, Consumer<BlockPos> onHostileSpawnerFound) {
 		AxisAlignedBB boundingBox = bb.getAABB();
 		for (NpcFaction factionNpc : world.getEntitiesWithinAABB(NpcFaction.class, boundingBox)) {
-			if ((player != null && !factionNpc.isPassive() && factionNpc.isHostileTowards(player)) || !factionNpc.isPassive()) {
+			if ((player != null && factionNpc.isHostileTowards(player)) || !factionNpc.isPassive()) {
 				onHostileNpcFound.accept(factionNpc);
 				return false;
 			}
