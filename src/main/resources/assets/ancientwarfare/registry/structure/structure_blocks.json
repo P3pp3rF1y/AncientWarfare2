@@ -141,6 +141,10 @@
         {
             "block": {"name": "minecraft:double_stone_slab", "properties": {"variant": "wood_old"}},
             "item": {"name": "minecraft:planks"}
+        },
+        {
+            "block": {"name": "ancientwarfarestructure:advanced_spawner"},
+            "item": {"name": "minecraft:air"}
         }
     ],
     "block_passes": [
