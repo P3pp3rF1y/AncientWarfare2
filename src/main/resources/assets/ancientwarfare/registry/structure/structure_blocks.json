@@ -143,7 +143,35 @@
             "item": {"name": "minecraft:planks"}
         },
         {
-            "block": {"name": "ancientwarfarestructure:advanced_spawner"},
+            "block": {"name": "ancientwarfarestructure:dirt"},
+            "item": {"name": "minecraft:air"}
+        },
+        {
+            "block": {"name": "ancientwarfarestructure:grass"},
+            "item": {"name": "minecraft:air"}
+        },
+        {
+            "block": {"name": "ancientwarfarestructure:grass_path"},
+            "item": {"name": "minecraft:air"}
+        },
+        {
+            "block": {"name": "ancientwarfarestructure:deadbush"},
+            "item": {"name": "minecraft:air"}
+        },
+        {
+            "block": {"name": "ancientwarfarestructure:vine"},
+            "item": {"name": "minecraft:air"}
+        },
+        {
+            "block": {"name": "ancientwarfarestructure:tallgrass"},
+            "item": {"name": "minecraft:air"}
+        },
+        {
+            "block": {"name": "ancientwarfarestructure:farmland"},
+            "item": {"name": "minecraft:air"}
+        },
+        {
+            "block": {"name": "ancientwarfarestructure:double_plant", "data": 2},
             "item": {"name": "minecraft:air"}
         }
     ],
