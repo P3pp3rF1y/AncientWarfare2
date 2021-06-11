@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyHelper;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -90,6 +91,11 @@ public class BlockCoinStack extends BlockBaseStructure {
 	@Override
 	public int getMetaFromState(IBlockState state) {
 		return (state.getValue(STACK_SIZE) / 8) - 1;
+	}
+
+	@Override
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return face != EnumFacing.DOWN ? BlockFaceShape.UNDEFINED : super.getBlockFaceShape(worldIn, state, pos, face);
 	}
 
 	@Override
