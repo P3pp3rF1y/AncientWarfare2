@@ -115,7 +115,6 @@ public class AWNPCItems {
 		registerExtendedReachWeapons(registry, "spear", 2, -3, 4.2F);
 		registerExtendedReachWeapons(registry, "lance", 2.5D, -3.2D, 5.5F);
 		registerExtendedReachWeapons(registry, "cleaver", 3.5D, -2.8D, 3.0F);
-		registerExtendedReachWeapons(registry, "halberd", 3, -3.2D, 4.5F);
 
 		registry.register(new ItemHalberd(Item.ToolMaterial.WOOD, "wooden_halberd", 3, -3.2D, 4.5F));
 		registry.register(new ItemHalberd(Item.ToolMaterial.STONE, "stone_halberd", 3, -3.2D, 4.5F));
