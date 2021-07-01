@@ -143,35 +143,35 @@
             "item": {"name": "minecraft:planks"}
         },
         {
-            "block": {"name": "ancientwarfarestructure:dirt"},
+            "block": {"name": "minecraft:dirt"},
             "item": {"name": "minecraft:air"}
         },
         {
-            "block": {"name": "ancientwarfarestructure:grass"},
+            "block": {"name": "minecraft:grass"},
             "item": {"name": "minecraft:air"}
         },
         {
-            "block": {"name": "ancientwarfarestructure:grass_path"},
+            "block": {"name": "minecraft:grass_path"},
             "item": {"name": "minecraft:air"}
         },
         {
-            "block": {"name": "ancientwarfarestructure:deadbush"},
+            "block": {"name": "minecraft:deadbush"},
             "item": {"name": "minecraft:air"}
         },
         {
-            "block": {"name": "ancientwarfarestructure:vine"},
+            "block": {"name": "minecraft:vine"},
             "item": {"name": "minecraft:air"}
         },
         {
-            "block": {"name": "ancientwarfarestructure:tallgrass"},
+            "block": {"name": "minecraft:tallgrass"},
             "item": {"name": "minecraft:air"}
         },
         {
-            "block": {"name": "ancientwarfarestructure:farmland"},
+            "block": {"name": "minecraft:farmland"},
             "item": {"name": "minecraft:air"}
         },
         {
-            "block": {"name": "ancientwarfarestructure:double_plant", "data": 2},
+            "block": {"name": "minecraft:double_plant", "data": 2},
             "item": {"name": "minecraft:air"}
         }
     ],
