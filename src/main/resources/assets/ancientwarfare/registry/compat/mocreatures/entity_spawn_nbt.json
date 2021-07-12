@@ -7,6 +7,24 @@
             "Name",
             "TypeInt"
         ],
+        "drzhark.mocreatures.entity.MoCEntityAmbient": [
+            "Adult",
+            "Edad",
+            "Name",
+            "TypeInt"
+        ],
+        "drzhark.mocreatures.entity.MoCEntityAnimal": [
+            "Adult",
+            "Edad",
+            "Name",
+            "TypeInt"
+        ],
+        "drzhark.mocreatures.entity.MoCEntityAquatic": [
+            "Adult",
+            "Edad",
+            "Name",
+            "TypeInt"
+        ],
         "drzhark.mocreatures.entity.monster.MoCEntityWerewolf": [
             "HumanForm"
         ],
