@@ -1152,7 +1152,7 @@ rule:
 plugin=blockTile
 number=98
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:0,protectionFlagTurnOff:0b,playerRange:32,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:0,random:0b,entries:[{volume:100,name:"ancientwarfarestructure:structures/village_farm_ambience_3",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:32,timeOfDay:0},stoppedForAll:0b,meta:2,block:"minecraft:log",id:"ancientwarfarestructure:sound_block_tile"}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:0,protectionFlagTurnOff:0b,playerRange:32,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:0,random:0b,entries:[{volume:100,name:"ancientwarfarestructure:village_farm_ambience_3",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:32,timeOfDay:0},stoppedForAll:0b,meta:2,block:"minecraft:log",id:"ancientwarfarestructure:sound_block_tile"}}
 :enddata
 :endrule
 
@@ -1168,7 +1168,7 @@ rule:
 plugin=vanillaSign
 number=100
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"Smithy§r",signContents1:"Broligans§r",signContents3:"",rotation:0}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"Smithyï¿½r",signContents1:"Broligansï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 

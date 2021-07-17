@@ -949,7 +949,7 @@ rule:
 plugin=vanillaSign
 number=60
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"north"}},signContents2:"Miller§r",signContents1:"Windy§r",signContents3:"",rotation:0}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"north"}},signContents2:"Millerï¿½r",signContents1:"Windyï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -1101,7 +1101,7 @@ rule:
 plugin=blockTile
 number=79
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:0,protectionFlagTurnOff:0b,playerRange:44,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:0,random:0b,entries:[{volume:60,name:"ancientwarfarestructure:structures/village_windmill_sails_turning_1",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:44,timeOfDay:0},stoppedForAll:0b,id:"ancientwarfarestructure:sound_block_tile"}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:0,protectionFlagTurnOff:0b,playerRange:44,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:0,random:0b,entries:[{volume:60,name:"ancientwarfarestructure:village_windmill_sails_turning_1",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:44,timeOfDay:0},stoppedForAll:0b,id:"ancientwarfarestructure:sound_block_tile"}}
 :enddata
 :endrule
 

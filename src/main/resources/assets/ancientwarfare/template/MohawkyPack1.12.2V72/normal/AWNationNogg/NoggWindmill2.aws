@@ -515,7 +515,7 @@ rule:
 plugin=blockTile
 number=9
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:1,protectionFlagTurnOff:0b,playerRange:20,playOnce:0b,whenInRange:0b,repetitions:1,maxDelay:10,random:0b,entries:[{volume:80,name:"ancientwarfarestructure:structures/village_windmill",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:32,timeOfDay:0},stoppedForAll:0b,meta:0,block:"minecraft:planks",id:"ancientwarfarestructure:sound_block_tile"}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:1,protectionFlagTurnOff:0b,playerRange:20,playOnce:0b,whenInRange:0b,repetitions:1,maxDelay:10,random:0b,entries:[{volume:80,name:"ancientwarfarestructure:village_windmill",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:32,timeOfDay:0},stoppedForAll:0b,meta:0,block:"minecraft:planks",id:"ancientwarfarestructure:sound_block_tile"}}
 :enddata
 :endrule
 
@@ -683,7 +683,7 @@ rule:
 plugin=blockTile
 number=30
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:5,protectionFlagTurnOff:0b,playerRange:20,playOnce:0b,whenInRange:0b,repetitions:1,maxDelay:20,random:0b,entries:[{volume:10,name:"ancientwarfarestructure:structures/village_windmill_interior",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:16,timeOfDay:0},stoppedForAll:0b,meta:6,block:"minecraft:stone",id:"ancientwarfarestructure:sound_block_tile"}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:5,protectionFlagTurnOff:0b,playerRange:20,playOnce:0b,whenInRange:0b,repetitions:1,maxDelay:20,random:0b,entries:[{volume:10,name:"ancientwarfarestructure:village_windmill_interior",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:16,timeOfDay:0},stoppedForAll:0b,meta:6,block:"minecraft:stone",id:"ancientwarfarestructure:sound_block_tile"}}
 :enddata
 :endrule
 

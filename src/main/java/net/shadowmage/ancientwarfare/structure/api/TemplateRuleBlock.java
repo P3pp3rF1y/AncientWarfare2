@@ -95,7 +95,7 @@ public abstract class TemplateRuleBlock extends TemplateRule {
 			}
 		}
 		catch (MissingResourceException e) {
-			AncientWarfareStructure.LOG.warn("Unable to find blockstate while parsing structure template thus replacing it with air - {}.", e.getMessage());
+			AncientWarfareStructure.LOG.trace("Unable to find blockstate while parsing structure template thus replacing it with air - {}.", e.getMessage());
 			state = Blocks.AIR.getDefaultState();
 		}
 	}

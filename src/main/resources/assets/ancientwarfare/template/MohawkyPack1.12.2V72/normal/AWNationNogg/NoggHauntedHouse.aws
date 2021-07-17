@@ -1200,7 +1200,7 @@ rule:
 plugin=vanillaSign
 number=26
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:standing_sign",properties:{rotation:"8"}},signContents2:"Exorcism!§r",signContents1:"Awaiting§r",signContents3:"",rotation:0}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:standing_sign",properties:{rotation:"8"}},signContents2:"Exorcism!ï¿½r",signContents1:"Awaitingï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -1208,7 +1208,7 @@ rule:
 plugin=vanillaSign
 number=27
 data:
-JSON:{signContents0:"Haunted§r",blockState:{blockName:"minecraft:standing_sign",properties:{rotation:"8"}},signContents2:"KEEP§r",signContents1:"House§r",signContents3:"OUT!§r",rotation:0}
+JSON:{signContents0:"Hauntedï¿½r",blockState:{blockName:"minecraft:standing_sign",properties:{rotation:"8"}},signContents2:"KEEPï¿½r",signContents1:"Houseï¿½r",signContents3:"OUT!ï¿½r",rotation:0}
 :enddata
 :endrule
 
@@ -1216,7 +1216,7 @@ rule:
 plugin=vanillaSign
 number=28
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:standing_sign",properties:{rotation:"8"}},signContents2:"",signContents1:"DANGER!§r",signContents3:"",rotation:0}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:standing_sign",properties:{rotation:"8"}},signContents2:"",signContents1:"DANGER!ï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -2272,7 +2272,7 @@ rule:
 plugin=blockTile
 number=160
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:10,protectionFlagTurnOff:0b,playerRange:36,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:20,random:1b,entries:[{volume:100,name:"ancientwarfarestructure:structures/creepy_ghostly_breath",length:5.0f},{volume:50,name:"ancientwarfarestructure:structures/creepy_ghostly_whisper",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/clock_grandfather_chimes",length:5.0f},{volume:50,name:"ancientwarfarestructure:structures/creepy_knock_knock",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/creepy_evil_girl",length:5.0f},{volume:50,name:"ancientwarfarestructure:structures/creepy_droning_2",length:5.0f},{volume:50,name:"ancientwarfarestructure:structures/creepy_droning_1",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/creepy_crypt_voice_4",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/creepy_chittering",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/creepy_crypt_voice_1",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/creepy_crypt_voice_2",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:36,timeOfDay:0},stoppedForAll:0b,meta:0,block:"minecraft:stone",id:"ancientwarfarestructure:sound_block_tile"}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:10,protectionFlagTurnOff:0b,playerRange:36,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:20,random:1b,entries:[{volume:100,name:"ancientwarfarestructure:creepy_ghostly_breath",length:5.0f},{volume:50,name:"ancientwarfarestructure:creepy_ghostly_whisper",length:5.0f},{volume:100,name:"ancientwarfarestructure:clock_grandfather_chimes",length:5.0f},{volume:50,name:"ancientwarfarestructure:creepy_knock_knock",length:5.0f},{volume:100,name:"ancientwarfarestructure:creepy_evil_girl",length:5.0f},{volume:50,name:"ancientwarfarestructure:creepy_droning_2",length:5.0f},{volume:50,name:"ancientwarfarestructure:creepy_droning_1",length:5.0f},{volume:100,name:"ancientwarfarestructure:creepy_crypt_voice_4",length:5.0f},{volume:100,name:"ancientwarfarestructure:creepy_chittering",length:5.0f},{volume:100,name:"ancientwarfarestructure:creepy_crypt_voice_1",length:5.0f},{volume:100,name:"ancientwarfarestructure:creepy_crypt_voice_2",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:36,timeOfDay:0},stoppedForAll:0b,meta:0,block:"minecraft:stone",id:"ancientwarfarestructure:sound_block_tile"}}
 :enddata
 :endrule
 

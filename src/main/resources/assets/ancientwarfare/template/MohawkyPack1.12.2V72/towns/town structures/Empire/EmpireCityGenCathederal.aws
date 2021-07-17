@@ -1949,7 +1949,7 @@ rule:
 plugin=blockTile
 number=103
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:30,protectionFlagTurnOff:1b,playerRange:32,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:124,random:0b,entries:[{volume:100,name:"ancientwarfarestructure:structures/guardians_church_choir",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:36,timeOfDay:1},stoppedForAll:0b,meta:0,block:"minecraft:glowstone",id:"ancientwarfarestructure:sound_block_tile"}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:30,protectionFlagTurnOff:1b,playerRange:32,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:124,random:0b,entries:[{volume:100,name:"ancientwarfarestructure:guardians_church_choir",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:36,timeOfDay:1},stoppedForAll:0b,meta:0,block:"minecraft:glowstone",id:"ancientwarfarestructure:sound_block_tile"}}
 :enddata
 :endrule
 
@@ -2781,7 +2781,7 @@ rule:
 plugin=blockTile
 number=207
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:50,protectionFlagTurnOff:1b,playerRange:36,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:120,random:0b,entries:[{volume:60,name:"ancientwarfarestructure:structures/religious_church_bells_12",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:44,timeOfDay:1},stoppedForAll:0b,meta:1,block:"minecraft:stonebrick",id:"ancientwarfarestructure:sound_block_tile"}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:50,protectionFlagTurnOff:1b,playerRange:36,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:120,random:0b,entries:[{volume:60,name:"ancientwarfarestructure:religious_church_bells_12",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:44,timeOfDay:1},stoppedForAll:0b,meta:1,block:"minecraft:stonebrick",id:"ancientwarfarestructure:sound_block_tile"}}
 :enddata
 :endrule
 

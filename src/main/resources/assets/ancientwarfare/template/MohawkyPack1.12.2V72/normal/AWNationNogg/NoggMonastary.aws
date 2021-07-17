@@ -2536,7 +2536,7 @@ rule:
 plugin=blockTile
 number=154
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:500,protectionFlagTurnOff:0b,playerRange:18,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:2000,random:0b,entries:[{volume:100,name:"ancientwarfarestructure:structures/yo_way_yo",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:18,timeOfDay:1},stoppedForAll:0b,meta:0,block:"ancientwarfarestructure:altar_short_cloth",id:"ancientwarfarestructure:sound_block_tile"}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:500,protectionFlagTurnOff:0b,playerRange:18,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:2000,random:0b,entries:[{volume:100,name:"ancientwarfarestructure:yo_way_yo",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:18,timeOfDay:1},stoppedForAll:0b,meta:0,block:"ancientwarfarestructure:altar_short_cloth",id:"ancientwarfarestructure:sound_block_tile"}}
 :enddata
 :endrule
 
@@ -2552,7 +2552,7 @@ rule:
 plugin=blockTile
 number=156
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:300,protectionFlagTurnOff:0b,playerRange:64,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:900,random:0b,entries:[{volume:100,name:"ancientwarfarestructure:structures/nogg_church_bells",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:64,timeOfDay:1},stoppedForAll:0b,meta:0,block:"ancientwarfarestructure:altar_short_cloth",id:"ancientwarfarestructure:sound_block_tile"}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:300,protectionFlagTurnOff:0b,playerRange:64,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:900,random:0b,entries:[{volume:100,name:"ancientwarfarestructure:nogg_church_bells",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:64,timeOfDay:1},stoppedForAll:0b,meta:0,block:"ancientwarfarestructure:altar_short_cloth",id:"ancientwarfarestructure:sound_block_tile"}}
 :enddata
 :endrule
 
@@ -2584,7 +2584,7 @@ rule:
 plugin=vanillaSign
 number=160
 data:
-JSON:{signContents0:"Song by§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"north"}},signContents2:"Ainsanova§r",signContents1:"Yana§r",signContents3:"A Tribute§r",rotation:0}
+JSON:{signContents0:"Song byï¿½r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"north"}},signContents2:"Ainsanovaï¿½r",signContents1:"Yanaï¿½r",signContents3:"A Tributeï¿½r",rotation:0}
 :enddata
 :endrule
 

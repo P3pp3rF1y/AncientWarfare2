@@ -9,7 +9,6 @@ import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.common.Loader;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructure;
-import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureEntry;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
 import net.shadowmage.ancientwarfare.structure.registry.BiomeGroupRegistry;
@@ -98,7 +97,7 @@ public class WorldGenStructureManager {
 			if (templatesByBiome.containsKey(biomeName) && checkBiome.test(biomeName)) {
 				addBiomeTemplate(template, territoryName, biomeName);
 			} else if (Loader.isModLoaded((new ResourceLocation(biomeName)).getResourceDomain())) {
-				AncientWarfareStructure.LOG.warn("Could not locate biome: {} while registering template: {} for world generation.", biomeName, template.name);
+				AncientWarfareStructure.LOG.trace("Could not locate biome: {} while registering template: {} for world generation.", biomeName, template.name);
 			}
 		}
 	}
@@ -133,6 +132,11 @@ public class WorldGenStructureManager {
 		Set<StructureTemplate> potentialStructures = new HashSet<>();
 		getTerritoryTemplates(territory.getTerritoryName()).ifPresent(potentialStructures::addAll);
 		getTerritoryTemplates(GENERIC_TERRITORY_NAME).ifPresent(potentialStructures::addAll);
+
+		if (!templatesByBiome.containsKey(biomeName)) {
+			return Optional.empty();
+		}
+
 		Set<StructureTemplate> biomeTemplates = templatesByBiome.get(biomeName);
 		potentialStructures.removeIf(t -> !biomeTemplates.contains(t));
 		if (potentialStructures.isEmpty()) {

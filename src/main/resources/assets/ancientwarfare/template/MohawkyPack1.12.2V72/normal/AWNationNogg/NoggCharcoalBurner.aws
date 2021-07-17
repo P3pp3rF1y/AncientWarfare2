@@ -981,7 +981,7 @@ rule:
 plugin=blockTile
 number=81
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:300,protectionFlagTurnOff:0b,playerRange:32,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:900,random:1b,entries:[{volume:100,name:"ancientwarfarestructure:structures/village_lumberjack_1",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/village_lumberjack_2",length:5.0f},{volume:100,length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/village_carpenter_3",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/village_carpenter_5",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:32,timeOfDay:1},stoppedForAll:0b,meta:2,block:"minecraft:planks",id:"ancientwarfarestructure:sound_block_tile"}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:300,protectionFlagTurnOff:0b,playerRange:32,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:900,random:1b,entries:[{volume:100,name:"ancientwarfarestructure:village_lumberjack_1",length:5.0f},{volume:100,name:"ancientwarfarestructure:village_lumberjack_2",length:5.0f},{volume:100,length:5.0f},{volume:100,name:"ancientwarfarestructure:village_carpenter_3",length:5.0f},{volume:100,name:"ancientwarfarestructure:village_carpenter_5",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:32,timeOfDay:1},stoppedForAll:0b,meta:2,block:"minecraft:planks",id:"ancientwarfarestructure:sound_block_tile"}}
 :enddata
 :endrule
 
