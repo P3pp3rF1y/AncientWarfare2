@@ -39226,7 +39226,7 @@ rule:
 plugin=blockTile
 number=105
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:40,protectionFlagTurnOff:1b,playerRange:60,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:80,random:1b,entries:[{volume:100,name:"ancientwarfarestructure:structures/jungle_drums_1",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/jungle_drums_2",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/zimba_drums_2",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/zimba_village_dance",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:60,timeOfDay:0},stoppedForAll:0b,meta:2,block:"minecraft:stonebrick",id:"ancientwarfarestructure:sound_block_tile"}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:40,protectionFlagTurnOff:1b,playerRange:60,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:80,random:1b,entries:[{volume:100,name:"ancientwarfarestructure:jungle_drums_1",length:5.0f},{volume:100,name:"ancientwarfarestructure:jungle_drums_2",length:5.0f},{volume:100,name:"ancientwarfarestructure:zimba_drums_2",length:5.0f},{volume:100,name:"ancientwarfarestructure:zimba_village_dance",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:60,timeOfDay:0},stoppedForAll:0b,meta:2,block:"minecraft:stonebrick",id:"ancientwarfarestructure:sound_block_tile"}}
 :enddata
 :endrule
 
@@ -41162,7 +41162,7 @@ rule:
 plugin=vanillaSign
 number=347
 data:
-JSON:{signContents0:"The§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"is§r",signContents1:"Way§r",signContents3:"shut§r",rotation:0}
+JSON:{signContents0:"Theï¿½r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"isï¿½r",signContents1:"Wayï¿½r",signContents3:"shutï¿½r",rotation:0}
 :enddata
 :endrule
 
@@ -41290,7 +41290,7 @@ rule:
 plugin=vanillaSign
 number=363
 data:
-JSON:{signContents0:"King§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"Mines§r",signContents1:"Solomons§r",signContents3:"",rotation:0}
+JSON:{signContents0:"Kingï¿½r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"Minesï¿½r",signContents1:"Solomonsï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 

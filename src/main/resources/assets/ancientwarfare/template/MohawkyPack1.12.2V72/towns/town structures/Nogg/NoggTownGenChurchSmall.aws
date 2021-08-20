@@ -1279,7 +1279,7 @@ rule:
 plugin=blockTile
 number=103
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:0,protectionFlagTurnOff:0b,playerRange:24,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:0,random:0b,entries:[{volume:100,name:"ancientwarfarestructure:structures/yo_way_yo",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:24,timeOfDay:0},stoppedForAll:0b,meta:0,block:"minecraft:stonebrick",id:"ancientwarfarestructure:sound_block_tile"}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:0,protectionFlagTurnOff:0b,playerRange:24,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:0,random:0b,entries:[{volume:100,name:"ancientwarfarestructure:yo_way_yo",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:24,timeOfDay:0},stoppedForAll:0b,meta:0,block:"minecraft:stonebrick",id:"ancientwarfarestructure:sound_block_tile"}}
 :enddata
 :endrule
 
@@ -1391,7 +1391,7 @@ rule:
 plugin=vanillaSign
 number=117
 data:
-JSON:{signContents0:"Song by§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"Ainsanova§r",signContents1:"Yana§r",signContents3:"A Tribute§r",rotation:0}
+JSON:{signContents0:"Song byï¿½r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"Ainsanovaï¿½r",signContents1:"Yanaï¿½r",signContents3:"A Tributeï¿½r",rotation:0}
 :enddata
 :endrule
 
@@ -1519,7 +1519,7 @@ rule:
 plugin=blockTile
 number=133
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:0,protectionFlagTurnOff:0b,playerRange:56,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:0,random:0b,entries:[{volume:100,name:"ancientwarfarestructure:structures/nogg_church_bells",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:56,timeOfDay:0},stoppedForAll:0b,meta:0,block:"minecraft:stonebrick",id:"ancientwarfarestructure:sound_block_tile"}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:0,protectionFlagTurnOff:0b,playerRange:56,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:0,random:0b,entries:[{volume:100,name:"ancientwarfarestructure:nogg_church_bells",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:56,timeOfDay:0},stoppedForAll:0b,meta:0,block:"minecraft:stonebrick",id:"ancientwarfarestructure:sound_block_tile"}}
 :enddata
 :endrule
 

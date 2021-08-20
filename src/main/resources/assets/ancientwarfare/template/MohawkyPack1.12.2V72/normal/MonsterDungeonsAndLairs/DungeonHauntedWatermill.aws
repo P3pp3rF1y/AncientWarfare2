@@ -1387,7 +1387,7 @@ rule:
 plugin=blockTile
 number=98
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:0,protectionFlagTurnOff:0b,playerRange:2,playOnce:1b,whenInRange:0b,repetitions:1,maxDelay:0,random:0b,entries:[{volume:100,name:"ancientwarfarestructure:structures/evil_boogiemancackle",length:5.0f}],limitedRepetitions:0b,playerEntry:1b,soundRange:24,timeOfDay:0},stoppedForAll:0b,meta:2,block:"minecraft:furnace",id:"ancientwarfarestructure:sound_block_tile"}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:0,protectionFlagTurnOff:0b,playerRange:2,playOnce:1b,whenInRange:0b,repetitions:1,maxDelay:0,random:0b,entries:[{volume:100,name:"ancientwarfarestructure:evil_boogiemancackle",length:5.0f}],limitedRepetitions:0b,playerEntry:1b,soundRange:24,timeOfDay:0},stoppedForAll:0b,meta:2,block:"minecraft:furnace",id:"ancientwarfarestructure:sound_block_tile"}}
 :enddata
 :endrule
 
@@ -1579,7 +1579,7 @@ rule:
 plugin=blockTile
 number=122
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[{values:{stopped:0b,lastTimePlayerNear:46550978L,numberOfTimesRepeated:0},playerIdMost:7575306154316677619L,playerIdLeast:-8766060666842904766L}],tuneData:{minDelay:0,protectionFlagTurnOff:0b,playerRange:3,playOnce:1b,whenInRange:1b,repetitions:1,maxDelay:0,random:0b,entries:[{volume:100,name:"ancientwarfarestructure:structures/evil_boogiemancackle",length:5.0f}],limitedRepetitions:0b,playerEntry:1b,soundRange:24,timeOfDay:0},stoppedForAll:0b,meta:2,block:"minecraft:furnace",id:"ancientwarfarestructure:sound_block_tile"}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[{values:{stopped:0b,lastTimePlayerNear:46550978L,numberOfTimesRepeated:0},playerIdMost:7575306154316677619L,playerIdLeast:-8766060666842904766L}],tuneData:{minDelay:0,protectionFlagTurnOff:0b,playerRange:3,playOnce:1b,whenInRange:1b,repetitions:1,maxDelay:0,random:0b,entries:[{volume:100,name:"ancientwarfarestructure:evil_boogiemancackle",length:5.0f}],limitedRepetitions:0b,playerEntry:1b,soundRange:24,timeOfDay:0},stoppedForAll:0b,meta:2,block:"minecraft:furnace",id:"ancientwarfarestructure:sound_block_tile"}}
 :enddata
 :endrule
 

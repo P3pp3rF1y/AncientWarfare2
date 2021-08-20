@@ -7,7 +7,6 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
-import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -117,17 +116,11 @@ public class ItemQuantityMap {
 	 */
 	public NonNullList<ItemStack> getItems() {
 		NonNullList<ItemStack> items = NonNullList.create();
-		ItemStack outStack;
-		int qty;
-		for (Map.Entry<ItemHashEntry, Integer> entry : map.entrySet()) {
-			qty = entry.getValue();
-			while (qty > 0) {
-				outStack = entry.getKey().getItemStack().copy();
-				outStack.setCount(qty > outStack.getMaxStackSize() ? outStack.getMaxStackSize() : qty);
-				qty -= outStack.getCount();
-				items.add(outStack);
-			}
-		}
+		map.forEach((key, value) -> {
+			ItemStack item = key.getItemStack().copy();
+			item.setCount(value);
+			items.add(item);
+		});
 		return items;
 	}
 

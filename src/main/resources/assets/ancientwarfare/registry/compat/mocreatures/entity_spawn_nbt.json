@@ -1,0 +1,104 @@
+{
+    "mod": "mocreatures",
+    "entity_nbt": {
+        "drzhark.mocreatures.entity.MoCEntityMob": [
+            "Adult",
+            "Edad",
+            "Name",
+            "TypeInt"
+        ],
+        "drzhark.mocreatures.entity.MoCEntityAmbient": [
+            "Adult",
+            "Edad",
+            "Name",
+            "TypeInt"
+        ],
+        "drzhark.mocreatures.entity.MoCEntityAnimal": [
+            "Adult",
+            "Edad",
+            "Name",
+            "TypeInt"
+        ],
+        "drzhark.mocreatures.entity.MoCEntityAquatic": [
+            "Adult",
+            "Edad",
+            "Name",
+            "TypeInt"
+        ],
+        "drzhark.mocreatures.entity.monster.MoCEntityWerewolf": [
+            "HumanForm"
+        ],
+        "drzhark.mocreatures.entity.monster.MoCEntityScorpion": [
+            "Babies"
+        ],
+        "drzhark.mocreatures.entity.monster.MoCEntityGolem": [
+            "golemState",
+            "GolemBlocks"
+        ],
+        "drzhark.mocreatures.entity.passive.MoCEntityWyvern": [
+            "Saddle",
+            "Chested",
+            "ArmorType",
+            "isSitting",
+            "isGhost"
+        ],
+        "drzhark.mocreatures.entity.passive.MoCEntityTurtle": [
+            "UpsideDown"
+        ],
+        "drzhark.mocreatures.entity.passive.MoCEntityPetScorpion": [
+            "Babies",
+            "Saddled"
+        ],
+        "drzhark.mocreatures.entity.passive.MoCEntityOstrich": [
+            "Saddle",
+            "EggWatch",
+            "Hiding",
+            "Helmet",
+            "FlagColor",
+            "Bagged",
+            "Items"
+        ],
+        "drzhark.mocreatures.entity.passive.MoCEntityKomodo": [
+            "Saddle"
+        ],
+        "drzhark.mocreatures.entity.passive.MoCEntityKitty": [
+            "Sitting",
+            "KittyState"
+        ],
+        "drzhark.mocreatures.entity.passive.MoCEntityHorse": [
+            "Saddle",
+            "EatingHaystack",
+            "ChestedHorse",
+            "HasReproduced",
+            "Bred",
+            "ArmorType",
+            "Items"
+        ],
+        "drzhark.mocreatures.entity.passive.MoCEntityElephant": [
+            "Tusks",
+            "Harness",
+            "Storage",
+            "TuskUses",
+            "Slot",
+            "Items",
+            "Items2",
+            "Items3",
+            "Items4"
+        ],
+        "drzhark.mocreatures.entity.passive.MoCEntityBigCat": [
+            "Saddle",
+            "Sitting",
+            "Chested",
+            "Ghost",
+            "Amulet",
+            "Items"
+        ],
+        "drzhark.mocreatures.entity.passive.MoCEntityBear": [
+            "Saddle",
+            "Chested",
+            "Ghost",
+            "BearState",
+            "Items"
+        ]
+    }
+}

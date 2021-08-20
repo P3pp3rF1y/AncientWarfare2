@@ -2531,7 +2531,7 @@ rule:
 plugin=vanillaSign
 number=96
 data:
-JSON:{signContents0:"Witchbane§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"",signContents1:"Abbey§r",signContents3:"",rotation:0}
+JSON:{signContents0:"Witchbaneï¿½r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"",signContents1:"Abbeyï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -2539,7 +2539,7 @@ rule:
 plugin=vanillaSign
 number=97
 data:
-JSON:{signContents0:"Witchbane§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"",signContents1:"Abbey§r",signContents3:"",rotation:0}
+JSON:{signContents0:"Witchbaneï¿½r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"",signContents1:"Abbeyï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -3275,7 +3275,7 @@ rule:
 plugin=vanillaSign
 number=189
 data:
-JSON:{signContents0:"Alms§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"north"}},signContents2:"Poor§r",signContents1:"for the§r",signContents3:"",rotation:0}
+JSON:{signContents0:"Almsï¿½r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"north"}},signContents2:"Poorï¿½r",signContents1:"for theï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -4947,7 +4947,7 @@ rule:
 plugin=blockTile
 number=398
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[{values:{stopped:0b,lastTimePlayerNear:41056141L,numberOfTimesRepeated:0},playerIdMost:7575306154316677619L,playerIdLeast:-8766060666842904766L}],tuneData:{minDelay:0,protectionFlagTurnOff:1b,playerRange:86,playOnce:0b,whenInRange:0b,repetitions:1,maxDelay:0,random:1b,entries:[{volume:100,name:"ancientwarfarestructure:structures/empire_church_bell",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/witchbane_church_entry",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/witchbane_nuns_chant",length:5.0f}],limitedRepetitions:0b,playerEntry:1b,soundRange:120,timeOfDay:1},stoppedForAll:0b,meta:4,block:"minecraft:stone",id:"ancientwarfarestructure:sound_block_tile"}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[{values:{stopped:0b,lastTimePlayerNear:41056141L,numberOfTimesRepeated:0},playerIdMost:7575306154316677619L,playerIdLeast:-8766060666842904766L}],tuneData:{minDelay:0,protectionFlagTurnOff:1b,playerRange:86,playOnce:0b,whenInRange:0b,repetitions:1,maxDelay:0,random:1b,entries:[{volume:100,name:"ancientwarfarestructure:empire_church_bell",length:5.0f},{volume:100,name:"ancientwarfarestructure:witchbane_church_entry",length:5.0f},{volume:100,name:"ancientwarfarestructure:witchbane_nuns_chant",length:5.0f}],limitedRepetitions:0b,playerEntry:1b,soundRange:120,timeOfDay:1},stoppedForAll:0b,meta:4,block:"minecraft:stone",id:"ancientwarfarestructure:sound_block_tile"}}
 :enddata
 :endrule
 

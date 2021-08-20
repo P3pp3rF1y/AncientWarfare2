@@ -35,6 +35,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 import static net.shadowmage.ancientwarfare.core.util.RenderTools.*;
 import static org.lwjgl.opengl.GL11.GL_QUADS;
@@ -53,6 +54,12 @@ public class PreviewRenderer {
 
 	@SideOnly(Side.CLIENT)
 	public static void renderTemplatePreview(EntityPlayer player, EnumHand hand, ItemStack stack, float delta, StructureTemplate structure, StructureBB bb, int turns) {
+		renderTemplatePreview(structure, bb, turns, getKey(stack, turns, hand), offset ->
+				GlStateManager.translate(-getRenderOffsetX(player, delta) + 0.005F + offset.getX(), -getRenderOffsetY(player, delta) + 0.005F + offset.getY(),
+						-getRenderOffsetZ(player, delta) + 0.005F + offset.getZ()));
+	}
+
+	public static void renderTemplatePreview(StructureTemplate structure, StructureBB bb, int turns, int cacheKey, Consumer<Vec3i> translate) {
 		Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		GlStateManager.pushMatrix();
 		if (Minecraft.isAmbientOcclusionEnabled()) {
@@ -63,7 +70,6 @@ public class PreviewRenderer {
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder buffer = tessellator.getBuffer();
 		buffer.begin(GL_QUADS, DefaultVertexFormats.BLOCK);
-		int cacheKey = getKey(stack, turns, hand);
 		Optional<CachedState> state = Optional.ofNullable(previewCache.getIfPresent(cacheKey));
 		Vec3i offset = Vec3i.NULL_VECTOR;
 		if (state.isPresent()) {
@@ -79,8 +85,8 @@ public class PreviewRenderer {
 			previewCache.put(cacheKey, stateToCache);
 			state = Optional.of(stateToCache);
 		}
-		GlStateManager.translate(-getRenderOffsetX(player, delta) + 0.005F + offset.getX(), -getRenderOffsetY(player, delta) + 0.005F + offset.getY(),
-				-getRenderOffsetZ(player, delta) + 0.005F + offset.getZ());
+		translate.accept(offset);
+
 		tessellator.draw();
 		renderDynamicRules(turns, state.get());
 
@@ -88,7 +94,11 @@ public class PreviewRenderer {
 	}
 
 	private static void renderDynamicRules(int turns, CachedState state) {
-		Iterator<Map.Entry<BlockPos, TemplateRuleBlock>> it = state.getDynamicRenderRules().entrySet().iterator();
+		renderDynamicRules(turns, state.getDynamicRenderRules());
+	}
+
+	public static void renderDynamicRules(int turns, Map<BlockPos, TemplateRuleBlock> dynamicRenderRules) {
+		Iterator<Map.Entry<BlockPos, TemplateRuleBlock>> it = dynamicRenderRules.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry<BlockPos, TemplateRuleBlock> entry = it.next();
 			try {
@@ -108,17 +118,15 @@ public class PreviewRenderer {
 	}
 
 	@SideOnly(Side.CLIENT)
-	private static void renderPreview(StructureTemplate structure, StructureBB bb, int turns, BufferBuilder buffer, Map<BlockPos, TemplateRuleBlock> dynamicRenderRules) {
+	public static void renderPreview(StructureTemplate structure, StructureBB bb, int turns, BufferBuilder buffer, Map<BlockPos, TemplateRuleBlock> dynamicRenderRules) {
+		if (structure.getBlockRules().isEmpty()) {
+			return;
+		}
 		TemplateBlockAccess blockAccess = new TemplateBlockAccess(structure, bb, turns);
+		Vec3i size = structure.getSize();
 		for (int pass = 0; pass < 3; pass++) {
-			for (int y = 0; y < structure.getSize().getY(); y++) {
-				for (int x = 0; x < structure.getSize().getX(); x++) {
-					for (int z = 0; z < structure.getSize().getZ(); z++) {
-						BlockPos pos = new BlockPos(x, y, z);
-						renderPreviewAt(structure, bb, turns, buffer, dynamicRenderRules, blockAccess, pos);
-					}
-				}
-			}
+			BlockPos.getAllInBoxMutable(0, 0, 0, size.getX() - 1, size.getY() - 1, size.getZ() - 1)
+					.forEach(pos -> renderPreviewAt(structure, bb, turns, buffer, dynamicRenderRules, blockAccess, pos));
 		}
 	}
 

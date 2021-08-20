@@ -729,7 +729,7 @@ rule:
 plugin=vanillaSign
 number=36
 data:
-JSON:{signContents0:"For§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"Travellers§r",signContents1:"Hungry§r",signContents3:"Welcome§r",rotation:0}
+JSON:{signContents0:"Forï¿½r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"Travellersï¿½r",signContents1:"Hungryï¿½r",signContents3:"Welcomeï¿½r",rotation:0}
 :enddata
 :endrule
 
@@ -745,7 +745,7 @@ rule:
 plugin=vanillaSign
 number=38
 data:
-JSON:{signContents0:"Nogg§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"Tower§r",signContents1:"Watch§r",signContents3:"",rotation:0}
+JSON:{signContents0:"Noggï¿½r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"Towerï¿½r",signContents1:"Watchï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -753,7 +753,7 @@ rule:
 plugin=blockTile
 number=39
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[{values:{stopped:0b,lastTimePlayerNear:43765916L,numberOfTimesRepeated:0},playerIdMost:7575306154316677619L,playerIdLeast:-8766060666842904766L}],tuneData:{minDelay:0,protectionFlagTurnOff:0b,playerRange:32,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:0,random:0b,entries:[{volume:100,name:"ancientwarfarestructure:structures/horn_7",length:5.0f}],limitedRepetitions:0b,playerEntry:1b,soundRange:32,timeOfDay:0},stoppedForAll:0b,meta:0,block:"minecraft:stonebrick",id:"ancientwarfarestructure:sound_block_tile"}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[{values:{stopped:0b,lastTimePlayerNear:43765916L,numberOfTimesRepeated:0},playerIdMost:7575306154316677619L,playerIdLeast:-8766060666842904766L}],tuneData:{minDelay:0,protectionFlagTurnOff:0b,playerRange:32,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:0,random:0b,entries:[{volume:100,name:"ancientwarfarestructure:horn_7",length:5.0f}],limitedRepetitions:0b,playerEntry:1b,soundRange:32,timeOfDay:0},stoppedForAll:0b,meta:0,block:"minecraft:stonebrick",id:"ancientwarfarestructure:sound_block_tile"}}
 :enddata
 :endrule
 

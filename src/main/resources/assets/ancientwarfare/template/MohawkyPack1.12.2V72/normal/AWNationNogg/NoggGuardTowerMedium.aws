@@ -377,7 +377,7 @@ rule:
 plugin=blockTile
 number=9
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:20,protectionFlagTurnOff:0b,playerRange:20,playOnce:0b,whenInRange:0b,repetitions:1,maxDelay:200,random:0b,entries:[{volume:100,name:"ancientwarfarestructure:structures/horn_7",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:80,timeOfDay:0},stoppedForAll:0b,meta:2,block:"minecraft:log",id:"ancientwarfarestructure:sound_block_tile"}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:20,protectionFlagTurnOff:0b,playerRange:20,playOnce:0b,whenInRange:0b,repetitions:1,maxDelay:200,random:0b,entries:[{volume:100,name:"ancientwarfarestructure:horn_7",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:80,timeOfDay:0},stoppedForAll:0b,meta:2,block:"minecraft:log",id:"ancientwarfarestructure:sound_block_tile"}}
 :enddata
 :endrule
 
