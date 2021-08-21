@@ -1,0 +1,23 @@
+name: comments
+
+on:
+  issues:
+    types: [opened, edited]
+  issue_comment:
+    types: [created, edited]
+  pull_request:
+    types: [created, edited]
+
+jobs:
+  comments:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: sobolevn/restrict-cursing-action@latest
+      with:
+        # Also supports emoji:
+        text: "Sorry, I am either a troll or just unlucky user who swears a lot :pray:"
+      env:
+        # We need this token to edit the comment text:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
