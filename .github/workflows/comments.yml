@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: sobolevn/restrict-cursing-action@latest
+    - uses: sobolevn/restrict-cursing-action@0.1.0
       with:
         # Also supports emoji:
         text: "Sorry, I am either a troll or just unlucky user who swears a lot :pray:"
