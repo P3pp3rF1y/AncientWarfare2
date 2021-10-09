@@ -1,5 +1,7 @@
 package net.shadowmage.ancientwarfare.structure.template;
 
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -258,6 +260,7 @@ public class StructureTemplate {
 
 	public static class BuildResource implements INBTSerializable<NBTTagCompound> {
 		private static final String STACK_TO_RETURN_TAG = "stackToReturn";
+		private static final String STACK_COUNT_TAG = "Count";
 		private ItemStack stackRequired;
 		private ItemStack stackToReturn = ItemStack.EMPTY;
 		private int requiredOriginalCount = 0;
@@ -296,7 +299,10 @@ public class StructureTemplate {
 
 		public NBTTagCompound serializeNBT() {
 			NBTTagCompound tag = new NBTTagCompound();
-			tag.setTag("stackRequired", stackRequired.writeToNBT(new NBTTagCompound()));
+			NBTTagCompound stackNbt = stackRequired.writeToNBT(new NBTTagCompound());
+			stackNbt.removeTag(STACK_COUNT_TAG);
+			stackNbt.setInteger(STACK_COUNT_TAG, stackRequired.getCount());
+			tag.setTag("stackRequired", stackNbt);
 			if (!stackToReturn.isEmpty()) {
 				tag.setTag(STACK_TO_RETURN_TAG, stackToReturn.writeToNBT(new NBTTagCompound()));
 				tag.setInteger("requiredOriginalCount", requiredOriginalCount);
@@ -305,7 +311,16 @@ public class StructureTemplate {
 		}
 
 		public void deserializeNBT(NBTTagCompound tag) {
-			stackRequired = new ItemStack(tag.getCompoundTag("stackRequired"));
+			NBTTagCompound stackNbt = tag.getCompoundTag("stackRequired");
+			NBTTagCompound capNBT = stackNbt.hasKey("ForgeCaps") ? stackNbt.getCompoundTag("ForgeCaps") : null;
+			Item item = stackNbt.hasKey("id", 8) ? Item.getByNameOrId(stackNbt.getString("id")) : Items.AIR;
+			int stackSize = stackNbt.getInteger(STACK_COUNT_TAG);
+			int itemDamage = Math.max(0, stackNbt.getShort("Damage"));
+
+			if (item != null) {
+				stackRequired = new ItemStack(item, stackSize, itemDamage, capNBT);
+			}
+
 			if (tag.hasKey(STACK_TO_RETURN_TAG)) {
 				stackToReturn = new ItemStack(tag.getCompoundTag(STACK_TO_RETURN_TAG));
 				requiredOriginalCount = tag.getInteger("requiredOriginalCount");
