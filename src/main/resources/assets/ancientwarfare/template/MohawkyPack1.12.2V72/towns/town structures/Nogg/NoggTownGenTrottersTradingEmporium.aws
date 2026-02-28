@@ -499,7 +499,7 @@ rule:
 plugin=vanillaSign
 number=27
 data:
-JSON:{signContents0:"Del's§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"No§r",signContents1:"Lock-Up§r",signContents3:"Entry§r",rotation:0}
+JSON:{signContents0:"Del'sï¿½r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"Noï¿½r",signContents1:"Lock-Upï¿½r",signContents3:"Entryï¿½r",rotation:0}
 :enddata
 :endrule
 
@@ -931,7 +931,7 @@ rule:
 plugin=vanillaSign
 number=81
 data:
-JSON:{signContents0:"Trotters§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"Trading§r",signContents1:"Peckham§r",signContents3:"Emporium§r",rotation:0}
+JSON:{signContents0:"Trottersï¿½r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"Tradingï¿½r",signContents1:"Peckhamï¿½r",signContents3:"Emporiumï¿½r",rotation:0}
 :enddata
 :endrule
 
@@ -939,7 +939,7 @@ rule:
 plugin=vanillaSign
 number=82
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"Jubbly!§r",signContents1:"Lovely§r",signContents3:"",rotation:0}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"Jubbly!ï¿½r",signContents1:"Lovelyï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -1035,7 +1035,7 @@ rule:
 plugin=blockTile
 number=94
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:10,protectionFlagTurnOff:0b,playerRange:8,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:20,random:1b,entries:[{volume:100,name:"ancientwarfarestructure:structures/clock_grandfather_chimes",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/del_packitin",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/del_cashinhand",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/del_cowboy",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/del_dontbeaplonker",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/del_dozytwonk",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/del_gonnabecushty",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/del_keepyourmitsoff",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/del_millionares",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/del_moneyforoldrope",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/del_ohshutupyoutart",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/del_youdipstick",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/del_youdipstick",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/del_youpranny",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/del_plonker",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:16,timeOfDay:0},stoppedForAll:0b,meta:2,block:"minecraft:planks",id:"ancientwarfarestructure:sound_block_tile"}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:10,protectionFlagTurnOff:0b,playerRange:8,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:20,random:1b,entries:[{volume:100,name:"ancientwarfarestructure:clock_grandfather_chimes",length:5.0f},{volume:100,name:"ancientwarfarestructure:del_packitin",length:5.0f},{volume:100,name:"ancientwarfarestructure:del_cashinhand",length:5.0f},{volume:100,name:"ancientwarfarestructure:del_cowboy",length:5.0f},{volume:100,name:"ancientwarfarestructure:del_dontbeaplonker",length:5.0f},{volume:100,name:"ancientwarfarestructure:del_dozytwonk",length:5.0f},{volume:100,name:"ancientwarfarestructure:del_gonnabecushty",length:5.0f},{volume:100,name:"ancientwarfarestructure:del_keepyourmitsoff",length:5.0f},{volume:100,name:"ancientwarfarestructure:del_millionares",length:5.0f},{volume:100,name:"ancientwarfarestructure:del_moneyforoldrope",length:5.0f},{volume:100,name:"ancientwarfarestructure:del_ohshutupyoutart",length:5.0f},{volume:100,name:"ancientwarfarestructure:del_youdipstick",length:5.0f},{volume:100,name:"ancientwarfarestructure:del_youdipstick",length:5.0f},{volume:100,name:"ancientwarfarestructure:del_youpranny",length:5.0f},{volume:100,name:"ancientwarfarestructure:del_plonker",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:16,timeOfDay:0},stoppedForAll:0b,meta:2,block:"minecraft:planks",id:"ancientwarfarestructure:sound_block_tile"}}
 :enddata
 :endrule
 

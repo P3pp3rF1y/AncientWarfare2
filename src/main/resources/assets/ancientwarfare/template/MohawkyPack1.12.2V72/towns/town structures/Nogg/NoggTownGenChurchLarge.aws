@@ -2063,7 +2063,7 @@ rule:
 plugin=vanillaSign
 number=106
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"",signContents1:"Indulgences§r",signContents3:"",rotation:0}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"",signContents1:"Indulgencesï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -2071,7 +2071,7 @@ rule:
 plugin=vanillaSign
 number=107
 data:
-JSON:{signContents0:"Alms§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"east"}},signContents2:"the§r",signContents1:"for §r",signContents3:"poor§r",rotation:0}
+JSON:{signContents0:"Almsï¿½r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"east"}},signContents2:"theï¿½r",signContents1:"for ï¿½r",signContents3:"poorï¿½r",rotation:0}
 :enddata
 :endrule
 
@@ -2103,7 +2103,7 @@ rule:
 plugin=blockTile
 number=111
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:0,protectionFlagTurnOff:0b,playerRange:24,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:0,random:0b,entries:[{volume:100,name:"ancientwarfarestructure:structures/yo_way_yo",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:24,timeOfDay:0},stoppedForAll:0b,meta:2,block:"minecraft:planks",id:"ancientwarfarestructure:sound_block_tile"}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:0,protectionFlagTurnOff:0b,playerRange:24,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:0,random:0b,entries:[{volume:100,name:"ancientwarfarestructure:yo_way_yo",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:24,timeOfDay:0},stoppedForAll:0b,meta:2,block:"minecraft:planks",id:"ancientwarfarestructure:sound_block_tile"}}
 :enddata
 :endrule
 
@@ -2167,7 +2167,7 @@ rule:
 plugin=blockTile
 number=119
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:600,protectionFlagTurnOff:0b,playerRange:12,playOnce:0b,whenInRange:0b,repetitions:1,maxDelay:900,random:0b,entries:[{volume:100,name:"ancientwarfarestructure:structures/witch_house_crow_2",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:64,timeOfDay:2},stoppedForAll:0b,meta:3,block:"minecraft:stonebrick",id:"ancientwarfarestructure:sound_block_tile"}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:600,protectionFlagTurnOff:0b,playerRange:12,playOnce:0b,whenInRange:0b,repetitions:1,maxDelay:900,random:0b,entries:[{volume:100,name:"ancientwarfarestructure:witch_house_crow_2",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:64,timeOfDay:2},stoppedForAll:0b,meta:3,block:"minecraft:stonebrick",id:"ancientwarfarestructure:sound_block_tile"}}
 :enddata
 :endrule
 
@@ -2303,7 +2303,7 @@ rule:
 plugin=vanillaSign
 number=136
 data:
-JSON:{signContents0:"Song by§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"north"}},signContents2:"Ainsanova§r",signContents1:"Yana§r",signContents3:"A Tribute§r",rotation:0}
+JSON:{signContents0:"Song byï¿½r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"north"}},signContents2:"Ainsanovaï¿½r",signContents1:"Yanaï¿½r",signContents3:"A Tributeï¿½r",rotation:0}
 :enddata
 :endrule
 
@@ -2543,7 +2543,7 @@ rule:
 plugin=blockTile
 number=166
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:0,protectionFlagTurnOff:0b,playerRange:64,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:0,random:0b,entries:[{volume:100,name:"ancientwarfarestructure:structures/nogg_church_bells",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:64,timeOfDay:0},stoppedForAll:0b,id:"ancientwarfarestructure:sound_block_tile"}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:0,protectionFlagTurnOff:0b,playerRange:64,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:0,random:0b,entries:[{volume:100,name:"ancientwarfarestructure:nogg_church_bells",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:64,timeOfDay:0},stoppedForAll:0b,id:"ancientwarfarestructure:sound_block_tile"}}
 :enddata
 :endrule
 

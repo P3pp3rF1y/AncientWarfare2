@@ -917,7 +917,7 @@ rule:
 plugin=vanillaSign
 number=60
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"Pugwash§r",signContents1:"Capn'§r",signContents3:"",rotation:0}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"Pugwashï¿½r",signContents1:"Capn'ï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -941,7 +941,7 @@ rule:
 plugin=vanillaSign
 number=63
 data:
-JSON:{signContents0:"Master§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"north"}},signContents2:"",signContents1:"Bates§r",signContents3:"",rotation:0}
+JSON:{signContents0:"Masterï¿½r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"north"}},signContents2:"",signContents1:"Batesï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -949,7 +949,7 @@ rule:
 plugin=vanillaSign
 number=64
 data:
-JSON:{signContents0:"Roger§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"Cabin Boy§r",signContents1:"the§r",signContents3:"",rotation:0}
+JSON:{signContents0:"Rogerï¿½r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"Cabin Boyï¿½r",signContents1:"theï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -957,7 +957,7 @@ rule:
 plugin=vanillaSign
 number=65
 data:
-JSON:{signContents0:"Ben§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"north"}},signContents2:"the§r",signContents1:"Dover§r",signContents3:"Cook§r",rotation:0}
+JSON:{signContents0:"Benï¿½r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"north"}},signContents2:"theï¿½r",signContents1:"Doverï¿½r",signContents3:"Cookï¿½r",rotation:0}
 :enddata
 :endrule
 
@@ -973,7 +973,7 @@ rule:
 plugin=vanillaSign
 number=67
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"east"}},signContents2:"Staines§r",signContents1:"Seaman§r",signContents3:"",rotation:0}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"east"}},signContents2:"Stainesï¿½r",signContents1:"Seamanï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -989,7 +989,7 @@ rule:
 plugin=vanillaSign
 number=69
 data:
-JSON:{signContents0:"Lady§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"Home§r",signContents1:"Chatterlea's§r",signContents3:"for old Seamen§r",rotation:0}
+JSON:{signContents0:"Ladyï¿½r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"Homeï¿½r",signContents1:"Chatterlea'sï¿½r",signContents3:"for old Seamenï¿½r",rotation:0}
 :enddata
 :endrule
 
@@ -1397,7 +1397,7 @@ rule:
 plugin=blockTile
 number=120
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[{values:{stopped:0b,lastTimePlayerNear:41372986L,numberOfTimesRepeated:0},playerIdMost:7575306154316677619L,playerIdLeast:-8766060666842904766L}],tuneData:{minDelay:0,protectionFlagTurnOff:1b,playerRange:24,playOnce:1b,whenInRange:0b,repetitions:1,maxDelay:0,random:0b,entries:[{volume:100,name:"ancientwarfarestructure:structures/pirate_pugwash",length:5.0f}],limitedRepetitions:0b,playerEntry:1b,soundRange:64,timeOfDay:0},stoppedForAll:0b,meta:2,block:"minecraft:planks",id:"ancientwarfarestructure:sound_block_tile"}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[{values:{stopped:0b,lastTimePlayerNear:41372986L,numberOfTimesRepeated:0},playerIdMost:7575306154316677619L,playerIdLeast:-8766060666842904766L}],tuneData:{minDelay:0,protectionFlagTurnOff:1b,playerRange:24,playOnce:1b,whenInRange:0b,repetitions:1,maxDelay:0,random:0b,entries:[{volume:100,name:"ancientwarfarestructure:pirate_pugwash",length:5.0f}],limitedRepetitions:0b,playerEntry:1b,soundRange:64,timeOfDay:0},stoppedForAll:0b,meta:2,block:"minecraft:planks",id:"ancientwarfarestructure:sound_block_tile"}}
 :enddata
 :endrule
 

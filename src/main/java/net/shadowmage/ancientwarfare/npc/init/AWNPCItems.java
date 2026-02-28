@@ -23,6 +23,7 @@ import net.shadowmage.ancientwarfare.npc.item.ItemCombatOrder;
 import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 import net.shadowmage.ancientwarfare.npc.item.ItemExtendedReachWeapon;
 import net.shadowmage.ancientwarfare.npc.item.ItemFoodBundle;
+import net.shadowmage.ancientwarfare.npc.item.ItemHalberd;
 import net.shadowmage.ancientwarfare.npc.item.ItemIceSpear;
 import net.shadowmage.ancientwarfare.npc.item.ItemMacuahuitl;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
@@ -112,9 +113,14 @@ public class AWNPCItems {
 		OreDictionary.registerOre("foodBundle", bundle);
 
 		registerExtendedReachWeapons(registry, "spear", 2, -3, 4.2F);
-		registerExtendedReachWeapons(registry, "halberd", 3, -3.2D, 4.5F);
 		registerExtendedReachWeapons(registry, "lance", 2.5D, -3.2D, 5.5F);
 		registerExtendedReachWeapons(registry, "cleaver", 3.5D, -2.8D, 3.0F);
+
+		registry.register(new ItemHalberd(Item.ToolMaterial.WOOD, "wooden_halberd", 3, -3.2D, 4.5F));
+		registry.register(new ItemHalberd(Item.ToolMaterial.STONE, "stone_halberd", 3, -3.2D, 4.5F));
+		registry.register(new ItemHalberd(Item.ToolMaterial.IRON, "iron_halberd", 3, -3.2D, 4.5F));
+		registry.register(new ItemHalberd(Item.ToolMaterial.GOLD, "golden_halberd", 3, -3.2D, 4.5F));
+		registry.register(new ItemHalberd(Item.ToolMaterial.DIAMOND, "diamond_halberd", 3, -3.2D, 4.5F));
 
 		registerUniqueExtendedReachWeapon(registry, "obsidian_spear", 2, -3, 4.2F);
 	}

@@ -150,7 +150,7 @@ public class WorldStructureGenerator implements IWorldGenerator {
 				if (p2.getY() >= y && y > 0 && world.canSnowAtBody(pos.up(), true)) {
 					IBlockState state = world.getBlockState(pos);
 					Block block = state.getBlock();
-					if (block != Blocks.AIR && state.getBlockFaceShape(world, pos, EnumFacing.UP) == BlockFaceShape.SOLID) {
+					if (block != Blocks.AIR && state.getBlockFaceShape(world, pos, EnumFacing.UP) == BlockFaceShape.SOLID && block.isTopSolid(state)) {
 						world.setBlockState(pos.up(), Blocks.SNOW_LAYER.getDefaultState());
 					}
 				}

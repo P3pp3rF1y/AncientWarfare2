@@ -4,22 +4,22 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagString;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.core.tile.IBlockBreakHandler;
+import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.NBTHelper;
 import net.shadowmage.ancientwarfare.structure.init.AWStructureBlocks;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class TileDraftingStation extends TileEntity implements ITickable, IBlockBreakHandler {
+public class TileDraftingStation extends TileUpdatable implements ITickable, IBlockBreakHandler {
 	private static final String STRUCTURE_NAME_TAG = "structureName";
 	private String structureName;//structure pulled from live structure list anytime a ref is needed
 	private boolean isStarted;//has started compiling resources -- will need input to cancel
@@ -32,6 +32,7 @@ public class TileDraftingStation extends TileEntity implements ITickable, IBlock
 		@Override
 		protected void onContentsChanged(int slot) {
 			markDirty();
+			BlockTools.notifyBlockUpdate(TileDraftingStation.this);
 		}
 	};
 
@@ -98,7 +99,7 @@ public class TileDraftingStation extends TileEntity implements ITickable, IBlock
 		}
 	}
 
-	private boolean tryFinish() {
+	public boolean tryFinish() {
 		if (outputSlot.getStackInSlot(0).isEmpty()) {
 			ItemStack item = new ItemStack(AWStructureBlocks.STRUCTURE_BUILDER_TICKED);
 			item.setTagInfo(STRUCTURE_NAME_TAG, new NBTTagString(structureName));
@@ -169,6 +170,10 @@ public class TileDraftingStation extends TileEntity implements ITickable, IBlock
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
+		readNBT(tag);
+	}
+
+	private void readNBT(NBTTagCompound tag) {
 		inputSlots.deserializeNBT(tag.getCompoundTag("inputInventory"));
 		outputSlot.deserializeNBT(tag.getCompoundTag("outputInventory"));
 		if (tag.hasKey(STRUCTURE_NAME_TAG)) {
@@ -184,8 +189,25 @@ public class TileDraftingStation extends TileEntity implements ITickable, IBlock
 	}
 
 	@Override
+	protected void writeUpdateNBT(NBTTagCompound tag) {
+		super.writeUpdateNBT(tag);
+		writeNBT(tag);
+	}
+
+	@Override
+	protected void handleUpdateNBT(NBTTagCompound tag) {
+		super.handleUpdateNBT(tag);
+		readNBT(tag);
+	}
+
+	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
+		writeNBT(tag);
+		return tag;
+	}
+
+	private void writeNBT(NBTTagCompound tag) {
 		tag.setTag("inputInventory", inputSlots.serializeNBT());
 
 		tag.setTag("outputInventory", outputSlot.serializeNBT());
@@ -198,8 +220,6 @@ public class TileDraftingStation extends TileEntity implements ITickable, IBlock
 		tag.setInteger("remainingTime", remainingTime);
 		tag.setInteger("totalTime", totalTime);
 		NBTHelper.writeSerializablesTo(tag, "buildResources", buildResources);
-
-		return tag;
 	}
 
 	@Override

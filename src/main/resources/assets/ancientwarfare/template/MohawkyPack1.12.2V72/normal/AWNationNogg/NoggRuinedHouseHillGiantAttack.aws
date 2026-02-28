@@ -688,7 +688,7 @@ rule:
 plugin=blockTile
 number=55
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:0,protectionFlagTurnOff:0b,playerRange:16,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:0,random:1b,entries:[{volume:100,name:"ancientwarfarestructure:structures/evil_ambience_1",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:20,timeOfDay:2},stoppedForAll:0b,meta:0,block:"minecraft:stonebrick",id:"ancientwarfarestructure:sound_block_tile"}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:0,protectionFlagTurnOff:0b,playerRange:16,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:0,random:1b,entries:[{volume:100,name:"ancientwarfarestructure:evil_ambience_1",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:20,timeOfDay:2},stoppedForAll:0b,meta:0,block:"minecraft:stonebrick",id:"ancientwarfarestructure:sound_block_tile"}}
 :enddata
 :endrule
 
@@ -728,7 +728,7 @@ rule:
 plugin=blockTile
 number=60
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:0,protectionFlagTurnOff:0b,playerRange:24,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:0,random:1b,entries:[{volume:100,name:"ancientwarfarestructure:structures/location_sigh_1",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/creepy_evil_girl",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/creepy_ghostly_whisper",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:24,timeOfDay:2},stoppedForAll:0b,meta:0,block:"minecraft:stonebrick",id:"ancientwarfarestructure:sound_block_tile"}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:0,protectionFlagTurnOff:0b,playerRange:24,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:0,random:1b,entries:[{volume:100,name:"ancientwarfarestructure:location_sigh_1",length:5.0f},{volume:100,name:"ancientwarfarestructure:creepy_evil_girl",length:5.0f},{volume:100,name:"ancientwarfarestructure:creepy_ghostly_whisper",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:24,timeOfDay:2},stoppedForAll:0b,meta:0,block:"minecraft:stonebrick",id:"ancientwarfarestructure:sound_block_tile"}}
 :enddata
 :endrule
 

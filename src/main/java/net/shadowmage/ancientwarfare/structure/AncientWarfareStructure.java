@@ -65,6 +65,7 @@ import net.shadowmage.ancientwarfare.structure.template.datafixes.fixers.EntityP
 import net.shadowmage.ancientwarfare.structure.template.datafixes.fixers.EntityRuleNameFixer;
 import net.shadowmage.ancientwarfare.structure.template.datafixes.fixers.FactionExpansionFixer;
 import net.shadowmage.ancientwarfare.structure.template.datafixes.fixers.RuleNameConsolidationFixer;
+import net.shadowmage.ancientwarfare.structure.template.datafixes.fixers.SoundBlockFixer;
 import net.shadowmage.ancientwarfare.structure.template.datafixes.fixers.json.JsonSimplificationFixer;
 import net.shadowmage.ancientwarfare.structure.template.load.TemplateLoader;
 import net.shadowmage.ancientwarfare.structure.town.WorldTownGenerator;
@@ -158,6 +159,7 @@ public class AncientWarfareStructure {
 		DataFixManager.registerRuleFixer(new TileLootFixer());
 		DataFixManager.registerRuleFixer(new LootSettingsPotionRegistryNameFixer());
 		DataFixManager.registerRuleFixer(new WoodenCoffinFixer());
+		DataFixManager.registerRuleFixer(new SoundBlockFixer());
 	}
 
 	@SuppressWarnings("unused")

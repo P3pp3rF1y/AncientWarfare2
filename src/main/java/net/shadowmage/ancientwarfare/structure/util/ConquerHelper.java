@@ -21,6 +21,7 @@ import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
 
+import javax.annotation.Nullable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
@@ -35,7 +36,7 @@ public class ConquerHelper {
 	}
 
 	public static boolean checkBBConquered(EntityPlayer player, StructureBB bb) {
-		return checkBBConquered(player.getEntityWorld(), bb, npc -> markNpcAndMessagePlayer(player, npc), pos -> markSpawnerAndMessagePlayer(player, pos));
+		return checkBBConquered(player.getEntityWorld(), bb, player, npc -> markNpcAndMessagePlayer(player, npc), pos -> markSpawnerAndMessagePlayer(player, pos));
 	}
 
 	private static void markSpawnerAndMessagePlayer(EntityPlayer player, BlockPos pos) {
@@ -50,9 +51,13 @@ public class ConquerHelper {
 	}
 
 	private static boolean checkBBConquered(World world, StructureBB bb, Consumer<NpcFaction> onHostileNpcFound, Consumer<BlockPos> onHostileSpawnerFound) {
+		return checkBBConquered(world, bb, null, onHostileNpcFound, onHostileSpawnerFound);
+	}
+
+	private static boolean checkBBConquered(World world, StructureBB bb, @Nullable EntityPlayer player, Consumer<NpcFaction> onHostileNpcFound, Consumer<BlockPos> onHostileSpawnerFound) {
 		AxisAlignedBB boundingBox = bb.getAABB();
 		for (NpcFaction factionNpc : world.getEntitiesWithinAABB(NpcFaction.class, boundingBox)) {
-			if (!factionNpc.isPassive()) {
+			if ((player != null && factionNpc.isHostileTowards(player)) || !factionNpc.isPassive()) {
 				onHostileNpcFound.accept(factionNpc);
 				return false;
 			}

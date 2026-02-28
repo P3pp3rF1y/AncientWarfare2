@@ -5,7 +5,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -19,16 +18,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.util.NBTBuilder;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.render.RenderStructureBuilder;
-import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
 
 import javax.annotation.Nullable;
-import java.util.Set;
 
 public class BlockStructureBuilder extends BlockBaseStructure {
-
-	private NonNullList<ItemStack> displayCache = null;
-
 	public BlockStructureBuilder() {
 		super(Material.ROCK, "structure_builder_ticked");
 		setHardness(2.f);
@@ -36,21 +30,7 @@ public class BlockStructureBuilder extends BlockBaseStructure {
 
 	@Override
 	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
-		if (displayCache == null || displayCache.isEmpty()) {
-			displayCache = NonNullList.create();
-
-			Set<String> templateNames = StructureTemplateManager.getSurvivalStructures().keySet();
-			ItemStack item;
-			for (String templateName : templateNames) {
-				item = new ItemStack(this);
-				item.setTagInfo("structureName", new NBTTagString(templateName));
-				displayCache.add(item);
-			}
-
-		}
-		if (!displayCache.isEmpty()) {
-			items.addAll(displayCache);
-		}
+		//noop - intentionally not returning any to hide builders from creative menu
 	}
 
 	@Override

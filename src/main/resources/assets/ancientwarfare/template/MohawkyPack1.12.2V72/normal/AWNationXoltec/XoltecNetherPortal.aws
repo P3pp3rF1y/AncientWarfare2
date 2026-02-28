@@ -1405,7 +1405,7 @@ rule:
 plugin=blockTile
 number=73
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:30,protectionFlagTurnOff:1b,playerRange:84,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:60,random:0b,entries:[{volume:40,name:"ancientwarfarestructure:structures/xoltec_long_drum_beat",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:80,timeOfDay:0},stoppedForAll:0b,id:"ancientwarfarestructure:sound_block_tile"}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:30,protectionFlagTurnOff:1b,playerRange:84,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:60,random:0b,entries:[{volume:40,name:"ancientwarfarestructure:xoltec_long_drum_beat",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:80,timeOfDay:0},stoppedForAll:0b,id:"ancientwarfarestructure:sound_block_tile"}}
 :enddata
 :endrule
 

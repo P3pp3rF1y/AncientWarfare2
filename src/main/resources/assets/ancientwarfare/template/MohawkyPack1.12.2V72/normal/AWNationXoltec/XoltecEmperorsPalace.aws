@@ -2812,7 +2812,7 @@ rule:
 plugin=blockTile
 number=68
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:20,protectionFlagTurnOff:1b,playerRange:40,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:40,random:0b,entries:[{volume:60,name:"ancientwarfarestructure:structures/xoltec_pyramid_drums",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:164,timeOfDay:0},stoppedForAll:0b,meta:1,block:"minecraft:red_sandstone",id:"ancientwarfarestructure:sound_block_tile"}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:20,protectionFlagTurnOff:1b,playerRange:40,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:40,random:0b,entries:[{volume:60,name:"ancientwarfarestructure:xoltec_pyramid_drums",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:164,timeOfDay:0},stoppedForAll:0b,meta:1,block:"minecraft:red_sandstone",id:"ancientwarfarestructure:sound_block_tile"}}
 :enddata
 :endrule
 
@@ -2820,7 +2820,7 @@ rule:
 plugin=vanillaSign
 number=69
 data:
-JSON:{signContents0:"xoltec§r",blockState:{blockName:"minecraft:standing_sign",properties:{rotation:"11"}},signContents2:"",signContents1:"",signContents3:"",rotation:11}
+JSON:{signContents0:"xoltecï¿½r",blockState:{blockName:"minecraft:standing_sign",properties:{rotation:"11"}},signContents2:"",signContents1:"",signContents3:"",rotation:11}
 :enddata
 :endrule
 
@@ -5060,7 +5060,7 @@ rule:
 plugin=blockTile
 number=349
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:20,protectionFlagTurnOff:1b,playerRange:164,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:40,random:1b,entries:[{volume:100,name:"ancientwarfarestructure:structures/evil_demonichaunting1",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/evil_demonichaunting2",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/evil_demonichaunting3",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/evil_demonichaunting4",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:64,timeOfDay:0},stoppedForAll:0b,meta:1,block:"minecraft:red_sandstone",id:"ancientwarfarestructure:sound_block_tile"}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:20,protectionFlagTurnOff:1b,playerRange:164,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:40,random:1b,entries:[{volume:100,name:"ancientwarfarestructure:evil_demonichaunting1",length:5.0f},{volume:100,name:"ancientwarfarestructure:evil_demonichaunting2",length:5.0f},{volume:100,name:"ancientwarfarestructure:evil_demonichaunting3",length:5.0f},{volume:100,name:"ancientwarfarestructure:evil_demonichaunting4",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:64,timeOfDay:0},stoppedForAll:0b,meta:1,block:"minecraft:red_sandstone",id:"ancientwarfarestructure:sound_block_tile"}}
 :enddata
 :endrule
 

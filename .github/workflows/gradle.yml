@@ -1,30 +1,46 @@
+# This workflow is triggered on pushes to the repository.
+
 name: Mod Build
 
 on: [push]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v1
-    - name: Set up JDK 1.11
-      uses: actions/setup-java@v1
-      with:
-        java-version: 1.11
-    - name: Build with Gradle
-      run: |
-        ./gradlew clean
-        ./gradlew setupCIWorkspace
-        ./gradlew build
-    - name: Publish to Github Packages
-      env:
-        GPR_USER: ${{ secrets.GPR_USER }}
-        GPR_API_KEY: ${{ secrets.GPR_TOKEN }}
-      run: ./gradlew build publish --stacktrace
-    - name: Code Quality
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: ./gradlew -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }} -Dsonar.organization=p3pp3rf1y-github sonarqube
-      
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up JDK 1.11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.11
+      - name: Generate build number
+        uses: einaregilsson/build-number@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+      - name: Build with Gradle
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GPR_USER: ${{ secrets.GPR_USER }}
+          GPR_API_KEY: ${{ secrets.GPR_TOKEN }}
+        run: |
+          chmod +x gradlew
+          ./gradlew clean
+          ./gradlew setupCIWorkspace
+          ./gradlew build
+      - name: Publish to Github Packages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GPR_USER: ${{ secrets.GPR_USER }}
+          GPR_API_KEY: ${{ secrets.GPR_TOKEN }}
+        run: |
+          chmod +x gradlew
+          ./gradlew clean
+          ./gradlew setupCIWorkspace
+          ./gradlew build publish
+      - name: Code Quality
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./gradlew -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }} -Dsonar.organization=p3pp3rf1y-github sonarqube

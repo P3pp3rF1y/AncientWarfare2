@@ -688,7 +688,7 @@ rule:
 plugin=blockTile
 number=8
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[{values:{stopped:0b,lastTimePlayerNear:25506699L,numberOfTimesRepeated:0},playerIdMost:7575306154316677619L,playerIdLeast:-8766060666842904766L}],tuneData:{minDelay:300,protectionFlagTurnOff:0b,playerRange:6,playOnce:0b,whenInRange:0b,repetitions:0,maxDelay:900,random:1b,entries:[{volume:100,name:"ancientwarfarestructure:structures/village_pigeons_1",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/village_pigeons_2",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/village_pigeons_3",length:5.0f}],limitedRepetitions:0b,playerEntry:1b,soundRange:64,timeOfDay:0},stoppedForAll:0b,meta:0,block:"minecraft:grass",id:"ancientwarfarestructure:sound_block_tile"}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[{values:{stopped:0b,lastTimePlayerNear:25506699L,numberOfTimesRepeated:0},playerIdMost:7575306154316677619L,playerIdLeast:-8766060666842904766L}],tuneData:{minDelay:300,protectionFlagTurnOff:0b,playerRange:6,playOnce:0b,whenInRange:0b,repetitions:0,maxDelay:900,random:1b,entries:[{volume:100,name:"ancientwarfarestructure:village_pigeons_1",length:5.0f},{volume:100,name:"ancientwarfarestructure:village_pigeons_2",length:5.0f},{volume:100,name:"ancientwarfarestructure:village_pigeons_3",length:5.0f}],limitedRepetitions:0b,playerEntry:1b,soundRange:64,timeOfDay:0},stoppedForAll:0b,meta:0,block:"minecraft:grass",id:"ancientwarfarestructure:sound_block_tile"}}
 :enddata
 :endrule
 
@@ -1432,7 +1432,7 @@ rule:
 plugin=blockTile
 number=101
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:0,protectionFlagTurnOff:0b,playerRange:44,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:0,random:0b,entries:[{volume:50,name:"ancientwarfarestructure:structures/village_windmill_sails_turning_2",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:44,timeOfDay:0},stoppedForAll:0b,meta:2,block:"minecraft:planks",id:"ancientwarfarestructure:sound_block_tile"}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:0,protectionFlagTurnOff:0b,playerRange:44,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:0,random:0b,entries:[{volume:50,name:"ancientwarfarestructure:village_windmill_sails_turning_2",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:44,timeOfDay:0},stoppedForAll:0b,meta:2,block:"minecraft:planks",id:"ancientwarfarestructure:sound_block_tile"}}
 :enddata
 :endrule
 

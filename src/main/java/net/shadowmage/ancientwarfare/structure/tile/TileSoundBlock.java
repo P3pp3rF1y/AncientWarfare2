@@ -130,7 +130,7 @@ public class TileSoundBlock extends TileUpdatable implements ISinger, ITickable 
 	}
 
 	private long getLastTimePlayerNear() {
-		return getPlayerSpecificValues().map(PersistentValues::getLastTimePlayerNear).orElse(Long.MAX_VALUE);
+		return getPlayerSpecificValues().map(PersistentValues::getLastTimePlayerNear).orElse(-1L);
 	}
 
 	private boolean isPlayerInRange() {

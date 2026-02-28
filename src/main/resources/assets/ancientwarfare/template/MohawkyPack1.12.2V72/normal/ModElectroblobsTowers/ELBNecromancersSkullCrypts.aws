@@ -2304,7 +2304,7 @@ rule:
 plugin=vanillaSign
 number=70
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"",signContents1:"Mana Essence§r§r§r",signContents3:"",rotation:0}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"",signContents1:"Mana Essenceï¿½rï¿½rï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -2312,7 +2312,7 @@ rule:
 plugin=vanillaSign
 number=71
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"",signContents1:"Essence of Ice§r§r§r",signContents3:"",rotation:0}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"",signContents1:"Essence of Iceï¿½rï¿½rï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -2320,7 +2320,7 @@ rule:
 plugin=vanillaSign
 number=72
 data:
-JSON:{signContents0:"Curse of§r§r§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"",signContents1:"Enfeeblement§r§r§r",signContents3:"",rotation:0}
+JSON:{signContents0:"Curse ofï¿½rï¿½rï¿½r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"",signContents1:"Enfeeblementï¿½rï¿½rï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -2328,7 +2328,7 @@ rule:
 plugin=vanillaSign
 number=73
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"",signContents1:"Bottled Death§r§r§r",signContents3:"",rotation:0}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"",signContents1:"Bottled Deathï¿½rï¿½rï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -2656,7 +2656,7 @@ rule:
 plugin=vanillaSign
 number=114
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"",signContents1:"Elixir of Fire§r§r§r",signContents3:"",rotation:0}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"",signContents1:"Elixir of Fireï¿½rï¿½rï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -2680,7 +2680,7 @@ rule:
 plugin=vanillaSign
 number=117
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"",signContents1:"Spider Venom§r§r§r",signContents3:"",rotation:0}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"",signContents1:"Spider Venomï¿½rï¿½rï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -3008,7 +3008,7 @@ rule:
 plugin=vanillaSign
 number=158
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"THE CELL!§r§r§r",signContents1:"DO NOT OPEN§r§r§r",signContents3:"",rotation:0}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"THE CELL!ï¿½rï¿½rï¿½r",signContents1:"DO NOT OPENï¿½rï¿½rï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -5240,7 +5240,7 @@ rule:
 plugin=blockTile
 number=437
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:25,protectionFlagTurnOff:0b,playerRange:80,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:30,random:1b,entries:[{volume:100,name:"ancientwarfarestructure:structures/haunted_graveyard",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/haunted_graveyard_entry_ambience",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/haunted_graveyard_tree_rustling_leaves",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/haunted_graveyard_wind_in_trees_01",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/haunted_graveyard_wind_in_trees_02",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/haunted_graveyard_wind_in_trees_03",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/haunted_graveyard_wind_in_trees_03",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/haunted_graveyard_wind_in_trees_04",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/creepy_spooky_ravens",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/undead_spooky",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/undead_whispering_voices",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:100,timeOfDay:0},stoppedForAll:0b,meta:0,block:"minecraft:mossy_cobblestone",id:"ancientwarfarestructure:sound_block_tile"}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:25,protectionFlagTurnOff:0b,playerRange:80,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:30,random:1b,entries:[{volume:100,name:"ancientwarfarestructure:haunted_graveyard",length:5.0f},{volume:100,name:"ancientwarfarestructure:haunted_graveyard_entry_ambience",length:5.0f},{volume:100,name:"ancientwarfarestructure:haunted_graveyard_tree_rustling_leaves",length:5.0f},{volume:100,name:"ancientwarfarestructure:haunted_graveyard_wind_in_trees_01",length:5.0f},{volume:100,name:"ancientwarfarestructure:haunted_graveyard_wind_in_trees_02",length:5.0f},{volume:100,name:"ancientwarfarestructure:haunted_graveyard_wind_in_trees_03",length:5.0f},{volume:100,name:"ancientwarfarestructure:haunted_graveyard_wind_in_trees_03",length:5.0f},{volume:100,name:"ancientwarfarestructure:haunted_graveyard_wind_in_trees_04",length:5.0f},{volume:100,name:"ancientwarfarestructure:creepy_spooky_ravens",length:5.0f},{volume:100,name:"ancientwarfarestructure:undead_spooky",length:5.0f},{volume:100,name:"ancientwarfarestructure:undead_whispering_voices",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:100,timeOfDay:0},stoppedForAll:0b,meta:0,block:"minecraft:mossy_cobblestone",id:"ancientwarfarestructure:sound_block_tile"}}
 :enddata
 :endrule
 

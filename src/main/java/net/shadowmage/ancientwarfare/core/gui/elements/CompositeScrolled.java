@@ -41,6 +41,10 @@ public class CompositeScrolled extends Composite implements IScrollableCallback 
 
 	@Override
 	public void render(int mouseX, int mouseY, float partialTick) {
+		if (!visible) {
+			return;
+		}
+
 		if (!isMouseOverElement(mouseX, mouseY)) {
 			mouseX = Integer.MIN_VALUE;
 			mouseY = Integer.MIN_VALUE;

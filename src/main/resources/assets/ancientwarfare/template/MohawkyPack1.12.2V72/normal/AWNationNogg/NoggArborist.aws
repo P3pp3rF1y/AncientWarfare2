@@ -741,7 +741,7 @@ rule:
 plugin=blockTile
 number=12
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[{values:{stopped:0b,lastTimePlayerNear:37043175L,numberOfTimesRepeated:0},playerIdMost:7575306154316677619L,playerIdLeast:-8766060666842904766L}],tuneData:{minDelay:300,protectionFlagTurnOff:0b,playerRange:6,playOnce:0b,whenInRange:0b,repetitions:0,maxDelay:900,random:1b,entries:[{volume:100,name:"ancientwarfarestructure:structures/village_pigeons_1",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/village_pigeons_2",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/village_pigeons_3",length:5.0f}],limitedRepetitions:0b,playerEntry:1b,soundRange:64,timeOfDay:0},stoppedForAll:0b,meta:0,block:"minecraft:grass",id:"ancientwarfarestructure:sound_block_tile"}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[{values:{stopped:0b,lastTimePlayerNear:37043175L,numberOfTimesRepeated:0},playerIdMost:7575306154316677619L,playerIdLeast:-8766060666842904766L}],tuneData:{minDelay:300,protectionFlagTurnOff:0b,playerRange:6,playOnce:0b,whenInRange:0b,repetitions:0,maxDelay:900,random:1b,entries:[{volume:100,name:"ancientwarfarestructure:village_pigeons_1",length:5.0f},{volume:100,name:"ancientwarfarestructure:village_pigeons_2",length:5.0f},{volume:100,name:"ancientwarfarestructure:village_pigeons_3",length:5.0f}],limitedRepetitions:0b,playerEntry:1b,soundRange:64,timeOfDay:0},stoppedForAll:0b,meta:0,block:"minecraft:grass",id:"ancientwarfarestructure:sound_block_tile"}}
 :enddata
 :endrule
 
@@ -1269,7 +1269,7 @@ rule:
 plugin=vanillaSign
 number=78
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:standing_sign",properties:{rotation:"12"}},signContents2:"",signContents1:"Acacia§r",signContents3:"",rotation:4}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:standing_sign",properties:{rotation:"12"}},signContents2:"",signContents1:"Acaciaï¿½r",signContents3:"",rotation:4}
 :enddata
 :endrule
 
@@ -1277,7 +1277,7 @@ rule:
 plugin=vanillaSign
 number=79
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:standing_sign",properties:{rotation:"4"}},signContents2:"",signContents1:"Jungle§r",signContents3:"",rotation:12}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:standing_sign",properties:{rotation:"4"}},signContents2:"",signContents1:"Jungleï¿½r",signContents3:"",rotation:12}
 :enddata
 :endrule
 
@@ -1341,7 +1341,7 @@ rule:
 plugin=vanillaSign
 number=87
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:standing_sign",properties:{rotation:"12"}},signContents2:"",signContents1:"Spruce§r",signContents3:"",rotation:4}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:standing_sign",properties:{rotation:"12"}},signContents2:"",signContents1:"Spruceï¿½r",signContents3:"",rotation:4}
 :enddata
 :endrule
 
@@ -1349,7 +1349,7 @@ rule:
 plugin=vanillaSign
 number=88
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:standing_sign",properties:{rotation:"4"}},signContents2:"",signContents1:"Birch§r",signContents3:"",rotation:12}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:standing_sign",properties:{rotation:"4"}},signContents2:"",signContents1:"Birchï¿½r",signContents3:"",rotation:12}
 :enddata
 :endrule
 
@@ -1381,7 +1381,7 @@ rule:
 plugin=vanillaSign
 number=92
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:standing_sign",properties:{rotation:"12"}},signContents2:"",signContents1:"Oak§r",signContents3:"",rotation:4}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:standing_sign",properties:{rotation:"12"}},signContents2:"",signContents1:"Oakï¿½r",signContents3:"",rotation:4}
 :enddata
 :endrule
 
@@ -1389,7 +1389,7 @@ rule:
 plugin=vanillaSign
 number=93
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:standing_sign",properties:{rotation:"4"}},signContents2:"",signContents1:"Dark Oak§r",signContents3:"",rotation:12}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:standing_sign",properties:{rotation:"4"}},signContents2:"",signContents1:"Dark Oakï¿½r",signContents3:"",rotation:12}
 :enddata
 :endrule
 

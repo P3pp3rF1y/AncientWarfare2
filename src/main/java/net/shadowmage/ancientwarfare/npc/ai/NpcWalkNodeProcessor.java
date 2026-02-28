@@ -1,7 +1,9 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockFenceGate;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.pathfinding.PathNodeType;
@@ -196,9 +198,18 @@ public class NpcWalkNodeProcessor extends WalkNodeProcessor {
 		Block block = iblockstate.getBlock();
 
 		if (block instanceof BlockFenceGate) {
-			return iblockstate.getValue(BlockFenceGate.OPEN) ? PathNodeType.DOOR_OPEN : PathNodeType.DOOR_WOOD_CLOSED;
+			return Boolean.TRUE.equals(iblockstate.getValue(BlockFenceGate.OPEN)) ? PathNodeType.DOOR_OPEN : PathNodeType.DOOR_WOOD_CLOSED;
+		} else if (block instanceof BlockDoor && iblockstate.getMaterial() == Material.IRON && Boolean.FALSE.equals(iblockstate.getValue(BlockDoor.OPEN))
+				&& iblockstate.getValue(BlockDoor.HALF) == BlockDoor.EnumDoorHalf.UPPER && lowerHalfOpen(world, blockpos, iblockstate.getBlock()) //fixes vanilla issue where top half of iron door isn't marked as open when the door is open
+		) {
+			return PathNodeType.DOOR_OPEN;
 		}
 
 		return super.getPathNodeTypeRaw(world, x, y, z);
+	}
+
+	private boolean lowerHalfOpen(IBlockAccess world, BlockPos blockpos, Block block) {
+		IBlockState lowerState = world.getBlockState(blockpos.down());
+		return lowerState.getBlock() == block && lowerState.getValue(BlockDoor.OPEN);
 	}
 }

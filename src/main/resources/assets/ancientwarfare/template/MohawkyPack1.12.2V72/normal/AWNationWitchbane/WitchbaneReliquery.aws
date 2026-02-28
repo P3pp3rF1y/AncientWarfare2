@@ -1071,7 +1071,7 @@ rule:
 plugin=vanillaSign
 number=77
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"Reliquery§r",signContents1:"Witchbane§r",signContents3:"",rotation:0}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"Reliqueryï¿½r",signContents1:"Witchbaneï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -1087,7 +1087,7 @@ rule:
 plugin=vanillaSign
 number=79
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"Reliquery§r",signContents1:"Witchbane§r",signContents3:"",rotation:0}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"Reliqueryï¿½r",signContents1:"Witchbaneï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -1199,7 +1199,7 @@ rule:
 plugin=blockTile
 number=93
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[{values:{stopped:0b,lastTimePlayerNear:34701807L,numberOfTimesRepeated:0},playerIdMost:7575306154316677619L,playerIdLeast:-8766060666842904766L}],tuneData:{minDelay:0,protectionFlagTurnOff:1b,playerRange:20,playOnce:0b,whenInRange:0b,repetitions:1,maxDelay:0,random:0b,entries:[{volume:100,name:"ancientwarfarestructure:structures/vampire_castle_organ_short",length:5.0f}],limitedRepetitions:0b,playerEntry:1b,soundRange:16,timeOfDay:0},stoppedForAll:0b,meta:3,block:"minecraft:stonebrick",id:"ancientwarfarestructure:sound_block_tile"}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[{values:{stopped:0b,lastTimePlayerNear:34701807L,numberOfTimesRepeated:0},playerIdMost:7575306154316677619L,playerIdLeast:-8766060666842904766L}],tuneData:{minDelay:0,protectionFlagTurnOff:1b,playerRange:20,playOnce:0b,whenInRange:0b,repetitions:1,maxDelay:0,random:0b,entries:[{volume:100,name:"ancientwarfarestructure:vampire_castle_organ_short",length:5.0f}],limitedRepetitions:0b,playerEntry:1b,soundRange:16,timeOfDay:0},stoppedForAll:0b,meta:3,block:"minecraft:stonebrick",id:"ancientwarfarestructure:sound_block_tile"}}
 :enddata
 :endrule
 

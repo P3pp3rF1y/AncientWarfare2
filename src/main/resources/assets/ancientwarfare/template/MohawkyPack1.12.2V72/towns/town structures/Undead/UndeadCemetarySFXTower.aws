@@ -1260,7 +1260,7 @@ rule:
 plugin=blockTile
 number=87
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:0,protectionFlagTurnOff:0b,playerRange:50,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:0,random:1b,entries:[{volume:100,name:"ancientwarfarestructure:structures/undead_ambience",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/creepy_spooky_ravens",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/creepy_spooky_ravens",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/undead_whispering_voices",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:50,timeOfDay:0},stoppedForAll:0b,id:"ancientwarfarestructure:sound_block_tile"}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:0,protectionFlagTurnOff:0b,playerRange:50,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:0,random:1b,entries:[{volume:100,name:"ancientwarfarestructure:undead_ambience",length:5.0f},{volume:100,name:"ancientwarfarestructure:creepy_spooky_ravens",length:5.0f},{volume:100,name:"ancientwarfarestructure:creepy_spooky_ravens",length:5.0f},{volume:100,name:"ancientwarfarestructure:undead_whispering_voices",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:50,timeOfDay:0},stoppedForAll:0b,id:"ancientwarfarestructure:sound_block_tile"}}
 :enddata
 :endrule
 

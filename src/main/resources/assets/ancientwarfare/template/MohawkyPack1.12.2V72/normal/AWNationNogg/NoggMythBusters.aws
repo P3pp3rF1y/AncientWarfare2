@@ -564,7 +564,7 @@ rule:
 plugin=blockTile
 number=24
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:10,protectionFlagTurnOff:0b,playerRange:6,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:30,random:1b,entries:[{volume:100,name:"ancientwarfarestructure:structures/myth_boldpredictions",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/mythbusters_eyebrow",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/myth_pithhelmet",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/mythbusters_theresyourproblem",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/gong_large",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/wizard_explosion_2",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/village_well_crank",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:16,timeOfDay:0},stoppedForAll:0b,meta:2,block:"minecraft:planks",id:"ancientwarfarestructure:sound_block_tile"}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:10,protectionFlagTurnOff:0b,playerRange:6,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:30,random:1b,entries:[{volume:100,name:"ancientwarfarestructure:myth_boldpredictions",length:5.0f},{volume:100,name:"ancientwarfarestructure:mythbusters_eyebrow",length:5.0f},{volume:100,name:"ancientwarfarestructure:myth_pithhelmet",length:5.0f},{volume:100,name:"ancientwarfarestructure:mythbusters_theresyourproblem",length:5.0f},{volume:100,name:"ancientwarfarestructure:gong_large",length:5.0f},{volume:100,name:"ancientwarfarestructure:wizard_explosion_2",length:5.0f},{volume:100,name:"ancientwarfarestructure:village_well_crank",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:16,timeOfDay:0},stoppedForAll:0b,meta:2,block:"minecraft:planks",id:"ancientwarfarestructure:sound_block_tile"}}
 :enddata
 :endrule
 
@@ -900,7 +900,7 @@ rule:
 plugin=vanillaSign
 number=66
 data:
-JSON:{signContents0:"Myth§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"east"}},signContents2:"Workshop§r",signContents1:"Busters§r",signContents3:"Keep Out§r",rotation:0}
+JSON:{signContents0:"Mythï¿½r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"east"}},signContents2:"Workshopï¿½r",signContents1:"Bustersï¿½r",signContents3:"Keep Outï¿½r",rotation:0}
 :enddata
 :endrule
 
@@ -1108,7 +1108,7 @@ rule:
 plugin=vanillaSign
 number=92
 data:
-JSON:{signContents0:"Mythical§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"and§r",signContents1:"Beasties§r",signContents3:"Monsters?§r",rotation:0}
+JSON:{signContents0:"Mythicalï¿½r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"andï¿½r",signContents1:"Beastiesï¿½r",signContents3:"Monsters?ï¿½r",rotation:0}
 :enddata
 :endrule
 
@@ -1116,7 +1116,7 @@ rule:
 plugin=vanillaSign
 number=93
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"Busters§r",signContents1:"Myth§r",signContents3:"",rotation:0}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"Bustersï¿½r",signContents1:"Mythï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -1148,7 +1148,7 @@ rule:
 plugin=vanillaSign
 number=97
 data:
-JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"Office§r",signContents1:"Kari's§r",signContents3:"",rotation:0}
+JSON:{signContents0:"",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"west"}},signContents2:"Officeï¿½r",signContents1:"Kari'sï¿½r",signContents3:"",rotation:0}
 :enddata
 :endrule
 
@@ -1172,7 +1172,7 @@ rule:
 plugin=vanillaSign
 number=100
 data:
-JSON:{signContents0:"Myth Buster§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"Keep§r",signContents1:"Work Shop§r",signContents3:"Out§r",rotation:0}
+JSON:{signContents0:"Myth Busterï¿½r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"Keepï¿½r",signContents1:"Work Shopï¿½r",signContents3:"Outï¿½r",rotation:0}
 :enddata
 :endrule
 
@@ -1244,7 +1244,7 @@ rule:
 plugin=vanillaSign
 number=109
 data:
-JSON:{signContents0:"So you need§r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"equipment§r",signContents1:"magical§r",signContents3:"for fighting§r",rotation:0}
+JSON:{signContents0:"So you needï¿½r",blockState:{blockName:"minecraft:wall_sign",properties:{facing:"south"}},signContents2:"equipmentï¿½r",signContents1:"magicalï¿½r",signContents3:"for fightingï¿½r",rotation:0}
 :enddata
 :endrule
 
@@ -1460,7 +1460,7 @@ rule:
 plugin=blockTile
 number=136
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:10,protectionFlagTurnOff:0b,playerRange:7,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:20,random:1b,entries:[{volume:100,name:"ancientwarfarestructure:structures/mythbusters_quack",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/village_carpenter_3",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/magical_appearance",length:5.0f},{volume:100,name:"ancientwarfarestructure:structures/village_weavers_loom",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:16,timeOfDay:0},stoppedForAll:0b,meta:2,block:"minecraft:planks",id:"ancientwarfarestructure:sound_block_tile"}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:10,protectionFlagTurnOff:0b,playerRange:7,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:20,random:1b,entries:[{volume:100,name:"ancientwarfarestructure:mythbusters_quack",length:5.0f},{volume:100,name:"ancientwarfarestructure:village_carpenter_3",length:5.0f},{volume:100,name:"ancientwarfarestructure:magical_appearance",length:5.0f},{volume:100,name:"ancientwarfarestructure:village_weavers_loom",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:16,timeOfDay:0},stoppedForAll:0b,meta:2,block:"minecraft:planks",id:"ancientwarfarestructure:sound_block_tile"}}
 :enddata
 :endrule
 

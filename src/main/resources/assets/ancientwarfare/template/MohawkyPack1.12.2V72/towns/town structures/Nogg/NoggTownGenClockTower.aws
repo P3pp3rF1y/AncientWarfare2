@@ -1137,7 +1137,7 @@ rule:
 plugin=blockTile
 number=58
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:600,protectionFlagTurnOff:0b,playerRange:64,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:1200,random:0b,entries:[{volume:100,name:"ancientwarfarestructure:structures/nogg_clock_tower",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:64,timeOfDay:1},stoppedForAll:0b,meta:2,block:"minecraft:planks",id:"ancientwarfarestructure:sound_block_tile"}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:600,protectionFlagTurnOff:0b,playerRange:64,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:1200,random:0b,entries:[{volume:100,name:"ancientwarfarestructure:nogg_clock_tower",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:64,timeOfDay:1},stoppedForAll:0b,meta:2,block:"minecraft:planks",id:"ancientwarfarestructure:sound_block_tile"}}
 :enddata
 :endrule
 

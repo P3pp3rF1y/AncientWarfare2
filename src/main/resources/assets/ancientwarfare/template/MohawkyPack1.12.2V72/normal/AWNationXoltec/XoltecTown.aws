@@ -3468,7 +3468,7 @@ rule:
 plugin=blockTile
 number=251
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:40,protectionFlagTurnOff:1b,playerRange:68,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:80,random:1b,entries:[{volume:50,name:"ancientwarfarestructure:structures/xoltec_town_flutes",length:5.0f},{volume:50,name:"ancientwarfarestructure:structures/xoltec_town_drums",length:5.0f},{volume:50,name:"ancientwarfarestructure:structures/xoltec_town_long",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:68,timeOfDay:0},stoppedForAll:0b,meta:1,block:"minecraft:red_sandstone",id:"ancientwarfarestructure:sound_block_tile"}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:40,protectionFlagTurnOff:1b,playerRange:68,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:80,random:1b,entries:[{volume:50,name:"ancientwarfarestructure:xoltec_town_flutes",length:5.0f},{volume:50,name:"ancientwarfarestructure:xoltec_town_drums",length:5.0f},{volume:50,name:"ancientwarfarestructure:xoltec_town_long",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:68,timeOfDay:0},stoppedForAll:0b,meta:1,block:"minecraft:red_sandstone",id:"ancientwarfarestructure:sound_block_tile"}}
 :enddata
 :endrule
 

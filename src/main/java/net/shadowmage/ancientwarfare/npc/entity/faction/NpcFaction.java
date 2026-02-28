@@ -5,6 +5,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
@@ -281,7 +282,9 @@ public abstract class NpcFaction extends NpcBase {
 		} else if (e instanceof NpcFaction) {
 			NpcFaction npc = (NpcFaction) e;
 			return !npc.getFaction().equals(factionName) && FactionRegistry.getFaction(getFaction()).isHostileTowards(npc.getFaction());
-		} else {
+		} else if (e instanceof IEntityOwnable && AIHelper.getOwnerPlayer((IEntityOwnable) e, e.world).isPresent()) {
+			return isHostileTowards(AIHelper.getOwnerPlayer((IEntityOwnable) e, e.world).get());
+		}else {
 			return FactionRegistry.getFaction(factionName).isTarget(e) || AIHelper.isAdditionalEntityToTarget(e);
 		}
 	}

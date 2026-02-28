@@ -34,10 +34,10 @@ public class TemplateRuleBlockDoors extends TemplateRuleVanillaBlocks {
 
 	@Override
 	public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
-		if (state.getValue(BlockDoor.HALF) == BlockDoor.EnumDoorHalf.UPPER) {
+		if (state.getValue(BlockDoor.HALF) == BlockDoor.EnumDoorHalf.LOWER) {
 			IBlockState state = BlockTools.rotateFacing(this.state, turns);
 			builder.placeBlock(pos, state, buildPass);
-			builder.placeBlock(pos.down(), state.withProperty(BlockDoor.HALF, BlockDoor.EnumDoorHalf.LOWER), buildPass);
+			builder.placeBlock(pos.up(), state.withProperty(BlockDoor.HALF, BlockDoor.EnumDoorHalf.UPPER), buildPass);
 		}
 	}
 

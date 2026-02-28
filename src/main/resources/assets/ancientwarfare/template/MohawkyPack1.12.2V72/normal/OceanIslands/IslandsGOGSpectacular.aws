@@ -29581,7 +29581,7 @@ rule:
 plugin=blockTile
 number=795
 data:
-JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:50,protectionFlagTurnOff:0b,playerRange:76,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:100,random:0b,entries:[{volume:100,name:"ancientwarfarestructure:structures/jungle_drums_1",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:80,timeOfDay:0},stoppedForAll:0b,meta:3,block:"minecraft:leaves",id:"ancientwarfarestructure:sound_block_tile"}}
+JSON:{blockState:{blockName:"ancientwarfarestructure:sound_block"},teData:{tuneIndex:-1,playerSpecificValues:[],tuneData:{minDelay:50,protectionFlagTurnOff:0b,playerRange:76,playOnce:0b,whenInRange:1b,repetitions:1,maxDelay:100,random:0b,entries:[{volume:100,name:"ancientwarfarestructure:jungle_drums_1",length:5.0f}],limitedRepetitions:0b,playerEntry:0b,soundRange:80,timeOfDay:0},stoppedForAll:0b,meta:3,block:"minecraft:leaves",id:"ancientwarfarestructure:sound_block_tile"}}
 :enddata
 :endrule
 
